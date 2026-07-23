@@ -15,21 +15,9 @@ Read-only static archive of the historic OpenDCL SMF forum (2007–2026).
 - **Main project:** [opendcl/OpenDCL](https://github.com/opendcl/OpenDCL)
 - **Project website:** [opendcl.github.io](https://opendcl.github.io/)
 
+## Short URLs (for SMF redirects)
+
+- Topic: https://opendcl.github.io/forum-archive/t/{topicId}.html
+- Board: https://opendcl.github.io/forum-archive/b/{boardId}.html
+
 Authors are original SMF display names, not verified GitHub accounts.
-
-## Local preview
-
-```powershell
-python -m http.server 8765 --bind 127.0.0.1
-```
-
-## Regenerate
-
-From the OpenDCL workspace (not this published tree alone):
-
-```powershell
-cd forum-archive-tools
-python generate.py config.full.json
-```
-
-Then commit and push updates to this repository.

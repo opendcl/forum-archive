@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Insertion points Show · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 786</p>
+    <h1>Insertion points Show</h1>
+    <p class="meta">Started by velasquez ·
+      2009-06-04 12:09 UTC ·
+      14 replies · SMF topic #786</p>
+<article class="post" id="msg3878">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-06-04 12:09 UTC</span>
+  </div>
+  <div class="post-body">I know a program that management the drawings of a directory he has the characteristic below.  <br>
+<br>
+<strong>*Insertion points plows displayed it goes drawings with images.</strong><br>
+<br>
+See the image.<br>
+Would it be possible to create some thing similar to OpenDCL?  <br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/768/Insertion points.png">Insertion points.png</a> <span class="muted">(26001 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3880">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-04 16:22 UTC</span>
+  </div>
+  <div class="post-body">Hi, velasquez, I've made something similar.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/770/block_select.png">block_select.png</a> <span class="muted">(50756 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3883">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-06-04 17:21 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred,  <br>
+You didn't understand well.  <br>
+I am talking about the red points in the drawing.  <br>
+They show the basepoint of the drawing.  <br>
+The same gotten with (getvar " insbase ").<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/771/points.png">points.png</a> <span class="muted">(11653 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3885">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-06-04 17:41 UTC</span>
+  </div>
+  <div class="post-body">Yes I've been thinking the same thing.<br>
+I'd like the insertion point shown for the Dwg Preview control also.<br>
+Like this: <a href="http://www.cadfx.com/blockman/screenshot.gif" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg3886">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-06-04 17:49 UTC</span>
+  </div>
+  <div class="post-body">Fred, how do you get your DWG Previews looking so good (or are you using the BlockView)?<br>
+Mine always look like #$^&amp;%$#, with random missing lines.<br>
+I'm wondering if it's an aspect ration thing.....<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/772/bx.png">bx.png</a> <span class="muted">(43741 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3889">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-04 18:23 UTC</span>
+  </div>
+  <div class="post-body">Hi, guys,<br>
+<br>
+@velasquez, sorry for my misinterpretation. I've already had the feeling that you meant the red point. But I have no idea how to point it out, especially in a isometric or perspective view. There are flying two ideas through my mind - not nice but they should work:<br>
+1. Create slides for each symbol with a point for insbase. Show a slide instead of each drawing in the form.<br>
+2. When you want to show the dwg-files in the preview then you have to save the block with a point object at insbase which is created on a layer which is off in the drawing where the block shall be inserted to. In this case the block has a point in the preview but not in the drawing.<br>
+The third idea to overlay the dwgpreview with a transparent image with a drawn circle and cross at the computed position of insbase of the shown block behind is so heavy this kind as I will leave it out to mention. ;)<br>
+<br>
+@Barry: try backcolor 7 of dwgpreview instead. As you can see in my screenshot the highlighted preview uses no backcolor 7 and looks much worse than the previews with backcolor 7.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3893">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-06-04 21:49 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=786.msg3889#msg3889 date=1244139793 wrote:</cite><br>
+@Barry: try backcolor 7 of dwgpreview instead. As you can see in my screenshot the highlighted preview uses no backcolor 7 and looks much worse than the previews with backcolor 7.<br>
+</blockquote><br>
+<br>
+Hmmm, you're right. 7 looks much better.<br>
+Owen why is this?<br>
+Should I report a bug?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/775/bx2.png">bx2.png</a> <span class="muted">(13548 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3894">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-05 02:10 UTC</span>
+  </div>
+  <div class="post-body">I have no idea why that is. Yes, report it as a bug, and attach a simple sample that demonstrates it. I'm not sure what can be done about it, but at least it will be logged.</div>
+</article>
+<article class="post" id="msg3898">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-05 05:51 UTC</span>
+  </div>
+  <div class="post-body">Hi, Barry and Owen, I'm afraid that it has its reaon in the dwgthumbnail-control. We also use the ActiveX control DWGThumbnail in forms made in VisualObjects (a development platform like Delphi). There we have similar problems. I also tried to use the DWGThumbnail control as ActiveX control with ObjectDCL with similar problems. In the end I gave up and I use white backcolor throughout the product.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3900">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-06-05 17:58 UTC</span>
+  </div>
+  <div class="post-body">I've updated this bug report: <a href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1683994&amp;group_id=187950&amp;atid=923363" rel="nofollow noopener">{2}</a><br>
+I wonder what control CADfx &amp; velasquez program is using...</div>
+</article>
+<article class="post" id="msg3901">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-06-05 18:40 UTC</span>
+  </div>
+  <div class="post-body">Would (acdbGetPreviewBitmapFromDwg) work better then (acdbDisplayPreviewFromDwg) as our buddy Tony suggests here:<br>
+<a href="http://discussion.autodesk.com/forums/thread.jspa?messageID=4223282�" rel="nofollow noopener">{2}</a><br>
+<br>
+It's all Greek to me.... :)<br>
+</div>
+</article>
+<article class="post" id="msg3915">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-08 01:30 UTC</span>
+  </div>
+  <div class="post-body">I tried to duplicate the functionality of acdbDisplayPreviewFromDwg by extracting the bitmap with acdbGetPreviewBitmapFromDwg, but I haven't been successful. The acdbDisplayPreviewFromDwg function inverts the blacks and whites in the preview bitmap when it detects a black background, but try as I might, I could not figure out how to reproduce that behavior with bitmap manipulations.</div>
+</article>
+<article class="post" id="msg3921">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-06-08 16:32 UTC</span>
+  </div>
+  <div class="post-body">OK thx for trying.<br>
+</div>
+</article>
+<article class="post" id="msg3962">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-06-10 21:06 UTC</span>
+  </div>
+  <div class="post-body">Hi Bazz  <br>
+Can you post the drawings that you show in your code?<br>
+Thanks</div>
+</article>
+<article class="post" id="msg3963">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-06-10 22:29 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=786.msg3962#msg3962 date=1244667970 wrote:</cite><br>
+Hi Bazz  <br>
+Can you post the drawings that you show in your code?<br>
+Thanks<br>
+</blockquote><br>
+<br>
+There are over 5000 of them &amp; I don't think Simpson would like me taking created for them.<br>
+But you can download them here: <a href="http://www.strongtie.com/AutoCad/index.htm" rel="nofollow noopener">{2}</a></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl-messagebox Help Button · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2844</p>
+    <h1>dcl-messagebox Help Button</h1>
+    <p class="meta">Started by Louderjohn ·
+      2023-01-19 14:27 UTC ·
+      5 replies · SMF topic #2844</p>
+<article class="post" id="msg13747">
+  <div class="post-head">
+    <span class="post-author">Louderjohn</span>
+    <span class="post-date muted">2023-01-19 14:27 UTC</span>
+  </div>
+  <div class="post-body">I tried the {ShowHelpButton [as Boolean]} option in dcl-messagebox. When I click on the Help button nothing happens, which I expected. How do you define the actual help file for the Help button?<br>
+</div>
+</article>
+<article class="post" id="msg13748">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2023-01-19 14:39 UTC</span>
+  </div>
+  <div class="post-body">Hello, I really have no experience with the help button in messageboxes. I'm also afraid that the messagebox does not close by clicking on the button, to get the return value of dcl-messagebox. In some cases AutoCAD can open a chm-file by clicking F1 when just a command is runnig (context-sensitive-help) but you have to define a help function right before by using setfunhelp (http://docs.autodesk.com/ACD/2013/ENU/index.html?url=files/GUID-61B2326A-8DE4-46C4-B9F9-22B8D163A761.htm,topicNumber=d30e627653). But in the end I realy have no idea, sorry.<br>
+With regards, Fred</div>
+</article>
+<article class="post" id="msg13749">
+  <div class="post-head">
+    <span class="post-author">Louderjohn</span>
+    <span class="post-date muted">2023-01-19 14:54 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred.</div>
+</article>
+<article class="post" id="msg13750">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2023-01-19 18:05 UTC</span>
+  </div>
+  <div class="post-body">Without looking at the code, I guess pressing  causes the dialog to close and (dcl-MessageBox) returns an integer value for the Help button that is just missed in the OpenDCL reference.</div>
+</article>
+<article class="post" id="msg13751">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2023-01-20 03:36 UTC</span>
+  </div>
+  <div class="post-body">Hello, Owen, unfotunately the form won't be closed by clicking help button.<br>
+<br>
+(dcl-messagebox "Msg" "Title" 3 3 T)<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg13752">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2023-01-21 00:18 UTC</span>
+  </div>
+  <div class="post-body">According to <a href="https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-messagebox" rel="nofollow noopener">{2}</a> the button sends a WM_HELP message to the parent window. Presumably the intent was to trigger the parent form's <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Event/Help.htm" rel="nofollow noopener">{2}</a> event handler. The parent form would be the form that is active before the message box is displayed.<br>
+<br>
+I'm not sure it works, though. I see that there is no direct handler for WM_HELP for any of the form types, so it depends on how the MFC dialog code translates an unhandled WM_HELP message.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

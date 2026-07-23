@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bug in OpenDCL 8.1.1.x or something has changed · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2436</p>
+    <h1>Bug in OpenDCL 8.1.1.x or something has changed</h1>
+    <p class="meta">Started by Emiliano ·
+      2016-10-17 13:46 UTC ·
+      15 replies · SMF topic #2436</p>
+<article class="post" id="msg12128">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2016-10-17 13:46 UTC</span>
+  </div>
+  <div class="post-body">To populate a ComboBox I use the following code:<br>
+<br>
+<br>
+(dcl_ComboBox_Dir APPNAME_Form_FormMain_PartList (findfile "namefolder\\L") "*.dwg")<br>
+<br>
+<br>
+This code works correctly in OpenDCL 8.0.5.0.<br>
+In fact, it replaces the list already present in ComboBox with a new list.<br>
+<br>
+While in OpenDCL 8.1.1.x the same line of code is not a substitute exists but the list adds new items!<br>
+I have also tried using the following line of code<br>
+<br>
+(dcl-ComboBox-Clear APPNAME_Form/FormMain/PartList)<br>
+<br>
+In OpenDCL 8.0.5.0. it works properly (it empties the list ...), while in OpenDCL 8.1.1.x does not work (the list does not empty)!<br>
+Can you help me to solve this problem?<br>
+</div>
+</article>
+<article class="post" id="msg12129">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-10-17 17:04 UTC</span>
+  </div>
+  <div class="post-body">Which combo style?</div>
+</article>
+<article class="post" id="msg12130">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2016-10-18 14:26 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2436.msg12129#msg12129 date=1476723856 wrote:</cite><br>
+Which combo style?<br>
+</blockquote><br>
+<br>
+Hi Owen,<br>
+Thank you for your answer<br>
+<br>
+The combo style is: "2 - Drop Down"</div>
+</article>
+<article class="post" id="msg12131">
+  <div class="post-head">
+    <span class="post-author">Tharwat</span>
+    <span class="post-date muted">2016-10-18 19:21 UTC</span>
+  </div>
+  <div class="post-body">I use this method to work around this accumulating process:<br>
+<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=2377.msg11909#msg11909" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg12132">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2016-10-19 15:57 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Tharwat link=topic=2436.msg12131#msg12131 date=1476818481 wrote:</cite><br>
+I use this method to work around this accumulating process:<br>
+<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=2377.msg11909#msg11909" rel="nofollow noopener">{2}</a><br>
+</blockquote><br>
+<br>
+I do not understand.<br>
+What should I do?</div>
+</article>
+<article class="post" id="msg12133">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-10-19 18:36 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Tharwat link=topic=2436.msg12131#msg12131 date=1476818481 wrote:</cite><br>
+I use this method to work around this accumulating process:...</blockquote><br>
+This discusses <strong>dcl-ComboBox-Clear</strong> which is already tried and used by Emiliano. It seem that I have the same problem (with combo-box style 0), but I have not analysed it in detail and in different versions.</div>
+</article>
+<article class="post" id="msg12134">
+  <div class="post-head">
+    <span class="post-author">Tharwat</span>
+    <span class="post-date muted">2016-10-19 18:55 UTC</span>
+  </div>
+  <div class="post-body">Just call this function at the top to clear the combo-box and as shown in help document:<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2230/cb.JPG">cb.JPG</a> <span class="muted">(66451 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12135">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2016-10-20 06:20 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Tharwat link=topic=2436.msg12134#msg12134 date=1476903313 wrote:</cite><br>
+Just call this function at the top to clear the combo-box and as shown in help document:<br>
+</blockquote><br>
+<br>
+This method works in OpenDCL 8.0.5.0<br>
+While it does not work in OpenDCL 8.1.1.1: it does not empty the list!<br>
+<br>
+Also in 8.0.5.0 I do not need to use this method to clear the list as with "dcl_ComboBox_Dir" I have no duplicates.<br>
+These problems are only present in 8.0.5.0</div>
+</article>
+<article class="post" id="msg12136">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-10-20 10:33 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Emiliano link=topic=2436.msg12135#msg12135 date=1476944457 wrote:</cite><br>
+This method works in OpenDCL 8.0.5.0<br>
+While it does not work in OpenDCL 8.1.1.1: it does not empty the list!...<br>
+</blockquote><br>
+I want to confirm the behaviour. Please take a look at the attached code and at the screencast here:<br>
+http://autode.sk/2eUrhnu<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2231/combo_box.odcl">combo_box.odcl</a> <span class="muted">(1258 bytes)</span></li><li><a href="../attachments/2232/combo_box.lsp">combo_box.lsp</a> <span class="muted">(2893 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12137">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2016-10-20 14:00 UTC</span>
+  </div>
+  <div class="post-body">#787 (dcl-ComboBox-Clear cntrlName) failing in 8.1.0.0<br>
+(dcl-ComboBox-Clear cntrlName)<br>
+This function works in 8.0.5.0 but not in 8.1.0.0.<br>
+It returns true but does nothing.<br>
+Reported on 9-10-2016<br>
+Jim</div>
+</article>
+<article class="post" id="msg12143">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2016-10-22 13:47 UTC</span>
+  </div>
+  <div class="post-body">I see that other developers have encountered the same problem.<br>
+Is there a solution?<br>
+When OpenDCL updated with the fix for this bug will release ?<br>
+</div>
+</article>
+<article class="post" id="msg12145">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2016-10-23 10:59 UTC</span>
+  </div>
+  <div class="post-body">I also found the same problem.</div>
+</article>
+<article class="post" id="msg12152">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2016-10-26 08:21 UTC</span>
+  </div>
+  <div class="post-body">No solution?  :'(<br>
+Is there an alternative way to clear the list of a ComboBox?</div>
+</article>
+<article class="post" id="msg12153">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2016-10-26 08:50 UTC</span>
+  </div>
+  <div class="post-body">I resolved with the following workaround:  ;D<br>
+<br>
+<br>
+<br>
+(defun ClearCombobox ()<br>
+  (repeat (dcl-ComboBox-GetCount APPNAME_Form/FormMain/PartList)<br>
+    (dcl-ComboBox-DeleteItem APPNAME_Form/FormMain/PartList 0)<br>
+  )<br>
+  (princ)<br>
+)<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg12154">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-10-26 08:57 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Emiliano link=topic=2436.msg12153#msg12153 date=1477471837 wrote:</cite><br>
+I resolved with the following workaround:  ;D ...</blockquote><br>
+Fine, thanks for the contribution.<br>
+<br>
+<blockquote class="quote"><cite> author=Emiliano link=topic=2436.msg12152#msg12152 date=1477470073 wrote:</cite><br>
+No solution?  :'( ...</blockquote><br>
+You have to be a little more patient - usually bugs and problems are fixed rather quick, but you know that OpenDCL is an open project and not a commercial software  ;)</div>
+</article>
+<article class="post" id="msg12155">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2016-10-26 10:17 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Peter2 link=topic=2436.msg12154#msg12154 date=1477472243 wrote:</cite><br>
+You have to be a little more patient - usually bugs and problems are fixed rather quick, but you know that OpenDCL is an open project and not a commercial software  ;)<br>
+</blockquote><br>
+<br>
+Of course ;-)<br>
+I greatly thank all developers working on OpenDCL!<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

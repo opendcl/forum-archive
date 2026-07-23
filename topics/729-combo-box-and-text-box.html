@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>combo box and text box · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 729</p>
+    <h1>combo box and text box</h1>
+    <p class="meta">Started by csgoh ·
+      2009-04-24 14:29 UTC ·
+      2 replies · SMF topic #729</p>
+<article class="post" id="msg3554">
+  <div class="post-head">
+    <span class="post-author">csgoh</span>
+    <span class="post-date muted">2009-04-24 14:29 UTC</span>
+  </div>
+  <div class="post-body">Combo box not populated and pre set to selected item<br>
+text box not displaying any default text.<br>
+<br>
+(defun c:w1 (/ <br>
+                c:W1_cmdW1_Cancel_OnClicked <br>
+                c:W1_cmdW1_OnInitialize <br>
+                c:W1_cmdW1_OK_OnClicked<br>
+                c:W1_cmdW1_SKALA_OnEditChanged<br>
+                c:W1_cmdW1_cbLayer_OnSelChanged <br>
+               )<br>
+;---------------------start subroutines------------------------------<br>
+<br>
+ (defun c:W1_cmdW1_OnInitialize ( /)<br>
+; the last skala default<br>
+     (dcl_Control_SetText W1_cmdW1_SKALA <br>
+        (itoa (cdr (assoc "SKALA" wg:constant-list))))<br>
+;populate the combo box<br>
+     (dcl_ComboBox_AddList W1_cmdW1_cbLayer AllLayers-List)<br>
+; set the last default layer<br>
+     (dcl_ComboBox_SetCurSel W1_cmdW1_cbLayer <br>
+      (vl-position  (cdr (assoc "BRGDIST-LAYER" wg:constant-list)) <br>
+                     AllLayers-List)<br>
+     )<br>
+; the last textht default<br>
+     (dcl_Control_SetText W1_cmdW1_tbTextHeight <br>
+        (itoa (cdr (assoc "TEXTHT" wg:constant-list))))<br>
+)<br>
+<br>
+(defun c:W1_cmdW1_SKALA_OnEditChanged (sText /)<br>
+ (princ)<br>
+)<br>
+<br>
+(defun c:W1_cmdW1_OK_OnClicked ( /)<br>
+;; update wg:constant-list<br>
+   (COND <br>
+    ((&lt;= (atoi (dcl_control_gettext W1_cmdW1_skala)) 0)<br>
+     (dcl_MessageBox "SCALE &gt; 0")    <br>
+    );SCALE &lt; 0<br>
+<br>
+    ((&lt; (atoi (dcl_control_gettext W1_cmdW1_tbTextHeight)) 1)<br>
+     (dcl_MessageBox "TEXTHT &gt;= 1")    <br>
+    );TEXTHT &lt; 1<br>
+<br>
+    (T<br>
+     (setq wg:constant-list <br>
+        (subst (cons "SKALA" (ATOI (dcl_control_gettext W1_cmdW1_skala)))<br>
+               (assoc "SKALA" wg:constant-list)<br>
+               wg:constant-list<br>
+        )<br>
+     )<br>
+     (setq wg:constant-list <br>
+       (subst (cons "TEXTHT" (ATOI (dcl_control_gettext W1_cmdW1_tbTextHeight)))<br>
+              (assoc "TEXTHT" wg:constant-list)<br>
+              wg:constant-list<br>
+        )<br>
+     )<br>
+;     (setq wg:constant-list <br>
+;        (subst (cons "BRGDIST-LAYER" (dcl_control_gettext W1_cmdW1_cbLayer))<br>
+;               (assoc "BRGDIST-LAYER" wg:constant-list)<br>
+;               wg:constant-list<br>
+;        )<br>
+;     )<br>
+;     (setq currentlayer (dcl_control_gettext W1_cmdW1_cbLayer))<br>
+     (dcl_Form_Close W1_cmdW1)<br>
+    );t<br>
+   );COND<br>
+)<br>
+<br>
+(defun c:W1_cmdW1_Cancel_OnClicked ( /)<br>
+     (dcl_Form_Close W1_cmdW1)<br>
+)<br>
+(defun c:W1_cmdW1_cbLayer_OnSelChanged (nSelection sSelText /)<br>
+     (setq wg:constant-list <br>
+        (subst (cons "BRGDIST-LAYER" sSelText)<br>
+               (assoc "BRGDIST-LAYER" wg:constant-list)<br>
+               wg:constant-list<br>
+        )<br>
+     )<br>
+)<br>
+<br>
+(defun c:W1_cmdW1_tbTextHeight_OnEditChanged (sText /)<br>
+ (princ)<br>
+)<br>
+<br>
+;---------------------end subroutines------------------------------<br>
+  (vl-load-com)<br>
+; all the layers<br>
+  (setq AllLayers-List (WG:GetAllLayers GB:ActivedocumentObj <br>
+                         '(("WG-BGDIST" 3 "CONTINUOUS") <br>
+                           ("WG-LOTARE" 4 "CONTINUOUS") <br>
+                           ("WG-GRIDTXT" 6 "CONTINUOUS") <br>
+                           ("WG-TRAVLN" 11 "CONTINUOUS") <br>
+                           ("WG-TABLE" 7 "CONTINUOUS") <br>
+                           ("WG-TABNO" 7 "CONTINUOUS") <br>
+                           ("WG-BDLABEL" 3 "CONTINUOUS") <br>
+                          ) <br>
+                       )<br>
+  )<br>
+<br>
+; all textstyles<br>
+  (setq AllTextStyles-List (WG:GetAllTextStyles GB:ActivedocumentObj))<br>
+<br>
+  (or LoadRunTime (load "_OpenDclUtils.lsp") (exit))<br>
+  (LoadRunTime)<br>
+  (dcl_project_load "W1.odcl" T)<br>
+  (dcl_FORM_SHOW W1_cmdW1)<br>
+;; The Event handlers manage the form here.   <br>
+  (PRINC)<br>
+(PRINT "WG:CONSTANT-LIST ")(PRINT WG:CONSTANT-LIST)<br>
+)<br>
+<br>
+<br>
+Where have i gone wrong?<br>
+Help is much appreciated.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/685/p1.GIF">p1.GIF</a> <span class="muted">(66748 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3555">
+  <div class="post-head">
+    <span class="post-author">csgoh</span>
+    <span class="post-date muted">2009-04-24 14:31 UTC</span>
+  </div>
+  <div class="post-body">forgot the odcl file.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/686/W1.odcl">W1.odcl</a> <span class="muted">(1221 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3556">
+  <div class="post-head">
+    <span class="post-author">csgoh</span>
+    <span class="post-date muted">2009-04-24 14:46 UTC</span>
+  </div>
+  <div class="post-body">found the problem. the initialize button was not checked.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Combo Box not Populated · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1548</p>
+    <h1>Combo Box not Populated</h1>
+    <p class="meta">Started by CouchPotato ·
+      2010-12-05 00:35 UTC ·
+      4 replies · SMF topic #1548</p>
+<article class="post" id="msg7569">
+  <div class="post-head">
+    <span class="post-author">CouchPotato</span>
+    <span class="post-date muted">2010-12-05 00:35 UTC</span>
+  </div>
+  <div class="post-body">I'm pulling my hair out, (what little there is).  I finally went through the tutorial, so I thought I woudl try some stuff at home.  I created a combo box at the office that initialized just fine.  I then tried to create it at home and nothing shows up in the drop down.  I even copied the form and lisp from the ofiice.  When I load the form at home the combo box is not  populated with the "initialize" values. <br>
+<br>
+Here is the LISP code and I've attached the odcl file.  What is missing??<br>
+<br>
+(defun c:Invertest ()<br>
+  (command "_opendcl")<br>
+  (dcl_project_load "pipecalcs" T)<br>
+  (dcl_form_show pipecalcs_invertcalcs)<br>
+)<br>
+<br>
+<br>
+(defun c:PipeCalcs_InvertCalcs_OnInitialize (/)<br>
+  (dcl_ComboBox_AddList PipeCalcs_InvertCalcs_MHSize "48" "60")<br>
+  (dcl_ComboBox_AddList PipeCalcs_InvertCalcs_ComboBox1 "70" "60")<br>
+) <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1499/PipeCalcs.odcl">PipeCalcs.odcl</a> <span class="muted">(962 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7570">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-12-05 03:09 UTC</span>
+  </div>
+  <div class="post-body">From help <br>
+(dcl_ComboBox_AddList PipeCalcs_InvertCalcs_MHSize NewItems [<strong>as List of Strings</strong>])<br>
+<br>
+<br>
+AND The event name in the code is not the same as the name in the dialog, so your dialog initialize event wasnt able to fing the defined name ..<br>
+<br>
+try ..<br>
+<br>
+<br>
+(command "_opendcl")<br>
+<br>
+(defun c:Invertest ()<br>
+  (dcl_project_load "pipecalcs" T)<br>
+  (dcl_form_show pipecalcs_invertcalcs)<br>
+)<br>
+<br>
+<br>
+;; (defun c:PipeCalcs_InvertCalcs_OnInitialize (/)<br>
+;; (defun c:PipeInvertCalc_InvertCalcs_OnInitialize ()<br>
+(defun c:PipeCalcs_InvertCalcs_OnInitialize (/)<br>
+<br>
+ (setq index  (dcl_ComboBox_AddList PipeCalcs_InvertCalcs_MHSize (list "48" "60")))<br>
+  (dcl_ComboBox_AddList PipeCalcs_InvertCalcs_ComboBox1 (list "70" "60"))<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg7571">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-12-05 03:16 UTC</span>
+  </div>
+  <div class="post-body"><strong>OR better still</strong>, deselect and reselect the event toggle in the odcl editor so that the event is named to match the fileName_controlName_Action<br>
+<br>
+Note: there is a command on the Toolbar-&gt;Tools-&gt;<strong>Reset Event Names</strong> which does the same thing for ALL controls.<br>
+<br>
+MisNamed events is one of the most frequent design errors in ODCL, and usually the first place to look :)</div>
+</article>
+<article class="post" id="msg7573">
+  <div class="post-head">
+    <span class="post-author">CouchPotato</span>
+    <span class="post-date muted">2010-12-05 21:38 UTC</span>
+  </div>
+  <div class="post-body">I thought I had done the reload of the commands from the control browser but apparently not enough of them.  All seems to be well, for now.  I'm sure I will be back for more.  Thanks again,<br>
+</div>
+</article>
+<article class="post" id="msg7576">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-12-06 02:18 UTC</span>
+  </div>
+  <div class="post-body"><br>
+You're welcome :)<br>
+<br>
+Have fun !!<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

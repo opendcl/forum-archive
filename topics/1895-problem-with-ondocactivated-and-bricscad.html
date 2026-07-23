@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with OnDocActivated and Bricscad · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1895</p>
+    <h1>Problem with OnDocActivated and Bricscad</h1>
+    <p class="meta">Started by Emiliano ·
+      2012-09-20 13:30 UTC ·
+      4 replies · SMF topic #1895</p>
+<article class="post" id="msg9312">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-09-20 13:30 UTC</span>
+  </div>
+  <div class="post-body">Hello to all,<br>
+I have a problem with the event "OnDocActivated" assigned to a Control Bar<br>
+In AutoCAD works correctly, but in Bricscad starts continuously every time you start a new command.<br>
+<br>
+I recommend you see the example and the video in the attached file.<br>
+Can you tell me how to fix this?<br>
+<br>
+thanks<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1822/TEST.zip">TEST.zip</a> <span class="muted">(596333 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9313">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-09-20 14:26 UTC</span>
+  </div>
+  <div class="post-body">Hi, I remember similar behaviour in the past in AutoCAD, because OnDocActivated does not mean OnActiveDocumentChanged. I believe, OnDocActivated will also be fired when the palette had the focus before clicking into ModelSpace of current drawing. I solved that using blackboard and I compared the vla-object of ActiveDocument with the content of the blackboard variable. If it is equal, OnDocActivated will be skipped.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9314">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-09-20 19:28 UTC</span>
+  </div>
+  <div class="post-body">It looks like Bricscad's document events are fired differently than AutoCAD's. I have changed the OpenDCL code for the next build so that OnDocActivated is not called unless a *different* document is activated. This should make the Bricscad behavior consistent with AutoCAD.</div>
+</article>
+<article class="post" id="msg9315">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-09-21 05:56 UTC</span>
+  </div>
+  <div class="post-body">Ok<br>
+thank you!<br>
+I hope that the next built to be published very soon  ;)</div>
+</article>
+<article class="post" id="msg9316">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-09-21 20:28 UTC</span>
+  </div>
+  <div class="post-body">If all goes according to plan, I will upload a new build this weekend.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

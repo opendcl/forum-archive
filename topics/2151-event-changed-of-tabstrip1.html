@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Event &quot;Changed&quot; of TabStrip1 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2151</p>
+    <h1>Event &quot;Changed&quot; of TabStrip1</h1>
+    <p class="meta">Started by Emiliano ·
+      2014-06-17 08:44 UTC ·
+      7 replies · SMF topic #2151</p>
+<article class="post" id="msg10756">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2014-06-17 08:44 UTC</span>
+  </div>
+  <div class="post-body">You know, there are problems with the event "Changed" the TabStrip1? <br>
+<br>
+When I activated this event and loads the form, the following error:<br>
+<br>
+<em>An OpenDCL function argument processing exception has occurred!<br>
+Error: NIL value non allowed<br>
+Function: dcl-Control-SetEnabled<br>
+Argument: 0</em><br>
+<br>
+It seems that the value of the ItemIndex is null<br>
+<br>
+I use 8.0.0.6</div>
+</article>
+<article class="post" id="msg10757">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-06-17 11:30 UTC</span>
+  </div>
+  <div class="post-body">What exact do you mean by "null"? If you mean zero, that is a valid value. Please provide some context.</div>
+</article>
+<article class="post" id="msg10758">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2014-06-17 13:49 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2151.msg10757#msg10757 date=1403004634 wrote:</cite><br>
+What exact do you mean by "null"? If you mean zero, that is a valid value. Please provide some context.<br>
+</blockquote><br>
+<br>
+Null = nil<br>
+<br>
+Scenario 1 <br>
+- In the project .Odcl I activated the Event "Changed" of TabStrip1. <br>
+- In lisp file I have <strong>not</strong> included any code <br>
+- When I load the form does <strong>not</strong> appear any error<br>
+<br>
+Scenario 2<br>
+- In the project .Odcl I activated the Event "Changed" of TabStrip1. <br>
+- In lisp file insert the following code:<br>
+<br>
+(defun c:Progetto/FormPrincipale/TabStrip1#OnChanged (ItemIndex /)<br>
+  (if (= ItemIndex 0)<br>
+    (dcl-Control-SetEnabled Progetto/FormPrincipale/ButtonOpzioni T)<br>
+    (dcl-Control-SetEnabled Progetto/FormPrincipale/ButtonOpzioni nil)<br>
+  )<br>
+)<br>
+<br>
+<br>
+<br>
+- When I load the form, the following error appears:<br>
+<em>An OpenDCL function argument processing exception has occurred!<br>
+Error: NIL value non allowed<br>
+Function: dcl-Control-SetEnabled<br>
+Argument: 0</em><br>
+<br>
+Only now I realized that the error appears when opening the form, perhaps because the "c:Progetto/FormPrincipale/TabStrip1#OnChanged" will start before the form is fully loaded.  :-\<br>
+<br>
+What can I do to prevent the "c:Progetto/FormPrincipale/TabStrip1#OnChanged" is launched when loading the form?<br>
+I want that it is only launched when the user changes the TabStrip1</div>
+</article>
+<article class="post" id="msg10760">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-06-17 17:58 UTC</span>
+  </div>
+  <div class="post-body">There are numerous ways to handle a situation where you want to handle events only after the form is initialized. The three most common are:<br>
+1) Check whether the control symbol (in your case Progetto/FormPrincipale/ButtonOpzioni) is already set<br>
+2) Set a global variable your Initialize event handler, then check that variable in the subject event handler<br>
+3) Leave the event unchecked in the .odcl file, but set the event property at runtime during Initialize</div>
+</article>
+<article class="post" id="msg10762">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-06-17 20:08 UTC</span>
+  </div>
+  <div class="post-body">Hi, I know this very well. As Owen said, you have to set a preinit variable to suppress code within the OnTabChanged event.<br>
+At the time the form is created at runtime, the current tab is changed and at that time it may be that not all controls are already created.<br>
+Thats why you need this variable. When OnInitialize is called all controls are created so you can set this variable to nil.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10763">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2014-06-18 07:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2151.msg10760#msg10760 date=1403027922 wrote:</cite><br>
+There are numerous ways to handle a situation where you want to handle events only after the form is initialized. The three most common are:<br>
+1) Check whether the control symbol (in your case Progetto/FormPrincipale/ButtonOpzioni) is already set<br>
+2) Set a global variable your Initialize event handler, then check that variable in the subject event handler<br>
+3) Leave the event unchecked in the .odcl file, but set the event property at runtime during Initialize<br>
+</blockquote><br>
+<br>
+Thanks for the reply. <br>
+I solved that method 2, but I'd like to better understand the first suggestion: <br>
+How do I to check whether the control symbol (in my case Progetto/FormPrincipale/ButtonOpzioni) is already set ?</div>
+</article>
+<article class="post" id="msg10764">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2014-06-18 07:03 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2151.msg10762#msg10762 date=1403035728 wrote:</cite><br>
+Hi, I know this very well. As Owen said, you have to set a preinit variable to suppress code within the OnTabChanged event.<br>
+At the time the form is created at runtime, the current tab is changed and at that time it may be that not all controls are already created.<br>
+Thats why you need this variable. When OnInitialize is called all controls are created so you can set this variable to nil.<br>
+<br>
+Regards, Fred<br>
+</blockquote><br>
+<br>
+thanks for your clarification !</div>
+</article>
+<article class="post" id="msg10765">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-06-18 14:30 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Emiliano link=topic=2151.msg10763#msg10763 date=1403074943 wrote:</cite><br>
+How do I to check whether the control symbol (in my case Progetto/FormPrincipale/ButtonOpzioni) is already set ?<br>
+</blockquote><br>
+<br>
+(if Progetto/FormPrincipale/ButtonOpzioni (do-stuff-with-button-opzioni1))</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

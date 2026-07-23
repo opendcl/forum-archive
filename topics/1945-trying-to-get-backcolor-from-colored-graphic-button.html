@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trying to get BACKCOLOR from colored Graphic Button · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1945</p>
+    <h1>Trying to get BACKCOLOR from colored Graphic Button</h1>
+    <p class="meta">Started by RGUS ·
+      2013-02-11 05:32 UTC ·
+      24 replies · SMF topic #1945</p>
+<article class="post" id="msg9545">
+  <div class="post-head">
+    <span class="post-author">RGUS</span>
+    <span class="post-date muted">2013-02-11 05:32 UTC</span>
+  </div>
+  <div class="post-body">Ok... so I don't like the tweeness of the ACI Color Dialog that comes with standard AutoCAD<br>
+So thinking... hey OpenDCL could do this...<br>
+I know, I know... probably not the best implementation of this really cool product... but hey... <br>
+<br>
+So anyway... attached are the odcl and lsp files for it... and all I want to do is return the correct number for the background color for each graphic button... but do you think I understand how... nope.<br>
+<br>
+Can someone... please point me in the right direction... I'm stumped right now.<br>
+<br>
+Thanks<br>
+Deane<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1852/color_swatch.lsp">color_swatch.lsp</a> <span class="muted">(376 bytes)</span></li><li><a href="../attachments/1853/color_swatch.odcl">color_swatch.odcl</a> <span class="muted">(7723 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9546">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-02-11 05:49 UTC</span>
+  </div>
+  <div class="post-body">Is this what you're looking for?<br>
+<br>
+(defun c:kolor_OnClicked (/)<br>
+ (dcl_Form_Close "color_swatch" "color_swatch" (dcl_Control_GetBackColor kolor))<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg9547">
+  <div class="post-head">
+    <span class="post-author">RGUS</span>
+    <span class="post-date muted">2013-02-11 06:22 UTC</span>
+  </div>
+  <div class="post-body">Ummm... it's a good call to certainly close the dialog box after picking... but if I pick... say color 58 ... it always returns 18 as the "GetBackColor" number... I can't set the current color to that selected.<br>
+</div>
+</article>
+<article class="post" id="msg9548">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-02-11 09:19 UTC</span>
+  </div>
+  <div class="post-body">The problem is that you are using the same VarName "kolor" for all Graphic Buttons. Ultimately the variable kolor will point to one control only: the last control with that VarName in the ZOrder. In the current ODCL this is the COLOR18 Graphic Button.<br>
+<br>
+I can think of two solutions:<br>
+1. Create a unique OnClicked function for each color button.<br>
+2. Use a single Picture Box for all color swatches.<br>
+<br>
+I have an example of the last solution. I will try to upload it today. I'll have to look it over first. ;)</div>
+</article>
+<article class="post" id="msg9550">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-02-11 12:03 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=1945.msg9548#msg9548 date=1360574383 wrote:</cite><br>
+I have an example of the last solution.<br>
+</blockquote><br>
+Link: http://www.opendcl.com/forum/index.php?topic=1946.0</div>
+</article>
+<article class="post" id="msg9551">
+  <div class="post-head">
+    <span class="post-author">RGUS</span>
+    <span class="post-date muted">2013-02-11 13:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=1945.msg9550#msg9550 date=1360584216 wrote:</cite><br>
+[quote author=roy_043 link=topic=1945.msg9548#msg9548 date=1360574383]<br>
+I have an example of the last solution.<br>
+</blockquote><br>
+Link: http://www.opendcl.com/forum/index.php?topic=1946.0<br>
+<br>
+<br>
+Wowzer... Man, that's some coding!<br>
+Thanks for the example and idea. I considered making a variable for each graphic button... but the lisp file would be enormous.<br>
+<br>
+I tried your example function with the example provided in the code:<br>
+(FlexColorDialog '((1 2 3 4 5 6 7 8 9) (250 251 252 253 254 255 nil 0 256) ((11 186 247) (247 186 11))) nil T)<br>
+<br>
+However AutoCAD 2013 spat this error back at me... I'll have to read your lines carefully I guess to get this to work.<br>
+Thanks a lot for your help<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1857/AutoCAD Spit.jpg">AutoCAD Spit.jpg</a> <span class="muted">(10750 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9552">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-02-11 13:51 UTC</span>
+  </div>
+  <div class="post-body">I will look into the error. Since the error seems to be related to colors-as-RGB-lists it think this will probably work:<br>
+(FlexColorDialog '((1 2 3 4 5 6 7 8 9) (250 251 252 253 254 255 nil 0 256) (11 12)) nil T)<br>
+<br>
+<blockquote class="quote"><cite> author=RGUS link=topic=1945.msg9551#msg9551 date=1360588680 wrote:</cite><br>
+but the lisp file would be enormous.<br>
+</blockquote>Not necessarily. You can create Lisp functions programmatically:<br>
+(setq indexList '(1 2 3 4))<br>
+<br>
+(foreach index indexList<br>
+  (eval<br>
+    (read<br>
+      (strcat<br>
+        "(defun c:Color_Swatch_Color" (itoa index) " () (ColorButtonOnClick " (itoa index) "))"<br>
+      )<br>
+    )<br>
+  )<br>
+)<br>
+<br>
+(defun ColorButtonOnClick (index)<br>
+  (command "color" index)<br>
+  (dcl_Form_Close "Color_Swatch" "Color_Swatch")<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg9553">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-02-11 14:43 UTC</span>
+  </div>
+  <div class="post-body">I have updated the Lisp file in my FlexColorDialog post:<br>
+http://www.opendcl.com/forum/index.php?topic=1946.0</div>
+</article>
+<article class="post" id="msg9559">
+  <div class="post-head">
+    <span class="post-author">RGUS</span>
+    <span class="post-date muted">2013-02-12 04:27 UTC</span>
+  </div>
+  <div class="post-body">Thanks roy...<br>
+<br>
+That self generating function code stuff worked a treat.<br>
+Probably not the most efficient way to do it but it works... and that's all it needs to do.<br>
+<br>
+Thanks for updating for code for the other routine... a little more learning and I just may rethink the way I'm doing it.<br>
+<br>
+Thanks again for your help.  </div>
+</article>
+<article class="post" id="msg9561">
+  <div class="post-head">
+    <span class="post-author">RGUS</span>
+    <span class="post-date muted">2013-02-15 17:41 UTC</span>
+  </div>
+  <div class="post-body">Ok... so using "roy_043" help with creating functions, I've change the code to work... and it does.<br>
+Primarily, I wanted a bigger color swatch than what comes standard with AutoCAD... because I'm old and blind.<br>
+<br>
+Getting it to work may help others see how it's done and provide ideas for other routines.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1859/color_swatch.lsp">color_swatch.lsp</a> <span class="muted">(1604 bytes)</span></li><li><a href="../attachments/1860/color_swatch.odcl">color_swatch.odcl</a> <span class="muted">(8742 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9562">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-02-15 18:07 UTC</span>
+  </div>
+  <div class="post-body">Looks good. This, or some variation on it, would make a nice OpenDCL sample. If you don't mind, I my steal your idea and make a sample out of it.</div>
+</article>
+<article class="post" id="msg9563">
+  <div class="post-head">
+    <span class="post-author">RGUS</span>
+    <span class="post-date muted">2013-02-15 18:29 UTC</span>
+  </div>
+  <div class="post-body">No problems Owen... would love to see the sample when you're done with it though.<br>
+Thanks for a great way to make DCL so much better than AutoDESK ever dreamed of!</div>
+</article>
+<article class="post" id="msg9564">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-02-15 21:54 UTC</span>
+  </div>
+  <div class="post-body">@RGUS: To make it extra nice: ;)<br>
+- Make the ByLayer button functional.<br>
+- Add a ByBlock button.<br>
+- End the main function with a (princ) statement.<br>
+</div>
+</article>
+<article class="post" id="msg9565">
+  <div class="post-head">
+    <span class="post-author">RGUS</span>
+    <span class="post-date muted">2013-02-16 00:11 UTC</span>
+  </div>
+  <div class="post-body">Something like this'roy'?<br>
+Though trying to suppress the '0' when exiting the dialog box is beyond my understanding.<br>
+I thought about adding the line <br>
+<em>(strcat "Entity Color Set to: " (itoa index))</em><br>
+<br>
+but that damn 0 kept popping up.<br>
+<br>
+Added the bits you mentioned... attached<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1861/color_swatch.lsp">color_swatch.lsp</a> <span class="muted">(1978 bytes)</span></li><li><a href="../attachments/1862/color_swatch.odcl">color_swatch.odcl</a> <span class="muted">(8789 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9566">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-02-16 10:09 UTC</span>
+  </div>
+  <div class="post-body">This is what I mean:<br>
+(defun c:CSW()<br>
+  (dcl_LoadProject "color_swatch")<br>
+  (dcl_Form_Show "color_swatch" "color_swatch")<br>
+  (princ) ; (princ) statement to suppress any return value.<br>
+)</div>
+</article>
+<article class="post" id="msg9568">
+  <div class="post-head">
+    <span class="post-author">RGUS</span>
+    <span class="post-date muted">2013-02-17 01:36 UTC</span>
+  </div>
+  <div class="post-body">See I knew it would be simple... I just need another 40 years in this stuff to begin to see the wood from the trees.</div>
+</article>
+<article class="post" id="msg12360">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2017-01-31 21:24 UTC</span>
+  </div>
+  <div class="post-body">When try to use this, (AutoCAD 2017)<br>
+<br>
+files Reply #13 with <br>
+command comment Reply #14 Roy..<br>
+<br>
+this is what happens..<br>
+<br>
+Figure this line is breaking the party<br>
+Command: ; error: AutoCAD command rejected: "color"<br>
+change it to (command "-color".. ) and that should work..? *EDIT * Not..<br>
+<br>
+*EDIT* <br>
+Added opendcl directory for files as trusted directory in AutoCAD, restart, .. negative<br>
+I find it strange that in the odcl nothing is defined when i check 'event' 'onclick'(?), none of the numbers have (?)<br>
+Only esc at some point does give me a way out..<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2288/Knipsel.JPG">Knipsel.JPG</a> <span class="muted">(18055 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12361">
+  <div class="post-head">
+    <span class="post-author">RGUS</span>
+    <span class="post-date muted">2017-01-31 21:29 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=hanslammerts link=topic=1945.msg12360#msg12360 date=1485897869 wrote:</cite><br>
+When try to use this, (AutoCAD 2017)<br>
+this is what happens..<br>
+</blockquote><br>
+<br>
+Just tried the code provided earlier with AutoCAD 2017 and it displays perfectly. I couldn't get the error you are having.<br>
+</div>
+</article>
+<article class="post" id="msg12363">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2017-01-31 22:09 UTC</span>
+  </div>
+  <div class="post-body">I think this dialog is very good. I model / draw all with thé most simple layernames onw can think of ;-)..: <br>
+1,2,3,4,5 ..following colorcode.<br>
+<br>
+Great stuff!<br>
+With some tweaks i would like it to turn into this this..<br>
+<br>
+(..replacement for..)<br>
+command:1<br>
+command:2<br>
+command:3<br>
+etc.<br>
+<br>
+(&gt; if layers is not available, make layer &gt; then layer current + start function to select object to make turn it this layer..)<br>
+<br>
+<br>
+<br>
+;;; either change current selection to current layer or start drawing line on current layer<br>
+(defun XYZ_laycmnd ( lyr / ss1 p1 idx)<br>
+  ;(c:makel)<br>
+  (if (and (tblsearch "LAYER" lyr)<br>
+           (setq ss1 (ssget "_I"))<br>
+      )<br>
+    ;; if selection, change to layer<br>
+    (repeat (setq idx (sslength ss1))<br>
+      (vla-put-layer<br>
+        (vlax-ename-&gt;vla-object (ssname ss1 (setq idx (1- idx))))<br>
+        lyr<br>
+      )<br>
+    )<br>
+    ;; if no selection, start drawing line on layer<br>
+    (progn<br>
+      (command "layer" "set" lyr "on" lyr "")<br>
+      (c:lac)<br>
+      <br>
+;;;      (if (setq p1 (getpoint "LINE From point: "))<br>
+;;;        (command "line" p1)<br>
+;;;      ) ;if<br>
+    ) ;progn<br>
+  ) ;if<br>
+)<br>
+<br>
+<br>
+(defun c:1 (/ p1)  (XYZ_laycmnd "1") (princ))<br>
+(defun c:2 (/ p1)  (XYZ_laycmnd "2") (princ))<br>
+(defun c:3 (/ p1)   (XYZ_laycmnd "3") (princ))<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg12365">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2017-02-01 22:47 UTC</span>
+  </div>
+  <div class="post-body">Trying to get this routine started, but failing in more then one way..<br>
+<br>
+- noticed that Autolisp file path was assigned to a local c:\ drive from the author. How to get rid of this? i don't how this can be set to <br>
+- See that none of the index number have event  'clicked' assigned, shouldn't that be?<br>
+- BBlock was not there i believe.<br>
+- did some editing in the code. I have the feeling something in the code that is ;;;commented is failing and giving errors.<br>
+<br>
+If someone can help me a little in the right direction, i would appriciate that. <br>
+The errors do not seem as normal behaviour for a beginner..<br>
+thanks <br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2290/color_swatch.odcl">color_swatch.odcl</a> <span class="muted">(7848 bytes)</span></li><li><a href="../attachments/2291/color_swatch.lsp">color_swatch.lsp</a> <span class="muted">(2153 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12368">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-02-02 14:14 UTC</span>
+  </div>
+  <div class="post-body">Fixed files attached.<br>
+<br>
+<strong>Modifications to the .odcl file:</strong><br>
+1.<br>
+Menu &gt; Project &gt; Set AutoLISP File Name &gt; select .lsp file<br>
+I don't know how to remove this file name, but it is only used in the Studio.<br>
+See: Menu &gt; Tools &gt; Write Events to Lisp File<br>
+2.<br>
+Menu &gt; Tools &gt; Clear Lisp Symbol Names &gt; OK<br>
+3.<br>
+Menu &gt; Tools &gt; Reset Event Names &gt; OK<br>
+<br>
+Note 1:<br>
+It is important that you do not call AutoCAD commands in event handlers.<br>
+Note 2:<br>
+The dialog is not finished. Only the buttons on top row and the last three buttons on the bottom row have an OnClicked event. So there is still some work to do.<br>
+Note 3:<br>
+Why don't you use the built-in color dialog?:<br>
+(acad_colordlg 1 T)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2292/color_swatch.odcl">color_swatch.odcl</a> <span class="muted">(7961 bytes)</span></li><li><a href="../attachments/2293/color_swatch.lsp">color_swatch.lsp</a> <span class="muted">(1069 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12372">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2017-02-02 22:23 UTC</span>
+  </div>
+  <div class="post-body">Nice of you to take a look Roy! :)<br>
+<br>
+Sofar i made it to this. It's not quite finished yet and i bet you have some findings on my coding..<br>
+<br>
+done this:<br>
+- buttons work<br>
+- make layer if not available<br>
+- functions "select layer" combined with "change elements" work (user can use escape, or tune it to use it only as colornumber..)<br>
+<br>
+- a bottom part to expand , *EDIT*<br>
+<strong>- works, review the code if you like....  12-2-2017 *EDIT*  see animated gif </strong><br>
+<strong>- needs better handling support : select objects first  17-2-2017 *EDIT* </strong><br>
+<strong>- defun c:lac handles select objects first 17-2-2017 *EDIT* </strong><br>
+<strong>- defun c:lac handles select objects first better 22-2-2017 *EDIT* </strong><br>
+<br>
+For now, i like it .. <br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2308/2017-02-12_23-01-41.gif">2017-02-12_23-01-41.gif</a> <span class="muted">(999726 bytes)</span></li><li><a href="../attachments/2319/color_swatch.odcl">color_swatch.odcl</a> <span class="muted">(12863 bytes)</span></li><li><a href="../attachments/2320/color_swatch.lsp">color_swatch.lsp</a> <span class="muted">(5413 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12383">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2017-02-07 22:10 UTC</span>
+  </div>
+  <div class="post-body">I made the dialog a modeless one. <br>
+Somehow i can get the button down / expand turn the real unfolding good.. hmmm  :-\<br>
+<br>
+it has height 45 / 450  <br>
+width 750<br>
+<br>
+<br>
+<br>
+(defun c:color_swatch/COLOR_SWATCH/cmdExpand#OnClicked ( / );_ expand<br>
+	(if (&lt; (Cadr (dcl-Form-GetControlArea color_swatch/COLOR_SWATCH)) 400)<br>
+		(progn<br>
+			(dcl-Form-Resize color_swatch/COLOR_SWATCH 750 450)<br>
+			(dcl-Control-SetPicture color_swatch/COLOR_SWATCH/cmdExpand 100)<br>
+		) ());_ if<br>
+    <br>
+<br>
+	(if (&gt; (Cadr (dcl-Form-GetControlArea color_swatch/COLOR_SWATCH)) 400)<br>
+		(progn<br>
+			(dcl-Form-Resize color_swatch/COLOR_SWATCH 750 45)<br>
+			(dcl-Control-SetPicture color_swatch/COLOR_SWATCH/cmdExpand 101)<br>
+		) ());_if<br>
+)<br>
+<br>
+(princ)<br>
+<br>
+<br>
+<br>
+See last previous post for code..<br>
+</div>
+</article>
+<article class="post" id="msg12384">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-02-08 09:38 UTC</span>
+  </div>
+  <div class="post-body">Hans, in the example you refer to (c:FormMover/Form1/cmdExpand#OnClicked) there is only a single 'if', why are there two in your code?<br>
+BTW 1:<br>
+At least 25 buttons still do not have an OnClicked event.<br>
+BTW 2:<br>
+The dcl-Form-Show method behaves differently for a modeless from. So you will have to revise the current logic of the c:CSW function.</div>
+</article>
+<article class="post" id="msg12408">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2017-02-12 22:13 UTC</span>
+  </div>
+  <div class="post-body">I updated the code. #21<br>
+Think its working a lot better now.<br>
+Thanks for your feedback Roy_043!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

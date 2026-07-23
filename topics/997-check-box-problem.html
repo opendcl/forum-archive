@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Check Box problem · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 997</p>
+    <h1>Check Box problem</h1>
+    <p class="meta">Started by Iulian ·
+      2009-10-28 18:39 UTC ·
+      7 replies · SMF topic #997</p>
+<article class="post" id="msg5062">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2009-10-28 18:39 UTC</span>
+  </div>
+  <div class="post-body">Hi. I have a problem with the Check Box tool. I put two check boxes on the form, then I set both check boxes as Unchecked; in AutoLISP, onInitialize event I set again with zero value (as unchecked), and when I run the project, one of two is checked. If I set into Oninitialize event  that check box with one value, after running the form are both unchecked. Where could be the problem?<br>
+And another question if you please, sometimes when I press the "save" button on the OpenDCL project, does not save anything. I must "SAVE AS.."..delete old version, and replace it. Why? </div>
+</article>
+<article class="post" id="msg5063">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-28 19:16 UTC</span>
+  </div>
+  <div class="post-body">Which version of OpenDCL Studio are you using?  Can you upload a simple example that demonstrates the check box problem?  Regarding the save issue, it would be helpful if you can describe precisely the steps to take in order to reproduce the problem.</div>
+</article>
+<article class="post" id="msg5081">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2009-11-01 18:34 UTC</span>
+  </div>
+  <div class="post-body">I am using OpenDCL.Studio.ENU.6.0.0.6 . When the form is initialized check box 2 is checked but in the first second becomes unchecked, and  if I run again the application (with "zzz" command) check box 2 remains checked. <br>
+<br>
+And I have another question if you please, with another Odcl form: I have put one text button on the form, and when i run the application, the button is invisible, till I move the mouse. <br>
+<br>
+Thanks. <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1012/cb.lsp">cb.lsp</a> <span class="muted">(121 bytes)</span></li><li><a href="../attachments/1013/cb.odcl">cb.odcl</a> <span class="muted">(521 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5082">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-01 20:03 UTC</span>
+  </div>
+  <div class="post-body">Your sample project does not include an OnInitialize event handler.  I added one that set the first check box value to 1, and that worked as expected with no noticeable problems.<br>
+<br>
+For the text button problem, can you attach a simple sample that demonstrates the problem?  Which versions of Windows and AutoCAD are you using?</div>
+</article>
+<article class="post" id="msg5089">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2009-11-02 21:26 UTC</span>
+  </div>
+  <div class="post-body">I am using AutoCAD 2007 , Windows XP professional with SP2 and OpenDCL.Studio.ENU.6.0.0.6.  I have upoaded a video on youtube    <br>
+<br>
+<a href="http://www.youtube.com/watch?v=gOOSUjtzHjI#normal" rel="nofollow noopener">{2}</a> <br>
+<br>
+with my problem (the text button which doesn`t appear on the "initialize" event of the form) and with the save button.( I press the SAVE button, but it doesn`t save the changes). This video has no very high quality, but can be seen that when the form is loaded the textbutton1 is invisible, and after the mouse is moved this appears; and the second problem, after the option buttons and the picture box are erased, is pressed the SAVE button; after that is compiled again the active lisp file, but the form do not present any changes. <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1014/iuli.lsp">iuli.lsp</a> <span class="muted">(204 bytes)</span></li><li><a href="../attachments/1015/iuli.odcl">iuli.odcl</a> <span class="muted">(781 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5090">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2009-11-02 21:34 UTC</span>
+  </div>
+  <div class="post-body">The movie was captured between the using the "initialize" event on form1, but as you can see, neither of option list or picture box are on the initialize event, and they are still being on the form, when form is loaded.</div>
+</article>
+<article class="post" id="msg5091">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-02 22:22 UTC</span>
+  </div>
+  <div class="post-body">The invisible button issue may have been fixed in a later alpha build, as I cannot reproduce it. Please test it in Alpha 11 and let me know whether it still happens.<br>
+<br>
+For the second problem, make sure you have specified the 'Reload' argument to (dcl_Project_Load):<br>
+(dcl_project_load "iuli" T)<br>
+<br>
+This is important during development to ensure that the project is always reloaded from disk.</div>
+</article>
+<article class="post" id="msg5096">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2009-11-03 13:16 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen, now it work. I have changed the OpenDCL version with the latest (11), and now it works (when I press the SAVE button now saves, and my text button appears without the code into the initialize event of the form.Thanks.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

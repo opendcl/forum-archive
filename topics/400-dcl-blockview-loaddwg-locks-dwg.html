@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_blockview_loaddwg locks dwg ?? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 400</p>
+    <h1>dcl_blockview_loaddwg locks dwg ??</h1>
+    <p class="meta">Started by commodore ·
+      2008-08-08 13:29 UTC ·
+      3 replies · SMF topic #400</p>
+<article class="post" id="msg1799">
+  <div class="post-head">
+    <span class="post-author">commodore</span>
+    <span class="post-date muted">2008-08-08 13:29 UTC</span>
+  </div>
+  <div class="post-body">When I display a dwg with dcl_blockview_loaddwg then close the form and go to windows explorer and try to delete the file I often get the following windows error...,<br>
+ "Error Deleting File or Folder"<br>
+"Cannot delete P8: It is being used by another person or program."<br>
+"Close any programs that might be using the file and try again."<br>
+<br>
+P8.dwg is the file name.<br>
+There are no corresponding dwl, bak or any other files.<br>
+Sometimes I can delete the file right away, sometimes I have to wait up to 30 seconds.<br>
+Closing ACAD and/or OpenDCL does not make any difference, the files still are locked.<br>
+Tried adding dcl_blockview_clear, did'nt help<br>
+<br>
+I am trying to use this as a preview to let the user see if they want to keep or delete an existing file so if they want to delete it my program would do do it for them after closing the form but if OpenDCL is not letting go of the file for an extended period then this will be a problem.<br>
+<br>
+Any insight on this?<br>
+</div>
+</article>
+<article class="post" id="msg1803">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-08-08 16:35 UTC</span>
+  </div>
+  <div class="post-body">this is a total shot in the dark but<br>
+<br>
+<pre class="code"><code>(dcl_Control_SetEnabled BlockView1 nil)</code></pre><br>
+<br>
+Disable the BlockView control?</div>
+</article>
+<article class="post" id="msg1810">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-08-11 00:26 UTC</span>
+  </div>
+  <div class="post-body">Test this in Alpha 22 and let us know whether it changes anything.</div>
+</article>
+<article class="post" id="msg1812">
+  <div class="post-head">
+    <span class="post-author">commodore</span>
+    <span class="post-date muted">2008-08-11 13:31 UTC</span>
+  </div>
+  <div class="post-body">No change with Alpha 22 but I don't think it's going to be an issue for me since from within my Lisp program it does not seem to be an issue.<br>
+I have been able to delete the previously viewed file 100% with out a problem from Lisp, just not from windows explorer right away.<br>
+I'm starting to think it's AutoCad that's hanging onto the file and not OpenDCL.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

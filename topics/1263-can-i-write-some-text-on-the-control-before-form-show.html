@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Can I write some text on the Control before form_show ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1263</p>
+    <h1>Can I write some text on the Control before form_show ?</h1>
+    <p class="meta">Started by khann ·
+      2010-04-21 02:05 UTC ·
+      6 replies · SMF topic #1263</p>
+<article class="post" id="msg6770">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-04-21 02:05 UTC</span>
+  </div>
+  <div class="post-body">Hi.<br>
+<br>
+Just After <br>
+(<span style="color:blue">setq</span> *ODCL_Proj_Name (<span style="color:blue">dcl_project_import </span> *Temp_ODCL_Form <span style="color:blue">nil</span> <span style="color:blue">nil</span>))<br>
+<br>
+Before (<span style="color:blue">dcl_Form_Show</span> *Temp_Form ) <br>
+<br>
+Can I do some action on the Control in the Form?<br>
+Like writing text on the textbox?<br>
+<br>
+Any help will be appreciate.<br>
+ Thanks.</div>
+</article>
+<article class="post" id="msg6772">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-04-21 04:28 UTC</span>
+  </div>
+  <div class="post-body">You can do that in the form's OnInitialize event handler function.</div>
+</article>
+<article class="post" id="msg6773">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-04-21 04:34 UTC</span>
+  </div>
+  <div class="post-body"> :)<br>
+Thanks. I just got it. </div>
+</article>
+<article class="post" id="msg6774">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-04-21 06:20 UTC</span>
+  </div>
+  <div class="post-body">And there,<br>
+<br>
+I think the form is ready to show but it still waiting.<br>
+<br>
+Before showing the form I'm getting number with (<span style="color:blue">getreal </span> ).<br>
+<br>
+But the form keeps its focus then I need click the CAD Screen to come back.<br>
+<br>
+I'm loading a Modaless form and before showing the form need user input number value.<br>
+<br>
+The form designed has Keep Focus Ture property. Does this matter?<br>
+<br>
+Thanks.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6775">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-04-21 08:20 UTC</span>
+  </div>
+  <div class="post-body">Yes, it may. You can cange the status of the property for the time of getreal. Another idea would be to use dcl_setcmdbarfocus to change the focus to the command-line.<br>
+<br>
+(dcl_control_setkeepfocus MyProj_MyForm nil)<br>
+(dcl_setcmdbarfocus)<br>
+(setq reaNumber (getreal "\nNew value: "))<br>
+(dcl_control_setkeepfocus MyProj_MyForm T)<br>
+(dcl_controlsetfocus MyProj_MyForm_MyControl)<br>
+<br>
+BTW: why don't you create a textbox for input the needed value?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6776">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-04-21 08:27 UTC</span>
+  </div>
+  <div class="post-body">I've just read your post once again. My first answer depends on the case the form is already visible and the user shall input something.<br>
+But did I understand you right, that you want to let the user input a number value <strong>between </strong> (dcl_form_show ) and before the form appears after finishing OnInitialize? It may be that it wouldn't work properly.<br>
+I'd either prefer to let the user input a number <strong>before </strong> (dcl_form_show ) <strong>or </strong> set a default number and let the user change the value in the form in a textbox with NumberStyle.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6783">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-04-22 02:31 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred, for your reply.<br>
+<br>
+I make it out like this way.<br>
+Before get in "form_OnInitialize" routine , I've packed up user input values on a List Var of global variable.<br>
+At end of this sub function I call the (<span style="color:blue">dcl_form_show</span>).<br>
+<br>
+Then in the "form_OnInitialize" routine, I set values in the TextBox Control.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

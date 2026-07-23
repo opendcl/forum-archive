@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Combo box styles · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 819</p>
+    <h1>Combo box styles</h1>
+    <p class="meta">Started by Jim ·
+      2009-06-18 02:56 UTC ·
+      8 replies · SMF topic #819</p>
+<article class="post" id="msg4056">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2009-06-18 02:56 UTC</span>
+  </div>
+  <div class="post-body">How do I keep the text displayed in the edit box from being edited by the user?<br>
+What are the differences between styles 0, 1, and 2?<br>
+Is there a restriction on when this property can be changed?<br>
+<br>
+Thanks,<br>
+Jim</div>
+</article>
+<article class="post" id="msg4058">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-18 03:55 UTC</span>
+  </div>
+  <div class="post-body">Right-click on a combo box in the editor and select Properties, then check out the "Combo Box Styles" tab. This should help answer your question.</div>
+</article>
+<article class="post" id="msg4063">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2009-06-18 12:39 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen, that works.<br>
+<br>
+But does the following also work?<br>
+(dcl_Control_SetComboBoxStyle Onset_Outline_cbTabMachine NewValue [as Integer])</div>
+</article>
+<article class="post" id="msg4064">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-18 12:50 UTC</span>
+  </div>
+  <div class="post-body">Hm, that does not work for me in a palette. But I'm not sure if it is a design time property...<br>
+Fred</div>
+</article>
+<article class="post" id="msg4070">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-18 14:38 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Jim Short link=topic=819.msg4063#msg4063 date=1245328760 wrote:</cite><br>
+But does the following also work?<br>
+(dcl_Control_SetComboBoxStyle Onset_Outline_cbTabMachine NewValue [as Integer])<br>
+</blockquote><br>
+<br>
+No, the combo type cannot currently be changed at runtime.  Runtime changes should be possible in the future, but it has to be done by destroying the old combo and creating a new one in its place.</div>
+</article>
+<article class="post" id="msg13735">
+  <div class="post-head">
+    <span class="post-author">JBerns</span>
+    <span class="post-date muted">2022-12-19 17:43 UTC</span>
+  </div>
+  <div class="post-body">Since my question is related to this old topic, I thought I would reply to this post.<br>
+If I should start a new post due to age, I can.<br>
+<br>
+I am using Open DCL, version 9.2.0.3.<br>
+<br>
+I have created a ComboBox that should only allow the user to select, not edit.<br>
+<br>
+However, using Style = 2 - Drop Down, the control appears disabled (gray).<br>
+If I choose Style 0 or 1, the control appears enabled.<br>
+Please see attachment.<br>
+<br>
+How can I make the control appear enabled, but allow selection only, no editing?<br>
+<br>
+Thank you for your time and attention. I look forward to your replies.<br>
+<br>
+Regards,<br>
+Jerry<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2552/2022-12-19_11-29-49.png">2022-12-19_11-29-49.png</a> <span class="muted">(22305 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13736">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2022-12-19 18:18 UTC</span>
+  </div>
+  <div class="post-body">Hello, Jerry, it is neccessary to know the differences between theses styles: Combobox-style means that you can either input text or select a list item. DropDown-style means, that you cannot input any text - you can only select an item from the list. To do so, it is neccessary to fill the list right before. The gray background of a drop-down-styled control underlines that the user cannot input any text. I hope, this makes it a little bit more clear.<br>
+With regards, Fred</div>
+</article>
+<article class="post" id="msg13737">
+  <div class="post-head">
+    <span class="post-author">JBerns</span>
+    <span class="post-date muted">2022-12-19 19:35 UTC</span>
+  </div>
+  <div class="post-body">Thank you for the quick reply. Fred.<br>
+<br>
+This is my first time using a ComboBox as a select only. I was not expecting the control to change color to gray. It sure looked disabled.<br>
+<br>
+I compared this OpenDCL style to a Visual Basic ComboBox control and it too changes to gray when its DropDownStyle = DropDownList (select only, no edit).<br>
+<br>
+I will inform my users. Thanks again.<br>
+<br>
+Regards,<br>
+Jerry</div>
+</article>
+<article class="post" id="msg13950">
+  <div class="post-head">
+    <span class="post-author">blacsteel</span>
+    <span class="post-date muted">2024-01-16 08:49 UTC</span>
+  </div>
+  <div class="post-body">I know its an old topic but related question or maybe more of a suggestion concerning combo box, but is it possible to have a 0 - Combo box without the possibility of editing (writing new text), so just choosing stuff that is in the list. I like the white background color of it, 2 - Drop down is always grey, cant be changed to other color am I right? <br>
+<br>
+And also second thing, like for example if I choose style 13 - Layers, the combo box selection width is changed (its larger) when on drop down if there are layer names longer than box width. If you understand my point. I'd like to have the same for 0 or 2 style, because often I have options in list that are very long, many string characters, and on drop down 0 or 2 style the selection box stays the same width as the combo box and you can't see complete list string.<br>
+<br>
+I'm pretty sure these thing can't be done now, but maybe a suggestion for the future release?</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

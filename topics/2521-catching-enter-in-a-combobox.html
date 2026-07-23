@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catching ENTER in a combobox · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2521</p>
+    <h1>Catching ENTER in a combobox</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2017-07-23 00:52 UTC ·
+      2 replies · SMF topic #2521</p>
+<article class="post" id="msg12519">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2017-07-23 00:52 UTC</span>
+  </div>
+  <div class="post-body">Salutations,<br>
+<br>
+It's been a while since I've written some new OpenDCL stuff ...<br>
+<br>
+Is there a built in way to catch ENTER in a ComboBox.<br>
+It seems there is no Key events associated.<br>
+<br>
+I may be able to hack it by :<br>
+Setting <em>ReturnAsTab</em> to false.<br>
+Catch the <em>OnCancelClose</em> event for the form<br>
+Determine the control with the current focus ie <em>(Setq rValue (dcl_GetFocus))</em><br>
+<br>
+If this identifies the control I want to "handle" ENTER for, go ahead and handle it.<br>
+<br>
+Of course, I'd rather use a built in Method if one exists :)<br>
+<br>
+Regards,</div>
+</article>
+<article class="post" id="msg12525">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-08-04 20:38 UTC</span>
+  </div>
+  <div class="post-body">This works (tested on BricsCAD):<br>
+<br>
+Set ReturnAsTab to True for the control.<br>
+In the control's OnKillFocus event handler check the keystate of the Enter key:<br>
+<pre class="code"><code>(if (vl-position (acet-sys-keystate 13) '(-127 -128))<br>
+  (progn<br>
+    (princ "\nFocus removed by pressing Enter ")<br>
+    ; Do something.<br>
+  )<br>
+  (progn<br>
+    (princ "\nFocus removed ")<br>
+    ; Do something else.<br>
+  )<br>
+)</code></pre></div>
+</article>
+<article class="post" id="msg12526">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2017-08-07 22:58 UTC</span>
+  </div>
+  <div class="post-body">Thanks Roy,<br>
+<br>
+I can probably make that work for my situation.<br>
+<br>
+I'll have a play.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

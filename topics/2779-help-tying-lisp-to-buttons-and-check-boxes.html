@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help tying lisp to buttons and check boxes · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2779</p>
+    <h1>Help tying lisp to buttons and check boxes</h1>
+    <p class="meta">Started by CADworker ·
+      2021-07-29 20:44 UTC ·
+      9 replies · SMF topic #2779</p>
+<article class="post" id="msg13565">
+  <div class="post-head">
+    <span class="post-author">CADworker</span>
+    <span class="post-date muted">2021-07-29 20:44 UTC</span>
+  </div>
+  <div class="post-body">I'm new to OpenDcl, I've been told it would be easier to write DCL code here from Mr. Darren Young from XtraCAD. So far I've been able to at least get a dialog to come up and close, Yea! I'm to the point where I'm not sure how to get my functions to work. I would like to be able to check a box or two, depending on what options I need, and then push the button "Collaborate" to run my lisp and run the routines that were checked.<br>
+I would also like to be able to use the "Save" button to save my drawing before running this routine.<br>
+<br>
+Any help would be appreciated, thanks!<br>
+<br>
+See attached screen shot of dialog.<br>
+My lisp code:<br>
+<pre class="code"><code><br>
+<br>
+<br>
+(command "OPENDCL") ;;;Ensure the appropriate OpenDCL ARX file is loaded<br>
+<br>
+(defun c:Collab ()<br>
+   (dcl_Project_Load "Collab" T) ;;;call the method to load the Collab.odcl file.  <br>
+   (dcl_Form_Show Collab_PopUp) ;;;call the method to show the Collab dialog box example <br>
+   (princ) <br>
+)<br>
+;;;set values of labels<br>
+(defun c:Collab/PopUp#OnInitialize (/)<br>
+  (dcl-Control-SetCaption Collab/PopUp/Label1 "Do you wish to SAVE before changes?")<br>
+  (dcl-Control-SetCaption Collab/PopUp/Label2 "Set UCS to world")<br>
+  (dcl-Control-SetCaption Collab/PopUp/Label3 "Detach XRef's")<br>
+  (dcl-Control-SetCaption Collab/PopUp/Label4 "One Viewport at PlanView")<br>
+)<br>
+<br>
+;;;set button parameters<br>
+(defun c:Collab/PopUp/CloseButton#OnClicked (/)<br>
+  (dcl-Form-Close Collab/PopUp)<br>
+)<br>
+<br>
+;;;set check box parameters<br>
+(defun c:Collab/Form1/CheckBox1#OnClicked (nValue /)<br>
+  (if (= nValue 0)<br>
+    (dcl_Control_SetEnabled Collab_PopUp_Form1 nil)<br>
+;;;    (dcl_Control_SetEnabled Collab_PopUp_Form1 T)<br>
+)<br>
+)<br>
+</code></pre><div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2527/Collab.jpg">Collab.jpg</a> <span class="muted">(20061 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13566">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2021-07-30 07:32 UTC</span>
+  </div>
+  <div class="post-body">Hi, please have a look at the OpenDCL samples at C:\Program Files (x86)\OpenDCL Studio\\Samples.<br>
+I've modified your code a bit. Please note that I do not know the names of the checkboxes. So handle it as dummy code only.<br>
+<br>
+<pre class="code"><code><br>
+(defun c:Collab (/ c:Collab/PopUp#OnInitialize<br>
+		   c:Collab/PopUp/Checkbox1#OnClicked<br>
+		   c:Collab/PopUp/Checkbox1#OnClicked<br>
+		   c:Collab/PopUp/Checkbox1#OnClicked<br>
+		   nValue1 nValue2 nValue3)<br>
+  <br>
+  (if (not dcl_Project_Load) (command "OPENDCL")) ;;;Ensure the appropriate OpenDCL ARX file is loaded<br>
+  (dcl_Project_Load "Collab" T) ;;;call the method to load the Collab.odcl file.<br>
+<br>
+  ;;; Sample code to get values<br>
+  (setq nValue1 (getvar "USERI1"))<br>
+  (setq nValue2 (getvar "USERI2"))<br>
+  (setq nValue3 (getvar "USERI3"))<br>
+<br>
+  ;;;set values of labels<br>
+  (defun c:Collab/PopUp#OnInitialize (/)<br>
+    (dcl-Control-SetCaption Collab/PopUp/Label1 "Do you wish to SAVE before changes?")<br>
+    (dcl-Control-SetCaption Collab/PopUp/Label2 "Set UCS to world")<br>
+    (dcl-Control-SetCaption Collab/PopUp/Label3 "Detach XRef's")<br>
+    (dcl-Control-SetCaption Collab/PopUp/Label4 "One Viewport at PlanView")<br>
+<br>
+   ;; set values<br>
+    (dcl-Control-SetValue Collab/PopUp/Checkbox1 nValue1)<br>
+    (dcl-Control-SetValue Collab/PopUp/Checkbox2 nValue2)<br>
+    (dcl-Control-SetValue Collab/PopUp/Checkbox3 nValue3)<br>
+  );c:Collab/PopUp#OnInitialize<br>
+<br>
+  ;; retreive values for later use or control other usercontrols<br>
+  (defun c:Collab/PopUp/Checkbox1#OnClicked(newValue) (setq nValue1 newValue))<br>
+  (defun c:Collab/PopUp/Checkbox2#OnClicked(newValue) (setq nValue2 newValue))<br>
+  (defun c:Collab/PopUp/Checkbox3#OnClicked(newValue) (setq nValue3 newValue))<br>
+<br>
+  (dcl_Form_Show Collab_PopUp) ;;;call the method to show the Collab dialog box example<br>
+<br>
+<br>
+  ;; make something with the values<br>
+  (if (/= nValue1 (getvar "USERI1")) (setvar "USERI1" nValue1))<br>
+  (if (/= nValue2 (getvar "USERI2")) (setvar "USERI2" nValue2))<br>
+  (if (/= nValue3 (getvar "USERI3")) (setvar "USERI3" nValue3))<br>
+  (princ)<br>
+); collab<br>
+</code></pre><br>
+<br>
+With regards, Fred</div>
+</article>
+<article class="post" id="msg13568">
+  <div class="post-head">
+    <span class="post-author">CADworker</span>
+    <span class="post-date muted">2021-07-30 12:33 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the help there. I see what your doing, checking if box has been checked and adding to a variable. I'm still lost though. I've been combing through the samples and still struggling to figure out how to make the buttons work.</div>
+</article>
+<article class="post" id="msg13569">
+  <div class="post-head">
+    <span class="post-author">CADworker</span>
+    <span class="post-date muted">2021-07-30 13:02 UTC</span>
+  </div>
+  <div class="post-body">So i think my biggest struggle is finding out how to make the buttons runs lisp. I can't seem to find any of the samples that do so.</div>
+</article>
+<article class="post" id="msg13570">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2021-07-30 13:21 UTC</span>
+  </div>
+  <div class="post-body">Hi, you have to make sure, that you activated the events like you did with c:Collab/PopUp#OnInitialize. Then save the project, reload the project and define the event functions.<br>
+With regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2528/Event.PNG">Event.PNG</a> <span class="muted">(38787 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13571">
+  <div class="post-head">
+    <span class="post-author">CADworker</span>
+    <span class="post-date muted">2021-07-30 13:37 UTC</span>
+  </div>
+  <div class="post-body">I have added the event trigger for this button. The default is a message prompt when clicked. How do I write the code to run a lisp when clicked.</div>
+</article>
+<article class="post" id="msg13572">
+  <div class="post-head">
+    <span class="post-author">CADworker</span>
+    <span class="post-date muted">2021-07-30 14:15 UTC</span>
+  </div>
+  <div class="post-body">Here is a go with what I have found others doing but its not working, I'm getting a "nil" return. I'm trying to at least get the "Save" button to work.<br>
+Any help?<br>
+<br>
+<pre class="code"><code><br>
+<br>
+____________________________________________________________________________________________________________________________<br>
+(defun c:Collab (/ c:Collab/PopUp#OnInitialize<br>
+		   c:Collab/PopUp/Checkbox1#OnClicked<br>
+		   c:Collab/PopUp/Checkbox1#OnClicked<br>
+		   c:Collab/PopUp/Checkbox1#OnClicked<br>
+		   nValue1 nValue2 nValue3)<br>
+ <br>
+  (if (not dcl_Project_Load) (command "OPENDCL")) ;;;Ensure the appropriate OpenDCL ARX file is loaded<br>
+  (dcl_Project_Load "Collab" T) ;;;call the method to load the Collab.odcl file.<br>
+  <br>
+<br>
+  ;;;--------------------------------------<br>
+  (defun c:Collab/PopUp/CloseButton#OnClicked () (dcl-form-close Collab/PopUp));;;after dcl-form-close "name of dcl file/name of form"<br>
+<br>
+(defun c:Collaboration3/Form1/SaveButton#OnClicked (/)<br>
+  (dcl-Invoke "c:saveorg")<br>
+  (dcl-SendString "(c:saveorg)")<br>
+)<br>
+<br>
+<br>
+  (defun c:Collaboration3/Form1/CollabButton#OnClicked (/)<br>
+  (dcl-MessageBox "To Do: code must be added to event handler\r\nc:Collaboration3/Form1/CollabButton#OnClicked" "To do")<br>
+)<br>
+  ;;;--------------------------------------<br>
+<br>
+  <br>
+<br>
+  ;;;Sample code to get values<br>
+  (setq nValue1 (getvar "USERI1"))<br>
+  (setq nValue2 (getvar "USERI2"))<br>
+  (setq nValue3 (getvar "USERI3"))<br>
+<br>
+  ;;;set values of labels<br>
+  (defun c:Collab/PopUp#OnInitialize (/)<br>
+    (dcl-Control-SetCaption Collab/PopUp/Label1 "Do you wish to SAVE before changes?")<br>
+    (dcl-Control-SetCaption Collab/PopUp/Label2 "Set UCS to world")<br>
+    (dcl-Control-SetCaption Collab/PopUp/Label3 "Detach XRef's")<br>
+    (dcl-Control-SetCaption Collab/PopUp/Label4 "One Viewport at PlanView")<br>
+<br>
+   ;;;set values<br>
+    (dcl-Control-SetValue Collab/PopUp/Checkbox1 nValue1)<br>
+    (dcl-Control-SetValue Collab/PopUp/Checkbox2 nValue2)<br>
+    (dcl-Control-SetValue Collab/PopUp/Checkbox3 nValue3)<br>
+  );;;c:Collab/PopUp#OnInitialize<br>
+<br>
+  ;;;retreive values for later use or control other usercontrols<br>
+  (defun c:Collab/PopUp/Checkbox1#OnClicked(newValue) (setq nValue1 newValue))<br>
+  (defun c:Collab/PopUp/Checkbox2#OnClicked(newValue) (setq nValue2 newValue))<br>
+  (defun c:Collab/PopUp/Checkbox3#OnClicked(newValue) (setq nValue3 newValue))<br>
+<br>
+  (dcl_Form_Show Collab_PopUp) ;;;call the method to show the Collab dialog box example<br>
+<br>
+<br>
+  ;;;make something with the values<br>
+  (if (/= nValue1 (getvar "USERI1")) (setvar "USERI1" nValue1))<br>
+  (if (/= nValue2 (getvar "USERI2")) (setvar "USERI2" nValue2))<br>
+  (if (/= nValue3 (getvar "USERI3")) (setvar "USERI3" nValue3))<br>
+<br>
+  <br>
+); collab<br>
+<br>
+<br>
+(defun saveorg ()<br>
+  (command "qsave")<br>
+  )</code></pre></div>
+</article>
+<article class="post" id="msg13573">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2021-07-31 06:57 UTC</span>
+  </div>
+  <div class="post-body">Hi, why of all things did you start working with OpenDCL using _qsave command (I recommend you to use international type writing of AutoCAD-commands)?<br>
+Honestly. Please remind two things: First of all, do not call a command from a running modal form. You can do this after closing the form and give back control to AutoCAD <strong>- OR -</strong> from a modeless form (like palette) (which is not running in KeepFocus-mode) from a control whose EventInvoke-property is set to "AllowCommand". Second, you cannot get access to the database (open, close, modify drawing entities) from a running modal form. The solutions are the same like mentioned before.<br>
+<br>
+Please have a look <a href="https://opendcl.com/forum/index.php?topic=1080.0" rel="nofollow noopener">{2}</a>.<br>
+With regards, Fred</div>
+</article>
+<article class="post" id="msg13574">
+  <div class="post-head">
+    <span class="post-author">CADworker</span>
+    <span class="post-date muted">2021-08-04 13:18 UTC</span>
+  </div>
+  <div class="post-body">I was just testing commands trying to get something to work. "Qsave" happened to be in my lisp when I copied my code to post.<br>
+<br>
+Again, like I've said before, I'm <strong>NEW</strong> to opendcl. I'm trying to get some help but I'm being re-directed to the samples every time. The problem there is none of those samples, from what I understand, show how to run lisp after buttons have been clicked. My previous employer had created a dialog to do something like this very similar without using opendcl. I thought this program would be easier to create what I'm needing but so far the help has been, quite frankly, a bit rude.<br>
+<br>
+I do like seeing the modal as you make it. That is helpful. I'm just struggling on how to make it work with lisp.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg13579">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2021-08-09 13:33 UTC</span>
+  </div>
+  <div class="post-body">Hi, CADWorker,<br>
+<br>
+sorry when my answer seemed to be rude. It was not my aim to do so. It took some time to find the words how to make sure calling commands from a modal form accessing the database is one of the few little things which can be quite challenging in OpenDCL. In fact, until AutoCAD 2015 some database modifications where possible. But then <a href="https://through-the-interface.typepad.com/through_the_interface/2006/10/some_background.html" rel="nofollow noopener">{2}</a> which has broken many Lisp-programs using OpenDCL. Not necessary to mention that I have nearly the same challenges in C#/.NET.<br>
+<br>
+Of course, I've had seen that you've just started with OpenDCL, so my excited answer was not well-formed what leads my to my apologize.<br>
+Again, if you have a modal form, you have to deal it that way (note: its dummy code):<br>
+<br>
+<pre class="code"><code><br>
+(defun c:main(/ c:MyProj/MyForm#OnInitialize c:MyProj/MyForm/pbAccept#OnClick retValue<br>
+                         c:MyProj/MyForm/pbCancel#OnClick c:MyProj/MyForm/pbGetPoint#OnClick)<br>
+<br>
+    (defun c:MyProj/MyForm#OnInitialize()<br>
+      ;; set the controls<br>
+    ); c:MyProj/MyForm#OnInitialize()<br>
+<br>
+    (defun c:MyProj/MyForm/pbAccept#OnClick()<br>
+      (dcl-form-close MyProj/MyForm 1)<br>
+      ;; form is still active, no complete access to the drawing<br>
+    ); c:MyProj/MyForm/pbAccept#OnClick<br>
+<br>
+    (defun c:MyProj/MyForm/pbCancel#OnClick() (dcl-form-close MyProj/MyForm 2))<br>
+<br>
+    (defun c:MyProj/MyForm/pbGetPoint#OnClick()<br>
+      (dcl-form-close MyProj/MyForm 3)<br>
+      ;; form is still active, no complete access to the drawing<br>
+    ); c:MyProj/MyForm/pbGetPoint#OnClick<br>
+<br>
+    (while (not (member (setq retValue (dcl-form-show MyProj/MyForm)) '(1 2)))<br>
+      ;; form is not active anymore, the control was given back to AutoCAD<br>
+      (cond<br>
+        ((= retValue 3) (setq ptPoint (getpoint "\r\nPick point: ")))<br>
+      ); cond<br>
+    ); while<br>
+    (if (= retValue 1)<br>
+      (progn<br>
+        (store_data_to_drawing)<br>
+        (command "_qsave")<br>
+      ); progn<br>
+    ); if<br>
+<br>
+); c:main<br>
+</code></pre><br>
+<br>
+So I hope the sample code gives you an idea how to deal with re-showing a form or finally modify the drawing database.<br>
+Maybe it would be more helpful to have  the project you try to build for much better answers.<br>
+<br>
+With regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dictionary write succeeds with dcl_SendString · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 482</p>
+    <h1>Dictionary write succeeds with dcl_SendString</h1>
+    <p class="meta">Started by Jim ·
+      2008-11-24 15:26 UTC ·
+      3 replies · SMF topic #482</p>
+<article class="post" id="msg2157">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-11-24 15:26 UTC</span>
+  </div>
+  <div class="post-body">With Owen's help I am now successfully running code with the entmakex function from a check box event. <br>
+<br>
+Questions remaining:<br>
+<br>
+Can dcl_SendString work with just one line? I had to use  (dcl_SendString "\n")    <br>
+to get the function to enter on the command line.<br>
+Can one construct a command string with arguments eliminating the need for a global variable?<br>
+<br>
+(defun c:Onset_Outline_InfoChkBox_OnClicked (Value)<br>
+  ;;returns 1 for true 0 for false<br>
+  (setq tcam:*InfoChkBox* value)<br>
+  (dcl_SendString "(tcam:infoChkBox)")<br>
+  (dcl_SendString "\n")    <br>
+  )<br>
+<br>
+(defun tcam:infoChkBox ()<br>
+  (tcam:putdictx<br>
+    "tcam"<br>
+    "SETUP{INFO"<br>
+    (cons "InfoChkBox" tcam:*InfoChkBox*)<br>
+  )<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg2160">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-11-24 18:46 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+try a <br>
+<br>
+<pre class="code"><code>(dcl_SendString "(tcam:infoChkBox) ")</code></pre><br>
+or a<br>
+<pre class="code"><code>(dcl_SendString "(tcam:infoChkBox)\n")</code></pre>.<br>
+<br>
+If you want a command with an argument use <br>
+<pre class="code"><code>(defun c:dosomething (strCtrl intType isReadFromForm) blah...)</code></pre> and call later<br>
+<pre class="code"><code>(dcl_SendString "(c:dosomething \"MyName\" 4096 T) ")</code></pre><br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2162">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-11-24 20:38 UTC</span>
+  </div>
+  <div class="post-body">Gee, I thought I tried that. I give it another go.<br>
+<br>
+Thanks,<br>
+Jim</div>
+</article>
+<article class="post" id="msg2163">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-11-24 20:39 UTC</span>
+  </div>
+  <div class="post-body">I forgot about the space from menu days.<br>
+<br>
+Thanks,<br>
+Jim</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

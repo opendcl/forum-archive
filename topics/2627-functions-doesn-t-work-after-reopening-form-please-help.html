@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Functions doesn't work after reopening Form! Please help! · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2627</p>
+    <h1>Functions doesn't work after reopening Form! Please help!</h1>
+    <p class="meta">Started by TheCADnoobie ·
+      2018-08-26 10:21 UTC ·
+      1 replies · SMF topic #2627</p>
+<article class="post" id="msg12979">
+  <div class="post-head">
+    <span class="post-author">TheCADnoobie</span>
+    <span class="post-date muted">2018-08-26 10:21 UTC</span>
+  </div>
+  <div class="post-body">Hi everyone,<br>
+<br>
+I have next problem. I created a program with only 1 form where user:<br>
+1. open modal dialog Form<br>
+2. press on Text button to close Form<br>
+3. select hatch from drawing<br>
+4. reopen Form again<br>
+<br>
+Then I extract data of hatch, pattern, colors, scale etc and put them into a string type. After that I tried to put them into respective Textboxes inside of Form with<br>
+<br>
+(dcl-Control-SetText testhatch/Form1/TextBox1 patname)<br>
+<br>
+and I constantly getting error:<br>
+<pre class="code"><code><br>
+An OpenDCl function argument processing exception has occured!<br>
+Error: NIL value not allowed<br>
+Function: dcl-Control-SetText<br>
+Argument:0<br>
+</code></pre><br>
+<br>
+I even tried instead my variable "patname" put string "example" and it gave to me same error.<br>
+I simply can't use any other function after reopening form.<br>
+Whole code is below. Thank you very much in advance on your help.<br>
+<pre class="code"><code><br>
+; Ensure the appropriate OpenDCL ARX file is loaded<br>
+(vl-load-com)<br>
+(setq cmdecho (getvar "CMDECHO"))<br>
+(setvar "CMDECHO" 0)<br>
+(command "_OPENDCL")<br>
+(dcl_Project_Load "testhatch" T)<br>
+(setvar "CMDECHO" cmdecho)<br>
+(princ)<br>
+    <br>
+<br>
+(defun c:testhatch (/ doCont intResult result)<br>
+<br>
+	(defun c:testhatch/Form1#OnInitialize (/)<br>
+  		(dcl-Control-SetText testhatch/Form1/TextBox1 "-")<br>
+            	(dcl-Control-SetText testhatch/Form1/TextBox2 "-")<br>
+            	(dcl-Control-SetText testhatch/Form1/TextBox3 "-")<br>
+            	(dcl-Control-SetText testhatch/Form1/TextBox4 "-")<br>
+	)<br>
+<br>
+    	; define condition index for pressing a button<br>
+      	(defun c:testhatch/Form1/TextButton1#OnClicked (/)<br>
+      		(dcl-Form-Close testhatch/Form1 3)<br>
+  	)<br>
+<br>
+    	; do while form is closed after pressing a button<br>
+	(setq doCont T)<br>
+  	  (while doCont<br>
+    	   (setq doCont nil)<br>
+           (setq intResult(dcl_form_show testhatch/Form1))<br>
+    	   (cond<br>
+            ((= intResult 2) (princ "\n*** Program closed by user. ***")(setq doCont nil))   <br>
+      	    ((= intResult 3) (pickHatch) (setq doCont T))<br>
+    	   ); cond<br>
+ 	  ); while<br>
+<br>
+  	(redraw)<br>
+  	(princ)<br>
+<br>
+    <br>
+);testhatch program<br>
+<br>
+(princ)<br>
+<br>
+<br>
+;===================================================================<br>
+; odabir samo hatch<br>
+	(defun pickHatch (/ hatch bcolor color patname patscale ss ename colors bcolors)<br>
+	 	<br>
+  		(while (not<br>
+  		(setq hatch (ssget "_+.:E:S" '((0 . "HATCH")))))<br>
+  		(alert "Pick HATCH!")<br>
+  		)<br>
+<br>
+            	(setq ename (ssname hatch 0))<br>
+            	(setq ss (vlax-ename-&gt;vla-object ename))<br>
+            	(setq patname (vla-get-patternname ss))<br>
+              	(setq color (vla-get-truecolor ss))<br>
+            	(setq bcolor (vla-get-backgroundcolor ss))<br>
+ 	 	(setq patscale (vla-get-patternscale ss))<br>
+<br>
+            	; create string from colors and scale<br>
+            	(setq colors (princ (strcat (itoa (vla-get-red color)) "," (itoa (vla-get-green color)) "," (itoa (vla-get-blue color)))))<br>
+            	(setq bcolors(princ (strcat (itoa (vla-get-red bcolor)) "," (itoa (vla-get-green bcolor)) "," (itoa (vla-get-blue bcolor)))))<br>
+            	(setq scales (princ (rtos patscale 2 1)))<br>
+<br>
+            	;(setq result (list patname colors bcolors scales))<br>
+           <br>
+            	; fill textboxes in gui (THIS DOESN'T WANT TO WORK!!!) ************************************<br>
+                ;(dcl-Control-SetText testhatch/Form1/TextBox1 patname)<br>
+            	;(dcl-Control-SetText testhatch/Form1/TextBox2 colors)<br>
+            	;(dcl-Control-SetText testhatch/Form1/TextBox3 bcolors)<br>
+            	;(dcl-Control-SetText testhatch/Form1/TextBox4 scales)<br>
+		(princ)<br>
+        ) ; pickHatch<br>
+<br>
+;===================================================================<br>
+<br>
+<br>
+<br>
+</code></pre><br>
+</div>
+</article>
+<article class="post" id="msg12980">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2018-08-26 16:43 UTC</span>
+  </div>
+  <div class="post-body">Your function (pickhatch) runs while the form is closed, before it is re-opened. Populating the form controls must be done after the form is re-opened, typically inside the form's OnInitialize event handler. You could save your hatch selection in a global variable. Inside OnInitialize, populate the controls when the global variable has a value.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

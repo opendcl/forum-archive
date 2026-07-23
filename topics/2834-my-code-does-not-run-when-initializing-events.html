@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My code does not run when initializing events · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2834</p>
+    <h1>My code does not run when initializing events</h1>
+    <p class="meta">Started by EcObO ·
+      2022-10-08 23:17 UTC ·
+      1 replies · SMF topic #2834</p>
+<article class="post" id="msg13716">
+  <div class="post-head">
+    <span class="post-author">EcObO</span>
+    <span class="post-date muted">2022-10-08 23:17 UTC</span>
+  </div>
+  <div class="post-body">Good evening dear friends, please if someone could guide me, when i do the following routine:<br>
+<br>
+where it loads the form, but it does not start any of the events, #OnInitialize or #OnClicked, what could be happening, thanks for the answers.<br>
+<br>
+P.s. The form only has the following elements:<br>
+<br>
+- a label (Etiqueta1)<br>
+- a text box (CajadeTexto1)<br>
+- a button (Botodetexto1)<br>
+<br>
+My AutoCAD is 2021 and i use version 9.2.0.2, and I also tried with 9.1.5.2 and none of them run the events.<br>
+<br>
+<br>
+<br>
+(defun c:hello()<br>
+  (command "_OPENDCL")<br>
+  (dcl_project_load "01_hello_world" T)<br>
+  (dcl_form_show 01_hello_world_Formulario1)  <br>
+  (princ)<br>
+ )<br>
+<br>
+(defun c:01_hello_world/Formulario1#OnInitialize (/)<br>
+  (dcl_MessageBox "Hello World!!!")<br>
+)<br>
+(defun c:01_hello_world/Formulario1_OnInitialize (/)  (dcl_Control_SetCaption 01_hello_world/Formulario1/Etiqueta1 "Type text to Box And Click Button")<br>
+  )<br>
+<br>
+(defun c:01_hello_world/Formulario1/BotondeTexto1#OnClicked (/)<br>
+   (dcl_MessageBox "Hello World!!!")<br>
+  (setq txtBoxString (dcl-Control-GetText 01_hello_world/Formulario1/CajadeTexto1))<br>
+  (alert (strcat "Hi" txtBoxString))<br>
+)<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg13717">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2022-10-10 01:13 UTC</span>
+  </div>
+  <div class="post-body">Likely your lisp event function names do not match the names in the .odcl file. If you open your .odcl file in OpenDCL Studio, you can copy/paste the event function names from studio to your lisp file.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

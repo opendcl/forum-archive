@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>transparent text box ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 849</p>
+    <h1>transparent text box ?</h1>
+    <p class="meta">Started by blasto ·
+      2009-07-15 10:08 UTC ·
+      1 replies · SMF topic #849</p>
+<article class="post" id="msg4211">
+  <div class="post-head">
+    <span class="post-author">blasto</span>
+    <span class="post-date muted">2009-07-15 10:08 UTC</span>
+  </div>
+  <div class="post-body">Hi all,<br>
+I've been working with opendcl (great software!!) for awhile and created awesome interfaces so far. But couldn't manage to create a transparent text box. Background always render in black if I choose transparent. I'll use it in a palette form and want it over a picture box but neither over picture nor just by itself textbox seems not happy with transparency. <br>
+<br>
+I'm using winxp&amp; acad2008; afaik usevisualstyle property is not applicable to the text box so I'm stuck. Or do I get the tranparency idea wrong ??? thanks for your helps  :)</div>
+</article>
+<article class="post" id="msg4245">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2009-07-31 15:41 UTC</span>
+  </div>
+  <div class="post-body">Is the textbox over the picturebox enabled or disabled?  If you have no need to edit the textbox contents in a direct manner you can use drawwrappedtext and paintpicture methods together with the OnPaint event.<br>
+<br>
+If this is the case, here is a snippet:<br>
+(defun @:Paint_Text (%symCtrl %lstDWText %lstPaintPic /)<br>
+  (dcl_PictureBox_DrawWrappedText %symCtrl %lstDWText) (dcl_PictureBox_PaintPicture %symCtrl %lstPaintPic)<br>
+  )<br>
+(defun c:Project_Form_Control_OnPaint (HasFocus /)<br>
+  (@:Paint_Text Project_Form_Control <br>
+(List of Lists as (UpperLeftX [as Long]  UpperLeftY [as  Long] Picture [as PictureID] {Enabled [as Boolean]} {UseMask [as Boolean]}) ...)<br>
+(List of Lists as (StartX [as Long]  StartY [as  Long] Width [as  Long] Color [as Color] {BackgroundColor [as Color]} Text [as String] Justification [as Integer]) ...)<br>
+))<br>
+<br>
+If this isn't the case or if this did not help you, could you post an example file?</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

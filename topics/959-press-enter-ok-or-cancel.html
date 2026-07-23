@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Press Enter :: OK or Cancel · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 959</p>
+    <h1>Press Enter :: OK or Cancel</h1>
+    <p class="meta">Started by kos ·
+      2009-10-08 08:38 UTC ·
+      3 replies · SMF topic #959</p>
+<article class="post" id="msg4818">
+  <div class="post-head">
+    <span class="post-author">kos</span>
+    <span class="post-date muted">2009-10-08 08:38 UTC</span>
+  </div>
+  <div class="post-body"><span style="color:#6600CC">I create the form which consists of several textboxes for data entry and two buttons, OK and Cancel. At initialization of the form the focal point is installed on an OK button (it is provided by parameter Z/Order). If at once you press Enter dialogue end occurs on OK. But if to pass in what or other field (to enter any data in any textbox) pressing Enter ending dialogue by button Cancel... <br>
+Where an error?</span></div>
+</article>
+<article class="post" id="msg4820">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-08 10:26 UTC</span>
+  </div>
+  <div class="post-body">Hi, kos, welcome to the forum.<br>
+<br>
+I suggest to activate OnCancelClose event of the form.<br>
+Search the forum for the word "OnCancelClose" and you will find several samples to this.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4825">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-08 13:12 UTC</span>
+  </div>
+  <div class="post-body">I suggest to use values for your buttons that are greater than the values for  (1) and  (2).  In other words, your button handlers should call (dcl-Form_Close  N) where N &gt; 2. Then you can easily distinguish the way that the dialog was closed.   will return 1,  will return 2, and your button will return N.<br>
+<br>
+If you don't want your dialog to close when the user presses , then handle the ReturnPressed event for the text boxes.</div>
+</article>
+<article class="post" id="msg4827">
+  <div class="post-head">
+    <span class="post-author">kos</span>
+    <span class="post-date muted">2009-10-08 13:54 UTC</span>
+  </div>
+  <div class="post-body"><span style="color:#6600CC">Thanks, gays. Your help was very useful...</span></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GraphicButton Image change with click · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2069</p>
+    <h1>GraphicButton Image change with click</h1>
+    <p class="meta">Started by pascal_dedi ·
+      2013-12-05 11:11 UTC ·
+      4 replies · SMF topic #2069</p>
+<article class="post" id="msg10201">
+  <div class="post-head">
+    <span class="post-author">pascal_dedi</span>
+    <span class="post-date muted">2013-12-05 11:11 UTC</span>
+  </div>
+  <div class="post-body">Hi , i am new in Forum,<br>
+how can i for a GraphicButton 2 Image use?<br>
+<br>
+eg. for one click "Image a", second click "Image b", next click again "Image a", next click "Image b" so.<br>
+<br>
+Thankyou <br>
+<br>
+<br>
+(defun c:Layer_Manager_Form1_GraphicButton5_OnClicked (/)<br>
+<br>
+(if <br>
+<br>
+????????????????<br>
+<br>
+(dcl_Control_SetPicture Layer_Manager_Form1_GraphicButton5  105)<br>
+<br>
+(dcl_Control_SetPicture Layer_Manager_Form1_GraphicButton5  104)<br>
+)<br>
+   )       </div>
+</article>
+<article class="post" id="msg10202">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-05 18:11 UTC</span>
+  </div>
+  <div class="post-body">Maybe this?<br>
+<br>
+(if (/= (dcl_Control_GetPicture Layer_Manager_Form1_GraphicButton5) 105) ...)</div>
+</article>
+<article class="post" id="msg10205">
+  <div class="post-head">
+    <span class="post-author">pascal_dedi</span>
+    <span class="post-date muted">2013-12-06 15:00 UTC</span>
+  </div>
+  <div class="post-body"><br>
+hi, thank you .<br>
+I have also solved, with extra button value :)<br>
+<br>
+<br>
+;(if <br>
+;(= but_val 0)<br>
+ ;(progn<br>
+;(dcl_Control_SetPicture Layer_Manager_Form1_GraphicButton5  105)<br>
+;(setq but_val 1)<br>
+;)<br>
+;(progn<br>
+;(dcl_Control_SetPicture Layer_Manager_Form1_GraphicButton5  104)<br>
+;(setq but_val 0)<br>
+;)<br>
+;);if</div>
+</article>
+<article class="post" id="msg10209">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-12-09 07:23 UTC</span>
+  </div>
+  <div class="post-body">Hm, why don't you use the property value as Owen recommended?<br>
+<br>
+<br>
+(dcl_Control_SetPicture Layer_Manager_Form1_GraphicButton5<br>
+  (if (/= (dcl_Control_GetPicture Layer_Manager_Form1_GraphicButton5) 105)<br>
+    105<br>
+    106<br>
+  ); if<br>
+); dcl_Control_SetPicture<br>
+<br>
+<br>
+That decreases the number of variables.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10211">
+  <div class="post-head">
+    <span class="post-author">pascal_dedi</span>
+    <span class="post-date muted">2013-12-09 09:25 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred,<br>
+i use Owen Version,<br>
+sure he has better written, I self have written before Owen,<br>
+ only for Info :-)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

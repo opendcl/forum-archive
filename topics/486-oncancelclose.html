@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OnCancelClose · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 486</p>
+    <h1>OnCancelClose</h1>
+    <p class="meta">Started by Jim ·
+      2008-11-25 20:48 UTC ·
+      1 replies · SMF topic #486</p>
+<article class="post" id="msg2172">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-11-25 20:48 UTC</span>
+  </div>
+  <div class="post-body">Beta 5.0.1.3<br>
+OnCancelClose event is shown by definition to apply to File dialog, Modal dialog, and Modeless dialog. Does it also apply to a Control bar? My grid control is closing the control bar when enter pressed. It does not fire the OnCancelClose event. It also leaves a blank gray docked form after the control bar closes. I am working Fred Fred Tomke's example below. <br>
+<br>
+;;handle escape and enter***<br>
+<br>
+;;start edit event<br>
+(defun c:Onset_Outline_InfoGrid_OnBeginLabelEdit (row col)<br>
+  (setq tcam:*isLabelEdit* T)<br>
+)<br>
+;;edit done event<br>
+(defun c:Onset_Outline_InfoGrid_OnEndLabelEdit (row col)<br>
+  (setq tcam:*isLabelEdit* nil)<br>
+)<br>
+<br>
+;;escape or enter event<br>
+(defun c:Onset_Outline_OnCancelClose (isESCWasPressed)<br>
+  (tcam:cancelGridEdit Onset_Outline_InfoGrid)<br>
+  ;;return true to keep form from closing after ENTER<br>
+  (/= isESCWasPressed 1) <br>
+)<br>
+<br>
+;;general sub<br>
+;;cancel edit if in edit mode<br>
+(defun tcam:cancelGridEdit (ctrlName)<br>
+  (if isLabelEdit<br>
+	 (dcl_Grid_CancelCellEdit ctrlName)<br>
+	)<br>
+)<br>
+<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/520/CancelClose.jpg">CancelClose.jpg</a> <span class="muted">(42833 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2173">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-11-26 00:13 UTC</span>
+  </div>
+  <div class="post-body">The control bar and palette do not support the OnCancelClose event because there is no safe way to prevent them from closing once the process has started. I just did a quick test, and pressing  or  in a control bar with a grid control did not close the form in AutoCAD 2009 on Vista.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

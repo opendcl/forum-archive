@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Picture Box showing a picture for an established number of seconds only? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1741</p>
+    <h1>Picture Box showing a picture for an established number of seconds only?</h1>
+    <p class="meta">Started by Iulian ·
+      2012-01-17 15:35 UTC ·
+      4 replies · SMF topic #1741</p>
+<article class="post" id="msg8555">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2012-01-17 15:35 UTC</span>
+  </div>
+  <div class="post-body">Hi, I need to know if the Picture Box instrument has some option which can be used to show a picture for an established number of seconds (for example 5 sec.)<br>
+<br>
+Thanks in advance.<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8556">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-01-17 16:45 UTC</span>
+  </div>
+  <div class="post-body">Hi, Iulian, do you mean that it should disappear after a while?<br>
+In a modeless form I can imagine that <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Function/DelayedInvoke.htm" rel="nofollow noopener">{2}</a> would help. Just create a method that would be called by dcl_delayedinvoke after the given time. Not sure if it also works in modal forms.<br>
+Otherwise you remove the picture when your progress has been finished.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8557">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2012-01-17 19:16 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred, I tried to do what yo said but, it doesn't work...the code used is the following: <br>
+<br>
+<br>
+(defun <strong>delete_curent_picture </strong>( / ) ;erase the current picture and sets the picture which should remain for 5 sec.<br>
+  (dcl_PictureBox_Clear project_Form4_PictureBox2)<br>
+  (dcl_Control_SetPicture project_Form4_PictureBox2 PictureID_current)<br>
+ )<br>
+<br>
+(defun c:project_Form4_CheckBox1_OnClicked (Value /)   ; checkbox which triggers the function above<br>
+  (setq PictureID_current (dcl_Control_GetPicture project_Form4_PictureBox2)) ; in PictureID_current  is saved the ID of current picture<br>
+  (dcl_DelayedInvoke DelayMilliseconds 5000 <strong>delete_curent_picture</strong>) ; there is triggered the <strong>delete_curent_picture </strong> above mentioned.<br>
+)<br>
+<br>
+This is the error code returned by the AutoCAD prompter command:<br>
+<br>
+Command: <strong>; error: invalid data type or data overflow: #</strong><br>
+<br>
+I must mention that I use a modal form and, between the two actions (appearance and disappearance of the picture) I don't have any other action.<br>
+<br>
+<br>
+Thank you<br>
+Iulian.</div>
+</article>
+<article class="post" id="msg8559">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-01-17 20:34 UTC</span>
+  </div>
+  <div class="post-body">The approach that Fred suggested does not work for a modal form.<br>
+The code below does work but during the delay your program will be suspended.<br>
+<br>
+(command "_.OPENDCL")<br>
+(dcl_Project_Load "DelayedErase" 'T)<br>
+<br>
+(defun delete_curent_picture ( / )<br>
+  (princ "\nNow we wait... ")<br>
+  ; (sleep 5000) ; Bricscad has the built-in (sleep) function.<br>
+  (command "_.delay" 5000)<br>
+  (dcl_PictureBox_Clear DelayedErase_Form1_PictureBox1)<br>
+)<br>
+<br>
+(defun c:DelayedErase_Form1_TextButton1_OnClicked (/)<br>
+  (delete_curent_picture)<br>
+  ; (dcl_DelayedInvoke 5000 "delete_curent_picture") ; Does not work for a modal form.<br>
+)<br>
+<br>
+(defun c:DelayedErase ()<br>
+  (dcl_Form_Show DelayedErase_Form1)<br>
+)<br>
+<br>
+<br>
+An alternative could be to use an animated gif image. But note:<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1288.msg6905#msg6905 date=1275579476 wrote:</cite><br>
+You should be able to use the HTML control to display a gif, but there is no .gif support in native OpenDCL code (because .gif support requires a license from CompuServe).<br>
+</blockquote><br>
+<br>
+BTW: Your call to (dcl_DelayedInvoke) did indeed have wrong arguments.</div>
+</article>
+<article class="post" id="msg8560">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2012-01-17 21:28 UTC</span>
+  </div>
+  <div class="post-body">Thank you Roy, I used your code and has worked. <br>
+<br>
+Iulian.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

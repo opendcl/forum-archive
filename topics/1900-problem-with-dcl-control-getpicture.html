@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with dcl_Control_GetPicture · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1900</p>
+    <h1>Problem with dcl_Control_GetPicture</h1>
+    <p class="meta">Started by hmspe ·
+      2012-10-08 05:07 UTC ·
+      4 replies · SMF topic #1900</p>
+<article class="post" id="msg9356">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2012-10-08 05:07 UTC</span>
+  </div>
+  <div class="post-body">I did an upgrade to my production computer that led to a reformat of the hard drive.   After a fresh install of Win7 64bit Home Premium, Bricscad 12.2.18, and OpenDCL 7.0.0.8 I'm having trouble with an OpenDCL modeless dialog.  The dialog worked properly before the reformat and the same routine, loaded from a network drive, runs properly on another computer in the office with the same OS and Bricscad versions.  When the ODCL file loads I get 13 pop-ups that read:<br>
+<br>
+   An OpenDCL function argument processing exception has occurred!<br>
+   Error: Nil value not allowed<br>
+   Function: dcl_Control_GetPicture<br>
+   Argument: 1<br>
+<br>
+There are 13 buttons on the dialog.  All of the buttons have similar code to:<br>
+<br>
+  (if (= (vlax-variant-value (vla-getvariable acaddoc "ORTHOMODE")) 1)<br>
+    (if (= (dcl_Control_GetPicture ModeBar_ModeBar_OrthoButton) 100)<br>
+      (dcl_Control_SetPicture ModeBar_ModeBar_OrthoButton 101)                 ; ortho down<br>
+    )<br>
+    (if (= (dcl_Control_GetPicture ModeBar_ModeBar_OrthoButton) 101)<br>
+      (dcl_Control_SetPicture ModeBar_ModeBar_OrthoButton 100)                 ; ortho up<br>
+    )<br>
+  )<br>
+<br>
+<br>
+I've uninstalled and reinstalled both Bricscad and OpenDCL with no change.  I rebuilt the picture folder for the routine wth bitmaps that are in the Bricscad path, but no change.  The I have the same problem whether I run a local copy or a network copy of the OpenDCL program.  All the other OpenDCL functions I run are working well.     <br>
+<br>
+Things like this usually mean I missed something simple.  Any suggestions on how to fix this would be appreciated.<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg9357">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-10-08 06:19 UTC</span>
+  </div>
+  <div class="post-body">Open your .odcl file in Studio and get the correct symbol name for the picture control (an easy way is to open Control Browser and click on the Picture property), then update your code so the two match.</div>
+</article>
+<article class="post" id="msg9358">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2012-10-08 14:05 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the reply, Owen.<br>
+<br>
+Before I posted I had done what you suggested.  The text in the lisp file exactly matches the symbol name from the control browser in each case.  As I said, the exact same code (both the .odcl file and the .lsp file) runs on another computer here, so I am reasonably sure that the code is OK.<br>
+<br>
+Based on the Nil value returned in the error message I'm thinking that this may be a problem with the .odcl file loading.  My guess is that the Nil means the "ModeBar_ModeBar_OrthoButton" was not found.  Since the new computer is faster (Intel i7-3770K instead of E8400) my though is that there could be a timing issue, but that is only a guess.<br>
+<br>
+Martin</div>
+</article>
+<article class="post" id="msg9359">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-10-08 14:36 UTC</span>
+  </div>
+  <div class="post-body">Does (dcl_Form_Show) succeed? The .odcl file is loaded correctly if it does.</div>
+</article>
+<article class="post" id="msg9360">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2012-10-08 20:14 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the gentle nudge.  The problem was in the routine that calculates the location of the modeless dialog box.  That code was in the same defun that did the dcl_form_show, and dcl_form_show was not getting called.  Off to find a more reliable way to determine the screen size in pixels....</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

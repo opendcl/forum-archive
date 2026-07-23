@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to toggle dcl_form_show / dcl_form_close? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2073</p>
+    <h1>How to toggle dcl_form_show / dcl_form_close?</h1>
+    <p class="meta">Started by MiD-AwE ·
+      2013-12-10 18:16 UTC ·
+      10 replies · SMF topic #2073</p>
+<article class="post" id="msg10219">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-12-10 18:16 UTC</span>
+  </div>
+  <div class="post-body"> ???<br>
+Hi all,<br>
+I'm trying to add a ribbon button that will allow the user to toggle the appearance of a palette. The first time it's clicked the palette should be shown. Each time it is clicked after the first, it should toggle ( show / hide ) the palette. I would prefer that the palette be set to an <em>Anchored Auto-hide state</em> <strong>if</strong> possible, instead of closed, but I'll take what I can get. <br>
+<br>
+Below is the code that I tried and it gives me an automation error. Undoubtedly, the error is because the  "DCL_FORM_ISVISIBLE" function returns an error if the form is not visible. &lt;- that's as far as I get. What next?<br>
+<br>
+(DEFUN c:CNTRL ()<br>
+  (DCL_PROJECT_LOAD "CNTRL-PNL" T)<br>
+  (IF (DCL_FORM_ISVISIBLE CNTRL-PNL_CPL-CAD)<br>
+    (DCL_FORM_CLOSE CNTRL-PNL_CPL-CAD)<br>
+    (DCL_FORM_SHOW CNTRL-PNL_CPL-CAD)<br>
+  )<br>
+  (PRINC)<br>
+)<br>
+<br>
+Thank you in advance for any help.</div>
+</article>
+<article class="post" id="msg10221">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-10 19:15 UTC</span>
+  </div>
+  <div class="post-body">It would be helpful if you could provide more precise information, such as the exact error message. Your code has some issues, but it should never produce an automation error. I suspect it is not an automation error at all, but let's clarify that before proceeding.</div>
+</article>
+<article class="post" id="msg10222">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-12-10 20:33 UTC</span>
+  </div>
+  <div class="post-body">I must've had something else going wrong at the time.<br>
+<br>
+I just tried it again and it says:<br>
+<br>
+Application Error: 2 :- ADS request error<br>
+<br>
+Does that sound right?</div>
+</article>
+<article class="post" id="msg10223">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-12-10 20:38 UTC</span>
+  </div>
+  <div class="post-body">missed the OpenDCL Runtime Error. Now attached.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1935/error.png">error.png</a> <span class="muted">(12899 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10224">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-10 22:06 UTC</span>
+  </div>
+  <div class="post-body">I suspect that the 'No object instance' error is due to reloading your project every time. Try this:<br>
+<br>
+<br>
+(DEFUN c:CNTRL ()<br>
+  (DCL_PROJECT_LOAD "CNTRL-PNL") ;do *not* reload every time<br>
+  (IF (DCL_FORM_ISACTIVE CNTRL-PNL_CPL-CAD)<br>
+    (DCL_FORM_CLOSE CNTRL-PNL_CPL-CAD)<br>
+    (DCL_FORM_SHOW CNTRL-PNL_CPL-CAD)<br>
+  )<br>
+  (PRINC)<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg10227">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-12-11 14:40 UTC</span>
+  </div>
+  <div class="post-body">Thank you Owen,<br>
+<br>
+Unfortunately, I got the exact same error.  :-\</div>
+</article>
+<article class="post" id="msg10229">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-11 15:04 UTC</span>
+  </div>
+  <div class="post-body">Hmm, strange. Can you reproduce the problem with the _masterdemo sample form? Which CAD/OS versions are you testing on?</div>
+</article>
+<article class="post" id="msg10230">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-12-11 17:01 UTC</span>
+  </div>
+  <div class="post-body">I'll give it a try. I'm on Win7 &amp; AC2013.<br>
+<br>
+BRB</div>
+</article>
+<article class="post" id="msg10232">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-12-11 17:34 UTC</span>
+  </div>
+  <div class="post-body"> :( I recieved two error messeges with the _MasterDemo_Main.<br>
+<br>
+I also noticed that with the MasterDemo code it is not using DCL_FORM_ISVISIBLE, but instead utilizes DCL_FORM_ISACTIVE.<br>
+<br>
+Any thoughts?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1936/masterdemo-error.png">masterdemo-error.png</a> <span class="muted">(20341 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10233">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-12-11 17:42 UTC</span>
+  </div>
+  <div class="post-body"> 8) Ok, I decided to change DCL_FORM_ISVISIBLE to DCL_FORM_ISACTIVE, and is works great. <br>
+Owen, I can't thank you enough.</div>
+</article>
+<article class="post" id="msg10235">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-11 17:52 UTC</span>
+  </div>
+  <div class="post-body">The code I posted earlier for you to try did use (dcl_Form_IsActive), but I forgot to mention that.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

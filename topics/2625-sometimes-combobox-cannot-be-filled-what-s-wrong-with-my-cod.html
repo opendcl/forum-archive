@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>sometimes ComboBox cannot be filled, what's wrong with my codes? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2625</p>
+    <h1>sometimes ComboBox cannot be filled, what's wrong with my codes?</h1>
+    <p class="meta">Started by khann ·
+      2018-08-21 03:49 UTC ·
+      9 replies · SMF topic #2625</p>
+<article class="post" id="msg12964">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2018-08-21 03:49 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+I want to add Block names into the ComboBox<br>
+I coded like this...<br>
+<br>
+But sometimes the ComboBox does not fill anythings...<br>
+and Cad shows like this error messages :<br>
+<br>
+; error: Unknown exception occurred<br>
+; warning: unwind skipped on unknown exception<br>
+<br>
+<br>
+what should I do at this time?<br>
+Thanks, Khann.<br>
+<br>
+<br>
+<br>
+<br>
+***<br>
+<span style="color:red">(</span><span style="color:blue">setq</span> *All_Block_Names <span style="color:red">(</span>F:Sub_Get_All_Block_Names<span style="color:red">))<br>
+</span><br>
+<br>
+<span style="color:red">(</span><span style="color:blue">dcl-ComboBox-Clear</span> TransfoA1/Form/cboRBListNew<span style="color:red">)<br>
+</span><br>
+<span style="color:red">(</span><span style="color:blue">dcl-ComboBox-AddList</span> TransfoA1/Form/cboRBListNew *All_Block_Names<span style="color:red">)<br>
+</span><br>
+<br>
+<br>
+***<br>
+<br>
+<br>
+<span style="color:red">(</span><span style="color:blue">defun</span> F:Sub_Get_All_Block_Names <span style="color:red">(</span> <span style="color:blue">/</span> *ALL_BLOCKS *ALL_BLOCK_NAMES *CURDOC *TMP_BNAME<span style="color:red">)</span><br>
+<br>
+   <span style="color:red">(</span><span style="color:blue">setq</span> *All_Block_Names '<span style="color:red">())<br>
+</span>   <span style="color:red">(</span><span style="color:blue">setq</span> *Curdoc <span style="color:red">(</span><span style="color:blue">vla-get-activedocument </span><span style="color:red">(</span><span style="color:blue">vlax-get-acad-object</span><span style="color:red">)))</span><br>
+   <span style="color:red">(</span><span style="color:blue">setq</span> *All_Blocks <span style="color:red">(</span><span style="color:blue">vla-get-blocks</span> *Curdoc<span style="color:red">))<br>
+</span><br>
+   <span style="color:red">(</span><span style="color:blue">vlax-for</span> *Block_Item *All_Blocks<br>
+<br>
+      <span style="color:red">(</span><span style="color:blue">setq</span> *Tmp_BName <span style="color:red">(</span><span style="color:blue">vla-get-name</span> *Block_Item<span style="color:red">))</span><br>
+<br>
+      <span style="color:red">(</span><span style="color:blue">if</span> <span style="color:red">(</span><span style="color:blue">wcmatch</span> <span style="color:red">(</span><span style="color:blue">substr</span> *Tmp_BName 1 4<span style="color:red">)</span> <span style="color:purple">"00*-"</span><span style="color:red">)</span><br>
+	 <span style="color:red">(</span><span style="color:blue">progn</span><br>
+	    <span style="color:red">(</span><span style="color:blue">setq</span> *All_Block_Names <span style="color:red">(</span><span style="color:blue">cons</span> *Tmp_BName *All_Block_Names<span style="color:red">))</span><br>
+	 <span style="color:red">)</span><br>
+      <span style="color:red">)<br>
+</span>   <span style="color:red">)<br>
+</span><br>
+   <span style="color:red">(</span><span style="color:blue">setq</span> *All_Block_Names <span style="color:red">(</span><span style="color:blue">reverse</span> *All_Block_Names<span style="color:red">))</span><br>
+<br>
+   <span style="color:red">(</span><span style="color:blue">setq</span> *All_Block_Names <span style="color:red">(</span><span style="color:blue">vl-sort</span> *All_Block_Names '<span style="color:blue">&lt;</span><span style="color:red">))</span><br>
+<br>
+   *All_Block_Names<br>
+<br>
+<span style="color:red">)</span></div>
+</article>
+<article class="post" id="msg12965">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-08-21 03:57 UTC</span>
+  </div>
+  <div class="post-body">Hi, I cannot see an error in the small piece.<br>
+I recommend to add some princ-hints to get closer to the line that hits the error, because I'm afraid that you can't debug this when it only occurs sometimes.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg12966">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2018-08-21 04:46 UTC</span>
+  </div>
+  <div class="post-body">Hi, Fred<br>
+Thank you for your reply.<br>
+I cannot find what's wrong with this.<br>
+<br>
+Sometimes ComboBox filled, but sometimes not...  :'( :'(<br>
+<br>
+where I need to put "princ-hits" ?</div>
+</article>
+<article class="post" id="msg12967">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-08-21 05:00 UTC</span>
+  </div>
+  <div class="post-body">I meant lines like this<br>
+<br>
+<pre class="code"><code><br>
+(princ "\r\n... read Blocks ...\r\n)<br>
+(setq *All_Block_Names (F:Sub_Get_All_Block_Names))<br>
+(princ "\r\n... clear combo ...\r\n)<br>
+(dcl-ComboBox-Clear TransfoA1/Form/cboRBListNew)<br>
+(princ "\r\n... fill combo ...\r\n)<br>
+(dcl-ComboBox-AddList TransfoA1/Form/cboRBListNew *All_Block_Names)<br>
+</code></pre><br>
+<br>
+please note, that the blocks-collection also contains modelspace, paperspaces, xrefs, dimensions (beginning with *D). <br>
+<br>
+Regards, Fred<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg12968">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2018-08-21 05:12 UTC</span>
+  </div>
+  <div class="post-body">Ok, I see.<br>
+Thank you Fred  :)</div>
+</article>
+<article class="post" id="msg12972">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2018-08-23 01:46 UTC</span>
+  </div>
+  <div class="post-body">Hi, Fred.<br>
+I tested with <span style="color:red">(</span><span style="color:blue">princ "\n Test ... "</span> <span style="color:red">)</span><br>
+every single line...<br>
+<br>
+I'm not sure<br>
+but<br>
+when I changed <span style="color:blue">wcmatch</span> to only <span style="color:blue">substr</span> <br>
+It seemed fixed the "unwind errors."<br>
+<br>
+<br>
+<br>
+<span style="color:red">(</span><span style="color:blue">wcmatch</span> <span style="color:red">(</span><span style="color:blue">substr</span> *Tmp_BName <span style="color:green">1 4</span><span style="color:red">)</span> <span style="color:purple">"00*-"</span><span style="color:red">)</span><br>
+=&gt;<br>
+<span style="color:red">(</span><span style="color:blue">and</span> <span style="color:red">(</span><span style="color:blue">=</span> <span style="color:red">(</span><span style="color:blue">substr</span> *Tmp_BName <span style="color:green">1 2</span><span style="color:red">)</span> <span style="color:purple">"00"</span><span style="color:red">)</span> <span style="color:red">(</span><span style="color:blue">=</span> <span style="color:red">(</span><span style="color:blue">substr</span> *Tmp_BName 4 1<span style="color:red">)</span> <span style="color:purple">"-"</span><span style="color:red">))</span><br>
+<br>
+ ::) ::)<br>
+<br>
+Thank you, Fred  :)</div>
+</article>
+<article class="post" id="msg12974">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-08-23 04:32 UTC</span>
+  </div>
+  <div class="post-body">That's frustrating. Do not see any reason, why wcmatch shouldn't work in this case. Good, that you worked around that.<br>
+Fred</div>
+</article>
+<article class="post" id="msg12975">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2018-08-23 05:36 UTC</span>
+  </div>
+  <div class="post-body">mmm..<br>
+So am I.<br>
+Maybe, my Acad does not like the <span style="color:blue">wcmatch</span> func.  :-\ :-\</div>
+</article>
+<article class="post" id="msg12977">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-08-23 06:27 UTC</span>
+  </div>
+  <div class="post-body">Hm, maybe add a String.IsNullOrEmpty-check right before calling wcmatch.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg12978">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2018-08-24 09:00 UTC</span>
+  </div>
+  <div class="post-body">Mmm... Ok, Fred.<br>
+I will try again your advices.<br>
+Thank you  :)<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

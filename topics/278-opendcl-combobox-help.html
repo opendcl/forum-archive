@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenDCL Combobox help? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 278</p>
+    <h1>OpenDCL Combobox help?</h1>
+    <p class="meta">Started by Shade ·
+      2008-04-08 19:39 UTC ·
+      1 replies · SMF topic #278</p>
+<article class="post" id="msg1239">
+  <div class="post-head">
+    <span class="post-author">Shade</span>
+    <span class="post-date muted">2008-04-08 19:39 UTC</span>
+  </div>
+  <div class="post-body">Attach find my LSP code and ODCL file.<br>
+<br>
+I am a rookie with OpenDCL and I am trying to translate one of my lisps with DCL into ODCL.<br>
+<br>
+At current I am a little confused. When both my combo_boxes where combo_boxes, using dcl_Control_SetText would set the text when i initialized.  Now that I have switched the combo_box to a dropdown, dcl_Control_SetText, no longer set the display text.<br>
+Do I have to work with a item number and a list like with DCL?<br>
+<br>
+Any help would be appreciated?<br>
+ <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/362/BlkReplace.odcl">BlkReplace.odcl</a> <span class="muted">(1377 bytes)</span></li><li><a href="../attachments/363/BlkReplace.lsp">BlkReplace.lsp</a> <span class="muted">(1168 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1240">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-04-08 19:48 UTC</span>
+  </div>
+  <div class="post-body">Welcome to the club. :)<br>
+I didn't look at your code, but...<br>
+The SetText does work, you just don't see the effects of the change (since it's read-only).<br>
+You can use:<br>
+(dcl_ComboBox_SetCurSel Untitled_Form1_ComboBox1 nIndex [as Integer])<br>
+OR<br>
+(Setq rValue (dcl_ComboBox_SelectString Untitled_Form1_ComboBox1 SearchString [as String]))<br>
+<br>
+And you can use the following to get the selection or text<br>
+(Setq rValue (dcl_ComboBox_GetCurSel Untitled_Form1_ComboBox1))<br>
+OR<br>
+(Setq rValue (dcl_ComboBox_GetTBText Untitled_Form1_ComboBox1))<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

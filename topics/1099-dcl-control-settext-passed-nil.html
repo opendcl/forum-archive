@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_Control_SetText passed NIL · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1099</p>
+    <h1>dcl_Control_SetText passed NIL</h1>
+    <p class="meta">Started by Vaidas ·
+      2009-12-22 06:54 UTC ·
+      4 replies · SMF topic #1099</p>
+<article class="post" id="msg5813">
+  <div class="post-head">
+    <span class="post-author">Vaidas</span>
+    <span class="post-date muted">2009-12-22 06:54 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+Just testing. The same problem as at <a href="http://www.opendcl.com/forum/index.php?topic=23.msg107#msg107" rel="nofollow noopener">{2}</a><br>
+but I can't replay to this topic, so starting new one.<br>
+<br>
+Error:<br>
+variable argument passed to dcl_Control_SetText was NIL<br>
+<br>
+Lisp passes text to TitleBar, but not to TextBox. The same for several different cases I checked.<br>
+<br>
+Thanks<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1187/Test-091221.LSP">Test-091221.LSP</a> <span class="muted">(572 bytes)</span></li><li><a href="../attachments/1188/Test-091221.odcl">Test-091221.odcl</a> <span class="muted">(766 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5814">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-22 07:03 UTC</span>
+  </div>
+  <div class="post-body">Hi, Vaidas, check the name of your cancel event: I read "c:Kitox-Toolset-dcl_FormEmail_TextButtonCancel_OnClicked" in the odcl file and "c:Test-091221_Form1_TextButtonCancel_OnClicked" in the lisp. That must match to make it work.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5815">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-22 07:09 UTC</span>
+  </div>
+  <div class="post-body">The reason the Textbox is not getting the value of the test-text variable is because the Form EVENT OnInitialize is not turned on in the Events Pane.<br>
+<br>
+added : refer attached<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1189/Initialize Toggle.png">Initialize Toggle.png</a> <span class="muted">(22581 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5816">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-22 07:17 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Vaidas ,<br>
+<br>
+That is an excelent way to test the actions and properties of controls !!<br>
+<br>
+Start small with simple tests till you understand what is happening.<br>
+<br>
+Good sample of the error.<br>
+</div>
+</article>
+<article class="post" id="msg5817">
+  <div class="post-head">
+    <span class="post-author">Vaidas</span>
+    <span class="post-date muted">2009-12-22 07:23 UTC</span>
+  </div>
+  <div class="post-body">Thanks for all, it works now.<br>
+Error was on Initialize checkbox. I started from bigger for and after changed it to smaller, but not changed function on Events.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Palette issues · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2270</p>
+    <h1>Palette issues</h1>
+    <p class="meta">Started by honkinberry ·
+      2015-05-21 22:45 UTC ·
+      7 replies · SMF topic #2270</p>
+<article class="post" id="msg11420">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2015-05-21 22:45 UTC</span>
+  </div>
+  <div class="post-body">I'm struggling quite a bit with my first Palette.<br>
+<br>
+First issue, after turning on Auto-Hide once, now that it is the way the dialog always comes up.  If I uncheck Auto-hide and close the form, firing it up again, it's auto-hidden.  Primarily I just need this set for me, couldn't find it in the registry.  But eventually I'll need to know how to make sure it will always come up Docked, instead of Auto-hidden.<br>
+<br>
+Secondly, having issues with my action button to place blocks.  It needs to set a layer active, uses a (command) call to insert a block, and other activities like that.  The only way I can get it to work from the Palette is by a delayedInvoke call.  Without that, I get errors even setting CLAYER.<br>
+<br>
+Lastly, and possibly related, having some difficulty with the difference between Asynchronous and Synchronous event invoke.  Does this only apply to the standard events, DocActivated, Close, Initialize, etc?  If so, then that would explain it, and I'm fine.  But as I was trying to determine why my button can't create a layer and set it current, I was toggling that setting to see no difference.<br>
+<br>
+Any tips will be most appreciated!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg11421">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-05-22 13:45 UTC</span>
+  </div>
+  <div class="post-body">Setting your EventInvoke to Asynchronous is the correct approach to allowing use of (command) in your event handler. Events which return a result cannot be executed asynchronously, but otherwise the setting applies to all OpenDCL events.<br>
+<br>
+Palette settings get saved in your profile (Profile.aws file) when you close AutoCAD. Dock your palette, close AutoCAD, then the docked state should be saved.<br>
+<br>
+I hope that helps.</div>
+</article>
+<article class="post" id="msg11422">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2015-05-22 15:40 UTC</span>
+  </div>
+  <div class="post-body">Ah beautiful, having the palette docked as I wished when I closed AutoCAD was the trick, thank you.<br>
+<br>
+Now to the other issue.<br>
+I have a button on my palette, Click event calling a function.  That function starts out setting a system variable (setvar "LWDISPLAY" 1).  Yet regardless if my event invoke is Synchronous or Asynchronous, I get an "AutoCAD variable setting rejected".  The only way around this I have found is to have the Click event fire a delayedInvoke with 1 millisecond, calling the same function -- then the sysvar is set, the block is inserted, and everything works the same as from a dialog.<br>
+Is this going to be the best way for me to transition similar dialog-based code to being palette-based, or am I just missing something simple?<br>
+<br>
+Thanks again.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg11423">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-05-22 16:26 UTC</span>
+  </div>
+  <div class="post-body">Some things to check:<br>
+1) After you change the Event Invoke property to Asynchronous, make sure you save the file and note exactly where you save it.<br>
+2) Make sure you load (or reload) the correct modified project file that you just saved.<br>
+3) Make sure there I nothing else going on, and no other command active, when you press the button that triggers the problematic code.<br>
+4) Try putting the problem code directly into the event handler preceded by some diagnostic code to verify that the correct event handler and code is being called.<br>
+<br>
+To be really certain about the Event Invoke property of your palette form, you can check (or change) it at runtime to make sure it is set correctly.</div>
+</article>
+<article class="post" id="msg11424">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2015-05-22 16:44 UTC</span>
+  </div>
+  <div class="post-body">Test file attached.<br>
+Many thanks if you have time to look at it.<br>
+<br>
+--J<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2132/Archive.zip">Archive.zip</a> <span class="muted">(1048 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11426">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-05-22 17:26 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I misled you by referring to the form's Event Invoke property. The button's Event Invoke property must be set to Asynchronous. When I changed that, it worked for me.</div>
+</article>
+<article class="post" id="msg11427">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2015-05-22 17:46 UTC</span>
+  </div>
+  <div class="post-body">Of course!  I should have seen that.<br>
+Thank you.<br>
+<br>
+Which leads me to a wishlist request -- this is a classic situation, I will be keeping some of my buttons with Synchronous so that they can process return values, and do not need to access the command line.  So I would *love* a Property in the Studio, of "Comments" for every object.  Definitely helps for so many situations, reminding myself why Use Bottom From Bottom is set a certain why, what other caption values need to be accounted for, archiving various size or placement values used, you name it.<br>
+<br>
+But as always, you rock, thank you!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg11429">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-05-22 20:12 UTC</span>
+  </div>
+  <div class="post-body">You're welcome. Just to clarify, you don't need to set your buttons to Synchronous so that return values are processed properly; any events that need return values (like <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Event/CancelClose.htm" rel="nofollow noopener">{2}</a>) simply ignore the Event Invoke property and automatically get sent synchronously.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

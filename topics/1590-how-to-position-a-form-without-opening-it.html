@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to position a form without opening it ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1590</p>
+    <h1>How to position a form without opening it ?</h1>
+    <p class="meta">Started by krunch ·
+      2011-02-14 14:34 UTC ·
+      3 replies · SMF topic #1590</p>
+<article class="post" id="msg7761">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-02-14 14:34 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+I'd want a Modeless form to appear near the cursor, so I set the position (left height) of the form with SetPos method (lisp below).<br>
+But this method doesn't work if the form is not displayed, so it makes a "flash" on the previous position of the form when (dcl_Form_Show proj dia) is called.<br>
+<br>
+Is there a way to set position before the dcl_Form_Show ?<br>
+Thanks<br>
+<br>
+<br>
+    (dcl_Form_Show proj dia)<br>
+;;;    (dcl_Form_Hide proj dia T) ; doesn't change anything<br>
+    (MoveForm dia 216 232) ; width height of the form<br>
+;;;    (dcl_Form_Hide proj dia nil)<br>
+<br>
+(defun MoveForm (dia x y / tmp lft hgt)<br>
+  (setq tmp (dcl_GetMouseCoords)<br>
+    lft (if (&lt; (- (car(dcl_GetScreenSize)) (car tmp) 30) x) (- (car tmp) x 30) (+ (car tmp) 30))<br>
+    hgt (if (&lt; (- (last tmp) 30) y) (+ (last tmp) 30) (- (last tmp) y 30)))<br>
+  (dcl_Control_SetPos proj dia lft hgt)<br>
+)</div>
+</article>
+<article class="post" id="msg7762">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-02-14 15:38 UTC</span>
+  </div>
+  <div class="post-body">Hello, why don't you use (dcl_form_show proj_dia intX intY) ?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7764">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-02-14 17:02 UTC</span>
+  </div>
+  <div class="post-body">I had't seen these arguments for show method.. Thanks !</div>
+</article>
+<article class="post" id="msg7766">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-02-14 19:38 UTC</span>
+  </div>
+  <div class="post-body">You're welcome!  :)<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

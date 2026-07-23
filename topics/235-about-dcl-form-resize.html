@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About “dcl_Form_Resize” · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 235</p>
+    <h1>About “dcl_Form_Resize”</h1>
+    <p class="meta">Started by hicoffee ·
+      2008-03-02 10:50 UTC ·
+      2 replies · SMF topic #235</p>
+<article class="post" id="msg1034">
+  <div class="post-head">
+    <span class="post-author">hicoffee</span>
+    <span class="post-date muted">2008-03-02 10:50 UTC</span>
+  </div>
+  <div class="post-body">“dcl_Form_Resize” can’t be used in Dockable Form, why?</div>
+</article>
+<article class="post" id="msg1035">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-03-02 16:42 UTC</span>
+  </div>
+  <div class="post-body">In some scenarios, a dockable form cannot be safely resized, so resizing is disabled altogether while it is docked. In the future, it may be possible to resize dockable forms when it is safe to do so.<br>
+<br>
+Resizing is tricky because there is no API for resizing. The MFC framework expects that dockable forms (and palettes) are always resized by changing the size of the control bar that contains them, but OpenDCL works from the bottom up, where resizing a form should resize the containing control bar. Unfortunately, this cannot be safely done, even by hacking it, because a control bar could contain multiple children that all need to be resized.</div>
+</article>
+<article class="post" id="msg1036">
+  <div class="post-head">
+    <span class="post-author">hicoffee</span>
+    <span class="post-date muted">2008-03-03 03:42 UTC</span>
+  </div>
+  <div class="post-body">I see, thanks!!! But<br>
+how can I put a dockable form in the center of screen in order to resize form?<br>
+Use Method but not manual operation ......</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

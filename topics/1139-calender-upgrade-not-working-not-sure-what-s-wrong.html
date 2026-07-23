@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>calender upgrade not working, not sure what's wrong.... · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1139</p>
+    <h1>calender upgrade not working, not sure what's wrong....</h1>
+    <p class="meta">Started by Hypersonic ·
+      2010-01-18 22:00 UTC ·
+      3 replies · SMF topic #1139</p>
+<article class="post" id="msg6047">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2010-01-18 22:00 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+(dcl_Calendar_SetCurSel job_manager_job_manager_cal1_Calendar1 (list (atoi min_year) (atoi min_month) (atoi min_day)))<br>
+<br>
+This returns an error that says "Bad arguement, expected more arguements"<br>
+<br>
+Not sure why, this is an upgrade from object_dcl to open_dcl, but I copied in the "new" version of the setcursel command (shown above) and it still does it.... ugh<br>
+<br>
+Thanks!</div>
+</article>
+<article class="post" id="msg6052">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-19 15:08 UTC</span>
+  </div>
+  <div class="post-body"><br>
+How about posting a small sample .LSP and .ODCL demonstrating your difficulty.<br>
+<br>
+This will save Owen some time and ALSO make sure that your usage of the Control and methods is correct. </div>
+</article>
+<article class="post" id="msg6057">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-19 17:05 UTC</span>
+  </div>
+  <div class="post-body">The problem is that AutoCAD chokes on a 3-integer list whose first element is the integer 2010. This is a long-standing problem in AutoCAD resulting from its attempt to interpret such a list as a DXF group. The only solution is to fool AutoCAD by making the first element a real instead of an integer.  Use (float (atoi min_year)) to make it a real, then it should work.</div>
+</article>
+<article class="post" id="msg6061">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2010-01-20 13:53 UTC</span>
+  </div>
+  <div class="post-body">Yep the float thing fixed it!  Wow, I would have never figured that out!<br>
+Thanks Owen!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

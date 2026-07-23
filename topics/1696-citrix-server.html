@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Citrix server · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/19-deployment.html">Deployment</a> /
+      Topic 1696</p>
+    <h1>Citrix server</h1>
+    <p class="meta">Started by DanW ·
+      2011-10-13 14:28 UTC ·
+      10 replies · SMF topic #1696</p>
+<article class="post" id="msg8388">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2011-10-13 14:28 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+Does anyone have any thoughts about installing and running an OpenDCL/lisp application through a remote Citrix server? I have no experience of this setup and am presuming (perhaps wrongly) there is no local Autocad install at all.  <br>
+<br>
+See <a href="http://usa.autodesk.com/adsk/servlet/item?siteID=123112&amp;id=13959101" rel="nofollow noopener">{2}</a><br>
+<br>
+Any thoughts about whether it is possible? Any potential pitfalls? Anything else? I am completely ignorant about this sort of set up.<br>
+<br>
+Many thanks in anticipation.<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8392">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-10-13 19:59 UTC</span>
+  </div>
+  <div class="post-body">In such a setup, both AutoCAD and OpenDCL would be installed on the server, and should work fine from a technical standpoint. The problem is that the AutoCAD EULA prohibits this sort of thing.</div>
+</article>
+<article class="post" id="msg8395">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2011-10-14 09:24 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen, good to know.</div>
+</article>
+<article class="post" id="msg9647">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2013-04-12 13:12 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen,<br>
+<br>
+I can confirm that the Runtime is indeed working on Citrix.  (Apparently it is legit, Autodesk wise).<br>
+<br>
+The only thing which seems to fail  are HTML controls/connecting to the internet which is a shame.  <br>
+<br>
+The server is running Microsoft Windows Server 2008 R2 Standard Edition, 64-bit (build 7600).<br>
+<br>
+Any thoughts or bright ideas greatly appreciated.<br>
+<br>
+Cheers<br>
+</div>
+</article>
+<article class="post" id="msg9649">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-04-12 13:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Danner link=topic=1696.msg9647#msg9647 date=1365772360 wrote:</cite><br>
+The only thing which seems to fail  are HTML controls/connecting to the internet which is a shame.</blockquote><br>
+<br>
+Is the problem that your server does not have an internet connection, or do you think it's a problem with OpenDCL's internet access implementation?</div>
+</article>
+<article class="post" id="msg9650">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2013-04-12 14:03 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen,<br>
+<br>
+The Citrix administrator has responded as follows:<br>
+<br>
+"Yes they have an internet connection but if they are trying to reach something specific and direct it may become an issue as we use a proxy."</div>
+</article>
+<article class="post" id="msg9651">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2013-04-12 14:58 UTC</span>
+  </div>
+  <div class="post-body">Citrix Administrator has added:<br>
+<br>
+"Is there a way to get it to use IE settings so it picks up the proxy details?"</div>
+</article>
+<article class="post" id="msg9652">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2013-04-15 09:27 UTC</span>
+  </div>
+  <div class="post-body">AutoCAD/ActiveX is also having problems connecting to other applications such as Excel.  So I'm starting to think the HTML control issue may somehow be related.<br>
+<br>
+The server is running AutoCAD 2011, which I think may not be officially  "Citrix Ready".  So that could be a possible reason too.<br>
+</div>
+</article>
+<article class="post" id="msg9653">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2013-04-15 11:29 UTC</span>
+  </div>
+  <div class="post-body">Ok, the reason Autocad isn't connecting to Microsoft Office is because they are on different servers.  Autocad is on its own server due its high resource requirements. </div>
+</article>
+<article class="post" id="msg9660">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-04-20 02:09 UTC</span>
+  </div>
+  <div class="post-body">The OpenDCL HTML control is the Internet Explorer control inside a dialog, and as far as I can tell it should use the same settings as IE running standalone.</div>
+</article>
+<article class="post" id="msg9663">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2013-04-22 13:20 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen,<br>
+<br>
+I am informed that IE is not "published" for everyone who uses the server just for AutoCAD.<br>
+<br>
+Anyway I can report the html control works for local files just not online ones.   Also when AutoCAD 2011's online Help is launched - IE launches but doesn't go online but opens the local help files.<br>
+<br>
+So this leads me to conclude this is purely due to the way the server/IE is setup rather than any issue with the html control.<br>
+<br>
+Seeing as the server administrator has set things up in such a way because of concerns about the resource requirements of AutoCAD, I am inclining towards leaving things be.  I would hate to recommend changes to their setup and increase the likelihood of crashes etc.<br>
+<br>
+Many thanks.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

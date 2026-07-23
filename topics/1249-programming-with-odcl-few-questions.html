@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Programming with Odcl - few questions · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1249</p>
+    <h1>Programming with Odcl - few questions</h1>
+    <p class="meta">Started by kruuger ·
+      2010-04-01 20:20 UTC ·
+      8 replies · SMF topic #1249</p>
+<article class="post" id="msg6689">
+  <div class="post-head">
+    <span class="post-author">kruuger</span>
+    <span class="post-date muted">2010-04-01 20:20 UTC</span>
+  </div>
+  <div class="post-body">hello<br>
+<br>
+I have few questions regarding programing with Odcl:<br>
+1. I'm wondering is there any way to omit (or how to program) all these C:..FUNCTION.. definition. Any click on any control (button, picture etc) is connected with C:FUNCTION<br>
+For example, after 20 click i run 20 FUNCTION. I don't see them at command line but i see all of them when i try use my UP arrow on keyboard. If i want to back to my value before ODCL starts is pain (i need to go thru all C:) -&gt; modeless form<br>
+2. Any way to buffer Hatch control? When hatch is to dense it takes few second to draw.<br>
+3. Is it possible to draw on Picture control with DASHED line?<br>
+4. With regular DCL we can scroll on ComboBox with mouse. Value are change without opening the combo list. I think it was more comfortable? Also i can very quick select something from the list, just entering the first letter.<br>
+<br>
+Thanks<br>
+</div>
+</article>
+<article class="post" id="msg6690">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-04-01 20:37 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=kruuger link=topic=1249.msg6689#msg6689 date=1270153249 wrote:</cite><br>
+hello<br>
+<br>
+I have few questions regarding programing with Odcl:<br>
+1. I'm wondering is there any way to omit (or how to program) all these C:..FUNCTION.. definition. Any click on any control (button, picture etc) is connected with C:FUNCTION<br>
+For example, after 20 click i run 20 FUNCTION. I don't see them at command line but i see all of them when i try use my UP arrow on keyboard. If i want to back to my value before ODCL starts is pain (i need to go thru all C:) -&gt; modeless form<br>
+2. Any way to buffer Hatch control? When hatch is to dense it takes few second to draw.<br>
+3. Is it possible to draw on Picture control with DASHED line?<br>
+4. With regular DCL we can scroll on ComboBox with mouse. Value are change without opening the combo list. I think it was more comfortable? Also i can very quick select something from the list, just entering the first letter.<br>
+<br>
+Thanks<br>
+</blockquote><br>
+<br>
+1. Just remove the C: from the function name in the events panel, then resave your project.<br>
+2. I don't think so, maybe Owen can look into that for a future build.<br>
+3. No, anther good feature request.<br>
+4. Anther good feature request.</div>
+</article>
+<article class="post" id="msg6691">
+  <div class="post-head">
+    <span class="post-author">kruuger</span>
+    <span class="post-date muted">2010-04-01 20:56 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">1. Just remove the C: from the function name in the events panel, then resave your project.</blockquote><br>
+i try this but error occurs "error: too few arguments"<br>
+i also delete these C: at my lsp file and nothing</div>
+</article>
+<article class="post" id="msg6693">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-04-01 21:25 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=kruuger link=topic=1249.msg6691#msg6691 date=1270155388 wrote:</cite><br>
+<blockquote class="quote">1. Just remove the C: from the function name in the events panel, then resave your project.</blockquote><br>
+i try this but error occurs "error: too few arguments"<br>
+i also delete these C: at my lsp file and nothing<br>
+</blockquote><br>
+<br>
+Oops, I think I got that one confused.<br>
+Removing the C: from the lisp allows you to hit Enter to repeat the last commend\function.<br>
+I don't think you can hide the functions in the history list....</div>
+</article>
+<article class="post" id="msg6694">
+  <div class="post-head">
+    <span class="post-author">kruuger</span>
+    <span class="post-date muted">2010-04-01 21:58 UTC</span>
+  </div>
+  <div class="post-body">:(<br>
+<br>
+Thanks anyway</div>
+</article>
+<article class="post" id="msg6696">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-04-02 02:27 UTC</span>
+  </div>
+  <div class="post-body">You should be able to set EventInvoke to Synchronous to prevent event handlers from showing up in the command history, but then you have to live with the limitations of synchronous event handlers.</div>
+</article>
+<article class="post" id="msg6697">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-04-02 09:09 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1249.msg6696#msg6696 date=1270175268 wrote:</cite><br>
+You should be able to set EventInvoke to Synchronous to prevent event handlers from showing up in the command history, but then you have to live with the limitations of synchronous event handlers.<br>
+</blockquote><br>
+<br>
+The question is if it are really limitations: I have a tree control in a palette. When I doubleclick an item the c:MyProject_MyForm_MyTree_OnDblClick event will be released. When the eventinvoke method is set to asynchronous then I see this name in the commandline. In earlier times I was sad about it. But now I changed my program style and my thinking about it:<br>
+<br>
+1. For all the image and text buttons which invokes events in a modeless form (or palette or dockable) that need user input or are going to create objects in the drawing I set the event invoke to asychronous and I define a custom event handler name: ^C^Cblockman_drawsingle. If the user presses such a button, an active command will be cancelled and in the commandline I read only BLOCKMAN_DRAWSINGLE. And I startet to love its advantage: this event can be repeated by pressing ENTER key.<br>
+<br>
+2. Checkboxes, optionbuttons or any controls which events have not effects in the drawings are calling synchronous events anytime and never asynchronous.<br>
+<br>
+3. ListViews, treeviews and so on, which events can also cause changes in the drawing or provides userinputs are called synchronously, too. But they call generic commands. <br>
+<br>
+(defun c:MyProject_MyForm_MyListView_OnDblClicked (intRow intCol)<br>
+  ;; [...] do something<br>
+  (dcl_sendstring "BLOCKMAN_DRAWSINGLE\n")<br>
+); c:MyProject_MyForm_MyListView_OnDblClicked  <br>
+<br>
+BLOCKMAN_DRAWSINGLE is called asynchronously. Yes, I work with global variables in this case. But there are also other ways to make sure that the asynchronously called command can get the information from the called event.<br>
+Working this way that has the same advantage as mentioned in my first point of this list.<br>
+<br>
+Having a look at (dcl_sendstring "BLOCKMAN_DRAWSINGLE\n") that leads me to a question, Owen:<br>
+When I send a string like (dcl_sendstring "^C^CBLOCKMAN_DRAWSINGLE\n") it has obviously not the same effect as OpenDCL calls this event name as mentioned in number one of this list.<br>
+Is there a way to cancel a running lisp or an active command via lisp (please not via sendkey {ESC}) OR<br>
+Could dcl_sendstring parse the given string for ^C^C to cancel a running lisp or an active command before sending the rest (in this case "BLOCKMAN_DRAWSINGLE\n")?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6698">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-04-02 17:45 UTC</span>
+  </div>
+  <div class="post-body">The prefix "^C^C" is translated to two break characters when OpenDCL calls an event handler. You can do the same by prepending your command with two break characters (chr 3) before passing it to (dcl_SendString).</div>
+</article>
+<article class="post" id="msg6699">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-04-02 17:50 UTC</span>
+  </div>
+  <div class="post-body">BTW Fred, the system you describe is exactly how I envision an ideal design to work, where "commands" triggered by user actions are implemented as and executed as typical AutoCAD commands, and everything else is executed as a function. This is probably a good topic for a tutorial; it's not difficult to grasp once you understand it, but it may not be obvious at first to newcomers. </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

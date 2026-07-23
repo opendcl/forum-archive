@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CheckBox - not hiding properly · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2876</p>
+    <h1>CheckBox - not hiding properly</h1>
+    <p class="meta">Started by ehya ·
+      2023-06-11 11:47 UTC ·
+      2 replies · SMF topic #2876</p>
+<article class="post" id="msg13861">
+  <div class="post-head">
+    <span class="post-author">ehya</span>
+    <span class="post-date muted">2023-06-11 11:47 UTC</span>
+  </div>
+  <div class="post-body">Hi there,<br>
+<br>
+<br>
+I want to hide the radio button and checkbox on the screen.<br>
+<br>
+The obfuscation is working correctly with the radio_button. But when I click checkBox it doesn't work correctly. It leaves a mark on the screen.<br>
+<br>
+The obfuscation is working correctly with the radio_button. But when I click checkBox it doesn't work correctly. It leaves a mark on the screen.<br>
+<br>
+<br>
+The 1st picture is the correct one. When I click on the radio_button it looks like what I want.<br>
+However, when I click checkbox, the text_box trace remains where I marked in the 2nd picture.<br>
+<br>
+<br>
+In summary, what I want to do is;<br>
+If the checkbox is checked while the radio_button is checked, the image and textbox will be on the screen.<br>
+If the checkbox is unchecked, the image will change. 1 editbox will be hidden. 2 editbox locations will change.<br>
+<br>
+<br>
+<br>
+How can I solve this problem?<br>
+<br>
+<br>
+1ST PIC<br>
+<img src="https://www.linkpicture.com/q/01_dogru.png" alt="" loading="lazy"><br>
+<br>
+<br>
+2ND PIC<br>
+<img src="https://www.linkpicture.com/q/01_hata.png" alt="" loading="lazy"><br>
+<br>
+CODE<br>
+<br>
+<pre class="code"><code>(defun resimduzen (/)<br>
+(if (and (= (dcl-Control-GetValue istinat/Form1/OptionButton1) 1)<br>
+	 (= (dcl-Control-GetValue istinat/Form1/CheckBox1) 1))<br>
+(progn<br>
+   (dcl-Control-SetPicture istinat/Form1/PictureBox1 100)<br>
+             (dcl-Control-setLeft istinat/Form1/DG11 114)<br>
+             (dcl-Control-setLeft istinat/Form1/DG7 230)<br>
+          (dcl-Control-setVisible istinat/Form1/DG10 t)<br>
+))<br>
+ <br>
+(if (and (= (dcl-Control-GetValue istinat/Form1/OptionButton1) 1)<br>
+	 (= (dcl-Control-GetValue istinat/Form1/CheckBox1) 0))<br>
+(progn<br>
+(dcl-Control-SetPicture istinat/Form1/PictureBox1 101)<br>
+             (dcl-Control-setLeft istinat/Form1/DG11 96)<br>
+             (dcl-Control-setLeft istinat/Form1/DG7 210)<br>
+    (dcl-Control-setVisible istinat/Form1/DG10 nil)<br>
+)))</code></pre><br>
+</div>
+</article>
+<article class="post" id="msg13862">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2023-06-12 06:11 UTC</span>
+  </div>
+  <div class="post-body">Hi, is it possible to get the project and (only) the relevant code for testing?<br>
+Maybe a resreh on all controls or the form could help.<br>
+With regards, Fred</div>
+</article>
+<article class="post" id="msg13863">
+  <div class="post-head">
+    <span class="post-author">ehya</span>
+    <span class="post-date muted">2023-06-12 06:31 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+First of all, thank you for your reply message.<br>
+I am attaching the lisp and odcl file.<br>
+I actually found a solution last night. But it was a very strange solution.<br>
+<br>
+In the attached lisp, in the section related to checkbox, typing the "(BUTON-1)" section twice in succession solves the problem.<br>
+I would like to know if there is a correct solution though.<br>
+Thanks.<br>
+<br>
+<br>
+https://drive.google.com/file/d/1FFxVCBn1gmD7orUnWWpJccmHvPs4A4Gf/view?usp=sharing<br>
+<br>
+<br>
+(defun c:retaining/Form1/CheckBox1#OnClicked (Value /)<br>
+   <strong>(BUTTON-1)(BUTTON-1)</strong><br>
+   (if (= (dcl-Control-GetValue retaining/Form1/CheckBox1) 1)<br>
+        (dcl-Control-SetEnabled retaining/Form1/TextBox11t)<br>
+        (dcl-Control-SetEnabled retaining/Form1/TextBox11 nil)<br>
+))</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

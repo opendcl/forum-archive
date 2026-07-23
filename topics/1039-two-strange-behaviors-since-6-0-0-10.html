@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Two strange behaviors since 6.0.0.10 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1039</p>
+    <h1>Two strange behaviors since 6.0.0.10</h1>
+    <p class="meta">Started by copter ·
+      2009-11-29 13:29 UTC ·
+      15 replies · SMF topic #1039</p>
+<article class="post" id="msg5358">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-11-29 13:29 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+<br>
+I attached an example to demonstrate the two issues.<br>
+1<br>
+ It appears that the labels are no more refreshed when the caption is changed. Have I to add a "dcl_Control_Redraw" call each time a text label is changed ? (I hope not)<br>
+2<br>
+When several buttons are "inside" a rectangle, they are no more drawn.  (Until the mouse go over them)  <br>
+<br>
+Thanks<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1069/Test.odcl">Test.odcl</a> <span class="muted">(1505 bytes)</span></li><li><a href="../attachments/1070/test.lsp">test.lsp</a> <span class="muted">(221 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5370">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-30 07:24 UTC</span>
+  </div>
+  <div class="post-body">Both of these problems should now be fixed in Alpha 15, but be on the lookout for new problems caused by the fix.</div>
+</article>
+<article class="post" id="msg5371">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-11-30 07:38 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen.<br>
+<br>
+By the way, did you find a solution for this issue: <a href="http://www.opendcl.com/forum/index.php?topic=823.0" rel="nofollow noopener">{2}</a> ?<br>
+(resolution in block view)<br>
+<br>
+Copter</div>
+</article>
+<article class="post" id="msg5373">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-30 08:24 UTC</span>
+  </div>
+  <div class="post-body">No, I haven't.</div>
+</article>
+<article class="post" id="msg5408">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-12-01 09:11 UTC</span>
+  </div>
+  <div class="post-body">I tried Alpha 15.<br>
+I confirm the new problems: Now, all the controls inside a rectangle or a frame are no more displayed (List, textbox, combobox, block view ...)<br>
+ </div>
+</article>
+<article class="post" id="msg5421">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-01 22:19 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Copter<br>
+I tried your Test.LSP and Test.ODCL from the first post in WinXP SP3 AC2010<br>
+<br>
+Worked as expected with runtime 6.0.0.9 and 6.0.0.15.<br>
+<br>
+Regards<br>
+Kerry<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5429">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-02 10:36 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Copter,<br>
+Can you try this please.<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=1044.msg5428#msg5428" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg5434">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-12-02 14:47 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+<br>
+I am sorry, I forgot to say that the issue concerns (since alpha 15) all the controls INSIDE a tab control. <br>
+(See sample attached)<br>
+<br>
+Thanks<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1092/Test.odcl">Test.odcl</a> <span class="muted">(1339 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5500">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-12-04 09:05 UTC</span>
+  </div>
+  <div class="post-body">Hello Kerry and Owen<br>
+<br>
+Do you confirm the issue ?<br>
+<br>
+Copter. </div>
+</article>
+<article class="post" id="msg5530">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-07 06:27 UTC</span>
+  </div>
+  <div class="post-body">The files display as expected for me.</div>
+</article>
+<article class="post" id="msg5533">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-07 07:41 UTC</span>
+  </div>
+  <div class="post-body"><br>
+For me win xp<br>
+<br>
+with 6.0.0.15<br>
+and<br>
+6.0.0.9<br>
+<br>
+Picture attachments :<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1117/testCopter 60015.png">testCopter 60015.png</a> <span class="muted">(11348 bytes)</span></li><li><a href="../attachments/1118/testCopter 6009.png">testCopter 6009.png</a> <span class="muted">(20901 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5603">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-12-10 08:45 UTC</span>
+  </div>
+  <div class="post-body">Thanks Kerry to your help for demonstrate the issue.<br>
+It seems that the runtime alpha 9 is much more stable that later releases.<br>
+Unfortunately I haven't downloaded it (only alpha 6,10,14 and 15) <br>
+Do you know if it is possible to download alpha 9 somewhere ?<br>
+Thanks again </div>
+</article>
+<article class="post" id="msg5608">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-10 09:11 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=copter link=topic=1039.msg5603#msg5603 date=1260434748 wrote:</cite><br>
+Do you know if it is possible to download alpha 9 somewhere ?<br>
+</blockquote><br>
+<br>
+I've uploaded it for you <a href="http://www.opendcl.de/downloads/installs/OpenDCL.Runtime.6.0.0.9.msi" rel="nofollow noopener">{2}</a>.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5628">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-12-10 19:41 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred !</div>
+</article>
+<article class="post" id="msg5629">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-10 19:53 UTC</span>
+  </div>
+  <div class="post-body">copter.<br>
+Can you please have a look here <a href="http://www.opendcl.com/forum/index.php?topic=1062.0" rel="nofollow noopener">{2}</a><br>
+and post your info if applicable.<br>
+<br>
+I can understand completely going back to 6.0.0.9 for your users, BUT I would like to think that you as a tester/developer would still stay up to date with the current build. This will give us more eyes and hands to help advance the product. <br>
+<br>
+regards<br>
+Kerry</div>
+</article>
+<article class="post" id="msg5631">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-12-10 21:15 UTC</span>
+  </div>
+  <div class="post-body">Thanks for your advise but I made already a post on this topic. Maybe you did not seen it:<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=1062.msg5610#msg5610" rel="nofollow noopener">{2}</a><br>
+<br>
+Anyway, dont worry about my next contributions, I will continue to test the last alpha.<br>
+But I really need a stable version for the BRICSCAD users. (Even if all the APi are not yet implemented)<br>
+<br>
+Regards<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

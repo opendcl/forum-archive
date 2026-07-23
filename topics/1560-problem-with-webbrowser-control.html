@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with WebBrowser control · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1560</p>
+    <h1>Problem with WebBrowser control</h1>
+    <p class="meta">Started by honkinberry ·
+      2010-12-17 19:12 UTC ·
+      3 replies · SMF topic #1560</p>
+<article class="post" id="msg7622">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-12-17 19:12 UTC</span>
+  </div>
+  <div class="post-body">I'm having an issue with a WebBrowser control.<br>
+I'm trying to close the dialog if the user clicks on certain links.  Also through Javascript.<br>
+<br>
+In the attached example, everything works fine with the control in general.<br>
+But click the button, which sets a flag to close the form on the next browser navigation.<br>
+Then when clicking on any link, the form_close fires a Cx0000005 access violation.<br>
+<br>
+I tried setting the Cancel parameter to true, but that error is even more grievous.<br>
+<br>
+Thanks for any thoughts!<br>
+<br>
+--J<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1518/webbrowser.zip">webbrowser.zip</a> <span class="muted">(5240 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7624">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-12-18 04:07 UTC</span>
+  </div>
+  <div class="post-body">I've attached a version that returns Cancel set to True. That version doesn't crash on my computer.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1519/webbrowser.lsp">webbrowser.lsp</a> <span class="muted">(1004 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7627">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-12-20 00:54 UTC</span>
+  </div>
+  <div class="post-body">That makes perfect sense, and it seems to work.  Many thanks.<br>
+<br>
+So it would seem the moral of the story is that all ActiveX events should return a quoted list of the parameters?  Is it safe to return nil if no change is desired?<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg7628">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-12-20 01:24 UTC</span>
+  </div>
+  <div class="post-body">The return list should include only the parameters that are passed by reference, and it all depends on the control as to whether or not a NIL return is acceptable. I would guess that the vast majority of ActiveX events ignore any return value, but use the Control Browser to determine what, if anything, it expects.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

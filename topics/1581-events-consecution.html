@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Events consecution · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1581</p>
+    <h1>Events consecution</h1>
+    <p class="meta">Started by VovKa ·
+      2011-02-01 08:10 UTC ·
+      0 replies · SMF topic #1581</p>
+<article class="post" id="msg7737">
+  <div class="post-head">
+    <span class="post-author">VovKa</span>
+    <span class="post-date muted">2011-02-01 08:10 UTC</span>
+  </div>
+  <div class="post-body">this is the crosspost from theswamp:<br>
+<br>
+see and run the attached files<br>
+<br>
+1 click on "Label1"<br>
+2 click on "Parent1"<br>
+3 close the dialog<br>
+4 see the output<br>
+<br>
+<blockquote class="quote">Command: test<br>
+start   c:Test_Form1_OnInitialize<br>
+end     c:Test_Form1_OnInitialize<br>
+<br>
+<span style="color:red">start   c:test_Form1_Grid1_OnBeginLabelEdit<br>
+end     c:test_Form1_Grid1_OnBeginLabelEdit</span><br>
+<br>
+<span style="color:green">start   c:test_Form1_TreeControl1_OnSelChanged<br>
+end     c:test_Form1_TreeControl1_OnSelChanged</span><br>
+<br>
+<span style="color:red">start   c:test_Form1_Grid1_OnEndLabelEdit<br>
+end     c:test_Form1_Grid1_OnEndLabelEdit</span></blockquote><br>
+<br>
+as you see "c:test_Form1_TreeControl1_OnSelChanged" event fires before "c:test_Form1_Grid1_OnEndLabelEdit".<br>
+i think it is not right, it must wait until "c:test_Form1_Grid1_OnEndLabelEdit" finishes.<br>
+<br>
+OpenDCL.Studio.ENU.6.0.2.1<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1538/test.lsp">test.lsp</a> <span class="muted">(1355 bytes)</span></li><li><a href="../attachments/1539/Test.odcl">Test.odcl</a> <span class="muted">(841 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

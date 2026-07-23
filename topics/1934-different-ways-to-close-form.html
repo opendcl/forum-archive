@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Different ways to close form · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1934</p>
+    <h1>Different ways to close form</h1>
+    <p class="meta">Started by Jim ·
+      2012-12-25 02:18 UTC ·
+      0 replies · SMF topic #1934</p>
+<article class="post" id="msg9488">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2012-12-25 02:18 UTC</span>
+  </div>
+  <div class="post-body">12/24/2012<br>
+<br>
+Test.odcl<br>
+Test.lsp<br>
+<br>
+Check and uncheck events in odcl to see different arrangements.<br>
+See attachments. Please correct any oversights.<br>
+<br>
+A Modal form with no form level events closes with:<br>
+Enter=1<br>
+Escape=2<br>
+<br>
+As long as there are no buttons with focus, otherwise close will be suppressed.<br>
+<br>
+To run some more code during enter and escape use:<br>
+OnCancel and OnOK<br>
+No form closes needed.<br>
+<br>
+Returns:<br>
+Enter=1<br>
+Escape=2<br>
+<br>
+To keep form up when enter pressed:<br>
+Use OnCancelClose and return true to suppress enter.<br>
+<br>
+Enter is suppressed and escape returns 1, because OnCancelClose function has a reason parameter with 0 being enter and 1 being escape.<br>
+<br>
+Enter suppressed<br>
+Returns:<br>
+Escape=1<br>
+<br>
+Once OnCancelClose event has been selected, OnOK and OnCancel no longer have any affect.<br>
+<br>
+Any coding then needs to go in the OnCancelClose event.<br>
+<br>
+Like this:<br>
+<br>
+(defun c:Test_One_OnCancelClose (Reason /)<br>
+	(cond<br>
+		(;;enter<br>
+			(= Reason 0)<br>
+			t<br>
+		)<br>
+		(;;cancel<br>
+			(= reason 1)<br>
+			(dcl_Form_Close Test_One 2)<br>
+		)<br>
+	)<br>
+)<br>
+<br>
+Returns:<br>
+Escape=2<br>
+<br>
+Escape can be any thing you choose so stay with 2 to be consistent.<br>
+<br>
+Since OK is like enter would be, if it were not suppressed, and Cancel and ESC are the same thing, set Set button OK to close form with 1 and button Cancel to close with 2 to keep everything consistent.<br>
+<br>
+(setq formReturn (dcl_Form_Show formName)) &lt;&lt;&lt; corrected 10/27/2013 was:Open is:Show js<br>
+<br>
+(cond<br>
+	(;; OK<br>
+		(= formReturn 1)<br>
+		returnVal1<br>
+	)<br>
+	(;;Cancel X ESC<br>
+		(= formReturn 2)<br>
+		returnVal2<br>
+	)<br>
+)<br>
+<br>
+This helped me understand what is going on. I hope it helps you.<br>
+Merry Christmas,<br>
+Jim<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1840/Test.lsp">Test.lsp</a> <span class="muted">(937 bytes)</span></li><li><a href="../attachments/1841/Test.odcl">Test.odcl</a> <span class="muted">(746 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

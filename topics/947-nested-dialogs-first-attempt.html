@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nested Dialogs ( first attempt ) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 947</p>
+    <h1>Nested Dialogs ( first attempt )</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2009-09-30 05:38 UTC ·
+      15 replies · SMF topic #947</p>
+<article class="post" id="msg4758">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-09-30 05:38 UTC</span>
+  </div>
+  <div class="post-body">I'm attempting to create a routine with the following functionality :<br>
+Main Dialog displays a Child Dialog<br>
+.. Main is closed so only the Child Dialog is displayed.<br>
+<br>
+Child Dialog 'hides to allow interaction with AutoCAD.<br>
+Child Dialog redisplays when interaction is completed.<br>
+<br>
+///---<br>
+<br>
+This works fine for the first 'hide' of the Child.<br>
+AutoCAD freezes on the second 'hide'.<br>
+<br>
+The attached piccy is the freeze point ( running a debug animation )<br>
+<br>
+I'm hoping the problem is something simple I'm not doing, or doing incorrectly.<br>
+<br>
+Attached is the LSP and ODCL code.<br>
+<br>
+I'd appreciate a second or third set of eyes ...<br>
+<br>
+T12 is the Command for the nested attempt.<br>
+T12Single for the single dialog.<br>
+<br>
+Regards<br>
+Kerry<br>
+<br>
+<br>
+<br>
+;|<br>
+Test routine for hiding modal form.<br>
+<br>
+|;<br>
+(vl-load-com)<br>
+(command "OPENDCL")<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;|<br>
+Main Dialog displays a Child Dialog<br>
+.. Main is closed so only a single dialog is displayed.<br>
+<br>
+Child Dialog 'hides to allow interaction with AutoCAD.<br>
+Child Dialog redisplays when interaction is completed.<br>
+<br>
+|;<br>
+<br>
+(defun c:t12 (/<br>
+              mainflag<br>
+              bflag<br>
+              ;;<br>
+              c:t12_main_selectstuff_onclicked<br>
+              c:t12_main_opennew_onclicked<br>
+              c:t12_child_selectstuff_onclicked<br>
+             )<br>
+  ;;---------------------------------------------<br>
+  (defun c:t12_main_selectstuff_onclicked (/)<br>
+    (setq mainflag t)<br>
+    (dcl_form_close t12_main)<br>
+    (_dostuff)<br>
+  )<br>
+  ;;---------------------------------------------<br>
+  (defun c:t12_main_opennew_onclicked (/ positionlist main-x main-y)<br>
+    (if (dcl_form_isactive t12_main)<br>
+      (progn (setq positionlist (dcl_control_getpos t12_main)<br>
+                   main-x       (car positionlist)<br>
+                   main-y       (cadr positionlist)<br>
+             )<br>
+             (dcl_form_close t12_main)<br>
+      )<br>
+    )<br>
+    (setq bflag t)<br>
+    (while bflag<br>
+      (setq bflag nil)<br>
+      (dcl_form_show t12_child main-x main-y)<br>
+      ;; <br>
+    )<br>
+  )<br>
+  ;;--------------------------------------------- <br>
+  (defun c:t12_child_selectstuff_onclicked (/)<br>
+    (setq bflag t)<br>
+    (dcl_form_close t12_child)<br>
+    (_dostuff)<br>
+  )<br>
+  ;;---------------------------------------------<br>
+  ;;---------------------------------------------  <br>
+  (or (dcl_project_load "T12" t) (exit))<br>
+  (setq mainflag t)<br>
+  (while mainflag<br>
+    (setq mainflag nil)<br>
+    (dcl_form_show t12_main)<br>
+    ;; <br>
+  )<br>
+  (princ)<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;; Library Code common<br>
+;;<br>
+(defun _dostuff (/ pt blip)<br>
+  (setq blip (getvar "BLIPMODE"))<br>
+  (setvar "BLIPMODE" 1)<br>
+  ;;<br>
+  (while (setq pt (getpoint "\n Select a Point"))<br>
+    (prompt (strcat "\n " (vl-prin1-to-string pt)))<br>
+  )<br>
+  ;;<br>
+  (setvar "BLIPMODE" blip)<br>
+  (redraw)<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;|<br>
+Single dialog which 'hides' to allow selection.<br>
+Single dialog redisplays when interaction is completed.<br>
+|;<br>
+<br>
+(defun c:t12single (/<br>
+                    bflag<br>
+                    ;;<br>
+                    c:t12_child_selectstuff_onclicked<br>
+                   )<br>
+  (defun c:t12_child_selectstuff_onclicked (/)<br>
+    (setq bflag t)<br>
+    (dcl_form_close t12_child)<br>
+    (_dostuff)<br>
+  )<br>
+  ;;---------------------------------------------  <br>
+  ;;---------------------------------------------<br>
+  (or (dcl_project_load "T12" t) (exit))<br>
+  (setq bflag t)<br>
+  (while bflag<br>
+    (setq bflag nil)<br>
+    (dcl_form_show t12_child)<br>
+    ;; <br>
+  )<br>
+  ;;---------------------------------------------  <br>
+  (princ)<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(prompt "\n T12Single, T12 to run.")<br>
+(princ)<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/927/T12.odcl">T12.odcl</a> <span class="muted">(849 bytes)</span></li><li><a href="../attachments/928/T12.lsp">T12.lsp</a> <span class="muted">(3407 bytes)</span></li><li><a href="../attachments/929/FreezePoint 2009-09-30 15-24-28.png">FreezePoint 2009-09-30 15-24-28.png</a> <span class="muted">(14810 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4759">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-09-30 06:32 UTC</span>
+  </div>
+  <div class="post-body">Hi, Kerry, I'm glad that I can help you  ;)<br>
+<br>
+The answer is easy understandable: <strong>Don't leave the car before stopping it! That could harm your health!</strong>  ;)<br>
+<br>
+By calling getpoint from an event which was released by a form which is still active (although you've called dcl_form_close in the same event) you force AutoCAD to take control although you haven't give the control back to AutoCAD yet. Everything's clear? <br>
+<br>
+Ok, then this way. Form1 &gt; Pick button for subform &gt; calls event 1 &gt; in this event the form is closed and in the same event function the next form will be shown, even in a while loop in you example &gt; pick point selection button in the subform &gt; calls event 2 &gt; close the form. Now: there are still 2 events in the batch which haven't finished yet.<br>
+<br>
+The solution is to give AutoCAD control far outside the events. For modal forms it means, you must leave the line dcl_form_show at first to give AutoCAD the chance to take control again and then you can AutoCAD ask for input points and objects.<br>
+<br>
+I've moved your code lines around a bit. Here's the solution:<br>
+<br>
+<br>
+(vl-load-com)<br>
+(command "OPENDCL")<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;|<br>
+Main Dialog displays a Child Dialog<br>
+.. Main is closed so only a single dialog is displayed.<br>
+<br>
+Child Dialog 'hides to allow interaction with AutoCAD.<br>
+Child Dialog redisplays when interaction is completed.<br>
+<br>
+|;<br>
+<br>
+(defun c:t12 (/ lstFormPos intForm<br>
+              c:t12_main_selectstuff_onclicked<br>
+              c:t12_main_opennew_onclicked<br>
+             )<br>
+  (defun c:t12_main_selectstuff_onclicked (/)<br>
+    (dcl_form_close t12_main 3)<br>
+  ); c:t12_main_selectstuff_onclicked<br>
+<br>
+  (defun c:t12_main_opennew_onclicked (/)<br>
+    (setq lstFormPos (dcl_control_getpos t12_main))<br>
+    (dcl_form_close t12_main 4)<br>
+  ); c:t12_main_opennew_onclicked<br>
+<br>
+  (load_project)<br>
+  (while (/= (setq intForm<br>
+                    (if lstFormPos<br>
+                      (dcl_form_show t12_main (car lstFormPos) (cadr lstFormPos))<br>
+                      (dcl_form_show t12_main)<br>
+                    ); if<br>
+                   ) 2) ;; 2 is for escaping the form!<br>
+    (cond<br>
+      ((= intForm 3) (_dostuff))<br>
+      ((= intForm 4) (call_child))<br>
+    ); cond<br>
+  ); while<br>
+  (princ)<br>
+); t12<br>
+<br>
+;; Call subform alone<br>
+<br>
+(defun c:t12single ()<br>
+  (call_child)<br>
+  (princ)<br>
+); c:t12single<br>
+<br>
+<br>
+;; =================== <br>
+;; Library Code common <br>
+;; =================== <br>
+<br>
+(defun load_project ()<br>
+  (or (member "T12" (dcl_getprojects)) (dcl_project_load "T12") (exit))<br>
+); load_project<br>
+<br>
+(defun _dostuff (/ pt blip)<br>
+  (setq blip (getvar "BLIPMODE"))<br>
+  (setvar "BLIPMODE" 1)<br>
+<br>
+  (while (setq pt (getpoint "\n Select a Point"))<br>
+    (prompt (strcat "\n " (vl-prin1-to-string pt)))<br>
+  ); while<br>
+<br>
+  (setvar "BLIPMODE" blip)<br>
+  (redraw)<br>
+); _dostuff<br>
+<br>
+(defun call_child (/ intForm c:t12_child_selectstuff_onclicked)<br>
+<br>
+  (defun c:t12_child_selectstuff_onclicked (/)<br>
+    (dcl_form_close t12_child 3)<br>
+  ); c:t12_child_selectstuff_onclicked<br>
+<br>
+  (load_project)<br>
+  (while (/= (setq intForm (dcl_form_show t12_child)) 2)<br>
+    (cond<br>
+      ((= intForm 3) (_dostuff))<br>
+    ); cond<br>
+  ); while<br>
+  <br>
+); call_child<br>
+<br>
+(prompt "\n T12Single, T12 to run.")<br>
+(princ)<br>
+<br>
+<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/930/T12.lsp">T12.lsp</a> <span class="muted">(2150 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4760">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-09-30 06:43 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred !!<br>
+<br>
+I'm running out the door to catch my train .. I'll have a look tomorrow.<br>
+<br>
+<br>
+Your blood is worth bottling :)<br>
+<br>
+Regards<br>
+Kerry<br>
+<br>
+ps<br>
+second thoughts<br>
+Ill print it and read on the train :)<br>
+</div>
+</article>
+<article class="post" id="msg4762">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-09-30 17:17 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=947.msg4760#msg4760 date=1254292995 wrote:</cite><br>
+Your blood is worth bottling :)<br>
+</blockquote><br>
+<br>
+What... ??? He gives you a great solution &amp; you want to kill him (that's not very nice) :)</div>
+</article>
+<article class="post" id="msg4763">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-09-30 22:10 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Yes, it is a great solution. <br>
+and no, I wouldn't harm him :)<br>
+</div>
+</article>
+<article class="post" id="msg4764">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-09-30 23:35 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Thanks Fred, The concept works great.<br>
+<br>
+I've set some enumerators for the DialogStatus <br>
+passed to  dcl_Form_Show<br>
+and returned from dcl_Form_Close<br>
+<br>
+This is my revised code :-<br>
+Regards,<br>
+Kerry<br>
+<br>
+<br>
+(vl-load-com)<br>
+(command "OPENDCL")<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;|<br>
+Main Dialog displays a Child Dialog<br>
+.. Main is closed so only a single dialog is displayed.<br>
+<br>
+Child Dialog 'hides to allow interaction with AutoCAD.<br>
+Child Dialog redisplays when interaction is completed.<br>
+<br>
+|;<br>
+<br>
+(defun c:T12 (/<br>
+              MainFormPosition<br>
+              DialogStatus<br>
+              c:T12_Main_SelectStuff_onclicked<br>
+              c:T12_Main_OpenNew_onclicked<br>
+             )<br>
+  ;;---------------------------------------------<br>
+  ;; establish GLOBAL VARIABLES for DialogStatus<br>
+  (_set_DialogStatusEnumerators)<br>
+  ;;---------------------------------------------<br>
+  (defun c:T12_Main_SelectStuff_onclicked (/)<br>
+    (dcl_form_close T12_Main e_SelectStuff)<br>
+  )<br>
+  ;;---------------------------------------------<br>
+  (defun c:T12_Main_OpenNew_onclicked (/)<br>
+    (setq MainFormPosition (dcl_control_getpos T12_Main))<br>
+    (dcl_form_close T12_Main e_Display_Child)<br>
+  )<br>
+  ;;---------------------------------------------<br>
+  (_Load_Project "T12")<br>
+  ;;---------------------------------------------<br>
+  (while (/= (setq DialogStatus (if MainFormPosition<br>
+                                  (dcl_form_show T12_Main<br>
+                                                 (car MainFormPosition)<br>
+                                                 (cadr MainFormPosition)<br>
+                                  )<br>
+                                  (dcl_form_show T12_Main)<br>
+                                )<br>
+             )<br>
+             e_Form_Cancelled<br>
+         )<br>
+    (cond ((= DialogStatus e_SelectStuff) (_doStuff))<br>
+          ((= DialogStatus e_Display_Child) (_Call_Child))<br>
+    )<br>
+  )<br>
+  (princ)<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;; Call subform alone<br>
+<br>
+(defun c:T12Single (/)<br>
+  ;;---------------------------------------------<br>
+  ;; establish GLOBAL VARIABLES for DialogStatus<br>
+  (_set_DialogStatusEnumerators)<br>
+  ;;---------------------------------------------<br>
+  (_Call_Child)<br>
+  (princ)<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;; =================== <br>
+;; Library Code common <br>
+;; =================== <br>
+<br>
+(defun _Load_Project (ProjectName)<br>
+  (or (member ProjectName (dcl_getprojects))<br>
+      (dcl_project_load ProjectName)<br>
+      (exit)<br>
+  )<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;; establish GLOBAL VARIABLES for DialogStatus<br>
+;|<br>
+  The Forms are Modal, so the dcl_Form_Show does not return until the dialog is closed,<br>
+  and it returns a long value that indicates the dialog status.<br>
+  If a dialog is cancelled (e.g. by pressing ), the return value is 2;<br>
+  if it is closed by pressing , the return value is 1.<br>
+  <br>
+  Other values may be returned by calling dcl_Form_Close from an event handler<br>
+  and specifying a custom dialog status.<br>
+  If the optional DialogStatus argument for dcl_Form_Close is provided when closing a modal dialog,<br>
+  it will become the return value for the call to dclForm_Show that displayed the modal dialog.<br>
+  <br>
+  |;<br>
+(defun _set_DialogStatusEnumerators ()<br>
+  (setq e_EnterPressed 1<br>
+        e_Form_Cancelled 2<br>
+        e_SelectStuff 123<br>
+        e_Display_Child 124<br>
+  )<br>
+)<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun _doStuff (/ pt blip)<br>
+  (setq blip (getvar "BLIPMODE"))<br>
+  (setvar "BLIPMODE" 1)<br>
+  (while (setq pt (getpoint "\n Select a Point"))<br>
+    (prompt (strcat "\n " (vl-prin1-to-string pt)))<br>
+  )<br>
+  (setvar "BLIPMODE" blip)<br>
+  (redraw)<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun _Call_Child (/ DialogStatus c:t12_child_SelectStuff_onclicked)<br>
+  (defun c:t12_child_SelectStuff_onclicked (/)<br>
+    (dcl_form_close t12_child e_SelectStuff)<br>
+  )<br>
+  ;;---------------------------------------------<br>
+  (_Load_Project "T12")<br>
+  (while (/= (setq DialogStatus (dcl_form_show T12_Child))<br>
+             e_Form_Cancelled<br>
+         )<br>
+    (cond ((= DialogStatus e_SelectStuff) (_doStuff)))<br>
+  )<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+<br>
+(prompt "\n T12Single, T12 to run.")<br>
+(princ)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;</div>
+</article>
+<article class="post" id="msg4791">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-02 19:28 UTC</span>
+  </div>
+  <div class="post-body">This is some pretty cool code guys...</div>
+</article>
+<article class="post" id="msg4797">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-10-02 21:48 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Fred,<br>
+           { or in fact anyone }<br>
+<br>
+Have you sucesfully used <br>
+A main Form<br>
+A Child Form { or several Child Forms }<br>
+<br>
+Where :<br>
+The Main stays Displayed when the Child is Active. <br>
+<br>
+From Main :<br>
+    For Interaction with AutoCAD :- Closes Main , and redisplays on return.<br>
+<br>
+From Child :<br>
+    For Interaction with AutoCAD :- Closes Main , Closes Child ... and redisplays both on return.<br>
+<br>
+<br>
+Regards<br>
+Kerry</div>
+</article>
+<article class="post" id="msg4798">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-02 22:02 UTC</span>
+  </div>
+  <div class="post-body">Hi, Kerry, it depends on what can be done in the child form. As long the child form never needs interaction from AutoCAD prompt (points, objects ...) I'll keep the main form active behind the child form. In all the cases where (1.) the user may pick points or objects from the drawing or (2.) AutoCAD dialogs are going to be shown which do need full control to AutoCAD (like text style manager from AutoCAD or classic layer properties manager), I close the main form before showing the child form. I often thought about such a case: closing both and reopen both. But it ever seemed to me too complicated to solve. Especially, I see no way to open the child (modal) form in the same context the main (modal) form is being shown. I mean if you send the line (dcl_form_show mainform) you cannot add another line for (dcl_form_show childform) afterwards anymore. And I don't believe (I mean: haven't try it yet) that I can call (dcl_form_show childform) from the OnInitialize-event of the main form (it would work if the child form is a modeless form).<br>
+<br>
+I hope that I explained it understandable enough with my poor English.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4799">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-10-02 22:30 UTC</span>
+  </div>
+  <div class="post-body">Fred,<br>
+Your English is perfectly understandable, thanks.<br>
+<br>
+<br>
+I do need the Main visible when the Child is active .. so the user can see some of the Main settings.<br>
+<br>
+The Child will call a draw process in AutoCAD.<br>
+<br>
+Then I'd like Both the Main and a Child to redisplay.<br>
+<br>
+<br>
+As you say, it is a complicated case.<br>
+<br>
+I had thought to use Tabs for the Children (about 9) but the Child size and layout requirements are too different.<br>
+ ... I may need to revisit this option.<br>
+<br>
+added:<br>
+or perhaps consider using nodeless forms for this application.<br>
+<br>
+Regards<br>
+Kerry<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4801">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-02 23:39 UTC</span>
+  </div>
+  <div class="post-body">Hi Kerry,<br>
+<br>
+yes both of your thoughts (tabs and modeless) could be usable alternativs. I do use them, too. <br>
+<br>
+A) Tabs: We have one form with many global settings for the drawing. In a few settings the form has to be closed for picking points. Using tabs is very comfortable (as well as for user <strong>and </strong> developer  ;) ) in this case.<br>
+<br>
+B) Modeless: Meanwhile I created some wizards where the user can either pick points in the drawing to change settings for distance or he can change the value in a form. Because it's not very comfortable for the user to press a button at first to close the form to pick at the screen for each setting, I decided to keep a modeless form open so the user can decide whether to select on screen or change in the form.<br>
+<br>
+I think that the way to solve this depends on the amount of hiding and reshowing the form. The more the form has to be closed for objects, points or settings, the more a modeless form may be better.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/946/modeless.gif">modeless.gif</a> <span class="muted">(755361 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4806">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-03 02:40 UTC</span>
+  </div>
+  <div class="post-body">As a general rule, if you're faced with this kind of dilemma, your UI is too complicated and needs to be designed differently. Going modeless might be one simple solution.<br>
+<br>
+You could probably solve the "reshow both dialogs" problem that Fred describes by utilizing the (dcl_DelayInvoke) function to "delay-invoke" a function that shows the child, then immediately call (dcl_Form_Show) to show the parent. However, the very fact that you need to do this leads me to suspect that the best solution is a redesign.</div>
+</article>
+<article class="post" id="msg4807">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-03 02:45 UTC</span>
+  </div>
+  <div class="post-body">Amazing... :o</div>
+</article>
+<article class="post" id="msg10839">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-08-29 21:32 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=947.msg4801#msg4801 date=1254526758 wrote:</cite><br>
+Hi Kerry,<br>
+<br>
+yes both of your thoughts (tabs and modeless) could be usable alternativs. I do use them, too. <br>
+<br>
+A) Tabs: We have one form with many global settings for the drawing. In a few settings the form has to be closed for picking points. Using tabs is very comfortable (as well as for user <strong>and </strong> developer  ;) ) in this case.<br>
+<br>
+B) Modeless: Meanwhile I created some wizards where the user can either pick points in the drawing to change settings for distance or he can change the value in a form. Because it's not very comfortable for the user to press a button at first to close the form to pick at the screen for each setting, I decided to keep a modeless form open so the user can decide whether to select on screen or change in the form.<br>
+<br>
+I think that the way to solve this depends on the amount of hiding and reshowing the form. The more the form has to be closed for objects, points or settings, the more a modeless form may be better.<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+Hello Fred,  <br>
+You worked with grread or grdraw with this function?<br>
+<br>
+Greetings Velasquez<br>
+</div>
+</article>
+<article class="post" id="msg10846">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-08-30 17:51 UTC</span>
+  </div>
+  <div class="post-body">Hi, velasquez, yes, with grread and grdraw.<br>
+Fred</div>
+</article>
+<article class="post" id="msg10848">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-08-30 21:08 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=947.msg10846#msg10846 date=1409421117 wrote:</cite><br>
+Hi, velasquez, yes, with grread and grdraw.<br>
+Fred<br>
+</blockquote><br>
+<br>
+good Fred, <br>
+You can access the form when these functions are working. <br>
+I always wanted to do this. <br>
+<br>
+great</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

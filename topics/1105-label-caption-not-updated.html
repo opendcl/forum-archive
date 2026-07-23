@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Label CAPTION not updated · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1105</p>
+    <h1>Label CAPTION not updated</h1>
+    <p class="meta">Started by kruuger ·
+      2009-12-30 21:03 UTC ·
+      3 replies · SMF topic #1105</p>
+<article class="post" id="msg5854">
+  <div class="post-head">
+    <span class="post-author">kruuger</span>
+    <span class="post-date muted">2009-12-30 21:03 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I have a problem with label caption update. I created simple test file. Please see attached (on my both computers label want update).<br>
+<br>
+I found this post <a href="http://www.opendcl.com/forum/index.php?topic=1044.0" rel="nofollow noopener">{2}</a>. Try the test and everything works fine.<br>
+But when i try to create my own form with label and update them with <strong>dcl_Control_GetCaption</strong> then nothing.<br>
+<br>
+I'm working on 5.1.2.3 version.<br>
+BTW, is it possible to change caption of FRAME object with <strong>dcl_Control_GetCaption</strong> ?<br>
+Any idea what can be wrong ?<br>
+<br>
+Thanks<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1197/TEST.odcl">TEST.odcl</a> <span class="muted">(762 bytes)</span></li><li><a href="../attachments/1198/TEST.LSP">TEST.LSP</a> <span class="muted">(577 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5856">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-30 21:17 UTC</span>
+  </div>
+  <div class="post-body">Try dcl_Control_SetCaption to change the caption. Let us know if that doesn't work.</div>
+</article>
+<article class="post" id="msg5857">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-30 21:29 UTC</span>
+  </div>
+  <div class="post-body"><br>
+also ;<br>
+check your Event function names in the ODCL against the Names in the LSP file.<br>
+They seem to be different.<br>
+<br>
+//-----------<br>
+<br>
+To help with your file management, I'd suggest naming your ODCL and LSP files something other than TEST.xxxx ; <br>
+<br>
+//-----------<br>
+<br>
+Rather than use the OpenDclUtils.lsp file , I'd suggest you use this sort of structure<br>
+<br>
+<br>
+(defun c:kruger01 (/)<br>
+  <br>
+  (vl-load-com)<br>
+  (command "._OPENDCL")<br>
+  <br>
+  (dcl_project_load "kruger01.odcl" t)<br>
+    <br>
+  (dcl_form_show kruger01_Form)<br>
+  <br>
+  (princ)<br>
+)<br>
+  <br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5858">
+  <div class="post-head">
+    <span class="post-author">kruuger</span>
+    <span class="post-date muted">2009-12-30 21:36 UTC</span>
+  </div>
+  <div class="post-body">OMG of course it should by SetCaption :)<br>
+<br>
+I'm blind and stupid. :-[<br>
+<br>
+Thanks for quick answers and tips<br>
+Happy New Year</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

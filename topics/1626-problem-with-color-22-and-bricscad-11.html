@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with color -22 and Bricscad 11 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1626</p>
+    <h1>Problem with color -22 and Bricscad 11</h1>
+    <p class="meta">Started by roy_043 ·
+      2011-05-18 09:45 UTC ·
+      3 replies · SMF topic #1626</p>
+<article class="post" id="msg8001">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-05-18 09:45 UTC</span>
+  </div>
+  <div class="post-body">Bricscad 11.2.13<br>
+Windows XP<br>
+OpenDCL 6.0.2.3<br>
+<code><br>
+model space background color &gt; control background color (set to -22)<br>
+                         256 &gt; black                (OK)<br>
+                         252 &gt; darker grey          (CC = Complementary Color)<br>
+                         253 &gt; much darker grey     (CC)<br>
+                           1 &gt; cyan                 (CC)<br>
+                           2 &gt; blue                 (CC)<br>
+                           3 &gt; magenta              (CC)<br>
+                           4 &gt; red                  (CC)<br>
+                           5 &gt; yellow               (CC)<br>
+                           6 &gt; green                (CC)<br>
+                           7 &gt; black                (CC)<br>
+                           8 &gt; lighter grey         (not CC)<br>
+                           9 &gt; much darker grey     (CC)<br>
+                          10 &gt; cyan                 (CC)<br>
+                          11 &gt; dark green           (CC)<br>
+</code><br>
+Workaround:<br>
+<code>(dcl_Control_SetBackColor project_form_control (getvar 'bkgcolor))</code></div>
+</article>
+<article class="post" id="msg8009">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-05-20 16:52 UTC</span>
+  </div>
+  <div class="post-body">I have reported the bug to Bricsys.</div>
+</article>
+<article class="post" id="msg8016">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-05-25 07:32 UTC</span>
+  </div>
+  <div class="post-body">Thank you.</div>
+</article>
+<article class="post" id="msg8333">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-09-20 14:19 UTC</span>
+  </div>
+  <div class="post-body">BC 11.4.6<br>
+ODCL 6.0.2.5<br>
+Win XP<br>
+<br>
+The Bricscad team has obviously been working on this problem. The current situation is that all the colors in the list display OK. But color 256, which used to display OK, now displays as white.<br>
+<br>
+New workaround:<br>
+(dcl_Control_SetBackColor project_form_control (if (= (getvar 'bkgcolor) 256) 0 -22))<br>
+<br>
+I'll file a Bricscad support request.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

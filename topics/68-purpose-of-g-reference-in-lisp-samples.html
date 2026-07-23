@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Purpose of &quot;G:&quot; reference in LISP samples? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/21-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 68</p>
+    <h1>Purpose of &quot;G:&quot; reference in LISP samples?</h1>
+    <p class="meta">Started by nwgeo ·
+      2007-10-15 23:44 UTC ·
+      5 replies · SMF topic #68</p>
+<article class="post" id="msg286">
+  <div class="post-head">
+    <span class="post-author">nwgeo</span>
+    <span class="post-date muted">2007-10-15 23:44 UTC</span>
+  </div>
+  <div class="post-body">I have been coding in LISP for many years, but have stepped away from the dialog bog environment back in version 2000.  Inserting menus and dealing with the new pbjects just proved to be too cumbersome to manage.  I am, however, pleasantly surprised at the features of this Open Source tool.  So, I'm highly motivated to get back into the  game.  My newbie problem:<br>
+<br>
+I am trying to re-understand the interactions of events and how they relate to dialog boxes in general.  To that end I have been poking around in the "Examples" folder and found the following on lines 46 &amp; 47:<br>
+<br>
+    (IF g:bs_filelist<br>
+      (PROGN (SETQ g:bs_filelist (VL-SORT g:bs_filelist '&lt;))<br>
+<br>
+I feel pretty dumb asking this, but what does the "G:" refer to?  I know about the keyboard command syntax [e.g. "C:" for keyboard commands], it's just that I haven't come across this parrticular nomenclature before.  Does this refer to a global command or variable?<br>
+<br>
+Thank you, in advance, for the simple answer to this :)<br>
+directorypowerful</div>
+</article>
+<article class="post" id="msg288">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2007-10-16 03:08 UTC</span>
+  </div>
+  <div class="post-body">I didn't code that example so I'm not 100% sure, but I think it's just means it's a Global varable.<br>
+It's nothing special like the C: keywork.<br>
+Maybe Kerry will let us know. :)</div>
+</article>
+<article class="post" id="msg290">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2007-10-16 06:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=nwgeo link=topic=68.msg286#msg286 date=1192491843 wrote:</cite><br>
+    (IF g:bs_filelist<br>
+      (PROGN (SETQ g:bs_filelist (VL-SORT g:bs_filelist '&lt;))<br>
+<br>
+I feel pretty dumb asking this, but what does the "G:" refer to? <br>
+</blockquote><br>
+<br>
+i think it is just how the variable is named. "g:" is used here probably as an indication that this is a global variable and will remain accessible after the command is finished. i've been following a similar naming convention and used glb::SomeName for global variables. </div>
+</article>
+<article class="post" id="msg291">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-10-16 10:06 UTC</span>
+  </div>
+  <div class="post-body"><br>
+I personally use<br>
+<span style="color:blue"><em>g:</em></span><br>
+and<br>
+<span style="color:blue"><em>gvar</em>:</span><br>
+<br>
+as prefixes for global variables ... <br>
+<br>
+You can use any colon prefix <u>except</u> c:  and  S: as far as I remember.</div>
+</article>
+<article class="post" id="msg296">
+  <div class="post-head">
+    <span class="post-author">nwgeo</span>
+    <span class="post-date muted">2007-10-16 16:48 UTC</span>
+  </div>
+  <div class="post-body">Thanks Kerry,<br>
+<br>
+I had always reserved the ":" as a keyboard command directive.  Nice to know that a variable can have some scope outside of a routine.  Although isn't that always the case if you don't put the variable behind the local variable directive? "/"   Just curious.  I guess it's a good visual cue to have "gvar:" or "G:" in your code, just to remind you that something has scope....</div>
+</article>
+<article class="post" id="msg301">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-10-16 22:05 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=nwgeo link=topic=68.msg296#msg296 date=1192553287 wrote:</cite><br>
+......  Although isn't that always the case if you don't put the variable behind the local variable directive? "/"   Just curious.  </blockquote><br>
+<br>
+Yes, that's the case.<br>
+<br>
+<blockquote class="quote"><cite> author=nwgeo link=topic=68.msg296#msg296 date=1192553287 wrote:</cite><br>
+......I guess it's a good visual cue to have "gvar:" or "G:" in your code, just to remind you that something has scope....<br>
+</blockquote><br>
+<br>
+Yep.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

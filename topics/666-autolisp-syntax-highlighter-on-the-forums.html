@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AutoLISP Syntax Highlighter on the forums · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/7-site-management.html">Site Management</a> /
+      Topic 666</p>
+    <h1>AutoLISP Syntax Highlighter on the forums</h1>
+    <p class="meta">Started by bazzacad ·
+      2009-03-18 23:44 UTC ·
+      6 replies · SMF topic #666</p>
+<article class="post" id="msg3240">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-03-18 23:44 UTC</span>
+  </div>
+  <div class="post-body">With some hard work from Owen (and myself), we now have a CODE tag that will automatically highlight your AutoLISP &amp; OpenDCL code.<br>
+Here's a small example.<br>
+<br>
+<br>
+;;This is a comment<br>
+(setq a 5)<br>
+(setq b (1+ a))<br>
+(setq c "this is a string")<br>
+(vl-load-com)<br>
+(OR (dcl_PROJECT_LOAD "Proj1" T) (EXIT))<br>
+(dcl_Form_Show Proj1_Form1)<br>
+<br>
+<br>
+Try not to paste super huge of code blocks. About 200 lines is the max. without bogging down the page load.<br>
+<br>
+All you have to do is hit the CODE button, now renames to "Insert AutoLISP code" (see image below), then paste your code in between the CODE tags.<br>
+If you still need the old generic code block without the Highlighting, just remove the <code>=autolisp</code> from the tag.<br>
+<br>
+You'll notice some of the special operators "+ 1+ * - 1- / = &lt; &gt; &lt;= &gt;=" etc.. &amp; ;| multi-line comments |; don't highlight.<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/645/LspSynHighlight.png">LspSynHighlight.png</a> <span class="muted">(21226 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3243">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-03-19 00:43 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Excellent Result Barry abd Owen.<br>
+<br>
+Did you get the MultiLine comment sorted ?? or is it too process intensive ?</div>
+</article>
+<article class="post" id="msg3245">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-19 00:59 UTC</span>
+  </div>
+  <div class="post-body">I had it in there, but it bogged things down too much, so I removed it again.</div>
+</article>
+<article class="post" id="msg8021">
+  <div class="post-head">
+    <span class="post-author">xshrimp</span>
+    <span class="post-date muted">2011-05-26 14:07 UTC</span>
+  </div>
+  <div class="post-body">bug?? ; <br>
+how to fix?<br>
+<br>
+<br>
+(setq a (strcat ";" a));add a ";" in front of the string if not already present  <br>
+(not (wcmatch a (strcat "*;" b ";*"))) ;is 'dir' already present in search path?   <br>
+</div>
+</article>
+<article class="post" id="msg8022">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-05-28 15:06 UTC</span>
+  </div>
+  <div class="post-body">It should be fixed now.</div>
+</article>
+<article class="post" id="msg8357">
+  <div class="post-head">
+    <span class="post-author">qjchen</span>
+    <span class="post-date muted">2011-10-06 13:38 UTC</span>
+  </div>
+  <div class="post-body">~~ Thank you, great.<br>
+Let me test<br>
+<br>
+;;; and lwpolyline<br>
+if (&gt; a b )<br>
+(defun objectpoint_text (obj);;;;test<br>
+  (if (= (cdr (assoc 0 obj)) "TEXT")<br>
+    (tbox-cab obj)<br>
+  )<br>
+)<br>
+ (setq textHeight (vlax-get (vlax-ename-&gt;vla-object x) 'Height))<br>
+<br>
+<br>
+<br>
+I am also learning how to use SyntaxHighlighter 3.0.83 in my pages<br>
+but I find that when I use this <br>
+this.regexList = [<br>
+				{ regex:  /;.*$/gm, 						css: 'comments'  },<br>
+then, in the highlight, all &lt; is convert into &lt;;   and &gt; into &gt;;    vlax-ename-&gt;vla-object x   into vlax-ename-&gt;;vla-object x<br>
+<br>
+but in your great site, there is no problem exist, great~</div>
+</article>
+<article class="post" id="msg8367">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-10-06 22:45 UTC</span>
+  </div>
+  <div class="post-body">It gets complicated because special characters will be represented as HTML codes (i.e. &lt;) in the raw HTML.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Function fails without (Alert &quot;we got here&quot;) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2860</p>
+    <h1>Function fails without (Alert &quot;we got here&quot;)</h1>
+    <p class="meta">Started by donnieworld ·
+      2023-05-17 07:45 UTC ·
+      1 replies · SMF topic #2860</p>
+<article class="post" id="msg13830">
+  <div class="post-head">
+    <span class="post-author">donnieworld</span>
+    <span class="post-date muted">2023-05-17 07:45 UTC</span>
+  </div>
+  <div class="post-body">I have a simple function that is failing in BricsCAD if I get rid of the (alert "we got here") line. If I leave this in, the function runs as expected? If I replace it with (princ) the function fails?<br>
+<br>
+Pick start point &gt; <br>
+;<br>
+; error : during LISP function [c:FastSegmentLabels/frmMain/bArc#OnClicked] invoke from BRX/SDS interface,<br>
+<br>
+(defun c:FastSegmentLabels/frmMain/bArc#OnClicked<br>
+	( / pStart pCenter pEnd lStyles sText oTArc)<br>
+<br>
+  (princ (strcat<br>
+		"\nFSL-I: Arcs are defined by the start point, center point, and"<br>
+		"\nend point. Arcs are drawn counter clock-wise."<br>
+	))<br>
+	<br>
+	(alert "we got here")<br>
+	<br>
+	(while<br>
+		(setq pStart (getpoint "\nPick start point &gt; "))<br>
+		(setq pCenter (getpoint pStart "\nPick center point &gt; "))<br>
+		(setq pEnd (getpoint pCenter "\nPick end point &gt; "))<br>
+		(setq lStyles (FSL:SetStyles))<br>
+		(setq oTArc (vla-addarc mspace pCenter (distance pStart pCenter) (angle pCenter pStart) (angle pCenter pEnd)))<br>
+		(setq sText (FSL:AddSegmentLabel (vlax-vla-object-&gt;ename oTArc) (nth 0 lStyles) (nth 1 lStyles)))<br>
+		(vla-delete oTArc)<br>
+	)<br>
+<br>
+)<br>
+<br>
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Please help!</div>
+</article>
+<article class="post" id="msg13836">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2023-05-31 04:25 UTC</span>
+  </div>
+  <div class="post-body">Hello, is it a modal form or a modeless form?<br>
+You cannot get access to AutoCAD within an event from a modal form.<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

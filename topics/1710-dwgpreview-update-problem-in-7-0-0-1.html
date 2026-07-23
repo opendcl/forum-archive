@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DwgPreview update problem in 7.0.0.1 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1710</p>
+    <h1>DwgPreview update problem in 7.0.0.1</h1>
+    <p class="meta">Started by roy_043 ·
+      2011-10-23 19:45 UTC ·
+      5 replies · SMF topic #1710</p>
+<article class="post" id="msg8429">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-10-23 19:45 UTC</span>
+  </div>
+  <div class="post-body">Bricscad 12.1.2<br>
+OpenDCL  7.0.0.1<br>
+Win XP<br>
+<br>
+A small problem with DwgPreview:<br>
+To load a new dwg in a preview you have to first make it invisible.<br>
+See attached files.<br>
+<br>
+Put all files in a single folder.<br>
+Open one of the drawings.<br>
+Load the lisp.<br>
+Enter BKG_BLOCKBROWSER to run.<br>
+Hit Reload button.<br>
+Result: only BkgBlockBrowser_Main_DwgPreview1 has been updated.<br>
+<br>
+<br>
+(defun c:BkgBlockBrowser_Main_btnReload_OnClicked ()<br>
+  ; (dcl_Control_SetVisible BkgBlockBrowser_Main_DwgPreview0 nil) ; required for ODCL 7.0.0.1<br>
+  (dcl_DWGPreview_LoadDwg BkgBlockBrowser_Main_DwgPreview0 "A002.dwg")<br>
+  (dcl_Control_SetVisible BkgBlockBrowser_Main_DwgPreview0 'T)<br>
+  (dcl_Control_SetVisible BkgBlockBrowser_Main_DwgPreview1 nil) ; required for ODCL 7.0.0.1<br>
+  (dcl_DWGPreview_LoadDwg BkgBlockBrowser_Main_DwgPreview1 "A003.dwg")<br>
+  (dcl_Control_SetVisible BkgBlockBrowser_Main_DwgPreview1 'T)<br>
+)<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1681/DwgPreview_Update_Problem.zip">DwgPreview_Update_Problem.zip</a> <span class="muted">(36076 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8430">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-10-24 01:56 UTC</span>
+  </div>
+  <div class="post-body">Good catch. This is now fixed for the next build.</div>
+</article>
+<article class="post" id="msg8431">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-10-24 08:51 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen.</div>
+</article>
+<article class="post" id="msg8519">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2011-12-18 06:45 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+Owen, <br>
+Any time frame for an update on this.<br>
+<br>
+In the meantime I'm using<br>
+<br>
+(defun c:KDUB_BlockInserter_Main_ListBox_OnSelChanged (ItemIndex Value /)<br>
+   (dcl_Control_SetVisible KDUB_BlockInserter_Main_DwgPreview1 'T)<br>
+   (dcl_Control_SetVisible KDUB_BlockInserter_Main_DwgPreview1 nil)<br>
+    (dcl_dwgpreview_loaddwg KDUB_BlockInserter_Main_DwgPreview1<br>
+                           (strcat G1003-SelectedFolder "\\" Value)<br>
+   )<br>
+   (dcl_Control_SetVisible KDUB_BlockInserter_Main_DwgPreview1 'T)     <br>
+)<br>
+<br>
+Good workaround roy_043.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8521">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-12-18 11:07 UTC</span>
+  </div>
+  <div class="post-body">I am planning to upload Alpha 2 this weekend.</div>
+</article>
+<article class="post" id="msg8522">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2011-12-19 08:51 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen.<br>
+<br>
+I'll be in Santa mode   :D<br>
+<br>
+All the best for the Silly Season.<br>
+Be well<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

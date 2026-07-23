@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Large Image in picture cannot be automatically shrink to Pic Control size? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2065</p>
+    <h1>Large Image in picture cannot be automatically shrink to Pic Control size?</h1>
+    <p class="meta">Started by khann ·
+      2013-11-29 07:01 UTC ·
+      3 replies · SMF topic #2065</p>
+<article class="post" id="msg10188">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2013-11-29 07:01 UTC</span>
+  </div>
+  <div class="post-body">Hi,  ::)<br>
+If there is a picture image of larger than the Pic Control size,<br>
+It cannot be shrink to fit the Pic Control?<br>
+<br>
+Ex : a pic, (PicID num 100 in the picture list) has a size of H 200, W 300, and the Pic Control has a size of H 150, W 200.<br>
+I want the pic num 100 automatically fit to the size of Pic Control.<br>
+<br>
+(<span style="color:blue">dcl_PictureBox_LoadPictureFile </span> formMH_PictureBox1 Filename [as String] {Stretch [as Boolean]})<br>
+<span style="color:blue">dcl_PictureBox_LoadPictureFile </span> has a "Stretch" option.<br>
+So the pictures in picture list?<br>
+<br>
+Or am I missing any properties in Pic Control?<br>
+<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg10189">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-11-29 12:16 UTC</span>
+  </div>
+  <div class="post-body">I think you are correct that there is no way to rescale except by loading from a file.</div>
+</article>
+<article class="post" id="msg10190">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-11-29 12:57 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=khann link=topic=2065.msg10188#msg10188 date=1385708486 wrote:</cite><br>
+Hi,  ::)<br>
+If there is a picture image of larger than the Pic Control size,<br>
+It cannot be shrink to fit the Pic Control?<br>
+</blockquote><br>
+<br>
+Yes, you can. I do it that way:<br>
+<ul><br>
+When clicking an item, a "waiting"-icon is shown at the place were the image has to be drawn<br>
+A .NET background worker is called to create a new image by resampling the original one<br>
+When the backgroundworker has finished, an event is fired to show the image in the picturebox<br>
+</ul><br>
+<br>
+All you need is to build a .NET backgroundworker or a resampler at all.<br>
+In the screenshot you see a picture of 6250x6250 pixels. It makes no sense to load it into picbox. That's why it is resampled to the current size of ppic box.<br>
+<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1933/picbox.png">picbox.png</a> <span class="muted">(43348 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10192">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2013-11-30 03:44 UTC</span>
+  </div>
+  <div class="post-body">Thanks you , Owen and Fred, for the replies.<br>
+I just want to know some way to make it in Open DCL.<br>
+If I should and need, will ask you, Fred for more tips.<br>
+<br>
+Thanks.  :D </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

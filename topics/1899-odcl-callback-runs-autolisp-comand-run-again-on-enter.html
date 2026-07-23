@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ODCL callback runs autolisp comand, run again on enter? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1899</p>
+    <h1>ODCL callback runs autolisp comand, run again on enter?</h1>
+    <p class="meta">Started by Jim ·
+      2012-09-30 13:54 UTC ·
+      1 replies · SMF topic #1899</p>
+<article class="post" id="msg9343">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2012-09-30 13:54 UTC</span>
+  </div>
+  <div class="post-body">I have an autolisp ODCL call back that runs fine.<br>
+It could evaluate a (defun c:somecommand ()) that would repeat if enter pressed at the command line.  <br>
+Is there a way to register it with autocad such that it can be run again by pressing enter,<br>
+just as if the command had been run at the command line?</div>
+</article>
+<article class="post" id="msg9344">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-09-30 20:01 UTC</span>
+  </div>
+  <div class="post-body">Hi, Jim, I'm not sure if I understand right, but I use it this way:<br>
+(defun c:proj_form_button ()<br>
+  (dcl_sendstring "StartMyCommand")<br>
+); c:proj_form_button<br>
+<br>
+;;; additional Command<br>
+(defun StartMyCommand()<br>
+  (do_something)<br>
+); StartMyCommand<br>
+<br>
+Is it that what you mean?<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

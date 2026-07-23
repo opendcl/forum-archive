@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DataGrid: selection of multiple rows possible · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1784</p>
+    <h1>DataGrid: selection of multiple rows possible</h1>
+    <p class="meta">Started by zdjapjas ·
+      2012-04-11 13:41 UTC ·
+      3 replies · SMF topic #1784</p>
+<article class="post" id="msg8769">
+  <div class="post-head">
+    <span class="post-author">zdjapjas</span>
+    <span class="post-date muted">2012-04-11 13:41 UTC</span>
+  </div>
+  <div class="post-body">Hello everyone,<br>
+<br>
+after some fiddling around with this nice tool I got used to it a bit more and wrote my first ACAD dialog based command with it which allows to look into the nesting structure of blocks. It was fairly easy.<br>
+<br>
+Now I am thinking of another application which would allow me to edit the attributes (80 per block) of hundrets of blocks within one drawing. I would like to use the DataGrid for that as it allows me to set<br>
+individual cells to be just Text-input boxes while others can be drop-down lists where the user can select one of many entries. The grid would show all the attributes in the columns, one row per block.<br>
+<br>
+I want to be able to distribute data in the following manner because it is sometimes used in ACAD itself, e.g. the publish dialog:<br>
+<br>
+- the user selects multiple rows<br>
+- then he can select an entry of a list box within the selection (in the publish command that would be the page setup)<br>
+- that would put the selected value into the column of all the selected rows<br>
+<br>
+There are other ways to solve this but I like the elegant and easy way this would offer.<br>
+<br>
+Is that somehow possible?<br>
+<br>
+Also it would be necessary to keep multiple rows selected while the user selects on entry in a cell's pulldown list.<br>
+<br>
+However, I don't see that the first step would be possible...? I have seen that there are values for the selected row/column but not for multiple rows + 1 column.<br>
+(It would be nice, if the list of selected rows was a simple lisp list of row index numbers)<br>
+<br>
+Or do I have missed something in the documentation?<br>
+<br>
+Thank you for your help<br>
+Zoltan<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8770">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-04-11 16:13 UTC</span>
+  </div>
+  <div class="post-body">Hi, Zoltan,<br>
+<br>
+no, you've missed nothing. You can only select a single row in a data grid.<br>
+When I read you post the first time, I thought you want to show all the block attributes in each row of the first and second column (key-value-pair). But then I've read you want to select multiple rows. Do you want to show attributes of different attribut blocks in the grid at the same time?<br>
+Then I recommend you to use a listview: there you can select multiple rows and you can detect which column the user has clicked to make a textbox or a dropdown (or a combobox) visible to edit the attribut value(s).<br>
+Or you draw a listview with the selected blocks you want to edit, and beside it you draw a grid. The grid contains all the available attributes and their valid values. But you can still modify a single attribute value.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8777">
+  <div class="post-head">
+    <span class="post-author">zdjapjas</span>
+    <span class="post-date muted">2012-04-12 14:12 UTC</span>
+  </div>
+  <div class="post-body">Thank you very much, Fred, these are very valuable ideas!<br>
+<br>
+Do I understand that correctly? You are able to change the type of each box in a list-view in runtime? Such as the user would click into a row which also would select it (via code) and then a dropdown list would appear in that box from which the user could choose his value. This would be actually exactly like the publish dialog works.<br>
+<br>
+You don't have to dig into the details, just tell me if that is possible. <br>
+</div>
+</article>
+<article class="post" id="msg8778">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-04-14 11:50 UTC</span>
+  </div>
+  <div class="post-body">Hi, Zoltan,<br>
+<br>
+you can display a textbox or a dropdown at the current mouseposition or at an area beside the listview.<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

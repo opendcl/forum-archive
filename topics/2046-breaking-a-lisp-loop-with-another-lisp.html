@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Breaking a Lisp-Loop with another Lisp · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2046</p>
+    <h1>Breaking a Lisp-Loop with another Lisp</h1>
+    <p class="meta">Started by Peter2 ·
+      2013-10-17 16:07 UTC ·
+      7 replies · SMF topic #2046</p>
+<article class="post" id="msg10103">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-10-17 16:07 UTC</span>
+  </div>
+  <div class="post-body">My idea is, with usage of OpenDCL:<br>
+<br>
+a) set a varable to TRUE - Start an (endless) loop "while 'var = true'"<br>
+b) use another lisp which sets the variable to NIL - loop a) will stop<br>
+<br>
+here is the code, with OpenDCL-Buttons:<br>
+<br>
+;;;######################################################################<br>
+ (defun c: btn_start_OnClicked (/)<br>
+    (setq runflag 1)<br>
+    (while runflag<br>
+        (dos_pause 3)<br>
+        (if (findfile "ja.txt")<br>
+            (dos_msgbox "Hier .." "Hauptroutine" 1 3 1)<br>
+            (dos_msgbox "Weg .." "Hauptroutine" 1 3 1)<br>
+        )<br>
+    )<br>
+)<br>
+;;;######################################################################<br>
+ (defun c:_btn_stop_OnClicked (/)<br>
+    (setq runflag nil1)<br>
+)<br>
+<br>
+The idea is fine - but worthless, because a second lisp can not be started while the first lisp is still active ....<br>
+<br>
+Any ideas for <br>
+- a solution with OpendDCL and DosLib or<br>
+- a solution in pure Lisp<br>
+</div>
+</article>
+<article class="post" id="msg10104">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-10-18 06:13 UTC</span>
+  </div>
+  <div class="post-body">Hello, Peter2,<br>
+<br>
+as far as I know it won't work, because as long the while-loop is running nothing else can be started.<br>
+You could do something using LISP with C# behind. I've written such a thing: starting a C# based LISP function as a listener and an event will be fired when a certain state is reached.<br>
+<br>
+================== snipping ====================<br>
+<ul><br>
+call lisp function to start filesearch on vpn network storage in a seperate thread to avoid AutoCAD is getting locked for the meantime<br>
+once the first file was found, an event file_was_found is send to AutoCAD<br>
+once a file was clicked by the user, an event file_was_selected is send to AutoCAD<br>
+</ul><br>
+================== snipping ====================<br>
+<br>
+<br>
+LISP always is "single-lined". So you will have to rearrange your code in order to change the algorythm.<br>
+<br>
+Regards, Fred<br>
+</div>
+</article>
+<article class="post" id="msg10105">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-10-18 06:23 UTC</span>
+  </div>
+  <div class="post-body">Hi, Peter2, it's me again:<br>
+<br>
+using the (dcl_DelayedInvoke intDelayMilliseconds [als Long] strLispFunctionName [als String]) function you can build a "tester", if a certain state is reached:<br>
+<br>
+<br>
+(defun c:command1()<br>
+  (dcl_DelayedInvoke 500 "c:command2")<br>
+); command1<br>
+<br>
+(defun c:command2()<br>
+  (if (not (findfile "c:\\myfile.txt)) (c:command1))<br>
+); command2<br>
+<br>
+<br>
+<br>
+Just a thought. Give it a try!<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10109">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-10-21 08:17 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred<br>
+<br>
+thanks for your posts. I will continue this week, but I suspect that your last code will do the same as mine: It loops endless, because also the "delay" is a lisp-command which can not be broken by another ...<br>
+<br>
+Another idea could be that the lisp-loop checks a registry which is modified by an external registry-command, but this will result in "two applications" - one lisp inside AutoCAD, on registry outside. Possible, but maybe not the best.<br>
+<br>
+My current try is to display a message-box after every loop. It is displayed for 2 seconds, and if you press "Cancel" it will cancel or it will continue. Normally a loop for 2 seconds is unacceptable, but in this case it could be a way -  but not the best one, I would still prefer a standard "Stop the loop - button".<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg10113">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-10-24 20:18 UTC</span>
+  </div>
+  <div class="post-body">Hm, would it be a solution to build a .net dll with a feature I mentioned above?<br>
+I'm not sure whether OpenDCL should solve that or not....<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10115">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-10-25 07:41 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2046.msg10113#msg10113 date=1382645917 wrote:</cite><br>
+Hm, would it be a solution to build a .net dll with a feature I mentioned above?....</blockquote><br>
+I'm not sure what exactly you mean, but yes - it seems that a solution outside of Lisp (reg-files, AHK-exe, .net) has to cooperate with Lisp. As already mentioned I don't want (but maybe I have to ..) two applications running, and creating a .net dll is not my knowledge. Maybe AHK ...</div>
+</article>
+<article class="post" id="msg10124">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-10-25 21:00 UTC</span>
+  </div>
+  <div class="post-body">Hi, Peter2, so in the end you will need a solution with lisp - especially if you think about using your app on different plattforms.<br>
+Since you've searched for a file in yout initial post, I thought about the <a href="http://dotnet-snippets.de/snippet/verzeichnis-ueberwachen-mit-dem-filesystemwatcher/146" rel="nofollow noopener">{2}</a>. When a.txt is created or deleted I would call an event in AutoCAD like it does when you press a button.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10139">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-11-02 15:50 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred<br>
+sorry -I missed the notification. I will take a look within the next time, but C# is not my "core competence" (better: I don't know nothing ..)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

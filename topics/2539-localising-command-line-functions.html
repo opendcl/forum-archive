@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Localising command line functions · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2539</p>
+    <h1>Localising command line functions</h1>
+    <p class="meta">Started by dan113 ·
+      2017-10-23 13:39 UTC ·
+      11 replies · SMF topic #2539</p>
+<article class="post" id="msg12589">
+  <div class="post-head">
+    <span class="post-author">dan113</span>
+    <span class="post-date muted">2017-10-23 13:39 UTC</span>
+  </div>
+  <div class="post-body">I am trying to localise the event commands so when i start to type the opendcl event commands do not show. I have however been unable to achieve this can anyone help?</div>
+</article>
+<article class="post" id="msg12590">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-10-24 10:27 UTC</span>
+  </div>
+  <div class="post-body">If your dialog is modal then localization is indeed the answer. You can nest all event-handler functions and declare them as local variables in the main function.<br>
+<br>
+For a modeless dialog you will have to rename the event-handlers. It is possible to enter names without the 'C:' prefix in the 'AutoLISP Function to Call On Event' field.<br>
+<br>
+I am not sure why the default names have this 'C:' prefix.</div>
+</article>
+<article class="post" id="msg12591">
+  <div class="post-head">
+    <span class="post-author">dan113</span>
+    <span class="post-date muted">2017-10-24 20:18 UTC</span>
+  </div>
+  <div class="post-body">I have tried localising them by nesting them also I have tried removing the c:. Localising has no effect and removing the c: just stops the event from firing. All that happens when localised is the commands on the command line return a not recognised error if activated.</div>
+</article>
+<article class="post" id="msg12592">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-10-25 09:29 UTC</span>
+  </div>
+  <div class="post-body">Here are some test files.<br>
+<br>
+I did find something unexpected (note: I use BricsCAD):<br>
+Nested functions with the 'C:' prefix are added to the 'AUTOCOMPLETE' list of command suggestions when their parent function is called, even though they don't exist outside that context because their names are localized.<br>
+<br>
+If the same is true for AutoCAD then the only solution is to always use names without the 'C:' prefix.<br>
+<br>
+Maybe Owen can explain the reason for this 'C:' prefix for event-handlers.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2352/HideFuncTest.lsp">HideFuncTest.lsp</a> <span class="muted">(986 bytes)</span></li><li><a href="../attachments/2353/HideFuncTest.odcl">HideFuncTest.odcl</a> <span class="muted">(742 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12593">
+  <div class="post-head">
+    <span class="post-author">dan113</span>
+    <span class="post-date muted">2017-10-25 09:40 UTC</span>
+  </div>
+  <div class="post-body">Thats exactly what is happening, the autocomplete list is full of dcl event functions  ;D<br>
+<br>
+I have tried without success to remove the c: I will keep trying....</div>
+</article>
+<article class="post" id="msg12594">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-10-25 13:48 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=dan113 link=topic=2539.msg12593#msg12593 date=1508924421 wrote:</cite><br>
+I have tried without success to remove the c: I will keep trying....<br>
+</blockquote>The example files demonstrate that as well. See the HideFuncTest/FormModeless/TextButton1#OnClicked function.</div>
+</article>
+<article class="post" id="msg12595">
+  <div class="post-head">
+    <span class="post-author">dan113</span>
+    <span class="post-date muted">2017-10-31 08:22 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2539.msg12594#msg12594 date=1508939329 wrote:</cite><br>
+[quote author=dan113 link=topic=2539.msg12593#msg12593 date=1508924421]<br>
+I have tried without success to remove the c: I will keep trying....<br>
+</blockquote>The example files demonstrate that as well. See the HideFuncTest/FormModeless/TextButton1#OnClicked function.<br>
+<br>
+<br>
+I have tried further and even the example you kindly added does not work for me  :-\<br>
+<br>
+I have loaded the files and the modal works but the autocomplete still shows the command and the modeless button doesn't work at all.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2354/Capture.PNG">Capture.PNG</a> <span class="muted">(6776 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12596">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-10-31 15:41 UTC</span>
+  </div>
+  <div class="post-body">I don't know why my modeless example does not work for you. Maybe somebody else (with an AutoCAD license) can jump in.</div>
+</article>
+<article class="post" id="msg12601">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2017-11-02 20:44 UTC</span>
+  </div>
+  <div class="post-body">Hi, I always used more readable commands in control events, when the control's property EventInvoke was set to AllowCommand. Events are only hidden in commandline when EventInvoke was set to KeepFocus.<br>
+<br>
+What I also did was to keep EventInvoke set to KeepFocus and call another command asynchronously within this event.<br>
+For example for a listview<br>
+<br>
+<pre class="code"><code>(defun c:myproject/myfom/mylistview#OnDblClicked (intRow intCol)<br>
+  (dcl-SendString "MyCommandWhenListviewItemWasDblClicked\r\n")<br>
+); c:myproject/myfom/mylistview#OnDblClicked </code></pre><br>
+<br>
+I've just seen that I've let the event names unchanged as OpenDCL Studio has inserted them, but I added ^C^C in front of eventnames when I wanted to call a command within the event function. What I wanted to say: play with ^C^C.<br>
+<br>
+Hope that helps,<br>
+Fred</div>
+</article>
+<article class="post" id="msg12602">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-11-02 22:57 UTC</span>
+  </div>
+  <div class="post-body">@Fred:<br>
+I believe you have misunderstood the problem.<br>
+The OP wants to avoid including the names of event handler functions in the 'autocomplete' list. I have suggested two methods. The first method does not work (Modal example). The second (Modeless) example works on BricsCAD but apparently not on AutoCAD.<br>
+<br>
+Why does the second example not work on AutoCAD?<br>
+And why do the default names of event handlers have the 'C:' prefix?</div>
+</article>
+<article class="post" id="msg12603">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2017-11-03 14:09 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2539.msg12602#msg12602 date=1509663476 wrote:</cite><br>
+And why do the default names of event handlers have the 'C:' prefix?<br>
+</blockquote><br>
+<br>
+I remember asking the same question when I started working on OpenDCL, but I don't remember why I couldn't change it. I'm pretty sure there is some Acad quirk (at least there was at one time) related to the C: prefix.</div>
+</article>
+<article class="post" id="msg12604">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-11-04 10:16 UTC</span>
+  </div>
+  <div class="post-body">So (to summarize):<br>
+<br>
+<strong>How to Hide Event Handlers</strong><br>
+<br>
+<strong>Q</strong>:<br>
+How to stop event handler names from appearing in the AutoComplete list that pops up when the user starts typing a command?<br>
+<strong>A</strong> (BricsCAD):<br>
+You can remove the 'C:' prefix from the default event handler name. You will of course have to do this for both the .odcl and the .lsp file.<br>
+<strong>A</strong> (AutoCAD):<br>
+This is not possible because the 'C:' prefix cannot be removed. But it is possible to rename the function so the user is unlikely to see it. For example by replacing 'C:' with 'C:*'.<br>
+<br>
+<strong>Q</strong>:<br>
+How to stop event handler calls from appearing in the command history?<br>
+<strong>A</strong>:<br>
+This issue does not apply to Modal forms. To hide these calls for a Modeless form the EventInvoke property of the form should be set to Synchronous. This does mean you can no longer call commands from event handlers. To use commands you will then have to use a dcl-SendString solution as demonstrated by Fred Tomke's code:<br>
+<pre class="code"><code>(defun c:myproject/myfom/mylistview#OnDblClicked (intRow intCol)<br>
+  (dcl-SendString "MyCommandWhenListviewItemWasDblClicked\r\n")<br>
+)</code></pre><br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2355/HideFuncTest.odcl">HideFuncTest.odcl</a> <span class="muted">(683 bytes)</span></li><li><a href="../attachments/2356/HideFuncTest.lsp">HideFuncTest.lsp</a> <span class="muted">(667 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

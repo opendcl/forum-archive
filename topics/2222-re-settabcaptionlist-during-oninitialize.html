@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Re: SetTabCaptionList during OnInitialize · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2222</p>
+    <h1>Re: SetTabCaptionList during OnInitialize</h1>
+    <p class="meta">Started by honkinberry ·
+      2014-12-16 22:57 UTC ·
+      3 replies · SMF topic #2222</p>
+<article class="post" id="msg11158">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2014-12-16 22:57 UTC</span>
+  </div>
+  <div class="post-body">This does not work -- at least not for tabs beyond the first 3.<br>
+See attached example.<br>
+<br>
+--J<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2095/Archive.zip">Archive.zip</a> <span class="muted">(1243 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11160">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-12-16 23:11 UTC</span>
+  </div>
+  <div class="post-body">Your code shows that you're replacing the existing tabs during OnInitialize. This is a different problem than the thread you posted in, so I've split your post into a new thread. I will investigate.</div>
+</article>
+<article class="post" id="msg11161">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-12-17 02:09 UTC</span>
+  </div>
+  <div class="post-body">I checked your sample under the debugger to verify what I suspected. The basic issue is that your form has only three tab pages. The TabCaptionList property nevertheless accepts a 5-member list of tab captions, even though there are no tab pages defined for the last two. The TabIndex argument of SetCurSel is based on defined tabs (i.e. tab pages), not visible tabs. Therefore, your call to SetCurSel fails because 4 is not a valid tab index.<br>
+<br>
+The reason for the somewhat counterintuitive behavior is that you can hide and unhide tab pages, so the number of tab strips displayed in the tab strip control is somewhat dynamic at runtime and not necessarily the same as the number of tab pages. To allow for this, the two are maintained as separate lists with a mapping between them. This is why you can have more (or fewer) tabs than tab pages.</div>
+</article>
+<article class="post" id="msg11163">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2014-12-17 18:21 UTC</span>
+  </div>
+  <div class="post-body">Ah, of course!<br>
+I had even set the Tab Captions at Design to have 6 captions.  But I should have instead been using the Wizard to create 6 tabs.<br>
+You are fantastic, thank you sir.<br>
+<br>
+--J<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

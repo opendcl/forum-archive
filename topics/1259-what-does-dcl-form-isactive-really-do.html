@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>what does dcl_Form_IsActive really do? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1259</p>
+    <h1>what does dcl_Form_IsActive really do?</h1>
+    <p class="meta">Started by jmaeding ·
+      2010-04-19 18:36 UTC ·
+      9 replies · SMF topic #1259</p>
+<article class="post" id="msg6740">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-04-19 18:36 UTC</span>
+  </div>
+  <div class="post-body">I use this function all over the place to test if a modeless status form is "open", so I can close it.<br>
+But is that testing if the form's variable is nil, or is it testing if the form is shown?<br>
+I am really only interested in closing a form that is shown of course.<br>
+Is IsVisible better?  How about IsEnabled?<br>
+I was sloppy in the past on this, but now need to know.<br>
+<br>
+I am partially asking because of the thing where current version of ODCL does not allow:<br>
+(dcl_form_IsActive myform) if myform is nil.<br>
+I can test if something is nil without the dcl_form_IsActive function, so what is it for exactly?<br>
+thanks</div>
+</article>
+<article class="post" id="msg6741">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-04-19 18:46 UTC</span>
+  </div>
+  <div class="post-body">Hi, jmaeding <br>
+<br>
+<blockquote class="quote">But is that testing if the form's variable is nil, or is it testing if the form is shown?</blockquote><br>
+No, you have to test the variable by your own.<br>
+(if (and MyProj_MyForm (dcl_form_isactive MyProj_MyForm))<br>
+  (do_something_in_the_form)<br>
+); if<br>
+<br>
+The variable is nil as long as the project wasn't loaded before.<br>
+<br>
+IsActive will return T, if the form was shown before (using <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Form/Show.htm" rel="nofollow noopener">{2}</a>-method) and was not closed yet (using Close-method).<br>
+IsVisible will return T, if the active form is not Hidden (using <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Form/Hide.htm" rel="nofollow noopener">{2}</a>-method).<br>
+IsEnabled will return T, if the active form is not Disabled (using <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Form/Enable.htm" rel="nofollow noopener">{2}</a>-method).<br>
+<br>
+Fred<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6745">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-04-19 19:48 UTC</span>
+  </div>
+  <div class="post-body">not sure I get this.<br>
+what are the pratical results of that?<br>
+It seems like we should use IsActive for modal forms, and IsVisible for modeless then, right?<br>
+I will put the code to test if the project is loaded in another central place, no need spraying out that test into all the code.</div>
+</article>
+<article class="post" id="msg6746">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-04-19 20:14 UTC</span>
+  </div>
+  <div class="post-body">I'm not convinced IsVisible is useful.<br>
+You would not use it on modals, as hiding those is a no-no (right?).<br>
+For a modeless, if the form was closed with close method, the IsVisible errors out, but IsActive does not and tells you what you need "is the form showing or not".<br>
+You would therefore not use IsVisible on a modeless either, IsActive tells you all that is needed.<br>
+<br>
+I get the feeling it used to be that hiding a form did not make it "inactive" but now it does.<br>
+I saw a post where Owen mentioned the form_hide now does close a form, so this seems backed up.<br>
+Am I missing some useful functionality of IsVisible here?<br>
+I want my code to be as simple and correct as possible, thx for the comments </div>
+</article>
+<article class="post" id="msg6747">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-04-19 20:15 UTC</span>
+  </div>
+  <div class="post-body">Hi, jmaeding,<br>
+<br>
+no: If a modeless form is active it does not mean that it is visible. You can hide a modeless form meanwhile the user picks a point in the drawing and after that make the form visible <strong>without</strong> the need of initializing the form again. You can only hide a form if the form was instanced.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6748">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-04-19 20:26 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jmaeding link=topic=1259.msg6746#msg6746 date=1271708094 wrote:</cite><br>
+You would not use it on modals, as hiding those is a no-no (right?).<br>
+</blockquote><br>
+<br>
+Right, since the user can only get access to the commandline if the modal form's instance was removed from the memory (using close method), the hide method does only make sense if you leave a small control bar on the screen to make the hidden modal form visible again (to show a contruction result, for instance).<br>
+<br>
+IsActive does only mean that the form was instanced and the control's variables are set (they are not if the form is not activated).<br>
+When s symbol with the form's varname is set with an entity it only means that the project was loaded but it does not mean that it was instanced. That does IsActive for you. An active form must not be visible at least - that does IsVisible.<br>
+<br>
+I use all these 3 different queries of states of modeless forms and it's very important that they exist. These three have completely different meanings.<br>
+<br>
+Hope that I could light the dark :)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6749">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-04-19 20:39 UTC</span>
+  </div>
+  <div class="post-body">The only possible reason to call IsActive is if something besides OpenDCL is changing the values of the lisp symbols (therby causing them to not be synchronized with the lifetime of the form instance). If nothing else is changing their values, you can simply check whether the value of the symbol is NIL and get the same result as you'll get by calling IsActive.</div>
+</article>
+<article class="post" id="msg6751">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-04-19 21:49 UTC</span>
+  </div>
+  <div class="post-body">Thx for replies,<br>
+I think I see my pattern of use now, and why IsVisible is not needed for me.<br>
+For modeless dialogs that act as "status" or "progress" forms, I always use close method on them.<br>
+So no messing with IsVisible for those, must use IsActive to test if they are showing.<br>
+For my other modeless dialogs, I do hide them and unhide.  I test to see if they are instantiated or not with IsActive, then unhide or show new.<br>
+I am not seeing the case where IsActive gives a True result when the form is hidden with hide method and param of 1.  IsActive gives a nil in that case.<br>
+<br>
+I did not follow Owen's comment that testing the var for nil is same as IsActive.  If you open a blank drawing, load a project and test for var, its there (as an ename...).  For a modeless, you must check the IsActive return before hoping to try the IsVisible test.  What I have found is stopping at IsActive works fine, no disadvantages.<br>
+<br>
+pls correct my reasoning as needed, just trying to spill my thoughts for sorting out, thx<br>
+</div>
+</article>
+<article class="post" id="msg6752">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-04-19 22:30 UTC</span>
+  </div>
+  <div class="post-body">I lied, tests just now show IsActive does give the True return for hidden forms, sorry.<br>
+<br>
+I see now that you can access a form hidden with hide method.  That is why I never got caught by not checking if a hidden form was visible.  The update works either way.<br>
+<br>
+You do get caught if a form is not active though, that will cause things to error out.<br>
+My sloppiness worked so I never paid attention.  I think I got it now. thx<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6759">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-04-20 02:38 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jmaeding link=topic=1259.msg6751#msg6751 date=1271713756 wrote:</cite><br>
+I did not follow Owen's comment that testing the var for nil is same as IsActive.</blockquote><br>
+<br>
+You're right, for forms the variable is set when the project is loaded. I was thinking about controls; for controls the variable is only set while the form is active.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

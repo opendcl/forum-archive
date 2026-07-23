@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tab strip problem · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1111</p>
+    <h1>Tab strip problem</h1>
+    <p class="meta">Started by Iulian ·
+      2010-01-06 12:08 UTC ·
+      6 replies · SMF topic #1111</p>
+<article class="post" id="msg5885">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2010-01-06 12:08 UTC</span>
+  </div>
+  <div class="post-body">Hello again! I have a new small problem..if can somebody help me...<br>
+<br>
+I have a modal form, which contains a tab strip with 3 tabs.<br>
+On the second tab I have a graphic button, which if is clicked, the modal form closes for getting a point, and then the modal form appears.<br>
+When the form appears, the tab strip is with his first tab selected, and I want it to be with the second tab, the tab from which has started this action.<br>
+<br>
+What should I do?<br>
+Thanks.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1203/tab strip.JPG">tab strip.JPG</a> <span class="muted">(63948 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5887">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-06 12:39 UTC</span>
+  </div>
+  <div class="post-body"><br>
+(dcl_TabStrip_SetCurSel Project_Form_TabStrip1 )<br>
+<br>
+<br>
+What you'll need to do is set a global variable before you close the form.<br>
+Then, in your initialisation event handler test for the variable ;<br>
+if it exists set it to nil and call the SetCurSel Method to display the second page.<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5908">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2010-01-07 11:08 UTC</span>
+  </div>
+  <div class="post-body">Sorry, but I could not resolve my problem...I don`t know where I should write the text, and how I should test the variable. I tried to use (<strong>dcl_TabStrip_GetCurSel</strong> proj_Form_TabStrip1) and set this value into a variable, for using it with (<strong>dcl_TabStrip_SetCurSel</strong> proj_Form_TabStrip1 TabIndex [as Long]), but I receive errors....I don`t know how I should write this...<br>
+I attached a small example with my problem, if can somebody help me...<br>
+Thanks.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1208/project.LSP">project.LSP</a> <span class="muted">(629 bytes)</span></li><li><a href="../attachments/1207/project.odcl">project.odcl</a> <span class="muted">(1154 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5909">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-07 11:42 UTC</span>
+  </div>
+  <div class="post-body">Iulian,<br>
+<br>
+for nested forms I ask you to study <a href="http://www.opendcl.com/forum/index.php?topic=947.0" rel="nofollow noopener">{2}</a>, espeacially the samples.<br>
+<br>
+In the event for selecting points you ask for the last tab.<br>
+(defun c:project_Form2_TextButton1_OnClicked (/)<br>
+  (setq intLastTab (dcl_TabStrip_GetCurSel project_Form2_TabStrip1))<br>
+  (dcl_Form_Close project_Form2 5)<br>
+)<br>
+<br>
+In the initialisation of Form2 you set the current tab (you'll have to activate the event).<br>
+<br>
+(defun c:project_Form2_OnInitialize (/)<br>
+  (if intLastTab (dcl_TabStrip_SetCurSel project_Form2_TabStrip1 intLastTab))<br>
+)<br>
+<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5910">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-07 12:01 UTC</span>
+  </div>
+  <div class="post-body">Try this<br>
+<br>
+<br>
+;; TestTabReturn.lsp TestTabReturn.odcl<br>
+<br>
+(defun c:DOIT (/) (c:TestTabReturn) (princ))<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:TestTabReturn (/)<br>
+  ;; Codehimbelonga kdub@opendcl.com<br>
+  (vl-load-com)<br>
+  (command "._OPENDCL")<br>
+  (dcl_project_load "TestTabReturn" t)<br>
+  (setq ODCLReturn (dcl_form_show TestTabReturn_Form))<br>
+  ;;<br>
+  (cond ((= ODCLReturn 110)<br>
+         (setq *ReturnToPageTwo T)<br>
+         (_SelectOnScreen)<br>
+         (setq ODCLReturn (dcl_form_show TestTabReturn_Form))<br>
+        )<br>
+  )<br>
+  (princ)<br>
+)<br>
+(princ "\n TestTabReturn or DOIT to run.")<br>
+(princ)<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun _SelectOnScreen ()<br>
+  (setq *var (getpoint))<br>
+  (setq ODCLReturn (dcl_form_show TestTabReturn_Form))<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:TestTabReturn_Form_OnInitialize (/)<br>
+  (if (and *ReturnToPageTwo *var)<br>
+    (progn (dcl_TabStrip_SetCurSel TestTabReturn_Form_TabStrip1 1)<br>
+           (dcl_Control_SetText TestTabReturn_Form_TextBox1 (vl-princ-to-string *var))<br>
+    )<br>
+  )<br>
+  (setq *ReturnToPageTwo nil<br>
+        *var nil<br>
+  )<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:TestTabReturn_Form_TextButton1_OnClicked (/)<br>
+  (dcl_Form_Close TestTabReturn_Form 110)<br>
+)<br>
+<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(princ)<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1209/TestTabReturn.odcl">TestTabReturn.odcl</a> <span class="muted">(1010 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5911">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-07 12:04 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+Ooops, didn't see your posted sample.</div>
+</article>
+<article class="post" id="msg5912">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2010-01-07 12:20 UTC</span>
+  </div>
+  <div class="post-body">Thanks a lot guys...with these codes I resolved my problem..I know that was a stupid problem...and I`m sorry for that, but I don`t understand all the samples...because I have some difficulties with AutoLISP... for this reason I put some stupid questions sometimes...<br>
+Thanks again.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

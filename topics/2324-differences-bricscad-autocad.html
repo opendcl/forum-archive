@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Differences BricsCAD - AutoCAD · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2324</p>
+    <h1>Differences BricsCAD - AutoCAD</h1>
+    <p class="meta">Started by Rainer Bous ·
+      2015-10-25 22:24 UTC ·
+      5 replies · SMF topic #2324</p>
+<article class="post" id="msg11686">
+  <div class="post-head">
+    <span class="post-author">Rainer Bous</span>
+    <span class="post-date muted">2015-10-25 22:24 UTC</span>
+  </div>
+  <div class="post-body">Dear all,<br>
+it is possible in AutoCAD to use following code:<br>
+<br>
+(dcl_sendstring "circle")<br>
+(dcl_sendstring " ")<br>
+<br>
+but it doesn't work in BricsCAD:<br>
+<br>
+(dcl_sendstring "cricle") -&gt; is shown in command:-row<br>
+(dcl_sendstring " ") starts the last command instead of "circle"<br>
+<br>
+I know, if I use (dcl_sendstring "circle ") it works on both sides, but for "Tablett-Emulator" with original ".mnu"-files I need separated command version.<br>
+<br>
+Can somebody help me?<br>
+<br>
+Kind regards<br>
+<br>
+Rainer</div>
+</article>
+<article class="post" id="msg11687">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-10-26 09:01 UTC</span>
+  </div>
+  <div class="post-body">I understand your problem. But since your code has parsed the menu file, you know the exact sequence of strings that will have to be sent. So it should be possible to avoid this altogether.</div>
+</article>
+<article class="post" id="msg11688">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-10-27 18:23 UTC</span>
+  </div>
+  <div class="post-body">Hello, Rainer,<br>
+<br>
+I recommend you to compare the behaviour between AutoCAD 2014 and AutoCAD 2016. Autodesk removed fiber in AutoCAD 2015 and I can imagine that it has consequences in the behaviour of calling commands.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11694">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-10-30 22:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2324.msg11688#msg11688 date=1445970225 wrote:</cite><br>
+...Autodesk removed fiber in AutoCAD 2015 ...</blockquote><br>
+Who or what is fiber?</div>
+</article>
+<article class="post" id="msg11695">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-10-31 01:28 UTC</span>
+  </div>
+  <div class="post-body">Hi, fiber is a special <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms682661%28v=vs.85%29.aspx" rel="nofollow noopener">{2}</a>. Using this technology it allowed AutoCAD 2014 and older releases to keep each drawing capsulated. That means, you've started a command in a drawing and while this command is running you could make another drawing active to start another command. That is not possible anymore. This is the only thing where the "normal user" can see a difference to AutoCAD 2015 and 2016. I assume, Autodesk had its reasons to use this in the past. But it also had some negative effects (for instance in debugging C# applications).<br>
+<br>
+But now some commands have to be called asynchronously. You reach that using command-s instead of vl-cmdf and command.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11697">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-10-31 20:11 UTC</span>
+  </div>
+  <div class="post-body">Danke, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

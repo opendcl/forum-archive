@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IsModified · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/11-german.html">GERMAN</a> /
+      Topic 981</p>
+    <h1>IsModified</h1>
+    <p class="meta">Started by SpEEDY ·
+      2009-10-21 08:15 UTC ·
+      8 replies · SMF topic #981</p>
+<article class="post" id="msg4998">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2009-10-21 08:15 UTC</span>
+  </div>
+  <div class="post-body">Hallo Forum,<br>
+<br>
+muss euch mal wider nerven. Es geht diesmal um dem Befehl IsModified bei einem Textfeld.<br>
+Ich wollte diesen einbauen um herauszufinden ob ein Textfeld geändert worden ist.<br>
+<br>
+Weiß aber nicht genau wo ich das ein bauen muss. Habe auch nicht in den Samplers gefunden.<br>
+<br>
+Habe es einfach mal so probiert<br>
+<br>
+(setq aaa (dcl_TextBox_IsModified BGR-Tool_FB_LINIE_TXLIST))<br>
+<br>
+<br>
+Bringt aber leider nicht.   :P<br>
+<br>
+Vielleicht kann mit jemand helfen.<br>
+<br>
+Danke im voraus.<br>
+<br>
+SpEEDY<br>
+</div>
+</article>
+<article class="post" id="msg5000">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-21 11:08 UTC</span>
+  </div>
+  <div class="post-body">Hm, ich habe bisher nicht mit IsModified gearbeitet, sondern immer die Events OnEditChanged, OnKillFocus und/oder OnReturnPressed abgefangen.<br>
+<br>
+Ich müsste mir mal ein Beipiel machen, wo ich das teste. Dazu kann ich aber erst heute abend was sagen, weil ich grad in einer Anwenderschulung bin.<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg5006">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-21 17:24 UTC</span>
+  </div>
+  <div class="post-body">Hi, SpEEDY, welch glückliches Händchen du doch hast... IsModified gibt (leider) immer nil zurück. Habe ein Bug-Report angelegt. Wie gesagt, mir ist es nie aufgefallen, weil ich es noch nie verwendet hab. Was natürlich keine Entschuldigung ist.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5011">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-21 20:08 UTC</span>
+  </div>
+  <div class="post-body">Hallo, ich ziehe meine Behauptung zurück und behaupte das Gegenteil: es scheint keinen Bug zu geben. Genaugenommen habe ich aber auch nicht die Funktionsweise verstanden. Hier wäre es ganz nett, wenn mir das jemand erklären könnte:<br>
+<br>
+<a href="http://sourceforge.net/tracker/?func=detail&amp;aid=2883387&amp;group_id=187950&amp;atid=923363" rel="nofollow noopener">{2}</a><br>
+<blockquote class="quote">Note that IsModified returns T only while interactive editing is in progress (and Undo is available).</blockquote><br>
+<br>
+In welchem Fall funktioniert es also?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5012">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-21 20:49 UTC</span>
+  </div>
+  <div class="post-body">Hi, ich habs fast. Teste mal beiliegendes Beispiel. Allerdings habe ich das mit dem Undo nicht ganz verstanden. Kann mir das jemand erklären?<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/987/prj.lsp">prj.lsp</a> <span class="muted">(633 bytes)</span></li><li><a href="../attachments/988/prj.odcl">prj.odcl</a> <span class="muted">(751 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5016">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2009-10-22 11:14 UTC</span>
+  </div>
+  <div class="post-body">Hi, Fred.<br>
+Ich habe gerade mit dein Testprojekt angeschaut. Und muss sagen ich habe mit den befehl: IsModified entwas anders vorgestellt. <br>
+Ich dachte der Befehl wird erst ausgelöst wenn tatsächlich der Wert sich ändert.<br>
+Z. B. Test -&gt; Test1<br>
+Was passiert aber wenn ich den Text erst Text Löschen und dann wieder den Gleichen schreib.<br>
+Z. B. Test -&gt; „“ -&gt; Test<br>
+<br>
+Den sonst ist der Befehl Überflüssig. <br>
+Den das was du in der Lisp datei geschrieben hast geht auch so.<br>
+<br>
+<br>
+(defun c:prj_dlg_edt_OnEditChanged (strNewValue /)<br>
+    (dcl_Control_SetCaption prj_dlg_Bezeichnung2 "X")<br>
+)<br>
+<br>
+<br>
+Ich sehe da keinen Unterschied. Korrigiere mich wenn ich falsch liege.<br>
+<br>
+Mit freundlichen Grüßen<br>
+<br>
+SpEEDY<br>
+</div>
+</article>
+<article class="post" id="msg5017">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-22 16:11 UTC</span>
+  </div>
+  <div class="post-body">Ja, das ist das, was ich mit dem Undo noch nicht verstanden habe.<br>
+Fred</div>
+</article>
+<article class="post" id="msg5024">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2009-10-23 06:19 UTC</span>
+  </div>
+  <div class="post-body">Dann sind wir schon zu zweit die im Dunkeln tappen.   ;D<br>
+<br>
+Werde es weiter Probieren vielleicht finde ich es heraus.   :P<br>
+<br>
+Mit freundlichen Grüßen<br>
+<br>
+SpEEDY<br>
+</div>
+</article>
+<article class="post" id="msg5025">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-23 08:51 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+<blockquote class="quote"><cite> author=SpEEDY link=topic=981.msg5024#msg5024 date=1256278785 wrote:</cite><br>
+Werde es weiter Probieren vielleicht finde ich es heraus.   :P<br>
+</blockquote><br>
+<br>
+ich bin heute noch in Attendorn und komme erst heute nacht zurück ins Büro. Werde wohl nicht vor Sonntagabend dazu kommen, mir das näher anzusehen. Vielleicht kannst Du <a href="http://www.opendcl.com/forum/index.php?topic=983.msg5020#msg5020" rel="nofollow noopener">{2}</a> irgendwas anfangen? Ich erst mal nicht...<br>
+<br>
+VG, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

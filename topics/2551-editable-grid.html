@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editable Grid · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2551</p>
+    <h1>Editable Grid</h1>
+    <p class="meta">Started by vasch the stampede ·
+      2018-01-05 10:13 UTC ·
+      0 replies · SMF topic #2551</p>
+<article class="post" id="msg12656">
+  <div class="post-head">
+    <span class="post-author">vasch the stampede</span>
+    <span class="post-date muted">2018-01-05 10:13 UTC</span>
+  </div>
+  <div class="post-body">How I can edit a grid like in a excel sheet?<br>
+<br>
+I tried this:<br>
+<pre class="code"><code>(DEFUN C:grid ()<br>
+ (DCL_PROJECT_IMPORT<br>
+  '("YWt6A5YQAABbt6v1BuKTKTUxLT9qQDskOFY0Pm0JHL4W3Ov0JtJVXTjd/ConljzdjGoXX094YWXo"<br>
+    "wEjQ8nVpuPvMjn+4eQ8bImajh30yuklAruN1YaoNmMgJkAJrJGpPWCJMvYMEsOINGJiF2K3smibs"<br>
+    "LNNOP7nW96SWTrsWQWOc6F5hb0NXXlSagZwqp7BwrNTX6CgNdQ91TfSMJXOJLzhfFJiJ66q0Eaw5"<br>
+    "ZtOfTxOCaJvI9EGrN+1sz/ht+6fV6AO6UbpTvNMjOdKYL+xbtEbcHcktdYE7Rznm5Spfp1ya2d4q"<br>
+    "JVrrrHwsQLTdqr0XgmXX+ZnqnqqUb+vYU1dpy/2Mt43WQEMNg/IO59SqnoWC2JBk0oMRfcB9hmie"<br>
+    "kVjhZqp3VA716wJrKI+H5caKMCBdi6aE4qosbQnhqov9fJfOpAB/DlGeecIS2HIsMb8Aurx1JRZT"<br>
+    "g/RYKxroyfxk1+VIDZUa4TDIucdBsF0qvhk5gXin8HwoyAEumEA5nWvGwf8EMKqyN5ydkg5gVwmL"<br>
+    "DwmNoysOkvO4oFHVZGYZSXgeaXl/aXyQyJx6ZQZjtcdjrhu5hwN9iWPakOeC3b7AbPfNcpTjEZJM"<br>
+    "N2tNBumqwWOSYf479b/As55fZ8FrpiVxxn+OaL62pFvOUGBouVohbgaeeaCifoVLvql/IbO8hMYl"<br>
+    "8f3FflmihAIhGkEEvgBujme2SZSwob8duCGxgW3ygZbgeHDQ+o/hM0OsexkPKdKPjHIjqs9QxIe+"<br>
+    "avQbrTtdjlJOP9Z/Rk95f4FQiUMiUekPmV7w+ZU9Gg3D4RLQlUcyvovNQOWVH+R80O2x0AlsokEx"<br>
+    "Z6LRtpu601yRsEaZEeNACyXW9UEV4y8uUHR0FOLfXgHtgHSVm4Cxip1zSneLFoJpqt1VitZZeKFq"<br>
+    "JCOByQQYBuHzifXG5dWPBJrDx5gaH4MFxvPCTQWMK5iieaYNpawNjtYY4561LQr1xHedQqSuCZtM"<br>
+    "5JO4NxhWm7SGtLeX8ItyaoJu5gB3KBN82+vt08r1gZwwyHnmJ3qGB5SCMk2Rc56fqlHNSmD8j9G/"<br>
+    "gXueb+QZn8kqGJ8pnoFsDk+apUWztBD4All/kXoCdE7gctl/6SbGTMkFPSScsOPfN1XW8Otayfdw"<br>
+    "mZjOBQQxWgcAfE2oiwA="<br>
+   )<br>
+ ) ;_ fine di DCL_PROJECT_IMPORT<br>
+ (DCL_FORM_SHOW mySetParam/Form1)<br>
+ (DCL-PROJECT-UNLOAD "mySetParam" T)<br>
+ (PRINC)<br>
+) ;_ fine di defun<br>
+<br>
+(defun c:mySetParam/Form1#OnInitialize (/)<br>
+ (DCL-GRID-ADDCOLUMNS mySetParam/Form1/Grid (LIST (LIST "Letters" 0 100)))<br>
+ (DCL-GRID-ADDCOLUMNS mySetParam/Form1/Grid (LIST (LIST "Value" 0 100)))<br>
+ (DCL-GRID-ADDROW mySetParam/Form1/Grid "A" "1")<br>
+ (DCL-GRID-ADDROW mySetParam/Form1/Grid "B" "2")<br>
+ (DCL-GRID-ADDROW mySetParam/Form1/Grid "C" "3")<br>
+ (DCL-GRID-ADDROW mySetParam/Form1/Grid "D" "4")<br>
+ (DCL-GRID-ADDROW mySetParam/Form1/Grid "E" "5")<br>
+ (DCL-GRID-ADDROW mySetParam/Form1/Grid "F" "6")<br>
+)<br>
+<br>
+(DEFUN c:mySetParam/Form1/Grid#OnSelChanged (Row Column /)<br>
+ (DCL-GRID-STARTCELLEDIT mySetParam/Form1/Grid)<br>
+) ;_ fine di defun<br>
+<br>
+(DEFUN c:mySetParam/Form1/Cancel#OnClicked (/)<br>
+ (DCL-FORM-CLOSE mySetParam/Form1)<br>
+) ;_ fine di defun</code></pre><br>
+<br>
+Where am I wrong?</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

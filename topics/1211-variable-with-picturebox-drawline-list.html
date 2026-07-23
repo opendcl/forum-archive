@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Variable with PictureBox_DrawLine list · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1211</p>
+    <h1>Variable with PictureBox_DrawLine list</h1>
+    <p class="meta">Started by kruuger ·
+      2010-03-17 22:30 UTC ·
+      4 replies · SMF topic #1211</p>
+<article class="post" id="msg6501">
+  <div class="post-head">
+    <span class="post-author">kruuger</span>
+    <span class="post-date muted">2010-03-17 22:30 UTC</span>
+  </div>
+  <div class="post-body">i try to modify my PictureBox_DrawLine list by variable. i try something like this:<br>
+<br>
+(setq www 4)<br>
+(dcl_PictureBox_DrawLine LineType_LineType_PictureBox1<br>
+  '(<br>
+    (www 22 75 22 7)<br>
+  )<br>
+)<br>
+<br>
+but there is error invalid data type or data overflow: WWW<br>
+is there any solution for this<br>
+<br>
+thanks</div>
+</article>
+<article class="post" id="msg6502">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-03-17 22:59 UTC</span>
+  </div>
+  <div class="post-body">Try this:<br>
+<br>
+<br>
+(setq www 4)  <br>
+(dcl_PictureBox_DrawLine LineType_LineType_PictureBox1  <br>
+   (list www 22 75 22 7)  <br>
+)<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6507">
+  <div class="post-head">
+    <span class="post-author">kruuger</span>
+    <span class="post-date muted">2010-03-18 23:16 UTC</span>
+  </div>
+  <div class="post-body">i noticed if we use integer value then we can wrote code like this:<br>
+'(<br>
+  (10 10 230 10 248)<br>
+  (10 20 230 20 249)<br>
+)<br>
+<br>
+if we use variable then code should be like this:<br>
+(list<br>
+  (list 10 10 230 bbb 248)<br>
+  (list 10 aaa 230 20 249)<br>
+)<br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg6509">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-03-19 00:28 UTC</span>
+  </div>
+  <div class="post-body">Yes ODCL has always had an issue with '() lists</div>
+</article>
+<article class="post" id="msg6511">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-19 00:34 UTC</span>
+  </div>
+  <div class="post-body">Just to clarify, this has nothing to do with OpenDCL, it's how the AutoLISP (quote) function is supposed to work.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

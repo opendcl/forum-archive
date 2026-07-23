@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Control name as string ?? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2058</p>
+    <h1>Control name as string ??</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2013-11-07 09:49 UTC ·
+      1 replies · SMF topic #2058</p>
+<article class="post" id="msg10159">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2013-11-07 09:49 UTC</span>
+  </div>
+  <div class="post-body">My old memoty is failing me.<br>
+Is there a way to identify a control by a string instead of it's object name.<br>
+<br>
+eg, I thought I could do this ... but it's failing with an 'Error: expected more arguments" <br>
+It's been a while since I've used OpenDCL and my grey stuff is slowing down ... <br>
+<br>
+<br>
+  (setq controlList '("Top" "Bottom"    "Front"     "Back"      "Left"<br>
+                            "Right"     "isoSW"     "isoSE"     "isoNE"<br>
+                            "isoNW"     "isoSWB"    "isoSEB"    "isoNEB"<br>
+                            "isoNWB"    "30+30"     "50+30"     "130+30"<br>
+                            "150+30"    "200+30"    "230+30"    "310+30"<br>
+                            "310+30"    "30-30"     "50-30"     "130-30"<br>
+                            "150-30"    "200-30"    "230-30"    "310-30"<br>
+                            "330-30"<br>
+                           )<br>
+  )<br>
+  (setq valuesList '())<br>
+  ;;-------------------------------------------<br>
+  ;;-------------------------------------------<br>
+  (defun c:UCSer_Form_TextButton1_OnClicked (/)<br>
+    (foreach name controlList<br>
+      (if (= 1 (dcl_Control_GetValue (strcat "UCSer_Form_" name)))<br>
+          (setq valuesList (cons name valuesList))<br>
+      )<br>
+    )<br>
+    (dcl_Form_Close UCSer_Form)<br>
+    ;;  (cond<br>
+    ;;    ( ( )     )<br>
+    ;;    )<br>
+  )<br>
+<br>
+<br>
+Regards,</div>
+</article>
+<article class="post" id="msg10160">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2013-11-07 10:22 UTC</span>
+  </div>
+  <div class="post-body">Sorted !<br>
+<br>
+<br>
+<br>
+<br>
+      (if (= 1 (dcl_Control_GetValue "UCSer" "Form"  name))<br>
+        (setq valuesList (cons name valuesList))<br>
+      )<br>
+<br>
+<br>
+<br>
+did the trick.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

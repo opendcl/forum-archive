@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Name in modal form · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 722</p>
+    <h1>Name in modal form</h1>
+    <p class="meta">Started by csgoh ·
+      2009-04-17 06:22 UTC ·
+      5 replies · SMF topic #722</p>
+<article class="post" id="msg3518">
+  <div class="post-head">
+    <span class="post-author">csgoh</span>
+    <span class="post-date muted">2009-04-17 06:22 UTC</span>
+  </div>
+  <div class="post-body">Greetings to all.<br>
+I am new to this forum and also trying to learn openDCL.<br>
+My first attempt really puzzles me and hope to get some help.<br>
+I am using acad map 2004 and ver 5.0.0.25 opendcl.<br>
+In my odcl file, the name of my modal form is TESTING and correspondingly in the lsp file also TESTING.<br>
+This works out as expected. see p1.jpg<br>
+<br>
+<br>
+(defun c:TET (/ <br>
+                c:W3_TESTING_Cancel_OnClicked <br>
+                c:W3_TESTING_OnInitialize <br>
+                c:W3_TESTING_OK_OnClicked<br>
+                c:W3_TESTING_SKALA_OnEditChanged<br>
+               )<br>
+   (defun c:W3_TESTING_OnInitialize ()<br>
+     (dcl_Control_SetText W3_TESTING_SKALA <br>
+        (cdr (assoc "SKALA" wg:constant-list)) )<br>
+   )<br>
+<br>
+   (defun c:W3_TESTING_Cancel_OnClicked ()<br>
+     (dcl_Form_Close W3_TESTING)<br>
+   )<br>
+<br>
+   (defun c:W3_TESTING_OK_OnClicked ()<br>
+;; update wg:constant-list<br>
+   (if (&lt;= (atoi (dcl_control_gettext W3_TESTING_skala)) 0)<br>
+    (progn<br>
+     (dcl_MessageBox "SCALE &gt; 0")    <br>
+    )<br>
+    (progn<br>
+     (setq wg:constant-list <br>
+        (subst (cons "SKALA" (ATOI (dcl_control_gettext W3_TESTING_skala)))<br>
+               (assoc "SKALA" wg:constant-list)<br>
+               wg:constant-list<br>
+        )<br>
+     )<br>
+     (dcl_Form_Close W3_TESTING)<br>
+    )<br>
+   );if<br>
+   )<br>
+<br>
+   (defun c:W3_TESTING_SKALA_OnEditChanged (sText /)<br>
+(print "stext ")(print stext)<br>
+     (setq svariable sText)<br>
+(print "svariable ")(print svariable)<br>
+   )<br>
+<br>
+  (or LoadRunTime (load "_OpenDclUtils.lsp") (exit))<br>
+  (LoadRunTime)<br>
+  (LoadODCLProj "W3.odcl")<br>
+  (dcl_FORM_SHOW W3_TESTING)<br>
+<br>
+;; The Event handlers manage the form here.   <br>
+  (PRINC)<br>
+(print "wg:constant-list ")<br>
+(print wg:constant-list)<br>
+)<br>
+<br>
+Then I change the name of the modal form to TESTING1 or some other name and also change it in the lsp file. However this does not work out. see p2.jpg<br>
+Where have I gone wrong??<br>
+<br>
+<br>
+(defun c:TET (/ <br>
+                c:W3_TESTING1_Cancel_OnClicked <br>
+                c:W3_TESTING1_OnInitialize <br>
+                c:W3_TESTING1_OK_OnClicked<br>
+                c:W3_TESTING1_SKALA_OnEditChanged<br>
+               )<br>
+   (defun c:W3_TESTING1_OnInitialize ()<br>
+     (dcl_Control_SetText W3_TESTING1_SKALA <br>
+        (cdr (assoc "SKALA" wg:constant-list)) )<br>
+   )<br>
+<br>
+   (defun c:W3_TESTING1_Cancel_OnClicked ()<br>
+     (dcl_Form_Close W3_TESTING1)<br>
+   )<br>
+<br>
+   (defun c:W3_TESTING1_OK_OnClicked ()<br>
+;; update wg:constant-list<br>
+   (if (&lt;= (atoi (dcl_control_gettext W3_TESTING1_skala)) 0)<br>
+    (progn<br>
+     (dcl_MessageBox "SCALE &gt; 0")    <br>
+    )<br>
+    (progn<br>
+     (setq wg:constant-list <br>
+        (subst (cons "SKALA" (ATOI (dcl_control_gettext W3_TESTING1_skala)))<br>
+               (assoc "SKALA" wg:constant-list)<br>
+               wg:constant-list<br>
+        )<br>
+     )<br>
+     (dcl_Form_Close W3_TESTING1)<br>
+    )<br>
+   );if<br>
+   )<br>
+<br>
+   (defun c:W3_TESTING1_SKALA_OnEditChanged (sText /)<br>
+(print "stext ")(print stext)<br>
+     (setq svariable sText)<br>
+(print "svariable ")(print svariable)<br>
+   )<br>
+<br>
+  (or LoadRunTime (load "_OpenDclUtils.lsp") (exit))<br>
+  (LoadRunTime)<br>
+  (LoadODCLProj "W3.odcl")<br>
+  (dcl_FORM_SHOW W3_TESTING1)<br>
+<br>
+;; The Event handlers manage the form here.   <br>
+  (PRINC)<br>
+(print "wg:constant-list ")<br>
+(print wg:constant-list)<br>
+)<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/677/W3.odcl">W3.odcl</a> <span class="muted">(958 bytes)</span></li><li><a href="../attachments/678/P1.JPG">P1.JPG</a> <span class="muted">(91463 bytes)</span></li><li><a href="../attachments/679/p2.JPG">p2.JPG</a> <span class="muted">(89011 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3519">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-04-17 06:46 UTC</span>
+  </div>
+  <div class="post-body">have a look at your events tab. it will still have the old name in there. uncheck it and recheck to get the new name.</div>
+</article>
+<article class="post" id="msg3520">
+  <div class="post-head">
+    <span class="post-author">csgoh</span>
+    <span class="post-date muted">2009-04-17 12:31 UTC</span>
+  </div>
+  <div class="post-body">uncheck and the recheck the  initialize checkbox. but there is no name checkbox. still doesnt work.<br>
+</div>
+</article>
+<article class="post" id="msg3521">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-17 12:46 UTC</span>
+  </div>
+  <div class="post-body">Renaming a form does not automatically rename event handler functions. Just copy and paste event handler function names for each event from the window at the bottom of the event tab, that way your lisp function names will match the ODCL project file. Also, you should use (dcl_Project_Load "" T) to load your project file.</div>
+</article>
+<article class="post" id="msg3522">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-04-17 14:37 UTC</span>
+  </div>
+  <div class="post-body">Select your accept button &amp; go to the events tab for it. Uncheck &amp; recheck the OnClick event for it. Do the same for the ignore button &amp; your text box OnEditChanged.<br>
+Just fixing the OnInitialize wont work as your other control will still have the old names....</div>
+</article>
+<article class="post" id="msg3531">
+  <div class="post-head">
+    <span class="post-author">csgoh</span>
+    <span class="post-date muted">2009-04-20 15:07 UTC</span>
+  </div>
+  <div class="post-body">ok that fix the problem. thanks.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Is there a way to get the scale of a closed drawing? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1646</p>
+    <h1>Is there a way to get the scale of a closed drawing?</h1>
+    <p class="meta">Started by flwright ·
+      2011-06-30 21:21 UTC ·
+      8 replies · SMF topic #1646</p>
+<article class="post" id="msg8168">
+  <div class="post-head">
+    <span class="post-author">flwright</span>
+    <span class="post-date muted">2011-06-30 21:21 UTC</span>
+  </div>
+  <div class="post-body">This is something I have been after for quite some time, but my search continuously leads me to dead ends.<br>
+<br>
+I am attempting to create a dialog box which lists all drawings in a given directory.  The user can select a drawing from the listbox and then the drawing will attach as an xref into the current drawing.  The difficult part is that I would like the xref to be scaled according to the cannoscale of the attaching drawing.<br>
+<br>
+Does anybody know of a way to accomplish this?<br>
+<br>
+Thank you,<br>
+Jeffrey K. Ries<br>
+Novi, MI</div>
+</article>
+<article class="post" id="msg8169">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-30 21:40 UTC</span>
+  </div>
+  <div class="post-body">Hello, and welcome to this board. I had a quick try but I didn't find where AutoCAD stores the value of CANNOSCALE of ModelSpace. But post your question to <a href="http://www.theswamp.org" rel="nofollow noopener">{2}</a> because OpenDCL forum is a specific forum OpebDCL related questions.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8170">
+  <div class="post-head">
+    <span class="post-author">flwright</span>
+    <span class="post-date muted">2011-07-01 14:19 UTC</span>
+  </div>
+  <div class="post-body">Thank you for the response and the warm welcome.<br>
+<br>
+I understand this forum is specific to just OpenDCL, but I posed the same question at Autodesk's forums and had no luck.<br>
+<br>
+I know there are other forums to try such as the Swamp and AUGI, but I believe I will have similar results there as well.  I believe this because most other forums are divided by programming language which doesn't necessarily help me because I only know lisp.  And after much research I am fairly certain it cannot be done with lisp.<br>
+<br>
+I am asking the question here because I believe the contributors here are similar to myself in that we are trying to reach similar goals - customizing AutoCAD to do specific and extraordinary things.  My hope is that someone here has already accomplished what I am attempting because they have done it in a different programming language in which it is possible.  That could at least point me in the right direction.<br>
+<br>
+I understand that this may go unanswered as it did on Autodesk's forums, but I have to at least try.<br>
+<br>
+Jeffrey K. Ries<br>
+Novi, MI<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8171">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-07-01 16:56 UTC</span>
+  </div>
+  <div class="post-body">Hi, flwright, sorry that I had no idea. I tried to save the drawing into dxf. Then I used ArxDbgSnoobDb to research the drawing for the handle of the scale object I've choosen before - but I didn't find it yet. But I recommend you to do this, too. I didn't search for the name, but only for the handle. LayerTableRecords are linked by their names. Maybe the scales are doing it as well.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8181">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2011-07-05 13:24 UTC</span>
+  </div>
+  <div class="post-body">ObjectDBX perhaps?<br>
+<br>
+Search at theSwamp.org for ObjectDBX functions (this is an AutoLISP exposed API).</div>
+</article>
+<article class="post" id="msg8182">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-07-05 14:05 UTC</span>
+  </div>
+  <div class="post-body">Hi, James, thanks. But to do this we need to know at first where AutoCAD stores the information of active annotation scale before we start loading the drawing via ObjectDBX.<br>
+I had a research but I didn't find it. May be you find the key, James.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8183">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2011-07-05 14:24 UTC</span>
+  </div>
+  <div class="post-body">vla-getvariable?</div>
+</article>
+<article class="post" id="msg8185">
+  <div class="post-head">
+    <span class="post-author">flwright</span>
+    <span class="post-date muted">2011-07-05 15:37 UTC</span>
+  </div>
+  <div class="post-body">ObjectDBX is an excellent suggestion, it seems the most likely to my project.<br>
+<br>
+However, I tried it and found that while it is capable of pulling certain info from a closed drawing it will not work with variables.<br>
+<br>
+jbuzbee - I did try vla-getvariable.  It seemed to work (it produced a scale reference for me) and I went ahead and created the dialog and commands necessary for my project.  Once done I tested and realized that the scale reference I was receiving was that of the sheet file I was currently in and not the detail file I was trying to probe.<br>
+<br>
+Fred Tomke - the info I am trying to get is stored as a variable within modelspace called 'cannoscale' or 'cannoscalevalue'.  Is that what you mean?<br>
+<br>
+If all else fails I plan to use ObjectDBX in conjunction with a custom dictionary.  The down side of this is that it will only pull the data from files in which the user has already placed the data (of course).  I can automate this data placement, but we have a large number of existing drawings.  This would put me in a position of creating a function which works <em>most</em> of the time.<br>
+<br>
+Does OpenDCL work with .NET?  I am told that it may have this ability to pull variables from a closed drawing.</div>
+</article>
+<article class="post" id="msg8186">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-07-05 18:29 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+<blockquote class="quote"><cite> author=flwright link=topic=1646.msg8185#msg8185 date=1309880249 wrote:</cite><br>
+Fred Tomke - the info I am trying to get is stored as a variable within modelspace called 'cannoscale' or 'cannoscalevalue'.  Is that what you mean?<br>
+</blockquote><br>
+Yes, the current scale is stored in the systemvariable 'cannoscale'. But drawing-depended systemvariables only work for the current drawing. As far as I know you can't get systemvariables from the drawing opened by ObjectDBX:<br>
+; Applicable Methods:<br>
+;   CopyObjects (3)<br>
+;   DxfIn (2)<br>
+;   DxfOut (3)<br>
+;   HandleToObject (1)<br>
+;   ObjectIdToObject (1)<br>
+;   ObjectIdToObject32 (1)<br>
+;   Open (2)<br>
+;   Save ()<br>
+;   SaveAs (2)<br>
+<br>
+Since scale objects are named objects like layouts I've tried to find the correct named object for the current scale. All settings must be stored in the drawing to make it available when drawing will be loaded. So I tried to find the place where AutoCAD stores the data you need.<br>
+<br>
+<blockquote class="quote"><cite> author=flwright link=topic=1646.msg8185#msg8185 date=1309880249 wrote:</cite><br>
+Does OpenDCL work with .NET?  I am told that it may have this ability to pull variables from a closed drawing.<br>
+</blockquote><br>
+<br>
+You can create a lisp functionin .NET to read out the scale from a closed drawing to return it into lisp and to show the result in an OpenDCL form.<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

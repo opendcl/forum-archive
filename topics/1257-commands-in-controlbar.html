@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Commands in ControlBar · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1257</p>
+    <h1>Commands in ControlBar</h1>
+    <p class="meta">Started by olamer ·
+      2010-04-16 21:35 UTC ·
+      13 replies · SMF topic #1257</p>
+<article class="post" id="msg6734">
+  <div class="post-head">
+    <span class="post-author">olamer</span>
+    <span class="post-date muted">2010-04-16 21:35 UTC</span>
+  </div>
+  <div class="post-body">Hi People ....<br>
+<br>
+I make a ControlBar in a ODCL Test Project.<br>
+<br>
+I put in ControlBar an PictureBox with Clicked Event.<br>
+In my c:TestProject_ControlBar1_PictureBox1_OnClicked I put this code:<br>
+<br>
+(c:TestProject_ControlBar1_PictureBox1_OnClicked (/)<br>
+   (command "line")<br>
+)<br>
+<br>
+But It returns<br>
+<blockquote class="quote">error: invalid AutoCAD command: nil</blockquote><br>
+<br>
+I don't know what is happening ...<br>
+<br>
+Anyone have idea ?<br>
+<br>
+Thanks ...</div>
+</article>
+<article class="post" id="msg6735">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-04-16 22:01 UTC</span>
+  </div>
+  <div class="post-body">Select the PicBox, in the properties panel change the "Event Invoke" = 1-Asynchronous</div>
+</article>
+<article class="post" id="msg6788">
+  <div class="post-head">
+    <span class="post-author">olamer</span>
+    <span class="post-date muted">2010-04-22 12:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=1257.msg6735#msg6735 date=1271455272 wrote:</cite><br>
+Event Invoke" = 1-Asynchronous<br>
+</blockquote><br>
+<br>
+Thanks Bazza.<br>
+It really works.<br>
+But I have in the same PicBox an OnMouseEntered and OnMouseMovedOff event.<br>
+And each mouse move on the PicBox put the function return in command line.<br>
+<br>
+Have any command to avoid this command return ?<br>
+<br>
+Bellow the code:<br>
+<br>
+(defun c:TestProject_frmTest_PictureBox1_OnMouseEntered (/)<br>
+	(dcl_Control_SetPicture TestProject_frmTest_PictureBox1 174)<br>
+ 	(princ "ttt")<br>
+)<br>
+(defun c:TestProject_frmTest_PictureBox1_OnMouseMovedOff (/)<br>
+  	(dcl_Control_SetPicture TestProject_frmTest_PictureBox1 173)<br>
+)<br>
+<br>
+<br>
+Put <strong>T</strong> in command line<br>
+<br>
+Thanks for all</div>
+</article>
+<article class="post" id="msg6789">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-04-22 13:23 UTC</span>
+  </div>
+  <div class="post-body">Hi, Oswald,<br>
+<br>
+add a (princ) in the end.<br>
+<br>
+(defun c:TestProject_frmTest_PictureBox1_OnMouseMovedOff (/)  <br>
+      (dcl_Control_SetPicture TestProject_frmTest_PictureBox1 173)<br>
+      (princ)<br>
+)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6790">
+  <div class="post-head">
+    <span class="post-author">olamer</span>
+    <span class="post-date muted">2010-04-22 14:00 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred,<br>
+<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=1257.msg6789#msg6789 date=1271942636 wrote:</cite><br>
+add a (princ) in the end.<br>
+</blockquote><br>
+<br>
+I add (princ) but on each MouseOver/Out it makes new line print<br>
+Example:<br>
+Command:<br>
+Command:<br>
+Command:<br>
+Command:<br>
+<br>
+<br>
+Thanks ...</div>
+</article>
+<article class="post" id="msg6791">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-04-22 14:41 UTC</span>
+  </div>
+  <div class="post-body">You can set Event Invoke back to Synchronous, but execute your (command) calls from within a different function that you initiate by calling (dcl_SendString) or (dcl_DelyedInvoke).<br>
+<br>
+By the way, if all goes according to plan, the next build of OpenDCL will not need the OnMouseEntered and OnMouseMovedOff handlers to switch the Keep Focus setting.</div>
+</article>
+<article class="post" id="msg6794">
+  <div class="post-head">
+    <span class="post-author">olamer</span>
+    <span class="post-date muted">2010-04-22 18:06 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen,<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1257.msg6791#msg6791 date=1271947268 wrote:</cite><br>
+You can set Event Invoke back to Synchronous, but execute your (command) calls from within a different function that you initiate by calling (dcl_SendString) or (dcl_DelyedInvoke).<br>
+</blockquote><br>
+<br>
+Following your instructions I test using dcl_SendString and dcl_DelayedInvoke.<br>
+<br>
+With DCL_SendString the command executes only after next command send by user.<br>
+The command was:<br>
+(dcl_SendString "(line)")<br>
+Don't solve ...<br>
+<br>
+Then I test DCL_DelayedInvoke ...<br>
+(dcl_DelayedInvoke 100 "(line)")<br>
+Then I solve my problem. ...<br>
+<br>
+Now it runs correctly ...<br>
+<br>
+Thanks guys ..</div>
+</article>
+<article class="post" id="msg6795">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-04-22 18:54 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Oswald link=topic=1257.msg6794#msg6794 date=1271959573 wrote:</cite><br>
+With DCL_SendString the command executes only after next command send by user.</blockquote><br>
+<br>
+You needed to add a '\n' at the end.</div>
+</article>
+<article class="post" id="msg6796">
+  <div class="post-head">
+    <span class="post-author">olamer</span>
+    <span class="post-date muted">2010-04-22 20:25 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen,<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1257.msg6795#msg6795 date=1271962455 wrote:</cite><br>
+You needed to add a '\n' at the end.<br>
+</blockquote><br>
+<br>
+Really ... It works ...<br>
+I use thist:<br>
+(dcl_SendString "(line)\n")<br>
+Then run ...<br>
+<br>
+What's the best way ?<br>
+dcl_SendString or dcl_DelayedInvoke ?</div>
+</article>
+<article class="post" id="msg6797">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-04-22 20:35 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Oswald link=topic=1257.msg6796#msg6796 date=1271967925 wrote:</cite><br>
+What's the best way ?<br>
+dcl_SendString or dcl_DelayedInvoke ?</blockquote><br>
+<br>
+Yes. ;)</div>
+</article>
+<article class="post" id="msg6798">
+  <div class="post-head">
+    <span class="post-author">olamer</span>
+    <span class="post-date muted">2010-04-22 21:03 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen,<br>
+heheh<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1257.msg6797#msg6797 date=1271968536 wrote:</cite><br>
+[quote author=Oswald link=topic=1257.msg6796#msg6796 date=1271967925]<br>
+What's the best way ?<br>
+dcl_SendString or dcl_DelayedInvoke ?</blockquote><br>
+Yes. ;)<br>
+<br>
+<br>
+Thanks for your answer<br>
+But what is the best method to use ?<br>
+SendString or DelayedInvoke ...<br>
+Or they're the same ?</div>
+</article>
+<article class="post" id="msg6799">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-04-22 23:49 UTC</span>
+  </div>
+  <div class="post-body">I think he's suggesting that either one works just as good.<br>
+I'd use (dcl_SendString) so I don't have to deal with the delay, but that's just me... :)<br>
+</div>
+</article>
+<article class="post" id="msg6800">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-04-23 01:05 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Oswald link=topic=1257.msg6798#msg6798 date=1271970200 wrote:</cite><br>
+But what is the best method to use ?<br>
+SendString or DelayedInvoke ...<br>
+Or they're the same ?</blockquote><br>
+<br>
+You can use whichever you prefer; for your purposes they are identical.<br>
+</div>
+</article>
+<article class="post" id="msg6803">
+  <div class="post-head">
+    <span class="post-author">olamer</span>
+    <span class="post-date muted">2010-04-23 11:36 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1257.msg6800#msg6800 date=1271984744 wrote:</cite><br>
+You can use whichever you prefer; for your purposes they are identical.<br>
+</blockquote><br>
+<blockquote class="quote"><cite> author=BazzaCAD link=topic=1257.msg6799#msg6799 date=1271980167 wrote:</cite><br>
+I think he's suggesting that either one works just as good.<br>
+I'd use (dcl_SendString) so I don't have to deal with the delay, but that's just me... :)<br>
+</blockquote><br>
+<br>
+Owen and Bazza ...<br>
+<br>
+Thanks again ...</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lisp symbol naming convention · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/5-project-administration.html">Project Administration</a> /
+      Topic 2084</p>
+    <h1>Lisp symbol naming convention</h1>
+    <p class="meta">Started by owenwengerd ·
+      2014-01-01 22:05 UTC ·
+      25 replies · SMF topic #2084</p>
+<article class="post" id="msg10292">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-01 22:05 UTC</span>
+  </div>
+  <div class="post-body">I've always been irritated by the project_form_control naming convention, and I'm thinking about what it would take to change the convention in OpenDCL 8. My main concern is the underscore symbol. I'd prefer something like project/form/control. For functions and methods, I'd prefer the hyphen as a delimiter to follow the visual lisp convention, so (dcl_Form_Show) becomes (dcl-Form-Show).<br>
+<br>
+This is partly an aesthetic issue, but also partly a practical/functional issue. Naming controls like project/form/control makes it more intuitive to visualize the hierarchy, and makes it easier to work with nested forms (or tab pages) addressed like Project/Form/Childform/Tabpage/Control. The current naming convention becomes unwieldy when you start referring to nested controls with a "complete" path. For events handlers, controls or forms with an underscore character in their name result in confusing names using the current convention.<br>
+<br>
+The question is, how painful will it be to transition. For events, it's no problem at all: old projects will continue to use the old name since the handler name is embedded in the project. For functions and methods I just have to create new function names, but leave the old names defined as well so that old code continues to work. It seems a bit messy, but for lisp symbol names I can also set both the old style and the new style names simultaneously so that old code will continue to work.<br>
+<br>
+Am I missing anything? What do you guys think?</div>
+</article>
+<article class="post" id="msg10304">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-01-03 12:32 UTC</span>
+  </div>
+  <div class="post-body">I've been looking at a project any examples and I liked the nomenclature especially in the event, it is easy to quickly identify the code by the symbol "#", in terms of functions and methods could create a small program to lisp files open and replace text.<br>
+<br>
+as to the 8.0.0.1 version, I've tried to "MasterDemo" in ac2014 and presents some problems, but this is another matter and we will already talking.<br>
+<br>
+Sorry for my bad English.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg10305">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-03 13:19 UTC</span>
+  </div>
+  <div class="post-body">That's a good idea to make a small lisp utility to update lisp files. You have to be careful, because if controls include an underscore in their name, the conversion should be project_form_con_trol -&gt; project/form/con_trol, which would require knowledge about the control name. I suppose the utility could open the .odcl and programmatically determine the correct control names. In that case it could even update event names, then save the modified .odcl and .lsp files.</div>
+</article>
+<article class="post" id="msg10306">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-01-03 15:36 UTC</span>
+  </div>
+  <div class="post-body">Hi guys, I'm not really sure, if I should be glad about it. I'm even wondering about a special char like '/' is allowed in symbolnames. But it actually is. For my own taste, a '_'-char is more wide and it devides project, form and control much better and it matches much better to other object variables which use '_', too.<br>
+And I was not worry about '_' in function names - my .NET based Lisp-function names are also using '_' to seperate app-prefix, upper topic, sub topic and function from each other (like stadtcad_menu_ribbons_regen). But nevertheless, if any issues will be closed with that change, it should be done.<br>
+<br>
+I'm thinking about a replacer for "'dcl_" and "(dcl_" (Search result of my old project "(dcl_" (11663 hits in 56 files)).<br>
+<br>
+Regards, Fred<br>
+</div>
+</article>
+<article class="post" id="msg10307">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-01-03 15:39 UTC</span>
+  </div>
+  <div class="post-body">Hm, how about defining a custom seperator char for an odcl project for control naming in OpenDCL Studio?<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10308">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-03 17:48 UTC</span>
+  </div>
+  <div class="post-body">Thanks for your input, Fred.</div>
+</article>
+<article class="post" id="msg10309">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-04 01:30 UTC</span>
+  </div>
+  <div class="post-body">If anyone wants to experiment, I've attached a quick-n-dirty utility to update the symbol and function names in existing odcl projects. I've only done very limited testing with the _MasterDemo sample project. It's not bulletproof. For example, it expects default event handler names in the project, so it will fail to update event handler names if they are no longer default. Load and run UDCL8UPDATE, then select the .odcl files. It will look for and update a .lsp file of the same name, and it will make backups of both files.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1941/ODCL8Upd.lsp">ODCL8Upd.lsp</a> <span class="muted">(7566 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10310">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-04 03:58 UTC</span>
+  </div>
+  <div class="post-body">After working with the update utility today and spending some time with the new naming convention, I'm pretty satisfied with most things about it. I'm not thrilled with the forward slash "path" separator, but I think it's better than the underscore, and I can't find anything better on a standard US keyboard. I guess adding an option for a user-selected separator would be one solution, but I know from all the places I had to modify the code to make this change that it's not simple to provide that flexibility.</div>
+</article>
+<article class="post" id="msg10311">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-01-04 11:23 UTC</span>
+  </div>
+  <div class="post-body">Owen, <br>
+The have a little time, I will test the utility with some of my major projects to see what happens and that may have errors.<br>
+... and I do get results</div>
+</article>
+<article class="post" id="msg10316">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2014-01-07 23:59 UTC</span>
+  </div>
+  <div class="post-body">Sorry I'm late to the game on this one Owen.<br>
+Are you saying existing projects (lsp &amp; odcl) would have to be converted or will OpenDCL be backwards comparable?<br>
+Can I leave existing projects as-is &amp; just use the new naming convention for new project?<br>
+<br>
+Barry</div>
+</article>
+<article class="post" id="msg10317">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-08 02:54 UTC</span>
+  </div>
+  <div class="post-body">Old projects should continue to work without modification.</div>
+</article>
+<article class="post" id="msg10548">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2014-04-10 12:04 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2084.msg10309#msg10309 date=1388799032 wrote:</cite><br>
+If anyone wants to experiment, I've attached a quick-n-dirty utility to update the symbol and function names in existing odcl projects. I've only done very limited testing with the _MasterDemo sample project. It's not bulletproof. For example, it expects default event handler names in the project, so it will fail to update event handler names if they are no longer default. Load and run UDCL8UPDATE, then select the .odcl files. It will look for and update a .lsp file of the same name, and it will make backups of both files.<br>
+</blockquote><br>
+<br>
+This utility will convert the project. Odcl with the new nomenclature? <br>
+In addition to the project. Odcl also need to convert individual files lisp related to it? <br>
+I understand it? <br>
+<br>
+The discussion goes back to January, there are updates? <br>
+I have a very complex project and I'm not sure that it is convenient to update to the new nomenclature. <br>
+Maybe I can leave things as they are, but that I will have problems in the future with the maintenance of my project? <br>
+What should I do?</div>
+</article>
+<article class="post" id="msg10550">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-10 14:43 UTC</span>
+  </div>
+  <div class="post-body">Yes, the utility updates the .odcl file and the matching lisp file.<br>
+<br>
+If your old project converts cleanly, then I think it would be best to use the utility and convert it. If it does not convert cleanly, then it would be best to leave it as it is. At this point there has been no change since January. As you can see, only a few people have provided feedback. Without feedback, I will continue with the current implementation.</div>
+</article>
+<article class="post" id="msg10576">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2014-04-14 14:32 UTC</span>
+  </div>
+  <div class="post-body">I state that I have not converted my project. Maybe I will in the coming days ... <br>
+<br>
+However, I tried to enable an event to a control 'Combo Box' and then copied the code suggested in my lisp file:<br>
+<br>
+<br>
+(defun c:NomeApp_Form/FormMain/ColLayer#OnSelChanged (ItemIndexOrCount Value /)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:NomeApp_Form/FormMain/ColLayer#OnSelChanged" "To do")<br>
+)<br>
+<br>
+<br>
+but when i load the lisp file in AutoCAD displays the following error:<br>
+<br>
+<em>Command: (LOAD "C:/Documents and Settings/Anonimo/Desktop/TEST.lsp") ; errore: ads_defun <br>
+failed: : </em><br>
+<br>
+if I remove the "/" from the name of the function, then the lisp file is loaded correctly.<br>
+</div>
+</article>
+<article class="post" id="msg10577">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-14 14:42 UTC</span>
+  </div>
+  <div class="post-body">I don't understand. The error indicates that you added a \ character to the function name. Are you mistyping \ instead of /? In any case, I recommend to copy/paste from Studio instead of typing.</div>
+</article>
+<article class="post" id="msg10579">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2014-04-16 10:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2084.msg10577#msg10577 date=1397486550 wrote:</cite><br>
+I don't understand. The error indicates that you added a \ character to the function name. Are you mistyping \ instead of /? In any case, I recommend to copy/paste from Studio instead of typing.<br>
+</blockquote><br>
+<br>
+You are right.<br>
+I just tried with a new project and working properly.<br>
+However, for some reason in my project I do copy-paste the code from Openstudio, to the lisp file, but the error is issued when loading the lisp file.</div>
+</article>
+<article class="post" id="msg10714">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-05-21 19:09 UTC</span>
+  </div>
+  <div class="post-body">I have just started a new ODCL project and, to my surprise, I actually like the new naming convention. It makes a lot of sense.<br>
+<br>
+But I do notice a small thing (ODCL 8.0.0.6):<br>
+The 'Clipboard Copy' code for events still uses "dcl_MessageBox" instead of "dcl-MessageBox".</div>
+</article>
+<article class="post" id="msg10715">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-21 19:52 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the feedback, and good catch on the function name. I've now corrected the function name for the next build.</div>
+</article>
+<article class="post" id="msg11039">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2014-11-18 07:32 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2084.msg10309#msg10309 date=1388799032 wrote:</cite><br>
+If anyone wants to experiment, I've attached a quick-n-dirty utility to update the symbol and function names in existing odcl projects. I've only done very limited testing with the _MasterDemo sample project. It's not bulletproof. For example, it expects default event handler names in the project, so it will fail to update event handler names if they are no longer default. Load and run UDCL8UPDATE, then select the .odcl files. It will look for and update a .lsp file of the same name, and it will make backups of both files.<br>
+</blockquote><br>
+<br>
+<br>
+Owen,<br>
+Thanks for this.<br>
+I'm updating about 20 projects for ac2015 ... decided to convert the ODCL event handlers and symbol names as well.<br>
+Faultless so far ... a very nice bit of code too.<br>
+<br>
+Regards and Thanks<br>
+Kerry<br>
+</div>
+</article>
+<article class="post" id="msg11042">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-18 14:59 UTC</span>
+  </div>
+  <div class="post-body">That's good to hear, Kerry. Thanks for the feedback!</div>
+</article>
+<article class="post" id="msg11069">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-21 08:24 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry link=topic=2084.msg11039#msg11039 date=1416295963 wrote:</cite><br>
+... decided to convert the ODCL event handlers and symbol names as well....</blockquote><br>
+Is it correct that these values are not changed by the lisp and have to be modified manually?</div>
+</article>
+<article class="post" id="msg11071">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-21 15:11 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Peter2 link=topic=2084.msg11069#msg11069 date=1416558292 wrote:</cite><br>
+[quote author=Kerry link=topic=2084.msg11039#msg11039 date=1416295963]<br>
+... decided to convert the ODCL event handlers and symbol names as well....</blockquote><br>
+Is it correct that these values are not changed by the lisp and have to be modified manually?<br>
+<br>
+<br>
+No, the lisp attempts to modify everything -- but only if the original event names are the default forms.</div>
+</article>
+<article class="post" id="msg11095">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-23 19:39 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2084.msg11071#msg11071 date=1416582714 wrote:</cite><br>
+...but only if the original event names are the default forms.</blockquote><br>
+OK - that's the trick.<br>
+<br>
+Thanks - the lisp works fine  :)</div>
+</article>
+<article class="post" id="msg11388">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-05-15 14:42 UTC</span>
+  </div>
+  <div class="post-body">After a long time I tried the lisp again ...<br>
+<br>
+- I had a code in Version 7 (lsp and ODCL)<br>
+- I renamed both lsp and odcl filenames<br>
+- in Studio, I used the "Reset symbolnames.." and "reset events". I modified from c:xTB_Font_Check_dialog_OptSystemPlot_OnClicked<br>
+to<br>
+c:xTB_Font_Check/dialog/OptSystemPlot#OnClicked<br>
+- in Lisp-code, I also have the old code<br>
+(defun c:xTB_Font_Check_dialog_OptSystemPlot_OnClicked (intValue /)<br>
+- now I used the ODCL8Upd.lsp<br>
+<br>
+-&gt; Lisp and ODCL where backed up; both get the current filedate<br>
+-&gt; but the content of the Lisp was not modified<br>
+<br>
+Did I modify to much?</div>
+</article>
+<article class="post" id="msg11389">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-05-16 02:54 UTC</span>
+  </div>
+  <div class="post-body">Just a guess, but you probably broke it by manually resetting symbol names and event names.</div>
+</article>
+<article class="post" id="msg11460">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-05-28 21:38 UTC</span>
+  </div>
+  <div class="post-body">Finally I could not find why it was broken, but I restored my bak-files and the tool made its job without problems. Thanks.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

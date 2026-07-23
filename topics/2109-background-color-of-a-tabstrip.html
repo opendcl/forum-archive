@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Background color of a TabStrip · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2109</p>
+    <h1>Background color of a TabStrip</h1>
+    <p class="meta">Started by Emiliano ·
+      2014-03-15 17:46 UTC ·
+      11 replies · SMF topic #2109</p>
+<article class="post" id="msg10462">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2014-03-15 17:46 UTC</span>
+  </div>
+  <div class="post-body">I've searched everywhere but I could not find it. <br>
+I want to change the background color of a TabStrip, if I select TabStrip1 between its properties have not found the background color. <br>
+If I select the individual tabs, the properties are empty  :'(<br>
+<br>
+how do I change the background color of a TabStrip? <br>
+<br>
+Thanks in advance</div>
+</article>
+<article class="post" id="msg10465">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-03-16 06:13 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I don't believe it is possible to change tab strip background color.</div>
+</article>
+<article class="post" id="msg10466">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2014-03-16 11:14 UTC</span>
+  </div>
+  <div class="post-body">Lately I want to do many things that you can not do ...  :'( :'( :'(</div>
+</article>
+<article class="post" id="msg10469">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-03-18 09:53 UTC</span>
+  </div>
+  <div class="post-body">Hi, Emiliano, how are you? Hope you are not sad anymore :) . Look OpenDCL even allows you building a generic "tab control" using picture box.<br>
+<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1973/tabs.PNG">tabs.PNG</a> <span class="muted">(1026 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10470">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2014-03-18 10:13 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2109.msg10469#msg10469 date=1395136391 wrote:</cite><br>
+Hi, Emiliano, how are you? Hope you are not sad anymore :) . Look OpenDCL even allows you building a generic "tab control" using picture box.<br>
+<br>
+Regards, Fred<br>
+</blockquote><br>
+<br>
+Hello Fred, <br>
+I'm fine thanks :) <br>
+<br>
+Could you explain better, or send me an example? <br>
+thanks</div>
+</article>
+<article class="post" id="msg10471">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-03-18 13:40 UTC</span>
+  </div>
+  <div class="post-body">Hi, Emiliano,<br>
+<br>
+I haven't just a small sample, but I can give you some hints:<br>
+1. Draw a picture box with -16 background color.<br>
+2. Activate OnPaint and OnMouseDown event of the picturebox<br>
+3. Write a little code:<br>
+<br>
+<br>
+(defun update_tab (useTree)<br>
+  (if useTree<br>
+    (progn<br>
+      (dcl_PictureBox_DrawSolidRect PictureBox<br>
+	(list (list 6 0 55 11 -6)))<br>
+      (dcl_PictureBox_DrawWrappedText PictureBox<br>
+	(list (list 0 0 65 -19 -6 "Hierarchie" 1) (list 60 0 65 -19 -16 "Liste" 1)))<br>
+      (dcl_PictureBox_DrawLine PictureBox<br>
+	(list (list 61 0 66 12 0) (list 66 12 120 12 0) (list 120 12 125 0 0)<br>
+	      (list 2 0 6 11 -6) (list 3 0 6 11 -6) (list 4 0 6 11 -6) (list 5 0 6 11 -6)<br>
+	      (list 60 11 61 0 -6) (list 60 11 62 0 -6) (list 60 11 63 0 -6) (list 60 11 64 0 -6)<br>
+	      (list 1 0 6 12 0) (list 6 12 60 12 0) (list 60 12 65 0 0)))<br>
+    ); progn<br>
+    (progn<br>
+      (dcl_PictureBox_DrawSolidRect PictureBox<br>
+	(list (list 66 0 55 11 -6)))<br>
+      (dcl_PictureBox_DrawWrappedText PictureBox<br>
+	(list (list 0 0 65 -19 -16 "Hierarchie" 1) (list 60 0 65 -19 -6 "Liste" 1)))<br>
+      (dcl_PictureBox_DrawLine PictureBox<br>
+	(list (list 1 0 6 12 0) (list 6 12 60 12 0) (list 60 12 65 0 0)<br>
+	      (list 62 0 66 11 -6) (list 63 0 66 11 -6) (list 64 0 66 11 -6) (list 65 0 66 11 -6)<br>
+	      (list 120 11 121 0 -6) (list 120 11 122 0 -6) (list 120 11 123 0 -6) (list 120 11 124 0 -6)<br>
+	      (list 61 0 66 12 0) (list 66 12 120 12 0) (list 120 12 125 0 0)))<br>
+    ); progn<br>
+  ); if<br>
+); update_tab<br>
+<br>
+(defun c:PictureBox_OnMouseDown (intButton intFlags intX intY / useTree)<br>
+  (setq useTree (&lt;= intX 76))<br>
+  (update_tab useTree)<br>
+  (dcl_control_setvisible project_form_tree useTree)<br>
+  (dcl_control_setvisible project_form_listview (not useTree))<br>
+); c:PictureBox_OnMouseDown<br>
+<br>
+(defun c:Picturebox_OnPaint (isHasFocus /)<br>
+  (update_tab (dcl_Control_GetVisible project_form_tree))<br>
+); c:Picturebox_OnPaint<br>
+<br>
+<br>
+<br>
+The update_tab function contains your design of tab. Use Images, Solids, Texts, Hatches and so on.<br>
+That's all. :)<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10472">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2014-03-18 14:34 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2109.msg10471#msg10471 date=1395150003 wrote:</cite><br>
+<br>
+The update_tab function contains your design of tab. Use Images, Solids, Texts, Hatches and so on.<br>
+That's all. :)<br>
+<br>
+Regards, Fred<br>
+</blockquote><br>
+<br>
+I still do not understand what this code does  :-[</div>
+</article>
+<article class="post" id="msg10473">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-03-18 18:14 UTC</span>
+  </div>
+  <div class="post-body">Hi, the code shows how repainting a control is working.<br>
+Whenever a control has to be repainted (when moving an other form over the control or moving the form itself), the OnPaint event is fired.<br>
+In the OnPaint event handler the update_tab function will be called to redraw the tabs depending on the last tab selection (left or right).<br>
+Whenever a user clicked into the picturebox, the OnMouseDown event handler is called to check whether the user has clicked the left or the right tab what can be caught by querying x-coordinate of the mouse.<br>
+<br>
+Redrawing the tab control means to draw each single line, solid hatch an text.<br>
+I recomment you to have a look at <a href="http://www.opendcl.com/forum/index.php?topic=995.0" rel="nofollow noopener">{2}</a>, also made by pure picture box.<br>
+Hope that helps.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10474">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2014-03-19 07:25 UTC</span>
+  </div>
+  <div class="post-body">Sorry Fred, but I do not understand how this can be useful to solve my problem. <br>
+Maybe I do not understand because of my poor English or lack of experience with OpenDCL. <br>
+<br>
+I just want to change the background color of a TabStrip. <br>
+Currently I can color the background of Controlbar that houses it, but I can not change the background color of the TabStrip. <br>
+It is not a problem repaint, but that property does not exist "Background Color" in TabStrip<br>
+<br>
+See attached image<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1974/tabstrip color.PNG">tabstrip color.PNG</a> <span class="muted">(13805 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10475">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-03-19 12:25 UTC</span>
+  </div>
+  <div class="post-body">Hi, as long OpenDCL supports z-tab-order you can draw a rectangle in the back of each tab item.<br>
+I use it this way in some cases.<br>
+<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1975/tab.zip">tab.zip</a> <span class="muted">(56611 bytes)</span></li><li><a href="../attachments/1976/tab.png">tab.png</a> <span class="muted">(55949 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10476">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2014-03-19 12:50 UTC</span>
+  </div>
+  <div class="post-body">Ok I had thought of this solution, but the probleme is I can not assign transparency to the added controls above.<br>
+See attached image.<br>
+<br>
+<img src="http://Screen.png" alt="" loading="lazy"><div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1977/Screen.png">Screen.png</a> <span class="muted">(52482 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10477">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-03-19 14:30 UTC</span>
+  </div>
+  <div class="post-body">Some controls do not support transparency. In addition, visual styles can override a control's background color. In the latter case, you can set 'Use Visual Style' to False. In the former case, the only solution is to use a different control (such as Picture Box with custom painting as Fred already described for tab strips).</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Multiple Repeated Functions · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1237</p>
+    <h1>Multiple Repeated Functions</h1>
+    <p class="meta">Started by Oak3s ·
+      2010-03-25 23:40 UTC ·
+      3 replies · SMF topic #1237</p>
+<article class="post" id="msg6621">
+  <div class="post-head">
+    <span class="post-author">Oak3s</span>
+    <span class="post-date muted">2010-03-25 23:40 UTC</span>
+  </div>
+  <div class="post-body">My first OpenDCL project :)<br>
+I was wondering if there is an easier way of going about this. I have 100's of blocks and slides that I want to be able to insert from this application. I can (with the help of others here) load a slide and insert upon double click. The functions are very repetitive and if it is possible I would like to condense them. I didnt attach the BlockInsert function. This is the only part I have been able to condense. Any ideas?<br>
+<br>
+[image attached]<br>
+<br>
+<pre class="code"><code>(defun c:SA-Block-Insertion-Image_Form1_OnInitialize (/)<br>
+	(dcl_SlideView_Load SA-Block-Insertion-Image_Form1_SlideView1 "P:/SA-Drafting/Blocks/Slide_images/SA-Anchorbolt.sld")		;SlideView1<br>
+	(dcl_SlideView_Load SA-Block-Insertion-Image_Form1_SlideView2 "P:/SA-Drafting/Blocks/Slide_images/SA-BoltNut.sld")			;SlideView2<br>
+	(dcl_SlideView_Load SA-Block-Insertion-Image_Form1_SlideView3 "P:/SA-Drafting/Blocks/Slide_images/SA-Centerline.sld")		;SlideView3<br>
+	(dcl_SlideView_Load SA-Block-Insertion-Image_Form1_SlideView4 "P:/SA-Drafting/Blocks/Slide_images/SA-DetailA.sld")			;SlideView4<br>
+	(dcl_SlideView_Load SA-Block-Insertion-Image_Form1_SlideView5 "P:/SA-Drafting/Blocks/Slide_images/SA-DetailNotUsed.sld")	;SlideView5<br>
+	(dcl_SlideView_Load SA-Block-Insertion-Image_Form1_SlideView6 "P:/SA-Drafting/Blocks/Slide_images/SA-DryPack.sld")			;SlideView6<br>
+	(dcl_SlideView_Load SA-Block-Insertion-Image_Form1_SlideView7 "P:/SA-Drafting/Blocks/Slide_images/SA-Earth.sld")			;SlideView7<br>
+	(dcl_SlideView_Load SA-Block-Insertion-Image_Form1_SlideView8 "P:/SA-Drafting/Blocks/Slide_images/SA-ExpansionBolt.sld")	;SlideView8<br>
+)<br>
+;*****************************************************************************************************************<br>
+;SlideView1<br>
+(defun c:SA-Block-Insertion-Image_Form1_SlideView1_OnMouseEntered (/)<br>
+	(dcl_Control_SetFocus SA-Block-Insertion-Image_Form1_SlideView1)<br>
+	(dcl_Control_SetCaption SA-Block-Insertion-Image_Form1_Label1 "Anchor Bolt")<br>
+)<br>
+(defun c:SA-Block-Insertion-Image_Form1_SlideView1_OnDblClicked (/)<br>
+(setq BName "SA-Anchorbolt" Xplod "1")<br>
+(BlockInsert)<br>
+)<br>
+;*****************************************************************************************************************<br>
+;SlideView2<br>
+(defun c:SA-Block-Insertion-Image_Form1_SlideView2_OnMouseEntered (/)<br>
+	(dcl_Control_SetFocus SA-Block-Insertion-Image_Form1_SlideView2)	<br>
+	(dcl_Control_SetCaption SA-Block-Insertion-Image_Form1_Label1 "Bolt Nut")<br>
+)<br>
+(defun c:SA-Block-Insertion-Image_Form1_SlideView2_OnDblClicked (/)<br>
+(setq BName "SA-BoltNut" Xplod "1")<br>
+(BlockInsert)<br>
+)</code></pre><div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1356/100325-Example.png">100325-Example.png</a> <span class="muted">(5420 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6624">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-03-26 04:07 UTC</span>
+  </div>
+  <div class="post-body">You could do something like:<br>
+<br>
+<br>
+(defun c:SA-Block-Insertion-Image_Form1_OnInitialize (/)<br>
+   (setq cnt 1)<br>
+   (while (&lt; cnt (Length SlideList))<br>
+	(dcl_SlideView_Load "SA-Block-Insertion-Image" "Form1" (strcat "SlideView" (itoa cnt)) (nth cnt SlideList))<br>
+        (setq cnt (1+ cnt))<br>
+   )<br>
+)<br>
+<br>
+<br>
+I did this off the top of my head without checking it in VLIDE, so I maybe missing something....<br>
+Also assuming you already you have SlideList built with all the slide files.<br>
+<br>
+<br>
+I don't think there's much you can do with the events...<br>
+</div>
+</article>
+<article class="post" id="msg6636">
+  <div class="post-head">
+    <span class="post-author">Oak3s</span>
+    <span class="post-date muted">2010-03-27 01:02 UTC</span>
+  </div>
+  <div class="post-body">Thanks Barry. Im not knowledgeable enough to read that code though. :)<br>
+I kind of understand it. I am getting lost though with<br>
+<pre class="code"><code>dcl SlideView Load....</code></pre><br>
+The confusing part is the lack of underscores...am I missing something here?<br>
+<pre class="code"><code>(dcl_SlideView_Load.....</code></pre></div>
+</article>
+<article class="post" id="msg6637">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-27 02:12 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+<pre class="code"><code>dcl SlideView Load</code></pre> won't work. It must be <pre class="code"><code>dcl SlideView_Load</code></pre> urgently.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

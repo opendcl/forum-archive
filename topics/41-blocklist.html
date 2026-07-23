@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BlockList · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 41</p>
+    <h1>BlockList</h1>
+    <p class="meta">Started by fred_tomke ·
+      2007-08-14 13:42 UTC ·
+      6 replies · SMF topic #41</p>
+<article class="post" id="msg158">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2007-08-14 13:42 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I have a database. In this database the user can change the display style of a line, a polygon or a point (GIS). The preview of the object's style is stored in a DWG-file (like as a block). Whenever the user selects a catalog of objects, the form shall show the list and the previews of the objects.<br>
+Up to now I use DWG preview control. But there's one disadvantage: the maximum number of previews is 9 in any way. But now the user wants to scale the dialog, so more objects will be shown in the form. I'd like to use blocklist control but it does only show block definition of the current drawing. It would be nice to handle it as a listview with an addlist method, which contains dwg-files and a userdefined description (not the dwg-filename).<br>
+<br>
+Is it possible with the current release?<br>
+<br>
+Regards, Fred<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg168">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2007-08-15 12:02 UTC</span>
+  </div>
+  <div class="post-body">How about substituting the dwgview control with the blockview control?  Or maybe have a seperate modeless dialog that is a "preview" type form: When the user picks the preview button the preview form is loaded, the blockview control displays the currently active dwgpreview.  When the user changes dwgpreview the blockview changes.  Make the "preview" form sizable . . ..<br>
+<br>
+<img src="http://www.studio2405.com/jdb/preview.JPG" alt="" loading="lazy"></div>
+</article>
+<article class="post" id="msg173">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2007-08-15 19:13 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+thank you for your suggestion. But I need something different:<br>
+Please imagine a listview control, not as a report styled list but with (very) large icons.<br>
+If this control is placed on a resizable form and you resize the form, more and more icons will be shown. If the icons wouldn't be real icons but dwg previews that I have that will come closer to what I need.<br>
+In one sentence: In a listview shall be shown no icons but several dwg previews. I thought blocklist could could help but in my understanding it only presents internal block definitions of the current drawing.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg174">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2007-08-15 22:16 UTC</span>
+  </div>
+  <div class="post-body">Have you played with the DwgList control?<br>
+I think it still needs some work, but maybe it can do what you're looking for.</div>
+</article>
+<article class="post" id="msg175">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2007-08-16 06:09 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+DWGList control comes very close to that what I want. But I have some questions:<br>
+<br>
+1. The BackColor is black, even after (dcl_Control_SetForeColor dwg_dwg_dwg <br>
+newValue [as Long]) (it was the only property with color settings). How to change to white?<br>
+<br>
+2. I defined a RowHeight. After resizing the rowheight change to 120 again. How to keep my settings?<br>
+<br>
+3. The description is always the filename. Can I change the description?<br>
+<br>
+4. May I add a tooltip to each entry (like in OptionList)?<br>
+<br>
+and most important:<br>
+5. With (dcl_DwgList_Dir dwg_dwg_dwg sDirectory [as String]) I can define a directory with the previews. In this case there is one directory with all the previews. Calling a group of objects from database, only some previews shall be shown. It would be glad do have an addlist method beside the dir property.<br>
+<br>
+Regards,<br>
+Fred</div>
+</article>
+<article class="post" id="msg179">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2007-08-16 11:30 UTC</span>
+  </div>
+  <div class="post-body">The only other option would be to build a form in the editor at a "maximum" size with the complete number of dwgpreview controls, then use the form resize event and form dimension properties to show / hide additional dwgpreview controls as neccessary.  Messy, but doable.</div>
+</article>
+<article class="post" id="msg180">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2007-08-16 12:12 UTC</span>
+  </div>
+  <div class="post-body">Yes, jb, that's the way I feared for.<br>
+I have to choose now.<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OnClicked Event on Block View. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 815</p>
+    <h1>OnClicked Event on Block View.</h1>
+    <p class="meta">Started by copter ·
+      2009-06-16 10:32 UTC ·
+      15 replies · SMF topic #815</p>
+<article class="post" id="msg4015">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-06-16 10:32 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+In the attached example, the onclicked event is fired on a block view without clicking on the block view.<br>
+It seems that selecting an entity before loading the form is "stored" and then, sent as an event.<br>
+How can I prevent this behaviour ?<br>
+Attached files: Test.lsp - Test.odcl<br>
+Thanks<br>
+Copter<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/804/Test.odcl">Test.odcl</a> <span class="muted">(519 bytes)</span></li><li><a href="../attachments/805/test.lsp">test.lsp</a> <span class="muted">(228 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4017">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-06-16 12:08 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+It seems to me it is not possible to access the AutoCAD graphical box with a modal.<br>
+<br>
+You must use a box modless!<br>
+<br>
+In addition, it is preferable to initialize all the controls with the event "oninitialize.<br>
+<br>
+Attached the example running.<br>
+<br>
+working with 5.1.1.6<br>
+<br>
+Best regards<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/806/test.lsp">test.lsp</a> <span class="muted">(321 bytes)</span></li><li><a href="../attachments/807/Test.odcl">Test.odcl</a> <span class="muted">(747 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4019">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-06-16 14:29 UTC</span>
+  </div>
+  <div class="post-body">Hi Stephan,<br>
+I should not want use a modeless form...<br>
+I think that is likely a bug: If the clicked point, before loading the form, is out of the area of the next display of the control, it works.<br>
+If it is in the area, the onclick event is fired. (I tried with 5.1.1.4.)<br>
+Copter</div>
+</article>
+<article class="post" id="msg4021">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-16 15:41 UTC</span>
+  </div>
+  <div class="post-body">Hm, quite interesting. Please add a textbutton and make sure that the blockview isn't the first control in the z/tab-order list.<br>
+Then this event won't be fired. This also happens to other controls (like textboxes or tab controls) when they are created during show-method.<br>
+<br>
+If such a control is the only control in the form or must be the first in the z/tab-order list then you can avoid it by a variable. I do so with tab controls. But it doesn't work in this case. I would add it as a bug report.<br>
+<br>
+<br>
+(defun c:test (/ isInit)<br>
+  (setq el (entsel "Select an entity &gt;"))<br>
+  (dcl_project_load "Test" T)<br>
+  (setq isInit T)<br>
+  (dcl_form_show Test_Form1)<br>
+  (princ)<br>
+)<br>
+<br>
+(defun c:Test_Form1_OnInitialize (/)<br>
+  (setq isInit nil)<br>
+)<br>
+<br>
+(defun c:Test_Form1_BlockView1_OnClicked (/)<br>
+  (if (not isInit) (dcl_MessageBox "You did click on me !"))<br>
+)<br>
+<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4025">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-06-16 16:32 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred<br>
+<br>
+I tried to add a textbutton and others controls without any effect. :(<br>
+<br>
+To Stephan:<br>
+You say: "In addition, it is preferable to initialize all the controls with the event "oninitialize."<br>
+Could you explain ? Is it preferable for the memory for example ?  Are there any rules for this ?<br>
+Because I am working on a big project, I will have to load maybe more than 100 (c:...) call back functions... <br>
+<br>
+Copter</div>
+</article>
+<article class="post" id="msg4039">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-06-16 18:59 UTC</span>
+  </div>
+  <div class="post-body">Good evening,<br>
+<br>
+I also work on a big project,<br>
+In fact use "OnInitialize" to activate all functions effectively if the dialog was open properly.<br>
+<br>
+Care of all your functions precompiled in a 'fas' file you can save memory, you lose, however, access time (negligible).<br>
+<br>
+It must surely exist some part-specific rules allowing to maximize the memory, unfortunately, I do not know!<br>
+<br>
+<br>
+Also uses the "OnClose" which will destroy all the functions previously created by making 'nil'<br>
+<br>
+<br>
+Best regards</div>
+</article>
+<article class="post" id="msg4049">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-17 03:21 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=copter link=topic=815.msg4019#msg4019 date=1245162598 wrote:</cite><br>
+I think that is likely a bug: If the clicked point, before loading the form, is out of the area of the next display of the control, it works.<br>
+If it is in the area, the onclick event is fired. (I tried with 5.1.1.4.)</blockquote><br>
+<br>
+I'm not sure that this is entirely a bug. The OnClicked event fires when you *release* the mouse button, and in this case, the form is displayed when you *press* the button. This means that the form is open by the time the mouse button is released, which triggers OnClicked. I will investigate to see if there is a workable solution.</div>
+</article>
+<article class="post" id="msg4050">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-17 04:06 UTC</span>
+  </div>
+  <div class="post-body">This should now be fixed for Beta 7.  I added logic to skip the OnClicked event if the button was not pressed down on the control before it was released.</div>
+</article>
+<article class="post" id="msg4051">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-06-17 06:00 UTC</span>
+  </div>
+  <div class="post-body"><br>
+thanks Owen, you da bomb !   :)</div>
+</article>
+<article class="post" id="msg4052">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-06-17 06:18 UTC</span>
+  </div>
+  <div class="post-body">Thanks !</div>
+</article>
+<article class="post" id="msg4066">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-06-18 13:58 UTC</span>
+  </div>
+  <div class="post-body">I have the same problem with a PictureBox in a screen of Splash.  <br>
+See in the image that the property Enabled this defined as false.  <br>
+But if the user clicks on the image the the form that didn't still appear it recognizes the event of OnClicked.<br>
+  <br>
+I posted the links for two videos showing this.<br>
+<br>
+<a href="http://www.4shared.com/file/112645609/f1fdd41d/Splash-NotClick.html" rel="nofollow noopener">{2}</a><br>
+<a href="http://[url" rel="nofollow noopener">{2}</a><div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/810/Splash-Project.png">Splash-Project.png</a> <span class="muted">(43197 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4067">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-06-18 14:01 UTC</span>
+  </div>
+  <div class="post-body">Excuse me.  <br>
+It follows the correct link.<br>
+<br>
+<a href="http://www.4shared.com/file/112647892/177a535d/SplashWithClick.html" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg4083">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-06-19 14:08 UTC</span>
+  </div>
+  <div class="post-body">I also tried the enabled property to false, but the event onclick no more fires.<br>
+Copter</div>
+</article>
+<article class="post" id="msg4177">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-07-09 17:58 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=815.msg4066#msg4066 date=1245333485 wrote:</cite><br>
+But if the user clicks on the image the the form that didn't still appear it recognizes the event of OnClicked.</blockquote><br>
+<br>
+Can you post some simple sample code that demonstrates the problem?</div>
+</article>
+<article class="post" id="msg4186">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-07-09 22:23 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen  <br>
+This problem this inside of a very big project.  <br>
+It is very difficult for me to separate this now.  <br>
+As soon as is possible I send for you.  <br>
+I made a list of steps below.  <br>
+1 - while SplashForm is presented I click with the mouse in the marked area.  <br>
+2 - first Form is called and it receives the event of last OnClicked for the splash form.  <br>
+3 - the second form is called.  <br>
+Below this the code that controls SplashForm.<br>
+<br>
+;;;This function controls exhibition of SplashForm<br>
+(defun JoyDelaySplash (/ wait)<br>
+;;;Wait function<br>
+  (defun wait (seconds / stop)<br>
+    (setq stop (+ (getvar "DATE") (/ seconds 86400.0)))<br>
+    (while (&gt; stop (getvar "DATE")))<br>
+  ) ;_ fim de defun   <br>
+;;;Show SplashForm<br>
+  (dcl_Form_Show DuctilCAD_SplashForm)<br>
+;;;Time of wait<br>
+  (wait 2)<br>
+;;;Close SplashForm<br>
+  (dcl_Form_Close DuctilCAD_SplashForm)<br>
+;;;<br>
+  (setq	JoyTagSplash T<br>
+	JoyNextDlg 1<br>
+  ) ;_ fim de setq<br>
+  (vl-propagate 'JoyTagSplash)<br>
+  (princ)<br>
+) ;_ fim de defun<br>
+;;; -------------------------------------------------------------------------------------------------------------------<br>
+;;;Só executa Inicializacao do quadro Splash se precisar<br>
+   (if (not JoyTagSplash)<br>
+     (defun c:DuctilCAD_SplashForm_OnInitialize	(/)<br>
+;;;Centraliza o quadro<br>
+       (dcl_Form_Center DuctilCAD_SplashForm)<br>
+     ) ;_ fim de defun<br>
+   ) ;_ fim de if<br>
+;;; -------------------------------------------------------------------------------------------------------------------<br>
+;;;LOOP<br>
+  (setq JoyNextDlg 1)<br>
+;;;While<br>
+  (while (/= JoyNextDlg nil)<br>
+    (cond<br>
+      ((= JoyNextDlg 1)<br>
+       (setq JoyNextDlg nil)<br>
+       (if (null JoyTagSplash)<br>
+	 (JoyDelaySplash) ;_ SplashForm<br>
+;;;FirstForm<br>
+	 (dcl_Form_Show DuctilCAD_DuctilCAD_MainForm)<br>
+       ) ;_ fim de if<br>
+      )<br>
+    ) ;_ fim de cond<br>
+  ) <br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/835/splash-form.png">splash-form.png</a> <span class="muted">(117002 bytes)</span></li><li><a href="../attachments/836/FirstForm.png">FirstForm.png</a> <span class="muted">(183613 bytes)</span></li><li><a href="../attachments/837/secondform.png">secondform.png</a> <span class="muted">(71549 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4187">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-07-09 22:53 UTC</span>
+  </div>
+  <div class="post-body">You don't show what type of control reports the incorrect OnClicked event.  I created a small test with a picture box, but it works as expected.  I will wait for sample code.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

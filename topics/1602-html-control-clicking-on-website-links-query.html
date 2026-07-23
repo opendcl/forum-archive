@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HTML Control - Clicking on website links query · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1602</p>
+    <h1>HTML Control - Clicking on website links query</h1>
+    <p class="meta">Started by DanW ·
+      2011-03-18 15:10 UTC ·
+      11 replies · SMF topic #1602</p>
+<article class="post" id="msg7869">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2011-03-18 15:10 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+When using an HTML Control to browse a (3rd party) website.  If you click on a menu/link (set to open a new Window) - Internet Explorer launches and browses to the page.<br>
+<br>
+I was wondering if there was a clever way to suppress this behaviour and instead make the new window open within the HTML Control?<br>
+<br>
+Many thanks for any advice<br>
+<br>
+Dan</div>
+</article>
+<article class="post" id="msg7870">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-03-18 17:04 UTC</span>
+  </div>
+  <div class="post-body">Hi, danner,<br>
+<br>
+<blockquote class="quote"><cite> author=Danner link=topic=1602.msg7869#msg7869 date=1300461003 wrote:</cite>set to open a new Window</blockquote><br>
+<br>
+I think you answered your question by yourself. ;)<br>
+New window means a new instance of IE window.<br>
+You can have a try with the IE ActiveX control, but I don't believe that this would mean a different behaviour.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7871">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2011-03-18 17:17 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred, <br>
+<br>
+That's what I feared.  I posted more in hope than expectation. <br>
+<br>
+Have a good weekend.</div>
+</article>
+<article class="post" id="msg7872">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-03-18 17:17 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Danner link=topic=1602.msg7869#msg7869 date=1300461003 wrote:</cite><br>
+I was wondering if there was a clever way to suppress this behaviour and instead make the new window open within the HTML Control?</blockquote><br>
+<br>
+I think the only way to change the behavior is to change the HTML.</div>
+</article>
+<article class="post" id="msg7874">
+  <div class="post-head">
+    <span class="post-author">techjunkie80</span>
+    <span class="post-date muted">2011-03-20 12:23 UTC</span>
+  </div>
+  <div class="post-body"><strong>Edited to reflect owenwengerd's suggestions.</strong><br>
+<br>
+Your mileage using this will vary, but in the <strong>OnNavigationComplete</strong> event of the html object set the url to<br>
+<br>
+javascript:(function(){var a=document.getElementsByTagName('a');for(var i=0;i tags to have a target of "_top" meaning they affect the current page</div>
+</article>
+<article class="post" id="msg7878">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-03-20 16:12 UTC</span>
+  </div>
+  <div class="post-body">Modifying HTML after it is loaded should be done in OnNavigationComplete.</div>
+</article>
+<article class="post" id="msg7884">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2011-03-21 17:03 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen and Techjunkie.<br>
+<br>
+Techjunkie - That is a really nice trick, thanks for sharing.  Sadly doesn't work for me, but perhaps I'm using it wrong.  It just gives me a blank page.  <br>
+<br>
+Owen - Before Techjunkie's trick - I was looking also playing with "dcl_Html_ReplaceText".  It works great when I paste it on the command line however when used in an OnNavigationComplete event  it seems to throw up an error message box saying  "Exception in dcl_Html_ReplaceText ARX command - Unhandled exception Exception c0000005 (Access Violation Reading 0x0000) at address 28859CAFh".  I'm not sure if its a bug, a limitation or user error.<br>
+<br>
+I attach my simple test project.  The OnNavigationComplete event/dcl_Html_ReplaceText has been commented out, but can be uncommented to test rather than Techjunkie's javascript option.<br>
+<br>
+Any thoughts greatly appreciated.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1589/HtmlTest.zip">HtmlTest.zip</a> <span class="muted">(1197 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7888">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-03-21 17:53 UTC</span>
+  </div>
+  <div class="post-body">I was able to reproduce the crash with ReplaceText during OnNavigationComplete. It looks like the document model has not yet been completely initialized at that point. I've now fixed the code to prevent the crash, but the call still fails, so it doesn't solve the problem. I also tried testjunkie's trick and like you, ended up with a blank document. It's an awful kludge, but I got it working by using (dcl_DelayedInvoke 500 "X") from within OnNavigationComplete to invoke the (X) function, which then called ReplaceText.</div>
+</article>
+<article class="post" id="msg7892">
+  <div class="post-head">
+    <span class="post-author">techjunkie80</span>
+    <span class="post-date muted">2011-03-21 20:03 UTC</span>
+  </div>
+  <div class="post-body">Just noticed I had a small typo in the javascript. Inside the for loop I was calling a.target instead of a[ i ].target (the array index). However even with that fix on un-cached pages I'm stuck with the same issue as your replace text, the DOM just isn't ready yet. Got this to work using Owen's delay idea<br>
+<br>
+(defun c:HtmlTest_HtmlTest_OnInitialize( / )  <br>
+	(dcl_Html_Navigate HtmlTest_HtmlTest_Html1 "http://google.com")<br>
+)<br>
+<br>
+(defun c:HtmlTest_HtmlTest_Html1_OnNavigationComplete(url / )  <br>
+	(dcl_DelayedInvoke 500 "linkfix")<br>
+)<br>
+<br>
+(defun c:linkfix()<br>
+	(dcl_Html_Navigate HtmlTest_HtmlTest_Html1 "javascript:(function(){var a=document.getElementsByTagName('a');for(var i=0;i&lt;a.length;i++){a<em>.target='_top';}})();")<br>
+)<br>
+<br>
+navigated to the News section and then clicked on an article to test, usually the articles open in a new window/tab but with this script they open over the current page.</div>
+</article>
+<article class="post" id="msg7896">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2011-03-23 15:38 UTC</span>
+  </div>
+  <div class="post-body">Thanks guys,<br>
+<br>
+Brilliant stuff. Wish I asked for help earlier now.  I'm using the following subroutine to fix the links.  Whilst not 100% fool proof, it will try to ascertain when the page has finished loaded and fix the links once the html control ceases to be busy.  It tries to take into account variable time periods that a page takes to load.<br>
+<br>
+Techjunkie best of luck with your mission on the other Html Control - thread, looks really exciting and imaginative what you are doing!<br>
+<br>
+(defun c:HtmlTest_HtmlTest_Html1_OnNavigationComplete (url / )<br>
+	(HTMLCONTROL_LINKFIX HtmlTest_HtmlTest_Html1 2000 500)<br>
+	(princ)<br>
+);endfun<br>
+				      <br>
+<br>
+;;subroutine to ascertain when a page has finished loading and then run Techjunkie's javascript trick to change the links<br>
+;reference <a href="http://www.opendcl.com/forum/index.php?topic=1602.0" rel="nofollow noopener">{2}</a><br>
+;;credits to Techjunkie for the genius javascript trick<br>
+;;arguements:<br>
+;;1. HtmlControl - the name of the ODCL HtmlControl eg HtmlTest_HtmlTest_Html1<br>
+;;2. MaxDelay - the maximum acceptable delay in milliseconds before the routine gives up eg 2000<br>
+;;3. TimeInterval - The intervals that the routine tries to correct the links with javascript (MaxDelay should be divisible by TimeInterval)<br>
+(defun HTMLCONTROL_LINKFIX (HtmlControl MaxDelay TimeInterval / TimeElapsed)<br>
+	(setq TimeElapsed 0)<br>
+	(while (&lt; TimeElapsed MaxDelay)<br>
+		(if (not (dcl_Html_GetBusy HtmlControl))<br>
+			(progn;then<br>
+				(dcl_Html_Navigate HtmlControl "javascript:(function(){var a=document.getElementsByTagName('a');for(var i=0;i&lt;a.length;i++){a<em>.target='_top';}})();")<br>
+				(setq TimeElapsed MaxDelay)<br>
+			);endprogn<br>
+			(progn;else<br>
+				(vl-cmdf "_.delay" TimeInterval)<br>
+				(setq TimeElapsed (+ TimeElapsed TimeInterval))<br>
+			);endprogn<br>
+		);endif<br>
+	);endwhile<br>
+);endfun</div>
+</article>
+<article class="post" id="msg7897">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-03-23 17:40 UTC</span>
+  </div>
+  <div class="post-body">The underlying HtmlView control also has an event called OnDocumentComplete; when I get a chance I'll test that event to see if it would resolve the problem.  In any case, it would be a good idea to add a feature request for an event that fires after the control is quiescent.</div>
+</article>
+<article class="post" id="msg7901">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2011-03-24 08:52 UTC</span>
+  </div>
+  <div class="post-body">Done! Thanks Owen.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

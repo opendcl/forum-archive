@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>List Box item data · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 686</p>
+    <h1>List Box item data</h1>
+    <p class="meta">Started by docsaintly ·
+      2009-03-31 19:18 UTC ·
+      4 replies · SMF topic #686</p>
+<article class="post" id="msg3323">
+  <div class="post-head">
+    <span class="post-author">docsaintly</span>
+    <span class="post-date muted">2009-03-31 19:18 UTC</span>
+  </div>
+  <div class="post-body">So I've turned to the help (after searching for working examples) on how the Item data works for the List Box. I see two listings for it under help, one is under properties (as Item Data) , the other is under methods as GetItemdata. They appear to call the same function but note different arguments. After setting the list box contents with<br>
+<br>
+(setq strings (list "String 1" "String 2" "String 3" "String 4"))<br>
+(dcl_ListBox_AddList cover_disc_select_pickdisc strings)<br>
+<br>
+and then trying<br>
+<br>
+(dcl_ListBox_GetItemData cover_disc_select_pickdisc 0)<br>
+<br>
+it always returns 0 no matter which position I select. Any ideas?</div>
+</article>
+<article class="post" id="msg3325">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-03-31 19:27 UTC</span>
+  </div>
+  <div class="post-body">Are you trying to get the selected item?<br>
+If so you'll want to use: dcl_ListBox_GetCurSel<br>
+<a href="http://www.opendcl.com/HelpFiles/ENU/Reference/Method/ListBox/GetCurSel.htm" rel="nofollow noopener">{2}</a><br>
+This will return the index on the selected item, 0,1,2, etc....<br>
+Then if you want it's text use:<br>
+dcl_ListBox_GetItemText<br>
+<a href="http://www.opendcl.com/HelpFiles/ENU/Reference/Method/ListBox/GetItemText.htm" rel="nofollow noopener">{2}</a><br>
+</div>
+</article>
+<article class="post" id="msg3327">
+  <div class="post-head">
+    <span class="post-author">docsaintly</span>
+    <span class="post-date muted">2009-03-31 19:30 UTC</span>
+  </div>
+  <div class="post-body">Thanks BazzaCad, right after i posted i started digging around and noticed the GetItemText function. I assume the Data is for special data you attach to the item?</div>
+</article>
+<article class="post" id="msg3328">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-03-31 19:46 UTC</span>
+  </div>
+  <div class="post-body">Ya it's for the more specific Combo Boxes like the Acad colors, I've never used it with List Boxes.<br>
+Just a tip, you can Double Click on a property in the properties panel &amp; it will bring up help on that topic.<br>
+<br>
+  </div>
+</article>
+<article class="post" id="msg3336">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-01 06:05 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I use ItemData in ListViews, Trees and Grids for adressing specified recordsets in database tables or views. Just imagine a list of groups defined in the database having the structure ID as integer | NAME as char | DESC as longchar. You put the names into the list and put the ID as ItemData using SetItemData method. Whenever the user changed the selection in the list you get the right item not by using the selected name but by getting the ItemData from the selected item. That's one of a million examples how to use ItemData in any kind of OpenDCL lists (combo, listbox, listview, tree, grid).<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

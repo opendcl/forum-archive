@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Address based Zoom-To · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 72</p>
+    <h1>Address based Zoom-To</h1>
+    <p class="meta">Started by nwgeo ·
+      2007-10-18 04:45 UTC ·
+      7 replies · SMF topic #72</p>
+<article class="post" id="msg313">
+  <div class="post-head">
+    <span class="post-author">nwgeo</span>
+    <span class="post-date muted">2007-10-18 04:45 UTC</span>
+  </div>
+  <div class="post-body">After all of the questions I've posted in the "Runtime/AutoLISP" section and the great responses, I feel I owe at least a quick view of what I've been working on these last few days.<br>
+<br>
+A client of mine needs to have a quick way to locate an address within their city using an AutoCAD drawing with many xrefs.    They print out plot plans for the residents who are interested in doing some sort of building activity.  It needs to be simple because it will be operated by non-technical, admin staff [yikes!].  This is not a replacement for a full design drawing, but a quick, paperspace-generated plot of their property.<br>
+<br>
+I cobbled together this project using Kerry Brown's reference to an ADOLisp link: http://acad.fleming-group.com/index.html so I could connect to an Access database.  And, of course, OpenDCL which I just discovered only last week.  Looking at the other examples posted in this section truly humbles me.<br>
+<br>
+The process:<br>
+<br>
+I built a database that contained the X/Y coordinates of a city address.  The user types in a street NUMBER, then the lookup returns all addresses that share that number.  After selecting the desried "full" address, the user clicks the "ZoomTo" button to navigate to that location within the city limits.<br>
+<br>
+Thanks again for all of the people who commented and gave me tips, especially BazzaCAD and his mention of the "EventInvoke" property.  I was dead in the wate without that one.<br>
+<br>
+Quick question: Is there any way to get an image to display with better color depth?  You will notice that the shadows and reflections don't look very nice in the background.  The orignal image looked pretty good [see "DCL_Sample3.jpg" attached] <br>
+<br>
+<br>
+<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg314">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-10-18 07:32 UTC</span>
+  </div>
+  <div class="post-body">Nice job!  Regarding the image color depth, you should post a bug report on SourceForge along with the original image and instructions for reproducing the problem (primarily, what kind of control, and how you added the image, although that may be irrelevant). I don't have much experience with image processing, but I'll have a look at the problem to see if I can fix it. :)</div>
+</article>
+<article class="post" id="msg319">
+  <div class="post-head">
+    <span class="post-author">nwgeo</span>
+    <span class="post-date muted">2007-10-18 14:51 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen,<br>
+<br>
+I did try to change the image from RGB to indexed color [in Photoshop], but I think that the creator of the image used some gradients in the final grahpic for high lighting.  I even tried saving as a GIF, same result.  Looks great in a standard image viewer.<br>
+<br>
+Is there a way to draw a straight line on the forms?  I like being able to draft a rectangle shape, but would like to underline objects too.</div>
+</article>
+<article class="post" id="msg320">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2007-10-18 15:41 UTC</span>
+  </div>
+  <div class="post-body">I use the rectangle control and give it a height of say 2.  This form uses them for the line under the "toolbar" and for a seperator:<br>
+<br>
+<img src="http://www.studio2405.com/jdb/screenshot.gif" alt="" loading="lazy"></div>
+</article>
+<article class="post" id="msg321">
+  <div class="post-head">
+    <span class="post-author">nwgeo</span>
+    <span class="post-date muted">2007-10-18 15:48 UTC</span>
+  </div>
+  <div class="post-body">jb,<br>
+<br>
+Thanks, that's a good idea.  This is a great library of tools and I look forward to it's continued development.  I stepped into this at release 4.x so I know I am not fully appreciating all of the development that went on prior to October 15th.<br>
+</div>
+</article>
+<article class="post" id="msg330">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2007-10-19 17:37 UTC</span>
+  </div>
+  <div class="post-body">Looks great. I wonder how it would look with the title bar turned off, since you have that nice background image.<br>
+(But then you may not be able to move it on screen, since the image is covering the form &amp; you couldn't grab the form to move it)</div>
+</article>
+<article class="post" id="msg331">
+  <div class="post-head">
+    <span class="post-author">nwgeo</span>
+    <span class="post-date muted">2007-10-19 17:42 UTC</span>
+  </div>
+  <div class="post-body">The display is already changing a bit.  I've dropped off the "OpenDatabase" button, opting to open and close the db connection with the Form_Initialize event.  <br>
+<br>
+BTW, what exactly does the "BeginGroup" property for an option button refer to?<br>
+<br>
+Thanks for the comment.</div>
+</article>
+<article class="post" id="msg334">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-10-19 20:24 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=nwgeo link=topic=72.msg331#msg331 date=1192815736 wrote:</cite><br>
+BTW, what exactly does the "BeginGroup" property for an option button refer to?<br>
+</blockquote><br>
+<br>
+Grouped option buttons are mutually exclusive (check one, and all others in the group become unchecked).  The 'BeginGroup' property marks the first option button in a group, in order to separate different groups from each other. :)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

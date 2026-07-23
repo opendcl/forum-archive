@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Batch drawing processor · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 408</p>
+    <h1>Batch drawing processor</h1>
+    <p class="meta">Started by jb ·
+      2008-08-15 16:57 UTC ·
+      27 replies · SMF topic #408</p>
+<article class="post" id="msg1831">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-08-15 16:57 UTC</span>
+  </div>
+  <div class="post-body">This was originally posted over at theSwamp.org.<br>
+<br>
+Using nothing more than a custom partial menu and OpenDCL!<br>
+<br>
+<span style="color:red">Warning: this is a batch processing program that opens, modifies and closes drawings without giving you the opportunity to interact.  So before trying it out, set up a test folder with a few drawings in it.</span><br>
+<br>
+How to use:<br>
+Unzip the files to a folder, making sure it's in AutoCAD's search path.  Menuload the partial menu, Batch.mns.  Now for some reason the menuload command doesn't load the corresponding .mnl file so you'll have to open up a fresh drawing to load the BatchProject.lsp.  Yes, this could also be done with an acadDoc.lsp in lieu of the menu.<br>
+<br>
+The calling command is "Batchthis".<br>
+<br>
+<img src="http://i283.photobucket.com/albums/kk302/bothetraveler/Batch.jpg?t=1218812976" alt="" loading="lazy"><br>
+<br>
+The BatchProject.lsp file is pretty well documented (well extremely well documented for me!) so I won't go into much detail here.  The Batch.odcl file is the OpenDCL project definition file that is edited in the studio editor.  Batch.lsp is the compiled code that I cut and paste into BatchProject.lsp.  Now you can just use the Batch.lsp in the Studio Editor and do away with the Batch.odcl, but I like to keep them separate.  Why? well, once I accidental screwed up the OpenDCL lisp file in the VLIDE editor.  :oops:<br>
+<br>
+The place in the lisp that you'll add the code that modifies the drawing is here:<br>
+<br>
+<pre class="code"><code>(defun Batch:Process (/ )<br>
+      (dcl_Control_SetCaption<br>
+	Batch_00_DWGName<br>
+	(strcat "Processing " (getvar "dwgname"))<br>
+	)<br>
+    ;run the process here - put your edit functions here<br>
+<br>
+      (command "circle" "0,0,0" "50")<br>
+<br>
+    ;close the document<br>
+      (command "close" "n")<br>
+      (princ)<br>
+      (princ)<br>
+)</code></pre><br>
+<br>
+You'll see that I use nothing fancy, just some command calls.  You can add any type of lisp stuff.  I'm going to set up some subs and just call them here like: (kb_EditTitleBLock) - stuff like that.<br>
+<br>
+You'll also notice I just use (command "close" . . . ) to close the document.  This is a beta because I want to speed things up by processing all the drawings first and then use (vla-close to save and close all the processed drawings.  I haven't figured out haw to not close the calling document yet  - but I'm working on it.<br>
+<br>
+Well, have at it and let me know what you think.<br>
+<br>
+jb<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/461/Batch.zip">Batch.zip</a> <span class="muted">(34979 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1842">
+  <div class="post-head">
+    <span class="post-author">cmwade77</span>
+    <span class="post-date muted">2008-08-26 16:33 UTC</span>
+  </div>
+  <div class="post-body">Hopefully this works better than my attempt at doing something like this, I will have to take a look, thank you so much.</div>
+</article>
+<article class="post" id="msg1879">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-09-03 12:56 UTC</span>
+  </div>
+  <div class="post-body">Had any luck?<br>
+<br>
+Make sure to let us know if you come up with anything interesting!</div>
+</article>
+<article class="post" id="msg1918">
+  <div class="post-head">
+    <span class="post-author">cmwade77</span>
+    <span class="post-date muted">2008-09-15 20:57 UTC</span>
+  </div>
+  <div class="post-body">This was a great starting point, unfortunately I do not believe mine would be of any interest, as it is so heavily customized for our office standards. But again, thank you to the OP, I still have a few bugs to iron out.</div>
+</article>
+<article class="post" id="msg3654">
+  <div class="post-head">
+    <span class="post-author">cmwade77</span>
+    <span class="post-date muted">2009-05-07 22:20 UTC</span>
+  </div>
+  <div class="post-body">Ok, so now that 2010 no longer includes VBA, how can I open and close documents without using the VBASTMT, so that I don't have to install it for this one routine, so far everything that I have tried has failed miserably.</div>
+</article>
+<article class="post" id="msg3771">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2009-05-25 15:59 UTC</span>
+  </div>
+  <div class="post-body">Owen . . . oh Owen . . .<br>
+<br>
+Maybe the <em>great one </em> can roll the ARX function for opening a drawing into OpenDCL?  How hard would it be / would it conflict with a product(s) already on the market??</div>
+</article>
+<article class="post" id="msg3772">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-25 16:43 UTC</span>
+  </div>
+  <div class="post-body">What exactly is the problem? I'll bet it can be solved with a little creative lisp.</div>
+</article>
+<article class="post" id="msg3773">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-25 18:27 UTC</span>
+  </div>
+  <div class="post-body">... sometimes I'll do such things via ObjectDBX<br>
+<br>
+<br>
+(defun DBX_OPEN (strFile / strRel reaRel strDBX oDbx)<br>
+  (setq strRel (substr (getvar "ACADVER") 1 2))<br>
+  (setq reaRel (float strRel))<br>
+  (if (&lt;= reaRel 15.0)<br>
+    (setq strDBX "ObjectDBX.AxDbDocument")<br>
+    (setq strDBX (strcat "ObjectDBX.AxDbDocument." strRel))<br>
+  ); if<br>
+  <br>
+  (if (vl-catch-all-error-p (setq oDbx (vl-catch-all-apply 'vla-GetInterfaceObject (list (vlax-get-acad-object) strDBX))))<br>
+    (setq oDbx nil)<br>
+    (if (vl-catch-all-error-p (vl-catch-all-apply 'vla-open (list oDbx strFile)))<br>
+      (progn<br>
+	(vlax-release-object oDbx)<br>
+        (setq oDbx nil)<br>
+      ); progn<br>
+    ); if<br>
+  ); if<br>
+  oDbx<br>
+); DBX_OPEN<br>
+<br>
+(defun LIST_LAYERS (strDWG / oDbx oLayers lstLayers)<br>
+  (setq oDbx (DBX_OPEN strDWG))<br>
+  (setq oLayers (vla-get-layers oDbx))<br>
+  (vlax-for oLayer oLayers<br>
+    (setq lstLayers (cons (vla-get-name oLayer) lstlayers))<br>
+    (vlax-release-object oLayer)<br>
+  ); vlax-for<br>
+  (vlax-release-object oLayers)<br>
+  (vl-catch-all-apply 'vla-close (list oDbx))<br>
+  (vlax-release-object oDbx)<br>
+  (setq lstLayers (vl-sort lstLayers '(lambda (a b) (&lt; (strcase a) (strcase b)))))<br>
+  lstLayers<br>
+); LIST_LAYERS<br>
+<br>
+(vl-load-com)<br>
+(LIST_LAYERS "MyDwg.dwg")<br>
+<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3774">
+  <div class="post-head">
+    <span class="post-author">Marco Jacinto</span>
+    <span class="post-date muted">2009-05-25 20:16 UTC</span>
+  </div>
+  <div class="post-body">what i do to open and close a file (or a lot of them) is to open a second instance of AutoCAD and do all the batch processing here, having it invisible makes it looks like if it is in the same session of AutoCAD.</div>
+</article>
+<article class="post" id="msg3790">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2009-05-27 17:41 UTC</span>
+  </div>
+  <div class="post-body">Owen the problem with lisp is because of document object dependency: vla-open returns to the calling document to complete, where as the VBA equivalent does not ( don't remember the syntax ).  I used the command "vbastmnt" to issue the open document function.  So, in 2010 if the VBA module isn't loaded I'm assuming the function fails ( don't have 2010 ).<br>
+<br>
+To my knowledge there is no way to open a document with AutoLISP / VLISP and not return to dependent calling document.<br>
+<br>
+Fred: I use ObjectDBX for a multiple of things and am well aware of it's potential, but it has some major problems with the Verticals ( I use Architecture ) so for this routine I wanted something with more control and access to the defined AEC commands.<br>
+<br>
+jb</div>
+</article>
+<article class="post" id="msg3791">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-27 18:36 UTC</span>
+  </div>
+  <div class="post-body">I've always used Marco's approach for batch processing (opening an invisible session of AutoCAD in the background). However, I think you could use (dcl_SendString) to duplicate the VBA Open functionality.</div>
+</article>
+<article class="post" id="msg3802">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-28 05:50 UTC</span>
+  </div>
+  <div class="post-body">Hi James,<br>
+<br>
+<blockquote class="quote">it has some major problems with the Verticals</blockquote><br>
+<br>
+Oha, just to extend my knowledge: which problems this could be? Our customers use mainly Map and Civil, some Architecture, too.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3805">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-05-28 10:11 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Perhaps something like<br>
+<br>
+(defun c:OpenDwg ()<br>
+    ;; CodeHimbelongaKdub ©  May2009 <br>
+    (vla-activate<br>
+        (vla-open (vla-get-documents<br>
+                      (vla-get-application (vlax-get-acad-object))<br>
+                  )<br>
+                  "c:\\Test_Drawing51.dwg"<br>
+        )<br>
+    )<br>
+)</div>
+</article>
+<article class="post" id="msg3806">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-05-28 10:32 UTC</span>
+  </div>
+  <div class="post-body">Thank goodness for Copernic desktop Search<br>
+searched my hardrives for vla-activate<br>
+This was from Frank Whaley (fairly elderley :) ):-<br>
+<br>
+<br>
+(defun cmdOpen (name)<br>
+  ;;; posted by Frank Whaley<br>
+  (vl-load-com)<br>
+  (if (= 0 (getvar "SDI"))<br>
+    (vla-activate (vla-open (vla-get-documents (vlax-get-acad-object)) name))<br>
+    (vla-sendcommand<br>
+        (vla-get-activedocument<br>
+            (vlax-get-acad-object))<br>
+                (strcat "(command \"_.OPEN\")\n" name "\n") )<br>
+  )<br>
+)</div>
+</article>
+<article class="post" id="msg3815">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2009-05-28 19:30 UTC</span>
+  </div>
+  <div class="post-body">Fred: specifically with Styles and attached "extra" data such as materials, propertyset data, classifications, etc..  Say you have a door style with a classification defined.  When the door is imported via ObjectDBX, and the classification exists, a new classification is created: MyClass.  I ran into this along time ago and I think it happens with property data as well.  My work-around was to create a block with an object representing the style in the block and then use 'ImportBlock which brings the style in cleaner: but still won't work with classifications.  So I don't use classifications.<br>
+<br>
+Owen: What argument to use with dcl_sendString? ".Open "?<br>
+<br>
+jb</div>
+</article>
+<article class="post" id="msg3817">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-28 20:30 UTC</span>
+  </div>
+  <div class="post-body">I didn't look at your original code, but presumably something like (dcl_SendString "FILEDIA 0 _OPEN \"MyDrawing.dwg\" FILEDIA 1 ").</div>
+</article>
+<article class="post" id="msg3829">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2009-05-29 18:18 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen - when I have the time I'll give it a try.<br>
+<br>
+Great Job! Sorry I can't be more involved.</div>
+</article>
+<article class="post" id="msg3837">
+  <div class="post-head">
+    <span class="post-author">cmwade77</span>
+    <span class="post-date muted">2009-05-29 23:48 UTC</span>
+  </div>
+  <div class="post-body">Thank you all, I will also have to give it a try, I also think that once I have it all working, that it might now be something that is of some use to everyone on here and will post it, as it is now quite a powerful routine. Right now, I have it switching to SDI mode, but I prefer not to do that for various reasons.</div>
+</article>
+<article class="post" id="msg3838">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-05-30 00:50 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=cmwade77 link=topic=408.msg3837#msg3837 date=1243640894 wrote:</cite><br>
+&lt; ... &gt; Right now, I have it switching to SDI mode, but I prefer not to do that for various reasons.<br>
+</blockquote><br>
+<br>
+yes, There is/was talk of eliminating SDI mode ...<br>
+<a href="http://through-the-interface.typepad.com/through_the_interface/2009/04/sdi-the-end-is-nigh.html" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg3860">
+  <div class="post-head">
+    <span class="post-author">cmwade77</span>
+    <span class="post-date muted">2009-06-02 19:09 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=408.msg3806#msg3806 date=1243506720 wrote:</cite><br>
+Thank goodness for Copernic desktop Search<br>
+searched my hardrives for vla-activate<br>
+This was from Frank Whaley (fairly elderley :) ):-<br>
+<br>
+<br>
+(defun cmdOpen (name)<br>
+  ;;; posted by Frank Whaley<br>
+  (vl-load-com)<br>
+  (if (= 0 (getvar "SDI"))<br>
+    (vla-activate (vla-open (vla-get-documents (vlax-get-acad-object)) name))<br>
+    (vla-sendcommand<br>
+        (vla-get-activedocument<br>
+            (vlax-get-acad-object))<br>
+                (strcat "(command \"_.OPEN\")\n" name "\n") )<br>
+  )<br>
+)<br>
+</blockquote><br>
+<br>
+Unfortunately this does not seem to work, using SDI mode does, but this doesn't. I really want to get rid of SDI mode in my routine, it would help a lot. I have attached here in hopes that someone can help me out, I have tried various versions of the code. Please note that this is related to the Cleanup tab on here. As you can see we use this tool for a lot more than just batch scripting. Please note that as I have this posted, it is using SDI mode. This works and works well, but if SDI mode is to be removed, then it won't work anymore.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/761/RTOOLS.LSP">RTOOLS.LSP</a> <span class="muted">(44866 bytes)</span></li><li><a href="../attachments/762/RTOOLS.odcl">RTOOLS.odcl</a> <span class="muted">(7727 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3861">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-02 20:39 UTC</span>
+  </div>
+  <div class="post-body">Hi, cmwade77,<br>
+<br>
+I tried to start, but it doesn't work because some functions are missing: DOS_GETDIR.<br>
+BTW, please test your dialog when resizing. The calendar control is very small at my desktop. Can you describe the steps what to do/click?<br>
+<br>
+1. Make sure that your code will be loaded in all newly loaded drawings (for instance using vl-load-all).<br>
+2. Make sure that the dialog content or/and the variables are updated when the user switches between the drawings (using the event OnDocActivate).<br>
+3. Make sure that the dialog will be closed if all drawings are closed (using the event OnEnteringNoDocState).<br>
+<br>
+ADN made a note towards recover:<br>
+<blockquote class="quote">Keep in mind the Recover command cannot be invoked using SendCommand()...</blockquote><br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3862">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-02 21:42 UTC</span>
+  </div>
+  <div class="post-body">cmwade77, I had a log try, but I'll give up now. I will try to built an own example for you to compare, but not now, I'm tired.<br>
+I'll be back soon.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3863">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2009-06-02 22:43 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=408.msg3861#msg3861 date=1243975191 wrote:</cite><br>
+<br>
+I tried to start, but it doesn't work because some functions are missing: DOS_GETDIR.<br>
+<br>
+</blockquote><br>
+<br>
+That's from a free tool DOSLib available at <a href="http://download.rhino3d.com/download.asp?id=doslib" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg3864">
+  <div class="post-head">
+    <span class="post-author">cmwade77</span>
+    <span class="post-date muted">2009-06-02 22:52 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I forgot to post that DOSLib (which can also be downloaded at: <a href="http://www.en.na.mcneel.com/doslib.htm" rel="nofollow noopener">{2}</a> ) is required for a lot of my functions. I am working on removing the dependency for this, but it is convenient.<br>
+<br>
+The routine that I posted shouldn't be using Recover, I just had one set of stubborn files that I needed it for, but should be remarked out now, I will be doing something in the UI for that later.<br>
+<br>
+To use the routine, you need to remark out anything you don't need in the c:rtools_bsr routine, there are a lot of powerful things going on there, but some are company specific of course.<br>
+<br>
+Step by step instructions once you have done that:<br>
+Type rtools to open the palette<br>
+Make sure you only have one open drawing<br>
+Click on the cleanup tab<br>
+Select the folder that you have the files in that you want to cleanup<br>
+Select the folder that you want to copy the files to once you are done<br>
+Click Clean Now<br>
+<br>
+Everything should be done automatically from this point, please note that the rtools_bsr routine does the following:<br>
+<br>
+Converts all xrefs from overlay to attach<br>
+Changes all xref paths to relative<br>
+Changes the drawing from color based plotting to style based plotting (you may wish to remark out this line)<br>
+Changes all items to bylayer for color and plot style<br>
+Changes all layers to color 8 and to plot with a shaded plot style (again you may wish to modify this line)<br>
+Completely Purges the drawing<br>
+<br>
+There are a few other items as well, but this is the basic overview of what it does as I have it setup now.</div>
+</article>
+<article class="post" id="msg3865">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-03 05:51 UTC</span>
+  </div>
+  <div class="post-body">Hm, I'm just thinking about doing these points by ObjectDBX or by script. RECOVER only works with script.<br>
+Fred</div>
+</article>
+<article class="post" id="msg3867">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-03 12:28 UTC</span>
+  </div>
+  <div class="post-body">Hi cmwade77, I send you something to test with MDI interface.<br>
+Yes, it is a completely different project to yours but maybe it fences your desires.<br>
+<br>
+1. Selecting a source folder all the drawings in it will be shown in the list below.<br>
+2. Not existing folders will be created by Scripting.FileSystemObject object.<br>
+3. If no file is selected and you press <strong>Clean it up now!</strong> all the files will be cleaned.<br>
+4. If some files are selected only the selected files will be cleaned up.<br>
+5. If you doubleclick a file in the list this files will be cleaned.<br>
+6. The grid at the bottom shows the options what to clean or how the file is to be opened or saved.<br>
+7. The splitter between grid and listbox shows you how to work with the geometry (compare your settings with the settings of this project).<br>
+8. The grid will be replaced by a multiline textbox showing the protocol of current actions. This sample shows how to add line by line and making sure that the last line will be visible.<br>
+9. During the progress the button <strong>Clean it up now!</strong> turns to <strong>Stop it now!</strong> so the user has the chance to cancel the progress after the active loop. After clicking <strong>Stop it now!</strong> the button turns to <strong>Cancelling...</strong> until the progress stops.<br>
+<br>
+The problem was the RECOVER command. In this case you have to work with scripts. But you can call your own cleaning operations from a script, too. You will find such a solution in this project. But to use this it is necessary to load the lisp in all files. One solution could be is calling (vl-load-all "clean.lsp") at the beginning (instead of load). Although the example from ADN shows multiple RECOVER commands within one script file it stops right before the next file will be opened. I took this negative experience to my advantage and created an option to exit the loop manually (as mentioned above at point 9).<br>
+<br>
+My English is not good but I hope you understand my dialog.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/763/clean.odcl">clean.odcl</a> <span class="muted">(2718 bytes)</span></li><li><a href="../attachments/765/clean.LSP">clean.LSP</a> <span class="muted">(20266 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4197">
+  <div class="post-head">
+    <span class="post-author">susanruswick</span>
+    <span class="post-date muted">2009-07-11 01:13 UTC</span>
+  </div>
+  <div class="post-body">wow you sure know a lot about this stuff jb.</div>
+</article>
+<article class="post" id="msg4208">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2009-07-13 16:00 UTC</span>
+  </div>
+  <div class="post-body">just enough to be extremely dangerous . . . ;)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Linking a slider control with a textbox · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1747</p>
+    <h1>Linking a slider control with a textbox</h1>
+    <p class="meta">Started by Iulian ·
+      2012-01-31 16:02 UTC ·
+      2 replies · SMF topic #1747</p>
+<article class="post" id="msg8583">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2012-01-31 16:02 UTC</span>
+  </div>
+  <div class="post-body">Hi, I try to use for the first time a slider control, and I need some help with the following:<br>
+<br>
+On my form I have a textbox in which integer numbers are inserted, and I want to link a slider with the textbox:<br>
+<br>
+The min value of the slider I want to be 85% of the value which in the textbox is inserted, and the max value of the slider I want to be 115% of the same value.<br>
+<br>
+<br>
+(dcl_Control_SetText gaura_Form4_TextBox1 (rtos vc)) ;vc- is the variable that sets the integer number in TextBox1<br>
+<br>
+(dcl_Control_SetMaxValue gaura_Form4_Slider1 (rtos (* vc (/ 115 100)) 2 0)); there I try to set the max value of the slider, but it won't...<br>
+<br>
+; <strong>vc</strong> is an integer value.<br>
+<br>
+How can I do this?<br>
+<br>
+Thanks.<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8584">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-01-31 17:01 UTC</span>
+  </div>
+  <div class="post-body">(rtos ...) creates a string instead of an integer.<br>
+Try:<br>
+(dcl_Control_SetMaxValue gaura_Form4_Slider1 (fix (* vc (/ 115.0 100.0))))<br>
+<br>
+You should also be aware of this:<br>
+(/ 115 100) =&gt; 1<br>
+(/ 115.0 100.0) =&gt; 1.15</div>
+</article>
+<article class="post" id="msg8585">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2012-01-31 17:57 UTC</span>
+  </div>
+  <div class="post-body">Thank you for the answer.<br>
+Iulian.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

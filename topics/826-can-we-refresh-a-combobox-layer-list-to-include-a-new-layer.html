@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Can we refresh a ComboBox Layer List to include a new layer added · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 826</p>
+    <h1>Can we refresh a ComboBox Layer List to include a new layer added</h1>
+    <p class="meta">Started by zeeboy ·
+      2009-06-22 18:44 UTC ·
+      3 replies · SMF topic #826</p>
+<article class="post" id="msg4098">
+  <div class="post-head">
+    <span class="post-author">zeeboy</span>
+    <span class="post-date muted">2009-06-22 18:44 UTC</span>
+  </div>
+  <div class="post-body">I've got a dialog to that has combo box layer lists.  this dialog also has buttons next to each combo box layer list for the user to click and open a 2nd dialog where they can set the properties to create a layer.  If the exit the 2nd dialog creating the layer I want to update the combo box layer lists.<br>
+<br>
+Can I do that easily?  I haven't found a method for it in my search yet.<br>
+<br>
+Thanks!</div>
+</article>
+<article class="post" id="msg4100">
+  <div class="post-head">
+    <span class="post-author">zeeboy</span>
+    <span class="post-date muted">2009-06-23 14:48 UTC</span>
+  </div>
+  <div class="post-body">I solved it by closing the 1st dialog then opening the 2nd.  Once the 2nd is complete I reopen the 1st and all is good.<br>
+<br>
+The only trouble I had was with closing the 1st dialog and reopening was I couldn't use the Cancel event.  I'm not sure why that event is called with  (dcl_Form_Close psSetLayers_main {DialogStatus [as Long]}) but it was.</div>
+</article>
+<article class="post" id="msg4101">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-23 15:36 UTC</span>
+  </div>
+  <div class="post-body">You can use (dcl_ComboBox_Clear) to refresh the layer list.  I don't understand the problem with the cancel event. Can you describe it more clearly?</div>
+</article>
+<article class="post" id="msg4102">
+  <div class="post-head">
+    <span class="post-author">zeeboy</span>
+    <span class="post-date muted">2009-06-23 15:53 UTC</span>
+  </div>
+  <div class="post-body">the (dcl_ComboBox_Clear works great.  Thanks!<br>
+<br>
+regarding the OnCancel, I had the following:<br>
+(defun c:psSetLayers_cmbbxNLWallLines_OnClicked    ()(psSetLayers_CreateNewLayer"Wall Lines"))<br>
+(defun c:psSetLayers_cmbbxNLDoorLines_OnClicked    ()(psSetLayers_CreateNewLayer"Door Lines"))<br>
+(defun c:psSetLayers_cmbbxNLDoorJambs_OnClicked    ()(psSetLayers_CreateNewLayer"Door Jambs"))<br>
+(defun c:psSetLayers_cmbbxNLWindowLines_OnClicked  ()(psSetLayers_CreateNewLayer"Window Lines"))<br>
+(defun c:psSetLayers_cmbbxNLWindowJambs_OnClicked  ()(psSetLayers_CreateNewLayer"Window Jambs"))<br>
+(defun c:psSetLayers_cmbbxNLWindowGlass_OnClicked  ()(psSetLayers_CreateNewLayer"Window Glass"))<br>
+(defun c:psSetLayers_cmbbxNLWindowSills_OnClicked  ()(psSetLayers_CreateNewLayer"Window Sills"))<br>
+(defun c:psSetLayers_grphbtnCancel_OnClicked()(dcl_Form_Close psSetLayers_main)(setq sy%cancel_clicked T))<br>
+(defun c:psSetLayers_grphbtnCancel_OnCancel()(dcl_Form_Close psSetLayers_main)(setq sy%on_cancel_clicked T))<br>
+(defun c:psSetLayers_main_OnCancelClose(in%canceling)(dcl_Form_Close psSetLayers_main)(setq sy%close T))<br>
+(defun psSetLayers_CreateNewLayer<br>
+  (st%title_suffix)<br>
+  (dcl_Form_Close psSetLayers_main)<br>
+  (zz^psArchitectural-CreateNewLayers st%title_suffix)<br>
+)<br>
+<br>
+when one of the first 7 events were triggered was the OnCancel event was triggered after (dcl_Form_Close psSetLayers_main) in psSetLayers_CreateNewLayer.<br>
+<br>
+I hope that helps.<br>
+<br>
+Thanks for pointing me to: (dcl_ComboBox_Clear!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

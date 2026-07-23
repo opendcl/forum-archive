@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stop lisp execution with modeless form close button · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2263</p>
+    <h1>Stop lisp execution with modeless form close button</h1>
+    <p class="meta">Started by Jim ·
+      2015-04-26 00:09 UTC ·
+      7 replies · SMF topic #2263</p>
+<article class="post" id="msg11370">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2015-04-26 00:09 UTC</span>
+  </div>
+  <div class="post-body">I have an animation running in a lisp expression. The expression tests a variable that stops execution when a button is pressed on a modeless dialog displayed during the animation. <br>
+;;cancel<br>
+(defun c:TahlCAM/RunSpeed/btClose#OnClicked	()<br>
+  (setq &gt;animate nil)<br>
+  (if (DCL_Form_IsActive TahlCAM/RunSpeed)<br>
+      (DCL_Form_Close TahlCAM/RunSpeed)<br>
+  )<br>
+)<br>
+<br>
+This works as expected in Acad2004 but does not respond in Acad2010.<br>
+Can anyone suggest a solution?<br>
+To my knowledge there is only a difference in acad version and arx version.</div>
+</article>
+<article class="post" id="msg11371">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-04-26 16:20 UTC</span>
+  </div>
+  <div class="post-body">What exactly do you mean by "does not respond"? Is it because DCL_Form_IsActive is not returning what you expect?</div>
+</article>
+<article class="post" id="msg11372">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2015-04-26 19:44 UTC</span>
+  </div>
+  <div class="post-body">The modeless form's titlebar has focus but is totally unresponsive to the mouse while routine is executing.<br>
+<br>
+If the callback was being evaluated  (setq &gt;animate nil) would occur. <br>
+This stops the animation and the routine continues the execution without it.<br>
+<br>
+The OncCicked event works properly except when inside the lisp routine.<br>
+Acad2015 and Bricscadv15 both exhibit this behavior. Acad2004 works properly.</div>
+</article>
+<article class="post" id="msg11373">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-04-26 21:17 UTC</span>
+  </div>
+  <div class="post-body">Ok, I'm assuming that by "lisp animation" you mean a loop of some sort, correct? if so, then there needs to be something inside the loop that gives Windows a chance to process messages. There's no way to guess without seeing the code why it might be different in R2004, but you should probably put something inside the loop explicitly for giving AutoCAD a chance to catch up with input events while the loop runs. Maybe something as simple as (princ) or (grtext) would work.</div>
+</article>
+<article class="post" id="msg11374">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2015-04-26 23:26 UTC</span>
+  </div>
+  <div class="post-body">I tried (princ) and (grtext). Only after pressing escape did the routine break. It broke near the (princ) which said you were on the right track. One additional detail. Bricscad crashes if I try to close without first closing the modeless form on left on the display.</div>
+</article>
+<article class="post" id="msg11375">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-04-27 05:03 UTC</span>
+  </div>
+  <div class="post-body">There might be undesirable command line side effects, but your animation would be much more efficient if you use the [url=http://www.opendcl.com/HelpFiles/index.php?page=Reference/Event/Timer.htm\OnTimer event to update your animation instead of running it in a loop.</div>
+</article>
+<article class="post" id="msg11377">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2015-04-30 01:53 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+I played with the OnTimer and found that it waited till my routine was done. I am glad to find out you added that event. <br>
+<br>
+I have been thinking of what you said about getting my routine out of the big loop for some time now.<br>
+Thanks for all your efforts.<br>
+Jim</div>
+</article>
+<article class="post" id="msg11378">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-04-30 02:55 UTC</span>
+  </div>
+  <div class="post-body">You're welcome, Jim. If OnTimer didn't work, then it sounds like you've still got something running in a loop that doesn't yield to allow message processing. The reason for using OnTimer is to eliminate the loop altogether.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

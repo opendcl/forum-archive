@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>File and Command Dialogs are disabled after OpenDCL Palette is Loaded · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2487</p>
+    <h1>File and Command Dialogs are disabled after OpenDCL Palette is Loaded</h1>
+    <p class="meta">Started by donnieworld ·
+      2017-03-09 21:32 UTC ·
+      2 replies · SMF topic #2487</p>
+<article class="post" id="msg12424">
+  <div class="post-head">
+    <span class="post-author">donnieworld</span>
+    <span class="post-date muted">2017-03-09 21:32 UTC</span>
+  </div>
+  <div class="post-body">After I load an OpenDCL project that contains a palette, the file dialog boxes and command dialog boxes in BricsCAD are not displayed. The command line version of commands are run. Setting FILEDIA and CMDDIA do not change the behavior.<br>
+<br>
+Any help is appreciated.</div>
+</article>
+<article class="post" id="msg12425">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2017-03-11 18:13 UTC</span>
+  </div>
+  <div class="post-body">The most common cause of this is reset system variables (by a palette event handler). If you're certain it's not a system variable issue, then I'd test the Palette sample (OPENDCLDEMO -&gt; double-click on Palette) to see if it works correctly. Dialogs are not displayed if a lisp function is executing, so maybe somehow whatever lisp code you use to load your palette is stuck and never returns while an inner function is executing your commands.</div>
+</article>
+<article class="post" id="msg12428">
+  <div class="post-head">
+    <span class="post-author">donnieworld</span>
+    <span class="post-date muted">2017-03-14 16:49 UTC</span>
+  </div>
+  <div class="post-body">The demo runs and behaves as expected. It's my code ... makes perfect sense, thanks!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

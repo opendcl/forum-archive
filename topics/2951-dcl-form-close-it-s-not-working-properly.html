@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl-Form-Close It's not working properly · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2951</p>
+    <h1>dcl-Form-Close It's not working properly</h1>
+    <p class="meta">Started by tujn08 ·
+      2025-03-04 15:24 UTC ·
+      1 replies · SMF topic #2951</p>
+<article class="post" id="msg14174">
+  <div class="post-head">
+    <span class="post-author">tujn08</span>
+    <span class="post-date muted">2025-03-04 15:24 UTC</span>
+  </div>
+  <div class="post-body">I have a problem. I want to close the form to draw a table using lisp. The form closes, immediately writes that the point is incorrect, requests the point again, Then the form opens. What to do?<br>
+<br>
+<pre class="code"><code><br>
+(defun c:Untitled2/Dcl-2/TB6#OnClicked (/) <br>
+	  	;(get_data)<br>
+		(dcl-Form-Close Untitled2/Dcl-2)<br>
+		;(dcl-Form-Hide Untitled2/Dcl-2)<br>
+		(princ)<br>
+		(setq pt (getpoint "click"))<br>
+(command "_.table" "_A" 4 "_S" "Standard" "_W" 60 pt (list (+ (* 60 4) (nth 0 pt)) (nth 1 pt) (nth 2 pt)) )<br>
+)<br>
+<br>
+</code></pre></div>
+</article>
+<article class="post" id="msg14175">
+  <div class="post-head">
+    <span class="post-author">tujn08</span>
+    <span class="post-date muted">2025-03-04 15:43 UTC</span>
+  </div>
+  <div class="post-body">(setq pt (getpoint "sdfg"))<br>
+	(command "_point" pt)<br>
+<br>
+I found out that any command via command causes such a problem. And after closing AutoCAD, some background task starts running in the processes for AutoCAD and loading the processor.<br>
+<br>
+how do I make the commands work correctly?</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

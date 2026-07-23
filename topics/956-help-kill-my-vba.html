@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help kill my VBA · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 956</p>
+    <h1>Help kill my VBA</h1>
+    <p class="meta">Started by bazzacad ·
+      2009-10-02 23:27 UTC ·
+      9 replies · SMF topic #956</p>
+<article class="post" id="msg4800">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-02 23:27 UTC</span>
+  </div>
+  <div class="post-body">Hi guys, I use this small VBA code to close my current DWG &amp; open anther DWG.<br>
+Now that VBA is semi removed from Acad2010 (yes I know I can download it), I'd like to kill all my VBA code, if possible.<br>
+Does anyone have a way to open a DWG &amp; close the calling DWG with VLisp?<br>
+<br>
+<pre class="code"><code><br>
+Public Sub CloseCurrentOpenPath()<br>
+  Dim ad As AcadDocument<br>
+  Dim pth As String<br>
+  Dim CloseFile As String<br>
+  Dim Response As Integer<br>
+  <br>
+  Set ad = ActiveDocument<br>
+ <br>
+  pth = ad.GetVariable("users2")<br>
+  <br>
+  If Not ad.GetVariable("DBMOD") = 0 Then<br>
+    Response = MsgBox("Do you want to save changes to " &amp; ad.FullName &amp; "?", vbYesNoCancel + vbExclamation + vbDefaultButton1, "TMaCAD")<br>
+    If Response = vbYes Then<br>
+      If ad.GetVariable("WRITESTAT") = 1 Then<br>
+        ad.Save<br>
+      End If<br>
+    ElseIf Response = vbCancel Then<br>
+      Exit Sub<br>
+    End If<br>
+  End If<br>
+    <br>
+  ad.Close False<br>
+  <br>
+  If pth &lt;&gt; "" Then<br>
+    Application.Documents.Open pth<br>
+  End If<br>
+  <br>
+End Sub<br>
+</code></pre></div>
+</article>
+<article class="post" id="msg4802">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-02 23:55 UTC</span>
+  </div>
+  <div class="post-body">Hm, have you ever thought about a .NET DLL with a LISP-function that would do that?<br>
+<br>
+If you really want to solve this via LISP I can imagine to do it this way:<br>
+<ul><br>
+Make sure that another drawing beside the current drawing is open (otherwise after closing the current drawing Lisp cannot be executed anymore).<br>
+Show a modeless form. The modeless form has an active event OnDocActivated. In a label there is written: "Wait until reopening drawing has finished..." and below it there is a readonly textbox with the fullname of the drawing to reopen.<br>
+Close the current drawing.<br>
+The other drawing is going to get active. In this moment the event OnDocActivated is called. In the event function the name of the file to reopen can be read out from the textbox. And if this file can still be found (maybe a nervous colleague has deleted my file meanwhile) it will be opened.<br>
+I think you are using a technology to load your app automatically to each newly opened drawing (via vl-load-all or similiar). In the end of your lisp there is a line which checks if the modeless form is active. In this case close it.<br>
+</ul><br>
+<br>
+Hm, I feel it is worth to test it.  ;)<br>
+Fred</div>
+</article>
+<article class="post" id="msg4803">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-03 00:44 UTC</span>
+  </div>
+  <div class="post-body">Hi, it's a quarter to 3 in the night - at this time I have the best ideas! <br>
+Barry, I send you a small example. Note: load the lisp via (vl-load-all reopen.lsp").<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/947/reopen.LSP">reopen.LSP</a> <span class="muted">(2291 bytes)</span></li><li><a href="../attachments/948/reopen.odcl">reopen.odcl</a> <span class="muted">(1192 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4805">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-03 02:38 UTC</span>
+  </div>
+  <div class="post-body">WOW, Fred as always you da man. ;D<br>
+How do you come up with this stuff....<br>
+Ya I thought about .NET, but know you'd come through  :)</div>
+</article>
+<article class="post" id="msg4808">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-03 07:51 UTC</span>
+  </div>
+  <div class="post-body">Barry, I'm not very familiar with any language of MSVS .NET, unfortunately, indeed. I've already worked at a wrapper written in C# .NET which provides additional LISP functions to get access to a third party product which cannot be adressed by ActiveX. With this project in mind and the fact that Autodesk suggest developers using VBA in AutoCAD to migrate to VB .NET I thought about creating several lisp functions in a .NET-dll. But it depends on the number and content of your VBA-procedures you want to migrate.<br>
+<br>
+<blockquote class="quote">How do you come up with this stuff....</blockquote><br>
+Very easy to tell: I remembered some of my palettes which are updating automatically after the current drawing is closed because OnDocActivated is being called. And on the other hand this modeless form is a good information what your command is currently going to do :)<br>
+<br>
+But there is still a doubt towards .NET: I do not know if such a procedure in VB .NET called by a lisp-function would really work because if the current drawing is being closed, the lisp context of the current drawing has been gone, too. Will the rest of the .NET code still be executed? Lisp code won't be executed anymore cause the current execution depend on the current drawing. Does it also have the same effect in .NET? I do not know. I do know that a VBA skript can be executed between different drawings because it runs outside the drawing. But has a VB .NET skript the same behaviour? Especially if the procedure was called from Lisp? I do not know. And that's why I'd prefer the AutoLisp-way.<br>
+<br>
+I have to look now to my kids what they're doing in their rooms - it sounds very strange there.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4809">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-03 11:27 UTC</span>
+  </div>
+  <div class="post-body">Hi Barry,<br>
+<br>
+So, now I know much more. I created a C# project and I've found out that you cannot close the current drawing from the Lisp context even it is a Lisp function defined in C#. But if the same code runs in a command it works very well.<br>
+<br>
+Here is the code. I also attached the whole C# project (MSVS 2005). For compiling anew the acmgd.dll and the acdbmdg.dll have to be linked anew before.<br>
+<br>
+For those who want to test.<br>
+<ul><br>
+Open AutoCAD and an existing drawing.<br>
+call NETLOAD from command line and load ReOpen.dll from the source project<br>
+call lisp function <strong>(reload)</strong>. An exception will occur.<br>
+call command <strong>reload </strong> from commandline. The drawing will be reloaded.<br>
+</ul><br>
+<br>
+As you can see the lisp function and the command are doing the same.<br>
+<br>
+<pre class="code"><code><br>
+        [LispFunction("reload")]<br>
+        public void fun_reload()<br>
+        {<br>
+            AcadClose();    <br>
+        }<br>
+<br>
+        [CommandMethod("reload", CommandFlags.Session)]<br>
+<br>
+        public void cmd_reload()<br>
+        {<br>
+            AcadClose();<br>
+        }<br>
+</code></pre><br>
+<br>
+That's the function for both:<br>
+<br>
+<pre class="code"><code><br>
+        private string AcadClose()<br>
+        {<br>
+            DocumentCollection oDocs = acadApp.DocumentManager;<br>
+            Document oDoc = oDocs.MdiActiveDocument;<br>
+<br>
+            string strCurrentFile = oDoc.Name;<br>
+<br>
+            if (oDoc.IsReadOnly)<br>
+            {<br>
+                oDoc.CloseAndDiscard();<br>
+            }<br>
+            else<br>
+            {<br>
+                int isModified = System.Convert.ToInt32(acadApp.GetSystemVariable("DBMOD"));<br>
+<br>
+                // No need to save if not modified<br>
+                if (isModified == 0)<br>
+                {<br>
+                    oDoc.CloseAndDiscard();<br>
+                }<br>
+                else<br>
+                {<br>
+                    int intReturn = System.Convert.ToInt32(MessageBox.Show("Do you want to save changes to " + strCurrentFile + "?", "Reopen current drawing", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1));<br>
+<br>
+                    switch (intReturn)<br>
+                    {<br>
+                        case 6:<br>
+                            // this may save the drawing at strange places, espeacially if it wasn't saved before<br>
+                            // oDoc.Save(); // Does not work, not implemented yet (http://discussion.autodesk.com/forums/message.jspa?messageID=6110668)<br>
+                            oDoc.CloseAndSave(strCurrentFile);<br>
+                            break;<br>
+                        case 7:<br>
+                            oDoc.CloseAndDiscard();<br>
+                            break;<br>
+                        default:<br>
+                            strCurrentFile = "";<br>
+                            break;<br>
+                    }<br>
+                }<br>
+            }<br>
+<br>
+            if (strCurrentFile != "")<br>
+            {<br>
+                try<br>
+                {<br>
+                    oDocs.Open(strCurrentFile,false);<br>
+                }<br>
+                catch (InvalidCastException e)<br>
+                {<br>
+                    throw (e);    // Rethrowing exception e<br>
+                }<br>
+            }<br>
+<br>
+            return strCurrentFile;<br>
+        }<br>
+    }<br>
+}<br>
+</code></pre><br>
+<br>
+EDIT: copy the ReOpen.dll into the AutoCAD-InstallDir that it finds the correct acmgd.dll and acdbmgd.dll for the correct AutoCAD release. DO NOT COPY THE ACMGD.DLL and ACDBMGD.DLL OF THE SOURCE DIR INTO AUTOCAD INSTALLDIR (the compiler copied them to the output folder automatically)! <br>
+This it the advantage of .NET: this DLL works with AutoCAD 2008 as well as with AutoCAD 2010 (just testet).<br>
+<br>
+So, I will cook some noodles now.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/949/ReOpen.zip">ReOpen.zip</a> <span class="muted">(1342393 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4811">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-10-03 20:16 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Fred, <br>
+cool, I'll have a play later.<br>
+<br>
+Regarding the acmgd.dll and the acdbmdg.dll.<br>
+You should set the CopyLocal property for both to false, otherwise debugging issues may arise.<br>
+<br>
+<img src="http://sites.google.com/a/kdubpro.com/storage/Home/SetCopyLocalToFalse.png" alt="" loading="lazy"></div>
+</article>
+<article class="post" id="msg4812">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-04 00:27 UTC</span>
+  </div>
+  <div class="post-body">Thanks Kerry, good to know.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4813">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-05 17:58 UTC</span>
+  </div>
+  <div class="post-body">Thx for the help &amp; the code Fred, I'll try to put it to good use.<br>
+</div>
+</article>
+<article class="post" id="msg5826">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-12-23 01:03 UTC</span>
+  </div>
+  <div class="post-body">Here's my modified version of Fred's code.<br>
+It asks you for the file name to open, open Read-Only, &amp; if you want to close the current DWG or not (like SDI without SDI mode).<br>
+I doesn't have much error checking in it, since I do the error checking in Lisp before I run the RELOAD command.<br>
+<br>
+<pre class="code"><code><br>
+using System;<br>
+using System.Collections.Generic;<br>
+using System.ComponentModel;<br>
+using System.Text;<br>
+using System.Windows.Forms;<br>
+using System.IO;<br>
+using Autodesk.AutoCAD.Runtime;<br>
+using Autodesk.AutoCAD.DatabaseServices;<br>
+using Autodesk.AutoCAD.ApplicationServices;<br>
+using Autodesk.AutoCAD.EditorInput;<br>
+using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;<br>
+<br>
+<br>
+namespace ReOpen<br>
+{<br>
+    public class ReOpen<br>
+    {<br>
+<br>
+        [CommandMethod("reload", CommandFlags.Session)]<br>
+<br>
+        public void cmd_reload()<br>
+        {<br>
+         Editor ed = acadApp.DocumentManager.MdiActiveDocument.Editor;<br>
+<br>
+         PromptStringOptions ops = new PromptStringOptions("\nDWG name: ");<br>
+         ops.AllowSpaces = true;<br>
+         PromptResult res = ed.GetString(ops);<br>
+<br>
+         PromptStringOptions ops2 = new PromptStringOptions("\nRead-Only Y/N: ");<br>
+         PromptResult res2 = ed.GetString(ops2);<br>
+<br>
+         PromptStringOptions ops3 = new PromptStringOptions("\nClose current DWG Y/N: ");<br>
+         PromptResult res3 = ed.GetString(ops3);<br>
+<br>
+         if (res.Status == PromptStatus.OK &amp;&amp; res.StringResult != string.Empty)<br>
+         {<br>
+             //MessageBox.Show(res.StringResult);<br>
+             AcadClose(res.StringResult, res2.StringResult, res3.StringResult);<br>
+         }<br>
+<br>
+<br>
+        }<br>
+<br>
+<br>
+        private string AcadClose(string FileToOpen, string RO, string CloseCurrent)<br>
+        {<br>
+            DocumentCollection oDocs = acadApp.DocumentManager;<br>
+            Document oDoc = oDocs.MdiActiveDocument;<br>
+<br>
+           string strCurrentFile = oDoc.Name;<br>
+<br>
+           if (CloseCurrent == "Y")<br>
+           {<br>
+               if (oDoc.IsReadOnly)<br>
+               {<br>
+                   oDoc.CloseAndDiscard();<br>
+               }<br>
+               else<br>
+               {<br>
+                   int isModified = System.Convert.ToInt32(acadApp.GetSystemVariable("DBMOD"));<br>
+<br>
+                   // No need to save if not modified<br>
+                   if (isModified == 0)<br>
+                   {<br>
+                       oDoc.CloseAndDiscard();<br>
+                   }<br>
+                   else<br>
+                   {<br>
+                       int intReturn = System.Convert.ToInt32(MessageBox.Show("Do you want to save changes to " + strCurrentFile + "?", "TMaCAD", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1));<br>
+<br>
+                       switch (intReturn)<br>
+                       {<br>
+                           case 6:<br>
+                               // this may save the drawing at strange places, espeacially if it wasn't saved before<br>
+                               // oDoc.Save(); // Does not work, not implemented yet (http://discussion.autodesk.com/forums/message.jspa?messageID=6110668)<br>
+                               oDoc.CloseAndSave(strCurrentFile);<br>
+                               break;<br>
+                           case 7:<br>
+                               oDoc.CloseAndDiscard();<br>
+                               break;<br>
+                           default:<br>
+                               FileToOpen = "";<br>
+                               break;<br>
+                       }<br>
+                   }<br>
+               }<br>
+           }<br>
+<br>
+            if (FileToOpen != "")<br>
+            {<br>
+<br>
+<br>
+                if (!File.Exists(FileToOpen))<br>
+                {<br>
+                    throw new System.ArgumentException("Drawing does not exist", FileToOpen);<br>
+                }<br>
+                else<br>
+                {<br>
+                    try<br>
+                    {<br>
+                        if (RO == "Y")<br>
+                        {<br>
+                            oDocs.Open(FileToOpen, true);<br>
+                        }<br>
+                        else<br>
+                        {<br>
+                            oDocs.Open(FileToOpen, false);<br>
+                        }<br>
+<br>
+                    }<br>
+                    catch (InvalidCastException e)<br>
+                    {<br>
+                        throw (e);    // Rethrowing exception e<br>
+                    }<br>
+                }<br>
+            }<br>
+<br>
+            return FileToOpen;<br>
+        }<br>
+    }<br>
+}<br>
+</code></pre></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

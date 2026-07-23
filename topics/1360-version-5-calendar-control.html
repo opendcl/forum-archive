@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Version 5 Calendar Control · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1360</p>
+    <h1>Version 5 Calendar Control</h1>
+    <p class="meta">Started by funkitect ·
+      2010-10-27 18:35 UTC ·
+      12 replies · SMF topic #1360</p>
+<article class="post" id="msg7235">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2010-10-27 18:35 UTC</span>
+  </div>
+  <div class="post-body">Hello forum,<br>
+<br>
+I'm using ODCL 5.1.2.3.<br>
+<br>
+The calendar control look different than I remember from before.  I don't see "dcl_Calendar_SetCurSel" or "dcl_Calendar_GetCurSel" in the Control Browser.  I only see:<br>
+<br>
+dcl_Control_GetProperty ccUtilShr_DatePicker_Calendar1 PropertyApiName [as String])<br>
+<br>
+and<br>
+<br>
+dcl_Control_SetProperty ccUtilShr_DatePicker_Calendar1 PropertyApiName [as String] NewValue [as Varies]<br>
+<br>
+<br>
+How do I find valid "PropertyApiName"?  The don't appear to be in the ODCL documentation.<br>
+<br>
+Thanks,<br>
+<br>
+James LeVieux</div>
+</article>
+<article class="post" id="msg7236">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-10-27 19:16 UTC</span>
+  </div>
+  <div class="post-body">Hello, funkitect, there should be such information. Maybe the help file is missing? Then I recommend you to reinstall OpenDCL studio. And if there is sometimes no help available, you'll always find help <a href="http://www.opendcl.com/HelpFiles/index.php?&amp;page=Index.htm" rel="nofollow noopener">{2}</a>.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7237">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-10-27 19:16 UTC</span>
+  </div>
+  <div class="post-body">I don't have 5.1 installed to test, but it sounds like there's something missing.  I just checked the OpenDCL 6 control browser, and everything looks correct there.  If possible, I recommend to use OpenDCL 6 instead of 5.1.</div>
+</article>
+<article class="post" id="msg7240">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2010-10-28 16:51 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred and Owen,<br>
+<br>
+Thanks for your replies.  I wish I could use ver 6 but I haven't had time to figure out some issues with my ActiveX controls yet so I need to stick with ver 5 for now.  I looked at the help but only the "older" function names are listed (getCurSel and SetCurSel).  I am using Vista x64 so I loaded version 5.1.2.3 on my x86 machine and got the same results.  I dug up an older version 5.0.1.8 and got same result.<br>
+<br>
+I took a look at the MasterDemo sample but the sample program Misc.lsp that demonstrates the calendar simply shows the calendar control and does not appear to use a Get or Set function.  Has anybody used the Calendar control in version 5?<br>
+<br>
+James</div>
+</article>
+<article class="post" id="msg7241">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-10-28 17:24 UTC</span>
+  </div>
+  <div class="post-body">Yes, we used it and it worked fine for us.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7244">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2010-10-28 17:34 UTC</span>
+  </div>
+  <div class="post-body">Fred,<br>
+<br>
+Do you mean you used the MasterDemo and it worked or that you used the Control Browser and the "working" functions (getCurSel and SetCurSel) were available?<br>
+<br>
+James</div>
+</article>
+<article class="post" id="msg7246">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-10-28 17:47 UTC</span>
+  </div>
+  <div class="post-body">Hi, this is a sample we used for a small date picker. We used it with Runtime 5.1.2.3.<br>
+<br>
+<br>
+(defun TIME_PICKDATE (lstDate / lstErg<br>
+			           c:general_sc_date_OnInitialize<br>
+			           c:general_sc_date_OnCancelClose<br>
+			           c:general_sc_date_pb_help<br>
+			           c:general_sc_date_pb_cancel<br>
+			           c:general_sc_date_pb_accept)<br>
+  (dcl_project_load "general")<br>
+<br>
+  (if lstDate<br>
+    (progn<br>
+      (if (not (numberp (car lstDate))) (setq lstDate (mapcar 'atoi lstDate)))<br>
+      (setq lstDate (cons (float (car lstDate)) (cdr lstDate)))<br>
+    ); progn<br>
+    (setq lstDate (mapcar 'atoi (TIME_TO_LIST (getvar "CDATE")))<br>
+	  lstDate (list (float (car lstDate)) (cadr lstDate) (caddr lstDate)))<br>
+  ); if<br>
+<br>
+  (defun c:general_sc_date_OnInitialize ( /)<br>
+    (dcl_Month_SetCurSel general_sc_date_date lstDate)<br>
+  ); c:general_sc_date_OnInitialize<br>
+<br>
+  (defun c:general_sc_date_OnCancelClose (bCancelling /)<br>
+    (if (= bCancelling 0) (setq lstErg (dcl_Month_GetCurSel general_sc_date_date)))<br>
+    nil<br>
+  ); c:general_sc_date_OnCancelClose<br>
+<br>
+  (defun c:general_sc_date_pb_help ( /)<br>
+    (help "help.chm" "d_TIME_PICKDATE")<br>
+  ); c:general_sc_date_pb_help<br>
+<br>
+  (defun c:general_sc_date_pb_cancel ( /)<br>
+    (setq lstErg nil)<br>
+    (dcl_form_close general_sc_date)<br>
+  ); c:general_sc_date_pb_cancel<br>
+<br>
+  (defun c:general_sc_date_pb_accept ( /)<br>
+    (setq lstErg (dcl_Month_GetCurSel general_sc_date_date))<br>
+    (dcl_form_close general_sc_date)<br>
+  ); c:general_sc_date_pb_accept<br>
+<br>
+  (dcl_form_show general_sc_date)<br>
+<br>
+  (mapcar 'fix lstErg)<br>
+); TIME_PICKDATE<br>
+<br>
+(defun TIME_TO_LIST (time / strTime)<br>
+  (setq strTime (rtos time 2 12))<br>
+  (setq strTime (mapcar '(lambda (x y / z) (repeat (- y (strlen (setq z (substr strTime x y))))<br>
+			       (setq z (strcat z "0"))<br>
+			     ); repeat<br>
+	     		     z<br>
+	   ) '(1 5 7 10 12 14) '(4 2 2 2 2 2)))<br>
+  strTime<br>
+); TIME_TO_LIST<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1463/general.odcl">general.odcl</a> <span class="muted">(6720 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7247">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2010-10-28 18:33 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred,<br>
+<br>
+I see the problem now.  I can use the functions "dcl_Month_SetCurSel" and "dcl_Month_SetCurSel"....Yay!  But those functions are not listed in the Help documentation.  The documentation lists "dcl_Calendar_SetCurSel" and "dcl_Calendar_SetCurSel" so that is incorrect.  The Control Browser does not appear to show any calendar specific functions at all...just generic control functions.<br>
+<br>
+James</div>
+</article>
+<article class="post" id="msg7248">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-10-28 18:48 UTC</span>
+  </div>
+  <div class="post-body">Hi, yes you are right, I can see it too, now. Which language have you installed? DEU or ENU?<br>
+Fred</div>
+</article>
+<article class="post" id="msg7249">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2010-10-28 19:11 UTC</span>
+  </div>
+  <div class="post-body">ENU is installed.<br>
+<br>
+I was just testing a few things and this problem turns up:<br>
+<br>
+If I pass a date 2009 or earlier like (2009 11 22)  to SetCurSel everything is fine.<br>
+If I pass a date after 2010 like (2010 11 22)  I get "Error: Expected more arguments".<br>
+<br>
+What could be causing that?<br>
+<br>
+James LeVieux</div>
+</article>
+<article class="post" id="msg7250">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-10-28 19:17 UTC</span>
+  </div>
+  <div class="post-body">James, this is a wellknow problem. AutoCAD is misinterpreting the value 2010 as DXF code. Please use a float instead (2010.0).<br>
+That's why you see the line (mapcar 'fix lstErg) in my code.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7251">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-10-28 19:19 UTC</span>
+  </div>
+  <div class="post-body">See here for further details: <a href="http://www.opendcl.com/forum/index.php?topic=903.0" rel="nofollow noopener">{2}</a><br>
+Fred</div>
+</article>
+<article class="post" id="msg7252">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2010-10-28 19:25 UTC</span>
+  </div>
+  <div class="post-body">excellent!  I've never run into that before.<br>
+<br>
+Thank you both for all you do!<br>
+<br>
+James</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

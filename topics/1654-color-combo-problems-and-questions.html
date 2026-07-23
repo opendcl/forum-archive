@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Color Combo: Problems and Questions · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1654</p>
+    <h1>Color Combo: Problems and Questions</h1>
+    <p class="meta">Started by roy_043 ·
+      2011-07-11 19:17 UTC ·
+      7 replies · SMF topic #1654</p>
+<article class="post" id="msg8211">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-07-11 19:17 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+Here are some problems and questions regarding the Color ComboBox. <br>
+<br>
+System:<br>
+Bricscad 11.4.2<br>
+Windows XP<br>
+OpenDCL 6.0.2.4<br>
+<br>
+Files:<br>
+ColorComboTest.lsp<br>
+ColorComboTest.odcl<br>
+ColorComboTest_mouse_over_effect.gif<br>
+<br>
+1.<br>
+Selecting a "Windows..." color returns the same values as selecting "ByBlock".<br>
+<br>
+2.<br>
+Why not use (or: is there a way to use):<br>
+(acad_truecolordlg '(62 . 1) nil)<br>
+instead of the Windows' color dialog?<br>
+<br>
+3.<br>
+After multiple clicks on 'normal' colors, the list displays multiple entries of the "Select color..." item with a strange 'mouse-over-effect'. See image.<br>
+<br>
+4.<br>
+After exiting the dialog and a restart of the COLTEST program, executing this code:<br>
+(dcl_ComboBox_DeleteItem ColorComboTest_ColComboModeless_ComboBox1 0)<br>
+multiple times until the return value is nil, or executing this code:<br>
+(dcl_ComboBox_Clear ColorComboTest_ColComboModeless_ComboBox1)<br>
+results in a list that still has two entries: "Select color..." and "Windows...". How can they be removed?<br>
+<br>
+5.<br>
+Continuing after 4. (list is empty except for the "Select color..." and "Windows..." entries) pasting this code on the command line:<br>
+(dcl_ComboBox_AddColor ColorComboTest_ColComboModeless_ComboBox1 5)<br>
+results in a list starting with "blue" (no cap) followed by all the standard entries including a second "Blue" entry (with a cap). Is there a way to create a list with, for instance, just colors 251, 252, 253 and 254?<br>
+<br>
+6.<br>
+After exiting the dialog and a restart of the COLTEST program, executing this code:<br>
+(dcl_ComboBox_AddColor ColorComboTest_ColComboModeless_ComboBox1 11)<br>
+will add color 11 to the top of the list. Why is it not below "white"? Note:<br>
+(dcl_Control_GetSorted ColorComboTest_ColComboModeless_ComboBox1) ; =&gt; T<br>
+<br>
+7.<br>
+After exiting the dialog and a restart of the COLTEST program, executing this code:<br>
+(dcl_Control_GetText ColorComboTest_ColComboModeless_ComboBox1)<br>
+returns "3". After 'manually' selecting red the same code returns "Red".<br>
+<br>
+Regards, Roy.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1633/ColorComboTest.lsp">ColorComboTest.lsp</a> <span class="muted">(907 bytes)</span></li><li><a href="../attachments/1634/ColorComboTest.odcl">ColorComboTest.odcl</a> <span class="muted">(755 bytes)</span></li><li><a href="../attachments/1635/ColorComboTest_mouse_over_effect.gif">ColorComboTest_mouse_over_effect.gif</a> <span class="muted">(13921 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8213">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-07-11 20:52 UTC</span>
+  </div>
+  <div class="post-body">Hi, roy_043,<br>
+<br>
+my feeling is that the colorcombo is for ACI color only. If you choose a truecolor from the Windows System Color box, the corresponding ACI color index will be added to the color combo. Maybe it's a bug. But I don't believe that because the FindColor and the AddColor methods are only supporting ACI colors.<br>
+<br>
+1. I cannot reproduce this: GetItemData will return the right ACI color index.<br>
+<br>
+2. As I mentioned, my feeling is that it should only support ACI color index. Using the Windows System Color form has its historical reason to keep ObjectDCL compatibel between AutoCAD 2002 and 2004. I'm not sure how much Owen has changed in the color combo meanwhile.<br>
+<br>
+3. I cannot reproduce this on Map 2012 x64. After 20 clicks on ACI colors 1 to 7 nor more entries were added.<br>
+<br>
+4. I got never nil when using (dcl_ComboBox_DeleteItem ColorComboTest_ColComboModeless_ComboBox1 0) several times.<br>
+<br>
+5. As far as I know it cannot be removed because it belongs to the color combo. Otherwise create an imagecombo. :)<br>
+I can reproduce the behavior of addind the additional item in the list. It seems that after a Clear a new initialization of the combobox will be started so the control does not know that it already contains color blue. In the German language version I have the Color 'Blau' and the color 'Farbe 5'. When you have a try with AddColor 5 without a Clear before you will see that color 5 won't be added again.<br>
+<br>
+6. Do you see the line on top of ByLayer item? That means that all the color which are displayed above this line are recently selected colors. Sorting property is for textitems in the combobox, not for colors.<br>
+<br>
+7. (dcl_Control_GetText ColorComboTest_ColComboModeless_ComboBox1) is not a good way to read out the value of the textbox. Please have a look at <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/ComboBox/GetEBText.htm" rel="nofollow noopener">{2}</a> and <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/ComboBox/GetLBText.htm" rel="nofollow noopener">{2}</a>. That means that you just have to get the selected item at first using GetCursel to get the item text using GetLBtext. GetEBText is for editable comboboxes only.<br>
+<br>
+As an OpenDCL user I recommend you to create an empty slide or an empty picture box to show the selected color. Clicking on this item will call acad_truecolordlg as you mentioned. It’s much easier than the color combo and it takes the user much less clicks to select a different color.<br>
+<br>
+Regards, Fred<br>
+</div>
+</article>
+<article class="post" id="msg8215">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-07-12 03:50 UTC</span>
+  </div>
+  <div class="post-body">To add to what Fred said, the color dialog is implemented by the host application, so the errant behavior in Bricscad is due to bugs in Bricsys' implementation. I recommend to report the problem(s) to them via a support request. You can point them to this thread.</div>
+</article>
+<article class="post" id="msg8216">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-07-12 11:07 UTC</span>
+  </div>
+  <div class="post-body">Fred and Owen thank you for your time and patience. I will submit a support request and try using an imagecombo as an alternative.</div>
+</article>
+<article class="post" id="msg8217">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-07-12 11:43 UTC</span>
+  </div>
+  <div class="post-body">Hi, roy, the disadvantage of the imagecombo is that you cannot display all of the 16777216 colors of RGB as images. That's why I use the slide / imagecombobox.<br>
+<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1636/color.png">color.png</a> <span class="muted">(7157 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8225">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-07-14 12:12 UTC</span>
+  </div>
+  <div class="post-body">I have changed the program to use an ImageCombo. Some new problems popped up. Since these are unrelated to the color Combo discussion in this topic I have started a new one:<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=1656.0" rel="nofollow noopener">{2}</a><br>
+<br>
+@ Fred: what do you mean by 'slide / imagecombobox'? It seems you can't use a slide in an ImageCombo.</div>
+</article>
+<article class="post" id="msg8228">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-07-14 22:24 UTC</span>
+  </div>
+  <div class="post-body">Hi, roy_043,<br>
+<br>
+no you can't use a slide in a combo. But you can use a slide or a picturebox as a "colorbutton" which shows the color you've selected.<br>
+<br>
+I've added an example.<br>
+<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1643/ColorSelector.LSP">ColorSelector.LSP</a> <span class="muted">(2809 bytes)</span></li><li><a href="../attachments/1644/ColorSelector.odcl">ColorSelector.odcl</a> <span class="muted">(918 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8238">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-07-19 07:45 UTC</span>
+  </div>
+  <div class="post-body">Fred, thank you for sharing. I'll be dissecting your code this week. </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

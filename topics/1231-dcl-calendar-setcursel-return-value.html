@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_Calendar_SetCurSel  Return Value · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1231</p>
+    <h1>dcl_Calendar_SetCurSel  Return Value</h1>
+    <p class="meta">Started by khann ·
+      2010-03-24 09:01 UTC ·
+      10 replies · SMF topic #1231</p>
+<article class="post" id="msg6574">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-03-24 09:01 UTC</span>
+  </div>
+  <div class="post-body"><br>
+ (setq *Inst_Day_Text "20100230")<br>
+	 (setq *YYYY (substr *Inst_Day_Text 1 4))<br>
+	 (setq *MM (substr *Inst_Day_Text 5 2))<br>
+	 (setq *DD (substr *Inst_Day_Text 7 2))<br>
+<br>
+	 (setq *Temp_Date (list (read (strcat *YYYY ".0")) (read *MM) (read *DD)))<br>
+<br>
+	 (setq *Chk_Date (dcl_Calendar_SetCurSel Calendar_form_calTemp *Temp_Date))<br>
+<br>
+<br>
+<br>
+Hi, <br>
+The above is my test code of <span style="color:blue">dcl_Calendar_SetCurSel </span> to check the <br>
+*Inst_Day_Text is valid.<br>
+<br>
+I need the <span style="color:blue">T</span> or <span style="color:blue">nil</span> return value but this returns <span style="color:red">ADS request error</span>.<br>
+Someone help this, please.<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg6576">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-24 09:39 UTC</span>
+  </div>
+  <div class="post-body">Hi, don't use (list 2010 3 024) for date but (list 2010.0 3 24) for the date.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6577">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-03-24 09:53 UTC</span>
+  </div>
+  <div class="post-body">Fred<br>
+in the posted example *Temp_Date will evaluate to (2010.0 2 30), so I don't think that's the trouble.</div>
+</article>
+<article class="post" id="msg6578">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-03-24 09:53 UTC</span>
+  </div>
+  <div class="post-body">Hi, Fred.<br>
+<br>
+Yes. I did.<br>
+<br>
+(strcat *YYYY ".0")<br>
+<br>
+I checked this list : (2010.0 2 30) .<br>
+<br>
+I need the <span style="color:blue">nil</span> Return.</div>
+</article>
+<article class="post" id="msg6579">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-24 11:12 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=1231.msg6577#msg6577 date=1269424389 wrote:</cite><br>
+in the posted example *Temp_Date will evaluate to (2010.0 2 30), so I don't think that's the trouble.<br>
+</blockquote><br>
+<br>
+Sorry, my look was too short to recognize this. I'm just at a customer training.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6584">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-24 13:17 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=khann link=topic=1231.msg6574#msg6574 date=1269421263 wrote:</cite><br>
+I need the <span style="color:blue">T</span> or <span style="color:blue">nil</span> return value but this returns <span style="color:red">ADS request error</span>.<br>
+</blockquote><br>
+<br>
+The exception is by design. Since there are potentially other reasons why the function might return NIL, I don't think it's a good idea to use that function for the purpose of validating a date, however I'm open to other opinions.</div>
+</article>
+<article class="post" id="msg6601">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-03-25 00:47 UTC</span>
+  </div>
+  <div class="post-body">Hi.<br>
+I was coding Date Validation routine.<br>
+*Inst_Day_Text is 8 digit formatted user input string.<br>
+<br>
+For checking leap year February's 29 day, I tried the <br>
+<span style="color:blue">dcl_Calendar_SetCurSel</span> .<br>
+<br>
+Has got any better idea?</div>
+</article>
+<article class="post" id="msg6605">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-25 03:50 UTC</span>
+  </div>
+  <div class="post-body">It's a kludge, but you can do something like this:<br>
+<br>
+(defun ValidateDate (date / result)<br>
+  (dcl_suppressmessages T)<br>
+  (setq result (vl-catch-all-apply 'dcl_calendar_setcursel (list  date)))<br>
+  (dcl_suppressmessages NIL)<br>
+  result<br>
+)<br>
+<br>
+You could also get fancy and use the ActiveX Windows date time picker control in a similar way.</div>
+</article>
+<article class="post" id="msg6606">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-03-25 04:54 UTC</span>
+  </div>
+  <div class="post-body">Thanks, it's so good.<br>
+And you tell me the usage of <span style="color:blue"> dcl_suppressmessages </span> <br>
+<br>
+But I wonder the Help page of "dcl_Calendar_SetCurSel "<br>
+-----------------------------------------------------------------------------------------------------<br>
+Syntax  :        (<span style="color:blue">dcl_Calendar_SetCurSel </span> form_Calendar Date [as Date]) <br>
+Return Type  : Boolean (<span style="color:blue">T</span> if successful; otherwise <span style="color:blue">NIL</span>) <br>
+-----------------------------------------------------------------------------------------------------<br>
+<br>
+If it fails why does not return <span style="color:blue">NIL</span> ?</div>
+</article>
+<article class="post" id="msg6607">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-25 06:06 UTC</span>
+  </div>
+  <div class="post-body">When a function throws an exception, it does not return.</div>
+</article>
+<article class="post" id="msg6610">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-03-25 06:53 UTC</span>
+  </div>
+  <div class="post-body">Mmm. I see.<br>
+<br>
+Thanks for your reply. </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

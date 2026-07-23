@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid Control - Column Captions · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1374</p>
+    <h1>Grid Control - Column Captions</h1>
+    <p class="meta">Started by AutoKAD ·
+      2010-11-04 16:14 UTC ·
+      4 replies · SMF topic #1374</p>
+<article class="post" id="msg7292">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2010-11-04 16:14 UTC</span>
+  </div>
+  <div class="post-body">Is there a method that returns a list of current column captions during runtime?  (dcl_Control_GetColumnCaptionList ) does not return a current list if you delete or add a column.  I assume you can write a function to update the column caption list each time a column is added or deleted using (dcl_Control_SetColumnCaptionList ), but it would easier and reduce code if there was a way to return the current column captions.<br>
+<br>
+If there isn't a method yet, maybe include T to specify the return of the current column captions?<br>
+<br>
+(dcl_Control_GetColumnCaptionList  {T})<br>
+<br>
+Thanks!</div>
+</article>
+<article class="post" id="msg7294">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-11-04 20:17 UTC</span>
+  </div>
+  <div class="post-body">The correct way to address this is to fix the add and delete methods so they modify the control property instead of the control directly. I'll see if I can fix that for the next build.</div>
+</article>
+<article class="post" id="msg7295">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2010-11-04 20:21 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1374.msg7294#msg7294 date=1288901847 wrote:</cite><br>
+The correct way to address this is to fix the add and delete methods so they modify the control property instead of the control directly. I'll see if I can fix that for the next build.<br>
+</blockquote><br>
+<br>
+That would be great!<br>
+<br>
+Thanks Owen!</div>
+</article>
+<article class="post" id="msg7296">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-11-04 22:22 UTC</span>
+  </div>
+  <div class="post-body">This is now fixed for the next build. I also changed the code so that the various column properties are listed in the left tree in the control browser.<br>
+<br>
+There are a number of similar cases (of methods operating directly on a control) scattered throughout the OpenDCL code that should be addressed. If you encounter other such cases, please report them.</div>
+</article>
+<article class="post" id="msg7298">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2010-11-05 04:14 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1374.msg7296#msg7296 date=1288909374 wrote:</cite><br>
+This is now fixed for the next build. I also changed the code so that the various column properties are listed in the left tree in the control browser.<br>
+</blockquote><br>
+<br>
+Cool!<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1374.msg7296#msg7296 date=1288909374 wrote:</cite><br>
+There are a number of similar cases (of methods operating directly on a control) scattered throughout the OpenDCL code that should be addressed. If you encounter other such cases, please report them.<br>
+</blockquote><br>
+<br>
+Sure, no problem.   :)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

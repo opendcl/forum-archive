@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>.odcl · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2173</p>
+    <h1>.odcl</h1>
+    <p class="meta">Started by masoud_123 ·
+      2014-09-23 11:06 UTC ·
+      7 replies · SMF topic #2173</p>
+<article class="post" id="msg10893">
+  <div class="post-head">
+    <span class="post-author">masoud_123</span>
+    <span class="post-date muted">2014-09-23 11:06 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+As I know we have to put the .odcl file directory in the support search path of Autocad.<br>
+I want to sell the software so it's not appropriate to put .odcl file in the end-user system because it is easily seen, and can be edited by OpenDCL studio, so I change .odcl to .lsp and the change it to .vlx. But when I put the .vlx (or .lsp) of the .odcl in the support search path of Autocad, the software can not be loaded, and cause to and error except again use the .odcl file.<br>
+<br>
+Whats wrong?<br>
+</div>
+</article>
+<article class="post" id="msg10897">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-09-23 15:57 UTC</span>
+  </div>
+  <div class="post-body">You have not provided enough information to determine the cause of the problem. What is the error? Where in your code does it occur?</div>
+</article>
+<article class="post" id="msg10901">
+  <div class="post-head">
+    <span class="post-author">masoud_123</span>
+    <span class="post-date muted">2014-09-23 16:13 UTC</span>
+  </div>
+  <div class="post-body">The error message is:<br>
+<br>
+Autocad Message<br>
+The file could not be found or an error  occurred during reading file.<br>
+<br>
+(then it shows the name of .odcl file, for example )</div>
+</article>
+<article class="post" id="msg10902">
+  <div class="post-head">
+    <span class="post-author">masoud_123</span>
+    <span class="post-date muted">2014-09-23 16:16 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=masoud_123 link=topic=2173.msg10901#msg10901 date=1411488814 wrote:</cite><br>
+The error message is:<br>
+<br>
+Autocad Message<br>
+The file could not be found or an error  occurred during reading file.<br>
+<br>
+(then it shows the name of .odcl file, for example )<br>
+</blockquote><br>
+<br>
+<br>
+Also after the first error message this error appears.<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2045/Untitled.png">Untitled.png</a> <span class="muted">(34904 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10903">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-09-23 17:48 UTC</span>
+  </div>
+  <div class="post-body">You haven't shown the code that fails.</div>
+</article>
+<article class="post" id="msg10904">
+  <div class="post-head">
+    <span class="post-author">masoud_123</span>
+    <span class="post-date muted">2014-09-24 03:03 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2173.msg10903#msg10903 date=1411494516 wrote:</cite><br>
+You haven't shown the code that fails.<br>
+</blockquote><br>
+<br>
+(vl-cmdf "OPENDCL")<br>
+(dcl_Project_Load "MathProj" T)<br>
+(dcl_Form_Show MathProj_InitialLogoForm)<br>
+<br>
+The error occurs in the last line.</div>
+</article>
+<article class="post" id="msg10905">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-09-24 14:43 UTC</span>
+  </div>
+  <div class="post-body">I understood that you embedded your .odcl inside a .vlx. Are you trying to then write the file to disk before loading it? If it is not a file, you cannot then load it like a file with (dcl-Project-Load), but you have to instead use (dcl-Project-Import) as shown in the examples.</div>
+</article>
+<article class="post" id="msg10907">
+  <div class="post-head">
+    <span class="post-author">masoud_123</span>
+    <span class="post-date muted">2014-09-25 09:19 UTC</span>
+  </div>
+  <div class="post-body">After observing the samples the problem was solved, Thank you.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

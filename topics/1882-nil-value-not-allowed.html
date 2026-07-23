@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NIL value not allowed · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1882</p>
+    <h1>NIL value not allowed</h1>
+    <p class="meta">Started by Atwist ·
+      2012-08-28 04:47 UTC ·
+      8 replies · SMF topic #1882</p>
+<article class="post" id="msg9239">
+  <div class="post-head">
+    <span class="post-author">Atwist</span>
+    <span class="post-date muted">2012-08-28 04:47 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I have a piece of programming designed with your help, I am getting an error message when I use the check boxes.<br>
+ I understand that the check boxes are not allowed to be empty, but I do not use all the checkboxes.<br>
+ Did the check boxes to "indeterminate", I think this is good.<br>
+<br>
+<br>
+<br>
+<br>
+(defun c:cadtool_Main_TextButton1_OnClicked (/)<br>
+	(dcl_Project_Unload "Cadtool" T)<br>
+	(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurbloc) 1)<br>
+        (command "-purge" "B" "*" "N")<br>
+	)<br>
+	(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurdim) 1)<br>
+	(command "-purge" "D" "*" "N")<br>
+	)<br>
+	(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurlay) 1)<br>
+	(command "-purge" "LA" "*" "N")<br>
+	)<br>
+	(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurlt) 1)<br>
+	(command "-purge" "LT" "*" "N" "")<br>
+	)<br>
+	(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurmat) 1)<br>
+	(command "-purge" "MA" "*" "N" "")<br>
+	)</div>
+</article>
+<article class="post" id="msg9240">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-08-28 07:36 UTC</span>
+  </div>
+  <div class="post-body">Your problem is the use of (dcl_Project_Unload "Cadtool" T). After this line the controls in the form no longer exist and (dcl_Control_Getvalue cadtool_Main_Chbpurbloc) etc. will fail.<br>
+<br>
+Try this instead:<br>
+<br>
+(defun c:cadtool_Main_TextButton1_OnClicked ( / purBlockP purDimP)<br>
+  ; (dcl_Project_Unload "Cadtool" T) ; Don't do this!<br>
+  (if (= (dcl_Control_Getvalue cadtool_Main_Chbpurbloc) 1)<br>
+    (setq purBlockP T)<br>
+  )<br>
+  (if (= (dcl_Control_Getvalue cadtool_Main_Chbpurdim) 1)<br>
+    (setq purDimP T)<br>
+  )<br>
+  ; etc.<br>
+  (dcl_Form_Close cadtool_Main)<br>
+  (if purBlockP<br>
+    (command "-purge" "B" "*" "N")<br>
+  )<br>
+  (if purDimP<br>
+    (command "-purge" "D" "*" "N")<br>
+  )<br>
+  ; etc.<br>
+)</div>
+</article>
+<article class="post" id="msg9241">
+  <div class="post-head">
+    <span class="post-author">Atwist</span>
+    <span class="post-date muted">2012-08-28 09:54 UTC</span>
+  </div>
+  <div class="post-body">Thanks Roy,<br>
+<br>
+I will try this</div>
+</article>
+<article class="post" id="msg9242">
+  <div class="post-head">
+    <span class="post-author">Atwist</span>
+    <span class="post-date muted">2012-08-28 12:48 UTC</span>
+  </div>
+  <div class="post-body">I made this, but I still get the error.<br>
+ With Vlisp looked but it gives no error.<br>
+ Personally I do not where the error is now<br>
+<br>
+(defun c:cadtool_Main_TextButton1_OnClicked ( / purBlockP purDimP purlayp purltP purmatP purshaP purtexsP purmlsP purtabsP purvisP purregP purallp)<br>
+	<br>
+	(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurbloc) 1)<br>
+	(setq purBlockP T)<br>
+    )<br>
+	(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurdim) 1)<br>
+	(setq purDimP T)<br>
+	)<br>
+	(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurlay) 1)<br>
+	(setq purlayp T)<br>
+	)<br>
+	(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurlt) 1)<br>
+	(setq purltp T)<br>
+	)<br>
+	(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurmat) 1)<br>
+	(setq purmatp T)<br>
+	)<br>
+	(if (= (dcl_Control_Getvalue cadtool_Main_Chbpursha) 1)<br>
+	(setq purshap T)<br>
+	)<br>
+	(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurtexs) 1)<br>
+	(setq purtexsp T)<br>
+	)<br>
+	(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurmls) 1)<br>
+	(setq purmlsp T)<br>
+	)<br>
+	(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurtabs) 1)<br>
+	(setq purtabsp T)<br>
+	)<br>
+	(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurvis) 1)<br>
+	(setq purvisp T)<br>
+	)<br>
+	(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurreg) 1)<br>
+	(setq purregp T)<br>
+	)<br>
+	(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurall) 1)<br>
+	(setq purallp T)<br>
+	)<br>
+	(dcl_Form_Close cadtool_Main)<br>
+  <br>
+	(if purBlockP<br>
+    (command "-purge" "B" "*" "N")<br>
+	)<br>
+	(if purDimP<br>
+	(command "-purge" "D" "*" "N")<br>
+	)<br>
+	(if purlayP<br>
+	(command "-purge" "la" "*" "N")<br>
+	)<br>
+	(if purltP<br>
+	(command "-purge" "lt" "*" "N")<br>
+	)<br>
+	(if purmatP<br>
+	(command "-purge" "ma" "*" "N")<br>
+	)<br>
+	(if purshaP<br>
+	(command "-purge" "m" "*" "N")<br>
+	)<br>
+	(if purtexsP<br>
+	(command "-purge" "sh" "*" "N")<br>
+	)<br>
+	(if purmlsP<br>
+	(command "-purge" "st" "*" "N")<br>
+	)<br>
+	(if purtabsP<br>
+	(command "-purge" "t" "*" "N")<br>
+	)<br>
+	(if purvisP<br>
+	(command "-purge" "v" "*" "N")<br>
+	)<br>
+	(if purregP<br>
+	(command "-purge" "r" "*" "N")<br>
+	)<br>
+	(if purallP<br>
+	(command "-purge" "all" "*" "N")<br>
+	)<br>
+	)</div>
+</article>
+<article class="post" id="msg9243">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-08-28 13:41 UTC</span>
+  </div>
+  <div class="post-body">I have built a quick test using my suggestion. The attached files work for BC12.2.17+ODCL7.0.0.6.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1810/cadtool.lsp">cadtool.lsp</a> <span class="muted">(585 bytes)</span></li><li><a href="../attachments/1811/cadtool.odcl">cadtool.odcl</a> <span class="muted">(643 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9244">
+  <div class="post-head">
+    <span class="post-author">Atwist</span>
+    <span class="post-date muted">2012-08-28 16:18 UTC</span>
+  </div>
+  <div class="post-body">Sorry even now I get the error message<br>
+<br>
+<img src="https://dl.dropbox.com/u/57820558/fout%20dcl.png" alt="" loading="lazy"></div>
+</article>
+<article class="post" id="msg9245">
+  <div class="post-head">
+    <span class="post-author">XDCAD</span>
+    <span class="post-date muted">2012-08-29 04:41 UTC</span>
+  </div>
+  <div class="post-body">Did you put the control variables in your function inside statement into local variables?<br>
+</div>
+</article>
+<article class="post" id="msg9246">
+  <div class="post-head">
+    <span class="post-author">Atwist</span>
+    <span class="post-date muted">2012-08-29 04:57 UTC</span>
+  </div>
+  <div class="post-body">I have used the lisp and odcl from post # 5.</div>
+</article>
+<article class="post" id="msg9247">
+  <div class="post-head">
+    <span class="post-author">XDCAD</span>
+    <span class="post-date muted">2012-08-29 05:29 UTC</span>
+  </div>
+  <div class="post-body">Your error reason is the control variable is NIL, so<br>
+<br>
+You check error control variable name, and then see the variable is in your LISP program other function definitions, give it a local variable declarations. If the local variable declaration, then the external control variable is not transfer function inside.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

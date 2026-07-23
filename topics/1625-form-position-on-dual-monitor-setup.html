@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Form Position on Dual Monitor Setup · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1625</p>
+    <h1>Form Position on Dual Monitor Setup</h1>
+    <p class="meta">Started by mr nick ·
+      2011-05-17 13:29 UTC ·
+      14 replies · SMF topic #1625</p>
+<article class="post" id="msg7995">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2011-05-17 13:29 UTC</span>
+  </div>
+  <div class="post-body">Is there a way to set the position of a dialog so that it appears in the middle of whichever monitor is displaying AutoCAD at the time? If I use dcl_Form_Center it displays the dialog in the centre of whichever monitor is defined as No.1 in Windows rather than the screen actually showing CAD. Not a massive problem when dealing with my own machine but when I'm dealing with multiple users each with their own specific configurations then the results can be problematic, often resulting in people thinking CAD has hung because nothing appears to be happening when in actual fact there is a dialog awaiting input on a different screen.</div>
+</article>
+<article class="post" id="msg7998">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-05-17 18:44 UTC</span>
+  </div>
+  <div class="post-body">Hi, sure there should be. But I'm not sure if there's a chance via Lisp.<br>
+Just find out the location and the size of AutoCAD mainwindow. Then you compute the upper left corner of your form depending the size of your form. I currently see no other way.<br>
+<br>
+Regards,<br>
+Fred</div>
+</article>
+<article class="post" id="msg8000">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-05-17 19:26 UTC</span>
+  </div>
+  <div class="post-body">I'm not sure there's a foolproof way to determine which monitor is "displaying AutoCAD" in cases where the AutoCAD window displays on multiple monitors, but I suppose it's possible to come up with something that works for most cases. I don't use dual monitors, but this could be changed if there's a concensus among the community.</div>
+</article>
+<article class="post" id="msg8002">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2011-05-18 15:14 UTC</span>
+  </div>
+  <div class="post-body">Looking at the definition for the Control_SetPos method, it states <em>"If the control is a child window, the specified coordinates are relative to the upper left corner of the parent window's client area; otherwise they are screen coordinates". </em> What exactly is considered to be a 'child window' in terms of ODCL forms because if it looks like a child window is the only item that can be passed AutoCAD specific coordinates but I'm unsure as to whether this is of any use to me or not.</div>
+</article>
+<article class="post" id="msg8003">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-05-18 15:21 UTC</span>
+  </div>
+  <div class="post-body">"Child windows" are a Windows thing. In OpenDCL currently I think only modal dialogs and file dialogs are child windows. Actually, docked control bars are also child windows, but they can't be positioned manually.</div>
+</article>
+<article class="post" id="msg8004">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2011-05-18 15:33 UTC</span>
+  </div>
+  <div class="post-body">Hmm. I tried both modal and modeless forms but if I try and set the position, it always seems to adopt screen coordinates rather than parent. Looks like I'm out of luck with this one  :'(</div>
+</article>
+<article class="post" id="msg8005">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-05-20 06:50 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I can imagine two ways of solving this:<br>
+<br>
+Either we add another addional function for returning the current location and size of AutoCAD main window similar to (dcl_form_getpos ...) so you can add additional arguments to (dcl_form_show ...) or (dcl_form_center ...) gets an additional optional argument T for centering the form in the center of AutoCAD main window (whereever it is currently placed).<br>
+Most of our customers are using Dual monitors because of the huge size of their land development plans.<br>
+<br>
+Regards,<br>
+Fred</div>
+</article>
+<article class="post" id="msg8007">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-05-20 12:20 UTC</span>
+  </div>
+  <div class="post-body">It's possible to get the position of the AutoCAD main window via lisp by using ActiveX, so I think with some work, you could do it with the existing ODCL functions.</div>
+</article>
+<article class="post" id="msg8010">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-05-22 15:14 UTC</span>
+  </div>
+  <div class="post-body">Hi, Owen,<br>
+<br>
+I'm not sure if it is really possible to get the information via ActiveX because WindowLeft and WindowTop seem to return standard values if maximized to the screen:<br>
+<br>
+<pre class="code"><code>;   Height = 1026<br>
+;   Width = 1696<br>
+;   WindowLeft = -8<br>
+;   WindowState = 3<br>
+;   WindowTop = -8</code></pre><br>
+<br>
+But how to get the information if it is on first or second screen?<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8011">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-05-23 01:42 UTC</span>
+  </div>
+  <div class="post-body">One idea would be to calculate the center of the AutoCAD window, then determine which monitor contains that point. There may not be a foolproof algorithm, but I think that would work for most cases.</div>
+</article>
+<article class="post" id="msg8038">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2011-06-02 11:14 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1625.msg8011#msg8011 date=1306114960 wrote:</cite><br>
+...then determine which monitor contains that point...<br>
+</blockquote><br>
+Any pointers on how I might go about doing this? I'm out of ideas about how to transpose AutoCAD coordinates to Windows coordinates and vice versa  ???</div>
+</article>
+<article class="post" id="msg8041">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-06-04 16:22 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1625.msg8010#msg8010 date=1306077243 wrote:</cite><br>
+I'm not sure if it is really possible to get the information via ActiveX because WindowLeft and WindowTop seem to return standard values if maximized to the screen:<br>
+</blockquote><br>
+<br>
+I cannot say anything about the situation in AutoCAD but in Bricscad this is not true.<br>
+If I am running the cad application on my secondary monitor and have this monitor positioned above my primary monitor this:<br>
+<pre class="code"><code>(vla-get-windowtop (vlax-get-acad-object))</code></pre><br>
+will return a large negative value (for a screen height of 1024 with the cad application maximized the value is -1028).<br>
+<br>
+Using the fact that (dcl_GetScreenSize) returns values for the primary monitor it is possible to determine on which monitor the cad application is running.<br>
+<br>
+But that information is not necessary: the center of the cad application window is enough to position a form.<br>
+<br>
+<br>
+; returns the center of the application window (may not be the screen center)<br>
+(defun GetCadAppCenter ( / oCad result)<br>
+  (vl-load-com)<br>
+  (setq oCad (vlax-get-acad-object))<br>
+  (setq result<br>
+    (list<br>
+      (+ (vla-get-windowleft oCad) (/ (vla-get-width oCad) 2))<br>
+      (+ (vla-get-windowtop oCad) (/ (vla-get-height oCad) 2))<br>
+    )<br>
+  )<br>
+  (vlax-release-object oCad)<br>
+  result<br>
+)<br>
+<br>
+; algorithm suggested by Owen Wengerd<br>
+; code will also return nil if the center of the application<br>
+; window is on the task bar of the primary monitor<br>
+(defun kg_odcl_CadAppOnPrimaryMonitorP ()<br>
+  (equal<br>
+    (mapcar<br>
+      '(lambda (app scr)<br>
+         (&lt; 0 app scr)<br>
+      )<br>
+      (GetCadAppCenter)<br>
+      (dcl_GetScreenSize)<br>
+    )<br>
+    '(T T)<br>
+  )<br>
+)<br>
+<br>
+; example: (kg_odcl_FormCenter_To_CadAppCenter MyProject_MyForm)<br>
+(defun kg_odcl_FormCenter_To_CadAppCenter (form)<br>
+  (apply<br>
+    'dcl_Control_SetPos<br>
+    (cons<br>
+      form<br>
+      (mapcar<br>
+        '-<br>
+        (GetCadAppCenter)<br>
+        (list<br>
+          (/ (dcl_Control_GetWidth form) 2)<br>
+          (/ (dcl_Control_GetHeight form) 2)<br>
+        )<br>
+      )<br>
+    )<br>
+  )<br>
+)<br>
+<br>
+<br>
+EDIT1: Something is going wrong with the code highlighting...<br>
+EDIT2: added <code>(vl-load-com)</code></div>
+</article>
+<article class="post" id="msg8043">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-06-04 19:03 UTC</span>
+  </div>
+  <div class="post-body">Comment highlighting should now be fixed.</div>
+</article>
+<article class="post" id="msg8053">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2011-06-07 07:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=1625.msg8041#msg8041 date=1307204578 wrote:</cite><br>
+<br>
+... Using the fact that (dcl_GetScreenSize) returns values for the primary monitor it is possible to determine on which monitor the cad application is running.<br>
+<br>
+But that information is not necessary: the center of the cad application window is enough to position a form...<br>
+<br>
+</blockquote><br>
+<br>
+Fantastic. Your provided code does exactly what I need. Dragging AutoCAD between windows and using your <em><strong>FormCenter_To_CadAppCenter</strong></em> code makes my dialog appear in the centre of whichever monitor is displaying the app.<br>
+<br>
+Many thanks for your input on this - it's very much appreciated  ;D</div>
+</article>
+<article class="post" id="msg13931">
+  <div class="post-head">
+    <span class="post-author">KKirk</span>
+    <span class="post-date muted">2023-11-28 18:40 UTC</span>
+  </div>
+  <div class="post-body">Revisting a quite old thread here, but I'm struggling to get this to work in Autocad 2023. I'm relatively new to LISP and OpenDCL so I may be doing something dumb or missing something obvious, but is there anything in the code from Roy/Owen that is Bricscad specific that I would have to adjust to make it work in Autocad?</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

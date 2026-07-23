@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tree Control · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 369</p>
+    <h1>Tree Control</h1>
+    <p class="meta">Started by Jim ·
+      2008-06-29 19:11 UTC ·
+      9 replies · SMF topic #369</p>
+<article class="post" id="msg1620">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-06-29 19:11 UTC</span>
+  </div>
+  <div class="post-body">Has anyone tried to duplicate the behavior of the Inventor Tree Control wit OpenDCL?<br>
+<br>
+Thanks,<br>
+Jim </div>
+</article>
+<article class="post" id="msg1621">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-06-29 20:37 UTC</span>
+  </div>
+  <div class="post-body">I don't know, what's it look like?<br>
+</div>
+</article>
+<article class="post" id="msg1627">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-07-03 13:02 UTC</span>
+  </div>
+  <div class="post-body">Attachment shows a tree with an end of part marker. One can drag it up and down the list. Everything it below is not processed and grayed out. I have seen very little info on programming for the tree control. I was wondering how the end of file marker is handled. Do you think its just another parent?<br>
+<br>
+Thanks,<br>
+Jim<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/431/Browser Bar.jpg">Browser Bar.jpg</a> <span class="muted">(58739 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1629">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-07-03 17:21 UTC</span>
+  </div>
+  <div class="post-body">I don't think you can drag-n-drop within the same tree control. (maybe that should be added as a feature request).<br>
+But you could add some up &amp; down arrow buttons to move the "End of Part" node &amp; change the image for all the other nodes below it.</div>
+</article>
+<article class="post" id="msg1630">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-07-03 18:16 UTC</span>
+  </div>
+  <div class="post-body">Is that a limitation of the MFC Tree Control or OpenDCL's implementation? </div>
+</article>
+<article class="post" id="msg1631">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-07-03 20:38 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=369.msg1629#msg1629 date=1215105676 wrote:</cite><br>
+I don't think you can drag-n-drop within the same tree control.</blockquote><br>
+<br>
+You should be able to, if it is enabled.</div>
+</article>
+<article class="post" id="msg1633">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-07-03 22:51 UTC</span>
+  </div>
+  <div class="post-body">Hello, I want to add something, too  ;)<br>
+<br>
+1. Owen is right: drag'n drop works within one and the same tree control, I use it very often in cases of data management (with database behind) to manage structures. It is not really difficult - but its a lot of code (which item is allowed to be moved, which item can be child of another item, parents cannot be child of its own child and so on). But maybe Barry meant something different when he said "I don't think you can drag-n-drop within the same tree control."<br>
+<br>
+2. The only pity thing is that OpenDCL does not support overlaying images (see icons of lnk-files (links) at your desktop with the small arrow at lower left). So thats why you have to manage it by yourself: just change the images at runtime. I always say: Everything I have to manage by myself can have the positive effect that I always have the control over it: I can decide when I want to do something and when not.<br>
+<br>
+Maybe we should think about an advanced example with tree control using drag &amp; drop...<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1634">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-07-03 23:05 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I must have misspoke. oops :)<br>
+An advanced example would be nice.<br>
+</div>
+</article>
+<article class="post" id="msg1635">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-07-03 23:29 UTC</span>
+  </div>
+  <div class="post-body">I try to attach a video at first to see if it is this what Jim meant.<br>
+<br>
+In the video I move different objects into other folders or below other objects. I have to make sure programmatically that the user won't move a filter (at the bottom of the tree) below a standard folder (at the top of the tree). This is not really a good example because I reread the complete hierarchy anew everytime, at last was too lazy.  :P<br>
+<br>
+Such an advanced example would take a bit of time. I dreamt of an example combining AdoDb (using access database), Tree, Grid, ListView and a SQL Builder in a nice dialog. But at first I have to make real (my bad english: become true?) some other given promises before getting into this project.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/434/dragdroptree.gif">dragdroptree.gif</a> <span class="muted">(509267 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1687">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-07-21 12:48 UTC</span>
+  </div>
+  <div class="post-body">I think this is what I meant. Video runs a little fast.<br>
+thanks,<br>
+Jim</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

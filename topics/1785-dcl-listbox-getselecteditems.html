@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_ListBox_GetSelectedItems · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1785</p>
+    <h1>dcl_ListBox_GetSelectedItems</h1>
+    <p class="meta">Started by velasquez ·
+      2012-04-11 18:10 UTC ·
+      2 replies · SMF topic #1785</p>
+<article class="post" id="msg8772">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2012-04-11 18:10 UTC</span>
+  </div>
+  <div class="post-body">Function Name: -&gt; dcl_ListBox_GetSelectedItems<br>
+Return Type: -&gt; List of Strings <br>
+<br>
+But function is not returning a list.<br>
+Only returns the selected string. -&gt;  "125"<br>
+<br>
+Any error or just a condition for only a selected item?<br>
+<br>
+Thanks<br>
+velasquez<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1719/listbox.png">listbox.png</a> <span class="muted">(20513 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8773">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-04-11 18:28 UTC</span>
+  </div>
+  <div class="post-body">It looks like the code returns a single item when the SelectionStyle is not set to multiple selection. This may be a relic of the original code that was carried forward to maintain compatibility, but I have removed this special handling for the next build so it returns a list in all cases. If old code relies on this behavior, it will need to be changed in the future.</div>
+</article>
+<article class="post" id="msg8775">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2012-04-11 19:43 UTC</span>
+  </div>
+  <div class="post-body">Now I understand it Owen.<br>
+But for this style would be best to keep well?<br>
+It seems to be the best way to get the selected text.<br>
+or:<br>
+(setq ItemText (dcl_ListBox_GetItemText<br>
+  DuctilCAD_ExtremBlutop_ListBoxDN<br>
+  (dcl_ListBox_GetCurSel DuctilCAD_ExtremBlutop_ListBoxDN)<br>
+) ;_ fim de dcl_ListBox_GetItemText<br>
+<br>
+Thanks</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

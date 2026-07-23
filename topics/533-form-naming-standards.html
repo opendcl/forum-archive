@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Form Naming Standards · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 533</p>
+    <h1>Form Naming Standards</h1>
+    <p class="meta">Started by bsande1 ·
+      2009-02-13 16:40 UTC ·
+      11 replies · SMF topic #533</p>
+<article class="post" id="msg2414">
+  <div class="post-head">
+    <span class="post-author">bsande1</span>
+    <span class="post-date muted">2009-02-13 16:40 UTC</span>
+  </div>
+  <div class="post-body">I am new both to ODCL and LISP. My manager has asked me to replace aging VB code (written by a former employee) for our customization of AutoCAD 2008.<br>
+<br>
+I saw ODCL Studio and think this would be perfect to meet my needs. I installed version 5.0.1.6, and started learning, however, I can't get past the HelloWorld tutorial.<br>
+<br>
+If I follow exactly what is written in the tutorial, it works fine, but if I change it to follow the naming conventions used in our VB code (prefixes; frm for forms, txt for text boxes, lbl for labels and cmd for buttons), it doesn't run. I get OpenDCL Runtime Errors, Error: NIL value not allowed for both the SetCaption and GetText functions. If I close everything down, reopen it, I don't get the errors, but it also doesn't run. I get the form, but the Label is back to Label1, and typing in the text box and clicking OK does nothing.<br>
+<br>
+To try and pin down why this is, I used the HelloWorld_Final.LSP from the tutorial files. If all I do is change Form1 to frmHello, it doesn't run. If I change it back, it does.<br>
+<br>
+My question (finally), is there some standards with regards to naming conventions that have to be met for ODCL to run? If so, where do I find them? If not, why does this one change fail?<br>
+<br>
+Thank You,<br>
+<br>
+Will</div>
+</article>
+<article class="post" id="msg2415">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-02-13 17:16 UTC</span>
+  </div>
+  <div class="post-body">The form name is used to construct the lisp symbol names that hold handles to the form and form controls. If you change the form name in the project, then you also need to change the lisp symbols in the code.<br>
+<br>
+To see what I mean, double click on one of your controls in OpenDCL Studio and click on one of the control's functions; it will display the correct lisp symbol name in the "Syntax" field. Now change the form name, then check the lisp syntax again. You will notice that the lisp symbol name changed.</div>
+</article>
+<article class="post" id="msg2416">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-02-13 17:52 UTC</span>
+  </div>
+  <div class="post-body">Ya what Owen said.<br>
+Also, if you have any events already in your code, you'll have to update them too.<br>
+If you change the form name after an event has already been added, just uncheck the even &amp; re-check it again, &amp; it will use the new symbol now.<br>
+<br>
+I think the main thing that is confusing you is you're thinking it works like VBA. In VBA if you click on a control &amp; change it's name in the properties panel the code updates also.<br>
+With ODCL this is not the case. You'll have to change the ODCL file &amp; the LSP file to match.</div>
+</article>
+<article class="post" id="msg2423">
+  <div class="post-head">
+    <span class="post-author">bsande1</span>
+    <span class="post-date muted">2009-02-16 16:41 UTC</span>
+  </div>
+  <div class="post-body">Thank you both for your comments, however, I am changing the name both in ODCL and in the attached LISP program, and it doesn't run. Allow me to demonstrate.<br>
+<br>
+Here is the original code from the tutorial's HELLOWORLD_FiNAL.lsp:<br>
+<br>
+<br>
+; the following command will ensure the <br>
+; appropriate OpenDCL ARX file is loaded.<br>
+(command "_OPENDCL")<br>
+<br>
+(defun c:Hello ()<br>
+   ; call the method to load the HelloWorld.odcl file.<br>
+   (dcl_Project_Load "HelloWorld" T)<br>
+   ; call the method to show the Hello World dialog box example.<br>
+   (dcl_Form_Show HelloWorld_Form1)<br>
+   (princ)<br>
+)<br>
+<br>
+; This fires just before the form is shown.<br>
+(defun c:HelloWorld_Form1_OnInitialize (/)<br>
+   (dcl_Control_SetCaption HelloWorld_Form1_Label1 "Type Something:") ; Change the labels Caption.<br>
+)<br>
+<br>
+; This gets called when the OK button is clicked<br>
+(defun c:HelloWorld_Form1_TextButton1_OnClicked (/)<br>
+   (setq sText (dcl_Control_GetText HelloWorld_Form1_TextBox1)) ; Get the Text property from the Text Box.<br>
+   (dcl_messagebox (strcat "You typed: " sText)) ; Show a MessageBox with the user entered text.<br>
+   (dcl_Form_Close HelloWorld_Form1) ; Close the form.<br>
+   (princ)<br>
+)<br>
+<br>
+<br>
+If all I do is change the form name from Form1 to frmForm1 in both the ODCL and LISP files:<br>
+<br>
+<br>
+; the following command will ensure the <br>
+; appropriate OpenDCL ARX file is loaded.<br>
+(command "_OPENDCL")<br>
+<br>
+(defun c:Hello ()<br>
+   ; call the method to load the HelloWorld.odcl file.<br>
+   (dcl_Project_Load "HelloWorld" T)<br>
+   ; call the method to show the Hello World dialog box example.<br>
+   (dcl_Form_Show HelloWorld_frmForm1)<br>
+   (princ)<br>
+)<br>
+<br>
+; This fires just before the form is shown.<br>
+(defun c:HelloWorld_frmForm1_OnInitialize (/)<br>
+   (dcl_Control_SetCaption HelloWorld_frmForm1_Label1 "Type Something:") ; Change the labels Caption.<br>
+)<br>
+<br>
+; This gets called when the OK button is clicked<br>
+(defun c:HelloWorld_frmForm1_TextButton1_OnClicked (/)<br>
+   (setq sText (dcl_Control_GetText HelloWorld_frmForm1_TextBox1)) ; Get the Text property from the Text Box.<br>
+   (dcl_messagebox (strcat "You typed: " sText)) ; Show a MessageBox with the user entered text.<br>
+   (dcl_Form_Close HelloWorld_frmForm1) ; Close the form.<br>
+   (princ)<br>
+)<br>
+<br>
+It fails to run. I get the error as described, and after restarting ACAD, I get the form problems.<br>
+<br>
+<br>
+Can you duplicate this error? If not, can you give me some idea of what might be different on my machine?<br>
+<br>
+Thank you,<br>
+Will</div>
+</article>
+<article class="post" id="msg2425">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-16 16:58 UTC</span>
+  </div>
+  <div class="post-body">Hi, bsande1, would you be so kind to upload the changed odcl-file? Normally, I call a command from the tools menu of OpenDCL studio to update all the control's names an their variables AND after that I deactivate and activate all the events to make sure that all event's names will be updated, too. And saving the project. And reloading in AutoCAD (!!!!!!!). And then updating the lisp source code. And reloading the lisp code. Only after these steps you can be sure that the new form name will be correctly addressed anywhere!<br>
+<br>
+So send me your project file that we can tell you which part you have to change.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2427">
+  <div class="post-head">
+    <span class="post-author">bsande1</span>
+    <span class="post-date muted">2009-02-16 17:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=533.msg2425#msg2425 date=1234803523 wrote:</cite><br>
+Hi, bsande1, would you be so kind to upload the changed odcl-file? Normally, I call a command from the tools menu of OpenDCL studio to update all the control's names an their variables AND after that I deactivate and activate all the events to make sure that all event's names will be updated, too. And saving the project. And reloading in AutoCAD (!!!!!!!). And then updating the lisp source code. And reloading the lisp code. Only after these steps you can be sure that the new form name will be correctly addressed anywhere!<br>
+<br>
+So send me your project file that we can tell you which part you have to change.<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+Here you go.<br>
+<br>
+Thank you for your help.<br>
+<br>
+Will<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/565/HelloWorld.lsp">HelloWorld.lsp</a> <span class="muted">(913 bytes)</span></li><li><a href="../attachments/566/HelloWorld.odcl">HelloWorld.odcl</a> <span class="muted">(807 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2428">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-02-16 17:19 UTC</span>
+  </div>
+  <div class="post-body">It sounds like you are on the right track, but apparently missing some step along the way. Without seeing your .odcl file it's difficult to say where you went wrong. Did you also change the control names? Your modified code only changed the form name. Did you check the correct syntax displayed in the Control Browser? Those are tools that you can use to diagnose the problem on your own.</div>
+</article>
+<article class="post" id="msg2429">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-02-16 17:24 UTC</span>
+  </div>
+  <div class="post-body">Your files work fine for me. I'll bet that you have multiple versions of the HelloWorld.odcl file, and your call to (dcl_Project_Load) is loading the wrong one.</div>
+</article>
+<article class="post" id="msg2431">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-16 18:11 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen, is it still so that I can load a odcl file using complete path and file name if I want to load a project which is not in one of the support pathes of AutoCAD?<br>
+<br>
+Like:<br>
+<br>
+(dcl_project_load "C:\\Programm Files\\MyApp\\MyApp.odcl")<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2437">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-02-16 19:45 UTC</span>
+  </div>
+  <div class="post-body">Yes, Fred, the complete path may be specified.</div>
+</article>
+<article class="post" id="msg2484">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-02-17 22:22 UTC</span>
+  </div>
+  <div class="post-body">bsande1, I opened your attached .ODCL file &amp; your event names are still out of date.<br>
+See attached Vid.<br>
+Owen how did you get this to work...? :)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/577/names.gif">names.gif</a> <span class="muted">(308628 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2497">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-02-18 02:26 UTC</span>
+  </div>
+  <div class="post-body">I used the code he attached; it looks like you used the original HellowWorld.lsp.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

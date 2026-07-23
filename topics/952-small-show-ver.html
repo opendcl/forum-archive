@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>small show ver · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 952</p>
+    <h1>small show ver</h1>
+    <p class="meta">Started by Slavko.Ivanovic ·
+      2009-10-02 16:54 UTC ·
+      0 replies · SMF topic #952</p>
+<article class="post" id="msg4779">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2009-10-02 16:54 UTC</span>
+  </div>
+  <div class="post-body"><br>
+While creating specific app i have need for<br>
+positioning forms with ref to ACAD window so<br>
+i created small wrapper for DCL_FORM_SHOW func.<br>
+(DCL_FORM_SHOW_L)<br>
+<br>
+<br>
+<br>
+;;&lt;|*NO|121|AL|NS:APP|<br>
+;; - POINTP<br>
+;; - Check to see if arg is valid point coordinate list. Return T or Nil.<br>
+(DEFUN POINTP (pt / l)                     ; *|&gt;<br>
+   (AND (= (TYPE pt) 'LIST)                ; list<br>
+        (SETQ l (VL-LIST-LENGTH pt))       ; not dotted<br>
+        (VL-EVERY '(LAMBDA (x) x) (MAPCAR 'NUMBERP pt)) ; all numbers<br>
+        (OR (= l 2) (= l 3))               ; 2 or 3 members<br>
+   )<br>
+)<br>
+<br>
+;;&lt;|*NO|47|VLA|NS:APP|<br>
+;; - VLA-GET-APPWIN<br>
+;; - Return info of Acad Application Window (in pixels).<br>
+;; - Argument Pos values:<br>
+;;    0 = (WinWidth WinHeight)<br>
+;;   values to retrieve Window Position: (xPos yPos)<br>
+;;    1=TL, 2=ML, 3=BL, 4=TC, 5=MC, 6=BC, 7=TR, 8=MR, 9=BR<br>
+;;  0 --w<br>
+;;  | 1-----4-----7<br>
+;;  h |           |		(GET-ACAD-WINDOW 7)<br>
+;;    2     5     8<br>
+;;    |           |<br>
+;;    3-----6-----9<br>
+(DEFUN GET-ACAD-WINDOW (Pos / fixF app w h x y) ; *|&gt;<br>
+   (COND ((MEMBER Pos '(0 1 2 3 4 5 6 7 8 9)) ; achk<br>
+          (VL-LOAD-COM)<br>
+          (DEFUN fixF (x)<br>
+             (IF (&lt; x 0)<br>
+                0<br>
+                x<br>
+             )<br>
+          )<br>
+          (SETQ app (VLAX-GET-ACAD-OBJECT)<br>
+                w   (VLA-GET-WIDTH app)<br>
+                h   (VLA-GET-HEIGHT app)<br>
+                x   (fixF (VLA-GET-WINDOWLEFT app))<br>
+                y   (fixF (VLA-GET-WINDOWTOP app))<br>
+          )<br>
+          (COND ((= Pos 0) (LIST w h))<br>
+                ((= Pos 1) (LIST x y))<br>
+                ((= Pos 2) (LIST x (+ y (/ h 2))))<br>
+                ((= Pos 3) (LIST x (+ y h)))<br>
+                ((= Pos 4) (LIST (+ x (/ w 2)) y))<br>
+                ((= Pos 5) (LIST (+ x (/ w 2)) (+ y (/ h 2))))<br>
+                ((= Pos 6) (LIST (+ x (/ w 2)) (+ y h)))<br>
+                ((= Pos 7) (LIST (+ x w) y))<br>
+                ((= Pos 8) (LIST (+ x w) (+ y (/ h 2))))<br>
+                ((= Pos 9) (LIST (+ x w) (+ y h)))<br>
+                (T NIL)<br>
+          )<br>
+         )<br>
+   )<br>
+)<br>
+<br>
+;;&lt;|*NO|42|ODCL|NS:APP|<br>
+;; - call type 1 for positioning with reference of AutoCAD window<br>
+;;      (DCL_FORM_SHOW_L dialogname 'P '(xPos yPos))<br>
+;; - call type 2 for centered inside AutoCAD window (must provide dlg size or approx)<br>
+;;      (DCL_FORM_SHOW_L dialogname 'C '(Width Height))<br>
+(DEFUN DCL_FORM_SHOW_L (dlg mode pxl / ref) ; *|&gt;<br>
+   (COND ((AND (= (TYPE dlg) 'ENAME) (MEMBER mode (LIST 'P 'C)) (POINTP pxl)) ; achk<br>
+          (IF (= mode 'P)<br>
+             (SETQ ref (MAPCAR '+ (GET-ACAD-WINDOW 1) pxl))<br>
+             (SETQ ref (GET-ACAD-WINDOW 5)<br>
+                   ref (LIST (- (CAR ref) (/ (CAR pxl) 2)) (- (CADR ref) (/ (CADR pxl) 2)))<br>
+             )<br>
+          )<br>
+          (DCL_FORM_SHOW dlg (CAR ref) (CADR ref))<br>
+         )<br>
+   )<br>
+)<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+nothing. just feele like share<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

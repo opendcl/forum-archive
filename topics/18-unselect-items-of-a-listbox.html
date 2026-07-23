@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>unselect items of a listbox · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 18</p>
+    <h1>unselect items of a listbox</h1>
+    <p class="meta">Started by gdu ·
+      2007-07-16 09:54 UTC ·
+      13 replies · SMF topic #18</p>
+<article class="post" id="msg81">
+  <div class="post-head">
+    <span class="post-author">gdu</span>
+    <span class="post-date muted">2007-07-16 09:54 UTC</span>
+  </div>
+  <div class="post-body">i got one form, where i have 2 listboxes, is there is a selction made in listbox A, the selected elements of listbox B should not be highlighted. i tried it with<br>
+(defun c:ListBoxCopyPaste_Grenzkat_ListBox3_OnSelChanged (nSelection sSelText /) <br>
+  (Odcl_ListBox_SetCurSel ListBoxCopyPaste_Grenzkat_ListBox4 -1) <br>
+) <br>
+but it doesn´t work.<br>
+any help welcome<br>
+gert<br>
+<br>
+hope you know what i am supposed to do ;)</div>
+</article>
+<article class="post" id="msg84">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-16 21:47 UTC</span>
+  </div>
+  <div class="post-body">gert,<br>
+I'd like to see a sample LSP and ODCL with a little better description og your question.<br>
+<br>
+Thanks,<br>
+Kerry </div>
+</article>
+<article class="post" id="msg85">
+  <div class="post-head">
+    <span class="post-author">gdu</span>
+    <span class="post-date muted">2007-07-17 11:18 UTC</span>
+  </div>
+  <div class="post-body">ok, maybe some pics make it clear, better than my english ;)<br>
+wrong<br>
+<a href="http://imageshack.us" rel="nofollow noopener">{2}</a><br>
+<br>
+ok<br>
+<a href="http://imageshack.us" rel="nofollow noopener">{2}</a><br>
+<br>
+ok too<br>
+<a href="http://imageshack.us" rel="nofollow noopener">{2}</a><br>
+<br>
+So the problem is, if i make a selction in one listbox, i want to unselect (unhighlight) the selected items in the other listbox </div>
+</article>
+<article class="post" id="msg87">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-07-18 02:07 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=gdu link=topic=18.msg85#msg85 date=1184671117 wrote:</cite><br>
+So the problem is, if i make a selction in one listbox, i want to unselect (unhighlight) the selected items in the other listbox</blockquote><br>
+<br>
+I have attached a small test project that works the way you describe. Does that help?<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg88">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-18 03:07 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen.<br>
+It's lunch time (here) and I logged in to answer this while having munchies ...</div>
+</article>
+<article class="post" id="msg89">
+  <div class="post-head">
+    <span class="post-author">gdu</span>
+    <span class="post-date muted">2007-07-18 07:29 UTC</span>
+  </div>
+  <div class="post-body">sorry, but i could not get your program to run<br>
+if i load the lisp, i get a no function def<br>
+dcl_project_load<br>
+but i use this line in my lsp for dcl too?!?<br>
+and i could not open the odcl to have a look at your example, odcl doesn´t open the odc programm, just odc, and renaming odcl in odc didn´t work  ;D<br>
+but i see, that you solve the problem with<br>
+(defun c:Test_Form1_ListBox3_OnSelChanged (nSelection sSelText /)<br>
+     (dcl_ListBox_SetCurSel Test_Form1_ListBox4 -1)<br>
+)<br>
+just like i posted in my first entry, so maybe i just have a mixup in my definition or i have to make it with a workaround... store all entries of a listbox in a list, clear the listbox, add the list to the listbox, force an update...<br>
+<br>
+but thanks a lot for your time to give me some help...<br>
+mit freundlichem gruß<br>
+gert<br>
+<br>
+edit:<br>
+i have just seen, that you use<br>
+(dcl_ListBox_SetCurSel <br>
+instead of<br>
+(Odcl_ListBox_SetCurSel <br>
+like i do<br>
+i use OpenDCL 4.0.1.8</div>
+</article>
+<article class="post" id="msg90">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-18 08:41 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=18.msg84#msg84 date=1184622420 wrote:</cite><br>
+gert,<br>
+I'd like to see a sample LSP and ODCL with a little better description og your question.<br>
+<br>
+Thanks,<br>
+Kerry <br>
+</blockquote><br>
+<br>
+gert,<br>
+can you please attach a sample LSP and ODCL.<br>
+<br>
+also, you may be best downloading and installing the most recent build from SourceForge. ... you are about 4 builds out of date.<br>
+<br>
+regards<br>
+Kerry.</div>
+</article>
+<article class="post" id="msg91">
+  <div class="post-head">
+    <span class="post-author">gdu</span>
+    <span class="post-date muted">2007-07-18 09:52 UTC</span>
+  </div>
+  <div class="post-body">ListBoxCopyPaste.odcl is a ListBoxCopyPaste.<strong>odc</strong> file, the only file my opendcl editor stores the files<br>
+<br>
+maybe i try to update to the latest version, do my workaround or just ignore the cosmetic troubles<br>
+<br>
+mit freundlichem gruß<br>
+gert<br>
+<br>
+<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg94">
+  <div class="post-head">
+    <span class="post-author">dkh007</span>
+    <span class="post-date muted">2007-07-19 01:48 UTC</span>
+  </div>
+  <div class="post-body">You need to download the latest OpenDCL (version 4.0.2.2) <a href="http://sourceforge.net/project/showfiles.php?group_id=187950" rel="nofollow noopener">{2}</a> You are using an old beta and the problem you have may simply be related to the beta you are using.<br>
+</div>
+</article>
+<article class="post" id="msg95">
+  <div class="post-head">
+    <span class="post-author">gdu</span>
+    <span class="post-date muted">2007-07-19 12:35 UTC</span>
+  </div>
+  <div class="post-body">i have downloaded the 4.0.2.2 verion, unistalled the old version, installed the new 4.0.2.2 version, and nothing works ;)<br>
+so i had to.....<br>
+<br>
+after the install, i haven´t found any arx in the install folder, looked at an example and it seems to be changed something at the (load runtime... stuff<br>
+i changed this so that my progromm now starts<br>
+than i had wrong function names, because all the names changed from <br>
+odcl_form_show<br>
+   into<br>
+dcl_form_show<br>
+so i changed them automatically, but than there was a no funct def at<br>
+loaddclproj<br>
+which still is<br>
+loadodclproj<br>
+ the new file extention is odcl, so i cant open my old odc files by clicking on them in the explorer, but i can open them when i select all files in the opendcl studio prog. than i can save them as odcl, which makes it possible to open them by clicking.<br>
+now everything seems to work, but my<br>
+(dcl_form_closeall 0)<br>
+which only works, after clicking it twice.... 1. click, you can see the window disapear for 1/100 of a second, than it is up again, click it once more, than it is gone.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg96">
+  <div class="post-head">
+    <span class="post-author">gdu</span>
+    <span class="post-date muted">2007-07-19 14:25 UTC</span>
+  </div>
+  <div class="post-body">i am now on the newest version, and the problem remains the same, it only works, if selection style is "single" if it is multiple, the setcursel -1 does not work.</div>
+</article>
+<article class="post" id="msg97">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2007-07-19 17:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=gdu link=topic=18.msg95#msg95 date=1184848533 wrote:</cite><br>
+i have downloaded the 4.0.2.2 verion, unistalled the old version, installed the new 4.0.2.2 version, and nothing works ;)<br>
+so i had to.....<br>
+<br>
+after the install, i haven´t found any arx in the install folder, looked at an example and it seems to be changed something at the (load runtime... stuff<br>
+i changed this so that my progromm now starts<br>
+than i had wrong function names, because all the names changed from <br>
+odcl_form_show<br>
+   into<br>
+dcl_form_show<br>
+so i changed them automatically, but than there was a no funct def at<br>
+loaddclproj<br>
+which still is<br>
+loadodclproj<br>
+ the new file extention is odcl, so i cant open my old odc files by clicking on them in the explorer, but i can open them when i select all files in the opendcl studio prog. than i can save them as odcl, which makes it possible to open them by clicking.<br>
+now everything seems to work, but my<br>
+(dcl_form_closeall 0)<br>
+which only works, after clicking it twice.... 1. click, you can see the window disapear for 1/100 of a second, than it is up again, click it once more, than it is gone.<br>
+</blockquote><br>
+<br>
+Most of these changes have been documented in the Help File: <a href="http://www.opendcl.com/HelpFiles/main.html" rel="nofollow noopener">{2}</a> &amp; on the SF site.<br>
+You can just rename your .odc files to .odcl in Win. Exp. you don't need to open them and resave them.<br>
+You can do a find and replace in any text editor to switch the "(odcl_" with "(dcl_" note "(" &amp; "_" so you don't replace other functions that shouldn't be replaced.</div>
+</article>
+<article class="post" id="msg98">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-19 21:44 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=gdu link=topic=18.msg95#msg95 date=1184848533 wrote:</cite><br>
+..................<br>
+ the new file extention is odcl, so i cant open my old odc files by clicking on them in the explorer, but i can open them when i select all files in the opendcl studio prog. than i can save them as odcl, which makes it possible to open them by clicking.<br>
+now everything seems to work, .................<br>
+<br>
+</blockquote><br>
+<br>
+Have you tried setting your file associations ?<br>
+<br>
+.. just choose one of your .ODC files ... <br>
+2 pictures..<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg100">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-19 22:22 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=gdu link=topic=18.msg96#msg96 date=1184855134 wrote:</cite><br>
+............... it only works, if selection style is "single" if it is multiple, the setcursel -1 does not work.<br>
+</blockquote><br>
+<br>
+Perhaps Try this ..<br>
+<pre class="code"><code><br>
+;; assume the ARX is loaded.<br>
+;; load the ODCL<br>
+<br>
+(DCL_PROJECT_LOAD "LB-Test" T)<br>
+<br>
+;; ----------------------------<br>
+;; Define Events<br>
+<br>
+(DEFUN c:LB-Test_Form1_DeSelect_OnClicked (/)<br>
+    (SETQ<br>
+        rValue (DCL_LISTBOX_GETSELECTEDNTHS LB-Test_Form1_ListBox-A)<br>
+    )<br>
+    (DCL_MESSAGEBOX (VL-PRINC-TO-STRING rValue)<br>
+                    "Items to Delelect"<br>
+                    2<br>
+                    2<br>
+    )<br>
+    (FOREACH item rValue<br>
+        (DCL_LISTBOX_SETSEL LB-Test_Form1_ListBox-A item 0)<br>
+    )<br>
+)<br>
+;; ------------<br>
+(DEFUN c:LB-Test_Form1_ListBox-A_OnSelChanged (nSelection sSelText /)<br>
+    (FOREACH item<br>
+             (DCL_LISTBOX_GETSELECTEDNTHS LB-Test_Form1_ListBox-B)<br>
+        (DCL_LISTBOX_SETSEL LB-Test_Form1_ListBox-B item 0)<br>
+    )<br>
+)<br>
+;; ------------<br>
+(DEFUN c:LB-Test_Form1_ListBox-B_OnSelChanged (nSelection sSelText /)<br>
+    (FOREACH item<br>
+             (DCL_LISTBOX_GETSELECTEDNTHS LB-Test_Form1_ListBox-A)<br>
+        (DCL_LISTBOX_SETSEL LB-Test_Form1_ListBox-A item 0)<br>
+    )<br>
+)<br>
+;; ----------------------------<br>
+;; Define Main Entry Point<br>
+(DEFUN c:test () (DCL_FORM_SHOW LB-Test_Form1))<br>
+<br>
+;; ----------------------------<br>
+;; Run the routine<br>
+(c:test)<br>
+<br>
+</code></pre><br>
+<br>
+.. and attachments .. <br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

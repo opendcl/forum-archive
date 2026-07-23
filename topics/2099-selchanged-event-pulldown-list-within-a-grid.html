@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SelChanged Event - Pulldown List within a Grid · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2099</p>
+    <h1>SelChanged Event - Pulldown List within a Grid</h1>
+    <p class="meta">Started by vosey ·
+      2014-03-04 10:27 UTC ·
+      7 replies · SMF topic #2099</p>
+<article class="post" id="msg10415">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2014-03-04 10:27 UTC</span>
+  </div>
+  <div class="post-body">I'm attempting to trigger an event from a Pull-Down list within a Grid (within a modeless dialog), but the 'SelChanged' event seems to fire on initial selection of the PullDown cell before I've chosen a value, and I can't seem to get the Item I subsequently select from the PullDown returned during this action.  I've tried both synchronous and asynchronous modes.  I guess I'm missing something here (as usual)!, but would appreciate a pointer in the right direction.</div>
+</article>
+<article class="post" id="msg10416">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-03-04 14:37 UTC</span>
+  </div>
+  <div class="post-body">SelChanged for the grid fires when the grid's current cell selection changes. What you want is the OnEndLabelEdit event.</div>
+</article>
+<article class="post" id="msg10417">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2014-03-04 14:59 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the reply Owen,  That worked fine, but it appears necessary to manually click on another control or cell after picking an item from the drop down list before the 'OnEndLabelEdit' event fires, I guess that's what defines the 'End of the Label Edit' .  What I'd like to do, which I accept may not be possible, is to trigger an event at the point when I actually click on an item from the drop down list in order to update some related cells at that time.  I'm pretty new at this so please be patient!</div>
+</article>
+<article class="post" id="msg10418">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-03-04 15:18 UTC</span>
+  </div>
+  <div class="post-body">You're doing fine, no patience needed.<br>
+<br>
+Which version of OpenDCL are you using, and what is the grid cell style? I think the behavior was changed in one of the recent builds so that the editing is considered to have ended as soon as you select from the dropdown, but only in the case of "simple list" combo styles (that is, combo styles where you can select from a list AND type in the edit box still do not fire immediately.)</div>
+</article>
+<article class="post" id="msg10419">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2014-03-04 15:27 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the vote of confidence!! - I'm using OpenDCL Studio 6.0.2.5,  The cell style is '18 - Drop Down List' with Four values entered at design time using the 'Set Drop List' button.  I'll upgrade and report back.  Thanks again.</div>
+</article>
+<article class="post" id="msg10420">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2014-03-04 15:58 UTC</span>
+  </div>
+  <div class="post-body">Now running with Version 7.0.1.4 and the event 'OnEndLabelEdit' appears unchanged.. It Fires when another cell or control is picked after choosing a value from the dropdown list.</div>
+</article>
+<article class="post" id="msg10421">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-03-04 16:27 UTC</span>
+  </div>
+  <div class="post-body">I just checked, and is changed in OpenDCL 8.0. Sorry, it looks like you're out of luck unless you move to OpenDCL 8.</div>
+</article>
+<article class="post" id="msg10422">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2014-03-05 07:30 UTC</span>
+  </div>
+  <div class="post-body">Upgraded to V.8 and it works perfectly!! - Thanks for the great support.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

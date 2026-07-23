@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZwCAD slow ResultBuffer after OpenDCL ZRX load · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2887</p>
+    <h1>ZwCAD slow ResultBuffer after OpenDCL ZRX load</h1>
+    <p class="meta">Started by Blade ·
+      2023-09-15 08:11 UTC ·
+      3 replies · SMF topic #2887</p>
+<article class="post" id="msg13897">
+  <div class="post-head">
+    <span class="post-author">Blade</span>
+    <span class="post-date muted">2023-09-15 08:11 UTC</span>
+  </div>
+  <div class="post-body">In ZwCAD there is a strange behaviour with resultbuffer if the OpenDCL ZRX loaded.<br>
+Here is a simple dot net sample code:<br>
+<br>
+<pre class="code"><code><br>
+[LispFunction("GetMyString")]<br>
+public static string GetMyString(ResultBuffer resBufIn)<br>
+{<br>
+    return "MyString";<br>
+}<br>
+</code></pre><br>
+<br>
+Lets call this function 10.000 times:<br>
+<br>
+(repeat 10000 (GetMyString))<br>
+<br>
+It the OpenDCL ZRX is NOT loaded the performance is like 0.25 seconds.<br>
+It the OpenDCL ZRX is LOADED the performance is like 2.00 seconds.<br>
+The performance results are the same for ZwCAD 2022, 2023 and 2024.<br>
+<br>
+OpenDCL or ZwCAD bug?<br>
+<br>
+Update:<br>
+Maybe a ZwCAD bug.<br>
+If I load additional VLS files with lot of lisp codes the performance becomes slower.</div>
+</article>
+<article class="post" id="msg13898">
+  <div class="post-head">
+    <span class="post-author">Blade</span>
+    <span class="post-date muted">2023-09-16 05:54 UTC</span>
+  </div>
+  <div class="post-body">I made some tests, loading ZRX files from the ZwCAD installation folder and the performance remains fast.<br>
+After loading the OpenDCL ZRX the performance became slow.<br>
+Maybe the OpenDCL ZRX has a bug. </div>
+</article>
+<article class="post" id="msg13923">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2023-11-01 01:31 UTC</span>
+  </div>
+  <div class="post-body">I think this is something to take up with ZWCAD tech support.</div>
+</article>
+<article class="post" id="msg13927">
+  <div class="post-head">
+    <span class="post-author">Blade</span>
+    <span class="post-date muted">2023-11-06 09:44 UTC</span>
+  </div>
+  <div class="post-body">Indeed, you are right.<br>
+Just installed the new service pack for ZwCAD and the bug is gone. They solved it.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

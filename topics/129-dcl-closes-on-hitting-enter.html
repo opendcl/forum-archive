@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl closes on hitting enter... · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 129</p>
+    <h1>dcl closes on hitting enter...</h1>
+    <p class="meta">Started by Hypersonic ·
+      2007-12-31 18:55 UTC ·
+      10 replies · SMF topic #129</p>
+<article class="post" id="msg502">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2007-12-31 18:55 UTC</span>
+  </div>
+  <div class="post-body">When entering data into a text box, and if you hit enter, it closes the dialog.<br>
+Is there any way to stop this , and maybe make hit enter step to the next box?<br>
+<br>
+Thanks!</div>
+</article>
+<article class="post" id="msg503">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-12-31 18:59 UTC</span>
+  </div>
+  <div class="post-body">Try setting the text box 'ReturnAsTab' property to 'True'.</div>
+</article>
+<article class="post" id="msg504">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2007-12-31 21:59 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen! ;D</div>
+</article>
+<article class="post" id="msg614">
+  <div class="post-head">
+    <span class="post-author">nwgeo</span>
+    <span class="post-date muted">2008-01-23 18:26 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the tip on trapping the "Enter" key being pressed, however I cannot seem to get the "OnReturnPressed" event to fire for a textbox control.  I have added the following lines to my LSP code for a text box that is to receive an address:<br>
+<br>
+(defun c:Addr_frmAddr_txtAddrNum_OnReturnPressed () <br>
+  (dcl_Control_SetFocus Addr_frmAddr_cmdFind)<br>
+  (princ "\nPressed  while in the txtAddrNum TEXT box...")<br>
+  (find_records)<br>
+);<br>
+<br>
+After I type in an address, I would like to hit the "Enter" key and fire off the "find_records" function.  The function already behaves properly as I have already associated it with the "cmdFind_OnClicked" button.  <br>
+<br>
+<br>
+(defun c:Addr_frmAddr_cmdFind_OnClicked (/)<br>
+  (find_records)<br>
+);end CMDFIND_ONCLICKED<br>
+<br>
+<br>
+<br>
+The "ReturnAsTab" property has been set to "True," as suggested.  This is confusing.  I am running version 4.1.0.10, AutoCAD Map 2004, WinXP, SP2<br>
+</div>
+</article>
+<article class="post" id="msg615">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-01-23 21:07 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=nwgeo link=topic=129.msg614#msg614 date=1201112802 wrote:</cite><br>
+Thanks for the tip on trapping the "Enter" key being pressed, however I cannot seem to get the "OnReturnPressed" event to fire for a textbox control.</blockquote><br>
+<br>
+If you need to respond when the user presses , you should set ReturnAsTab back to False and use a different approach.  Try responding to the  key press by handling the OnOK event, then cancel the dialog closing by responding to the OnCancelClose event.  If OnOK doesn't work, you can try the OnKeyDOwn event of the edit box. :)</div>
+</article>
+<article class="post" id="msg616">
+  <div class="post-head">
+    <span class="post-author">nwgeo</span>
+    <span class="post-date muted">2008-01-23 22:02 UTC</span>
+  </div>
+  <div class="post-body">Well, the OnOK event didn't quite do what I wanted.  Also the OnKeyDown for the text box fired everytime I hit a key [like it's supposed to I guess], but this makes it impossible to enter a five digit address number as the event code gets fired five times :(<br>
+<br>
+solution - I set the ReturnAsTab property back to True and changed the tab order so that the "Find Address" button follows directly after the address text box.  The user can hit the Return key twice, it's still faster than picking up the mouse just to click a button...<br>
+<br>
+Still, I'm curious why I can't get the "ReturnPressed" event to fire in my application.  Oh well, Rev 2.0 I guess.<br>
+<br>
+Thank you for responding to my post and giving me a few items to try.<br>
+</div>
+</article>
+<article class="post" id="msg617">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-01-24 10:30 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=nwgeo link=topic=129.msg616#msg616 date=1201125727 wrote:</cite><br>
+the OnKeyDown for the text box fired everytime I hit a key [like it's supposed to I guess], but this makes it impossible to enter a five digit address number as the event code gets fired five times :(</blockquote><br>
+<br>
+Would this method work if your event handler ignored all the keys except the  key?</div>
+</article>
+<article class="post" id="msg1533">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2008-06-03 09:45 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I've got the same problem, but i still working with 4.1.2.1 odcl tools.<br>
+<br>
+If i begin a new dailog box, whith an empty form, pressing  key make dcl close.<br>
+<br>
+There is no way to keep form alive ....<br>
+<br>
+I find something for easy form .... I show again the form whith OnOk event ...<br>
+<br>
+<pre class="code"><code>(defun c:GPE:PROJET_OnOK ( /)<br>
+     (dcl_Form_Show "boite.projet" "GPE:PROJET")<br>
+)</code></pre><br>
+<br>
+But still working with simple form .</div>
+</article>
+<article class="post" id="msg1534">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-03 12:17 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+have a look at OnCancelClose.<br>
+If you need an example, tell me.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1535">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2008-06-03 12:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=129.msg1534#msg1534 date=1212495436 wrote:</cite><br>
+Hello,<br>
+<br>
+have a look at OnCancelClose.<br>
+If you need an example, tell me.<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+Hello Fred,<br>
+<br>
+Yes, because,i tried many times with all options existing in a default frame, but  key make it close !<br>
+<br>
+Is there any option, like "isdefault" option in dcl, to tell than i want to put a button as default ????<br>
+<br>
+I will be very please, if you can show me how to not close a frame with  key pressed, with a blank frame for example ...   :P<br>
+<br>
+Thanks ....  ;)</div>
+</article>
+<article class="post" id="msg1536">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-03 20:28 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+please try the attached project. Unfortunately, I've never seen that OnOk was called. Mostly I use it with Textbox.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/407/MyProject.zip">MyProject.zip</a> <span class="muted">(2468 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

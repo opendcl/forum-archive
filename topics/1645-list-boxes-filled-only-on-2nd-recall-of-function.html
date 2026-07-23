@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>List boxes filled only on 2nd recall of function · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1645</p>
+    <h1>List boxes filled only on 2nd recall of function</h1>
+    <p class="meta">Started by tedicad ·
+      2011-06-28 12:04 UTC ·
+      4 replies · SMF topic #1645</p>
+<article class="post" id="msg8151">
+  <div class="post-head">
+    <span class="post-author">tedicad</span>
+    <span class="post-date muted">2011-06-28 12:04 UTC</span>
+  </div>
+  <div class="post-body">I have been working with opendcl for a few weeks now, and it is fun, thanks a lot to all of you. <br>
+<br>
+Now, on my first "serious" piece of code I encounter a problem I could not solve: everything works fine, with one exception: my listboxes are just empty the first time I recall the function. Closing the box and recalling the function shows them just the way I want them. I tried to move code around, but once I had the listboxes properly filled, the OK-button did not work anymore. Here is the code:<br>
+<br>
+; Ensure the appropriate OpenDCL ARX file is loaded<br>
+(command "OPENDCL")<br>
+(defun c:s203 ()<br>
+<br>
+<br>
+; Create the lists the user will choose a value from:<br>
+(setq s203Breite '("  624 (2 Schuppengläser)"<br>
+                   "  924 (3 Schuppengläser)"<br>
+                   "1224 (4 Schuppengläser)"<br>
+                   "1524 (5 Schuppengläser)"<br>
+                   "1824 (6 Schuppengläser)"<br>
+                   "2124 (7 Schuppengläser)"<br>
+                   "2424 (8 Schuppengläser)"<br>
+                   "2724 (9 Schuppengläser)"<br>
+                   "3024 (10 Schuppengläser)"<br>
+                   "3324 (11 Schuppengläser)"<br>
+                   "3724 (12 Schuppengläser)")<br>
+      s203Achsen '("0" "1" "2" "3")<br>
+      s203Glastyp '("VSG/ESG"<br>
+                    "Heat Mirror"<br>
+                    "ESG/ESG (nur CH!)")<br>
+      )<br>
+<br>
+; call the method to load the s203.odcl file.<br>
+(dcl_Project_Load "s203" T)<br>
+<br>
+; call the method to show the s:203 dialog box<br>
+(dcl_Form_Show s203_Form1)<br>
+  <br>
+(defun c:s203_Form1_OnInitialize (/)<br>
+  (dcl_ListBox_AddList s203_Form1_RIM-H s203Breite)<br>
+  (dcl_ListBox_AddList s203_Form1_AnzahlMittelAchsen s203Achsen)<br>
+  (dcl_ListBox_AddList s203_Form1_GlasTyp s203Glastyp)<br>
+)<br>
+  <br>
+<br>
+<br>
+(defun c:s203_Form1_OK_Button_OnClicked (/)<br>
+  (setq Val_RIM-B (atof (dcl_Control_GetText s203_Form1_RIM-B)))<br>
+  (setq Val_RIM-H (dcl_ListBox_GetSelectedItems s203_Form1_RIM-H))<br>
+  (setq Val_AnzahlMittelAchsen (dcl_ListBox_GetSelectedItems s203_Form1_AnzahlMittelAchsen))<br>
+  (setq Val_GlasTyp (dcl_ListBox_GetSelectedItems s203_Form1_GlasTyp))<br>
+  (if (or<br>
+       (&lt; Val_RIM-B 400.)<br>
+       (&gt; Val_RIM-B 5200.)<br>
+       (= Val_RIM-H NIL)<br>
+       (= Val_AnzahlMittelAchsen NIL)<br>
+       (= Val_GlasTyp NIL))<br>
+    (dcl_messagebox "Es muss in jedem Feld ein Wert angeklickt sein, ausserdem muss die Breite minimal 400 mm / maximal 5200 sein. Bitte korrigieren Sie Ihre Eingabe")<br>
+    (dcl_Form_Close s203_Form1)<br>
+    )<br>
+  )<br>
+)<br>
+<br>
+<br>
+I'll attach both the lsp and odcl files. The error will be stupid, I assume, but since I only am a "part time programer", more at home on the engineering side of life, I just can't identify the fault.<br>
+<br>
+Thanks a lot in advance,<br>
+<br>
+Holger<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1628/s203.LSP">s203.LSP</a> <span class="muted">(4491 bytes)</span></li><li><a href="../attachments/1629/s203.odcl">s203.odcl</a> <span class="muted">(1219 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8158">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-28 14:02 UTC</span>
+  </div>
+  <div class="post-body">Hi, and welcome to the board.<br>
+Please define the events before dcl_form_show otherwise your form does not know what to do.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8159">
+  <div class="post-head">
+    <span class="post-author">tedicad</span>
+    <span class="post-date muted">2011-06-28 14:14 UTC</span>
+  </div>
+  <div class="post-body">Thanks a lot! That was absolutely fast, you saved my day! It works. Got to improve my error routine now, and some more things... <br>
+<br>
+Holger</div>
+</article>
+<article class="post" id="msg8160">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-06-28 14:15 UTC</span>
+  </div>
+  <div class="post-body">You should use OnInitialize to initialize your listbox, otherwise your initialization code will not execute until after the form is closed.</div>
+</article>
+<article class="post" id="msg8162">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-28 15:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=tedicad link=topic=1645.msg8159#msg8159 date=1309270447 wrote:</cite><br>
+...and some more things... <br>
+</blockquote><br>
+<br>
+Yes, that's right: either you use (dcl_Control_SetList Unbenannt_Dialog1_Listenfeld1 lstNewValue) instead of AddList or you call (dcl_ListBox_Clear Unbenannt_Dialog1_Listenfeld1) before AddList because the Listbox remains this list after reshowing the form (when you will remove the T argument after project_load in future).<br>
+<br>
+Regards,<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

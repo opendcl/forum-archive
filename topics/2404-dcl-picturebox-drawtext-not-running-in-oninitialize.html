@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl-PictureBox-DrawText not running in &quot;Oninitialize&quot;? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2404</p>
+    <h1>dcl-PictureBox-DrawText not running in &quot;Oninitialize&quot;?</h1>
+    <p class="meta">Started by Peter2 ·
+      2016-08-09 14:36 UTC ·
+      2 replies · SMF topic #2404</p>
+<article class="post" id="msg11998">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-08-09 14:36 UTC</span>
+  </div>
+  <div class="post-body">I have this code to<br>
+- load and display a picture (WMF)<br>
+- load and display a tooltip<br>
+- create a temp-text with dcl-PictureBox-DrawText<br>
+- convert the temp-text to image with dcl-PictureBox-StoreImage<br>
+<br>
+(progn<br>
+    ; a) show image<br>
+    (dcl-PictureBox-LoadPictureFile (eval (read WMFViewName)) WMFName T)<br>
+    ; b) handle tooltip<br>
+    (dcl-Control-SetToolTipTitle (eval (read WMFViewName)) tafel)<br>
+    ; c) create temp-text<br>
+    (dcl-PictureBox-DrawText (eval (read WMFViewName)) (list (list 5 0 2 5 tafel 0)))<br>
+    ; d) store text as Image<br>
+    (dcl-PictureBox-StoreImage (eval (read WMFViewName)))<br>
+)<br>
+It works fine when the dialogue is open and I use buttons and lists and so on. But if I call the code from "Oninitialize", only a) and b) are done. c) (and of course d) does nothing. Is it a limitation of the function?<br>
+<br>
+Thanks<br>
+<br>
+Peter</div>
+</article>
+<article class="post" id="msg12010">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-08-10 01:41 UTC</span>
+  </div>
+  <div class="post-body">Yes, DrawText writes to the display. If nothing is displayed, there is nowhere for it to write. You might try using OnPaint to delay initialization until the control is visible.</div>
+</article>
+<article class="post" id="msg12013">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-08-10 07:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2404.msg12010#msg12010 date=1470793302 wrote:</cite><br>
+....You might try using OnPaint to delay initialization until the control is visible.</blockquote><br>
+Thanks for the hint. I tried it and normally it would works, but with 20 controls and dynamic content and different display commands it is more complex then expected. In this case I will search another way ...  ;)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

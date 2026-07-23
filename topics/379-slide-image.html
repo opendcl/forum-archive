@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Slide Image · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 379</p>
+    <h1>Slide Image</h1>
+    <p class="meta">Started by jambanks ·
+      2008-07-17 13:37 UTC ·
+      3 replies · SMF topic #379</p>
+<article class="post" id="msg1677">
+  <div class="post-head">
+    <span class="post-author">jambanks</span>
+    <span class="post-date muted">2008-07-17 13:37 UTC</span>
+  </div>
+  <div class="post-body">I currently have the attached programme working usng the code (dcl_SlideView_Load SarensShackles_shackleform_SlideView1 slideside) but as you can see the slide appears very small.<br>
+I have tried to increase the slide using the following code, but when i do the slide does not appear at all? any ideas how to get this to work?<br>
+<br>
+(dcl_SlideView_SlideImage SarensShackles_shackleform_SlideView1 <br>
+	   (list  (list  <br>
+	 5<br>
+	 5<br>
+	 5<br>
+	 5<br>
+	 5<br>
+	 slideside) <br>
+	 ))<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/445/dialog.bmp">dialog.bmp</a> <span class="muted">(448426 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1678">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-07-17 17:48 UTC</span>
+  </div>
+  <div class="post-body">I haven't tested it myself you, but this is what the intelligent help says:<br>
+<br>
+<pre class="code"><code>(dcl_SlideView_SlideImage Untitled_Form1_SlideView1 <br>
+(list  (list  <br>
+  UpperLeftX [as Integer] <br>
+  UpperLeftY [as Integer] <br>
+  Width [as Integer] <br>
+  Height [as Integer] <br>
+  FileName [as String] <br>
+ {Optional}  SlideLibraryImageName [as String]) <br>
+... ))</code></pre><br>
+<br>
+You have a total of (5) 5's. So you're passing an Int. where there should be a string (or maybe that was just a type-o).<br>
+Also you're setting your Width &amp; Height to 5 pixels. That's pretty small and would be hard to see.<br>
+try something like:<br>
+<br>
+<pre class="code"><code>(list<br>
+5<br>
+5<br>
+150<br>
+150<br>
+slideside<br>
+)</code></pre><br>
+<br>
+As a last resort you could recreate your slides. Strangely the aspect ratio of your Acad editor window has an effect on the zoom factor of the slide. I always create a square box around my objects, then stretch the Acad application window so it's as close to a square as possible. Then I create the slide.</div>
+</article>
+<article class="post" id="msg1683">
+  <div class="post-head">
+    <span class="post-author">jambanks</span>
+    <span class="post-date muted">2008-07-18 10:34 UTC</span>
+  </div>
+  <div class="post-body">Yeah the extra 5 was a typo, trust me to type code when frustrated.<br>
+I really like the trick about, changing the size of the autocad application, it did exactally what i need. So am just going to go down that route, <br>
+<br>
+Thanks for the help.<br>
+</div>
+</article>
+<article class="post" id="msg1684">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-07-18 16:45 UTC</span>
+  </div>
+  <div class="post-body">Cool, I'm glad it helped.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

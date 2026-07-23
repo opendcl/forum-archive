@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>latest version broke my code · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1869</p>
+    <h1>latest version broke my code</h1>
+    <p class="meta">Started by andrew.nao1 ·
+      2012-08-21 13:31 UTC ·
+      5 replies · SMF topic #1869</p>
+<article class="post" id="msg9174">
+  <div class="post-head">
+    <span class="post-author">andrew.nao1</span>
+    <span class="post-date muted">2012-08-21 13:31 UTC</span>
+  </div>
+  <div class="post-body">I upgraded to the latest version 7.0.0.6 from 7.0.0.2<br>
+<br>
+in my projects i have set a listbox to double click and it puts the text from the list box into acad. this worked with 7.0.0.2 but i get<br>
+ ; error: bad argument type: stringp<br>
+ with the new version<br>
+<br>
+attached are copies of my project with associated txt file<br>
+this is only 1 of 2 projects so far that i have found with this issue.<br>
+<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1797/oSTKBK.LSP">oSTKBK.LSP</a> <span class="muted">(12963 bytes)</span></li><li><a href="../attachments/1798/oSTKBK.odcl">oSTKBK.odcl</a> <span class="muted">(1483 bytes)</span></li><li><a href="../attachments/1799/partdes.txt">partdes.txt</a> <span class="muted">(122 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9175">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-08-21 14:43 UTC</span>
+  </div>
+  <div class="post-body">On line 212 you have this code:<br>
+(setq strStockBookNumber (substr (dcl_ListBox_GetSelectedItems oSTKBK_Form1_ListBox1) 1 21))<br>
+<br>
+Since (dcl_ListBox_GetSelectedItems) returns a list of strings this should be:<br>
+(setq strStockBookNumber (substr (car (dcl_ListBox_GetSelectedItems oSTKBK_Form1_ListBox1)) 1 21))</div>
+</article>
+<article class="post" id="msg9179">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-08-21 15:20 UTC</span>
+  </div>
+  <div class="post-body">It was a bug in earlier versions that GetSelectedItems did not return a list for a single-selection listbox. It should now match the documentation by always returning a list.</div>
+</article>
+<article class="post" id="msg9184">
+  <div class="post-head">
+    <span class="post-author">andrew.nao1</span>
+    <span class="post-date muted">2012-08-22 13:26 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1869.msg9179#msg9179 date=1345562434 wrote:</cite><br>
+It was a bug in earlier versions that GetSelectedItems did not return a list for a single-selection listbox. It should now match the documentation by always returning a list.<br>
+</blockquote><br>
+<br>
+i dont understand what this means<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg9185">
+  <div class="post-head">
+    <span class="post-author">andrew.nao1</span>
+    <span class="post-date muted">2012-08-22 13:29 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=1869.msg9175#msg9175 date=1345560191 wrote:</cite><br>
+On line 212 you have this code:<br>
+(setq strStockBookNumber (substr (dcl_ListBox_GetSelectedItems oSTKBK_Form1_ListBox1) 1 21))<br>
+<br>
+Since (dcl_ListBox_GetSelectedItems) returns a list of strings this should be:<br>
+(setq strStockBookNumber (substr (car (dcl_ListBox_GetSelectedItems oSTKBK_Form1_ListBox1)) 1 21))<br>
+</blockquote><br>
+<br>
+by doing what you listed returns an error<br>
+; error: bad argument type: consp<br>
+</div>
+</article>
+<article class="post" id="msg9186">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-08-22 13:58 UTC</span>
+  </div>
+  <div class="post-body">Are you perhaps testing with 7.0.0.6 *AND* 7.0.0.2?<br>
+If you want your code to work with both versions you could try something like this:<br>
+<br>
+(setq tmp (dcl_ListBox_GetSelectedItems oSTKBK_Form1_ListBox1))<br>
+(if (listp tmp) (setq tmp (car tmp)))<br>
+(setq strStockBookNumber (substr tmp 1 21))</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

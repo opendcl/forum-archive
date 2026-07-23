@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>lsp doesnt work when dialog called from another dialog · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1171</p>
+    <h1>lsp doesnt work when dialog called from another dialog</h1>
+    <p class="meta">Started by andrew ·
+      2010-02-09 20:29 UTC ·
+      25 replies · SMF topic #1171</p>
+<article class="post" id="msg6227">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-02-09 20:29 UTC</span>
+  </div>
+  <div class="post-body">this is a strange thing happening so ill do my best to explain the issue<br>
+apologies in advanced if its not enough explaination.<br>
+<br>
+attached are the files for examination.<br>
+the code in question is at the very botton of the text file<br>
+commented as  ;;;;stock book search;;;<br>
+<br>
+when i run the full program all works.<br>
+<br>
+the problem happens when i press a button called "stock book".<br>
+<br>
+when the dialog opens, i do a search for the text im after.<br>
+when i find the text i double click that line and its supposed to close the dialog and allow me to copy the text from the list its reading from and replacing a selected line of text in acad.<br>
+<br>
+the lsp code doesnt work when i activate that dialog box by pressing the text button, however if i activate the dialog by typing in <br>
+(dcl_Form_Show dwgbrowser_stockbook) in the command line<br>
+and then going thru my process, it all works how it was designed.<br>
+<br>
+would anyone have a clue as to whats going on, why its doing this?<br>
+what did i do wrong?<br>
+<br>
+any help is appreciated<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1285/dwgbrowser.LSP">dwgbrowser.LSP</a> <span class="muted">(35227 bytes)</span></li><li><a href="../attachments/1286/dwgbrowser.odcl">dwgbrowser.odcl</a> <span class="muted">(20560 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6229">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-09 22:57 UTC</span>
+  </div>
+  <div class="post-body">Have you tried changing the Event Invoke property of the button?</div>
+</article>
+<article class="post" id="msg6249">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-02-12 14:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1171.msg6229#msg6229 date=1265756225 wrote:</cite><br>
+Have you tried changing the Event Invoke property of the button?<br>
+</blockquote><br>
+<br>
+no i havent<br>
+what would this do by changing it?</div>
+</article>
+<article class="post" id="msg6252">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-12 16:26 UTC</span>
+  </div>
+  <div class="post-body">See here for more information about Event Invoke:<br>
+<a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Property/EventInvoke.htm" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg6254">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-02-12 17:11 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1171.msg6252#msg6252 date=1265992018 wrote:</cite><br>
+See here for more information about Event Invoke:<br>
+<a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Property/EventInvoke.htm" rel="nofollow noopener">{2}</a><br>
+</blockquote><br>
+<br>
+thanks Owen, however that didnt help.<br>
+its still not working<br>
+</div>
+</article>
+<article class="post" id="msg6255">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-12 17:21 UTC</span>
+  </div>
+  <div class="post-body">What exactly doesn't work? Do you get any error messages?</div>
+</article>
+<article class="post" id="msg6256">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-02-12 18:20 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1171.msg6255#msg6255 date=1265995287 wrote:</cite><br>
+What exactly doesn't work? Do you get any error messages?<br>
+</blockquote><br>
+<br>
+no error messages.<br>
+<br>
+the lisp executes but then doesnt let me select the text to "swap" out for the text it grabbed from a text file.<br>
+the way i explained it makes it sound like its the lisp code, but like i said in the first post, if i run the dialog manually, it does work if the dialog is called from another dialog the code dont work<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6279">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-02-16 13:54 UTC</span>
+  </div>
+  <div class="post-body">any other solutions?<br>
+has anyone tested this yet?<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6281">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-16 17:30 UTC</span>
+  </div>
+  <div class="post-body">I think it would be easier to help you if you could create a simple project from scratch with only the bare minimum code to demonstrate the problem.  I loaded your project, but I could not figure out what to do next.  When I tried typing some text and searching, I got an error about a missing (doslib?) function.</div>
+</article>
+<article class="post" id="msg6282">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-02-16 18:21 UTC</span>
+  </div>
+  <div class="post-body">i used doslib for a print function...<br>
+<br>
+anyway here is a stripped down version<br>
+you will need to change the text path (f:\\stock\\partdes.txt)<br>
+to look for your test text file<br>
+<br>
+this does the same thing, if you press the text button to bring up the search form it works but then when its time for the copying of the text from the search form to acad i cant select any text in acad<br>
+however if you call the form manually without calling the main form.<br>
+<br>
+(dcl_Form_Show STKBK_stockbook)<br>
+<br>
+the function performs hows its supposed to<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1297/STKBK.LSP">STKBK.LSP</a> <span class="muted">(1911 bytes)</span></li><li><a href="../attachments/1298/STKBK.odcl">STKBK.odcl</a> <span class="muted">(11294 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6286">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-16 23:09 UTC</span>
+  </div>
+  <div class="post-body">I didn't try the new files yet, but I noticed the following in your lisp file:<br>
+(defun c:STKBK_Form1_TextButton1_OnClicked (/)<br>
+(dcl_Form_Close STKBK_Form1)<br>
+(dcl_Form_Show STKBK_stockbook)<br>
+)<br>
+<br>
+That is a recipe for disaster, because you're showing a new form before the first form has completely closed. I suspect this is the reason you're having trouble. The correct way to handle this is to open the second form after the first (dcl_Form_Show) returns. You can do that conditionally depending on the return value of (dcl_Form_Show), and you can specify whatever return value you want in your call to (dcl_Form_Close).</div>
+</article>
+<article class="post" id="msg6289">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-17 02:04 UTC</span>
+  </div>
+  <div class="post-body">Never mind. I assumed your form1 was a modal dialog, but I see it is modeless. For a modeless dialog, it should work to show another dialog from within an event handler.<br>
+<br>
+Since I don't have a partdes.txt file, the file doesn't work the same for me as it does for you, and I still don't see the problem. Please upload a version with some hardcoded values in the list and describe step by step what I need to do to see the problem.</div>
+</article>
+<article class="post" id="msg6296">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-02-17 15:06 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+attached is the partsdes.txt file i only has a few items in it but i think this will be enough to get it working, you will just have to adjust the path.<br>
+<br>
+here is hows its supposed to work<br>
+after the program is loaded, you call it up.<br>
+it brings up form1 with "textbutton1" (obviously)<br>
+1 - you then press that button and it calls the stock book search form<br>
+2- enter your search, you will need to enter something thats in the partsdes.txt file for example, you would type in  1" IPS<br>
+then press the search button<br>
+3 - the results are displayed in the list box, for example: <br>
+93 03000 092 06 18 10	1" IPS SCH 40 A-53 B WELDED PIPE<br>
+<br>
+4 - you double click on one of the lines. after you double click your selection it allows you to pick a text entity and will change that text entity with the stock number. (this is where is stops working)<br>
+it goes into the function to allow you to select but doesnt select.<br>
+<br>
+now if you were to call just that form (dcl_Form_Show STKBK_stockbook)<br>
+manually from the command line.<br>
+and repeat the steps above, the program works as it was intended.<br>
+<br>
+i hope this is a little better explaination.<br>
+<br>
+thanks again<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1302/partdes.txt">partdes.txt</a> <span class="muted">(1397 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6299">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-17 17:49 UTC</span>
+  </div>
+  <div class="post-body">I tried what you wrote, but I don't get any search results.  However, I think you're encountering the problem I mentioned earlier, jus in a different place.  Try this:<br>
+Close the second form like this:<br>
+(dcl_Form_Close STKBK_stockbook 5)<br>
+<br>
+Then, move your text changing code to your OnClicked function like this:<br>
+<br>
+(if (= 5 (dcl_Form_Show STKBK_stockbook))<br>
+;change text here -- you may need to save the text in a global variable<br>
+)<br>
+<br>
+The idea is to do the work *after* (dcl_Form_Close) returns.<br>
+</div>
+</article>
+<article class="post" id="msg6300">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-02-17 18:10 UTC</span>
+  </div>
+  <div class="post-body">i dont follow what that code is supposed to do<br>
+<br>
+i changed per your suggestions and it still didnt work<br>
+</div>
+</article>
+<article class="post" id="msg6301">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-17 18:16 UTC</span>
+  </div>
+  <div class="post-body">See if this helps:<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=1080.0" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg6310">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-02-17 20:46 UTC</span>
+  </div>
+  <div class="post-body">i understood that, but closing the modal form to allow for selecting still didnt work.<br>
+<br>
+this is frustrating... :-\</div>
+</article>
+<article class="post" id="msg6311">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-17 22:43 UTC</span>
+  </div>
+  <div class="post-body">Hello, andrew,<br>
+<br>
+I attached a completely rewritten code. Check it out. It works quite well for me.<br>
+Have a closer look at <a href="http://www.opendcl.com/forum/index.php?topic=947.0" rel="nofollow noopener">{2}</a>.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1304/STKBK.LSP">STKBK.LSP</a> <span class="muted">(2553 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6314">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-02-18 14:03 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred,<br>
+thanks for your reply<br>
+im checking out that link you posted now<br>
+<br>
+i tested your modification to the code and after i close the search dialog i notice it still leaves me in the command (somewhat) what i mean is it doesnt leave me at a command  prompt it still looks like im in the selection command.<br>
+<br>
+also i noticed in the code you used <br>
+(dcl_Form_Close STKBK_stockbook 3)<br>
+<br>
+similar to what Owen has suggested<br>
+what does the 3 mean<br>
+1 and 2 is explained in the helps but i didnt see 3<br>
+<br>
+if i were to change the 3 to a 1 would that exit me out of the while loop when i press enter?<br>
+<br>
+thanks again for your assistance<br>
+<br>
+also<br>
+i noticed that after i press enter and it reinitializes the stock book<br>
+this line<br>
+(dcl_Control_SetText STKBK_stockbook_TextBox1 "")<br>
+which is supposed to clear the search entry on initialize doesnt clear it<br>
+</div>
+</article>
+<article class="post" id="msg6315">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-18 15:10 UTC</span>
+  </div>
+  <div class="post-body">Hi, andrew,<br>
+<br>
+<blockquote class="quote"><cite> author=andrew link=topic=1171.msg6314#msg6314 date=1266501787 wrote:</cite><br>
+i tested your modification to the code and after i close the search dialog i notice it still leaves me in the command (somewhat) what i mean is it doesnt leave me at a command  prompt it still looks like im in the selection command.<br>
+</blockquote><br>
+<br>
+Yes, that's right. It's because the subform is starting from an event calling by a control which property EventInvoke was set to KeepFocus.<br>
+That's a real mess of this code: there is an OnClick event. During the OnClick event the form shall be closed and another form shall be shown with the option to have access to AutoCAD. That's not good. It is even very bad - especially for having access to AutoCAD. Because you try to get access to AutoCAD while still a OnClick-event from the initial form is still running! Although you don't expect this and you think the OnClick event of the initial form is already over. That's why the entmod line didn't work and I changed it to do it via ActiveX to make it work. <br>
+The reason is the modeless form the subform is starting from. It would be easier to make it work from a modal form but I'm afraid that this is a part of a bigger project and you try to start it from a modeless form/palette/dockable form.<br>
+<br>
+So, to solve this, it would need another reconstruction: the subform should be started from a asynchronous called command using dcl_sendstring.<br>
+<br>
+<blockquote class="quote"><cite> author=andrew link=topic=1171.msg6314#msg6314 date=1266501787 wrote:</cite><br>
+(dcl_Form_Close STKBK_stockbook 3)<br>
+what does the 3 mean<br>
+1 and 2 is explained in the helps but i didnt see 3<br>
+</blockquote><br>
+<br>
+That's right. You cannot see 3 in the help because 3 was my own choice  ;) . These values mentioned in the help are reserved values. That means, you can use your own values greater than 2 for additional reasons.<br>
+<br>
+<blockquote class="quote"><cite> author=andrew link=topic=1171.msg6314#msg6314 date=1266501787 wrote:</cite><br>
+if i were to change the 3 to a 1 would that exit me out of the while loop when i press enter?<br>
+</blockquote><br>
+<br>
+No, that are two different things. I also noticed that the form is being closed after pressing ENTER.<br>
+Have a look at the <a href="http://www.opendcl.com/forum/index.php?topic=1061.0" rel="nofollow noopener">{2}</a> to solve that.<br>
+The value passing dcl_form_close is the returning value given by dcl_form_show to evaluate later.<br>
+<br>
+<blockquote class="quote"><cite> author=andrew link=topic=1171.msg6314#msg6314 date=1266501787 wrote:</cite><br>
+if i were to change the 3 to a 1 would that exit me out of the while loop when i press enter?<br>
+</blockquote><br>
+<br>
+You are right! I must agree with you that Copy&amp;Paste did a better job in the past! Have a look in your code. There you can read<br>
+<br>
+(defun c:dwgbrowser_stockbook_OnInitialize (/)<br>
+  (dcl_Control_SetText STKBK_stockbook_TextBox1 "")<br>
+); c:dwgbrowser_stockbook_OnInitialize<br>
+<br>
+<br>
+What do you mean? Wouldn't it work better if you use instead<br>
+<br>
+<br>
+(defun c:STKBK_stockbook_OnInitialize (/)<br>
+  (dcl_Control_SetText STKBK_stockbook_TextBox1 "")<br>
+); c:STKBK_stockbook_OnInitialize<br>
+<br>
+<br>
+Just kidding  :D I've overseen it, too.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6318">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-02-18 18:22 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1171.msg6315#msg6315 date=1266505840 wrote:</cite><br>
+<br>
+So, to solve this, it would need another reconstruction<br>
+</blockquote><br>
+<br>
+you are just filled with good news  :'(<br>
+<br>
+<br>
+<blockquote class="quote"><br>
+You are right! I must agree with you that Copy&amp;Paste did a better job in the past! Have a look in your code. There you can read<br>
+<br>
+(defun c:dwgbrowser_stockbook_OnInitialize (/)<br>
+  (dcl_Control_SetText STKBK_stockbook_TextBox1 "")<br>
+); c:dwgbrowser_stockbook_OnInitialize<br>
+<br>
+<br>
+What do you mean? Wouldn't it work better if you use instead<br>
+<br>
+<br>
+(defun c:STKBK_stockbook_OnInitialize (/)<br>
+  (dcl_Control_SetText STKBK_stockbook_TextBox1 "")<br>
+); c:STKBK_stockbook_OnInitialize<br>
+<br>
+<br>
+Just kidding  :D I've overseen it, too.<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+wow im blind...<br>
+<br>
+i have a bit more reading to do before i can continue with this project<br>
+<br>
+Fred thank you for your explaination on things</div>
+</article>
+<article class="post" id="msg6320">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-18 21:48 UTC</span>
+  </div>
+  <div class="post-body">Hi, andrew,<br>
+<br>
+<blockquote class="quote">you are just filled with good news</blockquote><br>
+<br>
+That's why I call myself Mr. Bad Guy  :P<br>
+<br>
+No, seriously, I thought about changing your project again, but this evening I had a meeting with a friend. And now I have a meeting with my wife. Sorry. But will have a closer look when I find the time in the next days.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6323">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-19 08:02 UTC</span>
+  </div>
+  <div class="post-body">Hi, andrew,<br>
+<br>
+and here it is:<br>
+<br>
+<ul><br>
+I've given you two wys to start the subform. Compare EventInvoke property of both the buttons and the event handler names they call in the event tab.<br>
+Please prefer the second way (button).<br>
+I've created a new command for the subform. This command is called by both of the buttons.<br>
+That's why you can repeat this command by pressing enter after closing the subform.<br>
+If the main form is active on screen, it will be set hidden for the time the subform command is running. Don't forget to make it visible after each subform command.<br>
+The list will be filled initially with all the items of the txt file. Then the user can filter it by typing a search string.<br>
+I've added the OnCancelClose event to make sure pressing enter in the textbox will invoke a new search.<br>
+I prefer to see the same when the subform comes up as I left it before. So it's a good design to keep the last search.<br>
+I've added a Clear button to clear the last search.<br>
+When double clicking a listbox item the text objects are changed using entmod instead of ActiveX again.<br>
+</ul><br>
+<br>
+I hope that I didn't miss anything!<br>
+May I use this sample for my FAQ about closing and reshowing forms?<br>
+As you can see the way to do this from modal forms is quite different to modeless forms.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1306/STKBK.odcl">STKBK.odcl</a> <span class="muted">(11489 bytes)</span></li><li><a href="../attachments/1307/STKBK.LSP">STKBK.LSP</a> <span class="muted">(5724 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6328">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-02-19 14:46 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred,<br>
+<br>
+WOW you have re-written the code alot heh<br>
+i wasnt expecting that, but thanks.<br>
+<br>
+im still reading over the links you posted<br>
+to get a better understanding of how this works.<br>
+<br>
+this code is or was however a subroutine of a larger code<br>
+which was broken down to its own for the purpose of debugging<br>
+the main code which this routine will be called from is a modeless form<br>
+so i guess this will work?<br>
+<br>
+after i ran your code i get an error<br>
+<br>
+NIL value not allowed<br>
+function: dcl_control_setvisible<br>
+argument: 0<br>
+<br>
+when i click "ok" the program starts up<br>
+<br>
+please feel free to use this for your FAQ im sure there will be some beginner out there who can benifit from this.<br>
+<br>
+thanks<br>
+<br>
+all is good Fred, i restarted acad and its working now</div>
+</article>
+<article class="post" id="msg6339">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-19 22:35 UTC</span>
+  </div>
+  <div class="post-body">Andrew:<br>
+<br>
+Please don't edit your posts to add a followup comment -- just post a new message instead. I can figure out what happened because I saw your original message before you edited it, but someone reading this thread now will be confused by your statement at the end "all is good..." after you just described a problem.</div>
+</article>
+<article class="post" id="msg6345">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-02-23 14:39 UTC</span>
+  </div>
+  <div class="post-body">ok sorry<br>
+i will do that from now on<br>
+<br>
+thanks</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

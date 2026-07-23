@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About dcl_Control_GetPos and dcl_Form_GetRectangle · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2180</p>
+    <h1>About dcl_Control_GetPos and dcl_Form_GetRectangle</h1>
+    <p class="meta">Started by velasquez ·
+      2014-10-15 12:57 UTC ·
+      5 replies · SMF topic #2180</p>
+<article class="post" id="msg10943">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-10-15 12:57 UTC</span>
+  </div>
+  <div class="post-body">1 - The dcl_Control_GetPos and dcl_Form_GetRectangle functions should do the same job? <br>
+2 - Why dcl_Form_GetRectangle is not documented? <br>
+<br>
+3 - When the screen of AutoCAD does not maximized they return an error message, see below <br>
+(dcl_Control_GetPos dc_3D_MainMenu_BarMax) <br>
+(227 232 168 426) <br>
+Application ERROR: Bad argument type<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2060/screen.png">screen.png</a> <span class="muted">(80268 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10946">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-10-16 20:00 UTC</span>
+  </div>
+  <div class="post-body">The dcl_Form_GetRectangle function is deprecated and replaced with dcl-Control-GetPos. Deprecated functions are <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Index.htm" rel="nofollow noopener">{2}</a> in the documentation.<br>
+<br>
+Please provide information and steps to reproduce the application error.</div>
+</article>
+<article class="post" id="msg10947">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-10-17 12:29 UTC</span>
+  </div>
+  <div class="post-body"><pre class="code"><code><blockquote class="quote"><cite> author=owenwengerd link=topic=2180.msg10946#msg10946 date=1413489618 wrote:</cite><br>
+The dcl_Form_GetRectangle function is deprecated and replaced with dcl-Control-GetPos. Deprecated functions are <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Index.htm" rel="nofollow noopener">{2}</a> in the documentation.<br>
+<br>
+Please provide information and steps to reproduce the application error.<br>
+</blockquote><br>
+<br>
+Hello Owen, <br>
+The error happened when I was doing a screen test with AutoCAD decreased. <br>
+The goal is to make a form always appears in the same place. <br>
+Always work when AutoCAD is with the window maximized.<br>
+See the code I am using.<br>
+[code<br>
+(defun c:dc_3D_MainMenu_BarMax_Aducao_OnClicked (/)<br>
+  (setq FormPos (dcl_Control_GetPos dc_3D_MainMenu_BarMax))<br>
+<br>
+;;;Muda a imagem do botao p/ over<br>
+  (dcl_Control_SetPicture dc_3D_MainMenu_BarMax_Aducao 113)<br>
+;;;Carrega o submenu na base do botao Blutop<br>
+  (dcl_Form_Show<br>
+    dc_3D_MainMenu_SubMenu_Agua<br>
+    (+ 161 (cadr FormPos))<br>
+    (+ 168 (cadr FormPos))<br>
+  ) ;_ fim de dcl_Form_Show  <br>
+) ;_ fim de defun<br>
+</code></pre><br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2061/screen-2.png">screen-2.png</a> <span class="muted">(87551 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10948">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-10-17 12:31 UTC</span>
+  </div>
+  <div class="post-body">Sorry I worked with AutoCAD 2010 and OpenDCL 7.0.1.4</div>
+</article>
+<article class="post" id="msg10949">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-10-17 15:59 UTC</span>
+  </div>
+  <div class="post-body">I'm having difficulty understanding what exactly I must do to reproduce the error here.</div>
+</article>
+<article class="post" id="msg10953">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-10-20 21:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2180.msg10949#msg10949 date=1413561591 wrote:</cite><br>
+I'm having difficulty understanding what exactly I must do to reproduce the error here.<br>
+</blockquote><br>
+<br>
+Hello Owen, <br>
+I discovered that the problem with my code has no relation with the dcl_Control_GetPos function. <br>
+Thanks</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

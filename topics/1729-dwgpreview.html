@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DWGPreview · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1729</p>
+    <h1>DWGPreview</h1>
+    <p class="meta">Started by Woabow ·
+      2011-12-02 13:09 UTC ·
+      5 replies · SMF topic #1729</p>
+<article class="post" id="msg8504">
+  <div class="post-head">
+    <span class="post-author">Woabow</span>
+    <span class="post-date muted">2011-12-02 13:09 UTC</span>
+  </div>
+  <div class="post-body">In Bricscad I'm having trouble viewing a DWG in the DGWPreview box. When initialising the Form the preview appears, but I'm not able to switch the content.<br>
+<br>
+I have created a smal testproject with the minimum of code, but it still doesn't work. <br>
+<br>
+Am I doing something wrong?<br>
+<br>
+<br>
+(defun c:btst ( /   )<br>
+ (command "_OPENDCL")<br>
+ (dcl_Project_Load "btst")<br>
+ (dcl_Form_Show btst_Form1)<br>
+)<br>
+<br>
+(defun c:btst_Form1_OnInitialize (/)<br>
+ (dcl_ListBox_Clear btst_Form1_ListBox1)<br>
+ (setq fullpathlist '("e:\\temp\\block1.DWG" "e:\\temp\\block2.DWG" "e:\\temp\\block3.DWG"))<br>
+ (dcl_ListBox_AddList btst_Form1_ListBox1 fullpathlist)<br>
+ (dcl_DwgPreview_LoadDwg "btst" "Form1" "DwgPreview1" (nth 1 fullpathlist)) ;this preview will show up<br>
+)<br>
+<br>
+<br>
+(defun c:btst_Form1_ListBox1_OnSelChanged (ItemIndexOrCount Value /)<br>
+	   (dcl_Control_SetCaption btst_Form1_Label1 Value) ; to check the value<br>
+	   (dcl_DwgPreview_LoadDwg "btst" "Form1" "DwgPreview1" Value) ;box will be cleared at this point<br>
+)<br>
+<br>
+<br>
+(princ)</div>
+</article>
+<article class="post" id="msg8506">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-12-02 20:13 UTC</span>
+  </div>
+  <div class="post-body">I'm pretty sure this is a Bricscad bug, and I recommend reporting it to them directly.</div>
+</article>
+<article class="post" id="msg8507">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-12-02 20:50 UTC</span>
+  </div>
+  <div class="post-body">Here you will find the same problem (with a work-around):<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=1710.0" rel="nofollow noopener">{2}</a><br>
+<br>
+Based on Owen's comment in that thread I assume it is an ODCL issue:<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1710.msg8430#msg8430 date=1319421419 wrote:</cite><br>
+Good catch. This is now fixed for the next build.<br>
+</blockquote></div>
+</article>
+<article class="post" id="msg8508">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-12-02 21:22 UTC</span>
+  </div>
+  <div class="post-body">Good catch, I forgot about that one.</div>
+</article>
+<article class="post" id="msg8509">
+  <div class="post-head">
+    <span class="post-author">Woabow</span>
+    <span class="post-date muted">2011-12-05 09:05 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the workaround, now I finally can see the previews in the second page of my browser and the speed is still good.<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8513">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2011-12-06 19:03 UTC</span>
+  </div>
+  <div class="post-body">heh, i just noticed mine doesnt see the dwgpreview either...<br>
+<br>
+meh, ill just wait for the fixed release instead of using the work around. im to lazy to modify my code for it.<br>
+<br>
+thanks for your suggestion though</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

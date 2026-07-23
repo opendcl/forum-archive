@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help for ERROR Autocad 2015 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2325</p>
+    <h1>Help for ERROR Autocad 2015</h1>
+    <p class="meta">Started by mclisp ·
+      2015-10-28 13:23 UTC ·
+      4 replies · SMF topic #2325</p>
+<article class="post" id="msg11689">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2015-10-28 13:23 UTC</span>
+  </div>
+  <div class="post-body">I have some macro work well with AutoCAD 2014.<br>
+Now I'm installing Autocad 2015 OpenDCL 8.0.2.0,<br>
+and I get this message (see attachment)<br>
+any help is good.<br>
+thank you<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2184/errore1.JPG">errore1.JPG</a> <span class="muted">(206655 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11690">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-10-28 15:17 UTC</span>
+  </div>
+  <div class="post-body">Maybe it has something to do with the removal of fibers in AutoCAD 2015. A small sample to reproduce the problem would be helpful in finding a solution.</div>
+</article>
+<article class="post" id="msg11691">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2015-10-29 06:31 UTC</span>
+  </div>
+  <div class="post-body">hello and thank you for your answers<br>
+This is a video where you see the error. <a href="https://youtu.be/gdEn4Rkizp0" rel="nofollow noopener">{2}</a><br>
+Sometimes I get a message ":CALLBACK-ENTRY"<br>
+<br>
+function (Creaprof3d ...) and function (ent_sec_gruppo) I also use it in other macro and they work well.<br>
+I do not understand.....<br>
+<br>
+Thank<br>
+</div>
+</article>
+<article class="post" id="msg11696">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2015-10-31 09:47 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+no idea?<br>
+How can I reproduce the error?<br>
+The macro hangs ALWAYS in a selection point:<br>
+see video: https://youtu.be/gdEn4Rkizp0<br>
+errors do not always occur, sometimes<br>
+except the command ARX VEVAL-STR + (what does it mean?)<br>
+other times ": CALLBACK-ENTRY"<br>
+some macros without OpenDCL use the same routine and work well<br>
+I do not know if it's Autocad or OpenDCL<br>
+I am going crazy<br>
+thanks</div>
+</article>
+<article class="post" id="msg11714">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2015-11-11 17:19 UTC</span>
+  </div>
+  <div class="post-body">Hello <br>
+I SOLVED<br>
+add "-s" to the command example. (command-s "_.SELECT" (entlast) "")<br>
+it is not necessary to replace all command<br>
+only where the command contains functions such as<br>
+(command-s "_rotate" "_Last" "" p8 (angtoc (90g + n1)))<br>
+Hello to all  :D</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

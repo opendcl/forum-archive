@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Progressbars · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2548</p>
+    <h1>Progressbars</h1>
+    <p class="meta">Started by vasch the stampede ·
+      2017-12-15 13:02 UTC ·
+      2 replies · SMF topic #2548</p>
+<article class="post" id="msg12644">
+  <div class="post-head">
+    <span class="post-author">vasch the stampede</span>
+    <span class="post-date muted">2017-12-15 13:02 UTC</span>
+  </div>
+  <div class="post-body">Hi everyone.<br>
+I have a problem with progressbars.<br>
+<br>
+Why I don't get a continuous feed of the bar but it go from 0 to 100 to the finished procedure?<br>
+<br>
+<pre class="code"><code>(COMMAND "OPENDCL")<br>
+(DEFUN c:Hello ()<br>
+ (SETQ Untitled_01 '("YWt6A64IAACRUWlTBuLL68URbT9uuMENbBlrYWz0+s7WXFtu7s4czuNGrnv6ul26wlpEDpJmMmw5"<br>
+		     "TH9SZJZWlteGbQY0QiQ6e2Nbe3tbbLH4bnf2hxiToqDzbE47kMoJhY2ysLCQsAmgoiIX3KNsGS69"<br>
+		     "XNQSDeY/Z5nuuGAGfqCKfAMC9aUu+9hSY7jOaUca7twt+MNKBScyHeLB2Yaw3PxcBUfAGaa1XxHD"<br>
+		     "NGYb+jQVpNg6su6tEhvwZN0p1JPpz285N1uIjPLl2SMEO6CdSADgkUpDzMLFnjXId7dqN2ZxT8pR"<br>
+		     "MK0NdnXWHeCX5CmWIcvKI7I3Cl0K52UIm4iEvkozwZ0bz0EJEoPhVADYhvecIRBAT+YllnPs64d4"<br>
+		     "qTOAC7p8za07QLHgh/OGFB4VwdWG1JzplndbfI0wp9E7Bt76AybFKjiezGK6agNwzSvTGe/gKyLZ"<br>
+		     "yfcFr4ZBqwJzu1iUkQnPmSWg07FGD+RtSkafetCOx7YKFJXiCXJYRvVXyf2M3fcJaorv1Oa59IWq"<br>
+		     "d6lcL4M34rx+pTs44Z1D/v0CID7GrKxMkPD0zbunoXVpYqFqQN8ojS+rtQgZAV+InfCNvDkr22At"<br>
+		     "QteG9hwGrwILw3DVi/qUyV+SObABKRmLSPzLMdcr+XkSi+tOFTnlYCv/cSu7oymCPo/DAVYWUCYf"<br>
+		     "9RlrsXlViOg6lXW0ADePE0uhmR45JcKcgpPwAC+dQXuh6Ghx148hI0CMjjtS5VJxFfuHexCGfLXK"<br>
+		     "sNPCsgX8rNAJ3s+QHvHSR9LHybxBKutSVYjCVgEpiFu7JANfK1tvK+8rNzY7GZtVZI3chxALiMwO"<br>
+		     "LCuDSMlAtST7haupn1HUyoBfKwC9eNYM+c21IYWB1spehd0VAP0VLNBBIbBx+Q=="<br>
+		    )<br>
+ ) ;_ fine di setq<br>
+ (DCL_FORM_SHOW Untitled_01/Form1)<br>
+ (PRINC)<br>
+) ;_ fine di defun<br>
+<br>
+(DEFUN c:Untitled_01/Form1/TextButton1#OnClicked (/)<br>
+;;; (alert "DADAD")<br>
+;;; (execute 100000)<br>
+ (DCL-CONTROL-SETVALUE Untitled_01/Form1/ProgressBar1 43)<br>
+ (DCL-MESSAGEBOX (ITOA (DCL-CONTROL-GETVALUE Untitled_01/Form1/ProgressBar1)))<br>
+ (SETQ maxVal 10000)<br>
+ (SETQ counter 0)<br>
+ (WHILE	(&lt;= counter maxVal)<br>
+  (DCL-CONTROL-SETVALUE Untitled_01/Form1/ProgressBar1 (* (/ counter maxVal) 100))<br>
+  (PRINC)<br>
+  (SETQ counter (1+ counter))<br>
+  (DCL-CONTROL-REDRAW Untitled_01/Form1)<br>
+;;;  (DCL-CONTROL-REDRAW Untitled_01/Form1/ProgressBar1)<br>
+ ) ;_ fine di while<br>
+) ;_ fine di DEFUN</code></pre></div>
+</article>
+<article class="post" id="msg12645">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2017-12-15 13:21 UTC</span>
+  </div>
+  <div class="post-body">Hi, I'd like to say: bad code :)<br>
+<br>
+try this event method:<br>
+<br>
+<pre class="code"><code>(DEFUN c:Untitled_01/Form1/TextButton1#OnClicked (/)<br>
+ (DCL-CONTROL-SETMINVALUE Untitled_01/Form1/ProgressBar1 0)<br>
+ (DCL-CONTROL-SETMAXVALUE Untitled_01/Form1/ProgressBar1 10000)<br>
+ (DCL-CONTROL-SETVALUE Untitled_01/Form1/ProgressBar1 43)<br>
+ (WHILE	(&lt;= (DCL-CONTROL-GETVALUE Untitled_01/Form1/ProgressBar1)<br>
+	    (DCL-CONTROL-GETMAXVALUE Untitled_01/Form1/ProgressBar1))<br>
+  (DCL-CONTROL-SETVALUE Untitled_01/Form1/ProgressBar1 (1+ (DCL-CONTROL-GETVALUE Untitled_01/Form1/ProgressBar1)))<br>
+  (PRINC)<br>
+  (DCL-CONTROL-REDRAW Untitled_01/Form1)<br>
+ ) <br>
+) </code></pre><br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg12646">
+  <div class="post-head">
+    <span class="post-author">vasch the stampede</span>
+    <span class="post-date muted">2017-12-17 18:15 UTC</span>
+  </div>
+  <div class="post-body">The problem is here:<br>
+<pre class="code"><code>(DCL-CONTROL-SETVALUE Untitled_01/Form1/ProgressBar1 (* (/ counter maxVal) 100))</code></pre><br>
+<br>
+Becose counter and maxVal are integer and counter will be allways <br>
+<br>
+Since "counter" and "maxVal" are integers and "counter" will always be less or equal to "maxVal" then the ratio will always be 0 until the last loop where it will become 1.<br>
+<br>
+This will work:<br>
+<pre class="code"><code>(DCL-CONTROL-SETVALUE Untitled_01/Form1/ProgressBar1 (/ (* counter 100) maxVal))</code></pre><br>
+<br>
+Certainly this works better:<br>
+<pre class="code"><code>(DCL-CONTROL-SETMINVALUE Untitled_01/Form1/ProgressBar1 0)<br>
+(DCL-CONTROL-SETMAXVALUE Untitled_01/Form1/ProgressBar1 maxVal)<br>
+(SETQ counter 0)<br>
+(WHILE	(&lt;= counter maxVal)<br>
+ (DCL-CONTROL-SETVALUE Untitled_01/Form1/ProgressBar1 counter)<br>
+ (SETQ counter (1+counter))<br>
+ (DCL-CONTROL-REDRAW Untitled_01/Form1/ProgressBar1)<br>
+) </code></pre></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

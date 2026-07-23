@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>shutting down all controls · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2051</p>
+    <h1>shutting down all controls</h1>
+    <p class="meta">Started by potencjalek ·
+      2013-10-26 06:46 UTC ·
+      1 replies · SMF topic #2051</p>
+<article class="post" id="msg10126">
+  <div class="post-head">
+    <span class="post-author">potencjalek</span>
+    <span class="post-date muted">2013-10-26 06:46 UTC</span>
+  </div>
+  <div class="post-body">Hi <br>
+In my application I have 8 different bar controls<br>
+i want to shut  down all controlls while changing drawings<br>
+so I created function which egzamine whether bar is open and if yes shut it down, code below<br>
+<br>
+(defun zamknij_wszystkie_karty 		()		<br>
+(if (dcl_Form_IsActive KalkulatorTMZ_DodajGS)						(dcl_form_Close KalkulatorTMZ_DodajGS)						)<br>
+(if (dcl_Form_IsActive KalkulatorTMZ_KalkulatorTMZ)					(dcl_form_Close KalkulatorTMZ_KalkulatorTMZ)					)<br>
+(if (dcl_Form_IsActive KalkulatorTMZ_MacierzStrumieni)					(dcl_form_Close KalkulatorTMZ_MacierzStrumieni)					)<br>
+(if (dcl_Form_IsActive KalkulatorTMZ_TMZ)							(dcl_form_Close KalkulatorTMZ_TMZ)							)<br>
+(if (dcl_Form_IsActive KalkulatorTMZ_Ustawienia)						(dcl_form_Close KalkulatorTMZ_Ustawienia)						)<br>
+(if (dcl_Form_IsActive KalkulatorTMZ_UstawieniaAutomatyczneStrumieni)	(dcl_form_Close KalkulatorTMZ_UstawieniaAutomatyczneStrumieni)	)<br>
+(if (dcl_Form_IsActive KalkulatorTMZ_UstawieniaStrumieni)				(dcl_form_Close KalkulatorTMZ_UstawieniaStrumieni)				)<br>
+(if (dcl_Form_IsActive KalkulatorTMZ_RysowanieStrumieni)				(dcl_form_Close KalkulatorTMZ_RysowanieStrumieni)				)<br>
+)<br>
+<br>
+and i run it while "OnDocActivated" of every control bar<br>
+while changing drawings bricscad returns that there is no function definition<br>
+f.e.<br>
+error : no function definition  ; expected FUNCTION at <br>
+does it mean that i have to load all definition to newly opened drawings (using for example on_doc_load.lsp)?</div>
+</article>
+<article class="post" id="msg10127">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-10-26 08:49 UTC</span>
+  </div>
+  <div class="post-body">Hi, potencjalek,<br>
+<br>
+<blockquote class="quote">does it mean that i have to load all definition to newly opened drawings</blockquote><br>
+<br>
+Yes, it does. I recommend you to use a .mnl-file (if you use to have a menu) or a acaddoc.lsp.<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

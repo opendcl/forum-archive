@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Memory leak? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1744</p>
+    <h1>Memory leak?</h1>
+    <p class="meta">Started by kenkrupa ·
+      2012-01-20 21:38 UTC ·
+      4 replies · SMF topic #1744</p>
+<article class="post" id="msg8565">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2012-01-20 21:38 UTC</span>
+  </div>
+  <div class="post-body">Owen - My latest project (a modal dialog) starts out displaying fine, but if you open and close it dozens of times it start to get progressively more sluggish. So I'm wondering if there might be some memory leakage causing this. I haven't noticed this with other projects, but this one seemed to get "heavier" as I added more images - it now has 29 of them (small .png's, 2-5KB each), though only a few are displayed at a time. Is this a known issue.</div>
+</article>
+<article class="post" id="msg8566">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-01-21 00:13 UTC</span>
+  </div>
+  <div class="post-body">Images definitely hog resources, but there is no known memory leak. If you can zip up a test project along with instructions, I'd like to take a look.</div>
+</article>
+<article class="post" id="msg8569">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2012-01-23 19:53 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen - what I'm finding is that the problem seems to be only when it's packed in a VLX. The attached zip has the .odcl file with a very stripped down .lsp to open it. When not reloading every time, there is no progressive delay. But there is when running from the VLX.  Just load the VLX and do WOODBEAMS,  to exit, and repeat. After a dozen times it starts to slow, after 20 it's quite noticeable. <br>
+<br>
+The VLX contains the same .odcl file and lsp code as the two other files. The .odcl file should <u>not</u> be present on the search path when running the VLX, as the same code is used for either situation.<br>
+<br>
+Any advice?<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1700/WoodBeams_Test.zip">WoodBeams_Test.zip</a> <span class="muted">(136832 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8571">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-01-26 21:04 UTC</span>
+  </div>
+  <div class="post-body">I've played around with your file in AutoCAD 2011 on Windows 7 64-bit w/ 32 GB of memory, and I can't really see any slowdown. It takes consistently about 4.5 seconds to display, even after 30 tries. I'll test on a virtual machine with more limited resources. In the meantime, it might be helpful to get specifics about the system you're noticing the slowdown on.</div>
+</article>
+<article class="post" id="msg8574">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-01-27 12:27 UTC</span>
+  </div>
+  <div class="post-body">Hi, I couldn't reproduce it either. But maybe it depends on the number of control accesses. Using only you lisp nothing happens to the controls.<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

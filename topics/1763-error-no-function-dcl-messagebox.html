@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>error: no function dcl_messagebox · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1763</p>
+    <h1>error: no function dcl_messagebox</h1>
+    <p class="meta">Started by andrew ·
+      2012-02-28 21:29 UTC ·
+      6 replies · SMF topic #1763</p>
+<article class="post" id="msg8647">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2012-02-28 21:29 UTC</span>
+  </div>
+  <div class="post-body">I have the following in a custom lisp<br>
+<pre class="code"><code><br>
+(defun yes_no_cancel (/)<br>
+	;; Ensure OpenDCL Runtime is (quietly) loaded<br>
+	(setq cmdecho (getvar "CMDECHO"))<br>
+	(setvar "CMDECHO" 0)<br>
+	(command "_OPENDCL")<br>
+	(setvar "CMDECHO" cmdecho)<br>
+<br>
+ (setq yn (dcl_MessageBox "File has been changed, do you want to save changes?" "Save Drawing?" 6 1))<br>
+   (if (= yn 6)<br>
+    (nclose)<br>
+   )<br>
+   (if (= yn 7)<br>
+    (nquit)<br>
+   )<br>
+)</code></pre><br>
+<br>
+when i first launch acad i get this error message.<br>
+I just upgraded to 2012 from 2009, there is no problem with this code in 2009<br>
+even after uninstalling opendcl and reinstalling it, i still get error.<br>
+<br>
+am i missing something?<br>
+</div>
+</article>
+<article class="post" id="msg8648">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2012-02-28 22:38 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Please  clarify the statement ..<br>
+<br>
+&gt;&gt;<blockquote class="quote"> when i first launch acad i get this error message.</blockquote><br>
+<br>
+Do you get the message without running the routine ? or is the routine called from a reactor in some way'<br>
+<br>
+just for info :  this works for me. <br>
+note the method name <em>dcl_MessageBox  </em> is blue in the IDE after the file is loaded into AutoCAD.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1707/dcl_MessageBox.PNG">dcl_MessageBox.PNG</a> <span class="muted">(70806 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8652">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2012-02-29 18:39 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry link=topic=1763.msg8648#msg8648 date=1330468686 wrote:</cite><br>
+<br>
+Please  clarify the statement ..<br>
+<br>
+&gt;&gt;<blockquote class="quote"> when i first launch acad i get this error message.</blockquote><br>
+<br>
+Do you get the message without running the routine ? or is the routine called from a reactor in some way'<br>
+</blockquote><br>
+<br>
+when i first launch acad it opens into a blank dwg (startup set to 0)<br>
+and it gives the error.<br>
+if i set my startup to 1 and use the dialog box to open my dwg i dont get this however, a few coworkers dont like to use that.<br>
+<br>
+and that code is in separate file loaded from acaddoc</div>
+</article>
+<article class="post" id="msg8654">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-02-29 18:43 UTC</span>
+  </div>
+  <div class="post-body">You may need to put your startup code in the S::STARTUP function so that it waits to execute until the AutoCAD editor is fully initialized.</div>
+</article>
+<article class="post" id="msg8658">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2012-03-01 15:20 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1763.msg8654#msg8654 date=1330540982 wrote:</cite><br>
+You may need to put your startup code in the S::STARTUP function so that it waits to execute until the AutoCAD editor is fully initialized.<br>
+</blockquote><br>
+<br>
+i have it loading in the startup, still get the error<br>
+<br>
+also i have a separate project that i have loading on every dwg and often it locks up my acad 2012 to the point where i have to bring up the task manager to end the acad process to get out of it.<br>
+<br>
+i would like to think its the coding, but most of it Fred did for me and i didnt have these issues with it loading in acad 2009</div>
+</article>
+<article class="post" id="msg8659">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2012-03-01 19:37 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=andrew link=topic=1763.msg8658#msg8658 date=1330615201 wrote:</cite><br>
+[quote author=owenwengerd link=topic=1763.msg8654#msg8654 date=1330540982]<br>
+You may need to put your startup code in the S::STARTUP function so that it waits to execute until the AutoCAD editor is fully initialized.<br>
+</blockquote><br>
+<br>
+i have it loading in the startup, still get the error<br>
+<br>
+also i have a separate project that i have loading on every dwg and often it locks up my acad 2012 to the point where i have to bring up the task manager to end the acad process to get out of it.<br>
+<br>
+i would like to think its the coding, but most of it Fred did for me and i didnt have these issues with it loading in acad 2009<br>
+<br>
+<br>
+Andrew, the the S::STARTUP function is different to loading from the startup suite.<br>
+Which are you doing ?<br>
+<br>
+Is the thread about start reactors at theSwamp yours ? If so, be aware that you can't include 'commands' in a reactor callback.<br>
+<br>
+Regards<br>
+</div>
+</article>
+<article class="post" id="msg8678">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2012-03-05 12:48 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry link=topic=1763.msg8659#msg8659 date=1330630670 wrote:</cite><br>
+[quote author=andrew link=topic=1763.msg8658#msg8658 date=1330615201]<br>
+[quote author=owenwengerd link=topic=1763.msg8654#msg8654 date=1330540982]<br>
+You may need to put your startup code in the S::STARTUP function so that it waits to execute until the AutoCAD editor is fully initialized.<br>
+</blockquote><br>
+<br>
+i have it loading in the startup, still get the error<br>
+<br>
+also i have a separate project that i have loading on every dwg and often it locks up my acad 2012 to the point where i have to bring up the task manager to end the acad process to get out of it.<br>
+<br>
+i would like to think its the coding, but most of it Fred did for me and i didnt have these issues with it loading in acad 2009<br>
+<br>
+<br>
+Andrew, the the S::STARTUP function is different to loading from the startup suite.<br>
+Which are you doing ?<br>
+<br>
+Is the thread about start reactors at theSwamp yours ? If so, be aware that you can't include 'commands' in a reactor callback.<br>
+<br>
+Regards<br>
+<br>
+<br>
+<br>
+no this doesnt have anything to do with reactors, two different things...<br>
+i did get it to work, i had to adjust my code to load the open dcl first before loading my functions. it seems to be working as it should now thanks for the replies</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>In Grid Control push Enter? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 384</p>
+    <h1>In Grid Control push Enter?</h1>
+    <p class="meta">Started by Sun_tk ·
+      2008-07-29 12:04 UTC ·
+      2 replies · SMF topic #384</p>
+<article class="post" id="msg1710">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2008-07-29 12:04 UTC</span>
+  </div>
+  <div class="post-body">Why Forms is closing when cursor in Grid and push Enter?</div>
+</article>
+<article class="post" id="msg1724">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-07-30 10:53 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+you can avoid that using the CancelClose event of the form. I do this, too.<br>
+<br>
+<pre class="code"><code>(defun cancel_edit ()<br>
+  (if isLabelEdit (dcl_Grid_CancelItemEdit MyGrid))<br>
+); cancel_edit <br>
+<br>
+(defun c:OnCancelClose (isESCWasPressed)<br>
+  (cancel_edit)<br>
+  (/= isESCWasPressed 1) ;; avoids closing form after ENTER<br>
+); CancelClose<br>
+<br>
+(defun c:OnBeginLabelEdit (intRow ontCol)<br>
+  (setq isLabelEdit T)<br>
+  ;; ... someting else, too<br>
+); c:OnBeginLabelEdit <br>
+<br>
+(defun c:OnEndLabelEdit (intRow ontCol)<br>
+  ;; ... someting else, too<br>
+  (setq isLabelEdit nil)<br>
+); c:OnBeginLabelEdit </code></pre> <br>
+Fred</div>
+</article>
+<article class="post" id="msg1734">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2008-07-31 11:26 UTC</span>
+  </div>
+  <div class="post-body">Thank you Fred, it's worked.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

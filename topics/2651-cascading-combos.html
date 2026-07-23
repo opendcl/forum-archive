@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>cascading combos · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2651</p>
+    <h1>cascading combos</h1>
+    <p class="meta">Started by Nima2018 ·
+      2019-03-02 13:21 UTC ·
+      1 replies · SMF topic #2651</p>
+<article class="post" id="msg13127">
+  <div class="post-head">
+    <span class="post-author">Nima2018</span>
+    <span class="post-date muted">2019-03-02 13:21 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+I want to connect and relate two combo so that when the item is selected in the first combo, the values of the second combo are changed.<br>
+<br>
+<pre class="code"><code><br>
+; Suppose, I have four list :<br>
+<br>
+(setq lst_City (list "A" "B" "C" )<br>
+            lst_A (list "A1" "A2" "A3" )<br>
+            lst_B (list "B1" "B2" "B3" "B4" )<br>
+            lst_C (list "C1" "C2"  )<br>
+)<br>
+<br>
+(COND ((= (DCL-COMBOBOX-GETCURSEL ABC_Fin/Form1/ComboBox1)<br>
+	  0<br>
+       ) ;_ end of equal<br>
+       (PROGN (DCL-COMBOBOX-CLEAR ABC_Fin/Form1/ComboBox2)<br>
+	      (DCL-COMBOBOX-ADDLIST<br>
+		ABC_Fin/Form1/ComboBox2<br>
+		lst_A<br>
+	      ) ;_ end of dcl-ComboBox-AddList<br>
+       ) ;_ end of progn<br>
+      )<br>
+      ((= (DCL-COMBOBOX-GETCURSEL ABC_Fin/Form1/ComboBox1)<br>
+	  1<br>
+       ) ;_ end of equal<br>
+       (PROGN (DCL-COMBOBOX-CLEAR ABC_Fin/Form1/ComboBox2)<br>
+	      (DCL-COMBOBOX-ADDLIST<br>
+		ABC_Fin/Form1/ComboBox2<br>
+		lst_B<br>
+	      ) ;_ end of dcl-ComboBox-AddList<br>
+       ) ;_ end of progn<br>
+      )<br>
+      (T<br>
+       (PROGN (DCL-COMBOBOX-CLEAR ABC_Fin/Form1/ComboBox2)<br>
+	      (DCL-COMBOBOX-ADDLIST<br>
+		ABC_Fin/Form1/ComboBox2<br>
+		lst_C<br>
+	      ) ;_ end of dcl-ComboBox-AddList<br>
+       ) ;_ end of progn<br>
+      )<br>
+) ;_ end of cond<br>
+</code></pre><br>
+<br>
+My problem is that when I click on an item in the first Combo, nothing is visible in the second Combo.<br>
+What can I do with this problem?<br>
+Please advice me .</div>
+</article>
+<article class="post" id="msg13130">
+  <div class="post-head">
+    <span class="post-author">Nima2018</span>
+    <span class="post-date muted">2019-03-05 12:31 UTC</span>
+  </div>
+  <div class="post-body">Hi friends,<br>
+Despite the fact that no one responded to this post,I was able to solve this issue below :<br>
+<br>
+<pre class="code"><code><br>
+<br>
+(DEFUN c:ABC_Fin/Form1/ComboBox1#OnSelChanged<br>
+       (ItemIndexOrCount Value /)<br>
+  (COND<br>
+<br>
+    ((AND (= ItemIndexOrCount 0) (= Value (NTH 0 lst_City)))<br>
+     (PROGN (DCL-COMBOBOX-CLEAR ABC_Fin/Form1/ComboBox2)<br>
+	    (DCL-COMBOBOX-ADDLIST<br>
+	      ABC_Fin/Form1/ComboBox2<br>
+	      lst_A<br>
+	    ) ;_ end of DCL-COMBOBOX-ADDLIST<br>
+     ) ;_ end of progn<br>
+    )<br>
+    ((AND (= ItemIndexOrCount 1) (= Value (NTH 1 lst_City)))<br>
+     (PROGN (DCL-COMBOBOX-CLEAR ABC_Fin/Form1/ComboBox2)<br>
+	    (DCL-COMBOBOX-ADDLIST<br>
+	      ABC_Fin/Form1/ComboBox2<br>
+	      lst_B<br>
+	    ) ;_ end of DCL-COMBOBOX-ADDLIST<br>
+     ) ;_ end of progn<br>
+    )<br>
+    ((AND (= ItemIndexOrCount 2) (= Value (NTH 2 lst_City)))<br>
+     (PROGN (DCL-COMBOBOX-CLEAR ABC_Fin/Form1/ComboBox2)<br>
+	    (DCL-COMBOBOX-ADDLIST<br>
+	      ABC_Fin/Form1/ComboBox2<br>
+	      lst_Rusta_C<br>
+	    ) ;_ end of DCL-COMBOBOX-ADDLIST<br>
+     ) ;_ end of progn<br>
+    )<br>
+  ) ;_ end of cond<br>
+) ;_ end of defun<br>
+<br>
+</code></pre><br>
+<br>
+If One of the members has a better suggestion, please tell me.<br>
+I am not English and apologize for the mistakes in the conversations.<br>
+Thank you and have a good time .</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Update Lisp Code accordingly to Varnames · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/5-project-administration.html">Project Administration</a> /
+      Topic 2276</p>
+    <h1>Update Lisp Code accordingly to Varnames</h1>
+    <p class="meta">Started by awerner ·
+      2015-05-28 20:27 UTC ·
+      2 replies · SMF topic #2276</p>
+<article class="post" id="msg11457">
+  <div class="post-head">
+    <span class="post-author">awerner</span>
+    <span class="post-date muted">2015-05-28 20:27 UTC</span>
+  </div>
+  <div class="post-body">After populating a form with a lot of controls I often find the lisp code hard to read. I have search a method to afterwards update my Lisp accordingly to the "VARNAMES" of the controls. As long as I can see this will not bee done in OpenDCL. Firstly I think that "Set Lisp Symbol Names" was about this but obviously I was wrong. Later I found a routine "odcl8-update" written by Owen Wengerd which I possibly can manipulate to solve my needs. I just wonder if it is possible to extract the name of Lispfile from the DCL-project. This code presumes that the main part of the name is the same as the name of the project.<br>
+<br>
+Thanks for a great program!<br>
+<br>
+Alf</div>
+</article>
+<article class="post" id="msg11459">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-05-28 21:36 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=alfwerner link=topic=2276.msg11457#msg11457 date=1432844877 wrote:</cite>...to afterwards update my Lisp accordingly to the "VARNAMES" of the controls. ...</blockquote><br>
+Maybe I don't understand what you are looking for, but the help-file has a fantastic "dynamic code creation" - all the "Get Function" and the "Set Functions" are created, depending on the control where you started the help. And with the "copy to clipboard - buttons" you can use the code-snippet without typos ...</div>
+</article>
+<article class="post" id="msg11461">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-05-28 21:44 UTC</span>
+  </div>
+  <div class="post-body">There are two ways to specify symbol names: assigning each control an explicit, fixed (never changing) name, or allowing the name to "float" and always get constructed based on the name of the control, parent form, and project name. You could call these two symbol naming styles the "floating" and "fixed" symbol naming modes. The idea behind the "Set lisp symbol names" and "Reset lisp symbol names" commands is to easily toggle between the floating or fixed symbol naming modes. This was important back when floating symbol names were first introduced, because developers were working with both old and new projects, so needed an easy way to toggle modes so that projects remained consistent. These days, it's unusual for developers to still use the fixed symbol names, so the commands are no longer as useful.<br>
+<br>
+I don't think it's possible currently to programmatically extract the embedded lisp filename from the odcl project.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

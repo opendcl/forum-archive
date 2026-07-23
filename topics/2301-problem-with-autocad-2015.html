@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>problem with AutoCAD 2015 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2301</p>
+    <h1>problem with AutoCAD 2015</h1>
+    <p class="meta">Started by ChristianGEO ·
+      2015-08-20 02:59 UTC ·
+      4 replies · SMF topic #2301</p>
+<article class="post" id="msg11566">
+  <div class="post-head">
+    <span class="post-author">ChristianGEO</span>
+    <span class="post-date muted">2015-08-20 02:59 UTC</span>
+  </div>
+  <div class="post-body">Dear:<br>
+My routine work without any problem in versions 2012, 2013 and 2014, using the Runtime OpenDCL corresponding to each version of AutoCAD. When I load my application in AutoCAD 2015 using the OpenDCL.x64.20.arx, although the dialog boxes there is instability in some options such as (selected in the dialog box options): try to export content to *. csv or * .txt, the said box does not close and the worst showing closes AutoCAD FATAL ERROR .... also when I try to export a table in AutoCAD with info from a content shown in Table or extracted from AutoCAD drawing hangs or is thinking infinitely.<br>
+<br>
+I'm using version 8.0.1.0<br>
+<br>
+What can be the reason?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2155/Demo.dwg">Demo.dwg</a> <span class="muted">(343898 bytes)</span></li><li><a href="../attachments/2156/estbk.lsp">estbk.lsp</a> <span class="muted">(76008 bytes)</span></li><li><a href="../attachments/2157/Good_ACAD2014.zip">Good_ACAD2014.zip</a> <span class="muted">(2309930 bytes)</span></li><li><a href="../attachments/2158/failure_ACAD2015.zip">failure_ACAD2015.zip</a> <span class="muted">(2493052 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11568">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-08-20 04:46 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I didn't test your code yet, but I watched the first video and I assume that it is related to the case you modify drawing database at runtime of the modal form (which looks very nice, btw).<br>
+<br>
+In AutoCAD 2015 Autodesk has changed some internal things (like removing Microsoft fiber) that has consequences for applications. It was never a good idea to modify a drawing database at runtime of a modal form but since AutoCAD 2015 you actually have to make sure to close the form. You can find many threads in this forum that are related to this (<a href="http://www.opendcl.com/forum/index.php?topic=2297.0" rel="nofollow noopener">{2}</a>).<br>
+<br>
+Please follow the <a href="http://www.opendcl.com/forum/index.php?topic=1080.msg5675#msg5675" rel="nofollow noopener">{2}</a>. At the place of picking a point you can make database modifictions.<br>
+<br>
+BTW, be aware of using entmake in an area outside of current viewport: in AutoCAD 2000/AutoCAD 2000i I had some troubles with it and AutoCAD told me to create objects using ActiveX.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11569">
+  <div class="post-head">
+    <span class="post-author">ChristianGEO</span>
+    <span class="post-date muted">2015-08-20 06:13 UTC</span>
+  </div>
+  <div class="post-body">Dear:<br>
+He would have to find the cause of the error in the source * .lsp and also I have to review the design of modal form OpenDCL Studio.<br>
+<br>
+Thank you</div>
+</article>
+<article class="post" id="msg11578">
+  <div class="post-head">
+    <span class="post-author">ChristianGEO</span>
+    <span class="post-date muted">2015-08-20 19:55 UTC</span>
+  </div>
+  <div class="post-body">Dear:<br>
+Apparently _-INSERT command is causing the problem, but why? is instability in 8.0.1.0 or tell your Autodesk has made changes to this version 2015. What you suggest I make.<br>
+<br>
+thanks for your help.<br>
+<br>
+<br>
+(repeat bloxf2<br>
+(setq entins1 (ssname bloxfl nq))<br>
+        		 (setq entatt1 entins1)<br>
+		         (setq lstattsins nil)<br>
+		         (setq tittag nil)<br>
+    			 (setq coord (trans (cdr (assoc 10 (entget entins1)))0 1))<br>
+    			 (setq blklaye (cdr (assoc 8 (entget entins1))))<br>
+    			 (COMMAND-S "_-LAYER" "M" blklaye "")<br>
+    			 (setq xpt (car coord))<br>
+	   		 (setq ypt (cadr coord))<br>
+		    	 (setq zpt (caddr coord))<br>
+		        (while<br>
+		            (= (cdr (assoc 0<br>
+		                           (setq lent (entget (setq entatt1 (entnext entatt1))))<br>
+		                    )<br>
+		               )<br>
+		               "ATTRIB"<br>
+		            )  ;; comprobar el primer attributo del bloque si tiene data attrib<br>
+                               (setq rttag (assoc 50 lent))<br>
+		               (setq tag (cdr (assoc 2 lent)))<br>
+		               ;;extrae el nombre del ATTRIB<br>
+		               (setq val (cdr (assoc 1 lent)))<br>
+		               ;;extrae el valor de ATTRIB<br>
+		               (setq lstattsins (cons (list tag val) lstattsins))<br>
+		               ;;formar lista con el nombre y el valor de atributo<br>
+		               (setq tittag (cons tag tittag))<br>
+		            )<br>
+ (setq contcold 0)<br>
+ (setq valtag nil)<br>
+ (setq idcampdat (length datcolm))<br>
+    (repeat idcampdat<br>
+    (setq nombar(nth contcold datcolm))<br>
+      (if (equal nombar "")<br>
+        (progn<br>
+        (setq nam1 "")<br>
+        (setq valtag (cons nam1 valtag))<br>
+        (setq contcold (+ 1 contcold))<br>
+        )<br>
+        (progn<br>
+        (setq nam1 (cadr (assoc nombar lstattsins)))<br>
+	(if (&gt;= contcold 8)<br>
+	  (progn<br>
+	    	(setq vardmz (getvar "dimzin"))<br>
+		(setvar "dimzin" (logand vardmz (~ 8))) ;desactivar el bit de supresion de cero a la derecha<br>
+	    	(setq nam1(rtos (atof nam1)2 2))<br>
+	    (setvar "dimzin" vardmz)<br>
+	    ))<br>
+	<br>
+        (setq valtag (cons nam1 valtag))<br>
+<br>
+        (setq contcold (+ 1 contcold))<br>
+        )<br>
+          )<br>
+        )<br>
+	(setq plotnw (reverse valtag))<br>
+<br>
+    (cond ((= opttp 1)(setq namgen "LEYCORPMC"))<br>
+          ((= opttp 3)(setq namgen "LEYCORPMV"))<br>
+          ((= opttp 2)(setq namgen "LEYCORPT"))<br>
+          )<br>
+        <br>
+       (setq angrt(angtos (cdr rttag)0 7))<br>
+    <br>
+    	(command-s "_-insert" namgen "R" angrt (list xpt ypt zpt) "" "") ;;;&lt;====================================<br>
+        (mapcar 'command-s plotnw)<br>
+<br>
+    (entdel entins1)<br>
+    <br>
+    (setq nq (+ 1 nq))<br>
+)</div>
+</article>
+<article class="post" id="msg11581">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-08-21 09:11 UTC</span>
+  </div>
+  <div class="post-body">Hi, Christian,<br>
+<br>
+command-s is for calling commands asynchronously, but you have to call it completely without any pause tag.<br>
+The problem is not calling insert-command it self - the problem is where or when do you call it.<br>
+I have headache with your line<br>
+(mapcar 'command-s plotnw)<br>
+Please comment it out and keep the single "(insert ..." line above. Does ist still crash?<br>
+Then we have to redesign your workflow with your form.<br>
+Fred<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

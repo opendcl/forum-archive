@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[Solved] - Can't go to graphscr when focus on tree control ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 797</p>
+    <h1>[Solved] - Can't go to graphscr when focus on tree control ?</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-06-09 10:43 UTC ·
+      3 replies · SMF topic #797</p>
+<article class="post" id="msg3925">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-06-09 10:43 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I still locked on a problem with tree control (in a dockable form):<br>
+When user chose a node, tree control keep focus anyway, and then , if i wish to send (entget) command , cursor are not available in graphical parts.<br>
+<br>
+I found this for the moment :<br>
+<br>
+	  (command "_TEXTSCR") ; Work fine, but flash a screen !<br>
+	  ;(command "_GRAPHSCR") ; No work at all !<br>
+	  ;(dcl_Control_SetOk "A" "B" "gpe:borne:inv") ; select another button in dockable form ,not work !<br>
+	  ;(dcl_Control_SetFocus "A" "B" "gpe:borne:inv") ; focus another button in dockable form ,not work !<br>
+	  (setq @&amp;entsel(entsel "Make a choice :"))<br>
+<br>
+<br>
+Also found :<br>
+Must do a mouse over the dockable form to get cursor back .... very strange !<br>
+There are no mouseover event.<br>
+<br>
+all EventInvoke are allow !<br>
+<br>
+<br>
+Thanks for any suggest or reply   ;)</div>
+</article>
+<article class="post" id="msg3926">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-09 11:40 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+beside the EventInvoke property there is a KeepFocus property for modeless forms. If it is set, then the form keeps focus. That's the only way to allow inputs (textboxes...) in modeless forms.<br>
+<br>
+There are many ways to solve but they depend on what you're going to do.<br>
+<br>
+1.: If you click on a button to select something from screen, it will be enough to send a (dcl_setcmdbarfocus).<br>
+2.: If you have textboxes on the modeless form you can change the value for KeepFocus. <a href="http://www.opendcl.com/forum/index.php?topic=757.msg3710#msg3710" rel="nofollow noopener">{2}</a> is an example.<br>
+3.: You can work with OnMouseEntered and OnMouseMovedOff to change the value of KeepFocus at runtime.<br>
+4.: ...<br>
+<br>
+Because there are different ways to work with it a sample of your project could help.<br>
+<br>
+<blockquote class="quote">Must do a mouse over the dockable form to get cursor back...</blockquote><br>
+<br>
+As far as I know theres no need to do it but maybe your sample will help us to help you.  ;)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3930">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-06-09 16:25 UTC</span>
+  </div>
+  <div class="post-body">Thanks for your reply fred !<br>
+<br>
+Anyway, my first issue is maybe to use the latest stable opendcl runtime .... i was working with 4xxx  :D<br>
+<br>
+So i do it now, and have a look as soon as i finish to update all my tools ...<br>
+<br>
+I 've just post another issue about titlebar.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3985">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-06-12 08:36 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+All screen display problem disepear with opendcl 5.xxx !<br>
+<br>
+No need to set focus nil at "Control Bar" form.<br>
+<br>
+Thanks again !</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

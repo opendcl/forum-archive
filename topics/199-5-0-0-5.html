@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>5.0.0.5 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 199</p>
+    <h1>5.0.0.5</h1>
+    <p class="meta">Started by jb ·
+      2008-02-20 02:22 UTC ·
+      18 replies · SMF topic #199</p>
+<article class="post" id="msg866">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-02-20 02:22 UTC</span>
+  </div>
+  <div class="post-body">Owen RE: Palettes<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Ohhhhhh . . . snap! <br>
+<br>
+ ;)</div>
+</article>
+<article class="post" id="msg883">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-02-21 14:54 UTC</span>
+  </div>
+  <div class="post-body">SetCmdBarFocus not working from Palette form - must click in the AutoCAD drawing window first . . ..<br>
+<br>
+<pre class="code"><code>(defun c:jb008_01_TreeControl1_OnDblClicked  (/)<br>
+  (dcl_SetCmdBarFocus)<br>
+  (vla-sendcommand(vla-get-activedocument(vlax-get-acad-object))"jbDoorAdd "))</code></pre><br>
+<br>
+When a palette form is set to hide it won't pop back open once collapsed.<br>
+<br>
+<br>
+More to come . . ..</div>
+</article>
+<article class="post" id="msg889">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-02-21 19:53 UTC</span>
+  </div>
+  <div class="post-body">I'm experiencing the "painting" issues as well.  Labels not re-painting and, oddly enough, "etched" spliters causing the worst painting issues . . ..<br>
+<br>
+Love the palette experience though.</div>
+</article>
+<article class="post" id="msg892">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-22 06:14 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=199.msg883#msg883 date=1203605648 wrote:</cite><br>
+SetCmdBarFocus not working from Palette form - must click in the AutoCAD drawing window first </blockquote><br>
+<br>
+Is this different from dockable forms? Does the KeepFocus property affect this?</div>
+</article>
+<article class="post" id="msg893">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-22 06:15 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=199.msg889#msg889 date=1203623614 wrote:</cite><br>
+I'm experiencing the "painting" issues as well.  Labels not re-painting and, oddly enough, "etched" spliters causing the worst painting issues . . ..</blockquote><br>
+<br>
+Can you attach a sample file that demonstrates these problems?</div>
+</article>
+<article class="post" id="msg913">
+  <div class="post-head">
+    <span class="post-author">tlindell</span>
+    <span class="post-date muted">2008-02-23 04:33 UTC</span>
+  </div>
+  <div class="post-body">Although this may not be able to be addressed until '09 is shipped, I have the RC on WinXP32bit, and palettes are looking very ugly in it.  Screenshot shows a splitter not refreshing along the sides right, the borders do not display correctly anyways. The background is the dark grey on which other controls look poorly against.  Only the new Ribbon actually uses the dark background color (all other built-in palettes use the Windows defualt color) which gets hidden as panels populate it.<br>
+<br>
+The splitter is not honoring the closest inside or outside properties either.<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg923">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-02-24 16:47 UTC</span>
+  </div>
+  <div class="post-body">There is an etched splitter between the top listbox and the graphic "open" button and path label.  Painting issues happen there.  There openDbx subs found elsewhere that aren't included here - but you should be able to open the palette and interact with it.<br>
+<br>
+<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg924">
+  <div class="post-head">
+    <span class="post-author">tlindell</span>
+    <span class="post-date muted">2008-02-24 21:53 UTC</span>
+  </div>
+  <div class="post-body">I'm getting a couple of functions missing from your code, primarily your 'jbload' function.</div>
+</article>
+<article class="post" id="msg930">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-25 05:30 UTC</span>
+  </div>
+  <div class="post-body">This is fixed in Alpha 6, but keep an eye on it in future builds, because I'm still tinkering to try to optimize the performance and reduce flashing.</div>
+</article>
+<article class="post" id="msg936">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-02-25 14:10 UTC</span>
+  </div>
+  <div class="post-body">tlindell - oops, that sub didn't belong in there anyway.  Try this one. (I've included the import functions if you want to try out - use - change the routine.)<br>
+<br>
+Owen - Great work, looking forward to 6.  Has anyone else had issues when the palette is "collapsed" it won't react to the mouseover and "expand"?</div>
+</article>
+<article class="post" id="msg937">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-02-25 14:34 UTC</span>
+  </div>
+  <div class="post-body">Hm, if you want to know in detail, I must say, palette worked better in 5.0.0.5 than in 5.0.0.6. It won't collapes anymore after leaving the mouse from the palette although auto-collapse is active. I will create a video 'bout that.</div>
+</article>
+<article class="post" id="msg938">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-25 15:28 UTC</span>
+  </div>
+  <div class="post-body">I think the auto-collapse problem is not new, but depends on which kind of control has focus, and perhaps whether KeepFocus is true.  At least, I don't think I changed anything in Alpha 6 that would affect that.</div>
+</article>
+<article class="post" id="msg940">
+  <div class="post-head">
+    <span class="post-author">tlindell</span>
+    <span class="post-date muted">2008-02-25 18:30 UTC</span>
+  </div>
+  <div class="post-body">Palette painting issues related to splitter movement is working much better in Alpha 6.  There are still painting issues related to palette resizing and when it is flipped during dragging.  This is being tested on '09RC WinXP.<br>
+<br>
+Thanks JB, I'll give your example a second try this evening.  Was there supposed to be a new attachment to your last post?<br>
+<br>
+Autocollapse is not working for me either, autoexpand is working ok.</div>
+</article>
+<article class="post" id="msg942">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-02-25 20:22 UTC</span>
+  </div>
+  <div class="post-body">'Doh!<br>
+<br>
+<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg1010">
+  <div class="post-head">
+    <span class="post-author">tlindell</span>
+    <span class="post-date muted">2008-02-28 05:58 UTC</span>
+  </div>
+  <div class="post-body">Just tried your viewtool and it is a really neat design.  When I double click on a saved view name, I'm getting an arguement process exception:  dcl_control_SetText nil value not allowed.  After clicking away the warning message, I get the view.</div>
+</article>
+<article class="post" id="msg1012">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-02-28 12:03 UTC</span>
+  </div>
+  <div class="post-body">That error is being thrown here:  <br>
+<br>
+<pre class="code"><code>(defun c:jb001_01_ViewList_OnDblClicked  (nRow nCol / vname)<br>
+  (setq vname (car (dcl_ListView_GetSelectedItems jb001_01_ViewList)))<br>
+  (if vname<br>
+    (progn (dcl_Control_SetText jb001_01_NewView vname)<br>
+           (command ".view" "_restore" vname))))<br>
+</code></pre><br>
+<br>
+I'm not getting that error on either 2006 or 2008, winXP pro, Dell XPS.  If you run just (dcl_ListView_GetSelectedItems jb001_01_ViewList) from vlide what is returned?  </div>
+</article>
+<article class="post" id="msg1015">
+  <div class="post-head">
+    <span class="post-author">Marco Jacinto</span>
+    <span class="post-date muted">2008-02-29 02:43 UTC</span>
+  </div>
+  <div class="post-body">I can't load the jbViewtools, it says <br>
+<br>
+"; error: ADS request error"<br>
+<br>
+I'm using 5.0.0.6.<br>
+<br>
+Also when I type some text in the object browser, can't see any content until I hit enter.<br>
+<br>
+Pressing F1, doesn't show help<br>
+<br>
+Saludos<br>
+Marco Jacinto</div>
+</article>
+<article class="post" id="msg1020">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-02-29 19:30 UTC</span>
+  </div>
+  <div class="post-body">Hmm.  AutoCAD version, Operating system?<br>
+<br>
+The ADS Request error means a variable is being passed to an OpenDCL control that's nil or invalid (a string instead of a real, for example).  I can't recreate that here: the On_initialize event has a call to populate the listbox with the following:<br>
+<br>
+<pre class="code"><code>(dcl_ListBox_AddList jb010_00_ViewList (jb:ListViews))</code></pre><br>
+<br>
+Now if there are no views, (jb:listview) returns nil.  I don't get any error here.  You might want to try changing the on_initialize event to the following and see if that helps:<br>
+<br>
+<pre class="code"><code>(defun c:jb010_00_OnInitialize ( /)<br>
+  (dcl_Control_SetCaption jb010_00_DWG<br>
+	 "No Import Drawing Selected!")<br>
+  (dcl_ListBox_Clear jb010_00_LB)<br>
+     (dcl_ListBox_Clear jb010_00_ViewList)<br>
+(if (setq vlist(jb:ListViews))<br>
+  (dcl_ListBox_AddList jb010_00_ViewList vlist))<br>
+  <br>
+)</code></pre></div>
+</article>
+<article class="post" id="msg1021">
+  <div class="post-head">
+    <span class="post-author">Marco Jacinto</span>
+    <span class="post-date muted">2008-02-29 19:39 UTC</span>
+  </div>
+  <div class="post-body">The problem I think comes from the dcl_import function, cause it throw me an erros an the jb010_00_DWG is set to nil.<br>
+<br>
+I'm using 2008 on XP<br>
+<br>
+Saludos<br>
+Marco Jacinto</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

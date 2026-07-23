@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>howto handle grid data · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1125</p>
+    <h1>howto handle grid data</h1>
+    <p class="meta">Started by grrrr ·
+      2010-01-10 15:31 UTC ·
+      8 replies · SMF topic #1125</p>
+<article class="post" id="msg5959">
+  <div class="post-head">
+    <span class="post-author">grrrr</span>
+    <span class="post-date muted">2010-01-10 15:31 UTC</span>
+  </div>
+  <div class="post-body">hi,<br>
+<br>
+for using the grid control there a tree kinds of data for most styles.<br>
+- the external data, comming from user<br>
+- the label data, displayed as label<br>
+- the internal data controlled by dcl<br>
+also there is a external data called 'empty', 'not defined','missing' or somewhat else.<br>
+<br>
+sample ckeckbox:<br>
+external data is:               0, 1 or empty<br>
+label is:                           ON, OFF, empty<br>
+dcl data for checkstate is:  T, nil, 'grayed out'<br>
+ <br>
+sample layer<br>
+external data is:      0, layer1, layer2,... with layer1, layer2,... not defined<br>
+label is:                  0, layer1, layer2,... with not defined layer 'grayed out'<br>
+dcl data for layer is: 0 and layers not defined ignored.<br>
+<br>
+sample color<br>
+external data is:      1..255, 256, 0, empty<br>
+label is:                  1..255, bylayer, byblock, 'grayed out'<br>
+dcl-data for color:    1..255, 256, 0, ignored<br>
+<br>
+the initialization for some types data can be changed by the user.<br>
+but if a field is clicked the user has to translate the remaining dcl data to label data.<br>
+if the choose is canceled the label data remains untouched.<br>
+<br>
+how to do.<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5960">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-10 19:33 UTC</span>
+  </div>
+  <div class="post-body">Hi, grrr, I'm not sure if I understood right. In my grids I save the old cell content or cell state that it is possible to restore the old cell content after cancelling.<br>
+<br>
+<br>
+(defun c:MyProj_MyForm_MyGrid_OnBeginLabelEdit (nRow nCol)<br>
+  (setq lstCellEdit (list nRow nCol (dcl_grid_getcellText MyProj_MyForm_MyGrid nRow nCol)))<br>
+); c:MyProj_MyForm_MyGrid_OnBeginLabelEdit<br>
+<br>
+(defun c:MyProj_MyForm_MyGrid_OnEndLabelEdit (nRow nCol)<br>
+  [evalute what to do, when content was changed]<br>
+  (setq lstCellEdit nil)<br>
+); c:MyProj_MyForm_MyGrid_OnEndLabelEdit <br>
+<br>
+(defun c:MyProj_MyForm_OnCancelClose (isESCWasPressed)<br>
+  (if (= isESCWasPressed 1)<br>
+    (if lstCellEdit (dcl_grid_getcellText MyProj_MyForm_MyGrid nRow nCol (last lstCellEdit)))<br>
+  ); if<br>
+  (/= isESCWasPressed 1)<br>
+); c:MyProj_MyForm_OnCancelClose<br>
+<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5966">
+  <div class="post-head">
+    <span class="post-author">grrrr</span>
+    <span class="post-date muted">2010-01-11 06:29 UTC</span>
+  </div>
+  <div class="post-body">hi fred,<br>
+<br>
+mmh why cant opendcl handle this issue.<br>
+please have a look at my samples for grid i<br>
+sent in a previous mail.<br>
+if you choose line type column and label is vonlayer and<br>
+you are in a us version then vonlayer is handled as unknown<br>
+and set to blank even you choose something in the pulldown.<br>
+thats a good sample the localized vonlayer cant be translated<br>
+by getcname to bylayer. it returns nil. i have asked for dcl__onButtonClicked to translate values for checkboxes <br>
+but thats available only for type 4.<br>
+my problem is a pre and post translation of data residing as labeltext.<br>
+the orginal data may be vonlayer shown as bylayer in enu version<br>
+and bylayer given to pulldown function.<br>
+hope this helps for understanding<br>
+ <br>
+</div>
+</article>
+<article class="post" id="msg5969">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-11 07:32 UTC</span>
+  </div>
+  <div class="post-body">Hm, grr, I will have a test this evening.<br>
+BTW, are you German? Maybe some things are easier for me to explain...<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5992">
+  <div class="post-head">
+    <span class="post-author">grrrr</span>
+    <span class="post-date muted">2010-01-13 10:00 UTC</span>
+  </div>
+  <div class="post-body">hi fred,<br>
+<br>
+you are rigth, i am from germany.<br>
+what you explained is not what i mean.<br>
+you explained to cancel a form and restoring the old values.<br>
+<br>
+have a look at the grid with columnstyle aclayer.<br>
+may be there are a label 0 and a label xxx.<br>
+'0' is a existing layer, 'xxx' layer doesnt exist.<br>
+click into 'xxx'  field, the pulldown appears.<br>
+then you click on field '0', the pulldown on 'xxx' disappears and the field<br>
+is empty. the pulldown on '0' appears and if you expand, layer '0' is presented.<br>
+how can i restore that value without pain.<br>
+<br>
+a similar issue appears with the checkbutton type.<br>
+label values '0' and '1' are not voted as 'data' which drives the checkbox. the checkbox remains still checked or unchecked. <br>
+so i could set the label to ON/OFF or EIN/AUS if the event<br>
+_OnButtonClicked is availabel for all grid column styles.<br>
+then i can test the checkstate and change the label.<br>
+<br>
+or<br>
+on linetype or lineweight the values bylayer or byblock can appear.<br>
+that values are localized values. because the appeare as localized<br>
+values ( on german autocad vonlayer, vonblock) they have to be translated before they are put to acui control. maybe as return value<br>
+of an event. also on return from acui-control that value has to be translated back too.<br>
+<br>
+once more to make it clear.<br>
+there is external data show in the grid. maybe localized data( german, decimal comma instead of decimal point)<br>
+they have to be translated to data for the cad system maybe enu autocad and put to opendcl and back.<br>
+</div>
+</article>
+<article class="post" id="msg5993">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-13 13:19 UTC</span>
+  </div>
+  <div class="post-body">Hi, grr<br>
+<blockquote class="quote"><cite> author=grrrr link=topic=1125.msg5992#msg5992 date=1263376820 wrote:</cite><br>
+how can i restore that value without pain.<br>
+</blockquote><br>
+<br>
+the answer ist similiar to this what I've written before:<br>
+<br>
+I save the current state before editing it. That makes it possible to restore in case of a wrong value. Save it in the OnBeginLabelEdit event and check the content in the OnEndLabelEdit event. If the new content is empty or wrong restore the old value. Do you know what I mean?<br>
+<br>
+Fred<br>
+</div>
+</article>
+<article class="post" id="msg5994">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-13 13:24 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=grrrr link=topic=1125.msg5992#msg5992 date=1263376820 wrote:</cite><br>
+[...] the checkbox remains still checked or unchecked. [...]<br>
+</blockquote><br>
+<br>
+Hm, if you check or uncheck a cell in checkbox style, the event OnStartLabelEdit will be fired - but not OnEndLabelEdit.<br>
+When I had this in my form, I check if the cell is in checkbox style and I invoke CancelCellEdit immediately to let OnEndLabelEdit fire.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5995">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-13 13:27 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=grrrr link=topic=1125.msg5992#msg5992 date=1263376820 wrote:</cite><br>
+there is external data show in the grid. maybe localized data( german, decimal comma instead of decimal point)<br>
+</blockquote><br>
+<br>
+As far as I know AutoCAD only accepts only point as decimal delimiter (but not in the DataTable palette in FDO). There's no chance to change.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5996">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-13 13:36 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=grrrr link=topic=1125.msg5992#msg5992 date=1263376820 wrote:</cite><br>
+on linetype or lineweight the values bylayer or byblock can appear. that values are localized values. because the appeare as localized<br>
+values ( on german autocad vonlayer, vonblock) they have to be translated before they are put to acui control. maybe as return value<br>
+of an event.<br>
+</blockquote><br>
+<br>
+You are right: they have to be translated by yourself. I do it so. As far as I remember I did not translate this in the ressource files, neither in SharedRes nor in RuntimeRes. That's why it must be given by the installed OS (what I don't believe) or by the started AutoCAD release. <br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

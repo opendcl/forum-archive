@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Font Drop List · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1698</p>
+    <h1>Font Drop List</h1>
+    <p class="meta">Started by honkinberry ·
+      2011-10-13 17:15 UTC ·
+      11 replies · SMF topic #1698</p>
+<article class="post" id="msg8391">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2011-10-13 17:15 UTC</span>
+  </div>
+  <div class="post-body">I'm having a doozy of a time trying to work with a ComboBox with Style 8 - Font Drop List.<br>
+(And on a tangent note, Style 9 - Font Simple List doesn't seem to work at all).<br>
+<br>
+While it's a wonderful idea and looks cool, I'm having incredible difficulty using it for actually selecting a font.<br>
+Further, I'd like the ability to trim the list a bit, removing fonts such as the @-preceded ones.<br>
+<br>
+But for instance fonts with the Swiss721 family that ship with AutoCAD:<br>
+The entries in the list do not correspond with the entries in HKLM/Software/Microsoft/Windows NT/Fonts, where I might be able to look up the TTF filename.<br>
+They do seem to match up with the entries in HKCU/Software/Microsoft/Shared Tools/Panose.<br>
+But the AutoCAD Style command doesn't like these values -- for instance "Swis721 Blk BT".<br>
+<br>
+Is there something I'm missing?  It sure would be cool if the ItemData for the selected item had the font filename all ready for me, oh that would be so sweet!<br>
+<br>
+Many thanks for any help on this!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg8396">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2011-10-14 12:02 UTC</span>
+  </div>
+  <div class="post-body">Very good idea to remove fonts from the list.<br>
+Mainly type shx fonts that are not shown as they are.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1677/fonts.png">fonts.png</a> <span class="muted">(23303 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8398">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-10-17 01:27 UTC</span>
+  </div>
+  <div class="post-body">What exactly do you mean by "@-preceded" fonts?  Which versions of OpenDCL, AutoCAD, and Windows are you using?  Do you notice the same problems on another system?  Do you notice the same problems with the fonts list in the Misc sample?</div>
+</article>
+<article class="post" id="msg8399">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-10-17 06:57 UTC</span>
+  </div>
+  <div class="post-body">Hello. honkinberry meant fonts starting with an @-character in their names. I know them, too. But since I have a new notebook I have no such of these fonts.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8401">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2011-10-17 18:01 UTC</span>
+  </div>
+  <div class="post-body">I'm sorry, I don't know where this Misc sample is located.<br>
+<br>
+The @-preceded fonts are visible when Asian character sets are installed.<br>
+I just mentioned them as a good example of a font I would like to remove from the list.<br>
+But the font drop control doesn't seem to respond to changing it's list property.<br>
+But that is secondary to my primary issue:<br>
+<br>
+The problem is that I don't see what I'm supposed to do with a font drop list.<br>
+If the misc sample shows what to do with it, then if you could direct me there, sorry for your time.<br>
+But I'm not seeing how to correlate the selected font name with an ability to create a text style in AutoCAD.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg8403">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-10-17 18:22 UTC</span>
+  </div>
+  <div class="post-body">The Misc sample is one of the sample programs installed in the \Samples subfolder of your OpenDCL Studio installation.  The font combos are on the Combos2 tab.  The sample doesn't do anything with the font selection either, but it will help rule out a problem caused by your event handler code.  I'm not sure why you have trouble using the font to create a text style, but it may depend on which AutoCAD version you're using.  Please answer the questions about your environment and upload sample code if possible.</div>
+</article>
+<article class="post" id="msg8404">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2011-10-17 18:49 UTC</span>
+  </div>
+  <div class="post-body">This machine is currently on 6.0.2.2, AutoCAD 2012, Windows 7.<br>
+<br>
+Thanks for pointing me to the Misc sample.<br>
+<br>
+As for the sample, yes, that displays the fonts the same as in my dialog box.<br>
+My question remains the same -- what am I supposed to do with it???<br>
+I'd like to use it to create a text style in AutoCAD, as I assume that's its purpose?<br>
+In which case, the AutoCAD Style command wants either a font filename, or a full font name.<br>
+Meanwhile, the list contains the filename of SHX fonts, but for TrueType fonts, such as those in the Swiss 721 family, does not list their full name, but their abbreviated name, which the Style command does not like.<br>
+<br>
+So as for example code, the Misc sample will work fine.<br>
+Select "Swis721 Blk BT" from the list.  How do I then derive either "Swiss 721 Black BT" or "swissk.ttf" which the AutoCAD Style command wants?<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg8405">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-10-17 19:04 UTC</span>
+  </div>
+  <div class="post-body">I see what you're saying about the font name in the combo not being accepted by the -STYLE command.  I agree with you, it would seem these should match.  Have you searched past messages for example of someone using the font combo?  It should be possible to translate, but I don't know how.  In any case, I'd be interested in hearing how others use the font combo.  Maybe your idea of using ItemData to save the "long" name could be implemented as a solution without breaking existing code.</div>
+</article>
+<article class="post" id="msg8406">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2011-10-17 20:12 UTC</span>
+  </div>
+  <div class="post-body">I did many searching on here, and couldn't find anything.<br>
+Also had no luck searching the internet or the registry for any way to translate the font names.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg8412">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-10-18 02:13 UTC</span>
+  </div>
+  <div class="post-body">I took a look at the font combo code in OpenDCL. The font combo uses the Windows SDK function EnumFontFamiliesEx() to enumerate all installed Windows fonts.  It looks like AutoCAD uses the list of font names in HKLM\Software\Microsoft\Windows NT\CurrentVersion\Fonts as a lookup table when entering a font name for the -STYLE command.  To meet your needs, I suppose the OpenDCL code should be changed to enumerate fonts based on thelist in the registry instead of using the EnumFontFamiliesEx() function.  Unfortunately that would break existing code that expects names as they are currently returned, so I don't think it is feasible.<br>
+<br>
+It would not be quite as sexy, but you could easily build your own font combo by filling a standard combo with the fonts from the registry plus any .shx fonts found in the AutoCAD support path.  It's also worth noting that OpenDCL removes from the list any Windows fonts that have been marked as hidden in the Windows control panel Fonts folder (hidden fonts are listed in CurrentVersion\Font Management\Inactive Fonts).  The fact that hidden fonts are omitted from the list means that the user can control which fonts are displayed by hiding/showing them.</div>
+</article>
+<article class="post" id="msg8415">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2011-10-18 16:47 UTC</span>
+  </div>
+  <div class="post-body">You're right, I can accomplish it otherwise.  And in fact, I'd rather have it in a listbox, with a more integrated looking preview.<br>
+So I am padding my listbox with this:<br>
+<br>
+(setq fontlist <br>
+    (vl-registry-descendents "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts" t)<br>
+<br>
+    fontlist (mapcar (function (lambda (x)<br>
+			(vl-string-subst "" " (TrueType)" x)<br>
+		)) ; lambda function<br>
+		fontlist<br>
+	) ; mapcar<br>
+	<br>
+    fontlist (acad_strlsort fontlist)<br>
+) ; setq<br>
+<br>
+(dcl_Control_SetList fontlistbox fontlist)<br>
+<br>
+<br>
+Then I have a label on the form, with about a 28pt size.<br>
+And my listbox onSelChanged is like so:<br>
+<br>
+(defun c:dclFontChanged (ItemIndexOrCount Value /)<br>
+	(dcl_Control_SetFont lblFontPreview Value)<br>
+) ; FontChanged<br>
+<br>
+<br>
+Which gives me an ability to select a font from a listbox (and full control of the list), see a preview, and even access the truetype filename if necessary.<br>
+<br>
+As for changing the font drop list to do something like this, I'd certainly say at a minimum the ItemData should have the font filename.  But as for breaking any existing code, I'm just not seeing what code could possibly be broken, as the the only use I can see of the existing font drop list is just the whiz-bang look in the Misc sample.  If I can't actually connect it to AutoCAD text styles, what could someone possibly be using it for?<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg8416">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-10-19 01:36 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=honkinberry link=topic=1698.msg8415#msg8415 date=1318956452 wrote:</cite><br>
+If I can't actually connect it to AutoCAD text styles, what could someone possibly be using it for?</blockquote><br>
+<br>
+I don't know, but one thing is certain: if it's possible, then someone is doing it.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

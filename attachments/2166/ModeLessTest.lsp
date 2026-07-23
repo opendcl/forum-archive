@@ -1,0 +1,13 @@
+(defun c:ModeLessTest ()
+  (princ "\nLoading... ")
+  (setvar 'cmdecho 0)
+  (command "_opendcl")
+  (setvar 'cmdecho 1)
+  (dcl-Project-Load "ModeLessTest.odcl" T)
+  (dcl-Form-Show ModeLessTest/Form1)
+  (princ)
+)
+
+(defun ModeLessTest/Form1/TextButton1#OnClicked (/)
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:Untitled/Form1/TextButton1#OnClicked" "To do")
+)

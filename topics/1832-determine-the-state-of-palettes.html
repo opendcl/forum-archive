@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Determine the state of Palettes · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1832</p>
+    <h1>Determine the state of Palettes</h1>
+    <p class="meta">Started by Emiliano ·
+      2012-07-14 16:29 UTC ·
+      4 replies · SMF topic #1832</p>
+<article class="post" id="msg9003">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-07-14 16:29 UTC</span>
+  </div>
+  <div class="post-body">Hello everyone,<br>
+I have to determine the status of a palette.<br>
+I tried with:<br>
+<br>
+(dcl_Form_IsActive NameP_NamePallette)<br>
+(dcl_Form_IsVisible NameP_NamePallette)<br>
+(dcl_Form_IsFloating NameP_NamePallette)<br>
+<br>
+but none of them allows you to determine whether a floating palette set to "Automatically Hide" is visible on the screen with all controls or is hidden.<br>
+Can you help me?<br>
+thanks</div>
+</article>
+<article class="post" id="msg9042">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-07-18 05:06 UTC</span>
+  </div>
+  <div class="post-body">I noticed that no one has answered this question.<br>
+For me it is very important to receive a response.<br>
+Maybe my question is not clear?</div>
+</article>
+<article class="post" id="msg9045">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-07-18 17:19 UTC</span>
+  </div>
+  <div class="post-body">I think it's most likely that nobody knows a way to do that.</div>
+</article>
+<article class="post" id="msg9046">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-07-18 19:06 UTC</span>
+  </div>
+  <div class="post-body">It is nice to see that palettes are now supported by Bricscad. But there seem to be a few bugs. I would not use it just yet for serious development.<br>
+<br>
+1.<br>
+If you undock a palette and then use the "X" to hide it, you cannot unhide it in the current CAD-session.<br>
+Using AUBlockTool_Final.lsp from OpenDCL_Tutorial.zip after hiding the palette in this manner:<br>
+<code>: (dcl_Form_IsVisible AUBlockTool_PalBlkTool)<br>
+nil<br>
+: (dcl_Form_IsActive AUBlockTool_PalBlkTool)<br>
+T<br>
+: (dcl_Form_IsEnabled AUBlockTool_PalBlkTool)<br>
+T<br>
+: (dcl_Form_IsFloating AUBlockTool_PalBlkTool)<br>
+T<br>
+: (dcl_Form_Hide AUBlockTool_PalBlkTool T)<br>
+T<br>
+: (dcl_Form_Hide AUBlockTool_PalBlkTool nil)<br>
+T</code><br>
+The palette is still invisible after the last line of code.<br>
+<br>
+2.<br>
+I you have undocked a palette and set it to auto-hide, in the next CAD-session auto-hide will be turned off and the width of the palette will be set to 22px.<br>
+<br>
+For now I would use a control bar instead of a palette.<br>
+</div>
+</article>
+<article class="post" id="msg9060">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-07-25 03:32 UTC</span>
+  </div>
+  <div class="post-body">Hi, in AutoCAD the latest settings of your palette is stored in the aws file of your project if you leave your palette open while closing AutoCAD. It is told that the state is also stored when you save the current drawing. I have no idea how BricsCAD is handling that. <br>
+<br>
+Unfortunately, currently there is no chance to get/set the current state of autohide with OpenDCL.<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

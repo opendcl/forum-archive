@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GRID ItemStyle 15 (DATE) Problem · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 451</p>
+    <h1>GRID ItemStyle 15 (DATE) Problem</h1>
+    <p class="meta">Started by garcigj ·
+      2008-10-09 18:19 UTC ·
+      4 replies · SMF topic #451</p>
+<article class="post" id="msg2023">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2008-10-09 18:19 UTC</span>
+  </div>
+  <div class="post-body">Initilize:<br>
+<br>
+(dcl_Grid_Clear (vl-doc-ref 'EspaciosTiempos_EPInsert_Grid1))<br>
+	 (dcl_Grid_AddColumns (vl-doc-ref 'EspaciosTiempos_EPInsert_Grid1)<br>
+		   (list  (list  "Fechas:" 0 100)<br>
+			  (list  "Proyecto" 0 100)<br>
+			  (list  "Diagrama" 0 100)))<br>
+	 (setq listIndex<br>
+		(list (dcl_Grid_AddString (vl-doc-ref 'EspaciosTiempos_EPInsert_Grid1)<br>
+			(strcat	 "Inicio de Obra" "," FECHAI "," FECHAIEP) ",") <br>
+		      (dcl_Grid_AddString (vl-doc-ref 'EspaciosTiempos_EPInsert_Grid1)<br>
+			(strcat	 "Final de Obra" ","  FECHAF "," FECHAFEP) ",")  <br>
+		))<br>
+	 (mapcar (function (lambda (idx)<br>
+	  (dcl_Grid_SetItemStyle (vl-doc-ref 'EspaciosTiempos_EPInsert_Grid1) idx 1 15)<br>
+	  (dcl_Grid_SetItemStyle (vl-doc-ref 'EspaciosTiempos_EPInsert_Grid1) idx 2 0)<br>
+	 )) listIndex)<br>
+<br>
+Use:<br>
+If you activate the calendar and we use the keyboard changes the values in the Item, but if you activate the calendar we use the mouse and the item loses focus and does not change its value ..<br>
+<br>
+Visual example:<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/494/OpenDCL_GridDate2.gif">OpenDCL_GridDate2.gif</a> <span class="muted">(226278 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2024">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-09 18:21 UTC</span>
+  </div>
+  <div class="post-body">Hello, garcigj, am I right that you're using OpenDCL 4.21? In this case this is a bug. That does not occur in OpenDCL 5 anymore.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2025">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2008-10-09 18:35 UTC</span>
+  </div>
+  <div class="post-body">Hello Fred, <br>
+<br>
+I'm using version 5.0.0.25 ENU and continues to misfire ..<br>
+<br>
+José</div>
+</article>
+<article class="post" id="msg2054">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-10-18 22:44 UTC</span>
+  </div>
+  <div class="post-body">I was able to reproduce this in Windows XP (it works correctly in Vista). This is now fixed for Beta 1.</div>
+</article>
+<article class="post" id="msg2056">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2008-10-20 08:25 UTC</span>
+  </div>
+  <div class="post-body">OK. Thanks Owen</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

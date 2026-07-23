@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PDF in OpenDCL · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 949</p>
+    <h1>PDF in OpenDCL</h1>
+    <p class="meta">Started by velasquez ·
+      2009-10-01 22:13 UTC ·
+      8 replies · SMF topic #949</p>
+<article class="post" id="msg4771">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-10-01 22:13 UTC</span>
+  </div>
+  <div class="post-body">Did anybody already work showing files PDF in OpenDCL?</div>
+</article>
+<article class="post" id="msg4772">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-01 22:16 UTC</span>
+  </div>
+  <div class="post-body">I did a small test and was able to use the ActiveX control to add the Adobe PDF reader &amp; view a file, but that's all I did.<br>
+</div>
+</article>
+<article class="post" id="msg4773">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-10-01 22:31 UTC</span>
+  </div>
+  <div class="post-body">I need to do the same.    <br>
+Can you post an example?<br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg4999">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-10-21 09:37 UTC</span>
+  </div>
+  <div class="post-body">Hi BazzaCAD<br>
+<br>
+Do you can me to show as doing this?  <br>
+Thanks</div>
+</article>
+<article class="post" id="msg5002">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-21 17:09 UTC</span>
+  </div>
+  <div class="post-body">Hi, velasquez,<br>
+<br>
+try the attached sample:<br>
+<br>
+(defun c:pdf ()<br>
+  (command "opendcl")<br>
+  (dcl_project_load "pdf")<br>
+  (dcl_form_show pdf_pdf)<br>
+  (dcl_AxControl_Put pdf_pdf_PDF1 "src" "d:\\tut_flora_07.pdf")<br>
+  (dcl_AxControl_Invoke pdf_pdf_PDF1 "setZoom" 200.0)<br>
+  (princ)<br>
+); pdf<br>
+<br>
+<br>
+@Owen: I get an error but I cannot narrow down the reason - if it is a problem of mine or a general one.<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/985/pdf.odcl">pdf.odcl</a> <span class="muted">(1761 bytes)</span></li><li><a href="../attachments/986/pdf.LSP">pdf.LSP</a> <span class="muted">(225 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5007">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-21 17:30 UTC</span>
+  </div>
+  <div class="post-body">I was going to throw one together, but it looks like Fred beat me to it again.<br>
+I get the unhandled exception error also...<br>
+</div>
+</article>
+<article class="post" id="msg5008">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-10-21 17:57 UTC</span>
+  </div>
+  <div class="post-body">Thank you Fred,  <br>
+  <br>
+I will work with this to see how it works.  <br>
+This cleared my ideas.</div>
+</article>
+<article class="post" id="msg5009">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-21 18:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=949.msg5002#msg5002 date=1256144987 wrote:</cite><br>
+@Owen: I get an error but I cannot narrow down the reason - if it is a problem of mine or a general one.</blockquote><br>
+<br>
+It was a bug, now fixed for Alpha 10.</div>
+</article>
+<article class="post" id="msg5010">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-10-21 19:19 UTC</span>
+  </div>
+  <div class="post-body">Great.<br>
+Excellent the work.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

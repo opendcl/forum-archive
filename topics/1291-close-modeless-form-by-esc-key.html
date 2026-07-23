@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Close modeless form by ESC key · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1291</p>
+    <h1>Close modeless form by ESC key</h1>
+    <p class="meta">Started by Jürg Menzi ·
+      2010-06-10 07:00 UTC ·
+      4 replies · SMF topic #1291</p>
+<article class="post" id="msg6923">
+  <div class="post-head">
+    <span class="post-author">Jürg Menzi</span>
+    <span class="post-date muted">2010-06-10 07:00 UTC</span>
+  </div>
+  <div class="post-body">Hi all<br>
+<br>
+Probably I've a hole in my brain... ;D<br>
+but how to close a modeless dialogue by ESC key if the dialogue has no focus?<br>
+<br>
+Cheers</div>
+</article>
+<article class="post" id="msg6927">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-06-11 02:23 UTC</span>
+  </div>
+  <div class="post-body">The window with keybard input focus decides how to respond to the  key.  If that window is the AutoCAD command line, there are probably ways to translate  into a (dcl_Form_Close) call, but offhand I don't know what would be the best way to do that.</div>
+</article>
+<article class="post" id="msg6929">
+  <div class="post-head">
+    <span class="post-author">Jürg Menzi</span>
+    <span class="post-date muted">2010-06-11 07:58 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+Thanks for the answer - seems to be a disadvantage of modeless dialogues.<br>
+<br>
+Meanwhile I use a (partial) solution with a command reactor. If the user invokes an unused command (he needs only Zoom, Pan etc. during the modeless dialogue), the dialogue will be closed by this reactor - not perfect but usable.<br>
+It would be fine if AutoCAD would offer something like a <em>KeyPressed</em> reactor... 8)<br>
+<br>
+Cheers</div>
+</article>
+<article class="post" id="msg6935">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-06-14 18:07 UTC</span>
+  </div>
+  <div class="post-body">it seems like you would only want a modeless to close when doing something involving it.<br>
+If you draw a line, and hit escape, you do not want some dialog to close.<br>
+If you are running a command like "change color", and you has a modeless dialog with colors, then you could program in code to close that dialog if the user hits escape during the command.<br>
+I'm a bit surprised you want to close dialogs outside of commands that involve them.<br>
+maybe you want to close them during things like zoom and pan, but that will be very annoying to people suring the commands that do need them.<br>
+Can you explain a bit more what you are doing?</div>
+</article>
+<article class="post" id="msg6936">
+  <div class="post-head">
+    <span class="post-author">Jürg Menzi</span>
+    <span class="post-date muted">2010-06-15 13:29 UTC</span>
+  </div>
+  <div class="post-body">Hi James<br>
+<br>
+The only thing to use a modeless dialogue was to allow the user using zoom, pan, etc. during the dialogue. The first idea was to close the dialogue by ESC key, but no solution available. This was the reason to use a command reactor for close the dialogue if the user starts another command than zoom, pan, etc.<br>
+<br>
+Cheers</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

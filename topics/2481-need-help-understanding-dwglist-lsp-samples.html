@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Need help understanding DwgList.lsp (Samples) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2481</p>
+    <h1>Need help understanding DwgList.lsp (Samples)</h1>
+    <p class="meta">Started by roy_043 ·
+      2017-02-08 16:48 UTC ·
+      4 replies · SMF topic #2481</p>
+<article class="post" id="msg12385">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-02-08 16:48 UTC</span>
+  </div>
+  <div class="post-body">I am trying to understand the DwgList.lsp sample.<br>
+The ComboBox1 control does not have any active events, yet if I change the current selection the DWGList1 control is updated. How does this work?<br>
+<br>
+Aside:<br>
+The name of one of the event-handlers is still based on the old naming scheme:<br>
+c:DwgListForm_DwgList1_OnDblClicked<br>
+</div>
+</article>
+<article class="post" id="msg12394">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2017-02-10 00:48 UTC</span>
+  </div>
+  <div class="post-body">I'm not sure I understand the question, but I suppose the behavior is hard-wired into the control.</div>
+</article>
+<article class="post" id="msg12395">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2017-02-10 01:36 UTC</span>
+  </div>
+  <div class="post-body">I checked source code, and the behavior is indeed hardwired. The folder combo searches for a DwgList control on the same form, then sends change notifications to the first one it finds.<br>
+<br>
+P.S. I've fixed the event name in the sample. Thanks for pointing it out!</div>
+</article>
+<article class="post" id="msg12406">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-02-10 20:50 UTC</span>
+  </div>
+  <div class="post-body">Thanks for your explanation Owen.<br>
+<br>
+I would like to suggest an improvement for the c:DwgList/DwgListForm/cmdUP#OnClicked function.<br>
+Currently using the 'Up' button causes all parents except the current, to be dropped from the combo list. Which is confusing and also means you are then restricted to a single drive. Using dcl-ComboBox-AddPath instead of dcl-ComboBox-Dir can fix this.<br>
+<br>
+(defun c:DwgList/DwgListForm/cmdUP#OnClicked ( / sPath)<br>
+  (setq sPath (strcat (dcl-ComboBox-GetDir DwgList/DwgListForm/ComboBox1) "\\.."))<br>
+  ; (dcl-ComboBox-Dir DwgList/DwgListForm/ComboBox1 sPath)<br>
+  (dcl-ComboBox-AddPath DwgList/DwgListForm/ComboBox1 sPath)<br>
+  (dcl-DWGList-Dir DwgList/DwgListForm/DwgList1 sPath)<br>
+  (princ)<br>
+)</div>
+</article>
+<article class="post" id="msg12407">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2017-02-12 03:23 UTC</span>
+  </div>
+  <div class="post-body">I've updated the sample (including a few other improvements) for the next update. Thanks!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

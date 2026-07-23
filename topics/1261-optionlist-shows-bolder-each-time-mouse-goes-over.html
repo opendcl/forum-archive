@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>optionlist shows bolder each time mouse goes over · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1261</p>
+    <h1>optionlist shows bolder each time mouse goes over</h1>
+    <p class="meta">Started by jmaeding ·
+      2010-04-19 22:58 UTC ·
+      16 replies · SMF topic #1261</p>
+<article class="post" id="msg6753">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-04-19 22:58 UTC</span>
+  </div>
+  <div class="post-body">not sure if this is a known issue,<br>
+I have a modal form with an optionlist whose background color is transparent.<br>
+At runtime, the text gets bolder and bolder each time I move the mouse over.<br>
+It took me a while to realize the pattern, see screenshot attached for effect.  I noticed the same thing starts to happen in the editor, when i right click and go to props, then hit ok.  It resets ack to normal each time i focus on it in editor though.<br>
+This is happening for all optionlists with transparent backgrounds, per some tests just now.<br>
+This is on Win xp32bit, nvidia video card....thx<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1376/dialog.PNG">dialog.PNG</a> <span class="muted">(31673 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6754">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-04-19 22:59 UTC</span>
+  </div>
+  <div class="post-body">the orig is on right, left shows the bold effect, like offset resampling or something...</div>
+</article>
+<article class="post" id="msg6755">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-04-19 23:01 UTC</span>
+  </div>
+  <div class="post-body">Where these forms created in an older version of ODCL?<br>
+I've seen that happen before with older projects.<br>
+You might want to try deleting the OptionList &amp; adding it again.<br>
+You can copy &amp; paste the "Button Captions" stings....</div>
+</article>
+<article class="post" id="msg6756">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-04-19 23:02 UTC</span>
+  </div>
+  <div class="post-body">yes, like 4.1.  Any easy fix?  :)</div>
+</article>
+<article class="post" id="msg6757">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-04-19 23:04 UTC</span>
+  </div>
+  <div class="post-body">I just now added an optionlist to a form, same result.<br>
+Is there history to this?</div>
+</article>
+<article class="post" id="msg6758">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-04-19 23:07 UTC</span>
+  </div>
+  <div class="post-body">Hmmm Owen, may have to look into it more.<br>
+Yes, it happened in the MessageBox example that gets installed with ODCL.<br>
+</div>
+</article>
+<article class="post" id="msg6760">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-04-20 02:42 UTC</span>
+  </div>
+  <div class="post-body">I'm familiar with that problem. It has something to do with either anti-aliasing and/or font smoothing. It happens with other controls as well, only if they have a transparent background and only on certain OS/graphics combinations. If I understood more about the GDI system in Windows I could probably figure out a solution, but short of scrapping control transparency, I have not yet found a solution.</div>
+</article>
+<article class="post" id="msg6761">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-04-20 05:51 UTC</span>
+  </div>
+  <div class="post-body">jmaeding, please have a test with backcolor -16 for the optionlist. -16 was the "original" backcolor. In my mind -24 is not neccesary if you use a standard form with no background image.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6767">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-04-20 15:34 UTC</span>
+  </div>
+  <div class="post-body">I set both the form color and optionlist color to -16, problem still happens.<br>
+Are you seeing cases where it does not happen?</div>
+</article>
+<article class="post" id="msg6768">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-04-20 17:48 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jmaeding link=topic=1261.msg6767#msg6767 date=1271777675 wrote:</cite><br>
+Are you seeing cases where it does not happen?<br>
+</blockquote><br>
+<br>
+Yes, if you create a new project from scratch it shouldn't happen.<br>
+</div>
+</article>
+<article class="post" id="msg6769">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-04-21 00:01 UTC</span>
+  </div>
+  <div class="post-body">oh, good, there is hope.  I'll try a few things to see if i can trick existing ones into shape, thx</div>
+</article>
+<article class="post" id="msg6793">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-04-22 17:25 UTC</span>
+  </div>
+  <div class="post-body">hmm, I am seeing this bold thing happen even on fresh new projects and forms.<br>
+I made a project called test2, use this code to load and display form:<br>
+(DCL_LoadProject (findfile "Test2.odcl.lsp") T)<br>
+(dcl_Form_Show Test2_Form1)<br>
+<br>
+move mouse back and forth over the optionlist, it takes a few passes to see the issue.<br>
+Now, this would be livable but there is a worse issue.<br>
+If I remove items at runtime, the optionlist does not refresh.  It seems to leave behind previous paints of the control, probably the reason the boldness is happening.<br>
+I tried a form redraw call after removing items from the optionlist, no luck.<br>
+So this has gone from an annoyance to a signifigant bug for me.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1380/Test2.odcl.lsp">Test2.odcl.lsp</a> <span class="muted">(701 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6822">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2010-04-27 18:24 UTC</span>
+  </div>
+  <div class="post-body">Same Issue for me: I tried with VISTA 32bits, SEVEN 64 bits. AutoCAD 2009 and 2010.<br>
+Background color = -16 doesnt change anything.<br>
+This issue (with others) appears with 6.0.0.10<br>
+Copter</div>
+</article>
+<article class="post" id="msg6837">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-05-06 15:39 UTC</span>
+  </div>
+  <div class="post-body">Hi, I can reproduce this on Win 7 x64 AutoCAD Map 2011 with OpenDCL 6.0.0.26.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1389/optionlist.gif">optionlist.gif</a> <span class="muted">(100809 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6850">
+  <div class="post-head">
+    <span class="post-author">c2k</span>
+    <span class="post-date muted">2010-05-11 15:19 UTC</span>
+  </div>
+  <div class="post-body">It is happening to me as I tab through check boxes. Version 5.1.2.3<br>
+Windows 7 64 bit<br>
+Nvidia Quadro FX1800<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg7748">
+  <div class="post-head">
+    <span class="post-author">canavar</span>
+    <span class="post-date muted">2011-02-05 12:06 UTC</span>
+  </div>
+  <div class="post-body">Hi there,<br>
+Is'nt there any solution up to date? I am suffering it for while and no body is coming up with a solution.</div>
+</article>
+<article class="post" id="msg7750">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-02-05 19:54 UTC</span>
+  </div>
+  <div class="post-body">I have not had any luck figuring out why it happens.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

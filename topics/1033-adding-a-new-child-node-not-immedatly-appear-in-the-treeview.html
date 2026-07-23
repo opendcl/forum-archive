@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Adding a new child node , not immedatly appear in the treeview. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1033</p>
+    <h1>Adding a new child node , not immedatly appear in the treeview.</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-11-26 13:04 UTC ·
+      9 replies · SMF topic #1033</p>
+<article class="post" id="msg5286">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-26 13:04 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+Is anybody can confirm that , at the moment, adding a new child node in a treeview does not appear immediatly, and this only if it is the first child of a parent node.<br>
+<br>
+I hate to expand (0 or 1) the parent node to see expand icon.<br>
+<br>
+Is this will be resolved ?<br>
+<br>
+PS: i will spend time on 6.0.0.14 next week.<br>
+<br>
+Thanks.<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg5321">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-27 09:45 UTC</span>
+  </div>
+  <div class="post-body">Hi Stephan, I cannot reproduce this in my forms. But can you tell us the settings for event invoke settings for the form AND the tree control?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5322">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-27 10:40 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1033.msg5321#msg5321 date=1259315141 wrote:</cite><br>
+Hi Stephan, I cannot reproduce this in my forms. But can you tell us the settings for event invoke settings for the form AND the tree control?<br>
+</blockquote><br>
+<br>
+Hi Fred,<br>
+<br>
+I always use asynchronous event settings for the both  ;)<br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg5324">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-27 12:46 UTC</span>
+  </div>
+  <div class="post-body">That means it is a palette or other not modal form?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5327">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-27 13:08 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1033.msg5324#msg5324 date=1259325972 wrote:</cite><br>
+That means it is a palette or other not modal form?<br>
+</blockquote><br>
+<br>
+Sorry, i didn't understood your final question  ;D<br>
+<br>
+But seems to have the trouble on these (tested) : Palette and modeless dialog<br>
+Modal,control bar : not tested<br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg5329">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-27 13:15 UTC</span>
+  </div>
+  <div class="post-body">Yes, you gave me the correct answer: you've tested it on forms which are not modal.  ;)<br>
+<br>
+That's why I can suggest you to switch event invoke property to synchronous event invoke just for testing if it still occurs.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5330">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-27 13:54 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1033.msg5329#msg5329 date=1259327716 wrote:</cite><br>
+That's why I can suggest you to switch event invoke property to synchronous event invoke just for testing if it still occurs.<br>
+</blockquote><br>
+<br>
+I just tried with a sample , with palette and treeview set to synchronous : nothing change .<br>
+<br>
+with 6.0.0.6 and 6.0.0.14<br>
+<br>
+Opps, awfull ! my sample return runtime error with dcl_control_getText (recurvise error ! have to shut down autocad  ???)  , have to see also that with owen  :(</div>
+</article>
+<article class="post" id="msg5335">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-27 16:19 UTC</span>
+  </div>
+  <div class="post-body">I can reproduce in the treeview sample that adding a child does not update the icon.</div>
+</article>
+<article class="post" id="msg5339">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-27 22:46 UTC</span>
+  </div>
+  <div class="post-body">I've added code to repaint the control after adding a child node, so that problem should be fixed in Alpha 15.</div>
+</article>
+<article class="post" id="msg5342">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-28 10:40 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1033.msg5339#msg5339 date=1259361994 wrote:</cite><br>
+I've added code to repaint the control after adding a child node, so that problem should be fixed in Alpha 15.<br>
+</blockquote><br>
+<br>
+Thanks, waiting for alpha 15 to have a try<br>
+<br>
+Best regards.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

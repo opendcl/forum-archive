@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Short list of imperfections · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1597</p>
+    <h1>Short list of imperfections</h1>
+    <p class="meta">Started by krunch ·
+      2011-03-02 14:12 UTC ·
+      29 replies · SMF topic #1597</p>
+<article class="post" id="msg7824">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-02 14:12 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+I've found some new imperfections..<br>
+Regards<br>
+<br>
+<br>
+<strong><u>Not clean (ControlBar/Palette) : Opening an "undocked" ControlBar or Palette</u></strong><br>
+Opening a ControlBar/Palette with coordinates seems to open it first as docked, before positioning it in the specified position (can see it for a split second)<br>
+<br>
+&gt; Please open "cropped!.odcl" and keep an eye on the left side :<br>
+(defun c:go ()<br>
+  (command "OPENDCL")<br>
+  (dcl_Project_Load "cropped!" T)<br>
+  (dcl_Form_Show cropped!_Form1 '10 10) ; ControlBar<br>
+  (dcl_Form_Show cropped!_Form2 '10 10) ; Palette<br>
+  (princ)<br>
+)<br>
+<br>
+<br>
+<strong><u>Display problem (ControlBar) : Resizing a ControlBar (AllowResizing=T) crops controls</u></strong><br>
+<br>
+&gt; Please see text in the ControlBar (Form1) in "cropped!.odcl"<br>
+<br>
+<br>
+<strong><u>Incohérence (ControlBar) : resizing handles appear while Resizing=nil</u></strong><br>
+Resizing-handles (horizontal/vertical double arrows) re-appear after the ControlBar has been moved, or its docked state changed. Handles are displayed while resizing isn't possible<br>
+<br>
+&gt; Please change AllowResizing (to nil) in cropped!_Form1, save, re-open, Move the ControlBar and place the cursor on one of the borders<br>
+<br>
+<br>
+<strong><u>Update problem (ControlBar/Palette) : AutoCad is not updated from "undocked" Dialog</u></strong><br>
+The sample below (Update!.odcl) deletes entities of the current selection set<br>
+If the Dialog isn't docked AutoCad is updated by (dcl_SetCmdBarFocus)<br>
+If the Dialog is docked AutoCad is updated when mouse moved off the dialog (dcl_SetCmdBarFocus doesn't works)<br>
+<br>
+&gt; Please open "Update!.odcl" select something and press DELETE :<br>
+<br>
+(defun c:go ()<br>
+  (command "OPENDCL")<br>
+  (dcl_Project_Load "Update!" T)<br>
+  (dcl_Form_Show Update!_Form1) ; ControlBar<br>
+;;;  (dcl_Form_Show Update!_Form2) ; Palette<br>
+;;;  (dcl_Form_Show Update!_Form3) ; Modeless<br>
+  (princ)<br>
+)<br>
+(defun c:Update!_Form1_TextButton1_OnClicked (/ sel cnt)<br>
+  (setq sel (cadr (ssgetfirst))<br>
+	cnt (sslength sel))<br>
+  <br>
+  (repeat cnt<br>
+    (setq cnt (1- cnt))<br>
+    (setq obj (vlax-ename-&gt;vla-object (ssname sel cnt)))<br>
+    (vla-delete obj)<br>
+    (dcl_SetCmdBarFocus) ; Updates only if "undocked" Dialog<br>
+  )<br>
+)<br>
+<br>
+<br>
+<strong><u>"Save changes ?" alert is not fired (Interface)</u></strong><br>
+This happens only with new and freshly saved files, it doesn't happen with opened and modified files.<br>
+<br>
+&gt; Open DCLstudio, add a dialog, and save it. Now properties and events modifications (I have not tried other) doesn't fire the alert<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1563/cropped_.odcl">cropped!.odcl</a> <span class="muted">(1081 bytes)</span></li><li><a href="../attachments/1564/Update_.odcl">Update!.odcl</a> <span class="muted">(1056 bytes)</span></li><li><a href="../attachments/1565/Update_.LSP">Update!.LSP</a> <span class="muted">(514 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7829">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-07 23:58 UTC</span>
+  </div>
+  <div class="post-body"><u><strong>ToolTip of Labels are not displayed</strong></u><br>
+Tested in Modal Modeless and ControlBar</div>
+</article>
+<article class="post" id="msg7830">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-03-08 19:22 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=krunch link=topic=1597.msg7829#msg7829 date=1299542339 wrote:</cite><br>
+<u><strong>ToolTip of Labels are not displayed</strong></u><br>
+Tested in Modal Modeless and ControlBar<br>
+</blockquote><br>
+<br>
+Hi krunch,<br>
+<br>
+I believe that they are not displayed as long the palette/dockable/modeless form does not keep focus (I mean property KeepFocus of the form). I could reproduce this in my palette made in C# .NET.<br>
+<br>
+Regards,<br>
+Fred</div>
+</article>
+<article class="post" id="msg7834">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2011-03-10 11:25 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1597.msg7830#msg7830 date=1299612157 wrote:</cite><br>
+[quote author=krunch link=topic=1597.msg7829#msg7829 date=1299542339]<br>
+<u><strong>ToolTip of Labels are not displayed</strong></u><br>
+Tested in Modal Modeless and ControlBar<br>
+</blockquote><br>
+<br>
+Hi krunch,<br>
+<br>
+I believe that they are not displayed as long the palette/dockable/modeless form does not keep focus (I mean property KeepFocus of the form). I could reproduce this in my palette made in C# .NET.<br>
+<br>
+Regards,<br>
+Fred<br>
+<br>
+<br>
+Hello Fred,<br>
+<br>
+Can you show me a picture of the palette you have created with C #.NET?<br>
+<br>
+Thanks<br>
+</div>
+</article>
+<article class="post" id="msg7835">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-03-10 11:42 UTC</span>
+  </div>
+  <div class="post-body">Hi, velasquez,<br>
+<br>
+<blockquote class="quote"><cite> author=velasquez link=topic=1597.msg7834#msg7834 date=1299756317 wrote:</cite><br>
+Can you show me a picture of the palette you have created with C #.NET?<br>
+</blockquote><br>
+<br>
+Sure I can but it is not so impressive like yours ;) .<br>
+It contains drawing data linked with a database from a COM-Server to get out information where the user produced semantic or geometric errors.<br>
+The layout of the palettes does not say anything about the code behind to analyze or modify the drawing objects or export information to clipboard, textfile, Excel or OpenOffice.<br>
+<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1566/statistic.png">statistic.png</a> <span class="muted">(44096 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7836">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2011-03-10 12:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1597.msg7835#msg7835 date=1299757349 wrote:</cite><br>
+Hi, velasquez,<br>
+<br>
+[quote author=velasquez link=topic=1597.msg7834#msg7834 date=1299756317]<br>
+Can you show me a picture of the palette you have created with C #.NET?<br>
+</blockquote><br>
+<br>
+Sure I can but it is not so impressive like yours ;) .<br>
+It contains drawing data linked with a database from a COM-Server to get out information where the user produced semantic or geometric errors.<br>
+The layout of the palettes does not say anything about the code behind to analyze or modify the drawing objects or export information to clipboard, textfile, Excel or OpenOffice.<br>
+<br>
+Regards, Fred<br>
+<br>
+<br>
+Thank you Fred,<br>
+Once I could see what you got work with vertical TabStrip.<br>
+Can you show me how it looks when it docked?<br>
+<br>
+Regards, Velasquez</div>
+</article>
+<article class="post" id="msg7837">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-03-10 16:43 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=1597.msg7836#msg7836 date=1299759006 wrote:</cite><br>
+Once I could see what you got work with vertical TabStrip.<br>
+Can you show me how it looks when it docked?<br>
+</blockquote><br>
+<br>
+Hi, velasquez, since there are 22 listview columns in the listview, the form was set that docking is not allowed. It would look like any other Autodesk palette sets with multiple palettes.<br>
+<br>
+You cannot compare the OpenDCL palette with the AutoCAD "palette":<br>
+If you want to define a "palette" in C# you have to define a new class which creates a new instance from the Autodesk.AutoCAD.Windows.PaletteSet class. Then you create a custom control in you project with the whole content of the palette. Then you add an instance of you custom control to the paletteset. For an other tab of your C# palette you either add an other instance of your custom control or you create another custom control and then you add it to the paletteset, too. And so on. That's why the number of tabs in the object properties manager differ from AutoCAD base product to the verticals.<br>
+<br>
+In OpenDCL it seems for me that you just define the content for the first palette of the palette set.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg7839">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-14 11:29 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">Quote from: krunch on March 07, 2011, 04:58:59 PM<br>
+ToolTip of Labels are not displayed<br>
+Tested in Modal Modeless and ControlBar<br>
+<br>
+Hi krunch,<br>
+<br>
+I believe that they are not displayed as long the palette/dockable/modeless form does not keep focus (I mean property KeepFocus of the form). I could reproduce this in my palette made in C# .NET.<br>
+<br>
+Regards,<br>
+Fred</blockquote><br>
+<br>
+Hi Fred<br>
+I've tried with KeepFocus=T (ControlBar) but the tooltips still doesn't appear on Label<br>
+Regards</div>
+</article>
+<article class="post" id="msg7840">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-14 11:53 UTC</span>
+  </div>
+  <div class="post-body"><u><strong>Display problem (ControlBar - AllowResizing=nil) : cropped when opened without argument</strong></u><br>
+<br>
+The ControlBar (AllowResizing=nil) are cropped if opened by (dcl_Form_Show) without X Y position arguments<br>
+See sample below<br>
+<br>
+(defun c:go ()<br>
+  (command "OPENDCL")<br>
+  (dcl_Project_Load "cropped2!" T)<br>
+  (dcl_Form_Show cropped2!_Form1)            ; ControlBar    cropped!<br>
+  (dcl_Form_Show cropped2!_Form2)            ; Palette       ok<br>
+;;;  (dcl_Form_Show cropped2!_Form1 0 0)     ; ControlBar    ok<br>
+;;;  (dcl_Form_Show cropped2!_Form2 0 0)     ; Palette       ok<br>
+  (princ)<br>
+)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1569/cropped2_.odcl">cropped2!.odcl</a> <span class="muted">(961 bytes)</span></li><li><a href="../attachments/1570/cropped2_.lsp">cropped2!.lsp</a> <span class="muted">(301 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7841">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-14 12:25 UTC</span>
+  </div>
+  <div class="post-body"><u><strong>Stacked ControlBar and Palette (AllowResizing=nil)</strong></u><br>
+Just another little thing with ControlBar and Palette (AllowResizing=nil) when "docked" (floating=nil) and stacked with another dialog (here with the standart Properties Palette).<br>
+<br>
+In this case we can expand the dialog but not reduce it, by moving the border..<br>
+But when I attempt to reduce it, the 2nd DialogBox seems to be cropped.<br>
+On this screenshoot I move the right border to the left :<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1571/stacked.jpg">stacked.jpg</a> <span class="muted">(228043 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7850">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-16 10:39 UTC</span>
+  </div>
+  <div class="post-body"><br>
+I've found a solution for one of my previous remark : <u><strong>Update problem...</strong></u><br>
+<br>
+This problem concerns updates of the drawing and the graphic screen, such as vla-delete, vla-highlight, grvecs...*, when called by a click on a Button or a Picture* : the update is made (visible) only when the cursor looses focus (* I haven't tried other)<br>
+<br>
+<u>It can be solved by adding a (princ) !</u> Note that (princ "something") doesn't work : only (princ) !<br>
+<br>
+To see that, run the sample below : <br>
+- select objects and click on the Button/Picture &gt; objects are deleted<br>
+- now disable the (princ) and try again             &gt; the operation is updated when the cursor moves off the dialog box (when lost focus ?)<br>
+<br>
+<br>
+(defun c:go ()<br>
+  (vl-load-com)<br>
+  (command "OPENDCL")<br>
+  (dcl_Project_Load "Update!" T)<br>
+  (dcl_Form_Show Update!_Form1) ; ControlBar (docked)<br>
+  (dcl_Form_Show Update!_Form2) ; Palette (docked)<br>
+  (dcl_Form_Show Update!_Form3) ; Modeless<br>
+  (princ)<br>
+)<br>
+(defun c:main_OnClicked (/ sel cnt)<br>
+  (setq sel (cadr (ssgetfirst))<br>
+    cnt (sslength sel))<br>
+  <br>
+  ; vla-delete the current selection set<br>
+  (repeat cnt<br>
+    (setq cnt (1- cnt))<br>
+    (setq obj (vlax-ename-&gt;vla-object (ssname sel cnt)))<br>
+    (vla-delete obj)<br>
+  )<br>
+  <br>
+  (princ) ; &lt; THE princ !<br>
+)</div>
+</article>
+<article class="post" id="msg7853">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-16 11:28 UTC</span>
+  </div>
+  <div class="post-body"><u><strong>A strange and vicious thing with Application bar + OnKillFocus..</strong></u><br>
+<br>
+This is a strange behavior concerning the Application window main bar (above) : in some cases the Application window is reduced when you click on the main bar<br>
+<br>
+Please see the sample below..<br>
+<br>
+Apparently this problem occurs :<br>
+- if the TextBox triggers a OnKillFocus function<br>
+- if this function contains an OpenDCL property (/method /function ?) to evaluate<br>
+- if the TextBox looses focus when you click on the main bar..<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1577/Appbar.odcl">Appbar.odcl</a> <span class="muted">(1220 bytes)</span></li><li><a href="../attachments/1578/Appbar.lsp">Appbar.lsp</a> <span class="muted">(454 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7858">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-03-16 14:47 UTC</span>
+  </div>
+  <div class="post-body">It would be easier to address each of your issues one by one, but this is difficult when they are all in one post, and some have since been superseded.  In the future, please create separate threads for unrelated problems.  I think I will start at the end and work backward for the other problems, but first I can dispense with the first issue in the first post: this is a known problem with no known solution.</div>
+</article>
+<article class="post" id="msg7859">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-03-16 16:06 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=krunch link=topic=1597.msg7853#msg7853 date=1300274916 wrote:</cite><br>
+A strange and vicious thing with Application bar + OnKillFocus</blockquote><br>
+<br>
+Good catch. That is indeed a strange one. I can reproduce the problem in any version of AutoCAD (on Windows 7), but I'm not sure what causes it. It seems like AutoCAD sends the "left button clicked" a second time when it appears that the first time got sidetracked, but the second message then gets interpreted as a double click. I tried some things to see if I could fix the problem, but I did not find any solution. The problem goes away when Keep Focus is disabled.<br>
+<br>
+This should be added to the bug tracker on SourceForge to ensure that it is logged for future fixing.</div>
+</article>
+<article class="post" id="msg7860">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-03-16 16:17 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=krunch link=topic=1597.msg7850#msg7850 date=1300271992 wrote:</cite><br>
+It can be solved by adding a (princ) !</blockquote><br>
+<br>
+I suspect that (dcl_SetCmdBarFocus) would work also.</div>
+</article>
+<article class="post" id="msg7861">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-03-16 16:19 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=krunch link=topic=1597.msg7841#msg7841 date=1300105505 wrote:</cite><br>
+In this case we can expand the dialog but not reduce it, by moving the border..</blockquote><br>
+<br>
+This should be added to the bug tracker so I can revisit it in OpenDCL 7.</div>
+</article>
+<article class="post" id="msg7862">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-16 17:30 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">It would be easier to address each of your issues one by one</blockquote><br>
+<blockquote class="quote">This should be added to the bug tracker on SourceForge to ensure that it is logged for future fixing</blockquote><br>
+OK<br>
+<br>
+<blockquote class="quote">Quote from: krunch on Today at 03:39:52 AM<br>
+It can be solved by adding a (princ) !<br>
+<br>
+I suspect that (dcl_SetCmdBarFocus) would work also.</blockquote><br>
+<br>
+This is exactly what I used, but (dcl_SetCmdBarFocus) doesn't work anymore if the Palette/ControlBar is docked !<br>
+Please try this in the sample below<br>
+<br>
+(defun c:go ()<br>
+  (vl-load-com)<br>
+  (command "OPENDCL")<br>
+  (dcl_Project_Load "Update!" T)<br>
+  (dcl_Form_Show Update!_Form1) ; ControlBar<br>
+  (dcl_Form_Show Update!_Form2) ; Palette<br>
+  (dcl_Form_Show Update!_Form3) ; Modeless<br>
+  (princ)<br>
+)<br>
+(defun c:Update!_Form1_TextButton1_OnClicked (/ sel cnt)<br>
+  (setq sel (cadr (ssgetfirst))<br>
+    cnt (sslength sel))<br>
+  <br>
+  (repeat cnt<br>
+    (setq cnt (1- cnt))<br>
+    (setq obj (vlax-ename-&gt;vla-object (ssname sel cnt)))<br>
+    (vla-delete obj)<br>
+  )<br>
+<br>
+;;;  (dcl_SetCmdBarFocus)     ; Updates only if "undocked" Dialog<br>
+  (princ)            ; Updates in all cases<br>
+)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1583/Update_.odcl">Update!.odcl</a> <span class="muted">(1022 bytes)</span></li><li><a href="../attachments/1584/Update_.LSP">Update!.LSP</a> <span class="muted">(561 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7863">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-16 17:37 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">Quote from: krunch on March 14, 2011, 05:25:05 AM<br>
+In this case we can expand the dialog but not reduce it, by moving the border..<br>
+<br>
+This should be added to the bug tracker so I can revisit it in OpenDCL 7.</blockquote><br>
+<br>
+This is a specific case where you stack 2 palettes or ControlBar, and one can not be resized (AllowResizing=nil) while the other can be (T). So, I don't know wich palette have to keep priority... <br>
+The point is that the 2nd palette is affected (cropped?) when you attempt to resize</div>
+</article>
+<article class="post" id="msg7865">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-03-16 22:03 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=krunch link=topic=1597.msg7829#msg7829 date=1299542339 wrote:</cite><br>
+ToolTip of Labels are not displayed</blockquote><br>
+<br>
+This is now fixed for the next build. You can work around the problem in the meantime by enabling the MouseMove event (even if no handler is defined).</div>
+</article>
+<article class="post" id="msg7866">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-03-16 22:06 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=krunch link=topic=1597.msg7824#msg7824 date=1299075130 wrote:</cite><br>
+"Save changes ?" alert is not fired (Interface)</blockquote><br>
+<br>
+Can you give precise instructions for reproducing this?</div>
+</article>
+<article class="post" id="msg7867">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2011-03-16 22:20 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1597.msg7866#msg7866 date=1300313174 wrote:</cite><br>
+[quote author=krunch link=topic=1597.msg7824#msg7824 date=1299075130]<br>
+"Save changes ?" alert is not fired (Interface)</blockquote><br>
+<br>
+Can you give precise instructions for reproducing this?<br>
+<br>
+<br>
+Ya I can reproduce this one too.<br>
+Start a new project, add a form, Save, now change a property (disable titlebar), hit the red X to close &amp; not prompted to save..<br>
+</div>
+</article>
+<article class="post" id="msg7868">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-17 16:03 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+To complete this post I have done some new tests on display and behavior problems of ControlBar + Palette<br>
+<br>
+They include 2 previous remarks (+ some new one):<br>
+<u><strong>Incohérence (ControlBar) : resizing handles appear while Resizing=nil</strong></u><br>
+<u><strong>Stacked ControlBar and Palette (AllowResizing=nil)</strong></u><br>
+<br>
+<br>
+<u>1- Display size is approximative</u><br>
+<br>
+On the fist image below you can see the Palette+ControlBar in 2 context (floating+docked). The red mask delimits the original size (248x448), and you can see that :<br>
+- ControlBar (floating) is bigger (vertically)<br>
+- ControlBar (docked) same gap<br>
+- Palette (floating) is smaller (the border goes in)<br>
+- Palette (docked) is bigger..<br>
+<br>
+I don't know, but may be those gaps (a fiew pixels) come back in the following tests ?<br>
+<br>
+<br>
+<u>2- Attempting to resize docked (AllowResizing=nil) Forms : noAllowResizing.odcl</u><br>
+<br>
+Now I keep only one of the 2 Forms, I dock it, and I attempt to resize (drag'ndrop the vertical border)..<br>
+&gt; The 'resize' cursor (lfet-right arrow) is displayed when the cursor rolls on the border (although AllowResizing=nil)<br>
+<br>
+&gt; When I attempt to resize a docked Palette, it 'moves' alternatively between 2 sizes : a few pixels more, less, more....<br>
+&gt; When I attempt to resize a docked ControlBar, it seems to 'move' once (only the first time)<br>
+<br>
+Now I stack vertically the two forms<br>
+&gt; Same thing, it 'moves' alternatively between 2 sizes, and the horizontal separator is moving too, same thing if I move it<br>
+<br>
+<br>
+<u>3- Same test with mixed AllowResizing (T+nil) : mixedAllowResizing.odcl</u><br>
+<br>
+On the second image the white Form is set to AllowResizing=T, the grey one is AllowResizing=nil...<br>
+&gt; Same problem When I expand or reduce : all is moving, you can see the offset of the horizontal separator on the screenshoot<br>
+<br>
+When I expand I get the 1st image (on the left)<br>
+&gt; OK (may be the grey background color could be expanded too ?)<br>
+<br>
+When I reduced I get the 2nd (on the right)<br>
+&gt; As you can see the white ControlBar is cropped when I reduce under the width of the grey form (AllowResizing=nil)<br>
+<br>
+So in this case (AllowResizing=nil+T) I think there are those 2 problems (all is mooving when resizing + resizable form is cropped)<br>
+But I think that the general behavior is ok, ie : expanding is allowed / reducing is limited to the size (width or height) of the Form whose AllowResizing=nil<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1585/displaysize.jpg">displaysize.jpg</a> <span class="muted">(101089 bytes)</span></li><li><a href="../attachments/1586/stacked.jpg">stacked.jpg</a> <span class="muted">(101057 bytes)</span></li><li><a href="../attachments/1587/noAllowResizing.odcl">noAllowResizing.odcl</a> <span class="muted">(668 bytes)</span></li><li><a href="../attachments/1588/mixedAllowResizing.odcl">mixedAllowResizing.odcl</a> <span class="muted">(683 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7873">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-03-19 12:06 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=krunch link=topic=1597.msg7824#msg7824 date=1299075130 wrote:</cite><br>
+"Save changes ?" alert is not fired (Interface)</blockquote><br>
+<br>
+This is now fixed for the next build.</div>
+</article>
+<article class="post" id="msg7929">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2011-04-05 20:09 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1597.msg7873#msg7873 date=1300536406 wrote:</cite><br>
+[quote author=krunch link=topic=1597.msg7824#msg7824 date=1299075130]<br>
+"Save changes ?" alert is not fired (Interface)</blockquote><br>
+<br>
+This is now fixed for the next build.<br>
+<br>
+<br>
+Why the appearance of Control Palette Bar and is modified along with the display of AutoCAD?<br>
+His answer is that either.<br>
+Thanks<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1596/Modified.png">Modified.png</a> <span class="muted">(49423 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7930">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-04-05 20:47 UTC</span>
+  </div>
+  <div class="post-body">I guess you're referring to the top edge of the form?  I'm not sure why that would have changed. Can you be more specific about what exactly changed, and when?</div>
+</article>
+<article class="post" id="msg7934">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2011-04-06 10:36 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1597.msg7930#msg7930 date=1302036478 wrote:</cite><br>
+I guess you're referring to the top edge of the form?  I'm not sure why that would have changed. Can you be more specific about what exactly changed, and when?<br>
+</blockquote><br>
+<br>
+Yes you are right.<br>
+Change happens when Control Bar is no longer anchored or when it is dragged from left to right.<br>
+It also happens when a palette is docked at his side.<br>
+And when a screen capture program like Snagit is called.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1597/Modified ControlBar.png">Modified ControlBar.png</a> <span class="muted">(58589 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7965">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2011-05-04 12:21 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1597.msg7930#msg7930 date=1302036478 wrote:</cite><br>
+I guess you're referring to the top edge of the form?  I'm not sure why that would have changed. Can you be more specific about what exactly changed, and when?<br>
+</blockquote><br>
+<br>
+Yes I'm referring to to the top edge of the form.<br>
+He continues with OpenDCL 6.0.2.3<br>
+It also appears that the display of AutoCAD is minimized and then restored.</div>
+</article>
+<article class="post" id="msg7966">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-05-04 21:16 UTC</span>
+  </div>
+  <div class="post-body">It would be useful to know which version of OpenDCL this changed in so I can try to find the change that caused it.</div>
+</article>
+<article class="post" id="msg7969">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2011-05-05 13:56 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1597.msg7966#msg7966 date=1304543767 wrote:</cite><br>
+It would be useful to know which version of OpenDCL this changed in so I can try to find the change that caused it.<br>
+</blockquote><br>
+<br>
+OK<br>
+I'll try testing out my old versions.</div>
+</article>
+<article class="post" id="msg8018">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2011-05-25 12:13 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=1597.msg7969#msg7969 date=1304603819 wrote:</cite><br>
+[quote author=owenwengerd link=topic=1597.msg7966#msg7966 date=1304543767]<br>
+It would be useful to know which version of OpenDCL this changed in so I can try to find the change that caused it.<br>
+</blockquote><br>
+<br>
+OK<br>
+I'll try testing out my old versions.<br>
+<br>
+<br>
+I could not determine which version this problem appeared.<br>
+But he remains in OpenDCL 6.0.2.3<br>
+<br>
+Thanks</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

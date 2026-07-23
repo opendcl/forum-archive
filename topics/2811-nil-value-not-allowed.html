@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NIL Value not allowed? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2811</p>
+    <h1>NIL Value not allowed?</h1>
+    <p class="meta">Started by mfreiet ·
+      2022-03-31 17:27 UTC ·
+      2 replies · SMF topic #2811</p>
+<article class="post" id="msg13661">
+  <div class="post-head">
+    <span class="post-author">mfreiet</span>
+    <span class="post-date muted">2022-03-31 17:27 UTC</span>
+  </div>
+  <div class="post-body">I came across Open DCL while trying to get a legacy AutoCAD add-in from a defunct company to work in a modern build of ACAD before the last supported version times out of licensing, and have gotten (I think) all of the functionality working in ACAD 22, but I always get 2-4 popups of the following error on opening AutoCAD with the AddIn enabled in the startup suite:<br>
+<br>
+An OpenDCL function argument processing exception has occurred!  <br>
+Error: NIL value not allowed<br>
+Function: dcl-Control-SetCaption<br>
+Argument:0<br>
+<br>
+I've got no idea if this is something coming from the add-in, or a bug/setting in OpenDCL, but am hoping someone can point me in a useful direction. If it means the users who want that add-in just have to click a few extra popups once a day, we can suffer that, but I'd love to clear it if possible. <br>
+<br>
+I'd love to be able to roll up to ACAD23, but didn't have the time to test out the current OpenDCL build with it yet, and I suspected it might not until an update came out so wasn't worrying about that yet, is that something that might roll out imminently, or that the current build should still work on?  </div>
+</article>
+<article class="post" id="msg13662">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2022-04-01 16:17 UTC</span>
+  </div>
+  <div class="post-body">It's a bug in your Lisp code.<br>
+<br>
+You have a line of code along the lines of:<br>
+(dcl-Control-SetCaption project/form/control1 "caption")<br>
+<br>
+Argument 0 means it's the first argument, so the `project/form/control1`.<br>
+<br>
+From the studio editor, you can go to the control browser for the control, and copy the SetCaption code, which will show you the correct syntax.<br>
+<br>
+--J</div>
+</article>
+<article class="post" id="msg13663">
+  <div class="post-head">
+    <span class="post-author">mfreiet</span>
+    <span class="post-date muted">2022-04-01 16:50 UTC</span>
+  </div>
+  <div class="post-body">Excellent, thanks, I think that's enough for me to figure out what I'm looking for.  <br>
+<br>
+It's only been a decade or so since I wrote anything in LISP, what can possibly go wrong ;)  I'll report back.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

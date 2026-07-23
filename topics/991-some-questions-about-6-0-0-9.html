@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Some questions about 6.0.0.9 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 991</p>
+    <h1>Some questions about 6.0.0.9</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-10-24 12:21 UTC ·
+      6 replies · SMF topic #991</p>
+<article class="post" id="msg5040">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-24 12:21 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+due to my custom scrollbar I have some further questions. For testing, I attached an example.<br>
+(Acad2008 on XP x86)<br>
+<br>
+<ul><br>
+When I load the project and I open the form, the content of the comboboxes small increment and large increment seem to be selected although I haven't selected them. Is that by Windows design? The selection is over when I click into the control and put the cursor behind the last character. But when I resize the form the selection is appears again.<br>
+The labels for large increment and style are shivering/flickering when the form will be resized by the user. I set all the background colors from -24 to -16 but it doesn't help. How can I avoid that?<br>
+I activated the OnCancelClose event of the form to avoid closing the form after pressing enter in the textbox for the percentage value. After some tests I figured out that the argument intIsESCWasPressed of OnCancelClose isn't an integer anymore. But although I've changed my code the form cannot be closed by pressing ESC or clicking the closing button at the upper right. <strong>A.</strong> Are you going to change the argument data type in OpenDCL 6 for OnCancelClose? <strong>B.</strong> If you are going to change the data value for the argument of OnCancelClose event, it will break existing code. Shall we note this in the help step by step with the ongoing changes for OpenDCL 6 or will the help files get updated only in the end when all changes in the code were made? <strong>C.</strong> Is it a bug that the form cannot be closed if OnCancelClose is active, neither nil nor T is given back by the event function for OnCancelClose? <br>
+I activated OnKeyPressed in the PictureBox. Unfortunately, the arrow keys are interpreted as TAB-key so they cannot be captured by OnKeyPressed in the PictureBox. Is there any solution to avoid that? End, Pos1, PgUp and PgDown "are working correctly".<br>
+</ul><br>
+<br>
+Thank you for watching.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/995/slider.lsp">slider.lsp</a> <span class="muted">(6011 bytes)</span></li><li><a href="../attachments/996/slider.odcl">slider.odcl</a> <span class="muted">(1570 bytes)</span></li><li><a href="../attachments/997/slider.png">slider.png</a> <span class="muted">(10023 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5042">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-25 20:57 UTC</span>
+  </div>
+  <div class="post-body">The active combo boxes and flickering labels problem should be fixed in Alpha 10. Starting with Alpha 10, I'm completely removing all the hacks I've put in to handle transparent and overlapping control, and I'm going to start over with that work, as it was becoming unmaintainable. Therefore, Alpha 10 will almost certainly have new display related problems, but at least these two should be fixed.<br>
+<br>
+For OnCancelClose, I've fixed the argument type by changing it back to an integer.  To make the nomenclature more consistent, I've changed the argument name in the documentation from "Canceling" (which implies a boolean) to "Reason". The way your OnCancelClose handler is written, it can never return NIL; if you change it to return NIL, the form will close.<br>
+<br>
+I've added code in Alpha 10 to ensure that the arrow keys are handled by the pciture box control when event handlers are enabled.</div>
+</article>
+<article class="post" id="msg5051">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-27 06:37 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen,<br>
+<br>
+at first: great job on this Alpha. Having your warning about Alpha 10 in mind I can say that this sample form is getting much faster than in Alpha 9 so I'm looking forward to test all my forms on different workstations with different OS.<br>
+<br>
+Details:<br>
+<br>
+- OnMouseWheel works very well in Alpha 10<br>
+- Resizing the form is much faster in Alpha 10, not control flickers anymore<br>
+- Arrow-Keys are triggered in the PictureBox<br>
+- OnCancelClose does not prevent the form from closing anymore, when pressing the closing button (even without changing my code :) , I always use the line (/= intESCWasPressed 1) as the only line in OnCancelClose).<br>
+<br>
+So a great Alpha, thank you!<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5065">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2009-10-29 14:56 UTC</span>
+  </div>
+  <div class="post-body">Hacks  :D<br>
+<br>
+Makes me think of the Star Trek movie where they went back to get the hump back whales:<br>
+<br>
+Owen, what we're saying is we trust your 'hacks' more than other peoples actual coding . . ..<br>
+<br>
+ ;)</div>
+</article>
+<article class="post" id="msg5068">
+  <div class="post-head">
+    <span class="post-author">Carsten</span>
+    <span class="post-date muted">2009-10-30 12:34 UTC</span>
+  </div>
+  <div class="post-body">Hi, <br>
+<br>
+Maybe a stupid question, but: How do I start a new post? <br>
+I do not see any button to do this, does it have to do with my profile?<br>
+<br>
+Help is appreciated<br>
+Thanks<br>
+Carsten</div>
+</article>
+<article class="post" id="msg5070">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-30 13:19 UTC</span>
+  </div>
+  <div class="post-body">Carsten, go to the forum you want to post in, then look for 'New Topic' in the tabs at the top right and bottom right of the forum.</div>
+</article>
+<article class="post" id="msg5074">
+  <div class="post-head">
+    <span class="post-author">Carsten</span>
+    <span class="post-date muted">2009-10-30 14:33 UTC</span>
+  </div>
+  <div class="post-body">Thanks, Owen<br>
+Must have been a "blind spot" for me. </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

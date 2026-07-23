@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Condition for TabControl · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 440</p>
+    <h1>Condition for TabControl</h1>
+    <p class="meta">Started by velasquez ·
+      2008-09-30 21:29 UTC ·
+      23 replies · SMF topic #440</p>
+<article class="post" id="msg1969">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-09-30 21:29 UTC</span>
+  </div>
+  <div class="post-body">Hi  <br>
+I need help for a problem.  <br>
+How to prohibit the change in TabControl if a condition be not accepted.</div>
+</article>
+<article class="post" id="msg1972">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-01 07:07 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+1. there are two events for tabs: OnChanged OnSelChanging. If the user changes the tab although the conditions are not accepted you could changed the selected tab back (with a message what the user has to to.<br>
+<br>
+2. when OnSelChanging events will be fired you should disable all controls in the selected tab.<br>
+<br>
+Regards<br>
+Fred</div>
+</article>
+<article class="post" id="msg1973">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-01 07:08 UTC</span>
+  </div>
+  <div class="post-body">... and you could use HideTab if the conditions are not accepted and use ShowTab if they are accepted.<br>
+Fred</div>
+</article>
+<article class="post" id="msg1974">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-10-01 12:19 UTC</span>
+  </div>
+  <div class="post-body">Hello Fred  <br>
+<br>
+I didn't get to do your suggestion to work.  <br>
+Please see the video that I posted.  <br>
+<br>
+Regards  <br>
+Velasquez<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/484/TabControl.zip">TabControl.zip</a> <span class="muted">(642292 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1975">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-10-01 12:34 UTC</span>
+  </div>
+  <div class="post-body">Hello Fred  <br>
+I posted a video of my TabControl.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/485/MyTabControl.zip">MyTabControl.zip</a> <span class="muted">(796388 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1976">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-01 20:21 UTC</span>
+  </div>
+  <div class="post-body">yeeeees, and after the error message you should activate the configuration tab again (I believe SetCurSel).<br>
+<br>
+BTW: how did you create the white-blue gradient in the left tab? Are these all images?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1977">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-10-01 20:44 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred  <br>
+  <br>
+I used dcl_Tab_SetCurSel, but nothing impedes the change of TabControl.  <br>
+I believe that this is not possible. But it is a lot of imprtante.  <br>
+Do you have some other idea?  <br>
+  <br>
+See the image that I used in the bottom of TabControl.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/486/background-ferramentas.jpg">background-ferramentas.jpg</a> <span class="muted">(7797 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1978">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-10-01 20:56 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred     <br>
+    <br>
+I posted my file.odcl for you to see.  <br>
+<br>
+<br>
+Regards,    <br>
+Velasquez<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/487/DuctilCAD-744.odcl">DuctilCAD-744.odcl</a> <span class="muted">(245258 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1979">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-10-02 01:42 UTC</span>
+  </div>
+  <div class="post-body">Great use of the PictureBox Velasquez, really good looking stuff.<br>
+Do you use PhotoShop to create the raised (Mouse Over) buttons, or is there an easier way?<br>
+</div>
+</article>
+<article class="post" id="msg1980">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-10-02 11:34 UTC</span>
+  </div>
+  <div class="post-body">Yes I used PhotoShop and SnagIt 8 Editor, to create all the images.</div>
+</article>
+<article class="post" id="msg1984">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-10-03 17:59 UTC</span>
+  </div>
+  <div class="post-body">Does nobody know a form please of working around of my problem with TabControl?<br>
+<br>
+Tanks</div>
+</article>
+<article class="post" id="msg1990">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-05 18:27 UTC</span>
+  </div>
+  <div class="post-body">Hi velasquez, tomorrow I'm in the office so I can have a try.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1993">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-06 06:43 UTC</span>
+  </div>
+  <div class="post-body">Hi, velasquez,<br>
+<br>
+I send you an example. If the checkbox is not checked you cannot change the tabs.<br>
+<br>
+Sorry for the delay. I was out of office in the last week cause of a trade fair for surveyors, cities and governments. At these times I can only send short answers. Especially not at the days. In the next weeks I will be out very often for roadshows, customer trainings and so on.<br>
+<br>
+Hope this helps.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/489/tab.zip">tab.zip</a> <span class="muted">(1685 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1994">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-06 11:26 UTC</span>
+  </div>
+  <div class="post-body">Hi velasquez,<br>
+<br>
+the textbox "AlturaTextoDados" uses FilterStyle Text. Why don't you use DecimalUnits?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1996">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-10-06 13:15 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred  <br>
+I didn't use DecimalUnits because he accepts "<span style="color:red"><strong>,</strong></span>" and the height of the text not accepts.  <br>
+With FilterStyle Text it is easier to control this.  <br>
+I use the function below:  <br>
+(dcl_TextBox_SetFilter DuctilCAD_DuctilCAD_MainForm_AlturaTextoDados " .0123456789 ")<br>
+<br>
+Do you know me to say because OnClicked is not added the c:tab_tabtest_chb_acceptcondition of your TabTest?  <br>
+</div>
+</article>
+<article class="post" id="msg2000">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-06 14:41 UTC</span>
+  </div>
+  <div class="post-body">Hi, velasquez,<br>
+<br>
+DecimalUnits do not accepts ",". I just had a test.<br>
+<br>
+<blockquote class="quote">Do you know me to say because OnClicked is not added the c:tab_tabtest_chb_acceptcondition of your TabTest?</blockquote><br>
+<br>
+I have removed it manually  ;) .<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2007">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-10-06 16:52 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred  <br>
+  <br>
+Did I look and didn't I find DecimalUnits in the filter styles?  <br>
+How to determine this?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/491/Filter Style.png">Filter Style.png</a> <span class="muted">(28575 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2010">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-06 18:19 UTC</span>
+  </div>
+  <div class="post-body">Sorry, in my German release it is called "Dezimalzahlen". In your English release it is NumericUnits.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2011">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-10-06 19:22 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred  <br>
+NumericUinits accepts many characters that are not for me.   <br>
+See "----/ / / /....------++++-----"  <br>
+The work to manipulate is very big.  <br>
+I prefer to filter the entrance in ".0123456789 "  <br>
+  <br>
+<strong>I used your function for TabControl with Opendcl 4.1.2.2, she worked perfectly.  <br>
+Thank you very much for your help.  </strong><br>
+ <br>
+I posted the methods below in " Feature Request ".<br>
+<br>
+(dcl_Tab_DisableTab  Project1_Form1_TabControl1 nIndex [as Integer])<br>
+<br>
+(dcl_Tab_EnableTab  Project1_Form1_TabControl1 nIndex [as Integer])</div>
+</article>
+<article class="post" id="msg2012">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-06 21:11 UTC</span>
+  </div>
+  <div class="post-body">Hi velasquez, hm, unfortunately, you are right, that all mathematic characters are allowed in numeric styled textboxes. I think about our many customers and the very often textboxes in NumericUnits style. Until now never a customer had a problem with it. <br>
+However, numeric styled textboxes suppress the text-characters. For the rest I do the following:<br>
+<br>
+<pre class="code"><code><br>
+(defun c:blocks_sc_block_size_edt_x (/ strText uVal)<br>
+    (if (and (setq strText (dcl_Control_getText blocks_sc_block_size_edt_x))<br>
+	  (setq uVal (read_secure strText))<br>
+	  (numberp uVal)<br>
+	  (&gt; uVal 0.0))<br>
+      (progn<br>
+        (setq reaX uVal)<br>
+      ); progn<br>
+      (dcl_Control_setText blocks_sc_block_size_edt_x (rtos reaX 2 4))<br>
+    ); if<br>
+  ); c:blocks_sc_block_size_edt_x<br>
+<br>
+(defun read_secure (uValue)<br>
+  (if (not (and (= (type uValue) 'STR)<br>
+		(setq uValue (if (= (substr uValue 1 1) ".") (strcat "0" uValue) uValue))<br>
+		(setq uValue (if (= (substr uValue 1 2) "-.") (strcat "-0" (substr uValue 2)) uValue))<br>
+		(setq uValue (vl-catch-all-apply 'read (list uValue)))<br>
+		(not (vl-catch-all-error-p uValue))))<br>
+    (setq uValue nil)<br>
+  ); if<br>
+  uValue<br>
+); read_secure<br>
+</code></pre><br>
+<br>
+This function c:blocks_sc_block_size_edt_x will be called when OnKillFocus or OnReturnPressed will be fired.<br>
+<br>
+But you have another chance: Activate the OnEditChanged event and check if the value is correct or not. If not, reset the text to the value before. I know it's not understandable what I mean. I can give you an example tomorrow. I'm tired now.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2033">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-15 14:18 UTC</span>
+  </div>
+  <div class="post-body">Hello velasquez, I have just read that you wanted to post feature requests for dcl_Tab_DisableTab and dcl_Tab_EnableTab. Just if you didn't know: there are already two methods HideTab and ShowTab. Maybe they can help you. I use these methods.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2035">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-10-15 17:11 UTC</span>
+  </div>
+  <div class="post-body">Hello Fred,  <br>
+I tested the methods for and to Hide and to Show Tab.  <br>
+But I still believe that to incapacitate it would be the best solution.  <br>
+It is easier to show when a problem exists.  <br>
+Thanks</div>
+</article>
+<article class="post" id="msg2050">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-10-18 16:38 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=440.msg1969#msg1969 date=1222810145 wrote:</cite><br>
+How to prohibit the change in TabControl if a condition be not accepted.<br>
+</blockquote><br>
+<br>
+In OpenDCL 5 Beta 1 the OnChanging event can be used to prevent the change. The event handler can return T to prevent the change, or anything else to allow it.</div>
+</article>
+<article class="post" id="msg2051">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-10-18 17:48 UTC</span>
+  </div>
+  <div class="post-body">Thank you Owen,  <br>
+  <br>
+Great your work.  <br>
+  <br>
+Velasquez</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

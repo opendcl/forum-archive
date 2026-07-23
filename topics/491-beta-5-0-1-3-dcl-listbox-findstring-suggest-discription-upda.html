@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Beta 5.0.1.3 dcl_ListBox_FindString suggest discription update · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 491</p>
+    <h1>Beta 5.0.1.3 dcl_ListBox_FindString suggest discription update</h1>
+    <p class="meta">Started by Jim ·
+      2008-11-28 14:48 UTC ·
+      12 replies · SMF topic #491</p>
+<article class="post" id="msg2183">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-11-28 14:48 UTC</span>
+  </div>
+  <div class="post-body">(dcl_ListBox_FindString Utility_Messages_Stack Search [as String] {StartIndex [as Long]})<br>
+<br>
+Proposed:<br>
+List box has zero based index. dcl_ListBox_FindString performs a case insensitive search of the entire list and returns index of the string found or -1. Optional start index perform the search from that point to the end, then starting starting again from the top.<br>
+<br>
+Is:<br>
+This method performs a case insensitive search for an item in the list that begins with Search. The search starts with the item at StartIndex and continues past the last item back to the first item until the entire list has been searched. If StartIndex is not specified, the search begins with the first item in the list. The return value is the index (zero based) of the first matching item, or -1 if no item is found.<br>
+</div>
+</article>
+<article class="post" id="msg2184">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-11-28 15:07 UTC</span>
+  </div>
+  <div class="post-body">Better to do both.<br>
+<br>
+(dcl_ListBox_FindString Utility_Messages_Stack Search [as String] {StartIndex [as Long]})<br>
+<br>
+List box has zero based index. dcl_ListBox_FindString performs a case insensitive search of the entire list and returns the index of the item containing characters that match the search string, or -1. Optional start index perform the search from that point to the end, then starting starting again from the top.<br>
+<br>
+(dcl_ListBox_FindStringExact Utility_Messages_Stack Search [as String] {StartIndex [as Long]})<br>
+<br>
+List box has zero based index. dcl_ListBox_FindStringExact performs a case insensitive search of the entire list and returns the index of the item who's string is a exact match to the search string, or -1. Optional start index perform the search from that point to the end, then starting starting again from the top.<br>
+</div>
+</article>
+<article class="post" id="msg2186">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-11-28 17:43 UTC</span>
+  </div>
+  <div class="post-body">Jim, what is it about the original description that you think is incorrect? Did you just want to make it more clear that the first item index is zero? In your proposed description for FindString there is no mention about the search being for an item that <em>begins with</em> the search string, so IMO it is less complete than the original.</div>
+</article>
+<article class="post" id="msg2187">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-11-28 21:03 UTC</span>
+  </div>
+  <div class="post-body">Owen, At first i did not understand the following sentence:<br>
+"This method performs a case insensitive search for an item in the list that begins with Search."<br>
+<br>
+Here is my present understanding:<br>
+dcl_ListBox_FindString performs a case insensitive search of the entire list and returns the index of the last item containing the search string as its first characters, or -1 if it fails. The optional start index performs the search from that point through the end of the list, then starting at the top, down to the item directly above it. If the search string matches the beginning of the string at the starting index it will be ignored if at the end of its search above the start index there is also a match.<br>
+<br>
+The bottom line.<br>
+Beginning characters are found first.<br>
+The last instance found is returned .<br>
+The last instance can be above the start index even if the start index is a match.<br>
+<br>
+I am really confused about how one would use the start index.<br>
+<br>
+Please say something good that gets this across.<br>
+Cheers,<br>
+Jim<br>
+<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg2188">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-11-28 21:40 UTC</span>
+  </div>
+  <div class="post-body">Ah, I see. I thought the "StartIndex" argument was where the search started, but I see now that the search starts with the item *after* the specified index. I've renamed the argument "StartAfter" and changed the text as follows (for FindString -- FindStringExact is slightly different):<br>
+<br>
+This method performs a case insensitive search for an item in the list. The search matches any item that begins with Search. The search starts with the item after StartAfter and continues past the last item back to the first item until the entire list has been searched. If StartAfter is not specified, the search begins with the first item in the list. The return value is the index (zero based) of the first matching item, or -1 if no match is found.</div>
+</article>
+<article class="post" id="msg2189">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-11-28 23:55 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+<br>
+I think we are making progress. As I was testing this method I thought as you that the search began after the index supplied. That was until I found that that staying consistent with returning the last match in the list meant the search started with the index and ignored it the same way it does when starting from the top. Please re- read my last post. I am out of energy to work this one any more. In the end all will be revealed.<br>
+<br>
+Also what could be the use of starting search in the middle?<br>
+<br>
+Thanks,<br>
+Jim</div>
+</article>
+<article class="post" id="msg2191">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-11-29 03:44 UTC</span>
+  </div>
+  <div class="post-body">Jim, in my testing it always returns the *first* item starting the search with the item after the specified item index. The purpose of the argument is to make it possible to search for multiple matches. Imagine the StartAfter argument being the index of the last successful match.</div>
+</article>
+<article class="post" id="msg2195">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-11-29 14:33 UTC</span>
+  </div>
+  <div class="post-body">That makes sense!<br>
+<br>
+Why not just have one method that returns a list of strings built from all matches?<br>
+The lisp way would be to return list of (index . string) conses . Of course each programmer <br>
+can build something similar from the controls existing methods.<br>
+<br>
+Did you determine the methods function from source or from testing the method? I will do my test again. <br>
+Do you expect Test1 to return EditOne and Test2 to return EditFour?<br>
+<br>
+Test1 starting without idx:<br>
+EditOne<br>
+EditTwo<br>
+EditThree<br>
+EditFour<br>
+EditFive<br>
+<br>
+Test2 with starting idx=2:<br>
+EditOne<br>
+EditTwo<br>
+EditThree<br>
+EditFour<br>
+EditFive <br>
+</div>
+</article>
+<article class="post" id="msg2196">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-11-29 14:50 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Jim Short link=topic=491.msg2195#msg2195 date=1227969180 wrote:</cite><br>
+Why not just have one method that returns a list of strings built from all matches?<br>
+</blockquote><br>
+<br>
+This is a typical way to add additional capability without requiring any additional work for the times when the simple case is sufficient, and more importantly, not wasting processor cycles searching for matches they may be irrelevant.<br>
+<br>
+<blockquote class="quote"><cite> author=Jim Short link=topic=491.msg2195#msg2195 date=1227969180 wrote:</cite><br>
+Do you expect Test1 to return EditOne and Test2 to return EditFour?<br>
+</blockquote><br>
+<br>
+Assuming you're searching for "Edit", yes.</div>
+</article>
+<article class="post" id="msg2197">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-11-29 16:12 UTC</span>
+  </div>
+  <div class="post-body">My results:<br>
+Command: (dcl_ListBox_AddList Utility_Messages_Stack<br>
+(_&gt; (list<br>
+((_&gt; "EditOne"<br>
+((_&gt; "EditTwo"<br>
+((_&gt; "EditThree"<br>
+((_&gt; "EditFour"<br>
+((_&gt; "EditFive"<br>
+((_&gt; )<br>
+(_&gt; )<br>
+4<br>
+<br>
+Command: (dcl_ListBox_GetItemText Utility_Messages_Stack<br>
+(_&gt; (dcl_ListBox_FindString Utility_Messages_Stack "Edit")<br>
+(_&gt; )<br>
+"EditTwo"<br>
+<br>
+Command: (dcl_ListBox_GetItemText Utility_Messages_Stack<br>
+(_&gt; (dcl_ListBox_FindString Utility_Messages_Stack "Edit" 2)<br>
+(_&gt; )<br>
+"EditFour"<br>
+<br>
+Description presently doesn't explain the above. How about this?<br>
+<br>
+This method performs a case insensitive search for a match between the search term and the starting characters of each item's string.  If StartAfter index is not specified, the search starts on index 1, otherwise it starts on the index after the one provided and continues past the last item back to the first item until the entire list has been searched. The return value is the index (zero based) of the first matching item, or -1 if no match is found.<br>
+<br>
+The above describes how it presently works for me. Without providing a StartAfter index, I think the search should be rewritten to begin with index 0 rather than one.<br>
+Cheers,<br>
+Jim<br>
+</div>
+</article>
+<article class="post" id="msg2198">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-11-29 16:19 UTC</span>
+  </div>
+  <div class="post-body">Jim, after looking at the code again, I see that omitting the StartAfter argument causes it to use the currently selected item as the StartAfter argument. I don't see any point in that, so I'm changing it to start from the beginning of the list when the argument is omitted. This should cause the behavior to match the (revised) description.</div>
+</article>
+<article class="post" id="msg2199">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-11-29 17:31 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+FindString without optional index will not match index 0 unless there are no further matches below it.<br>
+Jim</div>
+</article>
+<article class="post" id="msg2200">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-11-30 04:46 UTC</span>
+  </div>
+  <div class="post-body">What you describe would be the case when item 0 is selected. Beta 4 will fix that.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

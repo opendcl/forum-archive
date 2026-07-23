@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid Style Combo · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 377</p>
+    <h1>Grid Style Combo</h1>
+    <p class="meta">Started by Sun_tk ·
+      2008-07-15 15:28 UTC ·
+      13 replies · SMF topic #377</p>
+<article class="post" id="msg1665">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2008-07-15 15:28 UTC</span>
+  </div>
+  <div class="post-body">Can I to use Event in "Grid Style Combo" (as Control ComboBox OnSelChanged)?</div>
+</article>
+<article class="post" id="msg1666">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-07-15 16:07 UTC</span>
+  </div>
+  <div class="post-body">No, but you can use the EndLabelEdit event on the grid control to handle this.</div>
+</article>
+<article class="post" id="msg1676">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2008-07-17 10:38 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=377.msg1666#msg1666 date=1216138072 wrote:</cite><br>
+No, but you can use the EndLabelEdit event on the grid control to handle this.<br>
+</blockquote><br>
+<br>
+It hasn't helped me.</div>
+</article>
+<article class="post" id="msg1707">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-07-28 19:37 UTC</span>
+  </div>
+  <div class="post-body">What do you want to do when the selection changes?</div>
+</article>
+<article class="post" id="msg1708">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2008-07-29 12:01 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=377.msg1707#msg1707 date=1217273846 wrote:</cite><br>
+What do you want to do when the selection changes?<br>
+</blockquote><br>
+<br>
+When the selection changes by push any strings in opening Grids ComboBox (DropDawn) I want call my lisp function.</div>
+</article>
+<article class="post" id="msg1722">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-07-30 10:46 UTC</span>
+  </div>
+  <div class="post-body">Hello, maybe it will help:<br>
+<br>
+The EndLabelEdit event will be called after selecting another item of the dropdown list<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1726">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2008-07-30 15:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=377.msg1722#msg1722 date=1217414781 wrote:</cite><br>
+Hello, maybe it will help:<br>
+<br>
+The EndLabelEdit event will be called after selecting another item of the dropdown list<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+I need event that will be called on push (not after, I don't need crossing to anather row) selecting another item of the dropdown list.<br>
+</div>
+</article>
+<article class="post" id="msg1727">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-07-30 15:59 UTC</span>
+  </div>
+  <div class="post-body">The OnBeginLabelEdit and OnEndLabelEdit events were designed for what you describe.  If they don't work, perhaps it would help to post a picture showing the problem.</div>
+</article>
+<article class="post" id="msg1730">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-07-31 05:52 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+as Owen said, OnBeginLabelEdit is called whenever a cell starts to edit:<br>
+<br>
+- editboxes: when clicking into the cell so the cursor is shown<br>
+- combobox: when clicking into the cell that the arrow of the dropdown will be shown<br>
+- ellipsesbutton: when clicking to the cell that the button is shown<br>
+- toggle / radio: when activating/deactivating the toggle. Note: using this cell item style OnEndLabelEdit is only called after another cell was selected. Thats why I call CancelItemEdit within BeginLabelEdit at this cell item style.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1731">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2008-07-31 09:29 UTC</span>
+  </div>
+  <div class="post-body">I want have event on "Grid's DropDown" when I click on "3" (red arrow on picture) as analog "Control-&gt;ComboBox-&gt;OnSelChanged"<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/452/Grid Style Combo.PNG">Grid Style Combo.PNG</a> <span class="muted">(3158 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1732">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-07-31 09:38 UTC</span>
+  </div>
+  <div class="post-body">Ok, now it's more clear  ;)<br>
+<br>
+At this time no event is called yet. I don't know if it is even possible. The OnEndLabelEdit is only called when another cell will be selected.<br>
+Please try if OnMouseUp or OnMouseMove will be called if you select another item. Make sure that these events only work if OnBeginLabelEdit was called from a dropdown/combo list cell.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1733">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2008-07-31 09:50 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Sun_tk link=topic=377.msg1731#msg1731 date=1217496575 wrote:</cite><br>
+I want have event on "Grid's DropDown" when I click on "3" (red arrow on picture) as analog "Control-&gt;ComboBox-&gt;OnSelChanged"<br>
+</blockquote><br>
+<br>
+Ok, thanks that you understand me. ;D<br>
+I need this event.</div>
+</article>
+<article class="post" id="msg1738">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-07-31 16:55 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I attached an example which is not nice, but it works a little bit  :-\ .<br>
+After selecting an item OnMouseMove will be called - but only if the selected item lies in the area of the grid. If you select the item 5 in the last row, the event will only be fired, when you move the mouse over the grid again (and that's not very comfortable).<br>
+<br>
+Note: this may not work in dockable forms or palettes when EventInvoke is set to AllowCommand or the property KeepFocus is set to False.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/453/grid.zip">grid.zip</a> <span class="muted">(1767 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1746">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2008-08-01 11:09 UTC</span>
+  </div>
+  <div class="post-body">Thank you Fred, it's worked.<br>
+<br>
+Please look at this<br>
+http://www.opendcl.com/forum/index.php?topic=376.0<br>
+and help me.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

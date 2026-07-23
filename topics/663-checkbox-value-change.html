@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkbox value change · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 663</p>
+    <h1>Checkbox value change</h1>
+    <p class="meta">Started by william17051 ·
+      2009-03-17 16:24 UTC ·
+      5 replies · SMF topic #663</p>
+<article class="post" id="msg3204">
+  <div class="post-head">
+    <span class="post-author">william17051</span>
+    <span class="post-date muted">2009-03-17 16:24 UTC</span>
+  </div>
+  <div class="post-body">Hello again,<br>
+I am trying to get my check boxes to work now and I am getting a "nil value not allowed" when using a getValue command.<br>
+I have 4 checkboxes in which 3 are set to 0-unchecked and one is set to 1-checked.<br>
+When using an onclicked function I want the one picked to be set to 1 and the others to 0.<br>
+<br>
+(defun c:BillsShopDrawing_form1_CheckBox2_OnClicked (Value /)<br>
+  (if (= 1 (dcl_Control_GetValue BillsShopDrawing_form1_CheckBox3))(dcl_Control_SetValue BillsShopDrawing_form1_CheckBox3 0)) <br>
+  (if (= 1 (dcl_Control_GetValue BillsShopDrawing_form1_CheckBox4))(dcl_Control_SetValue BillsShopDrawing_form1_CheckBox4 0))<br>
+  (if (= 1 (dcl_Control_GetValue BillsShopDrawing_form1_CheckBox1))(dcl_Control_SetValue BillsShopDrawing_form1_CheckBox1 0))<br>
+  (dcl_Control_SetValue BillsShopDrawing_form1_CheckBox2 1)<br>
+  (dcl_Control_Redraw BillsShopDrawing_form1_CheckBox1)<br>
+  (dcl_Control_Redraw BillsShopDrawing_form1_CheckBox2)<br>
+  (dcl_Control_Redraw BillsShopDrawing_form1_CheckBox3)<br>
+  (dcl_Control_Redraw BillsShopDrawing_form1_CheckBox4)<br>
+  )<br>
+(defun c:BillsShopDrawing_form1_CheckBox3_OnClicked (Value /)<br>
+  (if (= 1 (dcl_Control_GetValue BillsShopDrawing_form1_CheckBox2))(dcl_Control_SetValue BillsShopDrawing_form1_CheckBox2 0))  <br>
+  (if (= 1 (dcl_Control_GetValue BillsShopDrawing_form1_CheckBox4))(dcl_Control_SetValue BillsShopDrawing_form1_CheckBox4 0)) <br>
+  (if (= 1 (dcl_Control_GetValue BillsShopDrawing_form1_CheckBox1))(dcl_Control_SetValue BillsShopDrawing_form1_CheckBox1 0)) <br>
+  (dcl_Control_SetValue BillsShopDrawing_form1_CheckBox3 1)<br>
+  (dcl_Control_Redraw BillsShopDrawing_form1_CheckBox1)<br>
+  (dcl_Control_Redraw BillsShopDrawing_form1_CheckBox2)<br>
+  (dcl_Control_Redraw BillsShopDrawing_form1_CheckBox3)<br>
+  (dcl_Control_Redraw BillsShopDrawing_form1_CheckBox4)<br>
+)<br>
+(defun c:BillsShopDrawing_form1_CheckBox4_OnClicked (Value /)<br>
+  (if (= 1 (dcl_Control_GetValue BillsShopDrawing_form1_CheckBox3))(dcl_Control_SetValue BillsShopDrawing_form1_CheckBox3 0))  <br>
+  (if (= 1 (dcl_Control_GetValue BillsShopDrawing_form1_CheckBox2))(dcl_Control_SetValue BillsShopDrawing_form1_CheckBox2 0)) <br>
+  (if (= 1 (dcl_Control_GetValue BillsShopDrawing_form1_CheckBox1))(dcl_Control_SetValue BillsShopDrawing_form1_CheckBox1 0)) <br>
+  (dcl_Control_SetValue BillsShopDrawing_form1_CheckBox4 1)<br>
+  (dcl_Control_Redraw BillsShopDrawing_form1_CheckBox1)<br>
+  (dcl_Control_Redraw BillsShopDrawing_form1_CheckBox2)<br>
+  (dcl_Control_Redraw BillsShopDrawing_form1_CheckBox3)<br>
+  (dcl_Control_Redraw BillsShopDrawing_form1_CheckBox4)<br>
+)<br>
+(defun c:BillsShopDrawing_form1_CheckBox1_OnClicked (Value /)<br>
+  (if (= 1 (dcl_Control_GetValue BillsShopDrawing_form1_CheckBox3))(dcl_Control_SetValue BillsShopDrawing_form1_CheckBox3 0)) <br>
+  (if (= 1 (dcl_Control_GetValue BillsShopDrawing_form1_CheckBox4))(dcl_Control_SetValue BillsShopDrawing_form1_CheckBox4 0))<br>
+  (if (= 1 (dcl_Control_GetValue BillsShopDrawing_form1_CheckBox2))(dcl_Control_SetValue BillsShopDrawing_form1_CheckBox2 0))<br>
+  (dcl_Control_SetValue BillsShopDrawing_form1_CheckBox1 1)<br>
+  (dcl_Control_Redraw BillsShopDrawing_form1_CheckBox1)<br>
+  (dcl_Control_Redraw BillsShopDrawing_form1_CheckBox2)<br>
+  (dcl_Control_Redraw BillsShopDrawing_form1_CheckBox3)<br>
+  (dcl_Control_Redraw BillsShopDrawing_form1_CheckBox4)<br>
+)<br>
+<br>
+I thought this would work, but it gives me an error and does not redraw the checkboxes with the new value.<br>
+<br>
+Thanks for any input,<br>
+Bill<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/642/BillsShopDrawing.odcl">BillsShopDrawing.odcl</a> <span class="muted">(16423 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3206">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-17 16:45 UTC</span>
+  </div>
+  <div class="post-body">I think you should scrap the checkboxes and use option buttons (or an option list) instead, as this is exactly what those are designed for.</div>
+</article>
+<article class="post" id="msg3207">
+  <div class="post-head">
+    <span class="post-author">william17051</span>
+    <span class="post-date muted">2009-03-17 17:20 UTC</span>
+  </div>
+  <div class="post-body">OK, I'll try that instead. :)<br>
+Thanks</div>
+</article>
+<article class="post" id="msg3208">
+  <div class="post-head">
+    <span class="post-author">william17051</span>
+    <span class="post-date muted">2009-03-17 18:24 UTC</span>
+  </div>
+  <div class="post-body">OK, the option button works great in the form for what i needed.<br>
+I am still getting an error when trying to use the Value of each button.<br>
+The GetValue statement gives me an error saying that nil value not allowed-argument 0. :(<br>
+<br>
+(setq doorfront(dcl_Control_GetValue BillsShopDrawing_form1_OptionButton3))<br>
+  (setq doorback(dcl_Control_GetValue BillsShopDrawing_form1_OptionButton1))<br>
+  (setq doorright(dcl_Control_GetValue BillsShopDrawing_form1_OptionButton2))<br>
+  (setq doorleft(dcl_Control_GetValue BillsShopDrawing_form1_OptionButton4))<br>
+  (cond<br>
+    ((= 1 doorfront)<br>
+     (setq doorpt1(list(+(car pt4)(/(-(car pt4)(car pt3))2))(+(cadr pt4)4)(caddr pt4)))<br>
+     (command "insert" "c:\\bills blocks\\MACHINING STANDARD LAYOUT BLOCKS\\STANDARD MAN DOOR LEFT HINGE.dwg" doorpt1 1 1 0)<br>
+     )<br>
+    ((= 1 doorright)<br>
+     (setq doorpt1(list(-(car pt3)4)(+(car pt4)(/(-(cadr pt3)(cadr pt4))2))(caddr pt4)))<br>
+     (command "insert" "c:\\bills blocks\\MACHINING STANDARD LAYOUT BLOCKS\\STANDARD MAN DOOR LEFT HINGE.dwg" doorpt1 1 1 90)<br>
+     )<br>
+    ((= 1 doorleft)<br>
+     (setq doorpt1(list(+(car pt4)4)(+(car pt4)(/(-(cadr pt1)(cadr pt4))2))(caddr pt4)))<br>
+     (command "insert" "c:\\bills blocks\\MACHINING STANDARD LAYOUT BLOCKS\\STANDARD MAN DOOR LEFT HINGE.dwg" doorpt1 1 1 270)<br>
+     )<br>
+    ((= 1 doorback)<br>
+     (setq doorpt1(list(+(car pt1)(/(-(car pt2)(car pt1))2))(-(cadr pt1)4)(caddr pt1)))<br>
+     (command "insert" "c:\\bills blocks\\MACHINING STANDARD LAYOUT BLOCKS\\STANDARD MAN DOOR LEFT HINGE.dwg" doorpt1 1 1 180)<br>
+     )<br>
+    );end cond<br>
+<br>
+Please help once again,<br>
+Bill<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/643/BillsShopDrawing.odcl">BillsShopDrawing.odcl</a> <span class="muted">(16455 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3209">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-17 18:47 UTC</span>
+  </div>
+  <div class="post-body">The symbol names look correct, so I'll bet you're calling these functions after the dialog has been closed. Put that code inside your c:BillsShopDrawing_form1_GraphicButton1_OnClicked event handler <em>before</em> the call to (dcl_form_close), and it should work.</div>
+</article>
+<article class="post" id="msg3210">
+  <div class="post-head">
+    <span class="post-author">william17051</span>
+    <span class="post-date muted">2009-03-17 18:58 UTC</span>
+  </div>
+  <div class="post-body">Yep! That did it!<br>
+So the form values can only be set while it is open and are not accessible when closed?<br>
+Thanks a lot ;D<br>
+Bill<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

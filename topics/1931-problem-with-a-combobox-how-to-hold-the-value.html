@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with a ComboBox : how to hold the value ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1931</p>
+    <h1>Problem with a ComboBox : how to hold the value ?</h1>
+    <p class="meta">Started by krunch ·
+      2012-12-20 11:24 UTC ·
+      1 replies · SMF topic #1931</p>
+<article class="post" id="msg9474">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-12-20 11:24 UTC</span>
+  </div>
+  <div class="post-body">There something I can't understand in the maintaining of a ComboBox value through a open/close process, I don't know if there's something wrong in my code ..<br>
+<br>
+Here is my sample (see attach) :<br>
+<a href="http://www.hostingpics.net/viewer.php?id=180267Sanstitre2.jpg" rel="nofollow noopener">{2}</a><br>
+When you click on the 'Select' button the form is closed to allow selection.<br>
+Values on the right ('Format') are independant of the selection, they display properties read into another object, and can be changed... Entity and Format can be specified in any order.<br>
+<br>
+it appears that the initial ComboBox value is not maintained when the form is closed and open (by clicking on the 'Select' button), while the TextBox value is maintained : <br>
+(dialog) &gt; click on 'Select', select something (or not) &gt; the ComboBox 'CurSel' (ie '1' in the sample) is not maintained.<br>
+<br>
+Now :<br>
+(dialog) &gt; select <u>manually</u> a value in the ComboBox (for example the same '1' value) &gt; click on 'Select' ... &gt; the value is maintained<br>
+<br>
+<br>
+Here is the sample code :<br>
+(defun Dialog (/ out)<br>
+    (command "OPENDCL")<br>
+    (dcl_Project_Load "Untitled" T)<br>
+<br>
+    (while (not (member out '(1 2)))<br>
+        (setq out (dcl_Form_Show Untitled_Form1))<br>
+        <br>
+        (if (= out 3) (entsel "&gt; Select something : "))<br>
+    )<br>
+    (if (= out 2) (princ "\n&gt; Cancel"))<br>
+    (if (= out 1) (princ "\n&gt; Apply"))<br>
+)<br>
+<br>
+(defun c:Untitled_Form1_OnInitialize (/)<br>
+  (or out<br>
+      ; Initialize the values on first opening only<br>
+      (progn<br>
+          (dcl_Control_SetText Untitled_Form1_TextBox1 "value")<br>
+          (dcl_Control_SetList Untitled_Form1_ComboBox1 '("0" "1" "2"))<br>
+          (dcl_ComboBox_SetCurSel Untitled_Form1_ComboBox1 1)<br>
+  ))<br>
+)<br>
+; Select<br>
+(defun c:Untitled_Form1_TextButton1_OnClicked (/)<br>
+  (dcl_Form_Close Untitled_Form1 3)<br>
+)<br>
+; Apply<br>
+(defun c:Untitled_Form1_TextButton2_OnClicked (/)<br>
+  (dcl_Form_Close Untitled_Form1 2)<br>
+)<br>
+; Cancel<br>
+(defun c:Untitled_Form1_TextButton3_OnClicked (/)<br>
+  (dcl_Form_Close Untitled_Form1 1)<br>
+)<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1839/Untitled.odcl">Untitled.odcl</a> <span class="muted">(1030 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9475">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-12-21 06:10 UTC</span>
+  </div>
+  <div class="post-body">Only properties of controls are persisted. A combo box does not have a "current item" property, so that aspect of the combo state must be initialized via code each time the combo is displayed. Note that for non-Simple combo styles, the Text property is persisted, but that doesn't help you in this case.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

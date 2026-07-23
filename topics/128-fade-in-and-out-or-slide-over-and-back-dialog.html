@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fade in and out or slide over and back dialog? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 128</p>
+    <h1>Fade in and out or slide over and back dialog?</h1>
+    <p class="meta">Started by Hypersonic ·
+      2007-12-31 14:40 UTC ·
+      3 replies · SMF topic #128</p>
+<article class="post" id="msg501">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2007-12-31 14:40 UTC</span>
+  </div>
+  <div class="post-body">I have a dialog that has much user interaction i.e. hit a button on the dialog, then go do something on the acad screen,<br>
+then back to the dialog....<br>
+<br>
+The problem is the dialog is getting quite large and using much of the acad screen.<br>
+I find myself sliding it over out of the way, then back.<br>
+<br>
+Are there any functions that will automatically do something like this?<br>
+<br>
+How do others handle this situation?<br>
+<br>
+Thanks!  -Bob</div>
+</article>
+<article class="post" id="msg505">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-01-01 01:38 UTC</span>
+  </div>
+  <div class="post-body">You could hide the dialog when you need to do something in Acad.<br>
+See the "Selections" example for a demo on how to do that.<br>
+Or you could wait tell the new palette form is added into OpenDCL, but with Owen focusing on language localization, that may be awhile... :)<br>
+</div>
+</article>
+<article class="post" id="msg570">
+  <div class="post-head">
+    <span class="post-author">Paul G</span>
+    <span class="post-date muted">2008-01-17 23:09 UTC</span>
+  </div>
+  <div class="post-body">You can try resizeing it. You can accomplish this two ways (from what I know, anyway). Just remember to grab the current state before you do (in lisp).<br>
+<br>
+1) Either create an Image object on your form covering all of the face, so anywhere you go, it will stay at the correct/normal size and shape.  Make sure you "send to back" this control. Use OnMouseMove to minimize if you leave the cavas/form.  Make sure it's large enough to run your mouse back over the image control, though.  If you have a problem with it minimizing when you go to pick buttons, then make your other controls keep focus if the mouse is over them as well.  I haven't tried it but it might work.<br>
+<br>
+2) Have use a button control to go to the command line or screen and minimize your form (shrink it), then once the command is done, have it resize it back to the original.  I've been able to do this one with a program I wrote.</div>
+</article>
+<article class="post" id="msg573">
+  <div class="post-head">
+    <span class="post-author">dkh007</span>
+    <span class="post-date muted">2008-01-18 02:31 UTC</span>
+  </div>
+  <div class="post-body">Could you post a screen shot of the form? We might have several suggestion. I've used a roll-up method and the hide suggestion from Paul G on some dialogs in the past.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

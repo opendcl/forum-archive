@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>try to run my opendcl stuff on acad map 2010 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1001</p>
+    <h1>try to run my opendcl stuff on acad map 2010</h1>
+    <p class="meta">Started by gdu ·
+      2009-11-02 15:34 UTC ·
+      6 replies · SMF topic #1001</p>
+<article class="post" id="msg5086">
+  <div class="post-head">
+    <span class="post-author">gdu</span>
+    <span class="post-date muted">2009-11-02 15:34 UTC</span>
+  </div>
+  <div class="post-body">Because of the upgrade politics of autodesk, and because it seems, that they have solved the boundary issue (after 10 years i think) i would like to upgrade to acad map 2010<br>
+my stuff runs fine on civil 3d 2008 and map 2004<br>
+now my question, how can i make it work under map 2010<br>
+i have found the .18.arx file and loaded it.<br>
+<br>
+It seems to me, that the<br>
+(VL-SYMBOL-VALUE 'ODCL_GETVERSIONEX)<br>
+does not work, so what am i doing wrong?<br>
+<br>
+any help welcome<br>
+<br>
+<br>
+my dcl file<br>
+<a href="http://rapidshare.com/files/301409736/trstkfarben.odc.html" rel="nofollow noopener">{2}</a><br>
+<br>
+my lisp file<br>
+(defun trstkfarben ( / fn)<br>
+    ;;<br>
+    ;; Ensure the OpenDCL.##.ARX is loaded.<br>
+    (OR (VL-SYMBOL-VALUE 'ODCL_GETVERSIONEX)<br>
+        (AND (SETQ fn (FINDFILE "OpenDCL_ARXLoader.LSP"))<br>
+             (LOAD fn (STRCAT "Failed to load :- " fn))<br>
+        )<br>
+        (ALERT (STRCAT "Failed to load OpenDCL_ARXLoader.LSP"))<br>
+        (EXIT)<br>
+    )<br>
+    ;;<br>
+    ;; Ensure the Project ODC file is loaded.    <br>
+    (OR (ODCL_PROJECT_LOAD "trstkfarben" T) (EXIT))<br>
+    ;;<br>
+    ;; Show the modal dialog .. <br>
+    ;;<br>
+<br>
+<br>
+(defun c:trstkfarben_Start_OnInitialize ( /)<br>
+     ;;(Odcl_MessageBox "To Do: code must be added to event handler\r\nc:trstkfarben_Start_OnInitialize" "To do")<br>
+     (Odcl_Control_ZOrder trstkfarben_Start_Keine 1)<br>
+)<br>
+<br>
+<br>
+<br>
+  (ODCL_FORM_SHOW trstkfarben_Start)<br>
+     ;; The Event handlers manage the form here. <br>
+    (PRINC) <br>
+)<br>
+<br>
+<br>
+;;-----------------------------------------------------------<br>
+<br>
+;; wird beim aufruf des forumlars ausgeführt<br>
+<br>
+(defun c:trstkfarben_Start_Keine_OnClicked ( /)<br>
+     ;;(Odcl_MessageBox "To Do: code must be added to event handler\r\nc:trstkfarben_Start_Keine_OnClicked" "To do")<br>
+     (setq GTRSTKFARBE 0)<br>
+     (Odcl_Form_CloseAll 0)<br>
+)<br>
+<br>
+(defun c:trstkfarben_Start_Gelb_OnClicked ( /)<br>
+     ;;(Odcl_MessageBox "To Do: code must be added to event handler\r\nc:trstkfarben_Start_Gelb_OnClicked" "To do")<br>
+     (setq GTRSTKFARBE 51)<br>
+     (Odcl_Form_CloseAll 0)<br>
+)<br>
+<br>
+(defun c:trstkfarben_Start_Rot_OnClicked ( /)<br>
+     ;;(Odcl_MessageBox "To Do: code must be added to event handler\r\nc:trstkfarben_Start_Rot_OnClicked" "To do")<br>
+     (setq GTRSTKFARBE 11)<br>
+     (Odcl_Form_CloseAll 0)<br>
+)<br>
+<br>
+(defun c:trstkfarben_Start_Braun_OnClicked ( /)<br>
+     ;;(Odcl_MessageBox "To Do: code must be added to event handler\r\nc:trstkfarben_Start_Braun_OnClicked" "To do")<br>
+     (setq GTRSTKFARBE 39)<br>
+     (Odcl_Form_CloseAll 0)<br>
+)<br>
+<br>
+<br>
+(defun c:trstkfarben_Start_Blau_OnClicked ( /)<br>
+     ;;(Odcl_MessageBox "To Do: code must be added to event handler\r\nc:trstkfarben_Start_Blau_OnClicked" "To do")<br>
+     (setq GTRSTKFARBE 161)<br>
+     (Odcl_Form_CloseAll 0)<br>
+)<br>
+<br>
+(defun c:trstkfarben_Start_Grun_OnClicked ( /)<br>
+     ;;(Odcl_MessageBox "To Do: code must be added to event handler\r\nc:trstkfarben_Start_Grun_OnClicked" "To do")<br>
+     (setq GTRSTKFARBE 91)<br>
+     (Odcl_Form_CloseAll 0)<br>
+)<br>
+<br>
+<br>
+(defun c:trstkfarben_Start_Violett_OnClicked ( /)<br>
+     ;;(Odcl_MessageBox "To Do: code must be added to event handler\r\nc:trstkfarben_Start_Violett_OnClicked" "To do")<br>
+     (setq GTRSTKFARBE 221)<br>
+     (Odcl_Form_CloseAll 0)<br>
+)<br>
+<br>
+;;-----------------------------------------------------------<br>
+<br>
+(princ)<br>
+<br>
+;|«Visual LISP© Format Options»<br>
+(80 4 50 2 nil "end of " 80 50 0 0 2 nil nil nil T)<br>
+;*** DO NOT add text below the comment! ***|;<br>
+</div>
+</article>
+<article class="post" id="msg5087">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-02 17:27 UTC</span>
+  </div>
+  <div class="post-body">I'm not sure why you're having trouble, but I recommend to update your code to use demand loading to load the runtime.  Just install the MSI file (either runtime or studio), then use (command "_OPENDCL") to load the runtime from your lisp code.  You can see this approach in the samples installed with the current OpenDCL Studio 6.0 Alpha build.</div>
+</article>
+<article class="post" id="msg5088">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-02 19:27 UTC</span>
+  </div>
+  <div class="post-body">Hallo, gdu, kannst Du die odcl-Datei hier hochladen, bitte, ich kann sie dort nicht runterladen. Dann kann ich dir morgen abend gern helfen (bin diese Woche tagsüber unterwegs).<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg5093">
+  <div class="post-head">
+    <span class="post-author">gdu</span>
+    <span class="post-date muted">2009-11-03 10:39 UTC</span>
+  </div>
+  <div class="post-body">Danke für das Angebot zu helfen, habe sogar gefunden wie man hier ein File anhängt ;)<br>
+<br>
+Werde mir morgen bzw am Wochenende die Samplefiles der neuen Opendcl Version ansehen, dürfte sich doch einiges geändert haben, meine Files habe ich mit 4.0.1.7 erstellt<br>
+<br>
+Mit freundlichem Gruß<br>
+Gert<br>
+<br>
+ps: ich mußte das ODC file in ODCL umbenennen, da es sonst nicht hochgeladen werden konnte.<br>
+<br>
+@owenwengerd<br>
+i have installed the msi, the sample files work perfectly<br>
+the <br>
+(VL-SYMBOL-VALUE 'ODCL_GETVERSIONEX)<br>
+returns nil in the new version, so it tries to load<br>
+(FINDFILE "OpenDCL_ARXLoader.LSP")<br>
+and than it fails....<br>
+<br>
+Had a brief look at the sample files, i do hope, that i just have to change the startup part...<br>
+but i could not load the ODC file in OpenDCL Studio, which have been created with OpenDCL 4.0.1.7 and reprogramming the forms is really a lot of work, am i doing something wrong, or is there maybe an migration tool to recompile the old ODC into ODCL... haven´t tried to simply "rename" them...  ;D<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1016/trstkfarben.lsp">trstkfarben.lsp</a> <span class="muted">(2680 bytes)</span></li><li><a href="../attachments/1017/trstkfarben.odcl">trstkfarben.odcl</a> <span class="muted">(1024 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5094">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-03 10:43 UTC</span>
+  </div>
+  <div class="post-body">The ODCL loads in the editor OK for me.<br>
+<br>
+I have to rush out, but will try the list when I get back<br>
+</div>
+</article>
+<article class="post" id="msg5098">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-04 14:01 UTC</span>
+  </div>
+  <div class="post-body">You'll need to search and replace "odcl_" with "dcl_".  See the migration guide for more info:<br>
+<a href="http://opendcl.com/wordpress/?page_id=10" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg5135">
+  <div class="post-head">
+    <span class="post-author">gdu</span>
+    <span class="post-date muted">2009-11-10 08:20 UTC</span>
+  </div>
+  <div class="post-body">i managed to run my programs, a simple rename and the replace function of the notepad editor -&gt;  ;D<br>
+<br>
+now i could use acad2010... or wait, till opendcl runs under bricscad  ;)<br>
+<br>
+thank you all for creating opendcl and your support...<br>
+<br>
+mit freundlichem gruss<br>
+gert<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,30 @@
+(defun c:ComboTest ( )
+  (command "OPENDCL")
+  (dcl_Project_Load "ComboTest" T)
+  (dcl_Form_Show ComboTest_Form1)
+  (princ)
+)
+
+(defun c:ComboTest_Form1_OnInitialize ( )
+  (dcl_ImageComboBox_SetCurSel ComboTest_Form1_ImageCombo1 1)
+  (c:ComboTest_Form1_ImageCombo1_OnSelChanged 1 "Yellow")
+  (princ)
+)
+
+(defun c:ComboTest_Form1_ImageCombo1_OnSelChanged (ItemIndexOrCount Value / col)
+  (dcl_Control_SetText ComboTest_Form1_TextBox1 Value)
+  (setq col
+    (cond
+      ((= (substr Value 1 4) "RGB:")
+        (dcl_GetOLEColorValue (read (strcat "(" (vl-string-translate "," " "  (substr Value 5)) ")")))
+      )
+      ((eval (read (strcat "ac" Value))))
+      ((atoi Value))
+    )
+  )
+  (dcl_Control_SetForeColor ComboTest_Form1_TextBox1 col)
+  (princ)
+)
+
+(princ "\nType ComboTest to run the command ")
+(princ)

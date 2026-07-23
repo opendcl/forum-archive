@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Making ActiveX Control's Event of string return value problem · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1296</p>
+    <h1>Making ActiveX Control's Event of string return value problem</h1>
+    <p class="meta">Started by khann ·
+      2010-06-21 03:11 UTC ·
+      4 replies · SMF topic #1296</p>
+<article class="post" id="msg6944">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-06-21 03:11 UTC</span>
+  </div>
+  <div class="post-body">Hi.<br>
+Recently I'm testing ActiveX Control.<br>
+My friend gave me an OCX made by himself.<br>
+He said that he made this with Visual Studio 6.<br>
+<br>
+The OCX has two buttons and each has its own Click Event.<br>
+When the button clicked the Event returns just short strings for testing Event.<br>
+I registerd this OCX on the ODCL Form and coded that button click Event in my testing LISP file.<br>
+<br>
+At the OCX Control Browser shows the Syntex of Event like this :<br>
+<br>
+(<span style="color:brown">defun</span> c:Test_form_OCX_OnPortClose (<span style="color:red">sMsg [as String] </span> /))<br>
+<br>
+And I coded as this.<br>
+<br>
+(<span style="color:blue">defun</span> c:Test_form_OCX_OnPortClose (sMsg / )<br>
+    (<span style="color:blue">alert</span> sMsg)<br>
+)<br>
+<br>
+But It runs the function just come through with "sMsg" arg as <span style="color:blue">nil</span>, though it has <span style="color:purple">"Button Clicked"</span> value.<br>
+<br>
+I don't know exactly how the OCX made.<br>
+My friend and I checked the Data Type of ODCL and making OCX environment but we could not find the answer. <br>
+<br>
+Hope someone give me a hand for this problem.<br>
+Thanks.<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6945">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-06-21 03:57 UTC</span>
+  </div>
+  <div class="post-body">What is the VARTYPE of the argument that the control sends to the event? It's difficult to guess at the cause without the control and sample code to test it.</div>
+</article>
+<article class="post" id="msg6960">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-06-24 08:29 UTC</span>
+  </div>
+  <div class="post-body">Thank you for your reply.<br>
+<br>
+I've tested several times but still getting <span style="color:blue">nil</span> string value.<br>
+attatching the TEST OCX and lisp code.<br>
+<br>
+Any help would be appreciated.<br>
+Thanks.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1408/OCXTest.zip">OCXTest.zip</a> <span class="muted">(13160 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6961">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-06-24 14:03 UTC</span>
+  </div>
+  <div class="post-body">This was due to a bug in OpenDCL (missing quotation marks around the string argument). The bug is now fixed for the next build.</div>
+</article>
+<article class="post" id="msg6967">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-06-25 00:18 UTC</span>
+  </div>
+  <div class="post-body"><br>
+So it was.<br>
+Just tested with 6.0.0.27 still returning nil.<br>
+Need to check the next build.<br>
+<br>
+Thanks.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

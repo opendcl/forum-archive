@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Newby Help · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/19-deployment.html">Deployment</a> /
+      Topic 640</p>
+    <h1>Newby Help</h1>
+    <p class="meta">Started by The Dark Princess ·
+      2009-03-10 15:58 UTC ·
+      17 replies · SMF topic #640</p>
+<article class="post" id="msg3045">
+  <div class="post-head">
+    <span class="post-author">The Dark Princess</span>
+    <span class="post-date muted">2009-03-10 15:58 UTC</span>
+  </div>
+  <div class="post-body">I'm looking to create a resizeable image in a modeless box - is this possible?<br>
+<br>
+here's the code:<br>
+<br>
+(defun c:test (/)<br>
+(setq imge (strcat ARCTDRVEPREF "Slides\\DDOOR_HELP.gif") msg "DD Help")<br>
+(vl-cmdf "_opendcl")<br>
+(dcl_project_load (strcat ARCTDRVESP "\\DSAISoft_Image_Zoom.odcl"))<br>
+(if (not (dcl_form_isactive DSAISoft_Image_Zoom))<br>
+          (dcl_form_show DSAISoft_Image_Zoom)<br>
+)<br>
+(dcl_PictureBox_LoadPictureFile DSAISoft_Image_Zoom_Image1 imge T)<br>
+(dcl_Control_SetCaption DSAISoft_Image_Zoom_Title msg)<br>
+(defun  c:DSAISoft_Zoom_Image_OnClicked (/)<br>
+  (dcl_Form_Close DSAISoft_Image_Zoom)<br>
+)<br>
+(defun c:DSAISoft_Close_OnClicked (/)<br>
+  (dcl_Form_Close DSAISoft_Image_Zoom)<br>
+)<br>
+)<br>
+<br>
+This thing works, and I can resize the box, but the image doesn't resize with the box.  Any Ideas?<br>
+<br>
+do I need to set up a resize event and clear and reset the image?  <br>
+<br>
+TDP</div>
+</article>
+<article class="post" id="msg3047">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-10 16:30 UTC</span>
+  </div>
+  <div class="post-body">OpenDCL will handle the resizing of the image automatically; you just have to tell it how you want the image to be resized as the dialog is resized. Open your .odcl file, select the picture box control, click on the (Wizard) property in the property pane (or right click on the control and select 'Properties'). In the Geometry tab, change the Right Side Alignment and Bottom Side Alignment to "Offset From Right Edge" and "Offset From Bottom Edge" respectively. Voila!</div>
+</article>
+<article class="post" id="msg3058">
+  <div class="post-head">
+    <span class="post-author">The Dark Princess</span>
+    <span class="post-date muted">2009-03-10 20:45 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen,  Eevrything is great although I've had to play a lot with the image files to get them to look okay.  Any help in that area would be appreciated.<br>
+<br>
+Lastly, a quick question regarding deplyment.  In the past you shipped out the .arx files and used a little lisp to make sure the right one is loaded.  I guess I could have the runtime installed using network deplyment - or is there a simpler way?<br>
+<br>
+Thanks<br>
+<br>
+TDP</div>
+</article>
+<article class="post" id="msg3060">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-10 20:57 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+using the msi or msm (to merge with your installation) is the easiest way: just call the command "_OPENDCL". Advantages: you don't cars about processor architecture, AutoCAD release and so on - OpenDCL does everything for you. Just call this command and OpenDCL will be loaded. Have a look at the samples for further details.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3061">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-10 21:01 UTC</span>
+  </div>
+  <div class="post-body">I'm no image file expert, but I'm curious what issues you encountered.<br>
+<br>
+Installing the runtime MSI (or MSM) via network deployment or otherwise is the only safe way; otherwise there's a risk of conflict with another OpenDCL application. See also <a href="http://www.opendcl.com/HelpFiles/ENU/Advanced/Deployment.htm" rel="nofollow noopener">{2}</a>.</div>
+</article>
+<article class="post" id="msg3062">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-10 21:36 UTC</span>
+  </div>
+  <div class="post-body">I don't know if you mean AutoCAD as network image or your application as network image.<br>
+<br>
+There is a point in the AutoCAD network image creation where you can add AutoCAD service packs as msm files. Try to add them but do not select merging it. As far as I know (please improve me) merging does extract all the files instead of calling the setup script inside the msi. Calling the script is necessary to create the reg key for AutoCAD.<br>
+<br>
+I'll give a try to install that way!<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3063">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-10 21:51 UTC</span>
+  </div>
+  <div class="post-body">Simply merging the MSM would be all that is needed, as long as the custom actions that create the demand-loading keys run <em>after</em> the AutoCAD registry keys are created. Merging the runtime MSM with an AutoCAD deployment should work in theory; it would be interesting to test it.</div>
+</article>
+<article class="post" id="msg3069">
+  <div class="post-head">
+    <span class="post-author">The Dark Princess</span>
+    <span class="post-date muted">2009-03-10 22:42 UTC</span>
+  </div>
+  <div class="post-body">so here's a dumb query.  my start up functions access network folders for data (updates etc).<br>
+is there not a simple test, that works for xp and vista, win 32 and 64, that if the opendcl folder isn't found or some such simply launches the .msi from the network folder?<br>
+<br>
+a la <br>
+<br>
+ (startapp opendclmsipath  (strcat "\"" OpenDCL.Runtime.5.0.2.2.msi "\""))<br>
+<br>
+TDP</div>
+</article>
+<article class="post" id="msg3070">
+  <div class="post-head">
+    <span class="post-author">The Dark Princess</span>
+    <span class="post-date muted">2009-03-10 22:45 UTC</span>
+  </div>
+  <div class="post-body">I looked at the msm thing, but we have so many variations that it would be a nightmare.<br>
+<br>
+revit 2008 + autocad 2008 32 +64<br>
+revit 2008 + autocad architecture 2008 32 + 64<br>
+revit 2009 + autocad 2009 32 + 64<br>
+revit 2009 + autocad architecture 2009 32 + 64<br>
+on win xp, 32 + 64, and win vista 32+64.<br>
+<br>
+I think I'll go the other route.<br>
+<br>
+Thanks for the great replies.<br>
+<br>
+TDP</div>
+</article>
+<article class="post" id="msg3071">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-10 22:57 UTC</span>
+  </div>
+  <div class="post-body">Just because you have so many variations, you should use the msi or msm. How do you install your application?<br>
+You can have a test whether OpenDCL is installed or not if you try to find the HKLM\Software\OpenDCL key.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3073">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-10 23:37 UTC</span>
+  </div>
+  <div class="post-body">Ok, it doesn't seems to be very easy to include OpenDCL Runtime installation into network image. AutoCAD requires an MSP file (I had an MSM file in mind) for servicepacks, which can be extracted from the servicepack.msi but obviously not from the OpenDCL Runtime MSI. Finally there's no point to call an msi afterwards but tomorrow I will check if there's an other option.<br>
+<br>
+I also tried to select the MSM anyway (using the All Files filter) but AutoCAD critized it that this file would match to the AutoCAD installation  &gt;:( .<br>
+<br>
+@ TDP: Do you deploy software via Novell Zenworks? Then it should be possible to configure the package to install the OpenDCL-msi after AutoCAD-msi.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3074">
+  <div class="post-head">
+    <span class="post-author">The Dark Princess</span>
+    <span class="post-date muted">2009-03-11 00:03 UTC</span>
+  </div>
+  <div class="post-body">they run an install to make sure my system is loaded....I will simply check for that hklm key to determine if opendcl is installed otherwise my app will launch the installer.<br>
+<br>
+I think this will be fine - if they are doing new installs the .msi will be added after my stuff is loaded. if it's existing my app will catch it.<br>
+<br>
+I assume the _opendcl just needs to be run once at startup?<br>
+<br>
+TDP</div>
+</article>
+<article class="post" id="msg3075">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-11 00:06 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=The Dark Princess link=topic=640.msg3069#msg3069 date=1236724933 wrote:</cite><br>
+so here's a dumb query.  my start up functions access network folders for data (updates etc).<br>
+is there not a simple test, that works for xp and vista, win 32 and 64, that if the opendcl folder isn't found or some such simply launches the .msi from the network folder?<br>
+<br>
+a la <br>
+<br>
+ (startapp opendclmsipath  (strcat "\"" OpenDCL.Runtime.5.0.2.2.msi "\""))<br>
+<br>
+TDP<br>
+</blockquote><br>
+<br>
+You can use <code>(startapp "msiexec /i W:\\OpenDCL\\OpenDCL.Runtime.5.0.2.2.msi")</code> (or add /q to do it without any UI). Depending on your OS and settings, you may need to copy the file to a local drive first. Note that you can use <code>(dcl_UpdateCheck)</code> to check whether a newer version is available online (but there is not yet a fixed URL that automatically redirects to the latest version).</div>
+</article>
+<article class="post" id="msg3076">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-11 00:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=The Dark Princess link=topic=640.msg3074#msg3074 date=1236729813 wrote:</cite><br>
+I think this will be fine - if they are doing new installs the .msi will be added after my stuff is loaded. if it's existing my app will catch it.</blockquote><br>
+<br>
+Does your app have an uninstaller? I recommend to always install the runtime MSI when your app is installed and always uninstall (with msiexec /u) when your app is uninstalled. That way, the runtime files get correctly reference counted, and removed when the last app that needed them is removed.<br>
+<br>
+<blockquote class="quote"><cite> author=The Dark Princess link=topic=640.msg3074#msg3074 date=1236729813 wrote:</cite><br>
+I assume the _opendcl just needs to be run once at startup?</blockquote><br>
+<br>
+Yes, but there is no overhead in running it multiple times, so I recommend to always run it at the beginning of any command or function that needs it just in case it got manually unloaded in the meantime.</div>
+</article>
+<article class="post" id="msg3077">
+  <div class="post-head">
+    <span class="post-author">The Dark Princess</span>
+    <span class="post-date muted">2009-03-11 03:29 UTC</span>
+  </div>
+  <div class="post-body">Thanks for all the great help.  I've got the network thing done and it works like a charm.  Here's the final weird thing.  I moved away from modeless to try a modal form.  The lsp below will not show the ociture when it runs the first time in a drawing, but shows the picture every time it's called after that.  What should I do to the lisp to get it working?<br>
+<br>
+(defun DSAI_Img_Zoom ( imge iwid ihgt  / )<br>
+(dcl_project_load (strcat ARCTDRVESP "\\DSAISoft_Image_Zoom.odcl"))<br>
+(dcl_Form_Show DSAISoft_Image_Zoom)<br>
+  (dcl_Control_SetWidth DSAISoft_Image_Zoom iwid)<br>
+  (dcl_Control_SetHeight DSAISoft_Image_Zoom ihgt)<br>
+(defun c:DSAISoft_Image_Zoom_OnInitialize (/)<br>
+(dcl_PictureBox_LoadPictureFile DSAISoft_Image_Zoom_Image1 imge T)<br>
+)<br>
+(defun  c:DSAISoft_Image_Zoom_Image1_OnClicked (/)<br>
+  (dcl_Form_Close DSAISoft_Image_Zoom)<br>
+)<br>
+)<br>
+<br>
+thanks<br>
+<br>
+TDP</div>
+</article>
+<article class="post" id="msg3079">
+  <div class="post-head">
+    <span class="post-author">The Dark Princess</span>
+    <span class="post-date muted">2009-03-11 03:39 UTC</span>
+  </div>
+  <div class="post-body">and ociture is badtyping for picture...LOL</div>
+</article>
+<article class="post" id="msg3081">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-11 05:31 UTC</span>
+  </div>
+  <div class="post-body">Since your dcl_Control_SetWidth and dcl_Control_SetHeight functions don't get called until after the dialog is closed, I suspect that the picture box just needs to be resized inside the OnInitialize event handler.</div>
+</article>
+<article class="post" id="msg3090">
+  <div class="post-head">
+    <span class="post-author">The Dark Princess</span>
+    <span class="post-date muted">2009-03-12 01:45 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+<br>
+Thanks for the great help, everything is working fine.<br>
+<br>
+<br>
+TDP</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

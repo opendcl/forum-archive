@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Enter button functionality · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2389</p>
+    <h1>Enter button functionality</h1>
+    <p class="meta">Started by Emiliano ·
+      2016-07-21 07:37 UTC ·
+      8 replies · SMF topic #2389</p>
+<article class="post" id="msg11963">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2016-07-21 07:37 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+usually in AutoCAD / BricsCAD, pressing Enter may be started the last used command.<br>
+<br>
+I created a ControlBar with buttons linked to a function c:xxxxxx (), unfortunately when I use these functions the Enter key does not start the last command c:xxxxxx ().<br>
+<br>
+Is it possible do this?</div>
+</article>
+<article class="post" id="msg11964">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-07-21 08:11 UTC</span>
+  </div>
+  <div class="post-body">Hi, Emiliano, sure it is. I made it this way:<br>
+<br>
+<ul><br>
+OpenDCL Studio Project &gt; Button &gt; Property Pane &gt; Event Invoke = KeepFocus <br>
+OpenDCL Studio Project &gt; Button &gt; Events Pane &gt; OnClicked event &gt; ^C^Cc:project_form_button_OnClicked<br>
+In the code of c:project_form_button_OnClicked I check some prerequisites and then I call the "reading-friendly" command (dcl-sendstring "MyCommand\r")<br>
+</ul><br>
+<br>
+You can also set EventInvoke to AllowCommand and set the "reading-friendly" command to the event name of the control.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11965">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2016-07-21 08:58 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2389.msg11964#msg11964 date=1469088707 wrote:</cite><br>
+Hi, Emiliano, sure it is. I made it this way:<br>
+<br>
+<ul><br>
+OpenDCL Studio Project &gt; Button &gt; Property Pane &gt; Event Invoke = KeepFocus <br>
+OpenDCL Studio Project &gt; Button &gt; Events Pane &gt; OnClicked event &gt; ^C^Cc:project_form_button_OnClicked<br>
+In the code of c:project_form_button_OnClicked I check some prerequisites and then I call the "reading-friendly" command (dcl-sendstring "MyCommand\r")<br>
+</ul><br>
+<br>
+You can also set EventInvoke to AllowCommand and set the "reading-friendly" command to the event name of the control.<br>
+<br>
+Regards, Fred<br>
+</blockquote><br>
+<br>
+I'm not sure I understand:<br>
+in OpenDCL Studio Project &gt; Button &gt; Property Pane &gt; Event Invoke = KeepFocus I have only "asynchronous" e "synchronous" :-(<br>
+In code c:project_form_button_OnClicked where I have to write  (dcl-sendstring "MyCommand\r") ?? "MyCommand"must be replaced with the name of my function?<br>
+<br>
+Can you send me a sample project?</div>
+</article>
+<article class="post" id="msg11966">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-07-21 10:15 UTC</span>
+  </div>
+  <div class="post-body">Hi, Emiliano,<br>
+<br>
+<blockquote class="quote">I have only "asynchronous" e "synchronous"</blockquote><br>
+You're right. In the German release there are the old values: Keep focus means synchronous and Allow command means asynchronous.<br>
+<br>
+<blockquote class="quote">"MyCommand"must be replaced with the name of my function?</blockquote><br>
+"MyCommand" is a synonym for your desired command to be executed. I don't want to see the event handler names in the command history, especially those ones with additional arguments like ListView_OnClicked. Thats why, at first I call a internally defined function synchronously (c:project_form_button_OnClicked) and within its code I call a command asynchronously. The command is that one, which can be repeated by pressing enter.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11967">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2016-07-21 12:53 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2389.msg11966#msg11966 date=1469096123 wrote:</cite><br>
+"MyCommand" is a synonym for your desired command to be executed. I don't want to see the event handler names in the command history, especially those ones with additional arguments like ListView_OnClicked. Thats why, at first I call a internally defined function synchronously (c:project_form_button_OnClicked) and within its code I call a command asynchronously. The command is that one, which can be repeated by pressing enter.<br>
+<br>
+Regards, Fred<br>
+</blockquote><br>
+<br>
+Hi Fred<br>
+Now I understand!<br>
+Your solution works properly!<br>
+Too bad I have a few dozen buttons to correct  :'(<br>
+<br>
+Thanks for your help</div>
+</article>
+<article class="post" id="msg11968">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2016-07-22 11:55 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2389.msg11966#msg11966 date=1469096123 wrote:</cite><br>
+Hi, Emiliano,<br>
+<br>
+<blockquote class="quote">I have only "asynchronous" e "synchronous"</blockquote><br>
+You're right. In the German release there are the old values: Keep focus means synchronous and Allow command means asynchronous.<br>
+<br>
+<blockquote class="quote">"MyCommand"must be replaced with the name of my function?</blockquote><br>
+"MyCommand" is a synonym for your desired command to be executed. I don't want to see the event handler names in the command history, especially those ones with additional arguments like ListView_OnClicked. Thats why, at first I call a internally defined function synchronously (c:project_form_button_OnClicked) and within its code I call a command asynchronously. The command is that one, which can be repeated by pressing enter.<br>
+<br>
+Regards, Fred<br>
+</blockquote><br>
+<br>
+Hello Fred,<br>
+Do you have an example of how this works in the command history?<br>
+I did not quite understand my language does not help.<br>
+Regard, Velasquez<br>
+</div>
+</article>
+<article class="post" id="msg11969">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2016-07-22 12:07 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=2389.msg11968#msg11968 date=1469188506 wrote:</cite><br>
+Hello Fred,<br>
+Do you have an example of how this works in the command history?<br>
+I did not quite understand my language does not help.<br>
+Regard, Velasquez<br>
+</blockquote><br>
+<br>
+I hope this helps you:<br>
+<br>
+(defun c:Nome_MainForm_ButtonName_OnClicked (/ )<br>
+  (dcl-sendstring "MyFunctionName\r")<br>
+)<br>
+<br>
+(defun c:MyFunctionName (/ )<br>
+   (princ "\nTEST")<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg11970">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2016-07-22 13:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Emiliano link=topic=2389.msg11969#msg11969 date=1469189228 wrote:</cite><br>
+[quote author=velasquez link=topic=2389.msg11968#msg11968 date=1469188506]<br>
+Hello Fred,<br>
+Do you have an example of how this works in the command history?<br>
+I did not quite understand my language does not help.<br>
+Regard, Velasquez<br>
+</blockquote><br>
+<br>
+I hope this helps you:<br>
+<br>
+(defun c:Nome_MainForm_ButtonName_OnClicked (/ )<br>
+  (dcl-sendstring "MyFunctionName\r")<br>
+)<br>
+<br>
+(defun c:MyFunctionName (/ )<br>
+   (princ "\nTEST")<br>
+)<br>
+<br>
+<br>
+<br>
+thank you<br>
+I will test in my project.<br>
+Regards, Velasquez</div>
+</article>
+<article class="post" id="msg11971">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2016-07-24 15:01 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Emiliano link=topic=2389.msg11967#msg11967 date=1469105600 wrote:</cite><br>
+[quote author=Fred Tomke link=topic=2389.msg11966#msg11966 date=1469096123]<br>
+"MyCommand" is a synonym for your desired command to be executed. I don't want to see the event handler names in the command history, especially those ones with additional arguments like ListView_OnClicked. Thats why, at first I call a internally defined function synchronously (c:project_form_button_OnClicked) and within its code I call a command asynchronously. The command is that one, which can be repeated by pressing enter.<br>
+<br>
+Regards, Fred<br>
+</blockquote><br>
+<br>
+Hi Fred<br>
+Now I understand!<br>
+Your solution works properly!<br>
+Too bad I have a few dozen buttons to correct  :'(<br>
+<br>
+Thanks for your help<br>
+<br>
+<br>
+Hi Fred,<br>
+I noticed a small problem born after implementing this.<br>
+In my ControlBar it is active the event 'MouseEntered'.<br>
+The "Event Invoke" was "asynchronous" so, while it was active a related function to a button of ControlBar if I passage over the ControlBar displays the message "Unable to return to LISP".<br>
+<br>
+So I have tried to set Event Invoke = synchronous, so the problem is solved, but I want to prevent the MouseEntered event's operation when there is an active command.<br>
+To do this I checked the variable (if (= (getvar "CMDNAMES") "").....<br>
+I want to prevent the event activation 'MouseEntered' even during the execution of a LISP function.<br>
+How can I do?<br>
+<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

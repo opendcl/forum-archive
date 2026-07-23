@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PictureBox in Beta 4 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 496</p>
+    <h1>PictureBox in Beta 4</h1>
+    <p class="meta">Started by velasquez ·
+      2008-12-04 12:37 UTC ·
+      12 replies · SMF topic #496</p>
+<article class="post" id="msg2208">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-12-04 12:37 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+I don't get to show an image correctly in PitcureBox.  <br>
+Could anybody reproduce this to know if it is a BUG?<br>
+  <br>
+Thanks<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/524/Test-PictureBox.png">Test-PictureBox.png</a> <span class="muted">(21929 bytes)</span></li><li><a href="../attachments/525/base-488x56.jpg">base-488x56.jpg</a> <span class="muted">(32579 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2262">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-12-09 11:59 UTC</span>
+  </div>
+  <div class="post-body">Hi  <br>
+Did anybody already get to test the image that I posted in PictureBox of Beta-4?  <br>
+I need to know because she appears bad.  <br>
+Thanks  <br>
+</div>
+</article>
+<article class="post" id="msg2267">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-12-09 16:41 UTC</span>
+  </div>
+  <div class="post-body">Can you post a small test project that demonstrates the problem?</div>
+</article>
+<article class="post" id="msg2268">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-12-09 17:39 UTC</span>
+  </div>
+  <div class="post-body">Ok Owen  <br>
+I posted the test files.  <br>
+  <br>
+Thanks<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/536/tabtest.odcl">tabtest.odcl</a> <span class="muted">(13185 bytes)</span></li><li><a href="../attachments/537/tabtest.lsp">tabtest.lsp</a> <span class="muted">(1928 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2269">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-12-09 18:04 UTC</span>
+  </div>
+  <div class="post-body">It looks like the problem is due to OpenDCL masking any pixels with RGB color 192,192,192 as transparent. I opened your image in Paint Shop, reduced the colors to 16, then resaved in .jpg format, and the problem disappeared.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/538/tabtest2.jpg">tabtest2.jpg</a> <span class="muted">(13454 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2270">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-12-09 18:53 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen  <br>
+I cannot change the color of the logo in my image.  <br>
+See another created image in the same way and that works well.  <br>
+Also see the same image in OenDCL 4.1.2.2</div>
+</article>
+<article class="post" id="msg2271">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-12-09 18:56 UTC</span>
+  </div>
+  <div class="post-body">Excuse I forgot to post the images.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/539/OpenDcl-4.1.2.2.png">OpenDcl-4.1.2.2.png</a> <span class="muted">(121469 bytes)</span></li><li><a href="../attachments/540/topo-488x48.jpg">topo-488x48.jpg</a> <span class="muted">(8131 bytes)</span></li><li><a href="../attachments/541/tabtest.odcl">tabtest.odcl</a> <span class="muted">(16243 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2272">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-12-09 19:43 UTC</span>
+  </div>
+  <div class="post-body">Transparency for color 192,192,192 was added in version 5 by design. So that's why it looks fine in version 4.<br>
+If you don't want to change the image yourself tell the author of it, that it can't use color 192,192,192.<br>
+It looks like it's just a mistake in the gradient as some of the pixel in the bottom row are  19<strong>3</strong>,192,192 &amp; 19<strong>4</strong>,192,192.<br>
+<br>
+Or if you want I can change that one bottom row of pixels to all one consistent color without changing any other colors.<br>
+<br>
+Or you last option would be to change the background color of the pic. box to color 192.192.192, so then the transparent pixels will actually show the real color &amp; look as you expect, but I do think that's a very good solution.</div>
+</article>
+<article class="post" id="msg2274">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-12-09 20:30 UTC</span>
+  </div>
+  <div class="post-body">Your suggestion to change color of background of PictureBox for 192 192 192 worked perfectly.  <br>
+I will remember this.  <br>
+Thank you very much.</div>
+</article>
+<article class="post" id="msg2275">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-12-09 20:43 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=496.msg2274#msg2274 date=1228854651 wrote:</cite><br>
+Your suggestion to change color of background of PictureBox for 192 192 192 worked perfectly.  <br>
+I will remember this.  <br>
+Thank you very much.<br>
+</blockquote><br>
+<br>
+I'm glad it helped, but I still think you should get the image fixed. :)<br>
+</div>
+</article>
+<article class="post" id="msg2276">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-12-09 21:12 UTC</span>
+  </div>
+  <div class="post-body">I would like to know to do this a lot of images they exist in my project.  <br>
+Do you can me to explain as doing this?  <br>
+I work with Photoshop.<br>
+<br>
+Thanks<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg2277">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-12-09 23:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=496.msg2276#msg2276 date=1228857143 wrote:</cite><br>
+Do you can me to explain as doing this?  <br>
+I work with Photoshop.<br>
+</blockquote><br>
+<br>
+You want me to explain how to do this?<br>
+Use the rectangle selection tool &amp; zoom in a select the 1 pixel row on the bottom of the gradient.<br>
+Use the fill tool and fill it what a new color, something like 194,192,192.<br>
+That's it.. :)<br>
+</div>
+</article>
+<article class="post" id="msg2278">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-12-10 10:24 UTC</span>
+  </div>
+  <div class="post-body">Ok   <br>
+Thanks for your help.  <br>
+  <br>
+You could tell me something on the one that I posted in Working with transparency.<br>
+<br>
+http://www.opendcl.com/forum/index.php?topic=495.0  <br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

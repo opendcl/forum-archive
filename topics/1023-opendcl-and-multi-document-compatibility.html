@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenDCL and Multi-Document Compatibility · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1023</p>
+    <h1>OpenDCL and Multi-Document Compatibility</h1>
+    <p class="meta">Started by JAT ·
+      2009-11-23 23:17 UTC ·
+      2 replies · SMF topic #1023</p>
+<article class="post" id="msg5220">
+  <div class="post-head">
+    <span class="post-author">JAT</span>
+    <span class="post-date muted">2009-11-23 23:17 UTC</span>
+  </div>
+  <div class="post-body">The reason for the question is that since it is LISP that is running this, switching to another drawing file would "pull out the rug from under it" unless the appropriate LISP code has also been loaded into that drawing's memory area.  If the OpenDCL modules themselves are .ARX files, that can be handled through the ACAD.RX and it is a one-time shot for a particular drawing session.  The issue may become a factor when running LISP in multiple drawings within the same drawing session.  Also, what happens to these forms and dialog boxes that are running with LISP when the drawing is closed and AutoCAD is in the "no drawing open" mode?  Are they automatically closed?  Currently, we have an old VB application that interfaces with AutoCAD using the SendKeys, of all methods.  Since it is external to AutoCAD, it will "survive" across multiple drawings.  The issue with this application is that the .DLL's are probably going to be incompatible with the new Windows 7 system, and I don't have the source code for this program.  As a result, I immediately thought of using the OpenDCL.</div>
+</article>
+<article class="post" id="msg5221">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-11-23 23:25 UTC</span>
+  </div>
+  <div class="post-body">Hi Jorge, welcome to the team.<br>
+<br>
+Yes this can be done.<br>
+You can use a Palette or modeless form. Like you said, you'll have to make sure you code is loaded when a DWG is opened. The easiest way to do this is to add it to something like "acaddoc.lsp"<br>
+You can also look into the "OnDocActivated" and "OnEnteringNoDocState" event to handle this. Maybe Fred can post some example code.<br>
+I wouldn't use the acad.rx file as it wont know what .arx to load e.g. 16, 17, or 18 or 32 vs. 64 bit.<br>
+<br>
+Hope this helps.<br>
+</div>
+</article>
+<article class="post" id="msg5222">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-24 02:28 UTC</span>
+  </div>
+  <div class="post-body">As you surmise, OpenDCL lives in the application context, so it works fine in the zero-document state. It's up to the implementor of a modeless form to decide how it should behave when entering zero-doc state, but the safest way to handle it is to just close the form. Otherwise, as Barry mentioned, you hgave to ensure that the implementation code loads again when a drawing is opened, and that no events fire while there is no document open.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

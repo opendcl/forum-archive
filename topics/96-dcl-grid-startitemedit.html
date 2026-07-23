@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_Grid_StartItemEdit · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 96</p>
+    <h1>dcl_Grid_StartItemEdit</h1>
+    <p class="meta">Started by dbalogh ·
+      2007-11-22 10:03 UTC ·
+      2 replies · SMF topic #96</p>
+<article class="post" id="msg398">
+  <div class="post-head">
+    <span class="post-author">dbalogh</span>
+    <span class="post-date muted">2007-11-22 10:03 UTC</span>
+  </div>
+  <div class="post-body">Hi all,<br>
+<br>
+I've just tried to use this function, but it does not seem to work. As I understood, when I click in a cell in the grid, I can edit it in place.<br>
+The code I used is<br>
+<br>
+(defun c:BOM_Builder_R12_Form2_Grid17_OnSelChanged (nRow nCol /)<br>
+  (dcl_Grid_StartItemEdit BOM_Builder_R12_Form2_Grid17 nRow nCol)<br>
+)<br>
+<br>
+The cell gets marked.... and that's it....Any ideas?<br>
+Did I miss something?<br>
+Thanks in advance,<br>
+Daniel<br>
+<br>
+(OpenDCL 4.1.1.5 Studio and Runtime on Acad2007 SP2)<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg400">
+  <div class="post-head">
+    <span class="post-author">DW</span>
+    <span class="post-date muted">2007-11-22 13:13 UTC</span>
+  </div>
+  <div class="post-body">Daniel,<br>
+have you set the item style for the cells you want to edit?  You need to do this first before you can edit the cell.  Use dcl_Grid_SetItemStyle in the OnInitialize function or set up the cell styles in the editor.  Once you've added rows you will be able to click into them and start editing. You don't need to call StartItemEdit explicitly. <br>
+<br>
+David</div>
+</article>
+<article class="post" id="msg401">
+  <div class="post-head">
+    <span class="post-author">dbalogh</span>
+    <span class="post-date muted">2007-11-23 08:32 UTC</span>
+  </div>
+  <div class="post-body">Hi David!<br>
+That was it! Thanks a lot  ;D<br>
+I set the Columns Style in the Studio. Cool.....  :)<br>
+<br>
+BR,<br>
+Daniel</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

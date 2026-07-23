@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenDCL error in AutoCAD Civil 3D 2015 - SP1 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2162</p>
+    <h1>OpenDCL error in AutoCAD Civil 3D 2015 - SP1</h1>
+    <p class="meta">Started by hvcrou ·
+      2014-08-19 11:05 UTC ·
+      13 replies · SMF topic #2162</p>
+<article class="post" id="msg10814">
+  <div class="post-head">
+    <span class="post-author">hvcrou</span>
+    <span class="post-date muted">2014-08-19 11:05 UTC</span>
+  </div>
+  <div class="post-body">hello <br>
+<br>
+The program is generating error in autocad 2015 as Civil files for testing and the error message generated. <br>
+The problem that occurs is: <br>
+1) I run the code and the form submitted <br>
+2) When you click on OK the form should be closed but that does not happen he becomes active again <br>
+3) Generate the error as attached image <br>
+4) When generating the error in the windows task list of a new section of autocad and automatically generated making the machine very slow <br>
+<br>
+The problem occurs with: Windows 8.1 - AutoCAD Civil 3D 2015 SP1 - OpenDCL 8.0.0.7<br>
+<br>
+Thank you<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2033/BUGOPENDCL.PNG">BUGOPENDCL.PNG</a> <span class="muted">(10212 bytes)</span></li><li><a href="../attachments/2034/TESTEFORMBUG.odcl">TESTEFORMBUG.odcl</a> <span class="muted">(564 bytes)</span></li><li><a href="../attachments/2035/TFORMSHOW.LSP">TFORMSHOW.LSP</a> <span class="muted">(1045 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10815">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-08-19 15:15 UTC</span>
+  </div>
+  <div class="post-body">I suspect that your button event handler is feeding some extra empty strings to the command line, which repeats the previous command.</div>
+</article>
+<article class="post" id="msg10817">
+  <div class="post-head">
+    <span class="post-author">hvcrou</span>
+    <span class="post-date muted">2014-08-19 18:18 UTC</span>
+  </div>
+  <div class="post-body">Hi there <br>
+<br>
+I think the problem is not that. The code you send is just an example to recreate the error generated the empty texts are part of conabdo own. <br>
+In the real code if I manually run the function without the form how the process is executed if no error doing the process correctly. <br>
+The error is happening is that the form is closed and opened again for no reason causing the problem. <br>
+<br>
+thank you</div>
+</article>
+<article class="post" id="msg10818">
+  <div class="post-head">
+    <span class="post-author">andrew.nao1</span>
+    <span class="post-date muted">2014-08-19 18:49 UTC</span>
+  </div>
+  <div class="post-body">try changing your (vl-cmdf...<br>
+to (command-s...<br>
+<br>
+ive had errors like this before and this was the culprit</div>
+</article>
+<article class="post" id="msg10820">
+  <div class="post-head">
+    <span class="post-author">hvcrou</span>
+    <span class="post-date muted">2014-08-19 20:06 UTC</span>
+  </div>
+  <div class="post-body">Hi there <br>
+<br>
+I think using command in place of vl-cmdf is a solution that shows <br>
+conflict actually exists. <br>
+The reason use is recbir vl-cmdf command response executed <br>
+which is not possible using command. <br>
+<br>
+Of any variant manner made ​​the changes and execute again and the problem persists. <br>
+<br>
+Thank you</div>
+</article>
+<article class="post" id="msg10821">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-08-19 20:17 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=hvcrou link=topic=2162.msg10817#msg10817 date=1408472321 wrote:</cite><br>
+I think the problem is not that.</blockquote><br>
+<br>
+Did you test, or are you assuming?</div>
+</article>
+<article class="post" id="msg10822">
+  <div class="post-head">
+    <span class="post-author">hvcrou</span>
+    <span class="post-date muted">2014-08-19 20:37 UTC</span>
+  </div>
+  <div class="post-body">Hi there <br>
+<br>
+Switch vl-cmdf for command and run the program again and again the error appears. <br>
+<br>
+Thank you</div>
+</article>
+<article class="post" id="msg10823">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-08-19 20:57 UTC</span>
+  </div>
+  <div class="post-body">I guess you'll need to postpone your calls to (vl-cmdf) until after the dialog is completely closed. See if this works for you:<br>
+<br>
+(defun c:TFORM ( )<br>
+	(defun c:formTest_OnInitialize ( )<br>
+		(setq LstNamLay (list "ALINHAMENTOPREDIAL" "DIVISAS"))<br>
+	)<br>
+	(defun c:btnOK_OnClicked ( )<br>
+		(dcl_Form_Close formTest 1234)<br>
+	)<br>
+	(dcl_project_load "TESTEFORMBUG" T)<br>
+	(if (not (dcl_form_isactive formTest))<br>
+		(progn<br>
+			(if (= 1234 (dcl_Form_Show formTest))<br>
+				(InitProcess)<br>
+			)<br>
+		)<br>
+	)<br>
+)<br>
+<br>
+(defun InitProcess ( )<br>
+	(vl-cmdf "-layer" "n" (nth 0 LstNamLay) "c" 7 (nth 0 LstNamLay) "lt" "Continuous" (nth 0 LstNamLay) "")<br>
+	(vl-cmdf "-layer" "n" (nth 1 LstNamLay) "c" 7 (nth 1 LstNamLay) "lt" "Continuous" (nth 1 LstNamLay) "")<br>
+	(SaveRestoreStatusLayers 0)<br>
+<br>
+	;Only test code<br>
+	(setq i 0)<br>
+	(while (&lt; i 100)<br>
+		(princ (strcat "\nCount: " (itoa (+ i 1))))<br>
+		(setq i (+ i 1))<br>
+	)<br>
+	(SaveRestoreStatusLayers 1)<br>
+	(princ)<br>
+)<br>
+<br>
+(defun SaveRestoreStatusLayers ( FlagAcao )<br>
+	(cond<br>
+		((= FlagAcao 0)<br>
+			(if (member "CONFLAYDWG" (layerstate-getnames))<br>
+				(progn<br>
+					(layerstate-delete "CONFLAYDWG")<br>
+				)<br>
+			)<br>
+			(layerstate-save "CONFLAYDWG" nil nil)<br>
+		)<br>
+		((= FlagAcao 1) (layerstate-restore "CONFLAYDWG" nil nil))<br>
+	)<br>
+	(vl-cmdf "regen")<br>
+)</div>
+</article>
+<article class="post" id="msg10824">
+  <div class="post-head">
+    <span class="post-author">hvcrou</span>
+    <span class="post-date muted">2014-08-19 21:44 UTC</span>
+  </div>
+  <div class="post-body">Hi there <br>
+<br>
+Your solution did not generate the error but the local function call InitProcess not address me because I have several other instructions on the ok button before going to run the processo. I want to close the form at the time of going to processar and not before. <br>
+Strange thing about this is that if I run my original code in AutoCAD Civil 3D 2014 error is not generated and I never use and always worked same technique, so I insist that in 2015's where error is being generated.<br>
+<br>
+Thank you for your dedication in helping me. <br>
+<br>
+Thank you</div>
+</article>
+<article class="post" id="msg10825">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-08-20 02:26 UTC</span>
+  </div>
+  <div class="post-body">Before AutoCAD 2015 you could often get away with this because AutoCAD did not need to synchronize the command throat, so it usually processed the queued window messages before any commands were processed. Note that even in 2014 and earlier your code can fail in cases where AutoCAD is slow to process window messages for some reason. In any case, the removal of fibers in AutoCAD 2015 means that the command throat now must be synchronized, so AutoCAD will block command execution until the Windows messages are processed. You have no choice now but to update your code to delay command processing until after the modal dialog is closed.</div>
+</article>
+<article class="post" id="msg10826">
+  <div class="post-head">
+    <span class="post-author">andrew.nao1</span>
+    <span class="post-date muted">2014-08-20 12:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=hvcrou link=topic=2162.msg10822#msg10822 date=1408480677 wrote:</cite><br>
+Hi there <br>
+<br>
+Switch vl-cmdf for command and run the program again and again the error appears. <br>
+<br>
+Thank you<br>
+</blockquote><br>
+<br>
+not just command, but command-s.<br>
+<br>
+i use acad mech 2015 and any time i use vl-cmdf or command in opendcl code i get that violation error.<br>
+<br>
+the solution for me was to change the command and vl-cmdf to command-s</div>
+</article>
+<article class="post" id="msg10827">
+  <div class="post-head">
+    <span class="post-author">hvcrou</span>
+    <span class="post-date muted">2014-08-22 12:34 UTC</span>
+  </div>
+  <div class="post-body">Hi there <br>
+<br>
+I got the problem solved and thanks to everyone's help. <br>
+The solution was to use the parameter to force the closure of the form with the suggestion of the manager. <br>
+<br>
+Thank you</div>
+</article>
+<article class="post" id="msg10873">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2014-09-19 21:19 UTC</span>
+  </div>
+  <div class="post-body">I've got the same problem.  I close a form and I still get that same error downstream.  What parameter is used to force closure of a form?<br>
+<br>
+James LeVieux</div>
+</article>
+<article class="post" id="msg10874">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-09-20 03:24 UTC</span>
+  </div>
+  <div class="post-body">I think he was referring to the argument to (dcl-Form-Close) that is used to signal what is to be done after the form is closed.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

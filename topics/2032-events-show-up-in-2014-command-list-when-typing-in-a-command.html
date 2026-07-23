@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Events show up in 2014 command list when typing in a command · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2032</p>
+    <h1>Events show up in 2014 command list when typing in a command</h1>
+    <p class="meta">Started by Syncmas ·
+      2013-09-26 18:38 UTC ·
+      7 replies · SMF topic #2032</p>
+<article class="post" id="msg10034">
+  <div class="post-head">
+    <span class="post-author">Syncmas</span>
+    <span class="post-date muted">2013-09-26 18:38 UTC</span>
+  </div>
+  <div class="post-body">Is there any way to make the OpenDCL events invisible when typing in a command in Autocad 2014? If I remove the "c:" from the defun's then they disappear however then the dialog events no longer appear to work.<br>
+<br>
+Any info would be helpful.<br>
+<br>
+Thanks<br>
+  Scott</div>
+</article>
+<article class="post" id="msg10035">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-09-26 20:28 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Syncmas link=topic=2032.msg10034#msg10034 date=1380220725 wrote:</cite><br>
+....If I remove the "c:" from the defun's then they disappear however then the dialog events no longer appear to work.....</blockquote><br>
+Have you also removed the "c:" from the events itself?</div>
+</article>
+<article class="post" id="msg10036">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-09-27 00:34 UTC</span>
+  </div>
+  <div class="post-body">Good question. I don't know of any programmatic way to hide lisp defined commands, but it sure doesn't make sense for them to be included in the auto-complete list.</div>
+</article>
+<article class="post" id="msg10401">
+  <div class="post-head">
+    <span class="post-author">Syncmas</span>
+    <span class="post-date muted">2014-02-17 19:04 UTC</span>
+  </div>
+  <div class="post-body">I still have not found a way to get these events from appearing. Just curious if anyone else has a way around this yet?</div>
+</article>
+<article class="post" id="msg10404">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2014-02-24 22:41 UTC</span>
+  </div>
+  <div class="post-body">Unless all of the commands are converted to sub-functions, it won't happen. I considered many possibilities even tripping the atoms-family with no luck. I'm wondering what is the issue with ODCL calling subs instead? (Of course it'll have to be an internal change.) Maybe a future version since "AutoComplete" isn't going away; but then again, what would happen to backward compatibility?..<br>
+<br>
+Sounds like a fleeting objective. just my 2¢  :-X</div>
+</article>
+<article class="post" id="msg10405">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-02-24 23:25 UTC</span>
+  </div>
+  <div class="post-body">For synchronous events that are never called asynchronously, there is no technical reason why the c: prefix would be required, but I don't think there's any reliable way to call asynchronous events without initiating them as commands (which obviously requires the c: prefix). I'm assuming that you guys are dealing with modeless forms where it's not possible to fire events synchronously. For modal forms, you can just set the event handler function symbols to NIL after the form is closed.</div>
+</article>
+<article class="post" id="msg10406">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2014-02-25 00:24 UTC</span>
+  </div>
+  <div class="post-body">Hi, Owen.<br>
+I was also wondering about that, why 2014 ACAD shows up the Open DCL "c:event command" strings.<br>
+You mean there is no way to hide it, when using modeless form?</div>
+</article>
+<article class="post" id="msg10407">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-02-25 00:33 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=khann link=topic=2032.msg10406#msg10406 date=1393287867 wrote:</cite>You mean there is no way to hide it, when using modeless form?</blockquote><br>
+<br>
+If they chose to, Autodesk could expose a way to filter the list. The only other solution I can think of is to somehow push all event handler calls through a single command, but that would require major changes.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

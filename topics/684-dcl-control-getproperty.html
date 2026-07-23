@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_Control_GetProperty · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 684</p>
+    <h1>dcl_Control_GetProperty</h1>
+    <p class="meta">Started by velasquez ·
+      2009-03-31 18:01 UTC ·
+      3 replies · SMF topic #684</p>
+<article class="post" id="msg3319">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-03-31 18:01 UTC</span>
+  </div>
+  <div class="post-body">In the beginning of my code I do:  <br>
+  (defun c:DuctilCAD_Tes_OnInitialize (/)<br>
+  (dcl_ComboBox_Clear DuctilCAD_Tes_Combo-DN)<br>
+  (dcl_ComboBox_AddList<br>
+    DuctilCAD_Tes_Combo-DN<br>
+    (list "30" "50" "80" "120")<br>
+  ) ;_ fim de dcl_ComboBox_AddList<br>
+  (dcl_ComboBox_SetCurSel DuctilCAD_Tes_Combo-DN 0)<br>
+) ;_ fim de defun<br>
+<br>
+  <br>
+Before the closing I try the function below and she comes back anything.<br>
+(setq ComboList (dcl_Control_GetProperty DuctilCAD_Tes_Combo-DN "List"))<br>
+  <br>
+Am I making something wrong?   <br>
+Or this is not possible in this condition.<br>
+Thanks   <br>
+</div>
+</article>
+<article class="post" id="msg3320">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-03-31 18:05 UTC</span>
+  </div>
+  <div class="post-body">Try this:<br>
+<a href="http://www.opendcl.com/HelpFiles/ENU/Reference/Property/List.htm" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg3324">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-03-31 19:21 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Hi Bazz  <br>
+I still work with OpenDCL 4.1.2.2.  <br>
+This function exists but nothing doesn't come back.<br>
+<br>
+<br>
+(setq ComboList (dcl_Control_GetList DuctilCAD_Tes_Combo-DN))<br>
+<br>
+(setq ComboList (dcl_Control_GetList "DuctilCAD" "Tes" "Combo-DN"))<br>
+</div>
+</article>
+<article class="post" id="msg3329">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-31 22:26 UTC</span>
+  </div>
+  <div class="post-body">In OpenDCL 4, 'List' was a design-time-only property (it was used only when constructing the list box, then ignored).</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

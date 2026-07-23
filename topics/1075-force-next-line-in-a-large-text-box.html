@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>force next line in a large text box.... · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1075</p>
+    <h1>force next line in a large text box....</h1>
+    <p class="meta">Started by Hypersonic ·
+      2009-12-12 21:21 UTC ·
+      8 replies · SMF topic #1075</p>
+<article class="post" id="msg5652">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2009-12-12 21:21 UTC</span>
+  </div>
+  <div class="post-body">the set text in a text box needs to be a long string.... I would like to make a large text box populate and be able to control when the <br>
+next line is started... as in the below:<br>
+<br>
+1. this is first line of text<br>
+2. this is second line <br>
+3. third line<br>
+4. etc.<br>
+<br>
+but I don't know if there is a special character to control this?<br>
+<br>
+Thanks!<br>
+</div>
+</article>
+<article class="post" id="msg5653">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-12-12 21:41 UTC</span>
+  </div>
+  <div class="post-body">does /n work?</div>
+</article>
+<article class="post" id="msg5654">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2009-12-12 22:08 UTC</span>
+  </div>
+  <div class="post-body">I tried it, it did not....</div>
+</article>
+<article class="post" id="msg5655">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-12 22:18 UTC</span>
+  </div>
+  <div class="post-body"><br>
+I don't know of a way.<br>
+<br>
+Can you use a listbox ??<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5656">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-12 22:24 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Something like :<br>
+<br>
+(vl-load-com)<br>
+(command "OPENDCL")<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+<br>
+;|&lt;&gt;|;<br>
+<br>
+(defun c:Hype1 (/ dialogreturn)<br>
+  (dcl_project_load "HYPE-01" T)<br>
+  (dcl_form_show HYPE-01_F)<br>
+  ;;------  <br>
+  (princ)<br>
+)<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;|&lt;&gt;|;<br>
+<br>
+;;;-------------------------------------------<br>
+(defun c:Hype-01_F_Populate_OnClicked (/)<br>
+  (setq longTextString (list<br>
+                         "1. this is first line of text"                         <br>
+                         "2. this is second line"<br>
+                         "3. third line"<br>
+                         "4. etc."<br>
+                        )<br>
+  )<br>
+  (dcl_ListBox_AddList Hype-01_F_ListBox1 longTextString)<br>
+)<br>
+<br>
+;;;-------------------------------------------<br>
+(defun c:Hype-01_F_ListBox1_OnSelChanged (ItemIndexOrCount Value /)<br>
+  (dcl_MessageBox Value "Selected Value from ListBox" 2 2)<br>
+)<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(princ)<br>
+<br>
+<br>
+<br>
+Refer attachments:<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1143/Hype-01.LSP">Hype-01.LSP</a> <span class="muted">(1185 bytes)</span></li><li><a href="../attachments/1144/Hype-01.odcl">Hype-01.odcl</a> <span class="muted">(777 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5657">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2009-12-12 22:47 UTC</span>
+  </div>
+  <div class="post-body">That should work!  <br>
+<br>
+Thanks!</div>
+</article>
+<article class="post" id="msg5659">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-12 23:07 UTC</span>
+  </div>
+  <div class="post-body">Hi guys, I'm not sure if you meant <a href="http://www.opendcl.com/forum/index.php?topic=1076.msg5658#msg5658" rel="nofollow noopener">{2}</a>.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5660">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2009-12-12 23:07 UTC</span>
+  </div>
+  <div class="post-body">Yes that works perfect!!!<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1145/SP32-20091212-180630.png">SP32-20091212-180630.png</a> <span class="muted">(13566 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5661">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2009-12-12 23:08 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred, that might have been easier.....  ::)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OnDblClicked SlideView · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1234</p>
+    <h1>OnDblClicked SlideView</h1>
+    <p class="meta">Started by Oak3s ·
+      2010-03-25 01:43 UTC ·
+      5 replies · SMF topic #1234</p>
+<article class="post" id="msg6602">
+  <div class="post-head">
+    <span class="post-author">Oak3s</span>
+    <span class="post-date muted">2010-03-25 01:43 UTC</span>
+  </div>
+  <div class="post-body">I am trying to make an alternative to AutoCADs image tille menu.<br>
+I have totally stripped this code down, trying to find the problem. It is probably simple.... ???<br>
+The problem is the anchor bolt is always the block being inserted on a DblClicked event.<br>
+<pre class="code"><code>(defun c:test (/)<br>
+(dcl_project_load "SA-Block-Insertion-Image" t)	;load .odcl file<br>
+(dcl_form_show SA-Block-Insertion-Image_form1)	;show dialog box form1<br>
+(princ)<br>
+)									<br>
+;*****************************************************************************************************************<br>
+(defun c:SA-Block-Insertion-Image_Form1_OnInitialize (/)<br>
+  (dcl_SlideView_Load SA-Block-Insertion-Image_Form1_SlideView1 "P:/SA-Drafting/Blocks/Slide_images/SA-Anchorbolt.sld")<br>
+  (dcl_SlideView_Load SA-Block-Insertion-Image_Form1_SlideView2 "P:/SA-Drafting/Blocks/Slide_images/SA-BoltNut.sld")<br>
+  (dcl_SlideView_Load SA-Block-Insertion-Image_Form1_SlideView3 "P:/SA-Drafting/Blocks/Slide_images/SA-Centerline.sld")<br>
+  (dcl_SlideView_Load SA-Block-Insertion-Image_Form1_SlideView4 "P:/SA-Drafting/Blocks/Slide_images/SA-DetailA.sld")<br>
+)<br>
+;*****************************************************************************************************************<br>
+;SlideView1<br>
+(defun c:SA-Block-Insertion-Image_Form1_SlideView1_OnDblClicked (/)<br>
+(dcl_Form_Close SA-Block-Insertion-Image_Form1)<br>
+(command "-insert" "SA-AnchorBolt" Pause "" "" Pause)<br>
+)<br>
+;*****************************************************************************************************************<br>
+;SlideView2<br>
+(defun c:SA-Block-Insertion-Image_Form1_SlideView2_OnDblClicked (/)<br>
+(dcl_Form_Close SA-Block-Insertion-Image_Form1)<br>
+(command "-insert" "SA-BoltNut" Pause "" "" Pause)<br>
+)<br>
+;*****************************************************************************************************************<br>
+;SlideView3<br>
+(defun c:SA-Block-Insertion-Image_Form1_SlideView3_OnDblClicked (/)<br>
+(dcl_Form_Close SA-Block-Insertion-Image_Form1)<br>
+(command "-insert" "SA-Centerline" Pause "" "" Pause)<br>
+)<br>
+;*****************************************************************************************************************<br>
+;SlideView4<br>
+(defun c:SA-Block-Insertion-Image_Form1_SlideView3_OnDblClicked (/)<br>
+(dcl_Form_Close SA-Block-Insertion-Image_Form1)<br>
+(command "-insert" "SA-DetailA" Pause "" "" Pause)<br>
+)</code></pre></div>
+</article>
+<article class="post" id="msg6603">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-03-25 02:39 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Sounds to me like you have all your event traps in the editor pointing to  c:SA-Block-Insertion-Image_Form1_SlideView1_OnDblClicked<br>
+This can happen when you set up one control and copy it several times :)<br>
+Check that each event function is calling the required function. Toggle the event off and then on again to reset the function name.<br>
+<br>
+<br>
+... other than that I have no idea.</div>
+</article>
+<article class="post" id="msg6604">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-25 03:01 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=1234.msg6603#msg6603 date=1269484795 wrote:</cite><br>
+Toggle the event off and then on again to reset the function name.</blockquote><br>
+<br>
+Or (in OpenDCl 6) use the new Tools -&gt; Reset Event Names command.</div>
+</article>
+<article class="post" id="msg6619">
+  <div class="post-head">
+    <span class="post-author">Oak3s</span>
+    <span class="post-date muted">2010-03-25 18:56 UTC</span>
+  </div>
+  <div class="post-body"> :D<br>
+WOW. I am pretty new huh. Thank you.</div>
+</article>
+<article class="post" id="msg6625">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-03-26 04:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1234.msg6604#msg6604 date=1269486074 wrote:</cite><br>
+Or (in OpenDCl 6) use the new Tools -&gt; Reset Event Names command.<br>
+</blockquote><br>
+<br>
+Wow, you added that, cool thx.<br>
+Now I have to figure out why SF isn't notifying me...</div>
+</article>
+<article class="post" id="msg6628">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-26 05:38 UTC</span>
+  </div>
+  <div class="post-body">Yes, I noticed that in A24. It's a very good and needed tool for my ObjectDCL&gt;OpenDCL transforming tasks.<br>
+Thanks, Owen.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>equivalent of dcl_binfile_write/read/close · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1015</p>
+    <h1>equivalent of dcl_binfile_write/read/close</h1>
+    <p class="meta">Started by s.barszczewski ·
+      2009-11-17 10:13 UTC ·
+      7 replies · SMF topic #1015</p>
+<article class="post" id="msg5175">
+  <div class="post-head">
+    <span class="post-author">s.barszczewski</span>
+    <span class="post-date muted">2009-11-17 10:13 UTC</span>
+  </div>
+  <div class="post-body">Hello everybody <br>
+<br>
+I'm using autocad 2009 LT and autocad extender which allows to run lisp routines on autocad LT, opendcl is not 100% compatibile with this autocad extender so for example when normal autolisp syntax looks like this<br>
+<br>
+(dcl_Form_Close abc_Form)<br>
+<br>
+i have to divide it into such syntax (dcl_Form_Close "abc" "Form") to make it work on autocad 2009 LT and autocad extender, or i get prompt from opendcl : Bad argument<br>
+<br>
+because I'm not able to force autocad 2009 LT to work with such code (normal autocad 2009 works with it ) : <br>
+(setq file (dcl_BinFile_Open "c:\\file.txt" "r"))<br>
+(setq data (dcl_BinFile_Read file T)  &lt;&lt;&lt; here I get opendcl prompt : bad argument<br>
+(dcl_BinFile_Close file)   &lt;&lt;&lt; here I get opendcl prompt : bad argument<br>
+<br>
+<br>
+I'm looking for library or lisp routine which has similar functions to : dcl_binfile_open / dcl_binfile_write / dcl_binfile_read . Maybe one of you came across of such functions<br>
+<br>
+Regards<br>
+Sebastian<br>
+s.barszczewski@wp.pl</div>
+</article>
+<article class="post" id="msg5176">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-17 11:56 UTC</span>
+  </div>
+  <div class="post-body">Hi, have you ever tried with the Scripting.FileSystemObject?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5180">
+  <div class="post-head">
+    <span class="post-author">DW</span>
+    <span class="post-date muted">2009-11-18 07:49 UTC</span>
+  </div>
+  <div class="post-body">The other option might be to use OpenDCL 4.1.2.2 which does work with LT-Extender - but of course you need to rewrite your dialog project and will be limited to the older version.  Also binary file functions have different names in the older version.<br>
+<br>
+David</div>
+</article>
+<article class="post" id="msg5181">
+  <div class="post-head">
+    <span class="post-author">s.barszczewski</span>
+    <span class="post-date muted">2009-11-18 11:34 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1015.msg5176#msg5176 date=1258459013 wrote:</cite><br>
+Hi, have you ever tried with the Scripting.FileSystemObject?<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+what's that, can you give me short example ? I don't know what's that . Maybe you're talking about Microsoft Scripting Runtime Library?<br>
+<br>
+regards <br>
+Sebastian </div>
+</article>
+<article class="post" id="msg5182">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-18 11:46 UTC</span>
+  </div>
+  <div class="post-body">Hi, I will give you an example later this day. I'm just in a customer training.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5183">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2009-11-18 17:48 UTC</span>
+  </div>
+  <div class="post-body">Hi barszczewski<br>
+Hi Fred<br>
+<br>
+Fred, maybe no need for samples.<br>
+<br>
+Barszczewski can check very nice samples by mr. Tony Tanzillo.:<br>
+lnk. to site <a href="http://www.caddzone.com/free.htm" rel="nofollow noopener">{2}</a><br>
+direct lnk. to sample <a href="http://www.caddzone.com/wsh.lsp" rel="nofollow noopener">{2}</a><br>
+<br>
+<br>
+p.s. Fred<br>
+Are U Customer or Trainer ;)<br>
+<br>
+Slavko</div>
+</article>
+<article class="post" id="msg5184">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-18 18:29 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+<blockquote class="quote"><cite> author=Slavko Ivanovic link=topic=1015.msg5183#msg5183 date=1258566501 wrote:</cite><br>
+Fred, maybe no need for samples.<br>
+</blockquote><br>
+<br>
+Hm, that's a really nice link, Slavko! Thank you! But I will publish a sample anyway. Maybe it is shorter. And finally, I'm not sure if AutoCAD LT makes it possible to get access to the ActiveX-object.<br>
+<br>
+<br>
+(defun write_textfile (strFile uData isUnicode / filFile oFSObject oFSFile strZeile)<br>
+  (setq oFSObject (vlax-create-object "Scripting.FileSystemObject"))<br>
+  (setq oFSFile (vlax-invoke-method oFSObject "CreateTextFile" strFile :vlax-true (if isUnicode :vlax-true :vlax-false)))<br>
+<br>
+  (if (listp uData)<br>
+    (foreach strZeile uData (vlax-invoke-method oFSFile 'WriteLine strZeile))<br>
+    (vlax-invoke-method oFSFile 'WriteLine uData)<br>
+  ); if<br>
+  (vlax-invoke-method oFSFile 'Close)<br>
+  (vlax-release-object oFSFile)<br>
+  (vlax-release-object oFSObject)<br>
+  T<br>
+); write_textfile<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=Slavko Ivanovic link=topic=1015.msg5183#msg5183 date=1258566501 wrote:</cite><br>
+Are U Customer or Trainer ;)<br>
+</blockquote><br>
+<br>
+I'm a AutoCAD Civil 3D trainer these days. ;)<br>
+<br>
+Fred<br>
+</div>
+</article>
+<article class="post" id="msg5185">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2009-11-19 09:07 UTC</span>
+  </div>
+  <div class="post-body"><br>
+And, barszczewski for other methods for<br>
+(vlax-create-object "Scripting.FileSystemObject")<br>
+u can check<br>
+<a href="http://msdn.microsoft.com/en-us/library/z9ty6h50%28VS.85%29.aspx" rel="nofollow noopener">{2}</a><br>
+<br>
+Slavko</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

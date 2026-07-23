@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Autocad toolbar controls? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 520</p>
+    <h1>Autocad toolbar controls?</h1>
+    <p class="meta">Started by hmspe ·
+      2009-01-12 04:54 UTC ·
+      5 replies · SMF topic #520</p>
+<article class="post" id="msg2354">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2009-01-12 04:54 UTC</span>
+  </div>
+  <div class="post-body">Originally posted at theswamp:<br>
+<br>
+-----------------<br>
+I'm thinking of trying to rework the toolbars and maybe some of the dialogs in Autocad into OpenDCL.  The intent is to get a common, consistent, and fast interface that I can port when the yearly version comes out.  I've found that most changes in Autocad in the last few years slow us down and aren't helpful for what we do.<br>
+<br>
+Is it possible to use Autocad toolbar controls within ODCL?  If not, has anyone duplicated the UNDO, REDO, and LAYER controls in ODCL that they'd be willing to share?  For dialogs I'm thinking of layer (we have no need for property filters, groups, or layer states and I really want a "NEW" button with text rather than just a nondescript icon) and plot (we frequently plot windows, but the latest dialogs make that an extra click).  If anyone has any replacement dialogs they'd like to share that would also help a lot.<br>
+<br>
+Is there a repository of working ODCL code anywhere?  I've run across a lot of really cool looking screen shots but very little code.  I find studying code to be one of the best ways to learn a new language, plus it's always good if you don't have to "reinvent the wheel".<br>
+<br>
+TIA,<br>
+Martin<br>
+---------------------------<br>
+<br>
+It was suggested that I post this here.  Fascinating site.  Any tips/tricks/help would be appreciated.<br>
+<br>
+Martin </div>
+</article>
+<article class="post" id="msg2356">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-01-14 20:37 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=hmspe link=topic=520.msg2354#msg2354 date=1231736058 wrote:</cite><br>
+Originally posted at theswamp:<br>
+<br>
+-----------------<br>
+I'm thinking of trying to rework the toolbars and maybe some of the dialogs in Autocad into OpenDCL.  The intent is to get a common, consistent, and fast interface that I can port when the yearly version comes out.  I've found that most changes in Autocad in the last few years slow us down and aren't helpful for what we do.<br>
+<br>
+Is it possible to use Autocad toolbar controls within ODCL?  If not, has anyone duplicated the UNDO, REDO, and LAYER controls in ODCL that they'd be willing to share?  For dialogs I'm thinking of layer (we have no need for property filters, groups, or layer states and I really want a "NEW" button with text rather than just a nondescript icon) and plot (we frequently plot windows, but the latest dialogs make that an extra click).  If anyone has any replacement dialogs they'd like to share that would also help a lot.<br>
+<br>
+Is there a repository of working ODCL code anywhere?  I've run across a lot of really cool looking screen shots but very little code.  I find studying code to be one of the best ways to learn a new language, plus it's always good if you don't have to "reinvent the wheel".<br>
+<br>
+TIA,<br>
+Martin<br>
+---------------------------<br>
+<br>
+It was suggested that I post this here.  Fascinating site.  Any tips/tricks/help would be appreciated.<br>
+<br>
+Martin <br>
+</blockquote><br>
+<br>
+1. Sorry their isn't a toolbar control in ODCL. You can use a Control Bar and dock in on the sides or top/bottom &amp; add toolbar like buttons, but it's exact. <br>
+2. What do yo mean by duplicating the undo\redo controls? I'd just create buttons that call the undo\redo commands.<br>
+3. For a layer drop down, you can use a Combo box with the Layer style. See the "Misc" sample project and the "ComboBoxes" tab.<br>
+4. You could easily create a new button with "Layers" in the caption and no icon. But recreating the whole layer manager interface would be a lot of work. But it's not imposable, you can use the GRID control to do so. (in Acad2009 you can collapse the layer groups\filters out of the way).<br>
+5. Plot, again it would be a lot of work to reproduce, but most of it could be done wit ha lot of ComboBoxes.<br>
+But I'd suggest setting up standard so you could do one click plotting. We just have 2 buttons on our toolbar for plotting 1:1 &amp; 1:2. Then buttons just run some basic lsp to plot the dwgs. But your dwgs need to me setup all the same way for it to work. (also, Acad 2009 eliminated the extra click for window).<br>
+6. This site and the Samples folder is the best place to find code. Just do a search, if you don't find it, post some code snippets and others will help you out where they can.<br>
+<br>
+Hope this helps.<br>
+Barry<br>
+</div>
+</article>
+<article class="post" id="msg2360">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2009-01-15 02:22 UTC</span>
+  </div>
+  <div class="post-body">Barry,<br>
+<br>
+Thanks for the reply.  <br>
+<br>
+I realize that ODCL does not do true toolbars, but a toolbar work-alike/look-alike is fine for me.  My hope was to have something close enough to true acad toolbars so that my staff doesn't have to re-train.  <br>
+<br>
+My standard interface is all custom toolbars with no OOTB toolbars at all.  The issue with undo/redo is the history dropdowns.  Nice to have but not mandatory.  I have no idea whether the history lists are accessible, so I don't know if the history dropdown can be emulated.  I have staffers who use the layer control for on/off, set current layer, etc.  It's all the extra glyphs that might be a problem in emulating the control.  Or maybe that's easy.  I'm still at the "getting my feet wet" stage with ODCL and there's a lot to learn.<br>
+<br>
+Duplicating the dialog boxes is mostly an exercise in patience.  Since I have limited free time I thought it best to ask if there is something existing available instead of starting from scratch.  As to the plotting dialog,  we work with many different drawing standards from different clients, and we have multiple plotters and printers.  We'd probably have to have 40 to 50 different setups if we went to a single button approach.  On the other hand, a custom dialog might be better for us than the default because there are a lot of things in the default dialog that don't change for us.<br>
+<br>
+Martin</div>
+</article>
+<article class="post" id="msg2361">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-01-15 03:59 UTC</span>
+  </div>
+  <div class="post-body">The Undo/Redo stack is not accessible programmatically as far as I know.  The ODCL layer combo is pretty similar to the AutoCAD layer dropdown, but I think you'd be far better off using AutoCAD's dropdowns rather than try to duplicate them.  Toolbars are essentially just modeless dialogs; you can create those fairly easily with ODCL's modeless dialogs or control panes.</div>
+</article>
+<article class="post" id="msg2362">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-01-15 05:48 UTC</span>
+  </div>
+  <div class="post-body">YA that's what I thought you meant with the undo\redo stack but wasn't sure.<br>
+Then I looked at Acad2009 &amp; the dropdown stack isn't even there anymore...<br>
+You could do something like this:<br>
+<a href="http://www.theswamp.org/index.php?topic=25357.0" rel="nofollow noopener">{2}</a><br>
+Like Owen said you wouldn't be able to show the commands, but could show:<br>
+1<br>
+2<br>
+3<br>
+4<br>
+etc...<br>
+<br>
+then call "UNDO 4" (or whatever number was picked)</div>
+</article>
+<article class="post" id="msg2369">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2009-01-15 14:59 UTC</span>
+  </div>
+  <div class="post-body">Owen and Barry,<br>
+<br>
+Thanks for the comments, and thanks for your efforts in providing and supporting ODCL.<br>
+<br>
+Martin</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

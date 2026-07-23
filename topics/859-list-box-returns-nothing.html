@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>List Box returns nothing? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 859</p>
+    <h1>List Box returns nothing?</h1>
+    <p class="meta">Started by docsaintly ·
+      2009-08-06 04:25 UTC ·
+      2 replies · SMF topic #859</p>
+<article class="post" id="msg4258">
+  <div class="post-head">
+    <span class="post-author">docsaintly</span>
+    <span class="post-date muted">2009-08-06 04:25 UTC</span>
+  </div>
+  <div class="post-body">(defun c:lstBlocks_OnSelChanged (ItemIndex Value /)<br>
+	(dcl_messagebox (itoa ItemIndex) "")<br>
+	(dcl_DWGPreview_LoadDwg dwgPreview (strcat selectedfolder "\\" Value))<br>
+)<br>
+<br>
+The "selectedfolder" var is gotten from the file dialog, i have verified it's contents. The messagebox always returns 0, and when I look at the Value, it always returns nothing. I'm a bit confused on this one. Any help is appreciated.</div>
+</article>
+<article class="post" id="msg4259">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-08-06 04:36 UTC</span>
+  </div>
+  <div class="post-body">A small sample project that demonstrates the problem would help.</div>
+</article>
+<article class="post" id="msg4260">
+  <div class="post-head">
+    <span class="post-author">docsaintly</span>
+    <span class="post-date muted">2009-08-06 04:38 UTC</span>
+  </div>
+  <div class="post-body">If it's not a known problem it's probably just me, I worked around it with:<br>
+(setq NValue (last (dcl_ListBox_GetSelectedItems lstBlocks)))<br>
+<br>
+edit: The only special circumstance i can think of is that i'm loading 13,000 items into the list box. As a sidenote, the listbox had no problem with me doing a vl-directory-files and dumping that list into the listbox, but the dwglist crashed the program and shot the memory through the roof when passed the directory name.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

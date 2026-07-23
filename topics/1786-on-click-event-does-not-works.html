@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>On click event does not works · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1786</p>
+    <h1>On click event does not works</h1>
+    <p class="meta">Started by anishtain4 ·
+      2012-04-18 05:56 UTC ·
+      1 replies · SMF topic #1786</p>
+<article class="post" id="msg8779">
+  <div class="post-head">
+    <span class="post-author">anishtain4</span>
+    <span class="post-date muted">2012-04-18 05:56 UTC</span>
+  </div>
+  <div class="post-body">Hi all<br>
+<br>
+I have two forms and a command button in every of them to switch between. I have loaded both of them in the lisp file that is calling them at first place, when I want to go from first to second it does works perfectly with this code:<br>
+<br>
+(defun c:Draw_frm_Draw_cmd_blocks_OnClicked (/)<br>
+  (dcl_Form_Show Blocks_frm_Blocks)<br>
+  (dcl_Form_close Draw_frm_Draw)<br>
+  (princ)<br>
+)<br>
+<br>
+<br>
+but when I want to get back to frm_Draw with this code:<br>
+<br>
+(defun c:Blocks_frm_Blocks_cmd_Draw_OnClicked (/)<br>
+  (command "._insunits" mhjv-definsunits) ; returning insunits to default value<br>
+  (princ "this is working")  ; this line is not showing<br>
+  (dcl_Form_Show Draw_frm_Draw)<br>
+  (dcl_Form_close Blocks_frm_Blocks) <br>
+)<br>
+<br>
+<br>
+It just returns nil and nothing happens.<br>
+<br>
+I have checked the name of this command button and it's right, there is nothing else I could think of, what is my problem?</div>
+</article>
+<article class="post" id="msg8782">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-04-18 13:09 UTC</span>
+  </div>
+  <div class="post-body">Hi, without testing your code: do you know that AutoLisp stops executing your code at the line dcl_form_show in modal forms? See <a href="http://www.opendcl.com/forum/index.php?topic=1080.0" rel="nofollow noopener">{2}</a>.<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

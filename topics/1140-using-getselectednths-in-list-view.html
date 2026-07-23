@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>using GetSelectedNths in list view · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1140</p>
+    <h1>using GetSelectedNths in list view</h1>
+    <p class="meta">Started by andrew ·
+      2010-01-19 14:00 UTC ·
+      5 replies · SMF topic #1140</p>
+<article class="post" id="msg6048">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-01-19 14:00 UTC</span>
+  </div>
+  <div class="post-body">when using GetSelectedNths in the list view, when setting it to a variable (see code)<br>
+<br>
+<pre class="code"><code><br>
+(setq selnth (dcl_ListView_GetSelectedNths project_Form3_ListView1))<br>
+</code></pre><br>
+<br>
+it returns the nth in parentisis IE: (4) or (2)<br>
+this isnt good when trying to use it in a lisp function.<br>
+<br>
+is there a different way to get the nth of a selected item in a list view that just returns the number without the parenthisis<br>
+or is it better to just write a function to remove them?<br>
+<br>
+i appreciate any feedback<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6051">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-19 15:02 UTC</span>
+  </div>
+  <div class="post-body"><br>
+I haven't tested, but ;<br>
+<br>
+The method allows for multi-selected items.<br>
+<br>
+The docs state : <em>This method returns a list containing the indices of selected items.</em><br>
+<br>
+Have you discovered differently ?<br>
+<br>
+<br>
+///---<br>
+<br>
+I'd suggest writing a library function to return the value(s) you want from the list, or to iterate the list as required.</div>
+</article>
+<article class="post" id="msg6054">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-01-19 16:44 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=1140.msg6051#msg6051 date=1263913371 wrote:</cite><br>
+<br>
+I haven't tested, but ;<br>
+<br>
+The method allows for multi-selected items.<br>
+<br>
+The docs state : <em>This method returns a list containing the indices of selected items.</em><br>
+<br>
+Have you discovered differently ?<br>
+<br>
+<br>
+///---<br>
+<br>
+I'd suggest writing a library function to return the value(s) you want from the list, or to iterate the list as required.<br>
+</blockquote><br>
+<br>
+i understood the indices as being the location of where the selected item is in the list.<br>
+am i not understanding is correctly?</div>
+</article>
+<article class="post" id="msg6056">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-19 16:52 UTC</span>
+  </div>
+  <div class="post-body">It sounds like you understand it correctly. What exactly is the problem you have?</div>
+</article>
+<article class="post" id="msg6058">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-01-19 19:03 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1140.msg6056#msg6056 date=1263919963 wrote:</cite><br>
+It sounds like you understand it correctly. What exactly is the problem you have?<br>
+</blockquote><br>
+<br>
+Owen,<br>
+im attempting to get the selected nth to use in another function<br>
+use the function in my first post it returns the correct nth but it has parenthesis around the number IE (4)<br>
+and using the nth of the selected item in the function isnt working because of ( )<br>
+<br>
+am i using this function incorrectly to get the nth?<br>
+<br>
+here is the code im wanting to use to get the nth to work with<br>
+it lets me remove a selected item from a list<br>
+<br>
+<pre class="code"><code><br>
+(defun remitem (lst pos)<br>
+  (vl-remove-if<br>
+    (function<br>
+      (lambda (x)<br>
+        (eq (nth pos lst) x)<br>
+      )<br>
+    )<br>
+    lst<br>
+  )<br>
+)<br>
+<br>
+(setq lst slst)<br>
+</code></pre><br>
+useage:<br>
+(remitem lst "nth goes here")<br>
+<br>
+using the function (dcl_ListView_GetSelectedNths project_Form3_ListView1)<br>
+returns for example (4) when what im after is just 4<br>
+</div>
+</article>
+<article class="post" id="msg6059">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-19 20:22 UTC</span>
+  </div>
+  <div class="post-body">If it's a single selection list view, just use the GetCurSel method instead. Your best source of information for working with lists is the AutoLISP reference guide that comes with AutoCAD.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

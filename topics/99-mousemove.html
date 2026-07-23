@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MouseMove · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 99</p>
+    <h1>MouseMove</h1>
+    <p class="meta">Started by Mast ·
+      2007-11-25 15:13 UTC ·
+      2 replies · SMF topic #99</p>
+<article class="post" id="msg406">
+  <div class="post-head">
+    <span class="post-author">Mast</span>
+    <span class="post-date muted">2007-11-25 15:13 UTC</span>
+  </div>
+  <div class="post-body">Hi, There is my problem: i have "Ok" button, with clicked and MouseMove events, and "Allow" for properties. my mouse is over de "ok" (see open3.jpg) and you see on left the change. my mouse is not over and you don't on the left (see open1.jpg). it's ok, but when i click "ok" the problem is the "open4.jpg". what's matter. thanks<br>
+<br>
+PS : i saw where is the problem : it's (Dcl_Form_Close Gddock_Form2) line, but how make for work fine ?  ???<br>
+<br>
+<br>
+ <pre class="code"><code>;ANNULE ET FERME BOUTON ANNULE<br>
+(Defun C:Gddock_Form2_Textbutton3_Onclicked ( /)<br>
+<br>
+		(Dcl_Form_Close Gddock_Form2) <br>
+)<br>
+;------------------------------------------------<br>
+; BOUTON OK<br>
+(Defun C:Gddock_Form2_Textbutton2_Onmousemove (Nflags Nx Ny /)<br>
+<br>
+		(Dcl_Control_Setvisible Gddock_Form2_Label20 1)<br>
+)<br>
+;------------------------------------------------<br>
+; ANNULE BOUTON<br>
+(Defun C:Gddock_Form2_Textbutton3_Onmousemove (Nflags Nx Ny /)<br>
+		(Dcl_Control_Setvisible Gddock_Form2_Label20 0)<br>
+<br>
+)<br>
+;------------------------------------------------<br>
+;TRAITEMENT PAR OK BOUTON<br>
+<br>
+(Defun C:Gddock_Form2_Textbutton2_Onclicked ( /)<br>
+		<br>
+   (Dcl_Form_Close Gddock_Form2)							; Ferme la boite principale.    <br>
+	  		(Command "Scu" "")<br>
+  					(Setq Old_Accroch (Getvar "Osmode"))<br>
+  			(Command "Accrobj" "Ext,Cent")<br>
+  					(Setq Planac (Getvar "Clayer"))<br>
+)<br>
+</code></pre><br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg408">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-11-26 08:17 UTC</span>
+  </div>
+  <div class="post-body">You'll have to modify your code to detect the case where the form gets closed before the OnMouseMove event is triggered. For example:<br>
+(if Gddock_Form2_Label20 (Dcl_Control_Setvisible Gddock_Form2_Label20 0))</div>
+</article>
+<article class="post" id="msg409">
+  <div class="post-head">
+    <span class="post-author">Mast</span>
+    <span class="post-date muted">2007-11-26 08:33 UTC</span>
+  </div>
+  <div class="post-body">Thank you very much owenwengerd. it work fine.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

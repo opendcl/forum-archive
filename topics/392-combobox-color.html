@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ComboBox - Color · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 392</p>
+    <h1>ComboBox - Color</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2008-08-04 04:48 UTC ·
+      5 replies · SMF topic #392</p>
+<article class="post" id="msg1759">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-08-04 04:48 UTC</span>
+  </div>
+  <div class="post-body"><br>
+With the ComboBox type set to 4 - Color<br>
+<br>
+Has anyone been able to programmatically set the selection to any Color number above White <br>
+<br>
+(dcl_ComboBox_SetCurSel KDUB_Test080804_Main_Combo3DColor 2) ;works<br>
+(dcl_combobox_selectstring KDUB_Test080804_Main_Combo3DColor "Magenta") ;works<br>
+<br>
+(dcl_ComboBox_SetCurSel KDUB_Test080804_Main_Combo3DColor 200) ; is ignored<br>
+(dcl_combobox_selectstring KDUB_Test080804_Main_Combo3DColor "Color 100")  ; is ignored<br>
+<br>
+<br>
+(cons "pf:3DColor"  (dcl_ComboBox_GetTBText KDUB_Test080804_Main_Combo3DColor)) returns ("pf:3DColor" . "Color 193") as expected <br>
+<br>
+<br>
+I'm not sure if I've missed something or if this is a bug.</div>
+</article>
+<article class="post" id="msg1760">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-08-04 04:52 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+and just for info , I've found this to be handy ..<br>
+<pre class="code"><code><br>
+;;;----------------------------------------------------------------------------<br>
+;; Convert the return value from the dcl_ComboBox_GetTBText Method to a Color Number (1-255)<br>
+;; (_ConvertColorStringToNumber "12")<br>
+;; (_ConvertColorStringToNumber "Color 122")<br>
+;; (_ConvertColorStringToNumber "Cyan")<br>
+;;<br>
+(defun _ConvertColorStringToNumber (ColorString / tmp)<br>
+    (setq ColorString (vl-string-subst "" "Color " ColorString))<br>
+    (cond ((numberp (setq tmp (read ColorString))) tmp)<br>
+          ((numberp (setq tmp (eval (read (strcat "ac" ColorString))))) tmp)<br>
+          (t 8)<br>
+    )<br>
+)<br>
+;;;----------------------------------------------------------------------------</code></pre></div>
+</article>
+<article class="post" id="msg1762">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-08-04 05:53 UTC</span>
+  </div>
+  <div class="post-body">I didn't notice any problems in a quick test. Are you sure you're adding the color before you try to select it?</div>
+</article>
+<article class="post" id="msg1763">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-08-04 06:13 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Not sure what you mean by add  the color ... ?<br>
+<br>
+The Combo is pre-initialised with the colors by default.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg1765">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-08-04 07:23 UTC</span>
+  </div>
+  <div class="post-body">Hello Kerry,<br>
+<br>
+if you show the form the first time and you drop down the color combo you see only a few colors (numbers 1 up to 7). The others ACI colors are not shown. If you want to select another color (ACI color number 200 for instance), you have to add the color first using AddColor method of dropdown control.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1770">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-08-05 02:20 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Ahhhhh ! .. thanks Fred. I understand. I'll play with that tonight.<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

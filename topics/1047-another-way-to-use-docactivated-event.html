@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Another way to use DocActivated Event ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1047</p>
+    <h1>Another way to use DocActivated Event ?</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-12-02 16:35 UTC ·
+      13 replies · SMF topic #1047</p>
+<article class="post" id="msg5438">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-02 16:35 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+Here is my trouble, i have to reload automatically my tools when user open a new file, or when user swith between allready loaded autocad files.<br>
+<br>
+I have a try with DocActivatedEvent, but i didn't put a function but an lisp order like <br>
+"(load "D:/test.lsp")"<br>
+<br>
+So , it look like work fine , but an error appear :<br>
+<blockquote class="quote"><br>
+Commande: Une erreur : fonction incorrecte: 2<br>
+</blockquote><br>
+<br>
+An error : Incorrect function : 2  ???<br>
+<br>
+Well, i know that is not the best way to use it, but i'll be very please to do it this way  ;)<br>
+<br>
+<br>
+(load "D:/test.lsp")<br>
+<br>
+<br>
+then open another drawing, or swith between allready loaded drawing.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1093/Test.odcl">Test.odcl</a> <span class="muted">(1315 bytes)</span></li><li><a href="../attachments/1094/test.lsp">test.lsp</a> <span class="muted">(5015 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5453">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-02 20:53 UTC</span>
+  </div>
+  <div class="post-body">Is there some reason why you don't just use code in acaddoc.lsp to load your form handler code when needed?</div>
+</article>
+<article class="post" id="msg5454">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-02 21:07 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1047.msg5453#msg5453 date=1259787183 wrote:</cite><br>
+Is there some reason why you don't just use code in acaddoc.lsp to load your form handler code when needed?<br>
+</blockquote><br>
+<br>
+Hello Owen,<br>
+<br>
+Yes, in fact this tool is load on demand, with a load order in an autocad menu.<br>
+<br>
+I would like to keep acad***.lsp safe.<br>
+<br>
+In fact trouble look like only a chek if order is a function ?<br>
+<br>
+So, is it possible to work this way ? , if it is possible  ;)<br>
+<br>
+Best regards</div>
+</article>
+<article class="post" id="msg5455">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-02 21:44 UTC</span>
+  </div>
+  <div class="post-body">If you already load a menu, just put your lisp code in the correspnding .mnl file so that it loads with every drawing.  Alternatively, use the Startup Suite or the VLXLoad utility on my web site to demand load your lisp code.  Both of these approaches achieve the objective without modifying the acaddoc.lsp file.</div>
+</article>
+<article class="post" id="msg5456">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-02 22:16 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1047.msg5455#msg5455 date=1259790294 wrote:</cite><br>
+If you already load a menu, just put your lisp code in the correspnding .mnl file so that it loads with every drawing.  Alternatively, use the Startup Suite or the VLXLoad utility on my web site to demand load your lisp code.  Both of these approaches achieve the objective without modifying the acaddoc.lsp file.<br>
+</blockquote><br>
+<br>
+Owen,<br>
+<br>
+I'm using fas file, and using VLXLoad seems too complicated for my level of knowledge .<br>
+<br>
+Sould'nt be possible to accept lisp order without error in DocActivated Event ?<br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg5457">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-02 22:46 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=stephan_35 link=topic=1047.msg5456#msg5456 date=1259792190 wrote:</cite><br>
+Sould'nt be possible to accept lisp order without error in DocActivated Event ?</blockquote><br>
+<br>
+It might be possible in some cases, but given the potential complications, I would not spend time pursuing this approach.</div>
+</article>
+<article class="post" id="msg5458">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-02 23:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1047.msg5457#msg5457 date=1259794010 wrote:</cite><br>
+It might be possible in some cases, but given the potential complications, I would not spend time pursuing this approach.<br>
+</blockquote><br>
+<br>
+Understanding what you mean , anyway, thanks again.<br>
+<br>
+Best regards.<br>
+</div>
+</article>
+<article class="post" id="msg5466">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2009-12-03 10:32 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1047.msg5455#msg5455 date=1259790294 wrote:</cite><br>
+.... or the VLXLoad utility on my web site to demand load your lisp code. <br>
+</blockquote><br>
+Ooh nice! Owen is there any chance of extending this utility so it includes brx/des versions? <br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5471">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-03 15:37 UTC</span>
+  </div>
+  <div class="post-body">Yes, I will add Bricscad support at some point.</div>
+</article>
+<article class="post" id="msg5477">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-03 16:26 UTC</span>
+  </div>
+  <div class="post-body">Hello, guys, I believe that we won't be the last who have to manage it I will publish our thoughts about it and the resulting solution.<br>
+<br>
+We start AutoCAD from an external Manager. After starting it, our VLX file will be loaded automatically by (vl-load-all "myApp.vlx").<br>
+If you have no external manager which has access to AutoCAD you have other opportunities:<br>
+<ul><br>
+call (vl-load-all "myApp.vlx") from the MNL-file of your menu (if you have one).<br>
+call (vl-load-all "myApp.vlx") from the acaddoc.lsp in your application product folder (if it is a supportpath).[/<br>
+add your vlx-file to the startup folder of APPLOAD command<br>
+many others...<br>
+</ul><br>
+<br>
+You just have to make sure that the vlx is loaded in all drawings. We make it using (vl-load-all).<br>
+If the vlx is loaded in all drawings OnDocActivated will work properly.<br>
+But there is one case which does still not work: OnEndDrawingOpen. That means thare must be an event when a new drawing will be created or opened. This can be done at the time when loading the lisp. Since (vl-load-all ..) also loads the lisp in newly opened drawings, we just added some lines at the end of the whole VLX-project.<br>
+<br>
+<br>
+(DCL_PALETTE_DOITORCLOSE layer_sc_ltm 'c:layer_sc_ltm_OnDocActivated nil)<br>
+<br>
+<br>
+As you can see, all our functions have to be loaded before. We make this sure by addings these line at the end.<br>
+<br>
+But what does DCL_PALETTE_DOITORCLOSE do?<br>
+It calls OnDocActivaed manually if this form is loaded and active.<br>
+<br>
+(defun DCL_PALETTE_DOITORCLOSE (oControl symFunc lstArg / uErg)<br>
+  (if (and oControl (dcl_Form_IsActive oControl))<br>
+    (if (dcl_Form_IsVisible oControl)<br>
+      (if symFunc (setq uErg (vl-catch-all-apply symFunc lstArg)))<br>
+      (dcl_Form_close oControl)<br>
+    ); if<br>
+  ); if<br>
+  uErg<br>
+); DCL_PALETTE_DOITORCLOSE<br>
+<br>
+Hope it was understandable<br>
+Fred</div>
+</article>
+<article class="post" id="msg5484">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2009-12-03 17:06 UTC</span>
+  </div>
+  <div class="post-body">Personally my interest was to combine a vlxload utility inconjunction with my app's installer. (Tricky for me!)<br>
+<br>
+This could invisibly load a small routine into any AutoDesk/Bricssys applications on a computer, so after a first-time install - a new user can type the routine name, in the same way as say "doslib" or "opendcl" and my application is launched (and creates file support paths, loads menus etc, if they are not there).<br>
+<br>
+For me - it just neatly gets round that issue of the initial install before my mnl file is loaded.</div>
+</article>
+<article class="post" id="msg5488">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-03 18:01 UTC</span>
+  </div>
+  <div class="post-body">That's how it should be used, except that I recommend against changing or adding support paths. Your code can use the functions from VLXLoad to determine where your files are, so there is no need to mess with the user's support paths -- it should simply specify the complete path for support files.</div>
+</article>
+<article class="post" id="msg5491">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2009-12-03 18:41 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1047.msg5488#msg5488 date=1259863295 wrote:</cite><br>
+....there is no need to mess with the user's support paths -- it should simply specify the complete path for support files.<br>
+</blockquote><br>
+Interesting, I would much prefer that.  However please correct me if I'm wrong - but I think I'm stuck with written support paths in Tools&gt;options&gt;files as my application uses its own shape and pat files.</div>
+</article>
+<article class="post" id="msg5497">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-03 20:01 UTC</span>
+  </div>
+  <div class="post-body">You may be right about shp and pat files.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

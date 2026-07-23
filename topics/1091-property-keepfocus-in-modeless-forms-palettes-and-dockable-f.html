@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Property KeepFocus in modeless forms, palettes and dockable forms · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/20-faqs.html">FAQs</a> /
+      Topic 1091</p>
+    <h1>Property KeepFocus in modeless forms, palettes and dockable forms</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-12-16 00:20 UTC ·
+      0 replies · SMF topic #1091</p>
+<article class="post" id="msg5742">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-16 00:20 UTC</span>
+  </div>
+  <div class="post-body">Question:<br>
+If I set the property KeepFocus of a palette to T I can write text into my textbox, but autocollapsing the palette after moving the mouse off the form does not work. <br>
+If I set the property KeepFocus of a palette to nil I cannot write text into my textbox (it will be written at commandline as it is written in the <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Property/KeepFocus.htm" rel="nofollow noopener">{2}</a>), but autocollapsing the palette works properly after moving the mouse off the form.<br>
+Is it not possible to have both?<br>
+<br>
+Answer:<br>
+You can change the property value for KeepFocus in two additional events of the form. In the OnMouseEntered event you activate the KeepFocus property. In the OnMouseOff event you disable it.<br>
+<br>
+<br>
+(defun c:MyProj_MyForm_OnMouseEntered ()<br>
+  (dcl_Control_SetKeepFocus MyProj_MyForm T) <br>
+); c:MyProj_MyForm_OnMouseEntered<br>
+<br>
+(defun c:MyProj_MyForm_OnMouseOff ()<br>
+  (dcl_Control_SetKeepFocus MyProj_MyForm nil) <br>
+); c:MyProj_MyForm_OnMouseOff<br>
+<br>
+<br>
+A sample was published <a href="http://www.opendcl.com/forum/index.php?topic=1064.msg5559#msg5559" rel="nofollow noopener">{2}</a>.<br>
+<br>
+Note: it will cause many calls from the form.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

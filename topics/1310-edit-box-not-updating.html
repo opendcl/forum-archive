@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Edit box not updating · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1310</p>
+    <h1>Edit box not updating</h1>
+    <p class="meta">Started by hmspe ·
+      2010-07-10 18:55 UTC ·
+      16 replies · SMF topic #1310</p>
+<article class="post" id="msg7012">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2010-07-10 18:55 UTC</span>
+  </div>
+  <div class="post-body">I've spent over 8 hours trying to figure this out and I'm not making progress.  In the attached form everything updates properly except the the first edit box (AFC).  I've tried both EditChanged and KillFocus as the event.  I've reset the event names.  I've checked spelling.  I've erased the section and started over.  I'm copying the prototypes via the clipboard from the ODCL form to the lisp file.  I have another ODCL form that also starts with an identical box that works fine.  <br>
+<br>
+I'm probably missing something simple (again).  Any suggestions would be greatly appreciated.  <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1419/fd.lsp">fd.lsp</a> <span class="muted">(11195 bytes)</span></li><li><a href="../attachments/1420/faultdrop.odcl">faultdrop.odcl</a> <span class="muted">(3458 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7013">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-07-11 05:40 UTC</span>
+  </div>
+  <div class="post-body"><br>
+I'd be happy to look at the problem if I had a better idea of your process.<br>
+Can you indicate how you enter info and where it is departing from your expectations.<br>
+<br>
+<br>
+Regards<br>
+</div>
+</article>
+<article class="post" id="msg7014">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2010-07-11 15:48 UTC</span>
+  </div>
+  <div class="post-body">Thank you, Kerry.<br>
+<br>
+This routine will calculate available fault current and voltage drop for electrical circuits.  The finished program will have the user select an insertion point.  If there is an existing calculation at that point (based on a specific text string) it will read input values from the screen, then open the ODCL form to allow the user to modify values.  If there is not an existing calculation it displays the ODCL form.  When the ODCL form is closed with the OK button the lisp does the necessary calculations and inserts the data in the drawing.  I've taken out all the "read the screen" and calculations in what I posted.  I tried to cut the posted code down to show just the part I'm having a problem with.  This is a conversion of a working DCL function to ODCL so the screen operation and calculations are not at issue.<br>
+<br>
+The code I posted should have the user select a point on the screen, then the ODCL form should open.  The values entered in the ODCL form are printed to the command line when the ODCL form is closed.  The code allows presetting values for the edit boxes and the buttons.  The 'check' function keeps the OK button inactive until all the fields have non-nil values, and it also tests the PFactor field to be sure it is within range.  Be aware that I have the ODCL file path hard coded in the lisp file at this point.  Plenty of areas to polish later, but first it has to work.<br>
+<br>
+All edit boxes except the one labeled 'AFC' seem to work as expected -- they show a preset value (blank if the preset is ""), and the associated variable is updated when an entry is made in the ODCL form.  The 'AFC' edit box appears to work just like the other edit boxes -- it correctly shows the preset value of the AFC$ variable, it is a tab stop, the displayed value changes when you edit the field, etc. -- but the AFC$ variable is not updated to match the changes.   If AFC$ is preset to "" then the check function never sees a non-nil value for AFC$ and the OK button is never enabled.  If AFC$ is preset to something like "65000" then edited to "22000" in the ODCL form the value returned on exit will be the preset, "65000".  <br>
+<br>
+Thanks for your help.<br>
+<br>
+Martin<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg7015">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-07-11 21:03 UTC</span>
+  </div>
+  <div class="post-body"><br>
+OK,<br>
+what values should I enter to stay in range.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg7016">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-07-11 21:15 UTC</span>
+  </div>
+  <div class="post-body">  (defun set_AFC ( / )<br>
+    (setq AFC$ <strong>value</strong>)<br>
+    (check)<br>
+  )<br>
+<br>
+where is<strong> value </strong> declared <br>
+Should it be a parameter to the function ??</div>
+</article>
+<article class="post" id="msg7017">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-07-11 21:51 UTC</span>
+  </div>
+  <div class="post-body">This is weird.<br>
+For some reason the there is an attempt to read the textbox values when the dialog is closing<br>
+<br>
+... and the value of AFC$ in nil  ... that should never happen !<br>
+I wonder if the use of <em>OnKillFocus</em> is the culprit ??<br>
+<br>
+<br>
+<br>
+<br>
+just a comment:<br>
+personally I set the frames to the back in the ZOrder. That allows the selection of controls in the Editor ... means that you can double-clich the control and have the Control Browser display for help with properties etc.</div>
+</article>
+<article class="post" id="msg7018">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2010-07-11 22:15 UTC</span>
+  </div>
+  <div class="post-body">Kerry,<br>
+<br>
+Good catch on the 'value'.  That was probably an artifact from too many hours trying to sort this out.  As you have apparently noticed, while that is an error it is not what's wrong overall.<br>
+<br>
+I've tried both OnKillFocus and OnEditChanged and neither updates AFC$ in this form.  I have a very similar lisp and ODCL form for just voltage drop calculations that has essentially the same controls and variables and it works fine.  That's why I'm so baffled by this.  The biggest difference I see between OnKillFocus and OnEditChanged is that OnKillFocus updates the variable once whereas OnEditChanged updates the variable after every key press.  <br>
+<br>
+As to values, all boxes except power factor take integers.  Typical would be AFC = 65000, voltage = 208, length = 120, conductor temperature = 75, and length 120.  Power factor is a cosine, so it must be a real number between 0 and 1, with a default of 0.85.  <br>
+<br>
+Martin</div>
+</article>
+<article class="post" id="msg7019">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-07-11 22:21 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+Try this<br>
+<br>
+change the events to  <br>
+<em>OnEditChanged</em>  not   <em>OnKillFocus</em><br>
+ <br>
+and get rid of the (setxxx functions<br>
+<br>
+  (defun c:faultdrop_FaultBox_ebAFC_OnEditChanged (NewValue/)<br>
+    (setq AFC$ NewValue )<br>
+    (check)<br>
+  )<br>
+;;;;; add value variable<br>
+;;;  (defun set_AFC (value / )<br>
+;;;    (setq AFC$ Value )<br>
+;;;    (check)<br>
+;;;  )<br>
+<br>
+don't forget to change the dialog events in the editor.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg7020">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-07-11 22:28 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+and what is the Amps load ??<br>
+<br>
+For some reason  AFC$ is getting a value of nil .. not sure why</div>
+</article>
+<article class="post" id="msg7021">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2010-07-11 22:53 UTC</span>
+  </div>
+  <div class="post-body">Amps is also an integer.  200 would be a typical value for amps, although any value should work since at this point we are just trying to get variables set to whatever was input.<br>
+<br>
+My first attempts [and the similar program that works] use this format:<br>
+(defun c:faultdrop_FaultBox_ebAFC_OnEditChanged (NewValue /)<br>
+  (set_AFC NewValue)<br>
+)<br>
+<br>
+(defun set_AFC (value / )  <br>
+   (setq AFC$ Value )  <br>
+   (check)  <br>
+)  <br>
+<br>
+I think I went that direction instead of <br>
+# (defun c:faultdrop_FaultBox_ebAFC_OnEditChanged (NewValue/)  <br>
+   (setq AFC$ NewValue )  <br>
+   (check)  <br>
+)<br>
+<br>
+because the variable was not updating with the setq inside the '(defun c:' function.  It was several weeks ago when I did the first program and I don't remember all the specifics.<br>
+<br>
+In any case, I just tested both forms of OnEditChanged and the AFC$ value does not update with either.  I also tried changing the order in the ODCL form so that voltage comes before AFC.  Still no update on AFC$.   <br>
+<br>
+Martin</div>
+</article>
+<article class="post" id="msg7022">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-07-11 22:55 UTC</span>
+  </div>
+  <div class="post-body">I'm getting faults with the<br>
+ (dcl_Control_SetEnabled faultdrop_FaultBox_btnOK T)<br>
+<br>
+and the <br>
+(dcl_Control_SetBackColor faultdrop_FaultBox_ebPFactor 50)<br>
+(dcl_Control_SetBackColor faultdrop_FaultBox_ebPFactor -6)<br>
+<br>
+Owen may need to look at this running in SPY.<br>
+<br>
+for some reason the Cancel button is calling close ???? <br>
+<br>
+I just realised that we can set ANY value in there Textbox controls and the (check) should work. ... </div>
+</article>
+<article class="post" id="msg7023">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2010-07-11 23:46 UTC</span>
+  </div>
+  <div class="post-body">Kerry,<br>
+<br>
+I've tried a couple of things since my last post.  First, changing 'AFC' to 'available_fault'.  My thought was that for some reason ODCL might not like the length and/or the form of the name.  No joy there.  Second, I deleted the AFC editbox from the ODCL form, saved the form and closed the ODCL editor, reopened the form, and recreated the edit box using 'available_fault' rather than AFC.  With that change the form now works.  I have no idea why this worked this time but not last time.  It is entirely possible that I had a syntax error or an errant variable that we both overlooked, but it is also possible that there was some really obscure issue ODCL.  I agree that it would be good to ask Owen to look at this at some point.<br>
+<br>
+Thanks for your help.<br>
+<br>
+Martin</div>
+</article>
+<article class="post" id="msg7024">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-07-11 23:57 UTC</span>
+  </div>
+  <div class="post-body">Martin ,<br>
+I also cleared and reset the Lisp Symbol names in the Editor. (to force the Automatic naming of variables at Runtime .. which I prefer )<br>
+Seemed to make no difference.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg7025">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-07-11 23:57 UTC</span>
+  </div>
+  <div class="post-body">Please tell me exactly what to do in order to reproduce the problem.</div>
+</article>
+<article class="post" id="msg7026">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-07-11 23:59 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Thanks Owen, I'll leave it for  Martin to respond.<br>
+Regards<br>
+</div>
+</article>
+<article class="post" id="msg7027">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-07-12 00:27 UTC</span>
+  </div>
+  <div class="post-body">That first edit box has EventInvoke set to 1 (Asynchronous), so the event is not executing until the dialog is already closed. Since EventInvoke is hidden on modal forms, the only way to change it is to cut the control and paste it into a modeless form, change the Event Invoke property to zero, thn copy and paste the modified control back into the original form.<br>
+<br>
+I think the design intent is to preserve but ignore that property on modal forms, but I'll have to do some investigating to determine why this situation is allowed to arise and how the problem can be fixed.</div>
+</article>
+<article class="post" id="msg7028">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2010-07-12 01:45 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+<br>
+Thanks for the update.  Good to know I wasn't completely losing my mind....<br>
+<br>
+Martin</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

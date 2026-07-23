@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Automated deployment · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/19-deployment.html">Deployment</a> /
+      Topic 1142</p>
+    <h1>Automated deployment</h1>
+    <p class="meta">Started by honkinberry ·
+      2010-01-21 18:17 UTC ·
+      9 replies · SMF topic #1142</p>
+<article class="post" id="msg6068">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-01-21 18:17 UTC</span>
+  </div>
+  <div class="post-body">We have an existing AutoCAD application, with thousands of users across the globe.<br>
+I've finally started transitioning our dialog boxes to OpenDCL (don't laugh!  I had to wait until Bricscad support was there).<br>
+<br>
+Does anyone have any ideas on the most painless (and automated) way to deploy the Runtime to users?<br>
+I was thinking something along the lines, of if the (command "_OPENDCL") fails, then it could download the msi and run it automatically?  But not really sure how to tell if the OPENDCL command exists, maybe it makes more sense to look for a Registry value?  Any suggestions on this?<br>
+Thanks so much for any assistance.<br>
+<br>
+--Jeremiah<br>
+</div>
+</article>
+<article class="post" id="msg6069">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-21 18:46 UTC</span>
+  </div>
+  <div class="post-body">You could check for the existence of the registry value at HKLM\Software\OpenDCL\RootFolder (or HKLM\Software\Wow6432Node\OpenDCL\RootFolder on x64 systems).</div>
+</article>
+<article class="post" id="msg6074">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-01-21 22:36 UTC</span>
+  </div>
+  <div class="post-body">It seems that's only for OpenDCL Studio.<br>
+For Runtime, it seeks HKLM + (vlax-product-key) + Applications + OpenDCL + Loader<br>
+would be more appropriate, correct?<br>
+could then grab the arx/brx filename, and check against (arx) to see if it loaded successfully.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg6076">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-22 00:28 UTC</span>
+  </div>
+  <div class="post-body">Ah yes, you are correct.</div>
+</article>
+<article class="post" id="msg6090">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-01-25 17:02 UTC</span>
+  </div>
+  <div class="post-body">So I ended up with this little function to automate the loading of the library, and downloading and installing of OpenDCL and our .odcl file.  If anyone wants any of the referenced functions let me know.<br>
+<br>
+;;; ------------------- OPENDCL -------------------------<br>
+	(defun fx:OPENDCL (forcereload / arxfile destfile)<br>
+		 ; standard call is (fx:OPENDCL t) in the beginning of a function under development<br>
+		 ; forcereload will reload the odcl file<br>
+		 ; once function is beyond test phase, call should be changed to (fx:OPENDCL nil)<br>
+		 ; alternately can be placed in general startup, as (fx:OPENDCL "STARTUP")<br>
+		 ;   in which case failure to load will not cause hard exit on error<br>
+		 ; will download and install OpenDCL as necessary<br>
+<br>
+		 ; first, look for regkey, which will give us file to load, and proof of install<br>
+		(setq arxfile (vl-registry-read <br>
+				(strcat "HKEY_LOCAL_MACHINE\\" (vlax-product-key) "\\Applications\\OpenDCL") "Loader"<br>
+			) ; vl-reg-read<br>
+			destfile (strcat MENULOC "Administration\\OpenDCL.msi") ; in case need to dl and install<br>
+		) ; setq<br>
+		<br>
+		(if arxfile ; it's installed, but is it loaded<br>
+			(progn<br>
+				(setq arxfile (strcase arxfile t) ; (arx) list is lower case<br>
+					arxfile (substr arxfile (1+ (strlen (vl-filename-directory arxfile)))) ; further it's only filename<br>
+				) ; setq<br>
+				(if (not (member arxfile (arx)))<br>
+					(command "_OPENDCL")<br>
+					 ; @@ but if that failed for whatever reason, a (type dcl_Project_Load) could be our flag<br>
+				) ; if<br>
+				(dcl_Project_Load "designfx" (if forcereload t nil))<br>
+			) ; progn<br>
+<br>
+			 ; not loaded, let's install!<br>
+			(if (c:CONFIRM_BOX #FX0466) ; an additional library is required, download it now?<br>
+				(progn<br>
+					 ; well we can be pretty certain he doesn't have the odcl file either<br>
+					(if (fx:DOWNLOADFILE (strcat "designfx-" _FXLANGUAGE ".odcl") (strcat MENULOC "designfx.odcl"))<br>
+						(if (fx:DOWNLOADFILE "opendcl.msi" destfile)<br>
+							(startapp (strcat "msiexec /i " destfile))<br>
+							 ; otherwise accept his error<br>
+						) ; if<br>
+						 ; otherwise accept his error<br>
+					) ; if<br>
+					 ; msiexec is out of process, so we just pop outta here<br>
+					(if (/= forcereload "STARTUP") (exit))<br>
+				) ; progn<br>
+				 ; nothing to do other than bounce<br>
+				(if (/= forcereload "STARTUP") (exit))<br>
+			) ; if<br>
+		) ; if<br>
+	(princ)<br>
+	) ; OPENDCL<br>
+;;; -----------------------------------------------------<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6093">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-01-25 17:31 UTC</span>
+  </div>
+  <div class="post-body">Is (fx:DOWNLOADFILE) downlaoding "opendcl.msi" from your site?<br>
+</div>
+</article>
+<article class="post" id="msg6098">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-01-25 20:29 UTC</span>
+  </div>
+  <div class="post-body">Correct.<br>
+An obvious upgrade would be to query SourceForge for the latest filename and download from there, but this way was clearly more expedient.   ;)<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg6104">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-01-25 21:34 UTC</span>
+  </div>
+  <div class="post-body">You could point it to the following URL's:<br>
+<br>
+<a href="http://opendcl.com/go?runtime" rel="nofollow noopener">{2}</a> (Stable build)<br>
+<a href="http://opendcl.com/go?runtime&amp;dev" rel="nofollow noopener">{2}</a> (Development build)<br>
+<br>
+&amp; it will download the current build for each.<br>
+<br>
+But note that if your code\product is relaying on some functionality, that functionality could change in the future (hopefully not). So downloading the runtime from your site, that you know works with your code\product maybe the way to go...</div>
+</article>
+<article class="post" id="msg6105">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-25 22:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=honkinberry link=topic=1142.msg6098#msg6098 date=1264451342 wrote:</cite><br>
+An obvious upgrade would be to query SourceForge for the latest filename and download from there, but this way was clearly more expedient.   ;)</blockquote><br>
+<br>
+I think installing it from an internal network is safer, and overall a better approach in most cases.</div>
+</article>
+<article class="post" id="msg6109">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-01-26 03:51 UTC</span>
+  </div>
+  <div class="post-body">This is excellent, I like the idea of not having to keep updating a cache of the most recent version, didn't know about the go?runtime link, thanks.<br>
+<br>
+The routine does download it to an internal network location, and runs it from there.<br>
+<br>
+Thanks so much for all the help!<br>
+<br>
+--J</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

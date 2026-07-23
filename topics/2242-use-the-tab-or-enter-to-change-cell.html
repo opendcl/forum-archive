@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Use the &quot;TAB&quot; or &quot;ENTER&quot; to change cell · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2242</p>
+    <h1>Use the &quot;TAB&quot; or &quot;ENTER&quot; to change cell</h1>
+    <p class="meta">Started by dioneib ·
+      2015-03-10 13:42 UTC ·
+      6 replies · SMF topic #2242</p>
+<article class="post" id="msg11269">
+  <div class="post-head">
+    <span class="post-author">dioneib</span>
+    <span class="post-date muted">2015-03-10 13:42 UTC</span>
+  </div>
+  <div class="post-body">Is there any way to change the cell in a "Grid" component using the "TAB" key or "ENTER".<br>
+Use the mouse for this is not productive.<br>
+<br>
+<br>
+Thank you in advance.<br>
+hugs<br>
+Dionei<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2103/tela_01.png">tela_01.png</a> <span class="muted">(78852 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11270">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-03-10 15:29 UTC</span>
+  </div>
+  <div class="post-body">Hi, yes there is: check the the Form.OnCancelClose event which is invoked when pressing enter.<br>
+I used this in <a href="http://www.opendcl.com/forum/index.php?topic=700.msg3445#msg3445" rel="nofollow noopener">{2}</a>.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11271">
+  <div class="post-head">
+    <span class="post-author">dioneib</span>
+    <span class="post-date muted">2015-03-10 17:07 UTC</span>
+  </div>
+  <div class="post-body">I managed to move forward.<br>
+Navigation is perfect.<br>
+The code is presented below:<br>
+<br>
+(defun c:DBEngenharia_BCDADOS/Form_Geral/Grid_Legenda#OnEndLabelEdit (Row Column / iColunas iLinhas lCelula iRow iColumn)<br>
+<br>
+  ;direcionar a navegação da grid<br>
+  (setq iColunas (dcl-Grid-GetColumnCount DBEngenharia_BCDADOS/Form_Geral/Grid_Legenda))<br>
+  (setq iLinhas  (dcl-Grid-GetRowCount DBEngenharia_BCDADOS/Form_Geral/Grid_Legenda))<br>
+  (setq lCelula  (dcl-Grid-GetCurCell DBEngenharia_BCDADOS/Form_Geral/Grid_Legenda))<br>
+  (setq iRow     (car lCelula))<br>
+  (setq iColumn  (cadr lCelula))<br>
+<br>
+  ;se não estiver na ultima coluna<br>
+  (if (&lt; iColumn iColunas)<br>
+    (progn<br>
+      ;;setar a proxima coluna e navegar normalmente semmudar a linha<br>
+      (setq iColumn (1+ iColumn))<br>
+     )<br>
+    (progn<br>
+      ;se for a ultima coluna então vai para a primeira colunha<br>
+      (setq iColumn 1)<br>
+<br>
+      (if (&lt; iRow iLinhas)<br>
+        (progn<br>
+          ;se for a ultima coluna mas nao a ultima linha então muda de linha<br>
+          (setq iRow (1+ iRow))<br>
+         )<br>
+        (progn<br>
+          ;se for a ultima linha então vai para a primeira linha<br>
+          (setq iRow 0)<br>
+         )<br>
+       ) ;;if (&lt; iRow iLinhas)<br>
+<br>
+     )<br>
+   )  ;;if (&lt; iColumn iColunas)<br>
+<br>
+<br>
+  (dcl-Grid-SetCurCell DBEngenharia_BCDADOS/Form_Geral/Grid_Legenda iRow iColumn)<br>
+  (dcl-Grid-StartCellEdit DBEngenharia_BCDADOS/Form_Geral/Grid_Legenda iRow iColumn)<br>
+  (princ)<br>
+ )<br>
+<br>
+<br>
+<br>
+However the "Cancel" button stopped working:<br>
+<br>
+(defun c:DBEngenharia_BCDADOS/Form_Geral/TextButton_Cancelar#OnClicked ( / )<br>
+  (dcl-Form-Close DBEngenharia_BCDADOS/Form_Geral 20)<br>
+   (princ)<br>
+  )<br>
+<br>
+<br>
+For each click on the grid cell button advances in one position.<br>
+<br>
+<br>
+Can I remove the "Cancel" button but prefer before asking what can I do to leave it running. I also realize that by pressing the Techa "Esc" the form closes. I ask if it is possible to intercept the "Esc" key. The procedure by clicking the "Cancel" button may be extamente the same as when you press the tecvla "Esc".<br>
+<br>
+Excuse my English. Do not dominate your language.<br>
+<br>
+I await more instructions.<br>
+Dionei<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2104/tela_01.png">tela_01.png</a> <span class="muted">(82306 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11272">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-03-10 18:08 UTC</span>
+  </div>
+  <div class="post-body">If I understand it correctly, maybe "OnSelChanged" is the right event.</div>
+</article>
+<article class="post" id="msg11273">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-03-10 18:39 UTC</span>
+  </div>
+  <div class="post-body">Hi, have you looked into the sample of my last post?<br>
+<br>
+<blockquote class="quote"><cite> author=dioneib link=topic=2242.msg11271#msg11271 date=1426007256 wrote:</cite><br>
+[...]However the "Cancel" button stopped working[...]<br>
+</blockquote><br>
+<br>
+I do not see the whole code and project, but I'm afraid, that the callback function is not called.<br>
+I recomment you to study the sample I've mentioned before.<br>
+<br>
+<blockquote class="quote"><cite> author=dioneib link=topic=2242.msg11271#msg11271 date=1426007256 wrote:</cite><br>
+[...]I ask if it is possible to intercept the "Esc" key.[...]<br>
+</blockquote><br>
+<br>
+Yes, of course you can. You can see this in the sample I've mentioned before.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11274">
+  <div class="post-head">
+    <span class="post-author">dioneib</span>
+    <span class="post-date muted">2015-03-10 19:06 UTC</span>
+  </div>
+  <div class="post-body">Excuse Me. In my brower did not show the link to download your example.<br>
+Thus I tried to guide me only by the post's comments.<br>
+I downloaded your example and I will study its source code.<br>
+Thank you greatly for your promptness and give sequenncia in the coming days.<br>
+We currently have more urgent activities to be developed.<br>
+Inform the results soon.<br>
+<br>
+hugs<br>
+Dionei</div>
+</article>
+<article class="post" id="msg11275">
+  <div class="post-head">
+    <span class="post-author">dioneib</span>
+    <span class="post-date muted">2015-03-10 22:46 UTC</span>
+  </div>
+  <div class="post-body">Dear Fred<br>
+<br>
+<br>
+Your example does not reflect my need.<br>
+<br>
+<br>
+I am sending the full sample.<br>
+Tetarei detail explain my need.<br>
+<br>
+If you are missing some lisp function, just ask.<br>
+<br>
+The project must be copied to a folder that is<br>
+PATH in AUTOCAD.<br>
+<br>
+To start you must open the file TESTE.DWG<br>
+<br>
+Load TESTE.LSP.<br>
+Use the syntax:<br>
+<br>
+(Load "teste.lsp")<br>
+<br>
+To start the program type in the AutoCAD command line:<br>
+<br>
+EG <br>
+<br>
+<br>
+The Grid will be automatically populated.<br>
+This is not the problem.<br>
+<br>
+The way I am sending the program it works perfectly<br>
+with the exception of navigation between cells of Grid.<br>
+<br>
+The "Delete Row" buttons, "Insert Row", "Add Line" and "Cancel"<br>
+work exactly as I need.<br>
+<br>
+The button "Update Drawing" is beside the point and inhibit some routines<br>
+he performed in order to not take them longer.<br>
+<br>
+<br>
+<img src="http://c:\lixo\tela_01.png" alt="" loading="lazy"><br>
+<br>
+<br>
+<br>
+But What do I desire is to move the cursor on the Grid using the key<br>
+TAB or Enter key. I was able to do using the TAB key.<br>
+<br>
+For the navigation function will be necessary to remove the<br>
+reviews of defun c: DBEngenharia_BCDADOS / Form_Geral / Grid_Legenda # OnEndLabelEdit<br>
+<br>
+Leave it as follows:<br>
+<br>
+<br>
+(defun c:DBEngenharia_BCDADOS/Form_Geral/Grid_Legenda#OnEndLabelEdit (Row Column / qtd_loc material_loc dimensoes_loc peso_espec qtd_dimensoes<br>
+                                                                                   espessura_loc largura_loc comprimento_loc peso_peca diametro_loc<br>
+                                                                                   iColunas iLinhas lCelula iRow iColumn)<br>
+<br>
+  ;direcionar a navegação da grid<br>
+  (setq iColunas (dcl-Grid-GetColumnCount DBEngenharia_BCDADOS/Form_Geral/Grid_Legenda))<br>
+  (setq iLinhas  (dcl-Grid-GetRowCount DBEngenharia_BCDADOS/Form_Geral/Grid_Legenda))<br>
+  (setq lCelula  (dcl-Grid-GetCurCell DBEngenharia_BCDADOS/Form_Geral/Grid_Legenda))<br>
+  (setq iRow     (car lCelula))<br>
+  (setq iColumn  (cadr lCelula))<br>
+<br>
+  ;se não estiver na ultima coluna<br>
+  (if (&lt; iColumn iColunas)<br>
+    (progn<br>
+      ;;setar a proxima coluna e navegar normalmente semmudar a linha<br>
+      (setq iColumn (1+ iColumn))<br>
+     )<br>
+    (progn<br>
+      ;se for a ultima coluna então vai para a primeira colunha<br>
+      (setq iColumn 1)<br>
+<br>
+      (if (&lt; iRow iLinhas)<br>
+        (progn<br>
+          ;se for a ultima coluna mas nao a ultima linha então muda de linha<br>
+          (setq iRow (1+ iRow))<br>
+         )<br>
+        (progn<br>
+          ;se for a ultima linha então vai para a primeira linha<br>
+          (setq iRow 0)<br>
+         )<br>
+       ) ;;if (&lt; iRow iLinhas)<br>
+<br>
+     )<br>
+   )  ;;if (&lt; iColumn iColunas)<br>
+<br>
+<br>
+  (dcl-Grid-StartCellEdit DBEngenharia_BCDADOS/Form_Geral/Grid_Legenda iRow iColumn)<br>
+  (princ)<br>
+ )<br>
+<br>
+<br>
+<br>
+<br>
+Run the program by typing<br>
+EG <br>
+<br>
+in the AutoCAD command line.<br>
+<br>
+<br>
+<br>
+notice that you can now move the Grid using<br>
+TAB.<br>
+<br>
+In entando the domouse use was impaired.<br>
+<br>
+The Mouse no longer obeys properly.<br>
+<br>
+By clicking on a column the focus does not remain in the column indicated.<br>
+<br>
+The "Delete Row" buttons, "Insert Row", "Add Line" and "Cancel"<br>
+fucnionava that do not work properly anymore.<br>
+<br>
+When I click on "Cancel" the focus of the behavior an Grid<br>
+makes the cursor walks cell by cell.<br>
+<br>
+Similar events occur when using the other buttons.<br>
+<br>
+I think that by getting to make a button to work the other<br>
+also function properly.<br>
+<br>
+<br>
+I wish the end rsultado was the grid running<br>
+the TAB and the buttons all working properly.<br>
+<br>
+<br>
+I look forward tips and suggestions.<br>
+<br>
+hugs<br>
+<br>
+Dionei<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2105/tela_01.png">tela_01.png</a> <span class="muted">(83738 bytes)</span></li><li><a href="../attachments/2106/tela_02.png">tela_02.png</a> <span class="muted">(66388 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

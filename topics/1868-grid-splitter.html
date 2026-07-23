@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid splitter · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1868</p>
+    <h1>Grid splitter</h1>
+    <p class="meta">Started by vladgothe ·
+      2012-08-20 06:46 UTC ·
+      10 replies · SMF topic #1868</p>
+<article class="post" id="msg9167">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2012-08-20 06:46 UTC</span>
+  </div>
+  <div class="post-body">In my main form, I implemented a grid, because it is much flexible. The grid is wider than the main form and automatically has an horizontal splitter, so if I want to edit the last cells from the grid I must move the splitter towards right. But when I try to edit these cells, the splitter automatically moves to its default location, the edit cursor is active, but its position is in another cell. When I finish editing though, the text goes to it's correct position. Is there any method to stop the splitter moving automatically?</div>
+</article>
+<article class="post" id="msg9169">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-08-20 16:43 UTC</span>
+  </div>
+  <div class="post-body">Do you mean "scroll bar" or "splitter"? Can you attach a simple example that I can use to reproduce the problem?</div>
+</article>
+<article class="post" id="msg9172">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2012-08-21 07:18 UTC</span>
+  </div>
+  <div class="post-body">I meant "scroll bar", sorry for ambiguity. I solved the problem by making the grid shorter, so the scroll bar does not appear anymore. I observed that when I use dcl_Grid_SetCellStyle and the style is 18 (Dropdown list), the runtime crashes, so I am forced to use Dropdown combo lists (36). It's a bug that was submitted, but in my build (7.0.0.6), AutoCAD 2007 and Windows 7 64 bit, it's still there.<br>
+</div>
+</article>
+<article class="post" id="msg9177">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-08-21 15:13 UTC</span>
+  </div>
+  <div class="post-body">It would be great if you could attach simple examples for both bugs so that I can fix them for the next build.</div>
+</article>
+<article class="post" id="msg9189">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2012-08-23 09:36 UTC</span>
+  </div>
+  <div class="post-body">Here, I made a simple example with a grid. The bug with the scroll bar occurs only when grid's width is large. But you will observe it if you try to edit the last cell from the right multiple times. In AutoCAD 2013 and 2007, when I try to edit the droplist from the second column, it crashes. Best regards.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1800/Grid_test.odcl">Grid_test.odcl</a> <span class="muted">(811 bytes)</span></li><li><a href="../attachments/1801/gridtest.lsp">gridtest.lsp</a> <span class="muted">(527 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9192">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-08-23 15:09 UTC</span>
+  </div>
+  <div class="post-body">I was able to reproduce the unwanted scrolling, and I will investigate that. I could not reproduce the dropdown crash. Are you using the latest build of OpenDCL?</div>
+</article>
+<article class="post" id="msg9202">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2012-08-24 08:54 UTC</span>
+  </div>
+  <div class="post-body">I use the 7.0.0.6 version of the runtime and studio, in AutoCAD 2007 and Windows 7 64 bit. In AutoCAD 2007, it doesn't crash when I try to change an item from the list the first time, it crashes the second time when I make the change. In AutoCAD 2013, it crashes the first time when I try to change an item in the list. Also, in the grid, I don't want to use visual style in my droplists (that grey is ugly), but I couldn't find out how to set the visual style of a droplist in a grid.<br>
+I don't know if I have the latest build of the runtime, but I downloaded it aprox. a week ago.</div>
+</article>
+<article class="post" id="msg9229">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-08-25 01:54 UTC</span>
+  </div>
+  <div class="post-body">I've fixed the unwanted scrolling problem for the next build. I have not been able to reproduce the dropdown crash, so I may need more information or more detailed steps to reproduce it. Are you able to reproduce that one on a different computer?<br>
+<br>
+There is no way to change the visual style or other properties of the grid dropdown edit control.</div>
+</article>
+<article class="post" id="msg9249">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2012-08-29 08:18 UTC</span>
+  </div>
+  <div class="post-body">After I uninstalled and then reinstalled an add-on for AutoCAD, now, when I use dropdown lists, it doesn't crash anymore. Now, my program acts like it should.</div>
+</article>
+<article class="post" id="msg9250">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2012-08-29 15:35 UTC</span>
+  </div>
+  <div class="post-body">After some use, sometimes the program still crashes. Here is the error message in AutoCAD 2007, if it helps:<br>
+Problem signature:<br>
+  Problem Event Name:	APPCRASH<br>
+  Application Name:	acad.exe<br>
+  Application Version:	23.0.54.0<br>
+  Application Timestamp:	440acd95<br>
+  Fault Module Name:	USER32.dll<br>
+  Fault Module Version:	6.1.7601.17514<br>
+  Fault Module Timestamp:	4ce7ba59<br>
+  Exception Code:	c0000005<br>
+  Exception Offset:	0001613f<br>
+  OS Version:	6.1.7601.2.1.0.256.1<br>
+  Locale ID:	1033<br>
+  Additional Information 1:	ef1a<br>
+  Additional Information 2:	ef1a5c26c968aa33f0b7c9bb536b7677<br>
+  Additional Information 3:	86d3<br>
+  Additional Information 4:	86d34300ce0416eff22ea82cefa0d682<br>
+<br>
+And here is the error message in AutoCAD 2013:<br>
+Problem signature:<br>
+  Problem Event Name:	APPCRASH<br>
+  Application Name:	acad.exe<br>
+  Application Version:	25.0.55.0<br>
+  Application Timestamp:	4f309abd<br>
+  Fault Module Name:	kernel32.dll<br>
+  Fault Module Version:	6.1.7601.17651<br>
+  Fault Module Timestamp:	4e21213b<br>
+  Exception Code:	c0000005<br>
+  Exception Offset:	0000000000002e95<br>
+  OS Version:	6.1.7601.2.1.0.256.1<br>
+  Locale ID:	1033<br>
+  Additional Information 1:	878d<br>
+  Additional Information 2:	878da497071cdefdaf9a4a7b9b9ea43a<br>
+  Additional Information 3:	c82c<br>
+  Additional Information 4:	c82ca074f059887d8ef914d4ec4b9b52<br>
+If it crashes once, even if I restart AutoCAD and reload the program, it crashes everytime from then on.<br>
+</div>
+</article>
+<article class="post" id="msg9254">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-08-29 17:00 UTC</span>
+  </div>
+  <div class="post-body">I need detailed instructions on what you do when the crash occurs, including timing. If it's difficult to describe with sufficient detail, a screen capture video would be helpful as well.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

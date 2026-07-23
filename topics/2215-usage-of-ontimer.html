@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Usage of 'onTimer' · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2215</p>
+    <h1>Usage of 'onTimer'</h1>
+    <p class="meta">Started by Peter2 ·
+      2014-12-09 11:27 UTC ·
+      1 replies · SMF topic #2215</p>
+<article class="post" id="msg11139">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-12-09 11:27 UTC</span>
+  </div>
+  <div class="post-body">I looked at the help and the sample of "onTimer" and I'm not sure if I understood it entirely ...<br>
+<br>
+The current sample seem to me like a "delay / pause" command: "start something - pause it - continue it".<br>
+<br>
+I don't understand how to define a timer which is "independent" from a command (sorry for my unprofessional wording). Simple example - create a "race of line-drawing", based on a count-down of 10 seconds:<br>
+<br>
+<br>
+start timer for 10 seconds (countdown)<br>
+while timer is running<br>
+       draw as many lines as you are able to<br>
+<br>
+if timer is down to 0<br>
+     alert "Game over"<br>
+<br>
+Maybe I misunderstand the basic target of a timer, but is it possible to make a code like this?</div>
+</article>
+<article class="post" id="msg11140">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-12-09 17:42 UTC</span>
+  </div>
+  <div class="post-body">What you describe is not a suitable use for OnTimer. For your scenario, you would simply check the system clock before starting the loop, then check the system clock inside the loop and break out when the clock reaches a certain time. OnTimer is for triggering an event in the future, while normal system activity continues in the meantime.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

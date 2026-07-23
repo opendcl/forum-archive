@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vlide question · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 720</p>
+    <h1>Vlide question</h1>
+    <p class="meta">Started by Slavko.Ivanovic ·
+      2009-04-16 08:04 UTC ·
+      2 replies · SMF topic #720</p>
+<article class="post" id="msg3508">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2009-04-16 08:04 UTC</span>
+  </div>
+  <div class="post-body"><br>
+OK, this maybe don't belongs here, but<br>
+<br>
+<strong>How to add new syntax highlighting to Visual Lisp?</strong><br>
+<br>
+In the past years i have made a lot of global use functions (maybe 50-60 pcs).<br>
+They are now actually my extension to AutoLisp and Visual Lisp functions.<br>
+<br>
+I'm also globalizing some of my functions for <strong>multiple </strong> read/write/run/event-handling<br>
+of OpenDCL controls, as an extension to existing Odcl functions in Autolisp. <br>
+---<br>
+<br>
+ODCL functions are added to Vlide syntax highlighting. How?<br>
+I want to add my functions like<br>
+$F|ss|WCS-pt|  $F|ss|UCS-pt|  $F|ss|spinner|  $F|ss|list-2-str|  $f|ss|rem-from-str| <br>
+$f|ss|read-line|  $F|ss|sset&gt;elist|  $F|ss|regset|  $F|ss|add-xdata|<br>
+$F|ss|make-circle|  $F|ss|make-mtext|  $F|ss|make-lwpoly| ..$F...$F....$F....<br>
+<br>
+some common Slavko Solutions extension functions:<br>
+<br>
+<br>
+;; KONVERTUJE LISTU U STRING<br>
+;; ARG-list / RETVAL-string of list<br>
+(DEFUN $F|ss|list-2-str| (@lista / tmp_n gfile)<br>
+ (SETQ tmp_n (VL-FILENAME-MKTEMP)<br>
+       gfile (OPEN tmp_n "w")<br>
+ )<br>
+ (PRIN1 @lista gfile)<br>
+ (CLOSE gfile)<br>
+ (SETQ gfile  (OPEN tmp_n "r")<br>
+       @lista (READ-LINE gfile)<br>
+ )<br>
+ (CLOSE gfile)<br>
+ @lista<br>
+)<br>
+;; SELECTION SET U ENAME LIST<br>
+;; ARG-sset / RETVAL-list of enames<br>
+(DEFUN $F|ss|sset&gt;elist| (@sset / ssn elist tmpent)<br>
+ (IF @sset<br>
+  (PROGN (SETQ ssn (- (SSLENGTH @sset) 1))<br>
+         (WHILE (&lt;= 0 ssn)<br>
+          (SETQ tmpent (SSNAME @sset ssn)<br>
+                elist  (APPEND elist (SETQ elist (LIST tmpent)))<br>
+                ssn    (- ssn 1)<br>
+          )<br>
+         )<br>
+  )<br>
+ )<br>
+ elist<br>
+)<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3509">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-04-16 09:16 UTC</span>
+  </div>
+  <div class="post-body">You could try something like this <br>
+<br>
+(setq functionList (list '$f|ss|wcs-pt|            '$f|ss|ucs-pt|<br>
+                         '$f|ss|spinner|           '$f|ss|list-2-str|<br>
+                         '$f|ss|rem-from-str|      '$f|ss|read-line|<br>
+                         '$f|ss|sset&gt;elist|        '$f|ss|regset|<br>
+                         '$f|ss|add-xdata|         '$f|ss|make-circle|<br>
+                         '$f|ss|make-mtext|        '$f|ss|make-lwpoly|<br>
+                        )<br>
+)<br>
+<br>
+<br>
+(eval (list 'pragma (list 'quote (list (cons 'unprotect-assign functionList)))))<br>
+<br>
+<br>
+;;<br>
+;; Define functions<br>
+<br>
+<br>
+;; &lt; ... &gt;<br>
+<br>
+;; then,<br>
+(eval (list 'pragma (list 'quote (list (cons 'protect-assign functionList)))))<br>
+<br>
+(setq functionList nil)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/676/Pragma Protect-Assign2009-04-16 19-13-37.png">Pragma Protect-Assign2009-04-16 19-13-37.png</a> <span class="muted">(18100 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3510">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2009-04-16 10:00 UTC</span>
+  </div>
+  <div class="post-body"><br>
+yeah Kerry, that is that.<br>
+<br>
+Thank You. I will use this.<br>
+<br>
+but, can you tell me more info about <strong>pragma </strong>?</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

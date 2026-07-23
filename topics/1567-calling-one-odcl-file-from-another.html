@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>calling one odcl file from another · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1567</p>
+    <h1>calling one odcl file from another</h1>
+    <p class="meta">Started by andrew ·
+      2011-01-06 14:21 UTC ·
+      2 replies · SMF topic #1567</p>
+<article class="post" id="msg7669">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2011-01-06 14:21 UTC</span>
+  </div>
+  <div class="post-body">I have a odcl program that has many many sub modal windows<br>
+most of which are no longer used, however the lsp code for all these sub modal windows are co-dependant so just re-writing it to use the 2 sub modal windows i need would take me a while to do.<br>
+<br>
+so my question is, is it possible to call sub modal windows in one odcl file from another?<br>
+<br>
+for example<br>
+(dcl_Form_Show dwgbrowser_Form3) is from one odcl file<br>
+<br>
+if i put just the above in my command line, the sub modal window opens and functions properly.<br>
+i want to put that function call into a totally different odcl file and have it open up without having to re-write any code.<br>
+<br>
+if this is possible can someone explain how to get it to work<br>
+<br>
+thanks</div>
+</article>
+<article class="post" id="msg7670">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-01-06 14:34 UTC</span>
+  </div>
+  <div class="post-body">Sure, you can, andrew, I'm using nearly different 20 odcl project files and I call a form from my layer.odcl from my main.odcl. You just have to make sure that both projects are loaded.<br>
+<br>
+(dcl_project_load "main.odcl")<br>
+(dcl_project_load "layer.odcl")<br>
+<br>
+[...]<br>
+<br>
+(defun c:main_form1_pb_layer_OnClicked ()<br>
+  (dcl_form_show layer_selection)<br>
+); c:main_form1_pb_layer_OnClicked <br>
+<br>
+[...]<br>
+<br>
+(dcl_form_show main_form1)<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg7671">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2011-01-07 14:01 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred, got it working  ;D</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

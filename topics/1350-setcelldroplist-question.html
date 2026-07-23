@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SetCellDropList question · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1350</p>
+    <h1>SetCellDropList question</h1>
+    <p class="meta">Started by copter ·
+      2010-10-15 11:50 UTC ·
+      5 replies · SMF topic #1350</p>
+<article class="post" id="msg7206">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2010-10-15 11:50 UTC</span>
+  </div>
+  <div class="post-body">Hello <br>
+I am probably doing something wrong:<br>
+I can't populate on intialize a droplist cell in a grid.<br>
+I joined a little sample in order to demonstrate the issue.<br>
+I tryed with odcl 5 and odcl 6: Same<br>
+Thanks for your help.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1451/Test.odcl">Test.odcl</a> <span class="muted">(634 bytes)</span></li><li><a href="../attachments/1452/test.lsp">test.lsp</a> <span class="muted">(255 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7207">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-10-15 12:28 UTC</span>
+  </div>
+  <div class="post-body">That looks like a bug.  I took a quick look at the code, and it's using the grid control's column default dropdown list and ignoring the list set for the cell.  I'll get that fixed for the next build.</div>
+</article>
+<article class="post" id="msg7208">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-10-15 12:36 UTC</span>
+  </div>
+  <div class="post-body">After investigating more deeply, I now see that this is working as designed. The cell must have a style set or it uses the column default drop list even if it has its own drop list set. This is done so that settings for a cell can revert back to "inherit from column defaults" mode by setting its style to -1. Your code works if you explicitly set the cell style via (dcl_Grid_SetCellStyle) before adding the list items.</div>
+</article>
+<article class="post" id="msg7209">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2010-10-15 13:18 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen It works<br>
+<br>
+Initialy I wanted to modify the defaut drop list with  "dcl_Control_SetColumnListItems"<br>
+And it doenst work: (Even if the cells type are defined):<br>
+(dcl_Control_SetColumnListItems Test_Form1_Grid1 (list (list "A" "B" "C"))) do nothnig.<br>
+That is the reason why I choose to set the list cell by cell.<br>
+<br>
+Any idea ?</div>
+</article>
+<article class="post" id="msg7212">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-10-15 15:28 UTC</span>
+  </div>
+  <div class="post-body">In your example, the list would be for column 0. Try this instead:<br>
+(dcl_Control_SetColumnListItems Test_Form1_Grid1 (list nil (list "A" "B" "C")))<br>
+</div>
+</article>
+<article class="post" id="msg7219">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2010-10-18 09:05 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen.<br>
+I'll do that<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

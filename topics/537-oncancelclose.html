@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OnCancelClose · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 537</p>
+    <h1>OnCancelClose</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-02-17 00:01 UTC ·
+      3 replies · SMF topic #537</p>
+<article class="post" id="msg2443">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-17 00:01 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I just translate the ErrorHandling.htm. I had a look at the sample and I'm confused: in my experiences the Canceling argument in<br>
+<br>
+<pre class="code"><code>(defun c:Project1_Form1_OnCancelClose( Canceling /)<br>
+  ;; Return T to prevent form closing if not canceling, and unresolved errors found<br>
+  (and (not Canceling) (HighlightFormErrors)) ; Always allow form to close when canceling<br>
+)</code></pre><br>
+<br>
+is not a boolean, but an integer - in any case until now. 1 for ESC pressed, 0 for not ESC pressed.<br>
+Did something has changed? Is it really a boolean now?<br>
+<br>
+See here: http://www.opendcl.com/forum/index.php?topic=384.msg1724#msg1724<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2444">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-02-17 02:47 UTC</span>
+  </div>
+  <div class="post-body">Hmm, you're right, it is passed as an integer. Strange, because it is a boolean right up to the point where it is sent to AutoCAD. I will fix the documentation.</div>
+</article>
+<article class="post" id="msg2450">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-17 07:21 UTC</span>
+  </div>
+  <div class="post-body">Ok, thanks, good to know.<br>
+<br>
+BTW, I'm just changing many files. Please, don't change the German help files, but give me instructions, what to change where. Maybe I've already changed a file.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2465">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-02-17 15:01 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I did not note exactly what I changed. I will upload new source files so you can use the SVN software to compare.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

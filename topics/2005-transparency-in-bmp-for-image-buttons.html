@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>'Transparency' in BMP for Image Buttons · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2005</p>
+    <h1>'Transparency' in BMP for Image Buttons</h1>
+    <p class="meta">Started by Peter2 ·
+      2013-08-12 14:32 UTC ·
+      11 replies · SMF topic #2005</p>
+<article class="post" id="msg9878">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-08-12 14:32 UTC</span>
+  </div>
+  <div class="post-body">I found some fine PNGs with transparency, and according to some postings here I filled the "transparent area" with colour 192,192,192 and saved them as BMP-24 bit. <br>
+<br>
+Using these images (32x32) on image-buttons brings this result - not exactly what expected (see attachment, screenshot from Editor):<br>
+<br>
+What's wrong?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1895/ODCL_Icons.jpg">ODCL_Icons.jpg</a> <span class="muted">(5564 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9880">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-08-12 14:49 UTC</span>
+  </div>
+  <div class="post-body">Transparency is tricky, and can work differently in different controls. On image buttons, I think you simply need original images with built-in transparency. Also, the Background Color and Style of the image button could affect how it displays (particularly the XP-themed style may be different).</div>
+</article>
+<article class="post" id="msg9883">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-08-12 15:01 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2005.msg9880#msg9880 date=1376318954 wrote:</cite><br>
+...On image buttons, I think you simply need original images with built-in transparency. ...</blockquote><br>
+So in this case no need to convert?<br>
+<br>
+EDIT:<br>
+- I used the original PNG, and get a black background (in Preview and in dialogue)<br>
+- Then I imported the same BMP as before - and the "ugly grey background" disappeared.<br>
+<br>
+Then I retried with another picture. I replaced ...<br>
+- the imported  BMP with the same(!) external BMP -&gt; no changes.<br>
+- the imported BMP with the transparent PNG -&gt; black background.<br>
+- the imported PNG with the same external BMP (see above) -&gt; fine, transparent looking background.<br>
+<br>
+Problems with refreshing?<br>
+</div>
+</article>
+<article class="post" id="msg9892">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-08-13 00:31 UTC</span>
+  </div>
+  <div class="post-body">Could you attach (or email if you don't want them in public) sample files that I can use to reproduce the problem?</div>
+</article>
+<article class="post" id="msg9896">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-08-13 05:08 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2005.msg9892#msg9892 date=1376353873 wrote:</cite><br>
+Could you attach (or email if you don't want them in public) sample files that I can use to reproduce the problem?<br>
+</blockquote><br>
+Here they are ..<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1900/background_examples.zip">background_examples.zip</a> <span class="muted">(6914 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9903">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-08-13 14:45 UTC</span>
+  </div>
+  <div class="post-body">I tried to reproduce the problem, but for me, the .png is always black background and the .bmp is always transparent. The visible graphic button on the open form in Studio does not update automatically after the picture folder changes, but that is by design. Is the .bmp displaying correctly for you at runtime?</div>
+</article>
+<article class="post" id="msg9914">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-08-13 21:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2005.msg9903#msg9903 date=1376405100 wrote:</cite>...Is the .bmp displaying correctly for you at runtime?</blockquote><br>
+The "ugly" BMP was displayed in Editor on my PC and at runtime on other PCs. But this project had a lot of changes before - I defined 300 BMPs, removed them later, worked with PNG, then with the first draft of BMP. So maybe there was really a refreshing problem; for me it is OK now to know that color 192,192,192 works fine.</div>
+</article>
+<article class="post" id="msg9915">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-08-14 21:51 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Peter2 link=topic=2005.msg9914#msg9914 date=1376430129 wrote:</cite><br>
+...for me it is OK now to know that color 192,192,192 works fine.</blockquote><br>
+Hmmmh, changed again. Now images which were fine yesterday have again the semi-dark background. New pictures which I added today are fine. Problem is in runtime (but in VMWare), the Editor seem to be OK.<br>
+<br>
+I use the ODCL, saved-as-LSP and compiled to VLX - maybe there is a problem?<br>
+<br>
+But the issue is not so important at the moment - I will keep on watching ...</div>
+</article>
+<article class="post" id="msg9916">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-08-15 00:21 UTC</span>
+  </div>
+  <div class="post-body">If you can document steps to reproduce it reliably, please let me know so I can investigate.</div>
+</article>
+<article class="post" id="msg9917">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-08-15 06:49 UTC</span>
+  </div>
+  <div class="post-body">Hi, a small hint: bmp are getting transparent when you use RGB 192,192,192 in the background. Don't use grading alpha colors (grading to transparent).<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9922">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-08-15 15:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2005.msg9916#msg9916 date=1376526091 wrote:</cite><br>
+If you can document steps to reproduce it reliably, please let me know so I can investigate.<br>
+</blockquote><br>
+Yes, I will try. Maybe it is a problem of compilation ..<br>
+<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=2005.msg9917#msg9917 date=1376549377 wrote:</cite><br>
+Hi, a small hint: bmp are getting transparent when you use RGB 192,192,192 in the background. </blockquote><br>
+This is what I did. I open the PNG, filled the transparent area around with 192,192,192 and saved as BMP.<br>
+<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=2005.msg9917#msg9917 date=1376549377 wrote:</cite><br>
+Don't use grading alpha colors (grading to transparent).</blockquote><br>
+???<br>
+Some posts above I added some pictures. Could you take a look to check them?<br>
+<br>
+EDIT:<br>
+All the BMP have 350-450 colours which is a little bit crazy. I start to test a reduction to 16 colours.</div>
+</article>
+<article class="post" id="msg9924">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-08-15 15:59 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Peter2 link=topic=2005.msg9922#msg9922 date=1376580666 wrote:</cite><br>
+[quote author=Fred Tomke link=topic=2005.msg9917#msg9917 date=1376549377]<br>
+Don't use grading alpha colors (grading to transparent).</blockquote><br>
+???<br>
+Some posts above I added some pictures. Could you take a look to check them?<br>
+<br>
+<br>
+Yes, I've seen <a href="http://www.opendcl.com/forum/index.php?action=dlattach;topic=2005.0;attach=1895" rel="nofollow noopener">{2}</a> and thought you wanted to get a gradiation to transparent under the arrow.<br>
+<br>
+I usually use icons. You can save your pictures with transparent background to ICO file using Gimp.<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

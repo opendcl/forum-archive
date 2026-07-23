@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Keynotes - Dynamic! · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 289</p>
+    <h1>Keynotes - Dynamic!</h1>
+    <p class="meta">Started by jb ·
+      2008-04-15 11:56 UTC ·
+      9 replies · SMF topic #289</p>
+<article class="post" id="msg1285">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-04-15 11:56 UTC</span>
+  </div>
+  <div class="post-body">Did 2007 have mleaders?  If so this will work on 2007 forward.  It's been tested on 2008 and 2009.<br>
+<br>
+I'm using the latest stable build: 4.1.2.1<br>
+<br>
+This routine is in it's 4th incarnation - you may have seen earlier versions before.  I'm just going to show the whole routine for those that aren't "in the know".<br>
+<br>
+Summary of Commands:<br>
+<br>
+jbkeynotes - shows the main keynoting form.<br>
+jbKeyInfo - shows the xdata form.<br>
+<br>
+<br>
+This is a dynamic Keynoting routine.  All note definitions are contained in an external text document, edited with notepad.exe.  This is a tab delimited file; meaning that the key and the note are separated by a tab.  Very important: this is how the routine knows the difference.  "Divisions" are defined by an asterisk (*) and the number directly after the asterisk will be used to filter the keynotes (more on that later)<br>
+<br>
+<img src="http://i283.photobucket.com/albums/kk302/bothetraveler/KeyFile.jpg" alt="" loading="lazy"><br>
+<br>
+This is the main form.  (command :jbKeynotes) The tool tips are pretty extensive so I won't spend much time here.  One thing to know: I use ADT so the keyfile is tied to the project.  If you don't have ADT then just make sure the keyfile is located in the same folder as the drawing.  Add keyed annotation to the drawing by double-clicking the ListBox with the keynotes.  After selecting two points on screen the keynote is generated.  Hitting  at this point will add another identical keynote.  Selecting different Divisions will filter the KeyList.  This is a modeless, re-sizable form.<br>
+<br>
+<img src="http://i283.photobucket.com/albums/kk302/bothetraveler/RolledDown.jpg?t=1208199341" alt="" loading="lazy"><br>
+<br>
+If you pick the little button in the top left corner, the form rolls up:<br>
+<br>
+<img src="http://i283.photobucket.com/albums/kk302/bothetraveler/RolledUp.jpg?t=1208199789" alt="" loading="lazy"><br>
+<br>
+OK, on to what this thing does.  You can generate 3 types of annotation: a Keynote, a Tagnote, or Mtext. Keynotes and Tagnotes are AutoCAD mleader objects:<br>
+<br>
+<img src="http://i283.photobucket.com/albums/kk302/bothetraveler/OutPut.jpg?t=1208200021" alt="" loading="lazy"><br>
+<br>
+A Keynote will require a corresponding KeyChart.  The form has buttons for generating a KeyChart or updating an existing chart if keynotes are added or deleted.  Only Keynote Objects will appear in the KeyChart.  The keychart is Mtext with Xdata attached:<br>
+<br>
+<img src="http://i283.photobucket.com/albums/kk302/bothetraveler/Chart.jpg?t=1208200649" alt="" loading="lazy"><br>
+<br>
+Dynamic: whenever a drawing is opened, and the routine is loaded via an .mnl or acaddoc.lsp file, the drawing will be compared to the file. Any discrepancies will be changed automatically.  The file takes precedence over the drawing.  So what this means is you can have these notes in as many places in the project that you want; the client changed from brick to stucco?  No problem: change the keyfile and evertime a user opens a file it's automatically updated. (No more redlines  :wink:)<br>
+<br>
+At anytime use the sync button on the form to "synchronise" the drawing and key file.  How does all this happen you ask?  Xdata.  The routine attaches Xdata to the annotation objects with the Key, Note and Object Type.  This is a little form to reveal that info: (command: jbKeyInfo)<br>
+<br>
+<img src="http://i283.photobucket.com/albums/kk302/bothetraveler/KeynoteData.jpg?t=1208200157" alt="" loading="lazy"><br>
+<br>
+OK, so lets say there is a keynote in the drawing but the project manager erased it from the file?  The "keyless" annotation will be turned red and Keynote Objects will have the key replaced with the note - so you know what's been deleted.<br>
+<br>
+<img src="http://i283.photobucket.com/albums/kk302/bothetraveler/Synced.jpg?t=1208200504" alt="" loading="lazy"><br>
+<br>
+KeyChart Objects will always turn a different color on Syncing to alert the user to a possible change with the Keynote Objects.<br>
+<br>
+<img src="http://i283.photobucket.com/albums/kk302/bothetraveler/ChartSync.jpg?t=1208201096" alt="" loading="lazy"><br>
+<br>
+Well, that's it.  Attached is the source code and opendcl form code.  There is a file, jb002-Public-Include.lsp, that <em>should</em> have all the external subs this routine uses.  Let me know if somethings missing.  Load up the lisp files and issue "jbkeynotes" command to bring up the main form and go from there.  All the mtext and mleader objects respect current style settings.  In the jb002-KeyNotes.lsp file you'll find the routines for generating the annotation objects.  Check out c:jbPlaceKeyNote and c:jbPlaceNote to see the changes I make to the Mleader object at the command line.  Other than that all style properties apply.  All objects are created using (command . . .) so if you have command reactors handling layering, your all set.<br>
+<br>
+Feel free to hack and use what you like.  It's about half commented and the function names and vars are <em>usually</em> self explanatory.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1417/jbKeynotes-v3.zip">jbKeynotes-v3.zip</a> <span class="muted">(25551 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1287">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2008-04-15 16:30 UTC</span>
+  </div>
+  <div class="post-body">James,<br>
+<br>
+I remember this program used to be a hybrid of Lisp and VBA? Not it uses OpenDCL. Great! <br>
+<br>
+Thank you!</div>
+</article>
+<article class="post" id="msg1297">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-04-16 16:09 UTC</span>
+  </div>
+  <div class="post-body">Thanks Kelie - have you ever used it??</div>
+</article>
+<article class="post" id="msg1299">
+  <div class="post-head">
+    <span class="post-author">Marco Jacinto</span>
+    <span class="post-date muted">2008-04-16 17:04 UTC</span>
+  </div>
+  <div class="post-body">James, I think the function (aeclayerkeylist) is missing, so I tweak the jb:GetADTVar funtion a litle and now your program works like a charm, I will atart using it, so I any comments I will let you know<br>
+<br>
+The look of the dialog is great, thanks for sharing.<br>
+<br>
+For those who are using 5.0.0.8 and up, remember to change the return value for the checkboxes in the c:jb002_00_KEYLIST_OnDblClicked function.<br>
+<br>
+Saludos <br>
+Marco Jacinto</div>
+</article>
+<article class="post" id="msg1300">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-04-16 18:16 UTC</span>
+  </div>
+  <div class="post-body">Marco-<br>
+<br>
+I thought I caught all the AEC stuff - thanks for catching that!  <br>
+<br>
+Please keep me updated  ;)<br>
+<br>
+jb</div>
+</article>
+<article class="post" id="msg1302">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2008-04-16 21:33 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=289.msg1297#msg1297 date=1208362159 wrote:</cite><br>
+Thanks Kelie - have you ever used it??<br>
+</blockquote><br>
+<br>
+Not yet. But I will now that you're using OpenDCL. I can use your program and at the same time learn OpenDCL.  :)</div>
+</article>
+<article class="post" id="msg6996">
+  <div class="post-head">
+    <span class="post-author">tombuck</span>
+    <span class="post-date muted">2010-07-01 12:51 UTC</span>
+  </div>
+  <div class="post-body">I have the program running on Acad 2011 with OpenDCL 6.0.0.28 running.  The program is not finding the kb.key file even though it is located in the same folder as the drawing.<br>
+<br>
+How do I point to the key file?  Will the program look for any key file or must it be named kb.key?<br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg7007">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2010-07-07 14:04 UTC</span>
+  </div>
+  <div class="post-body">Ok, I've fixed a few bugs and revised the findfile function for kb.key: kb.key MUST be in AutoCAD's search path.  The width property for an mleader with an mtext "note" now uses the CANNOSCALE var . . . earlier versions will default to 96.0.<br>
+<br>
+The download on the first post has been updated: jbKeynotes.v3.zip<br>
+<br>
+Hope this helps.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg12096">
+  <div class="post-head">
+    <span class="post-author">francinez</span>
+    <span class="post-date muted">2016-09-15 08:52 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+Im working with Autocad 2016 and I wanted to use your Keynotes tools.<br>
+On Autocad command I appload the file <em>jb002-odcl.lsp</em> but I get an error message: <br>
+<em>Command: ; error: no function definition: DCL_FORM_ISACTIVE</em><br>
+Do you know why?<br>
+Thank<br>
+Francine</div>
+</article>
+<article class="post" id="msg12097">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-09-15 15:35 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=francinez link=topic=289.msg12096#msg12096 date=1473929522 wrote:</cite><br>
+<em>Command: ; error: no function definition: DCL_FORM_ISACTIVE</em><br>
+Do you know why?<br>
+</blockquote><br>
+<br>
+You have to first install the OpenDCL Runtime. Current version is 8.1.0.0, available here:<br>
+<a href="http://www.opendcl.com/download/" rel="nofollow noopener">{2}</a></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

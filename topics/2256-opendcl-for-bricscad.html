@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenDCL for BricsCAD · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2256</p>
+    <h1>OpenDCL for BricsCAD</h1>
+    <p class="meta">Started by dioneib ·
+      2015-04-17 00:29 UTC ·
+      7 replies · SMF topic #2256</p>
+<article class="post" id="msg11329">
+  <div class="post-head">
+    <span class="post-author">dioneib</span>
+    <span class="post-date muted">2015-04-17 00:29 UTC</span>
+  </div>
+  <div class="post-body">There OpenDCL to BricsCAD?</div>
+</article>
+<article class="post" id="msg11331">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-04-17 14:59 UTC</span>
+  </div>
+  <div class="post-body">Yes, OpenDCL 8 supports AutoCAD, BricsCAD, ZWCAD, and soon GstarCAD.</div>
+</article>
+<article class="post" id="msg11334">
+  <div class="post-head">
+    <span class="post-author">dioneib</span>
+    <span class="post-date muted">2015-04-17 17:03 UTC</span>
+  </div>
+  <div class="post-body">Thank you.<br>
+I will search to find out how to make it work.<br>
+In attempts the BricsCAD did not recognize the command (command "_.OPENDCL").</div>
+</article>
+<article class="post" id="msg11335">
+  <div class="post-head">
+    <span class="post-author">dioneib</span>
+    <span class="post-date muted">2015-04-17 19:03 UTC</span>
+  </div>
+  <div class="post-body">I managed to make it work.<br>
+The correct is (command "OpenDCL") and not (command "_.OPENDCL").<br>
+The dot (.) Makes all the difference.<br>
+I appreciate your promptness.<br>
+hugs<br>
+Dionei</div>
+</article>
+<article class="post" id="msg11336">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-04-18 20:02 UTC</span>
+  </div>
+  <div class="post-body">It should work either way, and does for me in BricsCAD V15. Which version are you using?</div>
+</article>
+<article class="post" id="msg11337">
+  <div class="post-head">
+    <span class="post-author">dioneib</span>
+    <span class="post-date muted">2015-04-18 21:59 UTC</span>
+  </div>
+  <div class="post-body">See below in BricsCAD screen:<br>
+<br>
+<br>
+: _qnew<br>
+: (command "_.OPENDCL")<br>
+: _.OPENDCLnil<br>
+: <br>
+: ACADVER<br>
+<br>
+<br>
+ACADVER = "19.1 BricsCAD" (read only)</div>
+</article>
+<article class="post" id="msg11338">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-04-19 11:17 UTC</span>
+  </div>
+  <div class="post-body">@ dioneib:<br>
+You are misinterpreting the feedback you are getting.<br>
+It is important to know two things:<br>
+1. The return value of the command function is always nil.<br>
+2. Arx/Brx applications are loaded once per CAD session.<br>
+<br>
+Take a look at this command history:<br>
+<pre class="code"><code>: (command "_.OPENDCL")<br>
+: _.OPENDCL<br>
+OpenDCL Runtime [8.0.0.6] loaded<br>
+nil<br>
+: <br>
+: (command "_.OPENDCL")<br>
+: _.OPENDCLnil<br>
+: (command "bla")<br>
+: bla<br>
+<br>
+Unable to recognize command "BLA". Please try again.nil<br>
+: </code></pre><br>
+<br>
+To check the BricsCAD version you should use the _vernum variable.</div>
+</article>
+<article class="post" id="msg11343">
+  <div class="post-head">
+    <span class="post-author">dioneib</span>
+    <span class="post-date muted">2015-04-20 20:33 UTC</span>
+  </div>
+  <div class="post-body">You're right as always.<br>
+All the rest I speak not make sense.<br>
+Many thanks for your promptness always<br>
+Dionei</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>pallettes and Bricscad V12 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1865</p>
+    <h1>pallettes and Bricscad V12</h1>
+    <p class="meta">Started by Emiliano ·
+      2012-08-17 13:57 UTC ·
+      14 replies · SMF topic #1865</p>
+<article class="post" id="msg9154">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-08-17 13:57 UTC</span>
+  </div>
+  <div class="post-body">Hello everyone,<br>
+can anyone confirm that Bricscad V12.2.14 events "OnMouseEntered" and "Size" are in conflict between them?<br>
+<br>
+It seems to me that when I enter into the palettes first initiated the event is "Size" maybe because I approach the edge of the palettes, and then the event "OnMouseEntered".  :o<br>
+<br>
+While in AutoCAD work properly: only the event starts "OnMouseEntered".<br>
+<br>
+It's a bug or Bricscad OpenDCL?</div>
+</article>
+<article class="post" id="msg9157">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-08-18 02:49 UTC</span>
+  </div>
+  <div class="post-body">I tested in the latest build of OpenDCL 7 on Bricscad 12.2.5 and it only fires OnSize when the palette changes size, as expected. Perhaps something has changed in the more recent build of Bricscad.</div>
+</article>
+<article class="post" id="msg9158">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-08-18 09:07 UTC</span>
+  </div>
+  <div class="post-body">Unless the palette is set to autohide I only get the OnMouseEntered event with BC 12.2.14 + ODCL 7.0.06. Tested with a docked and undocked palette. Apart from autohide it is also possible that your code triggers an OnSize event.</div>
+</article>
+<article class="post" id="msg9159">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-08-18 09:43 UTC</span>
+  </div>
+  <div class="post-body">I did not understand, maybe for my bad English ...  :-[<br>
+<br>
+I tried with BC 02.12.14 + ODCL 7.0.04 and the result is what you see in the video.<br>
+<br>
+With ODCL 7.0.06 working properly?<br>
+<br>
+I'm not very concerned about the conflict of events, but only for the fact that the button that I put into the palettes is not scaled properly when I resize the palettes than the minimum size set.</div>
+</article>
+<article class="post" id="msg9160">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-08-18 12:22 UTC</span>
+  </div>
+  <div class="post-body">Maybe the attached picture will help:<br>
+1. Palette set to autohide.<br>
+2. Palette not set to autohide.<br>
+<br>
+<blockquote class="quote"><cite> author=Emiliano link=topic=1865.msg9159#msg9159 date=1345283010 wrote:</cite><br>
+in the video.</blockquote>What video?<br>
+<br>
+<blockquote class="quote"><cite> author=Emiliano link=topic=1865.msg9159#msg9159 date=1345283010 wrote:</cite><br>
+when I resize the palettes<br>
+</blockquote>I don't understand: are you resizing or not?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1790/pal.png">pal.png</a> <span class="muted">(2921 bytes)</span></li><li><a href="../attachments/1791/pal.odcl">pal.odcl</a> <span class="muted">(326 bytes)</span></li><li><a href="../attachments/1792/pal.lsp">pal.lsp</a> <span class="muted">(276 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9161">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-08-19 15:53 UTC</span>
+  </div>
+  <div class="post-body">I apologize,<br>
+I forgot to attach the file lisp + odcl and video for you to understand the problem.<br>
+I now attach.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1793/TEST.zip">TEST.zip</a> <span class="muted">(937024 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9162">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-08-19 16:32 UTC</span>
+  </div>
+  <div class="post-body">I'm having trouble understanding the problem. Maybe it would help eliminate external influences and make your sample less confusing if you change your palette to contain only a single listbox, then change your event handlers to add a line to the list box each time they are called.</div>
+</article>
+<article class="post" id="msg9164">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-08-19 17:07 UTC</span>
+  </div>
+  <div class="post-body">The code I posted is very simple.<br>
+With video understanding of the problem is very simple.<br>
+In Autocad works well, but not in Bricscad.<br>
+So, I think it is easy to understand that there is a bug in Bricscad or OpenDCL<br>
+<br>
+What do not you understand now?</div>
+</article>
+<article class="post" id="msg9166">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-08-19 17:55 UTC</span>
+  </div>
+  <div class="post-body">The code you posted is complicated and confusing because it introduces several unrelated elements, and it's not clear whether those elements have any bearing on the problem. For example, your OnSize event handler resizes the button. You don't that resizing the button has any effect on the problem, so I assume it is irrelevant. Your OnMouseEntered event handler prints text to the command line. You don't say whether this printing has any effect on the problem. Therefore, I assume it is irrelevant and has no bearing on the problem.<br>
+<br>
+If those elements are in fact irrelevant, they should not be in your sample. Taking the steps I outlined will help you determine definitively whether they are relevant. Defending the quality of your sample is not helpful. No matter how good it is, it is not good enough until it is able to communicate your problem to me.</div>
+</article>
+<article class="post" id="msg9168">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-08-20 07:21 UTC</span>
+  </div>
+  <div class="post-body">I hope I can explain my problem with this post, or let me know what is not clear.<br>
+I have to do exactly what you see in the video:<br>
+<br>
+1. With the event OnSize want to make sure that all controls inside the palettes are adapted to its size<br>
+2. The minimum width of the pallettes must be 336<br>
+<br>
+Unfortunately, in Bricscad, when I resize the palettes with the mouse over the minimum width happens what you see in the video: the button becomes much smaller and does not respect the rule "button width = palettes width  - 16"<br>
+<br>
+3. The event OnMouseEntered becomes relevant after replacing (princ "\ nenter") with (alert "enter"): in this case, in Bricscad becomes almost impossible to resize the palettes in AutoCAD is ok.<br>
+<br>
+Thanks in advance for your answers.</div>
+</article>
+<article class="post" id="msg9170">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-08-20 17:10 UTC</span>
+  </div>
+  <div class="post-body">You describe two different problems, and it seems neither problem actually has anything directly to do with the order of OnSize and OnMousEntered.<br>
+<br>
+<em>Problem #1: Minimum palette size set in .odcl is not honored.</em><br>
+<br>
+This is likely caused by bugs in the implementation of palettes in Bricscad, but I will check this again to see if anything can be done to work around the problem. For now, I'm afraid you are stuck with the problem.<br>
+<br>
+<em>Problem #2: Displaying an (alert) dialog during OnMouseEntered makes it difficult to resize a palette.</em><br>
+<br>
+If your OnMouseEntered event causes the input focus to change away from the palette as soon as the mouse enters, you should expect this consequence. This is why I asked you to display events in a listbox: to ensure that your diagnostic code does not change its subject. Even so, if you had posted your sample code with (alert) instead of (princ), your mistake would have been immediately obvious and we could have avoided this long discussion.<br>
+<br>
+<br>
+Finally, instead of resizing controls in OnSize, it would be more efficient to set them to resize automatically with the form. For example, you can set the <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Property/UseRightFromRight.htm" rel="nofollow noopener">{2}</a> of your button to 1 so that its width changes automatically.</div>
+</article>
+<article class="post" id="msg9171">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-08-21 07:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1865.msg9170#msg9170 date=1345482614 wrote:</cite><br>
+You describe two different problems, and it seems neither problem actually has anything directly to do with the order of OnSize and OnMousEntered.<br>
+<br>
+<em>Problem #1: Minimum palette size set in .odcl is not honored.</em><br>
+<br>
+This is likely caused by bugs in the implementation of palettes in Bricscad, but I will check this again to see if anything can be done to work around the problem. For now, I'm afraid you are stuck with the problem.<br>
+</blockquote><br>
+<br>
+I've already entered a support request to Bricsys, they said they are investigating to solve the problem.<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1865.msg9170#msg9170 date=1345482614 wrote:</cite><br>
+<em>Problem #2: Displaying an (alert) dialog during OnMouseEntered makes it difficult to resize a palette.</em><br>
+<br>
+If your OnMouseEntered event causes the input focus to change away from the palette as soon as the mouse enters, you should expect this consequence. This is why I asked you to display events in a listbox: to ensure that your diagnostic code does not change its subject. Even so, if you had posted your sample code with (alert) instead of (princ), your mistake would have been immediately obvious and we could have avoided this long discussion.<br>
+</blockquote><br>
+<br>
+I had just entered the alert because this would have helped prevent the verification of the first problem.<br>
+My real problem is in fact the correct sizing of controls.<br>
+In my application there is also the event "OnMouseEntered", but this is not a problem as long as there is an "alert" on the inside.<br>
+During my tests carried out to check what was the problem I added an alert and I noticed that too minor error.<br>
+It was not my intention to dwell too this discussion.<br>
+So if you agree, now I want to focus in finding a solution to the first problem.<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1865.msg9170#msg9170 date=1345482614 wrote:</cite><br>
+Finally, instead of resizing controls in OnSize, it would be more efficient to set them to resize automatically with the form. For example, you can set the <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Property/UseRightFromRight.htm" rel="nofollow noopener">{2}</a> of your button to 1 so that its width changes automatically.<br>
+</blockquote><br>
+<br>
+This is great because it greatly simplifies my code.<br>
+Too bad that in Bricscad has the same problem of my solution   :'(<br>
+Probably I will have to wait for the solution of Bricys.<br>
+Anyway thanks for the help!</div>
+</article>
+<article class="post" id="msg9173">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-08-21 07:35 UTC</span>
+  </div>
+  <div class="post-body">I can confirm that the UseRightFromRight property does not solve this issue.<br>
+<br>
+In a simple project I have a palette and, for comparison, a modal dialog. Both have a min. width of 80. Both have two controls with UseRightFromRight set to 1.<br>
+<br>
+The palette can be resize to a width smaller than 80:<br>
+Docked palette:<br>
+(dcl_Control_GetWidth Test_Resize_Palette1) ; =&gt; 40<br>
+After undocking the same palette:<br>
+(dcl_Control_GetWidth Test_Resize_Palette1) ; =&gt; 60<br>
+<br>
+Using this code on a palette does not work properly:<br>
+(dcl_Control_SetWidth Test_Resize_Palette1 160)<br>
+The controls are resized but the palette is not, resulting in a clipped effect.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1794/Test_Resize.png">Test_Resize.png</a> <span class="muted">(3925 bytes)</span></li><li><a href="../attachments/1795/Test_Resize.lsp">Test_Resize.lsp</a> <span class="muted">(227 bytes)</span></li><li><a href="../attachments/1796/Test_Resize.odcl">Test_Resize.odcl</a> <span class="muted">(814 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9178">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-08-21 15:18 UTC</span>
+  </div>
+  <div class="post-body">It's helpful to consider that the palette form is hosted inside a "dockable container" (which can actually contain multiple palettes or other forms). When you resize a docked palette, you resize the *container*. The control resizing is working fine; the form size is not remaining synchronized with the container in this case. I'm not certain that the problem is in Bricscad, but the odds are pretty good since their palettes are still a work in progress.</div>
+</article>
+<article class="post" id="msg9181">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-08-21 15:41 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1865.msg9178#msg9178 date=1345562319 wrote:</cite><br>
+It's helpful to consider that the palette form is hosted inside a "dockable container" (which can actually contain multiple palettes or other forms). When you resize a docked palette, you resize the *container*. The control resizing is working fine; the form size is not remaining synchronized with the container in this case. I'm not certain that the problem is in Bricscad, but the odds are pretty good since their palettes are still a work in progress.<br>
+</blockquote><br>
+<br>
+I'm not an expert, but whereas in AutoCAD works correctly, I believe that the problem is side Bricscad.<br>
+<br>
+I await the response of Bricsys and let you know.<br>
+If necessary, keep me informed if you find a solution.<br>
+<br>
+thanks</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

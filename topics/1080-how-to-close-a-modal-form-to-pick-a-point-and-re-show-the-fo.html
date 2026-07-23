@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to close a modal form to pick a point and re-show the form again · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/20-faqs.html">FAQs</a> /
+      Topic 1080</p>
+    <h1>How to close a modal form to pick a point and re-show the form again</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-12-14 11:18 UTC ·
+      1 replies · SMF topic #1080</p>
+<article class="post" id="msg5675">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-14 11:18 UTC</span>
+  </div>
+  <div class="post-body"><strong>Question:</strong><br>
+I want to pick a point in AutoCAD while a modal form is showing.<br>
+<br>
+<strong>Answer:</strong><br>
+You cannot pick a point or select objects in the drawing as long a modal form is showing. You have to close the form and to show it again after you have picked the point. The returning values for dcl_form_show and dcl_form_close will help you.<br>
+<br>
+<br>
+(defun c:MyProg (/ doCont intResult c:proj_form_OnInitialize c:proj_form_pb_accept c:proj_form_pb_select c:proj_form_pb_cancel)<br>
+  (defun c:proj_form_OnInitialize ()<br>
+    (princ "Initializing the form...")<br>
+  );  c:proj_form_OnInitialize<br>
+<br>
+  (defun c:proj_form_pb_accept ()<br>
+    (dcl_form_close proj_form 0)<br>
+  ); c:proj_form_pb_accept <br>
+<br>
+  (defun c:proj_form_pb_select ()<br>
+    (dcl_form_close proj_form 1)<br>
+  ); c:proj_form_pb_select <br>
+<br>
+  (defun c:proj_form_pb_cancel ()<br>
+    (dcl_form_close proj_form 2)<br>
+  ); c:proj_form_pb_cancel <br>
+<br>
+  (setq doCont T)<br>
+  (while doCont<br>
+    (setq doCont nil) ;; to avoid neverending loop at ESC<br>
+    (setq intResult (dcl_form_show proj_form))<br>
+    (cond<br>
+      ((= intResult 0) (princ "Something will happen here."))<br>
+      ((= intResult 1) (setq ptPoint (getpoint "\nPick point: ")) (setq doCont T)) ;; don't forget to set doCont to T to show the form again<br>
+      ((= intResult 2) (princ "This will be executed after ESC and after pressing Cancel button."))<br>
+    ); cond<br>
+  ); while<br>
+  (princ)<br>
+); MyProg<br>
+<br>
+<br>
+Here you will find a sample with placing blocks:<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=769.0" rel="nofollow noopener">{2}</a><br>
+<br>
+Here you will find a sample with a nested dialog.<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=947.0" rel="nofollow noopener">{2}</a><br>
+<br>
+Also see the "Selections.lsp" sample installed with the Studio under: "C:\Program Files\OpenDCL Studio\\Samples"<br>
+<br>
+Fred<br>
+</div>
+</article>
+<article class="post" id="msg6376">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-26 21:31 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+in addition to the initial post, this post is going into detail, when a modal form is being called from a modeless form (or palette or dockable form) and you want to have access to the AutoCAD drawing database from the modal form. <br>
+<br>
+Like in the first part you will have to close the modal form, as long as you need access to the drawing database. AutoCAD prevents you from having fully access to the drawing database if you call the modal form within a synchronous called event handler. The following event handler won't give you access to the drawing database if the EventInvoke property state of the clicked button is 0 for KeepFocus (don't mix it with the KeepFocus property of forms!).<br>
+<br>
+<br>
+(defun c:MyProj_MyForm_MyButton1_OnClicked ()<br>
+  (dcl_form_Hide MyProj_MyForm T)<br>
+  (call_function_with_modal_form)<br>
+  (dcl_form_Hide MyProj_MyForm nil)<br>
+); c:MyProj_MyForm_MyButton1_OnClicked<br>
+<br>
+(defun c:MyProj_MyForm_MyButton2_OnClicked ()<br>
+  (dcl_form_close MyProj_MyForm)<br>
+  (call_function_with_modal_form)<br>
+  (dcl_form_show MyProj_MyForm)<br>
+); c:MyProj_MyForm_MyButton2_OnClicked<br>
+<br>
+<br>
+This code works very well as long as you don't need access to the drawing database. But if you want to pick points, select objects or attach object data you will have to finish the event handler at first!<br>
+<br>
+There are 2 ways to do that:<br>
+<br>
+<strong><span style="color:navy">1. Call another command using dcl_sendstring from a synchronous called event handler.</span></strong><br>
+This makes only sense if you have to define additional variables at first or you have to finish other tasks at first before calling the other command.<br>
+<ul><br>
+The control's EventInvoke property state is 0 (for KeepFocus).<br>
+The event is active and calls the event handler with the default name (like c:MyProj_MyForm_MyButton_OnClicked).<br>
+During the event handler an externally defined command is called using (dcl_sendstring "ExternalCommand ") and <strong>NOT</strong> using (c:ExternalCommand).<br>
+</ul><br>
+<br>
+<strong><span style="color:navy">2. The event handler is an own command which is called asynchronous.</span></strong><br>
+<ul><br>
+The control's EventInvoke property state is 1 (for AllowCommand).<br>
+The event is active. The name of the event handler is only the cammand name (like ExternalCommand) or c:ExternalCommand. If you want, press the AddCancel button to make sure that all active commands and inputs are stopped. The prefix ^C^C will appear in front of you command name (like ^C^CExternalCommand).<br>
+You need no additional event handler but only the command which executes all the desired tasks.<br>
+</ul><br>
+<br>
+The attached sample will show you how to work with modeless forms, modal forms and user inputs from the commandline.<br>
+It is based on a topic from <a href="http://www.opendcl.com/forum/index.php?topic=1171.msg6323#msg6323" rel="nofollow noopener">{2}</a>.<br>
+All files need to be located into an AutoCAD support path. Compare both buttons of the modeless form with each other.<br>
+<br>
+<strong><span style="color:navy">Note:</span></strong> the latest selected item will be stored into the drawing using vlax-ldata-put. Also outside any event and modal form!!!<br>
+Change objects and objectdata outside (!!!) a running modal form and never inside. Make sure that Lisp-reactors are getting never fired when a modal form is active or a synchronous event is running.<br>
+<br>
+Have fun,<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1315/STKBK.LSP">STKBK.LSP</a> <span class="muted">(6494 bytes)</span></li><li><a href="../attachments/1316/STKBK.odcl">STKBK.odcl</a> <span class="muted">(11493 bytes)</span></li><li><a href="../attachments/1317/partdes.txt">partdes.txt</a> <span class="muted">(1397 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

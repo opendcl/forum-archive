@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entmake and ActiveX Interference · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 688</p>
+    <h1>Entmake and ActiveX Interference</h1>
+    <p class="meta">Started by Jim ·
+      2009-04-01 02:48 UTC ·
+      3 replies · SMF topic #688</p>
+<article class="post" id="msg3333">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2009-04-01 02:48 UTC</span>
+  </div>
+  <div class="post-body">Extension Dictionary xRecord writes using entmake may fail or throw an error when called inside an OpenDCL event. Use of VLax methods that do not use entmake will work around this problem.</div>
+</article>
+<article class="post" id="msg3337">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-01 06:14 UTC</span>
+  </div>
+  <div class="post-body">Hi, Jim,<br>
+<br>
+did you have such experiences in modal forms? If so, try to do it from modeless forms (or dockable forms or palettes) from an event of a control whose property EventInvoke is set to "AllowCommand". It should work then. I also had experiences that some other types of extended data were not set although using vlax-... functions, for instance vlax-ldata-put. That <strong>may</strong> fail, too. But you are right - vla-functions have much more success in several situations.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3340">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2009-04-01 17:37 UTC</span>
+  </div>
+  <div class="post-body">Fred,<br>
+<br>
+My experience was with non-modal forms. Much as been said about ldata frailty on other news groups. I never used those functions. I would be interested in knowing about any other xrecord write failures using VLAX and OpenDCL.<br>
+<br>
+Thanks,<br>
+Jim</div>
+</article>
+<article class="post" id="msg3372">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-03 06:28 UTC</span>
+  </div>
+  <div class="post-body">Jim, you wrote that you call writing XRecords from modless forms. Are these events called by controls with the property EventInvoke = AllowCommand?<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Insert Block Problem · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2929</p>
+    <h1>Insert Block Problem</h1>
+    <p class="meta">Started by dsm_dude ·
+      2024-06-12 13:35 UTC ·
+      1 replies · SMF topic #2929</p>
+<article class="post" id="msg14042">
+  <div class="post-head">
+    <span class="post-author">dsm_dude</span>
+    <span class="post-date muted">2024-06-12 13:35 UTC</span>
+  </div>
+  <div class="post-body">I reworked an odcl project for autocad that was created by tinomartinez 14 years ago for BricsCAD.<br>
+<br>
+I am stumped when it comes to inserting a block using OpenDCL. I've combed over these forms and the swamp trying to find a solution but I've come up emtpy. <br>
+<br>
+Can someone please take a look and help me out?<br>
+<br>
+<pre class="code"><code>(defun c:ttt (/)<br>
+  (command "OPENDCL")<br>
+  (dcl_Project_Load "BlockManager" T)<br>
+  (dcl_Form_Show BlockManager_Form1)<br>
+  (princ)<br>
+  )<br>
+<br>
+(defun c:Untitled/Form1#OnInitialize (/)<br>
+  (setq strPath (list<br>
+		  (list "Metric" "W:\\Engineering\\AutoCAD Support\\Blocks\\Borders\\Metric")<br>
+		  (list "Imperial" "W:\\Engineering\\AutoCAD Support\\Blocks\\Borders\\Imperial"))<br>
+	);setq<br>
+  (dcl-Control-SetList BlockManager/Form1/Shortcut (mapcar '(lambda (x) (car x)) strPath))<br>
+  (dcl-BlockView-LoadDwg BlockManager/Form1/BlockView "") ;; new line to clear viewblock<br>
+  ;(dcl-BlockView-Clear BlockManager/Form1/BlockView) <br>
+)<br>
+<br>
+(defun c:BlockManager/Form1/Shortcut#OnSelChanged (ItemIndexOrCount Value /)<br>
+  (dcl-ListBox-Dir BlockManager/Form1/DWGList (setq oBlockPreviewFolder (cadr(nth (dcl-ListBox-GetCurSel BlockManager/Form1/shortcut) strPath))) "*.dwg")<br>
+)<br>
+<br>
+(defun c:BlockManager/Form1/DWGList#OnSelChanged (ItemIndexOrCount Value /)<br>
+  (dcl-BlockView-LoadDwg BlockManager/Form1/BlockView (setq oBlockPreviewFile(strcat oBlockPreviewFolder "\\" Value)));_ load the DWG<br>
+  (dcl-BlockView-Zoom BlockManager/Form1/BlockView 0.75)<br>
+)<br>
+<br>
+(defun c:BlockManager/Form1/Insert#OnClicked (/)<br>
+  (dcl_Form_Hide BlockManager_Form1)<br>
+  (command "._insert" oBlockPreviewFile '(0 0 0) 1 1 0)<br>
+)<br>
+</code></pre></div>
+</article>
+<article class="post" id="msg14043">
+  <div class="post-head">
+    <span class="post-author">dsm_dude</span>
+    <span class="post-date muted">2024-06-18 07:04 UTC</span>
+  </div>
+  <div class="post-body">Can someone help with a solution?</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

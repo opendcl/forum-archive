@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calendar Control · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 64</p>
+    <h1>Calendar Control</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2007-10-09 03:48 UTC ·
+      1 replies · SMF topic #64</p>
+<article class="post" id="msg276">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-10-09 03:48 UTC</span>
+  </div>
+  <div class="post-body">Anyone like to try this ..<br>
+<br>
+the Date format is set for YYYY-MM-DD ; so rework if required<br>
+<br>
+This is a proof of concept test for one of my apps.<br>
+I thought it may be a reasonable example of form resizing, and control relocation.<br>
+Note that the TextBox should be ReadOnly .. this bug will be fixed in the ARX. <br>
+<br>
+<pre class="code"><code>(DEFUN C:CalendarTest (/ _displayDate )<br>
+    ;;--------------------------------------<br>
+    (DEFUN _displayDate (rValue / CAL_DATE DAY MONTH)<br>
+        (SETQ Month    (CADR rValue)<br>
+              Day      (CADDR rValue)<br>
+              cal_date (STRCAT (ITOA (CAR rValue))<br>
+                               "-"<br>
+                               (IF (&lt; Month 10)<br>
+                                   (STRCAT "0" (ITOA Month))<br>
+                                   (ITOA Month)<br>
+                               )<br>
+                               "-"<br>
+                               (IF (&lt; Day 10)<br>
+                                   (STRCAT "0" (ITOA Day))<br>
+                                   (ITOA Day)<br>
+                               )<br>
+                       )<br>
+        )<br>
+        (DCL_CONTROL_SETTEXT 20071009-CalendarTest_Form1_TextBox3 cal_date)<br>
+    )<br>
+    ;;--------------------------------------<br>
+    ;; ASSUME THE OpenDCL .arx IS LOADED<br>
+    ;;--------------------------------------<br>
+    (DCL_LOADPROJECT "20071009-CalendarTest" T)<br>
+    (DCL_FORM_SHOW 20071009-CalendarTest_Form1)<br>
+    (PRINC)<br>
+)<br>
+;;============================<br>
+<br>
+<br>
+;;============================<br>
+(DEFUN c:20071009-CalendarTest_Form1_OnInitialize (/)<br>
+    (DCL_FORM_RESIZE 20071009-CalendarTest_Form1 210 200)<br>
+    (DCL_CONTROL_SETPOS 20071009-CalendarTest_Form1_MonthPicker2 10 15)<br>
+    ;; (_displayDate (DCL_MONTH_GETTODAY 20071009-CalendarTest_Form1_MonthPicker2))<br>
+    (DCL_CONTROL_SETTEXT 20071009-CalendarTest_Form1_TextBox3 "Select Date -&gt;")<br>
+)<br>
+<br>
+<br>
+;;============================<br>
+(DEFUN c:20071009-CalendarTest_Form1_TextButton4_OnClicked (/)<br>
+    (DCL_CONTROL_SETVISIBLE 20071009-CalendarTest_Form1_MonthPicker2 T)<br>
+)<br>
+;;============================<br>
+<br>
+<br>
+(DEFUN c:Project1_Form1_MonthPicker2_OnSelChanged (nSelection sSelText /)<br>
+    ;;; THIS HAS A BUG ... VER4.1.0.10<br>
+    (DCL_MESSAGEBOX<br>
+        "To Do: code must be added to event handler\r\nc:Project1_Form1_MonthPicker2_OnSelChanged"<br>
+        "To do"<br>
+    )<br>
+)<br>
+;;============================<br>
+(DEFUN c:20071009-CalendarTest_Form1_MonthPicker2_OnSelect (/)<br>
+    (_displayDate (DCL_MONTH_GETCURSEL 20071009-CalendarTest_Form1_MonthPicker2))<br>
+    (DCL_CONTROL_SETVISIBLE 20071009-CalendarTest_Form1_MonthPicker2 nil)<br>
+)<br>
+;;============================<br>
+<br>
+(princ)</code></pre><br>
+<br>
+<em>Added:</em> Log-In for  SourceCode Download<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg277">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-10-09 04:28 UTC</span>
+  </div>
+  <div class="post-body">The Piccy :<br>
+Select to Activate.<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

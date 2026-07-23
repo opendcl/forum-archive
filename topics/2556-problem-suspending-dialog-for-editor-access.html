@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem suspending dialog for editor access · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2556</p>
+    <h1>Problem suspending dialog for editor access</h1>
+    <p class="meta">Started by funkitect ·
+      2018-01-10 02:58 UTC ·
+      4 replies · SMF topic #2556</p>
+<article class="post" id="msg12675">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2018-01-10 02:58 UTC</span>
+  </div>
+  <div class="post-body">Hi there,<br>
+<br>
+I'm working on a project that I wrote a long time ago.  I recently added a button to my dialog and my program crashes when I use it.  The program has several buttons that do various things in AutoCAD.  Each button still works except the new one.  Each button calls the same function that:<br>
+<br>
+--sets a global "flag" to true <br>
+--save some info on the form to a global variable<br>
+--closes the dialog<br>
+--does a variety of things based on the arguments passed by the calling function (the button events).</ul><br>
+<br>
+<br>
+  The function called by the bad button works to a point.  I removed the complicated code and replaced it with something simple so I could see if it's working:<br>
+<br>
+   (alert "3")<br>
+   (command "zoom" "e" )<br>
+<br>
+The alert works but the zoom does NOT.  Stepping through the program, it turns out the dialog returns immediately after the zoom.  If I push any buttons when the dialog returns it crashes with the message, "FATAL ERROR: Unhandled Access Violation Reading 0x0010 Exception at 8d7f3ab9h"<br>
+<br>
+It seems like I'm forgetting something. I was looking in the documentation because I remembered the bit about setting the flag and closing the dialog...but I couldn't find anything about this topic.  Are commands not allowed when dialog is suspended?  </div>
+</article>
+<article class="post" id="msg12676">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-01-10 05:12 UTC</span>
+  </div>
+  <div class="post-body">Hi, funkitect,<br>
+<br>
+not sure if I'm right but be aware of modifying drawing database at runtime of a modal form with beginning of AutoCAD 2015 (fiber technology was removed from AutoCAD).<br>
+Since you can't give control back to AutoCAD at runtime of a modal form, you have to close it at first and call it again after doing your changes. In modeless forms you have to set the button's event invoke property to Allow Command to call your event asynchonously.<br>
+<br>
+So in modal forms you do something like this:<br>
+<br>
+<pre class="code"><code><br>
+<br>
+(defun c:proj_form_OnZoomClicked()<br>
+  (dcl_form_close proj_form 3)<br>
+); c:proj_form_OnZoomClicked<br>
+<br>
+(setq doCont T)<br>
+(while doCont<br>
+  (cond <br>
+    ((= doCont 0) nil)<br>
+    ((= doCont 1) (setq doCont nil)) ;; OK<br>
+    ((= doCont 2) (setq doCont nil)) ;; ESC was pressed<br>
+    ((= doCont 3) (command "_zoom" "_e")) ;; your command,  3 is the retValue of dcl_form_close<br>
+  ); cond<br>
+); while<br>
+<br>
+</code></pre><br>
+<br>
+I took the sample from <a href="http://opendcl.com/forum/index.php?topic=1080.0" rel="nofollow noopener">{2}</a>.<br>
+<br>
+Hope it matches to your question.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg12677">
+  <div class="post-head">
+    <span class="post-author">Tharwat</span>
+    <span class="post-date muted">2018-01-10 05:21 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+In AutoLISP, you can not use command calls in action_tile that controls or collect the info from the dialog so I think you are facing the same case if I am not mistaken.<br>
+<br>
+Try to replace that command with the function <span style="color:blue">vla-zoomextents</span> and I think it should work as expected.<br>
+<br>
+<a href="http://help.autodesk.com/view/OARX/2018/ENU/?guid=GUID-B204BFAA-B774-4C87-86D8-37007F390B5A" rel="nofollow noopener">{2}</a><br>
+<br>
+Good luck.</div>
+</article>
+<article class="post" id="msg12681">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2018-01-10 16:47 UTC</span>
+  </div>
+  <div class="post-body">vla-zoomextents fixed it.  Thanks.</div>
+</article>
+<article class="post" id="msg12682">
+  <div class="post-head">
+    <span class="post-author">Tharwat</span>
+    <span class="post-date muted">2018-01-10 16:55 UTC</span>
+  </div>
+  <div class="post-body">Glad you got it working.<br>
+<br>
+You're welcome anytime. </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

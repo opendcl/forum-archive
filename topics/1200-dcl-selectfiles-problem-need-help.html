@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_SelectFiles problem need help! · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1200</p>
+    <h1>dcl_SelectFiles problem need help!</h1>
+    <p class="meta">Started by khann ·
+      2010-03-11 05:46 UTC ·
+      7 replies · SMF topic #1200</p>
+<article class="post" id="msg6432">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-03-11 05:46 UTC</span>
+  </div>
+  <div class="post-body">Hi, there.<br>
+I'm trying to dig with "dcl_SelectFiles"<br>
+<br>
+I wish someone show me the right sample code of "dcl_SelectFiles" as the Funtions SelectFiles Help Web page says.<br>
+<br>
+(dcl_SelectFiles {FileTypes [as List of Strings]} {Title [as String]} {DefaultDirectory [as String]})<br>
+<br>
+with Title and DefaultDirectory .<br>
+<br>
+I'm using Stable Version of OpenDCL.Studio.ENU.5.1.2.3<br>
+Thanks.<br>
+</div>
+</article>
+<article class="post" id="msg6434">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-11 07:43 UTC</span>
+  </div>
+  <div class="post-body">Hi, nice question, but I have the feeling <a href="http://www.opendcl.com/forum/index.php?topic=931.0" rel="nofollow noopener">{2}</a> :)<br>
+<br>
+I'm wondering the following dows not work in 6.0.0.23:<br>
+(setq strPath (getvar "DWGPREFIX"))<br>
+(dcl_SelectFiles (list "dwg" "dxf") "Open Files" strPath)<br>
+I've really no idea why the form does not appear...<br>
+<br>
+The following code works - but the form starts in the wrong initial folder:<br>
+(setq strPath (getvar "DWGPREFIX"))<br>
+(dcl_SelectFiles (list "dwg" "dxf") "Open Files" (vl-string-trim strPath "\\"))<br>
+<br>
+As far as I remember you can also add a description for each filetype:<br>
+(dcl_SelectFiles (list "Symbol files|*.dwg" "XChange files|*.dxf") "Select Files")<br>
+<br>
+I believe there is still a bug in 6.0.0.23. I will post it.<br>
+<br>
+Hope that helps.<br>
+Fred</div>
+</article>
+<article class="post" id="msg6490">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-03-17 09:21 UTC</span>
+  </div>
+  <div class="post-body">Hi, Fred, glad to meet you again  :).<br>
+That's right.<br>
+I remember I've posted about this problem once last year.<br>
+Now, I've changed Stable version and tested again then it's still going something wrong. <br>
+I wondered this happens just to me with my Acad Drawing.<br>
+So I want to hear others stories.<br>
+In fact I think that's not so critical and most of my ODCL runs well.<br>
+<br>
+There's very few bugs uncatched but I feel ODCL is really cool.<br>
+I always thank those updating new version of ODCL and great testers on this webpage.<br>
+<br>
+Thanks again.</div>
+</article>
+<article class="post" id="msg6493">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-17 10:43 UTC</span>
+  </div>
+  <div class="post-body">Hi, Owen fixed a OS-related limitation for the next Alpha, <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2968495&amp;group_id=187950&amp;atid=923363" rel="nofollow noopener">{2}</a>.<br>
+I must honestly say that I still use getfiled instead of dcl_selectfiles. I cannot see any advantage to use dcl_selectfiles but maybe others can tell me.<br>
+<br>
+<blockquote class="quote">There's very few bugs uncatched</blockquote><br>
+Please let us know everything - even it is not a bug. Some bugs only occur in special conditions and some things work as designed and sometimes there are some special ways to solve problems.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6504">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-03-18 03:36 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+In my case I think there some bugs not reported here.<br>
+But I did not list them up.<br>
+From now I'll try to report.<br>
+Thanks .</div>
+</article>
+<article class="post" id="msg6736">
+  <div class="post-head">
+    <span class="post-author">Jürg Menzi</span>
+    <span class="post-date muted">2010-04-19 08:39 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+I think there is still a little problem with dcl_SelectFiles...<br>
+(OS WinXP Pro SP3)<br>
+(dcl_getversionex)<br>
+"6.0.0.25"<br>
+(dcl_SelectFiles (list "Drawing (*.dwg)|*.dwg") "Select Files" "C:\\Temp")<br>
+shows the file dialog below. As you can see, a part of the path argument is shown<br>
+in Filename and the path argument has no other effect.<br>
+As a workaround I've found that the path argument:<br>
+"C:\\Temp\\*" or "C:\\Temp\\*.dwg"<br>
+will work correct. The last part of the path argument is shown in the Filename field,<br>
+eg. '*' or '*.dwg'<br>
+<br>
+Cheers<br>
+Jürg<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1374/ODCL FilesAPI-Error.jpg">ODCL FilesAPI-Error.jpg</a> <span class="muted">(31173 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6737">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-04-19 09:09 UTC</span>
+  </div>
+  <div class="post-body">Hi, Jürg, I can reproduce it, too. Maybe it's a bug. Then I ask you to add a bug report here: <a href="http://sourceforge.net/tracker/?group_id=187950&amp;atid=923363." rel="nofollow noopener">{2}</a><br>
+Thanks.<br>
+Fred</div>
+</article>
+<article class="post" id="msg6738">
+  <div class="post-head">
+    <span class="post-author">Jürg Menzi</span>
+    <span class="post-date muted">2010-04-19 11:25 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred<br>
+<br>
+In principle I would prefere the functionality as it is. Otherwise you can't add a default filename.<br>
+The only thing that should be fixed is the possibility to use a path argument with following backslash<br>
+to set a path without a default filename or asterisk... and the help/documentation should be fixed.<br>
+As you propose, I will add a bug report.<br>
+<br>
+Cheers<br>
+Jürg<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

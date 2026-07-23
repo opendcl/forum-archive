@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl buttons · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 355</p>
+    <h1>dcl buttons</h1>
+    <p class="meta">Started by lstewart ·
+      2008-06-04 19:41 UTC ·
+      8 replies · SMF topic #355</p>
+<article class="post" id="msg1537">
+  <div class="post-head">
+    <span class="post-author">lstewart</span>
+    <span class="post-date muted">2008-06-04 19:41 UTC</span>
+  </div>
+  <div class="post-body">I am running auto cad 2002. I am trying to add a toggle button (2d button) to my dcl file so i can have one button to display all my 2d blocks, then hit the toggle button (3d button) I can view all the 3d blocks that were created.  Does anyone have an solution to this, I have been messing with this for the past week and no luck.<br>
+<br>
+attachment 1 shows my dcl look<br>
+attachment 2 shows what i am trying to do as a toggle button, shown within the yellow oval<br>
+<br>
+thanks<br>
+<br>
+Lupe<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/408/Document2_Page_1.jpg">Document2_Page_1.jpg</a> <span class="muted">(128014 bytes)</span></li><li><a href="../attachments/409/Document2_Page_2.jpg">Document2_Page_2.jpg</a> <span class="muted">(128987 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1538">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-06-04 19:48 UTC</span>
+  </div>
+  <div class="post-body">Are you asking about basic DCL or OpenDCL?</div>
+</article>
+<article class="post" id="msg1539">
+  <div class="post-head">
+    <span class="post-author">lstewart</span>
+    <span class="post-date muted">2008-06-04 19:58 UTC</span>
+  </div>
+  <div class="post-body">I really do not know how to answer that please explain between open dcl and basic dcl<br>
+<br>
+thanks<br>
+<br>
+Lupe</div>
+</article>
+<article class="post" id="msg1540">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-04 20:13 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+DCL looks like this<br>
+<br>
+<pre class="code"><code><br>
+bntk_oe : dialog {<br>
+	label = "Objektinformationen";<br>
+	: text {<br>
+		label = "Geben Sie die Objekteigenschaften ein: ";<br>
+		alignment = left;<br>
+		}<br>
+		: column {<br>
+			: spacer {<br>
+				height = 1;<br>
+				}<br>
+			: edit_box {<br>
+				label = "Code: ";<br>
+				edit_width = 10;<br>
+				edit_limit = 10;<br>
+				key = "bntk_oe_code";<br>
+				}<br>
+			: edit_box {<br>
+				label = "Hinweise: ";<br>
+				edit_width = 50;<br>
+				edit_limit = 100;<br>
+				height = 2;<br>
+				fixed_height = true;<br>
+				key = "bntk_oe_hint";<br>
+				}<br>
+			}<br>
+		: row {<br>
+			: button {<br>
+				label = "Übernehmen";<br>
+				alignment = left;<br>
+				is_default = true;<br>
+				fixed_width = true;<br>
+				key = "accept";<br>
+				}<br>
+			: button {<br>
+				fixed_width = true;<br>
+				alignment = centered;<br>
+				label = "Abbrechen";<br>
+				key = "bntk_abbrechen";<br>
+				is_cancel = true;<br>
+				}<br>
+			: button {<br>
+				label = "&lt; von Objekt";<br>
+				key = "bntk_take";<br>
+				alignment = top;<br>
+				fixed_width = true;<br>
+				}<br>
+			}<br>
+		}<br>
+</code></pre><br>
+<br>
+OpenDCL looks like the screenshot I attached. DCL you have to program by yourself using notepad or visual lisp editor. For OpenDCL you use a special editior where you can draw (!!!) and not program a form, define some properties as events.<br>
+<br>
+When I did understand you right you cannot solve your wish via DCL but via OpenDCL.<br>
+Let us know if we can help you in solving it in OpenDCL.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/410/opendcl.jpg">opendcl.jpg</a> <span class="muted">(272137 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1543">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-06-05 15:40 UTC</span>
+  </div>
+  <div class="post-body">Yes Fred is correct. It looks like your dialog box was written with basic DCL.<br>
+What you're trying to add is called a TAB Control &amp; can't be done with DCL, but can with OpenDCL.<br>
+Unfortunately, OpenDCL only works with Acad2004 and up, so you'd have to upgrade your Acad2002.<br>
+ </div>
+</article>
+<article class="post" id="msg1545">
+  <div class="post-head">
+    <span class="post-author">lstewart</span>
+    <span class="post-date muted">2008-06-05 16:34 UTC</span>
+  </div>
+  <div class="post-body">thanks for the reply..... so that first dcl entry that you have put in there i can or cannot use that for my dcl routine.  I would like to upgrade my autocad to 2004 or greater but this menu that i had put together i for my company and i do not think that my boss wants to upgrade yet, do yall have any other ways that i can do this or am i just going to have to do it like i have been with 2 menus????<br>
+<br>
+thanks<br>
+<br>
+Lupe</div>
+</article>
+<article class="post" id="msg1546">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-05 19:38 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=lstewart link=topic=355.msg1545#msg1545 date=1212683664 wrote:</cite><br>
+so that first dcl entry that you have put in there i can or cannot use that for my dcl routine. <br>
+</blockquote><br>
+<br>
+No no, that was my first try to create a dcl form in the year 2001. But don't ask me anything about DCL  ;). I tried two or three forms with it and I gave up immediately.<br>
+<br>
+I still have an old release of the old ObjectDCL. Maybe I can help you in this way that I create the form and give you the whole solution. If you only have to use DCL then it will be better to create two menus.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1548">
+  <div class="post-head">
+    <span class="post-author">lstewart</span>
+    <span class="post-date muted">2008-06-05 20:53 UTC</span>
+  </div>
+  <div class="post-body">that sounds good i would like to give that a try and see what happens<br>
+<br>
+thanks very much<br>
+<br>
+lupe</div>
+</article>
+<article class="post" id="msg1549">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-05 21:59 UTC</span>
+  </div>
+  <div class="post-body">Hi, lstewart,<br>
+<br>
+please send me <strong>only</strong> the DCL file with <strong>only</strong> this one form. Please send it to f.tomke@opendcl.de.<br>
+Is this a list of blocks on the right side?<br>
+<br>
+How about tree control instead of the high amount of buttons?<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

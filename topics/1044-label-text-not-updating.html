@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Label Text not updating? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1044</p>
+    <h1>Label Text not updating?</h1>
+    <p class="meta">Started by Hypersonic ·
+      2009-12-02 03:18 UTC ·
+      13 replies · SMF topic #1044</p>
+<article class="post" id="msg5423">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2009-12-02 03:18 UTC</span>
+  </div>
+  <div class="post-body">I have a button that when pushed it updates the below label.... but it keeps writing text on top of text...<br>
+<br>
+the resulting screen shot is after clicking through what should print "Retainer group no. 1" then "Retainer group no. 2" , then <br>
+"Retainer group no. 3", then "Retainer group no. 4"<br>
+<br>
+but the 1,2,3, 4 all get piled up on top of one another......<br>
+<br>
+This was my code....<br>
+   (dcl_Control_SetCaption Parametrics_grouping_setup_Label2 (strcat "Retainer group no. " (itoa ret_group_no)))<br>
+<br>
+and I even tried this to attempt to clear it out.. nothing worked...<br>
+ (dcl_Control_SetCaption Parametrics_grouping_setup_Label2 " ")<br>
+  (dcl_Control_SetCaption Parametrics_grouping_setup_Label2 (strcat "Retainer group no. " (itoa ret_group_no)))<br>
+<br>
+Any thoughts? This is the first time I have seen this happen.....<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1085/SP32-20091201-221215.png">SP32-20091201-221215.png</a> <span class="muted">(2307 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5424">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2009-12-02 03:32 UTC</span>
+  </div>
+  <div class="post-body">Switched to 5.XX stable version, and the problem goes away...... I think I will stick with that for a while. :)</div>
+</article>
+<article class="post" id="msg5427">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-02 09:57 UTC</span>
+  </div>
+  <div class="post-body">Hypersonic<br>
+<br>
+I assume your test was with 5.0.0.15 ?<br>
+<br>
+just for interest, try 6.0.0.9</div>
+</article>
+<article class="post" id="msg5428">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-02 10:34 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Could you try this please.<br>
+<br>
+aside for Owen: Note the CheckBox2 Control does not display (contained in a rectangle Control in a Frame)<br>
+<br>
+<br>
+;; Test Code<br>
+;; 20091111 kdub@home<br>
+;; modified: add OnInitialize : 20091201 kdub@home<br>
+;; modified: add Runtime Caption : 20091201 kdub@home<br>
+;; modified: add textIncrementer : 20091202 kdub@home <br>
+<br>
+(vl-load-com)<br>
+ ;|&lt;&gt;|;<br>
+<br>
+;; GLOBAL VARIABLE<br>
+(or gvar:testIncrementValue (setq gvar:testIncrementValue 0))<br>
+;;<br>
+<br>
+(defun c:doit2 () (c:Test60012b))<br>
+<br>
+;;----------------------------------------------------------------<br>
+(defun c:Test60012b (/ DialogReturn)<br>
+  (command "_OPENDCL")<br>
+  (dcl_Project_Load "kdub60012b.odcl" T)<br>
+  ;; Show the main form<br>
+  (setq DialogReturn (dcl_Form_Show kdub60012b_Main))<br>
+  ;;------<br>
+  (princ)<br>
+)<br>
+ ;|&lt;&gt;|;<br>
+<br>
+ ;|&lt;&gt;|;<br>
+(defun c:kdub60012b_Main_OnInitialize (/)<br>
+  (dcl_Control_SetCaption kdub60012b_Main_RuntimeBuild (dcl_GetVersionEx))<br>
+  (dcl_Control_SetCaption kdub60012b_Main_TextValue<br>
+                          (strcat "TextValue : " (itoa gvar:testIncrementValue))<br>
+  )<br>
+)<br>
+;;-----------<br>
+(defun c:kdub60012b_Main_TextButton6_OnClicked (/)<br>
+  (dcl_Control_SetCaption<br>
+    kdub60012b_Main_TextValue<br>
+    (strcat "TextValue : "<br>
+            (itoa (setq gvar:testIncrementValue (1+ gvar:testIncrementValue)))<br>
+    )<br>
+  )<br>
+)<br>
+;;-----------<br>
+;;-----------<br>
+(princ " &lt;&lt; Enter DOIT2 or 'Test60012b' command to run &gt;&gt; \n")<br>
+<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1088/Test 20091202a.png">Test 20091202a.png</a> <span class="muted">(17070 bytes)</span></li><li><a href="../attachments/1089/kdub60012b.odcl">kdub60012b.odcl</a> <span class="muted">(2244 bytes)</span></li><li><a href="../attachments/1090/kdub60012-B.lsp">kdub60012-B.lsp</a> <span class="muted">(1384 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5433">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2009-12-02 14:07 UTC</span>
+  </div>
+  <div class="post-body">I was going to try the 6.0.0.9 but see nothing other than 6.0.0.15 and 5.xxxx in the downloads...<br>
+I will be happy to try, if you can tell me where to download it...<br>
+<br>
+I will try that other code now...</div>
+</article>
+<article class="post" id="msg5436">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2009-12-02 15:37 UTC</span>
+  </div>
+  <div class="post-body">I tested in 5.xx worked fine<br>
+I tested in 6.0.0.12 and it did the same as my routine did..... piled up the numbers....</div>
+</article>
+<article class="post" id="msg5452">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-02 20:48 UTC</span>
+  </div>
+  <div class="post-body">Kerry, I'm a bit confused about where exactly we're at with these display issues. Your example of the check box inside a rectangle is not necessarily a bug.  The only way to guarantee that it displays "on top of" the rectangle is to give it a transparent background and the rectangle a non-transparent background.  If both controls meet the condition, then it's a bug and I'll need to investigate.</div>
+</article>
+<article class="post" id="msg5459">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-03 01:59 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+In the editor [6.0.0.15], If the Rectangle is other than Transparent, the Checkbox will not show in the Editor (It will sometimes show momentarily when the control has focus, after/during clicking ... )<br>
+<br>
+<u>Piccy Descriptions :</u><br>
+In Runtime 6.0.0.15. When both transparent, Checkbox wont show untill mouseover control position .... Similar to the textButton on a Tab page.<br>
+<br>
+In Runtime 6.0.0.15. When Checkbox transparent and rectangle Color 2, The Checkbox displays with a button colored backbround<br>
+<br>
+In Runtime 5.1.2.3 and 6.0.0.9. When both transparent, Show as expected.<br>
+<br>
+In Runtime 5.1.2.3 and 6.0.0.9. When Checkbox transparent and rectangle Color 2, The Checkbox displays with a button colored background<br>
+<br>
+Hope these attached snapshots help.<br>
+<br>
+I don't imagine this combination will occur very often.<br>
+My main concern is the controls on the Tab pages not displaying, which occurs in all Runtimes from 6.0.0.10 to 6.0.0.15<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1097/Test 20091202a 60015 transparent.png">Test 20091202a 60015 transparent.png</a> <span class="muted">(21553 bytes)</span></li><li><a href="../attachments/1098/Test 20091202a 60015.png">Test 20091202a 60015.png</a> <span class="muted">(19187 bytes)</span></li><li><a href="../attachments/1099/Test 20091202a 6009 transparent.png">Test 20091202a 6009 transparent.png</a> <span class="muted">(23456 bytes)</span></li><li><a href="../attachments/1100/Test 20091202a 5123.png">Test 20091202a 5123.png</a> <span class="muted">(21023 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5461">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-03 03:36 UTC</span>
+  </div>
+  <div class="post-body">Kerry, from your description, I think the check box and rectangle are behaving as designed.  In the current scheme, I have accepted that the painting order of overlapping controls cannot be reliably controlled, unless one of them is transparent.  If one is transparent, it should always be drawn last.  Furthermore, a transparent control should be drawn not really transparent, but with the same background color as the form that owns it.<br>
+<br>
+I'm not sure yet what is going on with controls on tab pages, but apparently the change I made in Alpha 15 causes this new problem.</div>
+</article>
+<article class="post" id="msg5464">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-03 07:15 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Thanks Owen, I understand the explaination.<br>
+<br>
+The Issue with the Controls on Tab Controls has been there since 6.0.0.10  I didn't really test .10 or .11, so picked it up in .12<br>
+<br>
+For your info, The OptionButton and CheckBox controls display correctly on the Tab page in all Runtimes.<br>
+<br>
+Regards<br>
+</div>
+</article>
+<article class="post" id="msg5468">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-03 14:01 UTC</span>
+  </div>
+  <div class="post-body">im having this same issue.<br>
+<br>
+im using vers 6.0.0.14<br>
+<br>
+should i revert back to 5.x?</div>
+</article>
+<article class="post" id="msg5472">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-03 15:44 UTC</span>
+  </div>
+  <div class="post-body"><br>
+I'd use either 5.1.2.3 OR 6.0.0.9 for production Work.<br>
+<br>
+<br>
+Owen,<br>
+ can we make 5.0.0.9 available in the Archive Downloads.<br>
+<br>
+If we can, I'll write some notes for my Swap_ODCL_Runtime routine and make it public.</div>
+</article>
+<article class="post" id="msg5473">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-03 15:48 UTC</span>
+  </div>
+  <div class="post-body">i installed 6.0.0.15 and mine work<br>
+</div>
+</article>
+<article class="post" id="msg5483">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-03 16:59 UTC</span>
+  </div>
+  <div class="post-body">I don't want to encourage the use of outdated development builds, otherwise I won't get the needed bug reports during development.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

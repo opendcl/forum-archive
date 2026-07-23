@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_Calendar_SetCurSel behaviour. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 903</p>
+    <h1>dcl_Calendar_SetCurSel behaviour.</h1>
+    <p class="meta">Started by mr nick ·
+      2009-09-04 14:14 UTC ·
+      4 replies · SMF topic #903</p>
+<article class="post" id="msg4507">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-09-04 14:14 UTC</span>
+  </div>
+  <div class="post-body">I have a dialog with a calendar control on it and I want the dialog to open with a date preselected. This works just fine if I use a date within 2009 like this:<br>
+<br>
+  (setq ndate '(2009 12 31))<br>
+  (dcl_Calendar_SetCurSel date_date_calendar1 ndate)<br>
+<br>
+But as soon as I try and use a date from 2010 I get an <strong>'Expected more arguments' </strong> error:<br>
+<br>
+  (setq ndate '(2010 01 01))<br>
+  (dcl_Calendar_SetCurSel date_date_calendar1 ndate)<br>
+<br>
+Is there something else I need to do in order to get the calendar to select a date beyond the end of the year or is this a bug?</div>
+</article>
+<article class="post" id="msg4508">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-04 15:10 UTC</span>
+  </div>
+  <div class="post-body">This is due to a bug in the way AutoCAD handles list arguments that look like DXF group codes. It tries to interpret the '(2010 1 1) as a DXF group, and fails -- then deals with the failure by calling the SetCurSel function with no arguments. The SetCurSel function then triggeres the OpenDCL argument exception because it expects an argument.<br>
+<br>
+Since the argument never gets to OpenDCL, there is no way to fix it other than from the lisp side. The workaround is to make the first element of the list a floating point number instead of an integer so that AutoCAD doesn't interpret it as a DXF code. For example, the following works:<br>
+(dcl_Calendar_SetCurSel date_date_calendar1 '(2010.0 1 1))</div>
+</article>
+<article class="post" id="msg4512">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-09-04 23:34 UTC</span>
+  </div>
+  <div class="post-body">Thanks a lot Owen. Easy when you know how  ;D</div>
+</article>
+<article class="post" id="msg4519">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-09-07 06:42 UTC</span>
+  </div>
+  <div class="post-body">@Owen: Shall we add this behavior to the Online help?</div>
+</article>
+<article class="post" id="msg4522">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-07 13:46 UTC</span>
+  </div>
+  <div class="post-body">Yes, perhaps in DataType\Date.htm. The issue applies generally to any argument, but color and date are common cases.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

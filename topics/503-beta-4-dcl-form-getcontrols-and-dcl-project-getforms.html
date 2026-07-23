@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Beta 4 - dcl_Form_GetControls and dcl_Project_GetForms · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 503</p>
+    <h1>Beta 4 - dcl_Form_GetControls and dcl_Project_GetForms</h1>
+    <p class="meta">Started by velasquez ·
+      2008-12-08 12:27 UTC ·
+      6 replies · SMF topic #503</p>
+<article class="post" id="msg2241">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-12-08 12:27 UTC</span>
+  </div>
+  <div class="post-body">(dcl_Form_GetControls HTML_Dcl1)  <br>
+Return (                  )  <br>
+  <br>
+(DCL_PROJECT_GETFORMS " HTML ")  <br>
+Return ()  <br>
+  <br>
+It is not possible to treat this list with -&gt; <span style="color:blue">(entget ename )  </span><br>
+That is a BUG?  <br>
+</div>
+</article>
+<article class="post" id="msg2242">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-12-08 13:44 UTC</span>
+  </div>
+  <div class="post-body">That is not a bug. Forms and controls are not AutoCAD entities, despite their representation in AutoLISP as entity names.</div>
+</article>
+<article class="post" id="msg2244">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-12-08 15:17 UTC</span>
+  </div>
+  <div class="post-body">Ok Owen,  <br>
+How to work with this list?  <br>
+Should not she show the names of Forms and of the controls?</div>
+</article>
+<article class="post" id="msg2245">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-12-08 16:09 UTC</span>
+  </div>
+  <div class="post-body">Here's an example written by Owen, that shows how to read all the controls on a form, change their properties &amp; write them back to a new ODCL file.<br>
+<br>
+<br>
+<pre class="code"><code><br>
+(DEFUN SetOdclFontSizeUnscaled (odclfile password newodclpath / project props fontsize)<br>
+  (SETQ project (DCL_PROJECT_LOAD odclfile))<br>
+  (IF (NOT project) (EXIT))<br>
+  (FOREACH form (DCL_PROJECT_GETFORMS project)<br>
+    (FOREACH control (DCL_FORM_GETCONTROLS form)<br>
+      (PROGN (SETQ props (dcl_control_getproperties control))<br>
+        (IF (MEMBER "FontSize" props)<br>
+          (PROGN<br>
+            (SETQ fontsize (DCL_CONTROL_GETPROPERTY control "FontSize"))<br>
+              (IF (&gt; fontsize 0)<br>
+                (DCL_CONTROL_SETPROPERTY control "FontSize" (- 0 fontsize))<br>
+              )<br>
+            )<br>
+          )<br>
+        )<br>
+      )<br>
+    )<br>
+    (DCL_PROJECT_SAVEAS project newodclpath password)<br>
+)<br>
+<br>
+(SetOdclFontSizeUnscaled "project1.odcl" nil "C:/temp/project2.odcl")<br>
+</code></pre></div>
+</article>
+<article class="post" id="msg2247">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-12-08 20:47 UTC</span>
+  </div>
+  <div class="post-body">The function <span style="color:red">dcl_control_getproperties</span> doesn't exist in BETA-4.  <br>
+Was the name of the function modified?</div>
+</article>
+<article class="post" id="msg2251">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-12-08 21:40 UTC</span>
+  </div>
+  <div class="post-body">Hmmm that's strange, it's in the help file, but it's not in the ARX.<br>
+I'm sure it's a mistake. What say Owen. :)<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/534/GetProp.png">GetProp.png</a> <span class="muted">(67773 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2254">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-12-08 22:25 UTC</span>
+  </div>
+  <div class="post-body">Oops. I've put it back for Beta 5.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

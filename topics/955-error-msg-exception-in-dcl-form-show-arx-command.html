@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>error msg: Exception in dcl_Form_Show ARX Command · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 955</p>
+    <h1>error msg: Exception in dcl_Form_Show ARX Command</h1>
+    <p class="meta">Started by paul_s ·
+      2009-10-02 18:39 UTC ·
+      7 replies · SMF topic #955</p>
+<article class="post" id="msg4784">
+  <div class="post-head">
+    <span class="post-author">paul_s</span>
+    <span class="post-date muted">2009-10-02 18:39 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I am having problems with some of my old projects with Autocad 2010 and<br>
+latest opendcl runtime. I've tried saving the projects with the latest<br>
+editor but still gives me problems. It first gives me this error message,<br>
+then kicks me out autocad.<br>
+<br>
+The purpose of my project is to quickly open drawings in a predetermine<br>
+location. If I open a drawing by double clicking the drawing preview, then<br>
+close that drawing it would give the error message then kick me out.<br>
+<br>
+However, it does not kick me out if I open a drawing by double clicking<br>
+the drawing preview, switch to a different drawing then switch back to<br>
+that drawing I opened and then close it.<br>
+<br>
+Please create a folder in your C drive and call it "temp" then copy a couple<br>
+of drawings into it.<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/941/QLook.odcl">QLook.odcl</a> <span class="muted">(1154 bytes)</span></li><li><a href="../attachments/942/Test.lsp">Test.lsp</a> <span class="muted">(1023 bytes)</span></li><li><a href="../attachments/943/OpenDcl-Error.JPG">OpenDcl-Error.JPG</a> <span class="muted">(9993 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4785">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-02 18:55 UTC</span>
+  </div>
+  <div class="post-body">Hi, welcom to the board.<br>
+I've tried your example. I get no error (with AutoCAD 2008). But I do wonder that it sould work at all. In my opinion it shouldn't never work with modal forms (unless you close the form). Try it with a non modal form. That should work!<br>
+<br>
+Give me some minutes for an example.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4786">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-02 18:57 UTC</span>
+  </div>
+  <div class="post-body">Hmmmm, did you check out the Migration guide I referred you to in your last post?<br>
+<a href="http://opendcl.com/wordpress/?page_id=10" rel="nofollow noopener">{2}</a><br>
+<br>
+I just took a quick look at you code so far and found a few issue.<br>
+1. Change (dcl_LoadProject) to (dcl_Project_Load)<br>
+2. Dbl. Clicking on the preview doesn't work.<br>
+This is b/c you have the "OnClicked" event checked, not the "OnDblClicked"<br>
+<br>
+I'll keep playing and see if I can reproduce the crash...<br>
+</div>
+</article>
+<article class="post" id="msg4788">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-02 19:08 UTC</span>
+  </div>
+  <div class="post-body">Hi, paul_s,<br>
+<br>
+I got it!<br>
+<br>
+At first: You missed to activate the OnDblClicked event, but that's not the key.  ;)<br>
+You did something I described some days ago. The problem is here:<br>
+<br>
+<br>
+(defun c:QLook_QLook_DwgPreview1_OnDblClicked ( / rvalue)<br>
+(Setq rValue (Dcl_DwgPreview_GetDwgName QLook_QLook_DwgPreview1))<br>
+(Dcl_Form_Close QLook_QLook)<br>
+(vla-activate (vla-open (vla-get-documents (vlax-get-acad-object)) rvalue))<br>
+); c:QLook_QLook_DwgPreview1_OnDblClicked<br>
+<br>
+<br>
+You must leave the event function to give back control to AutoCAD at first.<br>
+My posting you will find <a href="http://www.opendcl.com/forum/index.php?topic=947.msg4759#msg4759" rel="nofollow noopener">{2}</a>.<br>
+<br>
+I will try to change the code that it works for you.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4789">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-02 19:11 UTC</span>
+  </div>
+  <div class="post-body">OK I was able to get your code to load &amp; reproduce the error.<br>
+It does close the form before opening the next DWG, but if you close that DWG, you get the error in the first DWG.<br>
+Maybe Owen can see if this is a bug. Use my code as it's working out of the box.<br>
+But like Fred said, it'll probably work if you use Modeless forms.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/944/Test.lsp">Test.lsp</a> <span class="muted">(1088 bytes)</span></li><li><a href="../attachments/945/QLook.odcl">QLook.odcl</a> <span class="muted">(1163 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4790">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-02 19:13 UTC</span>
+  </div>
+  <div class="post-body">I'll let Fred take over, as he's the expert in this area.. :)</div>
+</article>
+<article class="post" id="msg4792">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-02 19:30 UTC</span>
+  </div>
+  <div class="post-body">Hi, paul_s, here it is and it works with your project file without any change. I tried it successfully with Acad2008 on XP and Map 2010 on Vista.<br>
+<br>
+<br>
+(defun c:Test ( / c:QLook_QLook_OnInitialize c:QLook_QLook_DwgPreview1_OnDblClicked<br>
+                  c:QLook_QLook_TextButton1_OnClicked c:QLook_QLook_ListView1_OnClicked<br>
+                  intReturn temp_folder oDoc strFileToOpen)<br>
+  ;; define event functions<br>
+<br>
+  (defun c:QLook_QLook_OnInitialize (/ dwg_list)<br>
+    (Dcl_ListView_Clear QLook_QLook_ListView1)<br>
+    (Dcl_ListView_AddColumns QLook_QLook_ListView1 (list (list "Drawings   " 0 600)))<br>
+    (setq dwg_list (vl-directory-files temp_folder "*.dwg" 1))<br>
+    (if (/= dwg_list nil)<br>
+      (foreach N DWg_List<br>
+        (Dcl_ListView_AddItem QLook_QLook_ListView1 0 (strcat temp_folder "\\" N))<br>
+      ); foreach<br>
+    ); if<br>
+  ); c:QLook_QLook_OnInitialize<br>
+<br>
+  (defun c:QLook_QLook_DwgPreview1_OnClicked ( / rvalue)<br>
+    (Setq strFileToOpen (Dcl_DwgPreview_GetDwgName QLook_QLook_DwgPreview1))<br>
+    (Dcl_Form_Close QLook_QLook 1) ;; &lt;-- set return value here, 2 is reserved for ESC<br>
+  ); c:QLook_QLook_DwgPreview1_OnClicked<br>
+<br>
+  (defun c:QLook_QLook_TextButton1_OnClicked (/)<br>
+    (Dcl_Form_Close QLook_QLook 0)<br>
+  ); c:QLook_QLook_TextButton1_OnClicked<br>
+<br>
+<br>
+  (defun c:QLook_QLook_ListView1_OnClicked (Row Column / sSelText)<br>
+    (Setq sSelText (Dcl_ListView_GetItemText QLook_QLook_ListView1 Row Column))<br>
+    (Dcl_DwgPreview_LoadDwg QLook_QLook_DwgPreview1 sSelText)<br>
+  ); c:QLook_QLook_ListView1_OnClicked<br>
+<br>
+<br>
+  <br>
+  (Setq temp_folder "c:\\temp")<br>
+  (Dcl_LoadProject "QLook.odcl" T)<br>
+  (if (and (= (setq intReturn (Dcl_Form_Show QLook_QLook)) 1)  ;; return value from close method<br>
+           strFileToOpen (findfile strFileToOpen)<br>
+           (setq oDoc (vl-catch-all-apply 'vla-open (list (vla-get-documents (vlax-get-acad-object)) strFileToOpen)))<br>
+           (not (vl-catch-all-error-p oDoc)))<br>
+    (vla-Activate oDoc)<br>
+  ); if<br>
+  (princ)<br>
+); c:Test<br>
+<br>
+(vl-load-com)<br>
+<br>
+<br>
+Hope that helps a bit.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4796">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-02 20:37 UTC</span>
+  </div>
+  <div class="post-body">Fred shall be known henceforth as the official OpenDCL FormClose expert. ;)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

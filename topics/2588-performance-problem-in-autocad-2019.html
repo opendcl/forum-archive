@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Performance problem in AutoCAD 2019 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2588</p>
+    <h1>Performance problem in AutoCAD 2019</h1>
+    <p class="meta">Started by Emiliano ·
+      2018-04-13 11:24 UTC ·
+      10 replies · SMF topic #2588</p>
+<article class="post" id="msg12819">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2018-04-13 11:24 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+this problem seems to be present in AutoCAD 2018 and 2019, maybe even some previous version.<br>
+In the old AutoCAD 2011 and in all the BricsCAD versions the problem is not present.<br>
+<br>
+I am attaching an example file to reproduce.<br>
+Perform the following steps:<br>
+[list type=decimal]<br>
+Open AutoCAD 2019 and verify by quickly tracing some lines that the performances are adequate<br>
+Start the function "c:test1" to open the panel of my software and it will be possible to find that by quickly tracing some lines the performances are unacceptable, the cursor goes to shots<br>
+Close the panel of my application, the cursor returns to have adequate performance<br>
+By starting the "c: test2" function, a simplified panel of my application will open; here the performances seem adequate but I'm not sure that they are actually those of AutoCAD without my open panel.<br>
+<br>
+</ul><br>
+<br>
+I hope someone can help me understand what's wrong.<br>
+<br>
+Best Regards,<br>
+Emiliano<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2388/TEST.zip">_TEST.zip</a> <span class="muted">(541796 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12820">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2018-04-13 23:45 UTC</span>
+  </div>
+  <div class="post-body">I did not notice any difference with the form open. I'm not sure what you meant by "tracing some lines". I used the LINE command to draw lines.</div>
+</article>
+<article class="post" id="msg12821">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2018-04-14 05:08 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2588.msg12820#msg12820 date=1523663153 wrote:</cite><br>
+I did not notice any difference with the form open. I'm not sure what you meant by "tracing some lines". I used the LINE command to draw lines.<br>
+</blockquote><br>
+<br>
+Hi,<br>
+for "tracing some lines" I intend to use the Line command repeatedly and quickly: as you can see it goes jerkily, the performances are reduced.<br>
+See the attached video here .... unfortunately, however, it is not easy in the video to understand the reduction in performance.<br>
+<br>
+Best Regards,<br>
+Emiliano<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2389/Video.zip">Video.zip</a> <span class="muted">(1239402 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12823">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-04-15 18:34 UTC</span>
+  </div>
+  <div class="post-body">Do you see any other behaviour, interesting to describe?<br>
+<br>
+- does it happens with AutoCAD-palettes too?<br>
+- does it happen with other ODCL-apps (example from "opendcldemo" or other stuff)?<br>
+- do you see something in TaskManager - like heavy CPU load, caused by .... ??</div>
+</article>
+<article class="post" id="msg12826">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2018-04-16 08:35 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+I am attaching a new complete test of the lisp code needed to load the OpenDCL runtime:<br>
+https://www.dropbox.com/s/fvoh2bhj7pwajtf/_TEST2.zip?dl=0<br>
+<br>
+In the compressed file I also inserted 2 videos in which you can see the behavior of the CPU:<br>
+<ul><br>
+Video2: you can see that when the Pallette is closed the CPU of the AutoCAD process is 0%.<br>
+- I draw some lines, the CPU rises to about 14% and then drops to 0% when I finish drawing lines; so here everything is ok.. <br>
+- Then I start the function "test1" to open the palette of my software, and in this case the CPU never drops below 4%.<br>
+- Start to draw lines with the cursor that jerks, when I finish the line drawing the CPU does not fall below 8%.<br>
+- At the end of the video I close the pallette and you can see that the CPU drops immediately to 0%!!.<br>
+Video3: I tried an example included in OpenDCL and in this case the behavior of the CPU and AutoCAD is correct.<br>
+</ul><br>
+<br>
+What's in my application that does not work ??<br>
+<br>
+Thanks for your help.<br>
+Best Regards,<br>
+Emiliano</div>
+</article>
+<article class="post" id="msg12833">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2018-04-17 15:33 UTC</span>
+  </div>
+  <div class="post-body">Has anyone managed to reproduce the problem?<br>
+<br>
+In other words, when moving new lines, the movement of the cursor starts late</div>
+</article>
+<article class="post" id="msg12834">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2018-04-18 16:36 UTC</span>
+  </div>
+  <div class="post-body">I've just installed AutoCAD 2019 on another pc and I encounter the same problem.<br>
+In the same pc there is also AutoCAD 2018 and everything works fine here.<br>
+All of this is very strange  :-\<br>
+<br>
+Here you can download the complete installation file of the application:<br>
+https://we.tl/Ss8ZnqoV9z<br>
+<br>
+Can someone verify if it is possible to solve the problem?<br>
+<br>
+I did dozens of tests but all without success  :'(<br>
+AutoCAD 2019 is not unusable, however you may notice a reduction in performance during rapid drawing of objects; for example, when drawing a circle after inserting the center point, the real-time drawing of the circumference during the movement of the cursor is slightly jerky; if I close the palette of my software it becomes very fluid again.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg12837">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-04-18 20:06 UTC</span>
+  </div>
+  <div class="post-body">There is a completely new small update for Acad 2019 - have you already installed and tested it?</div>
+</article>
+<article class="post" id="msg12839">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2018-04-19 07:19 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Peter2 link=topic=2588.msg12837#msg12837 date=1524081983 wrote:</cite><br>
+There is a completely new small update for Acad 2019 - have you already installed and tested it?<br>
+</blockquote><br>
+<br>
+I do not see update for AutoCAD 2019 on the autodesk site.<br>
+Can you tell me the direct link?<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg12840">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-04-19 09:23 UTC</span>
+  </div>
+  <div class="post-body">Not all updates and hotfixes are visible for everybody.<br>
+Usually you have the go to your "personal account" via Internet Browser or you use your "AutoDESK Desktop App" (usually on your desktop)</div>
+</article>
+<article class="post" id="msg12842">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2018-04-19 10:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Peter2 link=topic=2588.msg12840#msg12840 date=1524129812 wrote:</cite><br>
+Not all updates and hotfixes are visible for everybody.<br>
+Usually you have the go to your "personal account" via Internet Browser or you use your "AutoDESK Desktop App" (usually on your desktop)<br>
+</blockquote><br>
+<br>
+I logged in with my account and everything seems updated to the latest version.<br>
+I have the feeling that it is a problem of AutoCAD 2019 and/or OpenDCL 9.0.13<br>
+<br>
+Question:<br>
+I found the problem on 2 different PCs. Did any of you do any tests with my project? What happens in your PCs?<br>
+<br>
+Thanks in advance.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

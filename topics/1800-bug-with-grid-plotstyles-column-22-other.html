@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bug with Grid + PlotStyles column (22) + &quot;Other..&quot; · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1800</p>
+    <h1>Bug with Grid + PlotStyles column (22) + &quot;Other..&quot;</h1>
+    <p class="meta">Started by krunch ·
+      2012-05-09 22:06 UTC ·
+      0 replies · SMF topic #1800</p>
+<article class="post" id="msg8863">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-05-09 22:06 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+In stb mode I have problems with the "Other.." dialog box of the PlotStyles dropddown :<br>
+- doesn't update the cell<br>
+- crashes if I select a new style<br>
+<br>
+You can try it :<br>
+<br>
+- Make a new STB drawing<br>
+<br>
+- Load the sample :<br>
+<br>
+(defun c:Untitled_Form1_OnInitialize (/)<br>
+    (dcl_Control_SetColumnStyleList Untitled_Form1_Grid1 '(22))<br>
+    (dcl_Grid_AddString Untitled_Form1_Grid1 "")<br>
+)<br>
+<br>
+(dcl_Project_Load "Untitled" T)<br>
+(dcl_Form_Show Untitled_Form1)<br>
+<br>
+<br>
+- Select the first cell, unfold the droplist and select "Others .."<br>
+- In the dialog box select a present PlotStyle (such as ByLayer ByBlock or Normal) and press OK &gt;&gt; the cell is empty, not updated with the selected style ?<br>
+<br>
+- Select the first cell, unfold the droplist and select "Others .."<br>
+- In the "Tables" droplist select a new table (such as "acad.stb"), in the list select a new style (such as "Style_1"), press OK &gt;&gt; ! CRASH !<br>
+<br>
+This crash occurs when I select a new style, that has not been loaded first by assigning to an object (?)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1732/Untitled.odcl">Untitled.odcl</a> <span class="muted">(621 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

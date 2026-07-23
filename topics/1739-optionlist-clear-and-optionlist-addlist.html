@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OptionList-&gt;Clear and OptionList-&gt;AddList · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1739</p>
+    <h1>OptionList-&gt;Clear and OptionList-&gt;AddList</h1>
+    <p class="meta">Started by Iulian ·
+      2011-12-28 17:50 UTC ·
+      2 replies · SMF topic #1739</p>
+<article class="post" id="msg8543">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2011-12-28 17:50 UTC</span>
+  </div>
+  <div class="post-body">Hy, <br>
+I have a question about the Clear and AddList OptionList Methods:<br>
+<br>
+<br>
+<br>
+First, I`have a modal form which contains two OptionLists.<br>
+OptionList1 has 4 (four) buttons, and OptionList2 has a variable number of buttons, dependent of the current selection of the OptionList2<br>
+For example, if:<br>
+ OptionList1-<strong>ItemIndexOrCount is 0</strong> (first button selected), OptionList2 has <strong>4</strong> (four) buttons;<br>
+ OptionList1-<strong>ItemIndexOrCount is 1</strong> (the second button selected), OptionList2 has <strong>2</strong> (two) buttons;<br>
+ OptionList1-<strong>ItemIndexOrCount is 2</strong> (the third button selected), OptionList2 has <strong>1</strong> (one) button.<br>
+<br>
+For having this effect on the  OptionList2, I used in <strong>OptionList1_OnSelChanged</strong> the following:<br>
+<br>
+(defun c:gaura_Form4_OptionList1_OnSelChanged (ItemIndexOrCount Value /)  <br>
+  <br>
+  (dcl_OptionList_Clear gaura_Form4_OptionList2); for having a blank list<br>
+  <br>
+  (cond ((= ItemIndexOrCount 0)  (dcl_OptionList_AddList gaura_Form4_OptionList2 "0buton1" "0buton2" "0buton3" "0buton4" ))<br>
+	   ((= ItemIndexOrCount 1)  (dcl_OptionList_AddList gaura_Form4_OptionList2 "1buton1" "1buton2"  ))<br>
+	   ((= ItemIndexOrCount 2)  (dcl_OptionList_AddList gaura_Form4_OptionList2 "2buton1"  ))<br>
+   );cond<br>
+  );defun OnSelChanged.<br>
+<br>
+<br>
+<br>
+Having these inputs, when the OptionList1 button is changed, OptionList2 is correspondingly updated, BUT if the third button of Optionlist1 is selected after selecting the first button of OptionList1, the second and the third buttons (which should disappear) are still there. What should I do to fix my problem?<br>
+<br>
+It is the same with the next example:<br>
+<br>
+I have an OptionList and 2 (two) Text Buttons.<br>
+On Form_Initialize, I set the optionList "clear";<br>
+pressing TextButton1 a button is added onto the OptionList;<br>
+pressing TextButton2 a button is removed from the OptionList.<br>
+<br>
+When I wont to remove a buton from the OptionList with TextButton2, the corresponding button can't be selected, but it is still there. <br>
+<br>
+<br>
+Thanks in advance.<br>
+Iulian.<br>
+<br>
+<br>
+I`m using the last version of OpenDCL (today downloaded), Windows 7 64bit, AutoCAD 2007<br>
+<br>
+<br>
+<br>
+This a video which sustain my example:<br>
+<br>
+<a href="http://www.youtube.com/watch?v=lGElML-XA-g&amp;feature=youtu.be#" rel="nofollow noopener">{2}</a><br>
+<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8544">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-12-28 19:51 UTC</span>
+  </div>
+  <div class="post-body">This sounds like an OpenDCL bug. To work around it, try assigning an explicit background color to the option list control. If that fails, you may have to call the Redraw method to force a redraw.</div>
+</article>
+<article class="post" id="msg8545">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2011-12-29 09:24 UTC</span>
+  </div>
+  <div class="post-body">Thank you owenwengerd. <br>
+It works by using the background color option list control. Is not necessary the redraw method (it works without it).<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

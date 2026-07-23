@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Solution to manage an array of controls · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1555</p>
+    <h1>Solution to manage an array of controls</h1>
+    <p class="meta">Started by krunch ·
+      2010-12-14 16:18 UTC ·
+      3 replies · SMF topic #1555</p>
+<article class="post" id="msg7605">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2010-12-14 16:18 UTC</span>
+  </div>
+  <div class="post-body">A solution to manage multiples controls placed "in table" (same dimension + same distance) and named "A0" "B0".<br>
+<br>
+Get_ControlName calculates the position index (#column #line) of the control under the pointer<br>
+The goal is to determine which control is under the pointer, without multiplying triggers. This function can be called by any trigger.<br>
+<br>
+<br>
+offset depends on the border of the Form :<br>
+; Form			            TitleBar=t/AllowResizing=f	TitleBar=t/AllowResizing=t	TitleBar=f/AllowResizing=f	TitleBar=f/AllowResizing=t<br>
+; Modal			              '(3 23) 			              '(8 28)				                   '(0 0)			 	                '(7 7)<br>
+; Modeless			            '(3 21)				          '(8 26)				                  '(0 0)			 	              '(7 7)<br>
+; Palette			            '(0 0)				             '(0 0)<br>
+; ControlBar(Docked) 	'(0 17)				            '(0 17)<br>
+; ControlBar(UnDocked) '(1 36)				            '(6 24)<br>
+<br>
+<br>
+; note: put these values in Get_ControlName once prj.odcl completed<br>
+; brd (x y)    offset due to the border of the Form<br>
+; org (x y)    position of the reference-control (upper-left)<br>
+; del (x y)     size of the reference-control (upper-left)<br>
+; int (x y)    spacing between the controls<br>
+<br>
+(defun c:go ()<br>
+  (dcl_Project_Load "try" T)<br>
+  (setq prj "ControlsArray"<br>
+    dia "pctArray"<br>
+    ref "pctA0"<br>
+    brd '(3 23)<br>
+    org (list (dcl_Control_GetLeft prj dia ref) (dcl_Control_GetTop prj dia ref))<br>
+    del (list (dcl_Control_GetWidth prj dia ref) (dcl_Control_GetHeight prj dia ref))<br>
+    int '(8 8)<br>
+  )<br>
+  (dcl_Project_Load prj T)<br>
+  (dcl_Form_Show prj dia)<br>
+)<br>
+<br>
+; MouseEntered/MouseMovedOff (uniques triggers)<br>
+; note: *PCT is a global handler<br>
+(defun c:ControlsArray_pctArray_pct_OnMouseEntered ()  <br>
+  (setq *PCT (Get_ControlName))<br>
+  ; paint it<br>
+  (dcl_Control_SetBackColor prj dia *PCT 16711808)<br>
+)<br>
+(defun c:ControlsArray_pctArray_pct_OnMouseMovedOff ()<br>
+  (dcl_Control_SetBackColor prj dia *PCT -6)  <br>
+)<br>
+<br>
+(defun Get_ControlName (/ a b c d e f pos)<br>
+  ; pos = position index<br>
+  (setq pos (mapcar '(lambda(a b c d e f) (fix (/ (- a b c d) (+ e f)))) (dcl_GetMouseCoords) (dcl_Control_GetPos prj dia) org brd del int))<br>
+  (strcat "pct" (nth (car pos) '("A" "B" "C" "D")) (nth (last pos) '("0" "1" "2" "3")))<br>
+)<br>
+<br>
+<br>
+version : 6.0.2.1<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1510/ControlsArray.odcl">ControlsArray.odcl</a> <span class="muted">(1179 bytes)</span></li><li><a href="../attachments/1511/ControlsArray.lsp">ControlsArray.lsp</a> <span class="muted">(1546 bytes)</span></li><li><a href="../attachments/1535/ControlsArray NEW.lsp">ControlsArray NEW.lsp</a> <span class="muted">(1483 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7707">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-01-22 20:21 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+I have corrected and updated this functioni It works fine, but is there a way to determine if a ControlBar is "docked" or not ?<br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg7710">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-01-24 05:10 UTC</span>
+  </div>
+  <div class="post-body">Hello, have a look at the method <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Form/IsFloating.htm" rel="nofollow noopener">{2}</a>.<br>
+Fred</div>
+</article>
+<article class="post" id="msg7712">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-01-24 09:56 UTC</span>
+  </div>
+  <div class="post-body">Thanks! It allows to finish this feature with ControlBar (Palette can also "float" ?)<br>
+<br>
+On the other hand, as it's setted by dimensions of the Form's border, I wonder if it's a good solution.. borders may be changed from a version to a new one ?</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

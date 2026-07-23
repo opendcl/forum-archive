@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Enter to repeat command from a Dialog Menu. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1129</p>
+    <h1>Enter to repeat command from a Dialog Menu.</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2010-01-14 00:27 UTC ·
+      15 replies · SMF topic #1129</p>
+<article class="post" id="msg6004">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-14 00:27 UTC</span>
+  </div>
+  <div class="post-body"><br>
+I'm calling any one of several  Functions/Commands from a modeless dialog. ( think of the dialog as a menu)<br>
+<br>
+I want the user to be able to press ENTER after running one instance of the command and have the command repeat.<br>
+I recall reading somewhere of a method of forcing the system to recognise the function (SUBR) as the last command run.<br>
+<br>
+I don't want to run MULTIPLE consecetive instances, I want the option of pressing ENTER and have another instance.<br>
+<br>
+For Example : With the MasterDemo Palette when a command button is pressed and the command runs,<br>
+THEN ; press ENTER and have the command run again.<br>
+<br>
+Anyone have any ideas ??<br>
+<br>
+Regards<br>
+Kerry<br>
+</div>
+</article>
+<article class="post" id="msg6005">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-01-14 00:46 UTC</span>
+  </div>
+  <div class="post-body">I would love to be able to do that also.<br>
+And I thought you would be the one to figure it out and teach us all how to do it . :)<br>
+</div>
+</article>
+<article class="post" id="msg6006">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-14 01:02 UTC</span>
+  </div>
+  <div class="post-body">The most frustrating thing is I seem to recall reading 'somewhere' how to do this. <br>
+<br>
+... problem with being retention challenged that comes with longevity.<br>
+<br>
+<br>
+ooooohhh<br>
+just noticed my post count is 333<br>
+... does that have any significance ( half a beast or something :) )</div>
+</article>
+<article class="post" id="msg6007">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-14 01:22 UTC</span>
+  </div>
+  <div class="post-body">Remove the C: from the OnClicked event handler name so it runs as a command instead of a function.</div>
+</article>
+<article class="post" id="msg6008">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-14 01:32 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+Owen,<br>
+Sorry, I don't quite get your meaning ??<br>
+</div>
+</article>
+<article class="post" id="msg6009">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-14 01:48 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Ahhh the penny dropped.<br>
+<br>
+change in the odcl editor , and in the call ..<br>
+So that the last command completed is the command I want repeated.<br>
+<br>
+ala<br>
+(DEFUN KDUB_CommandCenter_Form_B01_OnClicked (/) (c:KDUB_Steel_Main))<br>
+(DEFUN KDUB_CommandCenter_Form_B02_OnClicked (/) (c:kdub_HOLES))<br>
+<br>
+wonderfull !!</div>
+</article>
+<article class="post" id="msg6010">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-14 03:18 UTC</span>
+  </div>
+  <div class="post-body">The only thing you should have to change is the event handler name in the editor (and to make sure EventInvoke is asynchronous). Your lisp code shouldn't require any changes.</div>
+</article>
+<article class="post" id="msg6011">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-14 04:07 UTC</span>
+  </div>
+  <div class="post-body"><br>
+The button_OnClicked Event function was defined as a command (SUBR)<br>
+ie:<br>
+(DEFUN C:KDUB_CommandCenter_Form_B01_OnClicked (/) (c:KDUB_Steel_Main))<br>
+<br>
+<br>
+I changed it to a function (USUBR) in both the code and the Dialog Editor <br>
+.. by removing the C: prefix<br>
+ie:<br>
+(DEFUN KDUB_CommandCenter_Form_B01_OnClicked (/) (c:KDUB_Steel_Main))<br>
+<br>
+now the last registered command completed is  c:KDUB_Steel_Main not the event trap, allowing for ENTER to repeat the command.<br>
+<br>
+//--------------<br>
+Is this what you meant ??<br>
+It works as I now have it.<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6012">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-14 04:31 UTC</span>
+  </div>
+  <div class="post-body">You don't need the (defun KDUB_...) as it's not called.</div>
+</article>
+<article class="post" id="msg6013">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-14 05:13 UTC</span>
+  </div>
+  <div class="post-body"><br>
+I thinks we may be talking at cross purposes Owen :)<br>
+<br>
+I do need the error trap function to be able to call the draw routine.<br>
+<br>
+The only way I can see to eliminate the event trap is to call the draw routine directly from the editor ( in place of the event trap function)<br>
+... but that won't always suit because in some cases the event trap needs to do some work prior to calling it's draw routine.<br>
+<br>
+Regards <br>
+Kerry</div>
+</article>
+<article class="post" id="msg6014">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-01-14 05:43 UTC</span>
+  </div>
+  <div class="post-body">WOW, all these years I wanted to do this &amp; didn't think it was easily possible without a bunch of recoding.<br>
+Now I find out it was super easy...<br>
+Thanks Owen.  :)<br>
+<br>
+Here's a really basic sample (click the button, then hit Enter as few times)<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1233/reshow.LSP">reshow.LSP</a> <span class="muted">(307 bytes)</span></li><li><a href="../attachments/1234/reshow.odcl">reshow.odcl</a> <span class="muted">(558 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6015">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-14 06:35 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=1129.msg6013#msg6013 date=1263445987 wrote:</cite><br>
+I thinks we may be talking at cross purposes Owen :)</blockquote><br>
+<br>
+That's entirely possible. Assuming you've tested that thesis, what happened when you did what I suggested?</div>
+</article>
+<article class="post" id="msg6016">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-14 07:16 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1129.msg6015#msg6015 date=1263450942 wrote:</cite><br>
+[quote author=Kerry Brown link=topic=1129.msg6013#msg6013 date=1263445987]<br>
+I thinks we may be talking at cross purposes Owen :)</blockquote><br>
+<br>
+That's entirely possible. Assuming you've tested that thesis, what happened when you did what I suggested?<br>
+<br>
+<br>
+I don't actually know what you suggested. Several of your comments seem contrary to each other.<br>
+<br>
+<br>
+<blockquote class="quote">Remove the C: from the OnClicked event handler name so it runs as a command instead of a function.</blockquote><br>
+A command by definition HAS the C: a function doesn't. So removing the C: does NOT make it a command.<br>
+<br>
+<blockquote class="quote"> The only thing you should have to change is the event handler name in the editor ...  Your lisp code shouldn't require any changes.</blockquote><br>
+If I change the Name in the Editor and NOT in the Lisp the names won't match ... <br>
+<br>
+<blockquote class="quote">You don't need the (defun KDUB_...) as it's not called.</blockquote><br>
+This IS what I get when I remove the C: ( refer above )<br>
+<br>
+<br>
+<blockquote class="quote">That's entirely possible. Assuming you've tested that thesis, what happened when you did what I suggested?</blockquote><br>
+<br>
+<br>
+What DID you actually suggest ?  .. as I said, obviously something other than what I got to work. <br>
+<br>
+Regards<br>
+Kerry<br>
+ </div>
+</article>
+<article class="post" id="msg6017">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-14 07:22 UTC</span>
+  </div>
+  <div class="post-body">OK, <br>
+Is this correct ...<br>
+<br>
+<br>
+the Event name in the Editor can be a function and the Event name in the Code remains a Command. ??<br>
+<br>
+Whereas I made both names functions.<br>
+<br>
+And the documentation indicates they both be Commands.</div>
+</article>
+<article class="post" id="msg6019">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2010-01-14 09:13 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+Just in case its of interest - I've been using a slightly clumsier method to allow "enter" to repeat a function called from a modeless odcl dialogue:<br>
+<br>
+;;On click event for an (asynchronous) GraphicButton<br>
+(defun c:MyProject_AModelessForm_GraphicButtonAlert_OnClicked ( / )<br>
+  (dcl_SendString "TEST\n")<br>
+)<br>
+<br>
+(defun c:TEST ()<br>
+  (alert "This is a test")<br>
+)</div>
+</article>
+<article class="post" id="msg6021">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-14 16:11 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=1129.msg6017#msg6017 date=1263453770 wrote:</cite><br>
+the Event name in the Editor can be a function and the Event name in the Code remains a Command. ??<br>
+</blockquote><br>
+<br>
+Yes, except that the "event name in the editor" should be called simply the "event name" and nothing more.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Upgrading an OpenDCL runtime installation when AutoCAd is upgraded by the user · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/19-deployment.html">Deployment</a> /
+      Topic 2148</p>
+    <h1>Upgrading an OpenDCL runtime installation when AutoCAd is upgraded by the user</h1>
+    <p class="meta">Started by hermanm ·
+      2014-06-01 01:03 UTC ·
+      1 replies · SMF topic #2148</p>
+<article class="post" id="msg10749">
+  <div class="post-head">
+    <span class="post-author">hermanm</span>
+    <span class="post-date muted">2014-06-01 01:03 UTC</span>
+  </div>
+  <div class="post-body"><br>
+For example, suppose I have OpenDCL Runtime 8.xx installed when the latest AutoCAD version on the machine is ACAD 2014.<br>
+The ODCL runtime version for this product is evidently OpenDCL.x64.19.arx, which is the latest ODCL version installed by the ODCL Runtime msi (or msm). ODCL website says there is (tentative) support for AutoCAD 2015, which presumably means there is an OPenDCL.x64.20.arx which was not installed, due to ACAD 2015 not being present at the time of the ODCL Runtime install. Is this correct?<br>
+<br>
+Fine and dandy. I assume I can rerun the installer and have it detect ACAD 2015, then install OPenDCL.x64.20.arx.<br>
+Is this correct? (I have not simply tried it - please read on).<br>
+<br>
+My question is:<br>
+Suppose I distribute a project using ODCL, &amp; user's situation is as described above.<br>
+AutoCAD will migrate the LISP files &amp; all other such as part of the upgrade.<br>
+So, the user now has some "dead" add-ons until the ODCL Runtime is upgraded for their new ACAD.<br>
+How to instruct the user?<br>
+<br>
+Q: IF I create an installer using the ODCL msm, should/can the user rerun my installer to install the latest version of the ODCL Runtime? This seems clunky, to me.<br>
+I have no experience creating installers, so i have no idea if this makes any sense, but would like to try my hand at it, so am looking for information which might eliminate future problems...TIA<br>
+ </div>
+</article>
+<article class="post" id="msg10750">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-06-02 15:12 UTC</span>
+  </div>
+  <div class="post-body">Your thinking is basically correct. When installing OpenDCL Runtime, the .arx modules are always installed even for unavailable versions of AutoCAD, but the demand-load registry keys are not created unless the associated AutoCAD version registry key already exists.<br>
+<br>
+Users should not be "migrating lisp files" to new versions of AutoCAD unless the lisp files are their own files and they know what they're doing. Obviously lisp files are generally easier for users to manage on their own, but if they are sophisticated enough to port third party applications, then they have to be responsible for the consequences or figure out on their own that they also need to update OpenDCL Runtime.<br>
+<br>
+The bottom line is that you should create your own installer, and end users should get updates from you when new versions of AutoCAD are released.<br>
+<br>
+BTW, in case you're not familiar with my blog post on the subject, please check out <a href="http://otb.manusoft.com/2014/02/building-a-commercial-grade-lisp-plugin-installer-in-5-easy-steps.htm" rel="nofollow noopener">{2}</a>.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

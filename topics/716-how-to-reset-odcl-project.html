@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>how to reset odcl project · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 716</p>
+    <h1>how to reset odcl project</h1>
+    <p class="meta">Started by jromkes ·
+      2009-04-14 10:30 UTC ·
+      4 replies · SMF topic #716</p>
+<article class="post" id="msg3475">
+  <div class="post-head">
+    <span class="post-author">jromkes</span>
+    <span class="post-date muted">2009-04-14 10:30 UTC</span>
+  </div>
+  <div class="post-body">How do I reset an odcl project.<br>
+<br>
+I have a poject with a form. On the form I placed a button Reset to reset the form.<br>
+I tried al kinds of different things, like unloading, reloading etc. to reset the form to the initial values.<br>
+But I can't get any results. <br>
+<br>
+Can anyone help me?</div>
+</article>
+<article class="post" id="msg3476">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2009-04-14 11:29 UTC</span>
+  </div>
+  <div class="post-body">Hi there.<br>
+I'm no sure what you want to do in general.<br>
+You didn't provide any screen shot or code segment.<br>
+<br>
+<br>
+If you want to set some values to form elements, why not use function with multiple<br>
+set functions.<br>
+<br>
+<strong>Project_Load</strong> with argument T always load initial values, but U probably know that.<br>
+If not read about Project_Load in Control Browser. <br>
+<br>
+But anyway i don't know exactly where you facing with problems.<br>
+Send some code or screen shot.  <br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3479">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-14 13:53 UTC</span>
+  </div>
+  <div class="post-body">Hello, jromkes,<br>
+<br>
+welcome to OpenDCL. Unfortunately, there is no reset method to reset the form as known from HTML forms.<br>
+You can either call the <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Project/Load.htm" rel="nofollow noopener">{2}</a> method as Slavko meant or you have to keep initial values which are set and placed when the user presses the reset button.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3483">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2009-04-14 15:20 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<blockquote class="quote"><cite> author=Slavko.Ivanovic link=topic=716.msg3476#msg3476 date=1239708571 wrote:</cite><br>
+... If you want to set some values to form elements, why not use function with multiple<br>
+set functions.<br>
+</blockquote><br>
+<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=716.msg3479#msg3479 date=1239717213 wrote:</cite><br>
+.... or you have to keep initial values which are set and placed when the user presses the reset button.<br>
+Fred<br>
+</blockquote><br>
+Fred<br>
+We are talking about the same thing, and when i read are posts again, i myself get confused.<br>
+<br>
+  :D  ;D<br>
+<br>
+jromkes, don't get confused with the way me and Fred trying to tell U what is all about.<br>
+<br>
+Its simple:<br>
+<br>
+1. If U creating forms in studio, and testing it in AutoCAD, and U want to see changes instantly,<br>
+   then instead (DCL_PROJECT_LOAD "My_Project") in your code put (DCL_PROJECT_LOAD "My_Project" <strong>T</strong>)<br>
+<br>
+2. If you really need a button to reset form values, then you must write functions to set properties (values),<br>
+   for each control in form separately (in this case to set them to wanted "initial" values), and add them in <br>
+   button_OnClicked event function.<br>
+   (<em>or u can make more intelligent function with arguments to call that function button_OnClicked event)</em><br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3499">
+  <div class="post-head">
+    <span class="post-author">jromkes</span>
+    <span class="post-date muted">2009-04-15 08:29 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the solutions.<br>
+<br>
+I now added a little bit of code that changes all the changed properties to their initial values.<br>
+<br>
+Jaco<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

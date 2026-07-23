@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>decompiling  AutoLISP code · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2977</p>
+    <h1>decompiling  AutoLISP code</h1>
+    <p class="meta">Started by jbuzbee ·
+      2025-09-22 14:51 UTC ·
+      1 replies · SMF topic #2977</p>
+<article class="post" id="msg14267">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2025-09-22 14:51 UTC</span>
+  </div>
+  <div class="post-body">Can someone show me how to decompile the code below:<br>
+<br>
+'("YWt6A/w1AAC7h2ZtBuKT5DMSbTlquYGwaT0ONYYUF+s9W3w6fPV4RZ4ow9oIJMtLhw5yfNfpnnp/"<br>
+"T387/9prLFGipB2rIAyT16EsQVCT29lcD5b/XblgVFv6YMbrWAONYhkJoBLCRqD4IybRYpEBCYiT"<br>
+"suWJBc1N5dCr6yvSAwmYTvItynMedgeiuuVG82wTvdq57n6OuUjeLZEuj+Bt5j54aRaVOWjRX/sp"<br>
+"F9HxCvTx4dlTO7mF79jdBJFCWC/YU/WdCpJ8g+C6BouI1aQc+FLi2tPhwO0aQzvbMK4AYSUyrSmR"<br>
+"l9W5hwAbVCdYRe0KWjWZzQpCPYXF7po0rHmW+DTeexVhxDOFVssYfhlOdotFCKmw0msvO8qrcBdd"<br>
+"lF2An7EhGi7T3N0IJKkiA1aK/K6BdAM9lqGucKk5kwiQKayE4FZBWQoVvNKRsbCLEpE53wFshHnf"<br>
+"QW+IQWmEYd+Z+5A25oTvnTHIAR69sC6ctKU4N9Yg2dhpJf9aA49Mtd3M8aWMBvly6d7s3ASTnFih"<br>
+"9I0hdYPzriF3IycRYCkwM3cDG8Os98ELhiJrmVF1g8/OAQHDIyvDXLRRReTFAXel8o1DuIvwIWBG"<br>
+"i5wMYFrKPqtw1x+5iSfTRXIJyRbNlEWvraF1o1e27O9BE6YycB546faWdCDfekowFHgpTxluzCEh"<br>
+"iefOxbFH4dlDS5yWYMT9ZAsKLJU7ncDUmFzjeA1EUHFEm4vzqu7dOcoAMW4qboTqrpF08/qXWWeJ"<br>
+"+TuFBLOITXlRz8pGllYsfQpIYTovzO5UnQuqsYe5np4H8vAwHGDNKphEg+PbsObYigL+tDDt43QL"<br>
+"KGct4sbhD7Qy0Xk1JO9Wdl0XOXsXEXasBBKsMkk7/8yDq9gkMWoZ9/9vEDJCoGapxUNtUnkZVzy9"<br>
+"tr9d5mIqenlb5X3J7dw+v/VSU3Rsl0aEs5aRtI9GBPhtIgsqMy3EZd2hfEMamn0YPAk+dveGbVhv"<br>
+"yXpva+V2Abk7/+1pJqTd+xW0bY0c8mhQsXo1uBZWt8Z97fJ7P7hT8c+8m9xWTs7x27u+cNHHuo9Y"<br>
+"BQdd3WxUd+MhGjZ2WwpsNHcfLu9bH+rONOZbkkxnSm7XzZyXgB+8XWfGXIngQMFcniFoiem3HS+6"<br>
+"6TJ/i+05SgamtYyPBpaFQQaW9Qd2/vmJe3HC8Cr5+flPcaBCkh8XsVv0s/CGO8FGQaKWjOnNkcea"<br>
+"ay2dNbMgPzO3+WQgPfTXz9fX/B/RiJTbFWOyO3Sw2CmKtY82bz6yAXdNmAGL94dRAhzgC85PEfgz"<br>
+"apzB9dtrgePL+HKfEzSaexAsrWLy+QyQhleyxsRVmPDBpg25romTGCAuwzvg5b9rBNCLAD/rAJQh"<br>
+"LgcY9oS6Bf1czHjtyPXLw/hLvHUPPYhkqB1DKMdFs8+KyglqZJFWyeH9AwHcc/lP0WsemMuQKE3R"<br>
+"y8s4UdFPN0UnJFoT0dwmlRuTPD+q7zj3zFO4GicaJwBxgjMDQNr6o/o3puwGDMZlv1l5WJIH6GVv"<br>
+"SLhy41jJ68geEMo3FqPriiUbHkG6TVBVwFkeuEnxZgsYIjUlQZ0McZUvXpVH6IgBJ9BJ3Efgymdh"<br>
+"4HBLtC2j+bQGo7zp3HIy9ExAao8N5KHuYlI7E+8cVresIM21L12KvDXfB/AMgGKLSLTvxQRPNVCj"<br>
+"fjWjTidUhs7qpwTosk7yfDFFJqQdLOfEhWRAFoiDL1COb9coz+Zc6RD+XPA6aTttQGpr4L726p2B"<br>
+"mkJpBPyKmUGw+pwu")<br>
+<br>
+Owen, someone, anyone?</div>
+</article>
+<article class="post" id="msg14268">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2025-09-22 17:03 UTC</span>
+  </div>
+  <div class="post-body">That is not AutoLISP code, that is an .odcl project in plain text form. All you can do with that .odcl project is open/edit it in the OpenDCL editor.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>button click event dose not work..why? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 758</p>
+    <h1>button click event dose not work..why?</h1>
+    <p class="meta">Started by khann ·
+      2009-05-14 14:32 UTC ·
+      5 replies · SMF topic #758</p>
+<article class="post" id="msg3711">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2009-05-14 14:32 UTC</span>
+  </div>
+  <div class="post-body">Hi. I've studied the ODCL Tutorial.<br>
+At first I made two good working buttons of Ok and Cancel.<br>
+In the first form, they work fine.<br>
+<br>
+So now I making a new form and copied the two buttons from the first one in the same ODCL file.<br>
+I copied the buttons click event code too.<br>
+I also checked new button's click event.<br>
+<br>
+But the new two button's click event dose not fire.<br>
+I've touched every stone in the new ODCL form and copied LSP codes.<br>
+It all seems fine.<br>
+<br>
+What's the matter with the new two child buttons?<br>
+<br>
+Please give me a light.<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg3712">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-14 15:28 UTC</span>
+  </div>
+  <div class="post-body">The event handler function names must be changed for the copied buttons. Copy the event handler function name for the copied buttons directly from the events tab pane in OpenDDCL Studio to make sure it is correct.</div>
+</article>
+<article class="post" id="msg3713">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2009-05-15 00:21 UTC</span>
+  </div>
+  <div class="post-body">Thanks for your reply.<br>
+Yes, as you said. I've checked all the names and codes.<br>
+Well, does it matter? If one ODCL file have multi forms, and each form has the same OK button of same name, but the form names are different.<br>
+So the each OK button has different Event Handler code.<br>
+But in my case, only one form's OK button works in the first one.<br>
+<br>
+One ODCL file has one form and one LSP code, is this a rule?</div>
+</article>
+<article class="post" id="msg3715">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2009-05-15 01:01 UTC</span>
+  </div>
+  <div class="post-body">It's the matter of Button's Drag/Drop Allow Begin property.<br>
+It should be False.<br>
+<br>
+Thanks anyway.</div>
+</article>
+<article class="post" id="msg3716">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-15 01:25 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=khann link=topic=758.msg3713#msg3713 date=1242346897 wrote:</cite><br>
+One ODCL file has one form and one LSP code, is this a rule?<br>
+</blockquote><br>
+<br>
+It's generally a good idea, but it's not required.  You can use the same event handler for multiple controls; you just need to make sure the event handler names are correct in OpenDCL Studio.</div>
+</article>
+<article class="post" id="msg3718">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-15 05:13 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">You can use the same event handler for multiple controls</blockquote><br>
+<br>
+For me it is even essential. Two examples:<br>
+<br>
+1. Textbox control with numeric values for contruction<br>
+I often give OnKillFocus and OnReturnPressed the same event handler, cause they're doing the same: reading out the textbox content, check if it is zero or below zero and replace the invalid value with the latest valid value or setting focus again (after a messagebox). The easiest way to do the same is to use the same event handler.<br>
+<br>
+2. BackColor change on MouseOver<br>
+In an image based menu I activate OnMouseEntered for the case the mouse comes into the control and I activate OnMouseOff when leaving. For leaving the control I use the same event handler as for all images for the menu.<br>
+<br>
+So it's very comfortable for me.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

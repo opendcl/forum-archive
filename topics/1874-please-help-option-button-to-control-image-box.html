@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Please help, Option button to control Image box · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1874</p>
+    <h1>Please help, Option button to control Image box</h1>
+    <p class="meta">Started by twong ·
+      2012-08-24 03:20 UTC ·
+      4 replies · SMF topic #1874</p>
+<article class="post" id="msg9197">
+  <div class="post-head">
+    <span class="post-author">twong</span>
+    <span class="post-date muted">2012-08-24 03:20 UTC</span>
+  </div>
+  <div class="post-body">Hi all,<br>
+I have 4 Option buttons (not Option list). Button 1,2 is a group set and button 3,4 is another group set. If click 1 and 3 then show a image in Picture box, click 1,4 then show another one, Clicked Events is on in odcl but I just can't make it. Please anyone can see my code.<br>
+<br>
+(command "OPENDCL")<br>
+<br>
+(defun c:test ()<br>
+  (dcl_Project_Load "Test" T)<br>
+  (dcl_Form_Show test_Form1)<br>
+  (princ)<br>
+  )<br>
+<br>
+(defun c:test_Form1_OptionButton1_OnClicked (/)<br>
+  (setq button1_value (dcl_Control_GetValue test_Form1_OptionButton1))<br>
+  (setq button3_value (dcl_Control_GetValue test_Form1_OptionButton3))<br>
+  (setq button4_value (dcl_Control_GetValue test_Form1_OptionButton4))<br>
+  (if (and (= button1_value 1)(= button3_value 1))<br>
+    (dcl_Control_SetPicture test_Form1_PictureBox1 101)<br>
+    )<br>
+  (if (and (= button1_value 1)(= button4_value 1))<br>
+    (dcl_Control_SetPicture test_Form1_PictureBox1 102)<br>
+    )<br>
+)<br>
+<br>
+Thank you.<br>
+<br>
+T</div>
+</article>
+<article class="post" id="msg9201">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2012-08-24 08:39 UTC</span>
+  </div>
+  <div class="post-body">Tell us what the problem is: the image is not shown in the picture box or you get another error message at runtime? In OpenDCL Studio, in Project menu edit the picture folder, remove all the images, add them again and then save the project. Maybe you didn't save the project when you added the pictures.</div>
+</article>
+<article class="post" id="msg9206">
+  <div class="post-head">
+    <span class="post-author">twong</span>
+    <span class="post-date muted">2012-08-24 09:42 UTC</span>
+  </div>
+  <div class="post-body">The problem is it didn't show up or change the picture when I click the Option button. I just tried what you said and still not work. </div>
+</article>
+<article class="post" id="msg9209">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2012-08-24 10:25 UTC</span>
+  </div>
+  <div class="post-body">Put your pictures in an AutoCAD or BricsCAD Support Path and try to load them in your pictureboxes by using LoadPictureFile method. </div>
+</article>
+<article class="post" id="msg9221">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-08-24 14:44 UTC</span>
+  </div>
+  <div class="post-body">Hi, maybe a dcl_picture_refresh could help.<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

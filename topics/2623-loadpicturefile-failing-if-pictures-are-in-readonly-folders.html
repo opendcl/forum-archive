@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LoadPictureFile failing if pictures are in readonly folders · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2623</p>
+    <h1>LoadPictureFile failing if pictures are in readonly folders</h1>
+    <p class="meta">Started by leo9 ·
+      2018-08-14 17:31 UTC ·
+      2 replies · SMF topic #2623</p>
+<article class="post" id="msg12958">
+  <div class="post-head">
+    <span class="post-author">leo9</span>
+    <span class="post-date muted">2018-08-14 17:31 UTC</span>
+  </div>
+  <div class="post-body">I am returning to an old OpenDCL project and am trying to load a new JPG into an existing Picture Box using LoadPictureFile, but the picture is not being loaded.<br>
+<br>
+The JPGs are stored in a subfolder of ProgramData.  If I copy that subfolder to the root of C drive, and point LoadPictureFile to that folder instead, it loads the picture OK.<br>
+<br>
+So perhaps it's something to do with the folder permissions in ProgramData?<br>
+<br>
+Is there any solution?</div>
+</article>
+<article class="post" id="msg12959">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-08-14 19:02 UTC</span>
+  </div>
+  <div class="post-body">Hello, leo, have you checked the fullpath of the file in ProgramData using findfile? Maybe it's a problem of type mismatch. I also LoadPictures from Programdata path.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg12961">
+  <div class="post-head">
+    <span class="post-author">leo9</span>
+    <span class="post-date muted">2018-08-15 14:17 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred, I checked the path and it was OK.  So then I rebuilt the whole installation but specifically assigned full permissions to that JPG folder in the installation software (InstallShield).  Now LoadPictureFile works for that new JPG.  <br>
+<br>
+I remember a while ago that I had a similar problem with DWG Preview not showing previews of drawings stored in Program Files, so I moved the drawing folder to ProgramData and it worked.<br>
+<br>
+Perhaps ProgramData folder permissions behave differently depending on the version of Windows?  I'm using Windows 10 now but the original project (when I had no problem with LoadPictureFile and ProgramData folders) was done on Windows 7.<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

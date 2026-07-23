@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Slide Image · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2303</p>
+    <h1>Slide Image</h1>
+    <p class="meta">Started by dsm_dude ·
+      2015-08-27 18:34 UTC ·
+      7 replies · SMF topic #2303</p>
+<article class="post" id="msg11583">
+  <div class="post-head">
+    <span class="post-author">dsm_dude</span>
+    <span class="post-date muted">2015-08-27 18:34 UTC</span>
+  </div>
+  <div class="post-body">I've gone through the tutorials and started venturing off on my own.<br>
+<br>
+I have a slide image I want to use, but for the life of me I cant get the slide image to show when then dcl comes up.<br>
+<br>
+I placed a slide view, dbl clicked it and then when to slide view &gt; SlideImage &gt; load<br>
+which gives me this:<br>
+(dcl-SlideView-Load HelloWorld/Form1/SlideView1 Filename [as String] {ImageName [as String]})<br>
+<br>
+My slide file is called test.sld<br>
+<br>
+I keep getting an OpenDCL Runtime Error:<br>
+Error: NIL value not allowed<br>
+Function: dcl-slidview-load<br>
+Argument: 0<br>
+</div>
+</article>
+<article class="post" id="msg11584">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-08-27 20:17 UTC</span>
+  </div>
+  <div class="post-body">Hi, argument 0 is always the control entity.<br>
+The used variable is nil.<br>
+Do you have a type mismatch?<br>
+Is the form already active?<br>
+Do you use the OnInitialize event?<br>
+Fred</div>
+</article>
+<article class="post" id="msg11585">
+  <div class="post-head">
+    <span class="post-author">dsm_dude</span>
+    <span class="post-date muted">2015-08-27 20:19 UTC</span>
+  </div>
+  <div class="post-body">This is what I have so far. <br>
+<br>
+(command "OPENDCL")<br>
+(defun c:Hello ()<br>
+(dcl_Project_Load "HelloWorld" T)<br>
+(dcl_Form_Show HelloWorld_Form1)<br>
+(princ)<br>
+)<br>
+<br>
+(dcl-SlideView-Load HelloWorld/Form1/SlideView1 Filename [as String] {ImageName [as String]})<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg11586">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-08-27 20:29 UTC</span>
+  </div>
+  <div class="post-body">You should call the dcl-SlideView-Load function from an event handler such as your form's OnInitialize event or a button's OnClicked event.</div>
+</article>
+<article class="post" id="msg11587">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-08-28 08:03 UTC</span>
+  </div>
+  <div class="post-body">Hi, what Owen and I mean is this:<br>
+<br>
+Check the Initialize event of the form in the events tab in OpenDCL Studio.<br>
+And then type code like this:<br>
+<br>
+<br>
+(defun c:test (/ c:HelloWorld/Form1/OnInitialize)<br>
+  (command "OPENDCL")<br>
+  (dcl_Project_Load "HelloWorld")<br>
+<br>
+  (defun c:HelloWorld/Form1/OnInitialize()<br>
+    (dcl-SlideView-Load HelloWorld/Form1/SlideView1 "c:/temp/slide.sld")<br>
+  ); c:HelloWorld/Form1/OnInitialize<br>
+<br>
+  (dcl_Form_Show HelloWorld/Form1)<br>
+); test<br>
+<br>
+<br>
+Please, check the tutorial first.<br>
+Fred</div>
+</article>
+<article class="post" id="msg11941">
+  <div class="post-head">
+    <span class="post-author">dsm_dude</span>
+    <span class="post-date muted">2016-07-07 18:55 UTC</span>
+  </div>
+  <div class="post-body">Its been a while sense I've had time to mess with this stuff.<br>
+<br>
+I've decided to give it one last go. No where in the tutorials is there any information on Slide images.<br>
+<br>
+Am I missing something?</div>
+</article>
+<article class="post" id="msg11942">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2016-07-07 20:54 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=dsm_dude link=topic=2303.msg11941#msg11941 date=1467917703 wrote:</cite><br>
+Its been a while sense I've had time to mess with this stuff.<br>
+<br>
+I've decided to give it one last go. No where in the tutorials is there any information on Slide images.<br>
+<br>
+Am I missing something?<br>
+</blockquote><br>
+<br>
+What information do you need on Slide Image?<br>
+Regards</div>
+</article>
+<article class="post" id="msg11943">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-07-08 03:19 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=dsm_dude link=topic=2303.msg11941#msg11941 date=1467917703 wrote:</cite><br>
+I've decided to give it one last go. No where in the tutorials is there any information on Slide images.<br>
+Am I missing something?<br>
+</blockquote><br>
+<br>
+I think Fred was referring to <a href="http://opendcl.com/wordpress/?page_id=10" rel="nofollow noopener">{2}</a> to learn about OpenDCL forms and event handling in general, not specifically about working with slides. Once you understand how OpenDCL events work, the reference documentation about the slide functions and answers here will make more sense to you.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

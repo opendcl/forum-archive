@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Menu button and context menu · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/20-faqs.html">FAQs</a> /
+      Topic 1135</p>
+    <h1>Menu button and context menu</h1>
+    <p class="meta">Started by fred_tomke ·
+      2010-01-15 21:08 UTC ·
+      1 replies · SMF topic #1135</p>
+<article class="post" id="msg6037">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-15 21:08 UTC</span>
+  </div>
+  <div class="post-body"><strong>Question:</strong><br>
+<ul><br>
+How can I set a context menu to a tree item or listview item?<br>
+How can I create a menu button?<br>
+How can I show a shortcutmenu with a certain content depending on the clicked item?<br>
+</ul><br>
+<br>
+<strong>Answer:</strong><br>
+There is no built-in menubutton control and no popupmenu control in OpenDCL.<br>
+But you can workaround that with a static or dynamic shortcutmenu based on a loaded menu.<br>
+<br>
+The attached project demonstrates solutions for all questions above. In every case a popupmenu is needed to be shown by the AutoLISP menucmd-function.<br>
+<br>
+<br>
+(defun c:showmenu ()<br>
+  (MENUCMD "P0=MENUBUTTON.MENUBUTTON")<br>
+  (MENUCMD "P0=*")<br>
+  (princ)<br>
+); c:showmenu <br>
+<br>
+<br>
+The macro of each menu item either calls an event for the dialog or another command.<br>
+The menu button changes the current method after selecting a menubutton item.<br>
+<br>
+The select button of this sample invokes a progress of reading all listview items to create a shortcut menu of them.<br>
+This sample shows how to handle with a dynamic shortcutmenu.<br>
+<br>
+Many thanks to <a href="http://sourceforge.net/projects/opendcl/forums/forum/658811/topic/1868759?message=4621323" rel="nofollow noopener">{2}</a> and <a href="http://www.theswamp.org/index.php?topic=25896.msg311909#msg311909" rel="nofollow noopener">{2}</a> for their samples.<br>
+<br>
+<strong>Note:</strong> all the contents of the archive must be placed in a AutoCAD support path. Should work for all AutoCAD releases from R16.0 up to 18.1!<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1236/menubutton.zip">menubutton.zip</a> <span class="muted">(15293 bytes)</span></li><li><a href="../attachments/1237/static.png">static.png</a> <span class="muted">(10998 bytes)</span></li><li><a href="../attachments/1238/dynamic.png">dynamic.png</a> <span class="muted">(10264 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6377">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-26 22:07 UTC</span>
+  </div>
+  <div class="post-body">Hello, in the Rev 1.1 of this FAQ I want apply what I have learned when I studied the changes from Owen of <a href="http://www.opendcl.com/forum/index.php?topic=994.0" rel="nofollow noopener">{2}</a>. Owen put the modified code to the new OpenDCL sample in the folder "C:\Program Files\OpenDCL Studio\\Samples".<br>
+<br>
+What is different? The pb_task_OnClicked event handler was replaced by two commands. The commands will be assigned regarding the latest selected method. Have a look into the code and watch out for the (dcl_Control_SetProperty menubutton_form_pb_task "Clicked" ...)-lines.<br>
+<br>
+Have fun with it.<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1318/menubutton.zip">menubutton.zip</a> <span class="muted">(15455 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>filling Tree Control is slow · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1576</p>
+    <h1>filling Tree Control is slow</h1>
+    <p class="meta">Started by honkinberry ·
+      2011-01-25 18:11 UTC ·
+      3 replies · SMF topic #1576</p>
+<article class="post" id="msg7715">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2011-01-25 18:11 UTC</span>
+  </div>
+  <div class="post-body">I have a Tree List control that is taking too long to fill the members.<br>
+<br>
+In the default installation, there are about 50 parent elements, with 700 child elements in up to 4 levels of hierarchy.<br>
+In that case, it takes about 3 seconds to populate the tree list.<br>
+Yet we are getting power users who have had the software for over 5 years now, and they can have upwards of 5,000 child elements, in which case it is taking closer to 7 seconds to populate the tree list.<br>
+<br>
+So before I rewrite the rather involved requery function, I am inquiring if you know if I will be able to get the speed improvement I am after.  Essentially, I'm wondering if instead of passing each item one at at time, if I pass all the parent elements as a list of lists to a single dcl_tree_AddParent call, and then only have the 50 or so calls to dcl_tree_AddChild, again with the list of lists -- will that see a performance gain from calling them individually?<br>
+Or, of course, if you happen to know if the performance hit is from the tree list control itself rather than the dcl_tree function calling, then I would instead need to go the far more involved route of adding the child members on the fly from the Expand event.<br>
+In either case, I've got my work cut out for me, so I thought I'd ask for your thoughts first.<br>
+<br>
+Many thanks for any pointers!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg7716">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2011-01-25 19:50 UTC</span>
+  </div>
+  <div class="post-body">I was able to do a rather quick and dirty test.<br>
+I kept the 50 add_parent calls as single calls, but then assembled the 700 add_child calls into 50 add_child calls.<br>
+The result was negligible, if any.<br>
+<br>
+Any other tips, tricks, or thoughts on filling a tree list would be most appreciated!<br>
+<br>
+cheers,<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg7717">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2011-01-25 20:05 UTC</span>
+  </div>
+  <div class="post-body"><br>
+How much of your stated time is involved with determining the data ?<br>
+<br>
+Are you adding graphics to the lists ?<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg7718">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2011-01-26 01:45 UTC</span>
+  </div>
+  <div class="post-body">No graphics.<br>
+The data is all read into two lists initially, so all processing of the data is done on the lists.<br>
+That made me think of another test, so I simply commented out all the AddChild lines of code, which resulted in a negligible hit.<br>
+So it does seem that no matter how I requery the treelist, the primary performance hit is in processing all the data, with the AddChild calls actually the speediest part.<br>
+Well now I feel like a sucker!<br>
+Thanks for prodding me in the right direction.<br>
+<br>
+--J<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

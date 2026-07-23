@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problems when adding list to a listbox · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 454</p>
+    <h1>Problems when adding list to a listbox</h1>
+    <p class="meta">Started by Danell ·
+      2008-10-16 15:51 UTC ·
+      6 replies · SMF topic #454</p>
+<article class="post" id="msg2037">
+  <div class="post-head">
+    <span class="post-author">Danell</span>
+    <span class="post-date muted">2008-10-16 15:51 UTC</span>
+  </div>
+  <div class="post-body">I'm pretty new at OpenDCL. I'm creating a dialog where you can preview and insert blocks in a folder. But when I try to add the list via LISP to my listbox I get an OpenDCL Runtime error message that says. <br>
+<br>
+Error: NIL value not allowed. <br>
+Function: dcl_ListBox_Addlist. <br>
+Argument 0. <br>
+<br>
+My list do not contain NIL and I have tried several lists. I use AutoCad 2009 together with OpenDCL 5.0.0.25.<br>
+<br>
+I hope someone can help me out.</div>
+</article>
+<article class="post" id="msg2039">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-16 19:14 UTC</span>
+  </div>
+  <div class="post-body">Hello Danell and welcome,<br>
+<br>
+I'd like to help you. But I need so more information. Would it be possible to upload the project file and the source code?<br>
+You can also send it to f.tomke@opendcl.de of you don't like to publish.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2040">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-16 19:17 UTC</span>
+  </div>
+  <div class="post-body">Just to your knowledge: to avoid that I ask several things not knowing to come closer to the reason it should be easier to send me the sources. Then I can tell you why much more easier.<br>
+Fred</div>
+</article>
+<article class="post" id="msg2044">
+  <div class="post-head">
+    <span class="post-author">Danell</span>
+    <span class="post-date muted">2008-10-17 14:32 UTC</span>
+  </div>
+  <div class="post-body">Thank you for trying to help. Actually I solved the problem. The AddList function wasnt placed under OnInitialize. But now I have a new problem. I can not get the drawing that I want to preview to show up in the dwgPreview window unless I put it under OnInitialize. But even then it will not update when I make a new selection in my Listbox.<br>
+The code for previewing the dwg looks like this:<br>
+<br>
+(defun c:OFRdesign_FRdesign_FR_List_OnSelChanged (nSelection sSelText /)<br>
+  <br>
+  (dcl_DwgPreview_LoadDwg OFRdesign_FRdesign_DwgPreview1 "C:\\test\\GA.dwg")<br>
+<br>
+)<br>
+<br>
+The GA.dwg is not the actual drawing I want to show (it is not member of the list). I am just trying to show any drawing at all, for examplw c:\\test\\GA.dwg<br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg2045">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-17 15:26 UTC</span>
+  </div>
+  <div class="post-body">Hi, Danell, does this file have a preview? As far as I know a preview is needed for this.<br>
+Make sure that your project has been reloaded after activating the event OnSelChanged and saving the project file.<br>
+Reloading with (dcl_project_load "OFRdesign" T)<br>
+Fred</div>
+</article>
+<article class="post" id="msg2046">
+  <div class="post-head">
+    <span class="post-author">Danell</span>
+    <span class="post-date muted">2008-10-17 16:47 UTC</span>
+  </div>
+  <div class="post-body">Do I need to create the preview manually in some way you mean before I display it in the prevew window? Like I said, I can see a preview of the file if I put the code under OnInitialize, but nothing happens when I click the listbox.<br>
+<br>
+Danell</div>
+</article>
+<article class="post" id="msg2047">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-17 19:20 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+the preview of the dwg will be stored when you save the drawing and the systemvariable RASTERPREVIEW is set.<br>
+But I'm not sure that I'm on the right path 'cause you say that the preview of this file will be shown if you set the drawing in the OnInitialize function.  :-\ It should work so as you wrote. You code seems to be correct. Would you update the project, the code and the dwg for some tests?<br>
+<br>
+Fred<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

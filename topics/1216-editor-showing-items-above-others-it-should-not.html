@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editor showing items above others it should not · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1216</p>
+    <h1>Editor showing items above others it should not</h1>
+    <p class="meta">Started by jmaeding ·
+      2010-03-19 16:17 UTC ·
+      4 replies · SMF topic #1216</p>
+<article class="post" id="msg6517">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-03-19 16:17 UTC</span>
+  </div>
+  <div class="post-body">I am transitioning dialogs done in version 4 to latest version.<br>
+It seems that its not respecting the "zorder" of the controls.<br>
+On the attached image, the optionlist "oplProfSource" is below the two buttons "cmdOnAlgSets" and the other next to it.<br>
+Is this a transitional issue, or did the convention change so items at the bottom of the zorder list are actually on top now?<br>
+I also attached the rather large lisp dcl file, lots of dialogs in there....<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1343/CT-Civil10.odcl.lsp">CT-Civil10.odcl.lsp</a> <span class="muted">(371770 bytes)</span></li><li><a href="../attachments/1344/studio.PNG">studio.PNG</a> <span class="muted">(42848 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6518">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-03-19 16:21 UTC</span>
+  </div>
+  <div class="post-body">shoot, forgot to mention I am using the latest stable build for the dialog editor, not beta 6.x.<br>
+I am transitioning from version 4.1 roughly, if that helps.<br>
+<br>
+The biggest issue has been all the calls that changed from 1 and 0, to T and nil.  That affected thousands of lines of code.<br>
+Using ultraedit with "intelligent" regular expression search and replaces sure helped...</div>
+</article>
+<article class="post" id="msg6519">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-03-19 17:25 UTC</span>
+  </div>
+  <div class="post-body">This is a know issue with overlapping controls.<br>
+When transparent backgrounds for controls was introduce this was the side effect.<br>
+Anyways the controls should look fine at run-time.<br>
+Owen can correct me if I'm wrong or elaborate more on the issue if need be.<br>
+</div>
+</article>
+<article class="post" id="msg6521">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-03-19 17:51 UTC</span>
+  </div>
+  <div class="post-body">oh, so set back color to transparent, that works just fine!<br>
+Didn't think of that...</div>
+</article>
+<article class="post" id="msg6522">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-19 17:54 UTC</span>
+  </div>
+  <div class="post-body">The changes needed to support transparent controls did exacerbate the problem, but the bottom line is that Windows has never supported overlapping controls, and it has never guaranteed that Z order == draw order. The optimizations that the Windows display system uses to decide what to paint next get more complicated and unpredictable when you introduce the possibility of transparent controls, but even display driver changes or changes from one version of Windows to the next (think "visual styles") could cause changes in the display system that would result in changes to the way overlapping controls are rendered.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demand load problem · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1771</p>
+    <h1>Demand load problem</h1>
+    <p class="meta">Started by CouchPotato ·
+      2012-03-08 15:29 UTC ·
+      9 replies · SMF topic #1771</p>
+<article class="post" id="msg8682">
+  <div class="post-head">
+    <span class="post-author">CouchPotato</span>
+    <span class="post-date muted">2012-03-08 15:29 UTC</span>
+  </div>
+  <div class="post-body">I have installed Acad 2012 after installing the run time of OpenDCL.  "Opendcl" in the command line give "unknown command".  I have tried installing again and it gives me 2 option, remove or repair.  I have tried repair with no luck.  Do I need to remove and reinstall??<br>
+<br>
+Dave </div>
+</article>
+<article class="post" id="msg8683">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-03-08 15:54 UTC</span>
+  </div>
+  <div class="post-body">Hi, by default it should work after repair. If not, try reinstall. If it still does not work then try to add the registry key manually.<br>
+Regards, Fred<br>
+</div>
+</article>
+<article class="post" id="msg8684">
+  <div class="post-head">
+    <span class="post-author">CouchPotato</span>
+    <span class="post-date muted">2012-03-08 16:56 UTC</span>
+  </div>
+  <div class="post-body">OK, forgive my ignorance.  I am on the machine that will be developing the dcl routines.  I have installed and reinstalled OpenDCL Studio 6.  My 2009 Acad version works fine, but my 2012 version does not.  I don't think I ever realized or thought about the runtime version.  I just installed Studio on my end users computers.    What do I need to do to get it (Studio) working on my computer with 2012?<br>
+<br>
+Win XP64<br>
+<br>
+Dave</div>
+</article>
+<article class="post" id="msg8685">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2012-03-08 18:27 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=CouchPotato link=topic=1724.msg8682#msg8682 date=1331220543 wrote:</cite><br>
+I have installed Acad 2012 after installing the run time of OpenDCL.  "Opendcl" in the command line give "unknown command".  I have tried installing again and it gives me 2 option, remove or repair.  I have tried repair with no luck.  Do I need to remove and reinstall??<br>
+Dave <br>
+</blockquote><br>
+<br>
+Since you've got things all messed up, I would uninstall ALL OpenDCL software (Studio &amp; Run-time). Then reboot &amp; install ONLY the Studio (the Studio includes the run-time, so you don't need to install it).<br>
+If that doesn't work let us know, maybe it's an issue with WinXP x64...</div>
+</article>
+<article class="post" id="msg8686">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-03-08 18:56 UTC</span>
+  </div>
+  <div class="post-body">Make sure you're installing the latest version, because earlier versions did not support AutoCAD 2012. Also, make sure you have Administrator permission on the machine where you're running the instsall.<br>
+</div>
+</article>
+<article class="post" id="msg8687">
+  <div class="post-head">
+    <span class="post-author">CouchPotato</span>
+    <span class="post-date muted">2012-03-08 20:02 UTC</span>
+  </div>
+  <div class="post-body">I did the uninstall and reinstall.  Still no luck with 2012.  I happened to realize that I am running the 64 bit version of Autocad and Civil 3d 2012. Files go into the Program Files folder, not the (x86) folder.  Don't know if that is the problem.<br>
+<br>
+Dave </div>
+</article>
+<article class="post" id="msg8688">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-03-09 06:30 UTC</span>
+  </div>
+  <div class="post-body">Hello, by default OpenDCL Studio is installed to the Program Files (x86) folder. But it should be not the reason that the OpenDCL command is missing. Have a look at the Common Files folder. Is there an OpenDCL subfolder?<br>
+<br>
+When Studio or Runtime is installed, the following keys are set for each installed supported AutoCAD product:<br>
+<br>
+<pre class="code"><code><br>
+Windows Registry Editor Version 5.00<br>
+<br>
+[HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R18.2\ACAD-A000:407\Applications\OpenDCL]<br>
+"Loader"="C:\\Program Files (x86)\\Common Files\\OpenDCL\\OpenDCL.x64.18.arx"<br>
+"Description"="OpenDCL"<br>
+"LoadCtrls"=dword:0000000c<br>
+<br>
+[HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R18.2\ACAD-A000:407\Applications\OpenDCL\Commands]<br>
+"OPENDCL"="OPENDCL"<br>
+</code></pre> <br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8691">
+  <div class="post-head">
+    <span class="post-author">CouchPotato</span>
+    <span class="post-date muted">2012-03-09 20:18 UTC</span>
+  </div>
+  <div class="post-body">Fred, went to the registry.  All were there except the Command key.  I tried adding it, but am not sure I did it right.  However, I did add the arx file to the stratup suite of acad and it seems to work fine.  Not sure why the "Command" key wasn't there.<br>
+<br>
+Dave  </div>
+</article>
+<article class="post" id="msg8692">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-03-09 20:29 UTC</span>
+  </div>
+  <div class="post-body">The key is Commands (plural). Please let us know the exact build of OpenDCL you're installing. Hopefully someone else running the 64-bit Civil3D 2012 can test to see if they have the same problem.</div>
+</article>
+<article class="post" id="msg8694">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-03-10 12:26 UTC</span>
+  </div>
+  <div class="post-body">Yes, that's me. I'm using Civil 3D 2012 x64 DEU and I copied the registry key from there into this topic. That's why I know that the installation of Studio works fine and creates all the keys correctly.<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

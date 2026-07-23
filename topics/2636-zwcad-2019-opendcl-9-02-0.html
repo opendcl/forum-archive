@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZWCAD 2019 / OpenDcl 9.02.0 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2636</p>
+    <h1>ZWCAD 2019 / OpenDcl 9.02.0</h1>
+    <p class="meta">Started by juan ·
+      2018-10-18 13:10 UTC ·
+      5 replies · SMF topic #2636</p>
+<article class="post" id="msg13038">
+  <div class="post-head">
+    <span class="post-author">juan</span>
+    <span class="post-date muted">2018-10-18 13:10 UTC</span>
+  </div>
+  <div class="post-body">Hello, I have an application made with OpenDcl and it works perfectly in Autocad, my idea is to be able to work with it in zwcad 2019, but it gives me an error<br>
+<br>
+  (dcl_Project_Load "E: PERI_Present.odcl" T)<br>
+<br>
+Error: undefined function - DCL_PROJECT_LOAD<br>
+<br>
+<br>
+Please, can you help me<br>
+<br>
+TH<br>
+Juan</div>
+</article>
+<article class="post" id="msg13039">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-10-19 14:52 UTC</span>
+  </div>
+  <div class="post-body">It seems that the ARX is not loaded in ZWCAD. Please check carefully the installation and configuration that you have.</div>
+</article>
+<article class="post" id="msg13040">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2018-10-19 17:46 UTC</span>
+  </div>
+  <div class="post-body">I'm not sure demand loading ever worked on ZWCAD. I think they had at one time hard-coded OpenDCL to load automatically. In any case, you should be able to load the OpenDCL runtime module manually before loading your project.</div>
+</article>
+<article class="post" id="msg13041">
+  <div class="post-head">
+    <span class="post-author">juan</span>
+    <span class="post-date muted">2018-10-20 06:50 UTC</span>
+  </div>
+  <div class="post-body">Thank you for your answers,<br>
+Forgive my ignorance, but what installation I have to review, zwcad or OpenDCL<br>
+<br>
+this is the code of my lisp that works perfectly in autocad<br>
+<br>
+<br>
+(vl-cmdf "OPENDCL")<br>
+(if (not ADOLISP_ConnectToDB)<br>
+  (load<br>
+    "E:\\00Maven\\DevelopUS20323_Juan\\Web\\CentrioScafoldDesigns\\opedcl\\support\\ADOLISP_Library.lsp"<br>
+  )<br>
+)<br>
+(vl-load-com)<br>
+ (dcl_Project_Load "E:PERI_Present.odcl" T)<br>
+  (dcl_Form_Show PERI_Present_PERIPRESENTACIOND)<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg13042">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-10-20 22:27 UTC</span>
+  </div>
+  <div class="post-body">As Owen said, it is possible that not your code is the problem. It seems that Zwcad does not load OpendDCL.<br>
+<br>
+The line (vl-cmdf "OPENDCL") loads OpendDCL only if the load_on_demand-function exists and is defined correctly.<br>
+<br>
+So I would try to <br>
+a) comment out the line (vl-cmdf "OPENDCL") in your code<br>
+b) load the needed opnedcl-arx in another way: "appload" or "arxload" or ...<br>
+c) try your lisp again</div>
+</article>
+<article class="post" id="msg13043">
+  <div class="post-head">
+    <span class="post-author">juan</span>
+    <span class="post-date muted">2018-10-21 08:27 UTC</span>
+  </div>
+  <div class="post-body">Thank you very much, very grateful, loading manually works perfectly<br>
+with appload<br>
+<br>
+Juan</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

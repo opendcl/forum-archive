@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>confused with command and command-s · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2188</p>
+    <h1>confused with command and command-s</h1>
+    <p class="meta">Started by velasquez ·
+      2014-11-05 17:21 UTC ·
+      5 replies · SMF topic #2188</p>
+<article class="post" id="msg10970">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-11-05 17:21 UTC</span>
+  </div>
+  <div class="post-body">I do not understand the problem with command and command-s <br>
+I copied the lines below the help of AutoCAD 2015. <br>
+"The following is an invalid use of prompting for user input with the command-s function.<br>
+(command-s "._circle" (getpoint "\nSpecify center point: ") "_d" 2.75)<br>
+"<br>
+<br>
+Turns out the lines of code work fine in AutoCAD 2015 and 2012. <br>
+1 <br>
+<pre class="code"><code><br>
+(command-s "._circle" (getpoint "\nSpecify center point: ") "_d" 2.75)<br>
+</code></pre><br>
+2<br>
+<pre class="code"><code><br>
+(command "._circle" (getpoint "\nSpecify center point: ") "_d" 2.75)<br>
+</code></pre><br>
+<br>
+Can someone explain me better how to reproduce the error that is as reported. <br>
+I better understand all the comments about it. <br>
+Thanks<br>
+Modify message</div>
+</article>
+<article class="post" id="msg10971">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-05 21:32 UTC</span>
+  </div>
+  <div class="post-body">Are you typing this at the command prompt? Try putting it inside a lisp function that performs other UI after the call to (command), then run your lisp function.</div>
+</article>
+<article class="post" id="msg10973">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-11-06 11:24 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2188.msg10971#msg10971 date=1415223127 wrote:</cite><br>
+Are you typing this at the command prompt? Try putting it inside a lisp function that performs other UI after the call to (command), then run your lisp function.<br>
+</blockquote><br>
+<br>
+Sorry Owen,<br>
+Yes I used the code from the command prompt.<br>
+I did not understand well your suggestion<br>
+Can you show me an example?</div>
+</article>
+<article class="post" id="msg10974">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-06 19:15 UTC</span>
+  </div>
+  <div class="post-body">I did a quick test and could not produce a problem with using (getpoint) in the argument list. The documentation implies that (command-s) is a "special form" lisp function, but that does not appear to be the case. It's possible that they changed it late in the development cycle.</div>
+</article>
+<article class="post" id="msg10975">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-11-06 20:01 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2188.msg10974#msg10974 date=1415301334 wrote:</cite><br>
+I did a quick test and could not produce a problem with using (getpoint) in the argument list. The documentation implies that (command-s) is a "special form" lisp function, but that does not appear to be the case. It's possible that they changed it late in the development cycle.<br>
+</blockquote><br>
+<br>
+Thanks Owen,<br>
+GetPoint no problem with working with command and command-s there.<br>
+<br>
+AutoDesk also says:<br>
+No "Pause" command tokens may be used. Expressions that interact with the drawing area or Command Window may be used, but will all be processed before AutoCAD receives and processes any of them.<br>
+The following is not valid with the command-s function:<br>
+But the below code works without problems.<br>
+<pre class="code"><code>(command-s "._line" "0,0" PAUSE "")</code></pre><br>
+</div>
+</article>
+<article class="post" id="msg11003">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-11-12 19:03 UTC</span>
+  </div>
+  <div class="post-body">Hi, velasquez, I've unfortunately made the bad exerience the command, command-s, and vl-cmdf may also lead into VVC: internal error even if no OpenDCL was active.<br>
+So I started to rebuild my old lisp command calls either into ActiveX calls (as far as possible) or in C#. I urgently recommend you to rebuild your project until no command is used anymore :(<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

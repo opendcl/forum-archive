@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Im Back! but with error :)-GetOLEColorValue · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1345</p>
+    <h1>Im Back! but with error :)-GetOLEColorValue</h1>
+    <p class="meta">Started by Slavko.Ivanovic ·
+      2010-09-30 19:22 UTC ·
+      2 replies · SMF topic #1345</p>
+<article class="post" id="msg7185">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2010-09-30 19:22 UTC</span>
+  </div>
+  <div class="post-body"><br>
+First of all, hi to all OpenDCL developers and users.<br>
+In December 2009 i was change company (work place).<br>
+Iv got a much better position in my new company, but also much responsibilities.<br>
+I didn't touch <strong>any code</strong> from then up to two weeks ago.<br>
+<br>
+In December 2009 i was also cooking some very interesting code for Show and Tell with intention <br>
+to post as a NEW YEAR present :), but i was forced to stop at 80%.<br>
+<br>
+Now, to bug:<br>
+I was doing some stuff with colors and found this with <strong>6.0.0.29</strong> and <strong>6.0.1.1</strong><br>
+<br>
+GetOLEColorValue ERROR:<br>
+<br>
+(dcl_GetOLEColorValue (list 219 232 204)) -&gt; 13428955<br>
+(dcl_GetOLEColorValue (list 220 232 204)) -&gt; error !   from RED 220<br>
+...<br>
+...<br>
+(dcl_GetOLEColorValue (list 225 232 204)) -&gt; error !<br>
+(dcl_GetOLEColorValue (list 227 232 204)) -&gt; error !<br>
+...<br>
+...<br>
+(dcl_GetOLEColorValue (list 239 232 204)) -&gt; error !  to RED 239<br>
+(dcl_GetOLEColorValue (list 240 232 204)) -&gt; 13428976<br>
+<br>
+<br>
+i need confirmation.<br>
+thanx<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg7186">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-09-30 23:58 UTC</span>
+  </div>
+  <div class="post-body">Welcome back! The error is due to a bug in the way AutoCAD interprets DXF groups. The usual solution is to force one of the numbers to be a (float):<br>
+(dcl_GetOLEColorValue (list 220.0 232 204))</div>
+</article>
+<article class="post" id="msg7215">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2010-10-17 00:44 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen.<br>
+Simple. <br>
+Next time i will investigate more before posting  ;).</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

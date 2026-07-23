@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Drawing in PictureBox - 4.1.2.2 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 498</p>
+    <h1>Drawing in PictureBox - 4.1.2.2</h1>
+    <p class="meta">Started by velasquez ·
+      2008-12-04 22:01 UTC ·
+      5 replies · SMF topic #498</p>
+<article class="post" id="msg2210">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-12-04 22:01 UTC</span>
+  </div>
+  <div class="post-body">Hi  <br>
+I am having a great problem with drawing in PictureBox I worked with dcl_PictureBox_DrawRect and later dcl_PictureBox_StoreImage.  <br>
+I posted two images to show before and after a picture is dragged on the other.  <br>
+Did anybody already see this?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/526/Before.png">Before.png</a> <span class="muted">(39191 bytes)</span></li><li><a href="../attachments/527/After.png">After.png</a> <span class="muted">(52650 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2214">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-12-05 13:13 UTC</span>
+  </div>
+  <div class="post-body">Hi  <br>
+I discovered that the problem with dcl_PictureBox_StoreImage aconte why am I working inside with dcl_PictureBox_DrawRect of the event of OnPaint of PictureBox.  <br>
+The dcl_PictureBox_DrawRect event doesn't work inside of OnInitialize.  <br>
+Does anybody know a form to deceive this?</div>
+</article>
+<article class="post" id="msg2216">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-12-05 19:30 UTC</span>
+  </div>
+  <div class="post-body">Hi  <br>
+I found a way for dcl_PictureBox_DrawRect and dcl_PictureBox_StoreImage they work when a ModalForm is shown.  <br>
+See the functions below in the files that I posted.  <br>
+  <br>
+<span style="color:blue">(defun c:Methods_DemoMethods_OnInitialize...  <br>
+(defun c:Methods_DemoMethods_PictureBox4_OnPaint...  <br>
+(defun c:Methods_ViewHtm_OnClose...  <br>
+(defun c:Methods_ViewHtm_OnInitialize...  <br>
+(defun c:Methods_DemoMethods_Dragging_OnClicked...  </span><br>
+  <br>
+I changed Methods.odcl and lsp to show this. <br>
+ <br>
+<span style="color:red">Attention -&gt; PictureBox after the tests should have 1x1 pixel and to be transparent. </span><br>
+<br>
+I hope this can help in some work.  <br>
+  <br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/530/Methods.odcl">Methods.odcl</a> <span class="muted">(7159 bytes)</span></li><li><a href="../attachments/531/Methods.LSP">Methods.LSP</a> <span class="muted">(15003 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2219">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-12-06 01:45 UTC</span>
+  </div>
+  <div class="post-body">Thx I'll look into it.</div>
+</article>
+<article class="post" id="msg2221">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-12-06 18:52 UTC</span>
+  </div>
+  <div class="post-body">Have you determined whether there is a bug with respect to picture box drawing, or is it just a case of doing things in the correct context?</div>
+</article>
+<article class="post" id="msg2226">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-12-06 20:50 UTC</span>
+  </div>
+  <div class="post-body">This was a way that I found to use the drawing functions correctly in PictureBox when a form is opened.  <br>
+They don't work in OnInitialize.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

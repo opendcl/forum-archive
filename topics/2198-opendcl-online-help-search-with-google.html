@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenDCL, Online Help - search with Google · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/7-site-management.html">Site Management</a> /
+      Topic 2198</p>
+    <h1>OpenDCL, Online Help - search with Google</h1>
+    <p class="meta">Started by Peter2 ·
+      2014-11-17 11:06 UTC ·
+      9 replies · SMF topic #2198</p>
+<article class="post" id="msg11021">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-17 11:06 UTC</span>
+  </div>
+  <div class="post-body">In OpenDCL, Online Help the search with Google gives no results - neither in Firefox nor in IE:<br>
+https://screencast.autodesk.com/main/details/afcf619e-95b8-4753-8a12-180f3a9481ad<br>
+<br>
+Problem of my PC or of the System?</div>
+</article>
+<article class="post" id="msg11032">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-17 16:53 UTC</span>
+  </div>
+  <div class="post-body">It looks like the Google Web Search API has <a href="https://developers.google.com/web-search/docs/" rel="nofollow noopener">{2}</a>. I'll have to do some research to see what we can do to replace it.</div>
+</article>
+<article class="post" id="msg11096">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-24 11:21 UTC</span>
+  </div>
+  <div class="post-body">Seem to work again - thanks for the fix.<br>
+<br>
+A small cosmetic issue:<br>
+The resulting list tries to display the image "http://www.opendcl.com/site/Images/forum_logo.png" in the upper left corner - but this image does not exist.</div>
+</article>
+<article class="post" id="msg11097">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-24 13:45 UTC</span>
+  </div>
+  <div class="post-body">In addition to the missing forum image, we need to figure out how to remove www.opendcl.com/HelpFiles/index.php from the results and display only the link to the actual page.</div>
+</article>
+<article class="post" id="msg11098">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-24 13:47 UTC</span>
+  </div>
+  <div class="post-body">Hmm, I don't get any missing forum image. I do remember seeing it earlier when testing this problem. Can you describe the steps to get it? Or maybe it is just a cached page on your system.</div>
+</article>
+<article class="post" id="msg11099">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-24 16:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2198.msg11098#msg11098 date=1416836851 wrote:</cite><br>
+...Can you describe the steps to get it? ...</blockquote><br>
+No complex steps - only use it. See attachment.<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=2198.msg11098#msg11098 date=1416836851 wrote:</cite><br>
+...Or maybe it is just a cached page on your system.</blockquote><br>
+Or it exists in your cache and is displayed for you. If I try to open the image itself - see link above, I get an error 404.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2079/Opendcl_search.png">Opendcl_search.png</a> <span class="muted">(49214 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11100">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-24 18:01 UTC</span>
+  </div>
+  <div class="post-body">It looks like Barry made a change to ENU\Top.html that corrects the problem for ENU searches, but DEU\Top.html is still original. Presumably he is experimenting, or trying to fix the problem of search results from all languages instead of only the active language. In the meantime I have updated DEU\Top.html and RUS\Top.html so they work the same way as the ENU search.</div>
+</article>
+<article class="post" id="msg11136">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-12-07 19:44 UTC</span>
+  </div>
+  <div class="post-body">The search seem to run - in principle. But it does not find "ontimer", "OnTimer" and "*ontimer*".<br>
+<br>
+Why?</div>
+</article>
+<article class="post" id="msg11137">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-12-08 02:59 UTC</span>
+  </div>
+  <div class="post-body">It seems to be working here. I get two results for "ontimer" (albeit only the DEU help pages): the OnTimer event and the Timer method. Maybe Google had not indexed them until you searched? I really don't know.</div>
+</article>
+<article class="post" id="msg11138">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-12-08 07:50 UTC</span>
+  </div>
+  <div class="post-body">Strange .... <br>
+For ...<br>
+"timer": 48 results<br>
+"starttimer": 1 result (http://www.opendcl.com/HelpFiles/index.php)<br>
+"ontimer":    0 results<br>
+<br>
+(Same on Firefox and on IE10)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

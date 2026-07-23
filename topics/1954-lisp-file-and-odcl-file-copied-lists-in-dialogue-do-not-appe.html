@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lisp-file and odcl-file copied, lists in dialogue do not appear · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1954</p>
+    <h1>Lisp-file and odcl-file copied, lists in dialogue do not appear</h1>
+    <p class="meta">Started by tedicad ·
+      2013-04-02 08:33 UTC ·
+      1 replies · SMF topic #1954</p>
+<article class="post" id="msg9626">
+  <div class="post-head">
+    <span class="post-author">tedicad</span>
+    <span class="post-date muted">2013-04-02 08:33 UTC</span>
+  </div>
+  <div class="post-body">Dear friends,<br>
+<br>
+this may be a very basic and very stupid question, however I am stuck since I don't user opendcl on a daily basis.<br>
+<br>
+Problem: I copied a working set of lips files plus the related odcl-files to a new project. Having modified both set of files (variable names, file names etc.), launching the function is no problem, the dialogue appears, but... no content, i.e. all the list values in the fields are missing. I have assigned the new lisp file to the odcl dialogue, but nothing happens.<br>
+<br>
+What am I missing?<br>
+<br>
+Thanks a lot in advance, Holger<br>
+<br>
+Here is the code:<br>
+<br>
+<br>
+;Dialoge for s:211<br>
+<br>
+(defun s211_015_dialog ()<br>
+<br>
+<br>
+(setq s211Antrieb '("Motor Front"<br>
+		    "Motor Seite"<br>
+		    "Manuell")<br>
+      s211Glastyp '("ESG/VSG 5-16-8.2"<br>
+		    "ESG/VSG 6-16-8.2"<br>
+		    "ESG/VSG 8-16-12.2"<br>
+                    "ESG/ESG/VSG 5-10-5-10-8.2"<br>
+		    "ESG/ESG/VSG 8-10-5-10-12.2")<br>
+      s211EDMat '("Kupfer 0.55"<br>
+                  "Kupfer 0.60"<br>
+                  "Titan-Zink blank"<br>
+                  "CrNiStahl blank"<br>
+                  "CrNiStahl matt")<br>
+      s211Strg '("Basic"<br>
+		 "Basic Funk"<br>
+                 "Arexa"<br>
+                 "WS1 / WS1000"<br>
+                 "WS1 / WS1000 Funk")<br>
+      s211BSTyp '("OHNE Beschattung"<br>
+		  "Beschattung innen"<br>
+		  "Beschattung aussen")<br>
+      s211Sprache '("Deutsch"<br>
+		    "Französisch"<br>
+		    "Italienisch"<br>
+		    "Englisch")<br>
+      )<br>
+<br>
+;preset the variables<br>
+  (setq Val_RIM-H 0)<br>
+	<br>
+<br>
+  <br>
+  (command "_OPENDCL")<br>
+  (dcl_Project_Load "s211N" T)<br>
+  (dcl_Form_Show s211N_Form1)<br>
+<br>
+ <br>
+(defun c:s211N_Form1_OnInitialize (/)<br>
+  (dcl_ListBox_AddList s211N_Form1_Antriebsliste s211Antrieb)<br>
+  (dcl_ListBox_AddList s211N_Form1_GlasTyp s211Glastyp)<br>
+  (dcl_ListBox_AddList s211N_Form1_ListBoxBS_Typ s211BSTyp)<br>
+  (dcl_ListBox_AddList s211N_Form1_ListBoxEindeckrahmen s211EDMat)<br>
+  (dcl_ListBox_AddList s211N_Form1_ListBoxSteuerung s211Strg)<br>
+  (dcl_ListBox_AddList s211N_Form1_ListBoxSprache s211Sprache)<br>
+)<br>
+  <br>
+ <br>
+; call the method to show the s:203 dialog box<br>
+;;;(dcl_Form_Show s211N_Form1)<br>
+<br>
+(defun c:s211N_Form1_OK_Button_OnClicked (/)<br>
+<br>
+  (setq Val_RIM-B (atof (dcl_Control_GetText s211N_Form1_RIM-B)))<br>
+  (setq Val_RIM-H (atof (dcl_Control_GetText s211N_Form1_RIM-H)))<br>
+  (setq Val_Antrieb (dcl_ListBox_GetSelectedItems s211N_Form1_Antrieb))<br>
+  (setq Val_GlasTyp (dcl_ListBox_GetSelectedItems s211N_Form1_GlasTyp))<br>
+  (setq Val_Anzahl (atof (dcl_Control_GetText s211N_Form1_TextBoxAnzahl)))<br>
+  (setq Val_Auftrag (dcl_Control_GetText s211N_Form1_TextBoxAuftrag))<br>
+  (setq Val_Position (dcl_Control_GetText s211N_Form1_TextBoxPosition))<br>
+  (setq Val_Objekt (dcl_Control_GetText s211N_Form1_TextBoxObjekt))<br>
+  (setq Val_Kunde (dcl_Control_GetText s211N_Form1_TextBoxKunde))<br>
+  (setq Val_MatED (dcl_ListBox_GetSelectedItems s211N_Form1_ListBoxEindeckrahmen))<br>
+  (setq Val_Strg (dcl_ListBox_GetSelectedItems s211N_Form1_ListBoxSteuerung))<br>
+  (setq Val_BSTyp (dcl_ListBox_GetSelectedItems s211N_Form1_ListBoxBS_Typ))<br>
+  (setq Val_Plan (dcl_Control_GetText s211N_Form1_TextBoxPlan))<br>
+  (setq Val_Sprache (dcl_ListBox_GetSelectedItems s211N_Form1_ListBoxSprache))<br>
+<br>
+<br>
+;Umwandlung der Abfragewerte in der Liste in reale Masse<br>
+;-------------------------------------------------------<br>
+<br>
+;;;  (setq Val_RIM-H (atof (car Val_RIM-H)))<br>
+;;;  (setq Val_AnzahlMittelAchsen (atof (car Val_AnzahlMittelAchsen)))<br>
+<br>
+<br>
+  (dcl_Form_Close s211N_Form1)<br>
+</div>
+</article>
+<article class="post" id="msg9627">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-04-02 14:25 UTC</span>
+  </div>
+  <div class="post-body">You probably changed the .odcl filename, which changed the project key, which changed the symbol names for the form controls. Just resynchronize your names, either by changing the lisp code to match the .odcl file, or by changing the .odcl file to match the lisp code.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BlockList's OnKeyDown event bug · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 780</p>
+    <h1>BlockList's OnKeyDown event bug</h1>
+    <p class="meta">Started by khann ·
+      2009-05-30 02:50 UTC ·
+      3 replies · SMF topic #780</p>
+<article class="post" id="msg3841">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2009-05-30 02:50 UTC</span>
+  </div>
+  <div class="post-body">Hi.<br>
+I've tested the BlockList OnKeyDown event.<br>
+After pressing the left, right, up, down arrow key,<br>
+the <span style="color:blue">"dcl_blocklist_getcursel"</span> returns the previous selitem value.<br>
+Mmm.</div>
+</article>
+<article class="post" id="msg3846">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-30 05:01 UTC</span>
+  </div>
+  <div class="post-body">I'm not sure I understand the problem. If you press left/right/up/down, the current selection should end up where it started.</div>
+</article>
+<article class="post" id="msg3849">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-30 06:56 UTC</span>
+  </div>
+  <div class="post-body">Hm,<br>
+<br>
+<blockquote class="quote">If you press left/right/up/down, the current selection should end up where it started.</blockquote><br>
+<br>
+What will be given back by <span style="color:blue">dcl_blocklist_getcursel</span> within OnKeyUp?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3850">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-30 19:38 UTC</span>
+  </div>
+  <div class="post-body">Ah, I understand now. The problem is that the current selection does not change until *after* the OnKeyDown event. It seems strange that there is no OnSelectionChanged event for the block list; it should be added as a feature request.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ListView MultiColumns DragBegin · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1302</p>
+    <h1>ListView MultiColumns DragBegin</h1>
+    <p class="meta">Started by toco1 ·
+      2010-06-26 15:21 UTC ·
+      2 replies · SMF topic #1302</p>
+<article class="post" id="msg6972">
+  <div class="post-head">
+    <span class="post-author">toco1</span>
+    <span class="post-date muted">2010-06-26 15:21 UTC</span>
+  </div>
+  <div class="post-body">Version  OpenDCL Studio ENU 6.0.0.27 with Acad2011<br>
+ListView problem<br>
+<br>
+Test with OpenDCL Sample: MasterDemo -&gt; DragNDrop.<br>
+<br>
+Just a simple modification in DragNDrop.lsp -&gt; <br>
+<br>
+;---original<br>
+(defun c:DragNDrop_Form1_OnInitialize (/)<br>
+	(dcl_ListView_AddColumns DragNDrop_Form1_ListView1 (list "Column 1" 0 140))<br>
+	(dcl_ListView_FillList DragNDrop_Form1_ListView1<br>
+                               '(("List 1a" 0) ("List 2a" 1) ("List 3a" 2))<br>
+	)<br>
+	(princ)<br>
+)<br>
+;---modification : add a new column<br>
+(defun c:DragNDrop_Form1_OnInitialize (/)<br>
+	(dcl_ListView_AddColumns DragNDrop_Form1_ListView1 (list "Column 1" 0 140))<br>
+	(dcl_ListView_AddColumns DragNDrop_Form1_ListView1 (list "Column 2" 1 140))<br>
+	(dcl_ListView_FillList DragNDrop_Form1_ListView1<br>
+                               '(("List 1a" 0 "col2 1a") ("List 2a" 1 "col2 2a") ("List 3a" 2 "col2 3a"))<br>
+	)<br>
+	(princ)<br>
+)<br>
+<br>
+No change in DragNDrop.odcl<br>
+DragnDropAllowBegin -&gt; t<br>
+DragnDropAllowDrop  -&gt; t<br>
+<br>
+In the dialogBox:<br>
+Just one click on ListView Cell "List 1a" =&gt; "col2 1a" in the cell off column 2 disappears...<br>
+Is this a bug or a default setting ?<br>
+Thanks</div>
+</article>
+<article class="post" id="msg6975">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-06-27 01:44 UTC</span>
+  </div>
+  <div class="post-body">Technically this is working as designed, but only because it isn't a very robust design. I've changed the code for the next build to drag all columns of a multi-colum list. That change should make it behave the way you would expect (hopefully without any unwanted side effects).</div>
+</article>
+<article class="post" id="msg6977">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-06-27 07:51 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1302.msg6975#msg6975 date=1277603069 wrote:</cite><br>
+ (hopefully without any unwanted side effects).<br>
+</blockquote><br>
+<br>
+I will have an eye on that  ;)<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

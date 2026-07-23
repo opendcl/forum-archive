@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Basic Splash Screen · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 26</p>
+    <h1>Basic Splash Screen</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2007-07-28 06:31 UTC ·
+      6 replies · SMF topic #26</p>
+<article class="post" id="msg114">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-28 06:31 UTC</span>
+  </div>
+  <div class="post-body">In response to a user Request ..<br>
+The ODCL is too large to be attached due to the current site configuration .. sorry, but it's pretty simple :-)<br>
+(the ODCL is 548 KB ; most of which is the graphic picture)<br>
+<pre class="code"><code><br>
+(DEFUN c:TestSplash (/ _Delay_Initialize)<br>
+    (VL-LOAD-COM)<br>
+    ;;------------------------------------------------------<br>
+    (defun _Delay_Initialize (delayval / cnt)<br>
+        (setq cnt 0)<br>
+        (setvar "cmdecho" 0)<br>
+        (while (&lt; cnt delayval)<br>
+            (command "delay" "20")<br>
+            (dcl_Control_SetValue TestSplash_F1_ProgressBar1 (setq cnt (1+ cnt)))<br>
+        )<br>
+        (dcl_Form_close TestSplash_F1)<br>
+        <br>
+        ;; pretend to do stuff<br>
+        (command "delay" "700")<br>
+        ;;<br>
+        (dcl_Form_close TestSplash_Splash)        <br>
+    )<br>
+    ;;------------------------------------------------------<br>
+    (DCL_PROJECT_LOAD "TestSplash.odcl" T)<br>
+    ;;<br>
+    (DCL_FORM_SHOW TestSplash_Splash)<br>
+    (dcl_Form_Show TestSplash_F1 100 100)<br>
+    (_Delay_Initialize 100)<br>
+    ;;<br>
+    (DCL_FORM_SHOW TestSplash_Main)<br>
+    (PRINC)<br>
+)</code></pre><br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg115">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-28 06:50 UTC</span>
+  </div>
+  <div class="post-body">Perhaps a suitable way to treat this would be to load a seperate LSP and ODCL just for the Splash screen ... then remove BOTH from memory to save resources ... but that may just be the frugal side of my nature talking :-)<br>
+</div>
+</article>
+<article class="post" id="msg116">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-28 06:56 UTC</span>
+  </div>
+  <div class="post-body">Here's the code with the Pictures removed ...<br>
+Note that the file name is different ..<br>
+<br>
+... so just rename the file to "TestSplash.odcl" and add some piccys to suit  ;)<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg117">
+  <div class="post-head">
+    <span class="post-author">dkh007</span>
+    <span class="post-date muted">2007-07-28 13:21 UTC</span>
+  </div>
+  <div class="post-body">Nice trick. I prefer this over a built in Splash Screen (unless we would be able to change the picture in OpenDCL with a built in).</div>
+</article>
+<article class="post" id="msg118">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2007-07-28 14:06 UTC</span>
+  </div>
+  <div class="post-body">Thanks Kerry . . .</div>
+</article>
+<article class="post" id="msg119">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-29 00:44 UTC</span>
+  </div>
+  <div class="post-body"><br>
+It may be more advantagous to use a HTML page and read the piccy from a local file. <br>
+<br>
+(if (= Today Sunday)  (dcl_Html_Navigate Splash_F_HtmlControl1  "P:\Destination-01") )</div>
+</article>
+<article class="post" id="msg995">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-02-26 20:00 UTC</span>
+  </div>
+  <div class="post-body">In the latest Alpha build (5.0.0.6) there's a new sample showing how to create a basic Splash Screen with the new (dcl_DelayedInvoke) function.<br>
+This doesn't lock up Acad like (command "delay" ###) so you can continue to load other LSP's in the background or preform other processes.<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

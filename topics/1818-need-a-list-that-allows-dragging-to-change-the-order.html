@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Need a list that allows dragging to change the order · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1818</p>
+    <h1>Need a list that allows dragging to change the order</h1>
+    <p class="meta">Started by EricStiles ·
+      2012-06-20 02:11 UTC ·
+      7 replies · SMF topic #1818</p>
+<article class="post" id="msg8933">
+  <div class="post-head">
+    <span class="post-author">EricStiles</span>
+    <span class="post-date muted">2012-06-20 02:11 UTC</span>
+  </div>
+  <div class="post-body">What would be the tool, if any, that would put a list on the screen and then allow you to drag items in the list to change the order items in the list?</div>
+</article>
+<article class="post" id="msg8934">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-06-20 05:40 UTC</span>
+  </div>
+  <div class="post-body">You can use a listbox control with "Drag/Drop Allow Begin" and "Drag/Drop Allow Drop" both set to true.</div>
+</article>
+<article class="post" id="msg8937">
+  <div class="post-head">
+    <span class="post-author">EricStiles</span>
+    <span class="post-date muted">2012-06-20 19:02 UTC</span>
+  </div>
+  <div class="post-body">Thank you, I'll investigate that.   </div>
+</article>
+<article class="post" id="msg8938">
+  <div class="post-head">
+    <span class="post-author">EricStiles</span>
+    <span class="post-date muted">2012-06-20 19:11 UTC</span>
+  </div>
+  <div class="post-body">Ok I'm working and shouldn't be doing this since I don't get paid to program but I had to see if that was what I was looking for, and IT IS!!!   Thank you, OWENWENGERD!</div>
+</article>
+<article class="post" id="msg11948">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2016-07-12 01:17 UTC</span>
+  </div>
+  <div class="post-body">This does work. What event would fire after dropping in new location so new list could be save immediately?</div>
+</article>
+<article class="post" id="msg11951">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-07-12 04:32 UTC</span>
+  </div>
+  <div class="post-body">Hi, Jim, I always set up my controls this way:<br>
+<br>
+source control: <br>
+enable OnDragnDropBegin to ensure the user is allowed to drag the selected items<br>
+<br>
+destination control: <br>
+enable OnDragOverFromControl to ensure the user is allowed to drop the selected items to the target<br>
+enable OnDragnDropFromControl to execute code to store the state into the databases<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11952">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2016-07-12 12:12 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred,<br>
+Does this work when dragging only within the same control like just changing order of the items?<br>
+Run built-in code DragDropBegin<br>
+Save with KillFocus.<br>
+<br>
+Selecting additional events messes with built-in behavior.<br>
+Jim</div>
+</article>
+<article class="post" id="msg11953">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-07-12 14:03 UTC</span>
+  </div>
+  <div class="post-body">Hi, Jim,<br>
+<blockquote class="quote"><cite> author=Jim Short link=topic=1818.msg11952#msg11952 date=1468325574 wrote:</cite><br>
+Does this work when dragging only within the same control like just changing order of the items?<br>
+</blockquote><br>
+<br>
+yes, it does. Just check in the code of OnDragOverFromControl and/or OnDragnDropFromControl that the source control name is the same as the destination control name.<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

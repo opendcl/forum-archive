@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SetCurSel based off another Listbox · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2828</p>
+    <h1>SetCurSel based off another Listbox</h1>
+    <p class="meta">Started by dsm_dude ·
+      2022-08-23 20:57 UTC ·
+      2 replies · SMF topic #2828</p>
+<article class="post" id="msg13701">
+  <div class="post-head">
+    <span class="post-author">dsm_dude</span>
+    <span class="post-date muted">2022-08-23 20:57 UTC</span>
+  </div>
+  <div class="post-body">I have two list boxes in my dialog box.<br>
+<br>
+One contains a description and the other a VBScript.<br>
+<br>
+When I select the desired description it automatically selects the VBScript.<br>
+<br>
+This is how I'm accomplishing it, but I would like to know if there is a better and more streamlined way to accomplish this.<br>
+<pre class="code"><code>(defun c:LabelContent/Form1/ListBox2#OnSelChanged (ItemIndexOrCount Value /)<br>
+  (setq Usel (dcl-ListBox-GetCurSel LabelContent/Form1/ListBox2))<br>
+  (cond<br>
+    ((= Usel 0)(dcl-ListBox-SetCurSel LabelContent/Form1/ListBox1 0))<br>
+    ((= Usel 1)(dcl-ListBox-SetCurSel LabelContent/Form1/ListBox1 1))<br>
+    ((= Usel 2)(dcl-ListBox-SetCurSel LabelContent/Form1/ListBox1 2))<br>
+    ((= Usel 3)(dcl-ListBox-SetCurSel LabelContent/Form1/ListBox1 3))<br>
+    ((= Usel 4)(dcl-ListBox-SetCurSel LabelContent/Form1/ListBox1 4))<br>
+    ((= Usel 5)(dcl-ListBox-SetCurSel LabelContent/Form1/ListBox1 5))<br>
+    ((= Usel 6)(dcl-ListBox-SetCurSel LabelContent/Form1/ListBox1 6))<br>
+    ((= Usel 7)(dcl-ListBox-SetCurSel LabelContent/Form1/ListBox1 7))<br>
+    ((= Usel 8)(dcl-ListBox-SetCurSel LabelContent/Form1/ListBox1 8))<br>
+    ((= Usel 9)(dcl-ListBox-SetCurSel LabelContent/Form1/ListBox1 9))<br>
+    ((= Usel 10)(dcl-ListBox-SetCurSel LabelContent/Form1/ListBox1 10))<br>
+);cond<br>
+  )</code></pre></div>
+</article>
+<article class="post" id="msg13702">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2022-08-23 23:18 UTC</span>
+  </div>
+  <div class="post-body">Hi, does this the trick?<br>
+<br>
+<pre class="code"><code><br>
+(defun c:LabelContent/Form1/ListBox2#OnSelChanged (ItemIndexOrCount Value /)<br>
+  (dcl-ListBox-SetCurSel LabelContent/Form1/ListBox1 ItemIndexOrCount)<br>
+)<br>
+</code></pre><br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg13724">
+  <div class="post-head">
+    <span class="post-author">dsm_dude</span>
+    <span class="post-date muted">2022-10-31 20:51 UTC</span>
+  </div>
+  <div class="post-body">Fred,<br>
+<br>
+You are the man. I knew there was a better way!!<br>
+<br>
+Thank you!!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

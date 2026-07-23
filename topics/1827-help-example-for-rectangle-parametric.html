@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help: Example for rectangle parametric · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1827</p>
+    <h1>Help: Example for rectangle parametric</h1>
+    <p class="meta">Started by mclisp ·
+      2012-07-06 13:51 UTC ·
+      10 replies · SMF topic #1827</p>
+<article class="post" id="msg8964">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2012-07-06 13:51 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+<br>
+Iapologize for my bad English.<br>
+I'm studying OpenDCL, the documentation is very extensive, and I do not understand.<br>
+<br>
+I wish someone could post a small sample application to parametrize a rectangle composed of four lines,<br>
+<br>
+You should ask the insertion point, the angle to draw, you open the form Modeless, (see examples modeless.lsp)<br>
+<br>
+the form may contain No. 2 textbox with the measurement of the two sides and a combobox with the type of continuous, <br>
+<br>
+hidden, line ... etc..<br>
+<br>
+modifying the dimension of a side, dynamically should delete the preceding rectangle and create the new rectangle.<br>
+I hope not too much to ask, I thank those who will take time for me<br>
+thanks<br>
+mclisp</div>
+</article>
+<article class="post" id="msg8965">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-07-06 19:46 UTC</span>
+  </div>
+  <div class="post-body">Take a look at the sample in the <a href="http://opendcl.com/wordpress/?page_id=10" rel="nofollow noopener">{2}</a>.</div>
+</article>
+<article class="post" id="msg8967">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2012-07-08 09:34 UTC</span>
+  </div>
+  <div class="post-body">Hello and thanks for your time, here is part of my test, I attach the files<br>
+<br>
+1)One form MODELESS (which remains open) with two textboxes, one combobox and a button closure. IS OK<br>
+2)loading the lisp file, first open the form, asks the insertion point and angle for the rectangle shape. IS OK<br>
+3)before opening the form, set the value of the textbox in the two sides of the rectangle, say 800 and 400<br>
+  also sets the combobox with the list of types of lines "continuous, hidden" etc. IS OK<br>
+4)open the form and draw the rectangle. IS OK<br>
+<br>
+from here I do not understand how to make<br>
+<br>
+5)if I change a measure in one of the two textbox, the program would draw a new rectangle with the new values <br>
+   i tried with the edit change event but it doesn't work.<br>
+<br>
+any help is appreciated<br>
+Thanks<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1746/Rectangle.odcl">Rectangle.odcl</a> <span class="muted">(1014 bytes)</span></li><li><a href="../attachments/1747/Rectangle.lsp">Rectangle.lsp</a> <span class="muted">(1759 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8968">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2012-07-08 14:16 UTC</span>
+  </div>
+  <div class="post-body">You might want to look specifically at the modeless.lsp and modeless.odcl files in the OpenDCL samples.  <br>
+<br>
+A starting point:  modeless form controls are normally ASYNCHRONOUS, not SYNCHRONOUS.</div>
+</article>
+<article class="post" id="msg8969">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-07-08 14:22 UTC</span>
+  </div>
+  <div class="post-body">I did not look at your code, but EditChanged should work. What did not work when you tried it?</div>
+</article>
+<article class="post" id="msg8970">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2012-07-08 21:02 UTC</span>
+  </div>
+  <div class="post-body">I put together a quick example based on your request.  This is prototype code that has not been cleaned up and fully tested.  I look at this as a learning exercise, not necessarily as a function to use when creating drawings.  I tried to match the functions in the original rectangle.lsp rather than write a complete routine that does everything listed in the original post.  <br>
+<br>
+There are several things incomplete with this function:<br>
+1.  The rectangle is drawn as line segments.  This will make updating the linetype more difficult since each line segment will have to be handled separately.  Unless there is a reason to have line segments a lwpolyline would be a better choice.  I would suggest using entmake instead of the line command or pline command.  An example is in post #2 at <a href="http://www.cadtutor.net/forum/showthread.php?51210-Creating-Rectangles" rel="nofollow noopener">{2}</a><br>
+2.  There is a drop-down box in the ODCL form for linetype but the code in the original rectangle.lsp does not do anything with it.  The drop-down box should be initialized with the linetype of the first rectangle.  I would use ENTMOD to update the rectangle's linetype.<br>
+3.  The original rectangle is not deleted in the original rectangle.lsp so I did not add code to delete the original rectangle.   <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1748/rectangle2.odcl">rectangle2.odcl</a> <span class="muted">(1228 bytes)</span></li><li><a href="../attachments/1749/Rectangle2.lsp">Rectangle2.lsp</a> <span class="muted">(2871 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8979">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2012-07-09 08:53 UTC</span>
+  </div>
+  <div class="post-body">I really thank everyone for their availability, especially HMSPE for his example.<br>
+I confirm that this is supposed to be only a year of study.<br>
+My file type is already RECTANGLE.ODCL MODELESS and I started studying precisely the file MODELESS.odcl examples.<br>
+For now I do not care if the rectangle does not clear, I want to study OpenDCL I repeat this is only a test.<br>
+I want to change a dimension, it must redraw the rectangle.<br>
+<br>
+owenwengerd, I tried EditChange I think is correct.<br>
+if I write:<br>
+(defun c:Rectangle_Form1_TextBox1_OnEditChanged (NewValue / )<br>
+         (<span style="color:red">drawrectangle</span>)<br>
+)<br>
+<br>
+;;<span style="color:red">DrawRectangle</span> <br>
+(defun DrawRectangle ( / side1 side2 p1 p2 p3 p4 )<br>
+(setq side1 (atof (dcl_Control_GetText Rectangle_Form1_TextBox1)))<br>
+(setq side2 (atof (dcl_Control_GetText Rectangle_Form1_TextBox2)))<br>
+(setq p1 ptStart<br>
+      p2 (polar p1 ang side1)<br>
+      p3 (polar p2 (+ ang (/ pi 2)) side2)<br>
+      p4 (polar p3 (+ ang pi) side1))<br>
+(command "_line" p1 p2 p3 p4 p1 "")<br>
+);defun DrawRectangle<br>
+<br>
+<br>
+the function <span style="color:red">DrawRectangle</span> expected read the new values ​​in textbox1 and redraw the rectangle,<br>
+but this does not happen, when I write each number in textbox1 returns me ERROR:<br>
+Application Error: 2 :- invalid AutoCAD command: nil<br>
+Application Error: 2 :- invalid AutoCAD command: nil<br>
+Application Error: 2 :- invalid AutoCAD command: nil<br>
+Thanks<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8980">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-07-09 13:10 UTC</span>
+  </div>
+  <div class="post-body">In order to use (command) inside your event handler, you must set the control's <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Property/EventInvoke.htm" rel="nofollow noopener">{2}</a> property to 1 - Asynchronous.</div>
+</article>
+<article class="post" id="msg8981">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2012-07-09 13:27 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=hmspe link=topic=1827.msg8968#msg8968 date=1341756986 wrote:</cite><br>
+You might want to look specifically at the modeless.lsp and modeless.odcl files in the OpenDCL samples.  <br>
+<br>
+A starting point:  modeless form controls are normally ASYNCHRONOUS, not SYNCHRONOUS.<br>
+</blockquote><br>
+<br>
+ok with ASYNCHRONOUS selecting the concept is OK<br>
+<br>
+(defun c:Rectangle_Form1_TextBox1_OnEditChanged (NewValue / )<br>
+   (drawrectangle)(princ)<br>
+ )<br>
+<br>
+but now, if I want to write and let texbox1 <span style="color:red">181</span> in 400 in texbox2 <br>
+are drawn three rectangles <br>
+one with dimensions <span style="color:red">1</span>x400 <br>
+another with dimensions <span style="color:red">18</span>x400 <br>
+and the third with dimensions <span style="color:red">181</span>x400<br>
+how can<br>
+I tell when the user has entered all of the string, to work function (DrawRectangle) once.<br>
+Thanks<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8982">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-07-09 13:52 UTC</span>
+  </div>
+  <div class="post-body">That is a design decision you'll have to make. The OpenDCL Studio property window applies changes when the user presses  and when the control loses focus, so that might work in this case as well.</div>
+</article>
+<article class="post" id="msg8985">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2012-07-10 07:44 UTC</span>
+  </div>
+  <div class="post-body"> Thanks owenwengerd for your information.<br>
+(killfocus) works well, now it seems easy OpenDCL.<br>
+<br>
+(defun c:Rectangle_Form1_TextBox2_OnKillFocus ( /)<br>
+    (drawrectangle)(princ ));defun<br>
+<br>
+Thanks for your work, <br>
+with the lisp, now I will open new horizons.<br>
+I would like your comments or additions<br>
+ciao<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1750/Rectangle.odcl">Rectangle.odcl</a> <span class="muted">(1036 bytes)</span></li><li><a href="../attachments/1751/Rect.lsp">Rect.lsp</a> <span class="muted">(2504 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

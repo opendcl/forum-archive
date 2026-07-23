@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tabcontrol event ...OnChanged not fired version 6.0.0.18 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1121</p>
+    <h1>tabcontrol event ...OnChanged not fired version 6.0.0.18</h1>
+    <p class="meta">Started by grrrr ·
+      2010-01-08 21:10 UTC ·
+      4 replies · SMF topic #1121</p>
+<article class="post" id="msg5938">
+  <div class="post-head">
+    <span class="post-author">grrrr</span>
+    <span class="post-date muted">2010-01-08 21:10 UTC</span>
+  </div>
+  <div class="post-body">hi,<br>
+i try to configure tabcontrol at runtime.<br>
+starting with an empt tab from odcl file<br>
+i add some tabcontrols and activate the events onSelChanged and onChanged.<br>
+now onSelChanged ist called but onChanged not.<br>
+please try the attached sample.<br>
+if code ist static means tab1 and tab2 comes from odcl-file both events are called.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1213/tabtest.zip">tabtest.zip</a> <span class="muted">(6391 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5944">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-09 01:34 UTC</span>
+  </div>
+  <div class="post-body"><br>
+It appears that you may have attached the incorrect LSP file.</div>
+</article>
+<article class="post" id="msg5952">
+  <div class="post-head">
+    <span class="post-author">grrrr</span>
+    <span class="post-date muted">2010-01-09 09:23 UTC</span>
+  </div>
+  <div class="post-body">sorry kerry,<br>
+<br>
+you are right<br>
+has been the wrong lisp file<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1219/tabtest.zip">tabtest.zip</a> <span class="muted">(2321 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5955">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-09 23:16 UTC</span>
+  </div>
+  <div class="post-body">The logic for the OnChanged event is designed to fire the event after the new tab page is visible. Since there is not tab page (and it's not possible to create one at runtime), the event never fires. I can imagine some uses for a tab control even when there are no associated tab pages, so I will change the logic for Alpha 19 to ensure that the event is fired in every case.</div>
+</article>
+<article class="post" id="msg5987">
+  <div class="post-head">
+    <span class="post-author">grrrr</span>
+    <span class="post-date muted">2010-01-13 09:02 UTC</span>
+  </div>
+  <div class="post-body">hi,<br>
+<br>
+thank you owen.<br>
+i have tested for 6.0.0.19. it works pretty good.<br>
+think you have some misunderstood. <br>
+there is one tab control defined in odcl and <br>
+at runtime i add tab items to them depending on current data. <br>
+i would like to switch on or off controls related to a specific tab item <br>
+on by c:dcl__OnChanged and <br>
+off by c:dcl__OnSelChanging.<br>
+that controls are also declared in odcl for a maximal number of tab items because, as you say, they can not be created at runtime.<br>
+of course i would prefer creating them at runtime.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

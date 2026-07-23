@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>I can't setlist in Listbox.... · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 718</p>
+    <h1>I can't setlist in Listbox....</h1>
+    <p class="meta">Started by mycino ·
+      2009-04-15 00:43 UTC ·
+      8 replies · SMF topic #718</p>
+<article class="post" id="msg3493">
+  <div class="post-head">
+    <span class="post-author">mycino</span>
+    <span class="post-date muted">2009-04-15 00:43 UTC</span>
+  </div>
+  <div class="post-body">well , firstly i have say HI :) <br>
+<br>
+HI ~~ OpenDcl Maters ~ i live in korean , and i work for GIS and i always use AutoCad Map3D 2008<br>
+<br>
+well, i wanna make something tool for my Job..to good workablity..<br>
+<br>
+so ... i found opendcl tool for it. ..it is really good tool :)<br>
+<br>
+anyway , My point of question is ...how can i put string into Listbox...?<br>
+<br>
+here is my routine..<br>
+<br>
+1. make some pallette form in openstudio...<br>
+<br>
+2. add listbox on pallette form  <br>
+<br>
+3. check event button to  initialize for pallette form  <br>
+<br>
+4.. add source into lisp file...like this :<br>
+<br>
+(defun c:Untitled_Form1_OnInitialize (/)<br>
+<br>
+<br>
+(dcl_Control_SetList Untitled_Form1_ListBox1 (setq laylist (list "a" "b" "c" "d")))<br>
+<br>
+)<br>
+<br>
+..when i start upper command in autocad , i can't see anything in listbox :(<br>
+<br>
+how can i fix it?<br>
+<br>
+please help me OpenDcl masters~:)<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3494">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-15 00:50 UTC</span>
+  </div>
+  <div class="post-body">Are you using the latest verion of OpenDCL?  It is working for me in 5.1.0.3.</div>
+</article>
+<article class="post" id="msg3495">
+  <div class="post-head">
+    <span class="post-author">mycino</span>
+    <span class="post-date muted">2009-04-15 03:31 UTC</span>
+  </div>
+  <div class="post-body">same version like you 5.1.0.3<br>
+bb:(<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3496">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-15 04:44 UTC</span>
+  </div>
+  <div class="post-body">In that case, check your event handler name to make sure it matches what is in the .odcl file. Otherwise, post the .odcl and .lsp so I can have a look at it.</div>
+</article>
+<article class="post" id="msg3498">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-15 06:12 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+just a thought:<br>
+<br>
+<br>
+<br>
+(defun c:myprog (/ lstLayer c:MyProj_MyForm_OnInitialize)<br>
+  (dcl_project_load "MyProj")<br>
+<br>
+  (defun c:MyProj_MyForm_OnInitialize (/)<br>
+    (dcl_ListBox_Clear MyProj_MyForm_lst_layer)<br>
+    (dcl_ListBox_AddList MyProj_MyForm_lst_layer lstLayer)<br>
+  ); c:MyProj_MyForm_OnInitialize <br>
+<br>
+  (setq lstLayer (list "a" "b" "c" "d"))<br>
+  (dcl_form_show MyProj_MyForm)<br>
+<br>
+  (princ)<br>
+); c:myprog <br>
+<br>
+<br>
+I do this in this way.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3505">
+  <div class="post-head">
+    <span class="post-author">mycino</span>
+    <span class="post-date muted">2009-04-16 05:03 UTC</span>
+  </div>
+  <div class="post-body">hello :)<br>
+<br>
+thanks for your comments :) <br>
+<br>
+yesterday, finally i rocked it :) thanks for your advised:)<br>
+<br>
+so.. i update my code :) please comments about my code:)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/675/isolveit.JPG">isolveit.JPG</a> <span class="muted">(97287 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3506">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-16 06:06 UTC</span>
+  </div>
+  <div class="post-body">Seems to be ok!<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3507">
+  <div class="post-head">
+    <span class="post-author">mycino</span>
+    <span class="post-date muted">2009-04-16 06:15 UTC</span>
+  </div>
+  <div class="post-body">thanks you :) FRed :)<br>
+<br>
+Well, What do you work for in Germany?<br>
+<br>
+i work for GIS(Kind of ARc Gis) ..</div>
+</article>
+<article class="post" id="msg3511">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-16 13:49 UTC</span>
+  </div>
+  <div class="post-body">Mostly I work on townplanning and landscaping projects (combining CAD and GIS).<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

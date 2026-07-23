@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Property ClassName · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 432</p>
+    <h1>Property ClassName</h1>
+    <p class="meta">Started by fred_tomke ·
+      2008-09-22 09:05 UTC ·
+      4 replies · SMF topic #432</p>
+<article class="post" id="msg1927">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-09-22 09:05 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+before adding my wish as a feature request I want to ask if there's already a solution.<br>
+When I get all the controls from (dcl_form_getcontrols myform) I also want to get the <strong>not localized</strong> control's class name: tree, textbutton, calendar and so on. Why the <strong>not localized</strong> name? When our company's product turns to international release I must know the control's class name in a common language.<br>
+<br>
+For instance:<br>
+<br>
+(dcl_control_getClassName mycontrol) = "tree"<br>
+<br>
+For those who need a localized name <br>
+<br>
+(dcl_control_getLocalClassName mycontrol) = "Baumstruktur"<br>
+<br>
+Is there already a chance to get the class name?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1931">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-09-22 19:07 UTC</span>
+  </div>
+  <div class="post-body">There is no concept of a localized class name in the OpenDCL code, but I suppose one could be concocted from the localized resources. How would you use it?</div>
+</article>
+<article class="post" id="msg1934">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-09-22 19:31 UTC</span>
+  </div>
+  <div class="post-body">Hm, my question was not very understandable. Sorry for that. I try it this way:<br>
+<br>
+We are forced to change our application that it could be sold worldwide. So it must be translated into English (whenever I shall do that). The captions of all controls, listview and grid contents, trees and so on are located in a database. There are 2 problems where I need NOT LOCALIZED controls class names:<br>
+<br>
+1. Searching the existing odcl projects for controls with captions, tooltip texts and tooltip titles. I wanted to do it this way:<br>
+   <pre class="code"><code>(foreach oControl (dcl_form_getcontrols oForm) (if (= (dcl_control_getclassname oControl) "textbutton") (write_caption_to_database oControl))</code></pre><br>
+<br>
+2. If a control is a textbutton or something with a caption, the caption shall be loaded from the database and set while the oninitialize-event.<br>
+<br>
+I'm afraid of performance delay to do that, but it's the way I was wanted to.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1936">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-09-23 00:35 UTC</span>
+  </div>
+  <div class="post-body">Fred, every control has a "type", which is an enumerated value in the code. For searching and comparisons, an integer would be more efficient than a string, so I propose to add a (dcl_Control_GetType) function that returns an integer identifying the control type. The types would of course need to be indentified in the documentation, but in the meantime you can look at ControlTypes.h in the source code.</div>
+</article>
+<article class="post" id="msg1939">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-09-23 05:48 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen,<br>
+<br>
+that's absolutely great. That's why I wrote: <blockquote class="quote">I want to ask if there's already a solution.</blockquote><br>
+And that's a very good solution!<br>
+<br>
+Thanks Owen!<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

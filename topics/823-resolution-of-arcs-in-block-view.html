@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resolution of arcs in Block View · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 823</p>
+    <h1>Resolution of arcs in Block View</h1>
+    <p class="meta">Started by copter ·
+      2009-06-18 16:09 UTC ·
+      13 replies · SMF topic #823</p>
+<article class="post" id="msg4073">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-06-18 16:09 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I attached one sreen shot including a control DWGPreview and one with a control BlockView.<br>
+We can see a very bad resolution for arcs on the 2nd screen shot. Is it possible to increase the resolution ?<br>
+Or maybe something is wrong in the dwg ? ... (attached)<br>
+Thanks for your help.<br>
+Copter<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/811/DWG_Preview.png">DWG_Preview.png</a> <span class="muted">(25889 bytes)</span></li><li><a href="../attachments/812/Block_View.png">Block_View.png</a> <span class="muted">(26051 bytes)</span></li><li><a href="../attachments/813/CFSP013.dwg">CFSP013.dwg</a> <span class="muted">(29527 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4076">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-18 18:53 UTC</span>
+  </div>
+  <div class="post-body">Hi, copter,<br>
+<br>
+I don't believe that it is a matter of dwg.<br>
+<br>
+Try another setting of rendermode of the blockview.<br>
+Disable hardware acceleration (I don't know the english word for it) in the _3dconfig command.<br>
+<br>
+Both ways end up with better results for me.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4078">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-06-18 20:47 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred<br>
+<br>
+I tried all the render modes: Result is the same.<br>
+<br>
+I changed few parameters in 3DConfig without any changes.<br>
+<br>
+Copter </div>
+</article>
+<article class="post" id="msg4080">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-19 05:56 UTC</span>
+  </div>
+  <div class="post-body">Hm, quite interesting. I tried your block in 2 different AutoCAD releases: DWG-Preview gives the same result in both releases. But the blockview result looks much better in Map 2010 as in Civil 2009... Which AutoCAD release are you using?<br>
+<br>
+Fred<br>
+<br>
+ The last screenshot shows the new driver "Autodesk" of Map 2010 - maybe it's the key?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/814/dwgpreview.png">dwgpreview.png</a> <span class="muted">(1016 bytes)</span></li><li><a href="../attachments/815/blockview_civil2009.png">blockview_civil2009.png</a> <span class="muted">(20238 bytes)</span></li><li><a href="../attachments/816/blockview_map2010.png">blockview_map2010.png</a> <span class="muted">(22009 bytes)</span></li><li><a href="../attachments/817/3dconfig.png">3dconfig.png</a> <span class="muted">(25438 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4082">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-06-19 14:00 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred<br>
+My previous screen shots was under R2009 single.<br>
+I tried under R2010. (Image attached) Things are better but not the best that I could hope.<br>
+I changed settings in 3DConfig, under R2009 and R2010,  but without any effect. <br>
+Monday, I will make some new test on others workstations.<br>
+I am using blockview rather than dwgpreview because the blocks are part of a big librairy where dwg files are modified with ObjectDBX, and, du to the ObjectDBX 'saveas method, the preview is lost...<br>
+<br>
+Copter <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/818/Block_View2010.png">Block_View2010.png</a> <span class="muted">(29602 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4090">
+  <div class="post-head">
+    <span class="post-author">Amsterdamned</span>
+    <span class="post-date muted">2009-06-22 09:12 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+If this would be in the dwg itself  i would say, try the viewres sysvar. set it higher. But i don't know if that helps in a preview as well....<br>
+<br>
+<br>
+Bernd</div>
+</article>
+<article class="post" id="msg4092">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-06-22 09:39 UTC</span>
+  </div>
+  <div class="post-body">OK<br>
+I made several investigations on different work stations,  I can understand now what happens.<br>
+The resolution depends on the zoom factor of the current drawing. <br>
+I am not speaking about the block but the drawing where you launch the form.<br>
+There is nothing to see with the 3D configs options, Civil3D or not, driver X or Y ...<br>
+The 2 following screen shots have been done on the same drawing:<br>
+The 1st one with a zoom extend, the 2nd one with a 20xp zoom. (Anywhere on the drawing)<br>
+<br>
+I thing that is likely a bug, because the display of a block view should not depend of the current zoom of the drawing...<br>
+Any suggestions ?<br>
+Copter <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/819/ZoomExt.png">ZoomExt.png</a> <span class="muted">(14159 bytes)</span></li><li><a href="../attachments/820/Zoom20xp.png">Zoom20xp.png</a> <span class="muted">(14443 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4093">
+  <div class="post-head">
+    <span class="post-author">Amsterdamned</span>
+    <span class="post-date muted">2009-06-22 10:07 UTC</span>
+  </div>
+  <div class="post-body">did you try viewres?</div>
+</article>
+<article class="post" id="msg4097">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-06-22 18:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=copter link=topic=823.msg4092#msg4092 date=1245663584 wrote:</cite><br>
+OK<br>
+I made several investigations on different work stations,  I can understand now what happens.<br>
+The resolution depends on the zoom factor of the current drawing. <br>
+I am not speaking about the block but the drawing where you launch the form.<br>
+There is nothing to see with the 3D configs options, Civil3D or not, driver X or Y ...<br>
+The 2 following screen shots have been done on the same drawing:<br>
+The 1st one with a zoom extend, the 2nd one with a 20xp zoom. (Anywhere on the drawing)<br>
+<br>
+I thing that is likely a bug, because the display of a block view should not depend of the current zoom of the drawing...<br>
+Any suggestions ?<br>
+Copter <br>
+</blockquote><br>
+<br>
+Can you post a small sample code showing this?<br>
+</div>
+</article>
+<article class="post" id="msg4099">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-06-23 08:01 UTC</span>
+  </div>
+  <div class="post-body"><br>
+In order to reproduce this behaviour:<br>
+<br>
+- Open Test.dwg<br>
+- Load Test.lsp<br>
+- Type "Test"<br>
+<br>
+(Tested with R2009,R2010 and Civil3D-2009)<br>
+<br>
+Copter<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/822/Block_View.zip">Block_View.zip</a> <span class="muted">(24256 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4107">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-24 15:01 UTC</span>
+  </div>
+  <div class="post-body">This should now be fixed for Beta 7.<br>
+<br>
+For some reason, the block view code was using parameters from the active drawing viewport to initialize the block view control. I have removed that code and it now uses a standard plan view as the initial view. This appears to have fixed the tessellation problem in my tests.</div>
+</article>
+<article class="post" id="msg4112">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-06-25 14:26 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen<br>
+I thought that I was the only one to see the problem!<br>
+Copter</div>
+</article>
+<article class="post" id="msg4513">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-09-05 18:42 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen<br>
+<br>
+This is not yet fixed. (I tried with 5.1.1.3)<br>
+I attached again the test files.<br>
+When you will fixe it , would it be possible to update both 5.1 and 6.0 ?<br>
+Thanks for your help<br>
+Copter<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/878/Block_View.zip">Block_View.zip</a> <span class="muted">(24256 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4518">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-07 01:51 UTC</span>
+  </div>
+  <div class="post-body">I am able to reproduce the problem in AutoCAD 2007, but I can't find any way to change the tesselation tolerance. Please report this as a bug so that I can revisit it in the future.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

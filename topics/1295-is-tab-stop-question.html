@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>is_tab_stop question · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1295</p>
+    <h1>is_tab_stop question</h1>
+    <p class="meta">Started by csgoh ·
+      2010-06-17 08:17 UTC ·
+      4 replies · SMF topic #1295</p>
+<article class="post" id="msg6939">
+  <div class="post-head">
+    <span class="post-author">csgoh</span>
+    <span class="post-date muted">2010-06-17 08:17 UTC</span>
+  </div>
+  <div class="post-body">I am starting to learn this opendcl.<br>
+i wrote the following lsp to get the user so input text for the lot number.<br>
+1st scenario. the "is tab stop" in the ok button is set to false. Key in say 1234567 into the lot number textbox and click ok. It returns the same.<br>
+2nd scenario. the "is tab stop" in the ok button is set to true. Key in say 987654 into lot number textbox and press return and press return again. It did not return 987654 but return 1234567.<br>
+So, isnt pressing return on the ok button and clicking on the ok button the same?<br>
+I hope you can understand what i am trying to say and i apologise for no being able to put it clearer.<br>
+Many thanks.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1400/codecvl.txt">codecvl.txt</a> <span class="muted">(95577 bytes)</span></li><li><a href="../attachments/1401/UPI.odcl">UPI.odcl</a> <span class="muted">(1438 bytes)</span></li><li><a href="../attachments/1402/wg10Library.LSP">wg10Library.LSP</a> <span class="muted">(17696 bytes)</span></li><li><a href="../attachments/1403/UPI.LSP">UPI.LSP</a> <span class="muted">(13970 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6940">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-06-17 17:13 UTC</span>
+  </div>
+  <div class="post-body">Have a look at the (defun c:UPI_frmUPI_tbLotNo_OnReturnPressed) Event.<br>
+Then run your OK button code when it's fired....</div>
+</article>
+<article class="post" id="msg6941">
+  <div class="post-head">
+    <span class="post-author">csgoh</span>
+    <span class="post-date muted">2010-06-18 07:46 UTC</span>
+  </div>
+  <div class="post-body">Ok, check the ReturnPress event. <br>
+variable lotno is event ReturnPress is fired<br>
+variable lotno1 is event ok is fired.<br>
+<br>
+case 1. enter a value 13579 for the lot number. press enter and enter for the ok button.<br>
+<br>
+It returns <br>
+Command: (print lotno)<br>
+<br>
+"13579" "13579"<br>
+<br>
+Command: (print lotno1)<br>
+<br>
+nil nil<br>
+<br>
+case 2 : enter 357913 for the lot number. press enter and click mouse for the ok button.<br>
+It returns<br>
+Command: (print lotno)<br>
+<br>
+"13579" "13579"-----&gt; this is the old value entered the first time.<br>
+<br>
+Command: (print lotno1)<br>
+<br>
+"357913" "357913"<br>
+<br>
+So it returns different result when clicking using mouse and pressing return at the ok button.<br>
+How to do it so that both action returns the same result. Something wrong in my code?<br>
+attached the updated code.<br>
+<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1404/UPI.LSP">UPI.LSP</a> <span class="muted">(14266 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6942">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-06-18 18:09 UTC</span>
+  </div>
+  <div class="post-body">I'm sorry you code is too large from me to go through it line by line &amp; figure out what's wrong with it.<br>
+So I've put together this sample that shows how to get the same results from hitting enter on a text box &amp; on the OK button.<br>
+I hope it helps you out....<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1405/txtTest.odcl">txtTest.odcl</a> <span class="muted">(869 bytes)</span></li><li><a href="../attachments/1406/txtTest.LSP">txtTest.LSP</a> <span class="muted">(533 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6943">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-06-19 12:36 UTC</span>
+  </div>
+  <div class="post-body">Hi  <br>
+Very good your example.  <br>
+But it imagines that TextBox loses the focus for a PictureBox or ListBox.  <br>
+How could I close the form pressing Enter or Esc?</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

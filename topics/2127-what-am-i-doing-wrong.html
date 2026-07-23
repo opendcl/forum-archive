@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What am I doing wrong? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2127</p>
+    <h1>What am I doing wrong?</h1>
+    <p class="meta">Started by RGUS ·
+      2014-04-10 18:56 UTC ·
+      4 replies · SMF topic #2127</p>
+<article class="post" id="msg10554">
+  <div class="post-head">
+    <span class="post-author">RGUS</span>
+    <span class="post-date muted">2014-04-10 18:56 UTC</span>
+  </div>
+  <div class="post-body">Just trying to get a dialog box to close in ACAD 2015. OpenDCL 8.0.0.5<br>
+It will be obvious... but not to me.<br>
+Has the syntax changed for this version of OpenDCL?<br>
+<br>
+Thanks for any pointers.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1993/test.lsp">test.lsp</a> <span class="muted">(170 bytes)</span></li><li><a href="../attachments/1994/TEST.odcl">TEST.odcl</a> <span class="muted">(567 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10558">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-10 21:55 UTC</span>
+  </div>
+  <div class="post-body">You need to define your event handler *before* you show the form.</div>
+</article>
+<article class="post" id="msg10559">
+  <div class="post-head">
+    <span class="post-author">RGUS</span>
+    <span class="post-date muted">2014-04-11 01:19 UTC</span>
+  </div>
+  <div class="post-body">Ok... what is an event handler.. where in the help file do I get help defining an event handler?<br>
+Previously, you loaded a project and 'showed' the form then closed the form and the dialog disappeared from the screen.</div>
+</article>
+<article class="post" id="msg10560">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-11 01:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=RGUS link=topic=2127.msg10559#msg10559 date=1397179171 wrote:</cite><br>
+Ok... what is an event handler.. where in the help file do I get help defining an event handler?</blockquote><br>
+<br>
+The function c:TEST/Form1/EXIT_BUTTON#OnClicked in your lisp file is an <a href="http://www.opendcl.com/HelpFiles/index.php?page=Usage/AutoLISP.htm" rel="nofollow noopener">{2}</a>. It must be defined *before* you call (dcl-Form-Show). You can look at the OpenDCL samples to see a typical file structure.</div>
+</article>
+<article class="post" id="msg10564">
+  <div class="post-head">
+    <span class="post-author">RGUS</span>
+    <span class="post-date muted">2014-04-11 07:07 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen... I'll have to do a bit of study with my code... silly thing is it worked perfectly with ACAD 2014 and the latest previous version of OpenDCL ... but them's the curve balls I guess.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help with turning DCL to ODCL · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2585</p>
+    <h1>Help with turning DCL to ODCL</h1>
+    <p class="meta">Started by hanslammerts ·
+      2018-03-28 20:49 UTC ·
+      5 replies · SMF topic #2585</p>
+<article class="post" id="msg12793">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2018-03-28 20:49 UTC</span>
+  </div>
+  <div class="post-body">Hi <br>
+I am not so very good at programming but i want programmer <br>
+to redesig a existing DCL dialog into a ODCL variant.<br>
+The first i did was to give the buttons the same name.<br>
+Could use some hint how to get the dialog started. Thanks upfront<br>
+<br>
+<br>
+ORIGINAL DCL : <br>
+<pre class="code"><code><br>
+HI_menu : dialog<br>
+{<br>
+        label = " ";<br>
+<br>
+        <br>
+:row {<br>
+	: boxed_column<br>
+        	     {<br>
+				<br>
+<br>
+   		: row {<br>
+          		: button {<br>
+            			label = "KW - millimeter ";<br>
+            			alignment = left;<br>
+            			key = "SET_mm";<br>
+            			width = 8;<br>
+            			is_default = true;<br>
+          			}<br>
+   			}<br>
+   		: row {<br>
+          		: button {<br>
+            			label = "TBB - millimeter";<br>
+            			alignment = left;<br>
+            			key = "SET_tbb";<br>
+            			width = 8;<br>
+            			is_default = true;<br>
+          			}<br>
+   			}<br>
+    		: row {<br>
+          		: button {<br>
+            			label = "WE - meter    ";<br>
+            			alignment = left;<br>
+            			key = "SET_m";<br>
+            			width = 8;<br>
+            			is_default = true;<br>
+          			}<br>
+   			}<br>
+   		 : row {<br>
+          		: button {<br>
+            			label = "GEO - meter  ";<br>
+            			alignment = left;<br>
+            			key = "SET_geo";<br>
+            			width = 8;<br>
+            			is_default = true;<br>
+          			}<br>
+   			} 	<br>
+   			}<br>
+   			}<br>
+   			<br>
+  <br>
+  : spacer { width = 2; }<br>
+<br>
+  			: button {<br>
+     				label = "Cancel";<br>
+     				key = "cancel";<br>
+				is_cancel = true;<br>
+      				width = 4;<br>
+      				fixed_width = true;<br>
+        <br>
+    				}<br>
+  				}<br>
+</code></pre><br>
+<br>
+<br>
+LISP CODE  PART:<br>
+<br>
+<pre class="code"><code><br>
+(vl-load-com)<br>
+<br>
+(setvar 'cmdecho 0)<br>
+(vl-cmdf "_Opendcl")<br>
+(setvar 'cmdecho 1)<br>
+<br>
+<br>
+(defun c:HI_menu (/ OLDERR)<br>
+    (graphscr)<br>
+    (setq SETMS NIL<br>
+          SETMMS NIL<br>
+          SETGEOS NIL<br>
+          SETTBBS NIL<br>
+          CANCEL nil<br>
+    ) ;_ end of setq<br>
+    (SETMMMENU)<br>
+    (if SETMS<br>
+        (cond ((= SEL 1) (SET_M)))<br>
+    )<br>
+    (if SETMMS<br>
+        (cond ((= SEL 2) (SET_MM)))<br>
+    )<br>
+    (if SETGEOS<br>
+        (cond ((= SEL 3) (SET_GEO)))<br>
+    )<br>
+    (if SETTBBS<br>
+        (cond ((= SEL 4) (SET_TBB)))<br>
+    )<br>
+    (if CANCEL<br>
+        (princ "\nPROGRAM CANCELLED!")<br>
+    ) ;_ end of if<br>
+    (princ)<br>
+)<br>
+<br>
+<br>
+(defun SETMMMENU ()<br>
+    (dcl-LoadProject "HI_MENU")<br>
+    (action_tile "SET_m" "(SET_m) (done_dialog 1)")<br>
+    (action_tile "SET_mm" "(SET_mm) (done_dialog 1)")<br>
+    (action_tile "SET_geo" "(SET_geo) (done_dialog 1)")<br>
+    (action_tile "SET_tbb" "(SET_tbb) (done_dialog 1)")<br>
+    (action_tile "cancel" "(setq cancel t)(done_dialog)")<br>
+    (start_dialog)<br>
+)<br>
+<br>
+; ETC.<br>
+</code></pre><br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2382/HI_MENU.odcl">HI_MENU.odcl</a> <span class="muted">(697 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12796">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-04-03 07:35 UTC</span>
+  </div>
+  <div class="post-body">Hi Hans<br>
+<br>
+I don't think that a "1:1 translation" from DCL to ODCL is a good way. <br>
+<br>
+I would analyse<br>
+- what the old DCL code does<br>
+- what you currently want and need (maybe more features, maybe others, maybe less)<br>
+- how to implement it with ODCL<br>
+<br>
+In ODCL you have <br>
+- more dialogues (palettes, modeless, ..)<br>
+- more (and easier) controls (list, toggles, image buttons, ..)<br>
+- other and better handling of "Cancel" ..<br>
+- and much more.<br>
+<br>
+Take DCL only as inspiration and create your software (the dialogue part) completely new ..</div>
+</article>
+<article class="post" id="msg12816">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2018-04-08 20:33 UTC</span>
+  </div>
+  <div class="post-body">Not a super-duper programming wizard speaking here.<br>
+Just your daliy AutoCAD designer trying to keep some of his tools working and making them even better. With some help ;-)<br>
+<br>
+Right now i'm having some real problems in AutoCAD Civil3D.<br>
+One of them is that DCL dialogs don't run. (begining with nasty BASE.DCL not found warnings). <br>
+Being investigated, but taking long and i see opendcl has more to offer.<br>
+<br>
+I just would like to get have 'blueprint'of code to get a simple 'button dialog' run in ODCL.<br>
+Just a few buttons activating a command. See att. I use something similar in DCL but none of it works any more.<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2384/blueprint button dialog.jpg">blueprint button dialog.jpg</a> <span class="muted">(16665 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12817">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-04-08 20:45 UTC</span>
+  </div>
+  <div class="post-body">a) Base.dcl not found<br>
+Maybe a problem of the AutoCAd-installation or of the settings. Try to "repair Autocad Installation" and / or try to start Autocad with the standard configuration.<br>
+<br>
+b) Help in OpenDCL:<br>
+Type "opendcldemo" in Autocad - you will see a palette where you can see and try all the functions of ODCL - from simple button to more complex examples. And all these examples have the LSP (with a lot of explaining comments) and ODCL code installed on your hard drive.</div>
+</article>
+<article class="post" id="msg12818">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2018-04-09 21:24 UTC</span>
+  </div>
+  <div class="post-body">a) Workaround for this problem finally arrived<br>
+b) I looked at the modeless dialog of 'Mover'  Made this up. Almost there, this message appears...<br>
+<br>
+Can you take a look?<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2385/FormMover2.lsp">FormMover2.lsp</a> <span class="muted">(1384 bytes)</span></li><li><a href="../attachments/2386/FormMover2.odcl">FormMover2.odcl</a> <span class="muted">(10478 bytes)</span></li><li><a href="../attachments/2387/no object instance.JPG">no object instance.JPG</a> <span class="muted">(21722 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12824">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-04-15 18:42 UTC</span>
+  </div>
+  <div class="post-body">Maybe I can look deeper tomorrow, but at the moment (only from lsp): are you sure that there is no confusion with code with same name?<br>
+<br>
+- The subroutines (set_mm), (set_m) and others are not defined in this snippets.<br>
+- There is although nothing with defines something with "rectangle" - so where does the error-message comes from?</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

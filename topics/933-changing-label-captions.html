@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Changing label captions · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 933</p>
+    <h1>Changing label captions</h1>
+    <p class="meta">Started by thatcadguy ·
+      2009-09-22 12:50 UTC ·
+      6 replies · SMF topic #933</p>
+<article class="post" id="msg4673">
+  <div class="post-head">
+    <span class="post-author">thatcadguy</span>
+    <span class="post-date muted">2009-09-22 12:50 UTC</span>
+  </div>
+  <div class="post-body">Is there anyway to avoid having the text bleed into itself like this?<br>
+<br>
+Just using dcl_Control_SetCaption right before a heavy data extraction process.<br>
+<br>
+Pretty sure this is Windows' fault, not OpenDCL's.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/912/untitled.PNG">untitled.PNG</a> <span class="muted">(7780 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4674">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-09-22 15:28 UTC</span>
+  </div>
+  <div class="post-body">Try this inside your loop:<br>
+<br>
+(dcl_Control_SetCaption 'Label "")<br>
+(dcl_Control_Redraw 'Label)<br>
+(dcl_Control_SetCaption 'Label  "My text")<br>
+<br>
+Copter</div>
+</article>
+<article class="post" id="msg4677">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-22 16:22 UTC</span>
+  </div>
+  <div class="post-body">Which version of OpenDCL Runtime are you using? I'm pretty sure this problem is fixed in current builds.</div>
+</article>
+<article class="post" id="msg4683">
+  <div class="post-head">
+    <span class="post-author">thatcadguy</span>
+    <span class="post-date muted">2009-09-22 19:03 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=933.msg4677#msg4677 date=1253636544 wrote:</cite><br>
+Which version of OpenDCL Runtime are you using? I'm pretty sure this problem is fixed in current builds.<br>
+</blockquote><br>
+<br>
+6.0.0.3 on 2008</div>
+</article>
+<article class="post" id="msg4684">
+  <div class="post-head">
+    <span class="post-author">thatcadguy</span>
+    <span class="post-date muted">2009-09-22 19:08 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=copter link=topic=933.msg4674#msg4674 date=1253633332 wrote:</cite><br>
+Try this inside your loop:<br>
+<br>
+(dcl_Control_SetCaption 'Label "")<br>
+(dcl_Control_Redraw 'Label)<br>
+(dcl_Control_SetCaption 'Label  "My text")<br>
+<br>
+Copter<br>
+</blockquote><br>
+<br>
+Thanks Copter, that works like a charm.<br>
+<br>
+Btw, just installed 6.0.0.5 and am still seeing the same behavior (before using copter's method)</div>
+</article>
+<article class="post" id="msg4688">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-23 01:47 UTC</span>
+  </div>
+  <div class="post-body">I just did a quick test changing the caption manually in a modeless dialog, and it repainted correctly. It may be that your processing loop does not do allow Windows to process messages. If that's the case, the following might work as well (and use less processor time):<br>
+<br>
+(dcl_Control_SetCaption 'Label  "My text")<br>
+(dcl_Control_Redraw 'Label)<br>
+</div>
+</article>
+<article class="post" id="msg4730">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-09-25 07:14 UTC</span>
+  </div>
+  <div class="post-body">Hi, thatcadguy, in my experiences I could solve this by using BackColor (for the label) -16 instead of -24.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

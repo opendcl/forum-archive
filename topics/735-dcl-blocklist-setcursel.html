@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_BlockList_SetCurSel · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 735</p>
+    <h1>dcl_BlockList_SetCurSel</h1>
+    <p class="meta">Started by scottcd ·
+      2009-04-29 11:05 UTC ·
+      6 replies · SMF topic #735</p>
+<article class="post" id="msg3575">
+  <div class="post-head">
+    <span class="post-author">scottcd</span>
+    <span class="post-date muted">2009-04-29 11:05 UTC</span>
+  </div>
+  <div class="post-body">I am trying to create a legend. Please see attached files.<br>
+<br>
+In trying to 'select all' I cannot seem to get (dcl_BlockList_SetCurSel Legend_Form1_BlockList1 -1) to work ?<br>
+<br>
+Additionally, if I drag from the blocklist to the listbox the icon etc is removed from the blocklist, but if I try to use multiple selection can this be replicated?<br>
+<br>
+Thanks in advance<br>
+<br>
+Scott<br>
+OpenDCL Version 5.1.0.3<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/690/legend.LSP">legend.LSP</a> <span class="muted">(2029 bytes)</span></li><li><a href="../attachments/691/Legend.odcl">Legend.odcl</a> <span class="muted">(1254 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3576">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-29 14:18 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+removing items while drag and drop is by design. You can suppress this when you activate OnDragDropBegin at the blocklist and OnDragDropFromControl at the list on the right. In that case you can control which item has to be copied to the right by yourself.<br>
+<br>
+(dcl_BlockList_SetCurSel Legend_Form1_BlockList1 -1) is only for deselecting all. For selecting all items you have to create a loop to select every single item. At least don't forget to set the focus to the list, otherwise you won't see the selection.<br>
+<br>
+Try the code below:<br>
+<br>
+<br>
+(defun c:Legend_Form1_TextButton2_OnClicked (/ intCnt)							    ; Select All Button<br>
+  (repeat (setq intCnt (dcl_BlockList_GetCount Legend_Form1_BlockList1))<br>
+    (dcl_BlockList_SetCurSel Legend_Form1_BlockList1 (setq intCnt (1- intCnt)))<br>
+  ); repeat<br>
+  (dcl_Control_SetFocus Legend_Form1_BlockList1)<br>
+); c:Legend_Form1_TextButton2_OnClicked<br>
+<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3577">
+  <div class="post-head">
+    <span class="post-author">scottcd</span>
+    <span class="post-date muted">2009-04-29 15:05 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred,<br>
+<br>
+I will give that a shot :-\<br>
+<br>
+Cheers<br>
+<br>
+Scott<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3580">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-29 20:12 UTC</span>
+  </div>
+  <div class="post-body">In addition to what Fred said, note that holding the  button during a drag/drop operation turns it into a copy operation instead of a move operation.</div>
+</article>
+<article class="post" id="msg3617">
+  <div class="post-head">
+    <span class="post-author">scottcd</span>
+    <span class="post-date muted">2009-05-01 11:43 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the help.<br>
+<br>
+I have added your suggestions and the resulting files are now uploaded to Show your stuff.<br>
+<br>
+I was thinking about refining it a bit further.<br>
+<br>
+Is it possible to filter the blocks shown in the blocklist so blocks contained within an xref are not displayed ?<br>
+<br>
+Thanks <br>
+<br>
+Scott<br>
+</div>
+</article>
+<article class="post" id="msg3618">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-01 13:12 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=scottcd link=topic=735.msg3617#msg3617 date=1241178213 wrote:</cite><br>
+Is it possible to filter the blocks shown in the blocklist so blocks contained within an xref are not displayed ?<br>
+</blockquote><br>
+<br>
+No, but if there was a DeleteItem method for block list controls, you could remove the xref blocks with your own code. I suggest adding a feature request for a BlockList_DeleteItem method.</div>
+</article>
+<article class="post" id="msg3620">
+  <div class="post-head">
+    <span class="post-author">scottcd</span>
+    <span class="post-date muted">2009-05-01 15:33 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the reply Owen.<br>
+<br>
+I will submit this request.<br>
+<br>
+Cheers<br>
+Scott<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

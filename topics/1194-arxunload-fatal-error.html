@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arxunload fatal error ... · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1194</p>
+    <h1>Arxunload fatal error ...</h1>
+    <p class="meta">Started by olamer ·
+      2010-03-03 13:27 UTC ·
+      12 replies · SMF topic #1194</p>
+<article class="post" id="msg6393">
+  <div class="post-head">
+    <span class="post-author">olamer</span>
+    <span class="post-date muted">2010-03-03 13:27 UTC</span>
+  </div>
+  <div class="post-body">Hi guys,<br>
+<br>
+I'm developing an application that verify what's the opendcl version running at moment and depending the version it will unload it (arxunload) and reload again (arxload).<br>
+When I try to unload the 5.1.2.3 version and reload the 4.0.3.1 version it works fine.<br>
+But, when I try to unload the 4.0.3.1 version an fatal error happen.<br>
+The command:<br>
+(arxunload "OpenDCL.16.arx" 'nil)<br>
+<br>
+I'm testing with AutoCAD 2004.<br>
+<br>
+Someone having any ideia</div>
+</article>
+<article class="post" id="msg6394">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-03 18:07 UTC</span>
+  </div>
+  <div class="post-body">That 4.x version was pretty unstable, and I don't recommend using it.</div>
+</article>
+<article class="post" id="msg6395">
+  <div class="post-head">
+    <span class="post-author">olamer</span>
+    <span class="post-date muted">2010-03-03 18:52 UTC</span>
+  </div>
+  <div class="post-body">I understand ...<br>
+But I have some applications using OpenDCL 4.0.3.1 and the 4.0.3.1 Runtime don't load my other application in 5.1.2.3.<br>
+Then I think ....<br>
+<br>
+1 - Get the OpenDCL version:<br>
+(setq OpenVersion dcl_GetVersionEx)<br>
+2 - If the OpenVersion is different to 5.1.2.3 then<br>
+(arxunload "OpenDCL.16.arx" 'nil)<br>
+3 - then reload<br>
+(arxload (strcat appPath "OpenDCL.16.arx") 'nil)<br>
+<br>
+But in 2nd item the AutoCAD 2004 and 2008 (I also test) crashes and show the Fatal Error message.<br>
+<br>
+I don't understand ...<br>
+Have any method to successful unload the OpenDCL 4.0.3.1 ARX ?<br>
+<br>
+Thanks for all</div>
+</article>
+<article class="post" id="msg6396">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2010-03-03 21:07 UTC</span>
+  </div>
+  <div class="post-body">You need to re-build those apps in the latest stable build.  I know in the beginning development was fairly quick, but things have slowed down a bit.  Time to catch up!</div>
+</article>
+<article class="post" id="msg6398">
+  <div class="post-head">
+    <span class="post-author">olamer</span>
+    <span class="post-date muted">2010-03-04 12:54 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=1194.msg6396#msg6396 date=1267650422 wrote:</cite> You need to re-build those apps in the latest stable build </blockquote><br>
+This is the problem ...<br>
+<br>
+There is some apps that I don't have source code.<br>
+<br>
+I'm in trouble ...<br>
+What's really happening ?<br>
+There's no other way ?<br>
+<br>
+<br>
+Thank again ..</div>
+</article>
+<article class="post" id="msg6399">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2010-03-04 14:53 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">There is some apps that I don't have source code.</blockquote><br>
+<br>
+You don't have the odcl files, or you don't have the lisp source code?  Are these apps rolled up .fas - .vlx?</div>
+</article>
+<article class="post" id="msg6402">
+  <div class="post-head">
+    <span class="post-author">olamer</span>
+    <span class="post-date muted">2010-03-04 16:35 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=1194.msg6399#msg6399 date=1267714405 wrote:</cite>You don't have the odcl files, or you don't have the lisp source code?  Are these apps rolled up .fas - .vlx?</blockquote><br>
+<br>
+I don't have the lisp code.<br>
+I have only VLX files.<br>
+<br>
+This apps forces to use 4.0.3.1 version.<br>
+<br>
+When I try to unload this arx (Tools/Load/Unload or arxunload) the AutoCAD 2004/2008 crashes (fatal error)<br>
+<br>
+Unfortunately I can't unload this 4.0.3.1 version without crashes AutoCAD.<br>
+<br>
+Thanks again JB</div>
+</article>
+<article class="post" id="msg6403">
+  <div class="post-head">
+    <span class="post-author">olamer</span>
+    <span class="post-date muted">2010-03-04 17:13 UTC</span>
+  </div>
+  <div class="post-body">Other question...<br>
+<br>
+Have any method to load the 5.1.2.3 version over 4.0.3.1 version without unload/reaload it ?<br>
+<br>
+Maybe I solve my problem ...</div>
+</article>
+<article class="post" id="msg6404">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-04 17:30 UTC</span>
+  </div>
+  <div class="post-body">I guess the basic problem is that in 5.x, the odcl function names are prefixed with dcl_ instead of odcl_, correct?  If so, maybe you could just define aliases like (setq odcl_XXXX dcl-XXXX) so that the older lisp works with the newer OpenDCL Runtime.</div>
+</article>
+<article class="post" id="msg6413">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-03-04 19:03 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Oswald link=topic=1194.msg6402#msg6402 date=1267720508 wrote:</cite><br>
+[quote author=jb link=topic=1194.msg6399#msg6399 date=1267714405]You don't have the odcl files, or you don't have the lisp source code?  Are these apps rolled up .fas - .vlx?</blockquote><br>
+<br>
+I don't have the lisp code.<br>
+I have only VLX files.<br>
+<br>
+This apps forces to use 4.0.3.1 version.<br>
+<br>
+When I try to unload this arx (Tools/Load/Unload or arxunload) the AutoCAD 2004/2008 crashes (fatal error)<br>
+<br>
+Unfortunately I can't unload this 4.0.3.1 version without crashes AutoCAD.<br>
+<br>
+Thanks again JB<br>
+<br>
+<br>
+Why don't you contact the developer of the code and ask them to update it or ask them for the source if not...<br>
+</div>
+</article>
+<article class="post" id="msg6415">
+  <div class="post-head">
+    <span class="post-author">olamer</span>
+    <span class="post-date muted">2010-03-04 19:59 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1194.msg6404#msg6404 date=1267723827 wrote:</cite>I guess the basic problem is that in 5.x, the odcl function names are prefixed with dcl_ instead of odcl_, correct?</blockquote><br>
+<br>
+Hi Owen,<br>
+Unfortunately it's not the problem.<br>
+<br>
+When I have a 4.0.3.1 version loaded I can't load other version.<br>
+AutoCAD says:<br>
+     OpenDCL.16.arx already loaded.<br>
+And open my dialogs created at Studio 5.1.2.3 with 4.0.3.1 not works ...<br>
+<br>
+When I try to unload the 4x version, AutoCAD crashes ...<br>
+Aff ..  :-\<br>
+heheeh  ;)<br>
+<br>
+Bazza ... <br>
+I don't have the contact of the developer of the code.<br>
+He changes your home ...<br>
+<br>
+Well,<br>
+Thanks people ...</div>
+</article>
+<article class="post" id="msg6417">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-04 20:05 UTC</span>
+  </div>
+  <div class="post-body">My point was to not load 4.x in the first place.</div>
+</article>
+<article class="post" id="msg6420">
+  <div class="post-head">
+    <span class="post-author">olamer</span>
+    <span class="post-date muted">2010-03-05 14:23 UTC</span>
+  </div>
+  <div class="post-body">An important information ...<br>
+<br>
+I'm testing to load/unload/load the 4.0.3.1 ARX version in Windows XP and the problem not occurs ...<br>
+<br>
+The problem occured in Windows Vista Ultimate ....<br>
+<br>
+Weird ...</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

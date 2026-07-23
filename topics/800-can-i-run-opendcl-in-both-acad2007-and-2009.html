@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Can I run OpenDCL in both Acad2007 and 2009? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 800</p>
+    <h1>Can I run OpenDCL in both Acad2007 and 2009?</h1>
+    <p class="meta">Started by vosey ·
+      2009-06-10 08:57 UTC ·
+      9 replies · SMF topic #800</p>
+<article class="post" id="msg3940">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2009-06-10 08:57 UTC</span>
+  </div>
+  <div class="post-body">Hi,  I'm experiencing a problem when attempting to run OpenDLC in AutoCAD 2007.  I also have AutoCAD 2009 on my PC and that seems fine, When I start Acad 2009 I see a line that says 'OpenDCL Runtime [5.0.1.6] loaded' and all's fine, but when starting AutoCAD 2007 I just see a line '_OPENDCL' when starting up, and then "(*ERROR* "no function definition: DCL_PROJECT_LOAD").  the curious thing is that it has been working on both versions without a problem for many months, until today!.  If I try to load the arx file using (arxload "OpenDCL.17.arx"), (the file is on the search path) The error message I get in 2007 is that the OpenDCL Local Language resource module was not found and that I need to reinstall OpenDCL runtime, I have tried reinstalling runtime several times but when I hit 'run' the progress bar gets to 6% and stays there.  If I try to install the OpenDCL Studio', I get to 98%, and then it hangs.  I have also tried the repair option but this too has made no difference.  If OpenDCL is not designed to run on multiple versions that's fine, but as I say, I'm sure it has been! Unfortunately I need two versions as I support different offices.  I've just discovered that once AutoCAD2007 has started and after I get the error message about "no function definition: DCL_PROJECT_LOAD" - if I subsequently enter 'opendcl' at the acad command prompt, it loads fine ('OpenDCL Runtime [5.0.1.6] loaded' ), but it doesn't appear possible to automate the load prior to running the 'dcl_project_load' command.   Sorry if this rambles on a bit, I'm just hoping someone recognises what it is I've done wrong, and can point me in the right direction!!.   Cheers Pete</div>
+</article>
+<article class="post" id="msg3944">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-06-10 11:49 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I had the same message : "Local Language resource module was not found" with OpenDCL 5.x .<br>
+<br>
+My soluce was to copy all languages file "ENU" "FRA" ... in path were are arx files ....<br>
+<br>
+Stéphan.</div>
+</article>
+<article class="post" id="msg3946">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2009-06-10 12:05 UTC</span>
+  </div>
+  <div class="post-body">Thanks, any ideas where I can hold of these files?</div>
+</article>
+<article class="post" id="msg3947">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-06-10 12:11 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=vosey link=topic=800.msg3946#msg3946 date=1244635554 wrote:</cite><br>
+Thanks, any ideas where I can hold of these files?<br>
+</blockquote><br>
+<br>
+In fact, you have to install the run-time OpenDCL tools.<br>
+here "C:\Program Files\Common Files\OpenDCL" you will find arx files for AutoCAD2007/2008/2009 and Languages runtimes folder.<br>
+<br>
+You should copy all these folder in the correct path in autocad, where it can find them ...<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3948">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2009-06-10 12:42 UTC</span>
+  </div>
+  <div class="post-body">Tried that and still the same result (it won't work)! - All of the dll files in all of the various OpenDCL Folders are now on my search paths.  Thanks for your suggestions though Stephan.</div>
+</article>
+<article class="post" id="msg3949">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-06-10 12:54 UTC</span>
+  </div>
+  <div class="post-body">Sorry, <br>
+<br>
+I wrote arx files, not dll files  ;)<br>
+<br>
+See attached files !<br>
+<br>
+I only copies ENU and FRE Languages files (which i use)<br>
+<br>
+Hope this will help you   ;)<br>
+<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/784/Common_OpenDCL_ARXFILES.jpg">Common_OpenDCL_ARXFILES.jpg</a> <span class="muted">(69586 bytes)</span></li><li><a href="../attachments/785/Project_OpenDCL_ARXFILES.jpg">Project_OpenDCL_ARXFILES.jpg</a> <span class="muted">(72544 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3952">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-10 13:55 UTC</span>
+  </div>
+  <div class="post-body">Please do not copy files manually; that is what got you into this mess.  You'll need to uninstall OpenDCL Studio and OpenDCL Runtime, then find all OpenDCL files on your hard drive and delete them. Then you'll need to undo all the manual edits you've made to your AutoCAD configuration (removing OpenDCL from startup suite, acaddoc.lsp, etc.), remove your changes to the AutoCAD support path, etc.  Once you have a clean system, delete your temporary internet files, then download and install OpenDCL again.  If it does not work, do not try to fix the problem until you know what the problem is. You can install with full logging so that you'll know exactly what causes the installation to fail.</div>
+</article>
+<article class="post" id="msg3953">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2009-06-10 14:06 UTC</span>
+  </div>
+  <div class="post-body">I consider myself told Off Owen!! - but as far as I was aware I hadn't touched the Installation of OpenDCL, although I now guess it's likely I may have inadvertantly moved a folder or something. Well it's now working! - I understand the correct way forward is to clean all traces of OpenDCL and reinstall but now all arx files and language folders have been placed in exactly the same setup as Stephans screen shot and they can be seen by AutoCAD.  When I first tried it I got the same error, but putting (arxload "opendcl.17.arx") in my mnl file too seems to have been the final touch (bodge), and it's working.  I still don't really get why on my 2nd PC I don't need to explicitly load it, but on my 1st PC I do (although having just read Owens reply I probably now do),  anyway- can't complain! .  Your time help is very much appreciated.  If my bodge causes further problems Owen I promise to do a proper cleanup - lesson learnt!.</div>
+</article>
+<article class="post" id="msg3954">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-06-10 16:52 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=vosey link=topic=800.msg3953#msg3953 date=1244642819 wrote:</cite><br>
+I still don't really get why on my 2nd PC I don't need to explicitly load it, but on my 1st PC I do (although having just read Owens reply I probably now do),  anyway- can't complain! .<br>
+</blockquote><br>
+<br>
+Did you maybe have the Studio &amp; the Runtime installed on the same PC?<br>
+You only need one or the other.<br>
+When OpenDCL (Studio or Runtime) it installed it creates a registry key that will demand load the ARX when the "OPENDCL" command is run. That's why you "shouldn't" have to "explicitly load it".<br>
+If files are moved or loaded from somewhere else on the network, that's when the things gets screwy. </div>
+</article>
+<article class="post" id="msg3969">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2009-06-11 05:55 UTC</span>
+  </div>
+  <div class="post-body">Yes, both the runtime and studio were installed on the same PC so I guess that didn't help.   If the problem reoccurs I'll have my PC Wiped and start again - now I know the possible pitfalls.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

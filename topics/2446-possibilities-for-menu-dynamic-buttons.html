@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Possibilities for menu, dynamic buttons · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2446</p>
+    <h1>Possibilities for menu, dynamic buttons</h1>
+    <p class="meta">Started by hanslammerts ·
+      2016-11-09 22:39 UTC ·
+      43 replies · SMF topic #2446</p>
+<article class="post" id="msg12202">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2016-11-09 22:39 UTC</span>
+  </div>
+  <div class="post-body">Hi <br>
+I was wondering it would be possible to programm a menu in Autocad that act similar to the entity snap toolbar in Bricscad. Because autocad doesn't support dynamic toolbars  this could only be done with a menu that 'stays open'.. Can this be done with opendcl?<br>
+Thanks upfront hans<br>
+<br>
+https://www.bricsys.com/bricscad/help/en_US/V13/UsrGui/source/01_User_Interface/Art/01_Toolbar10_Entitysnaps.png</div>
+</article>
+<article class="post" id="msg12205">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-11-10 09:59 UTC</span>
+  </div>
+  <div class="post-body">For OpenDCL - yes, it is a standard feature to create "something" (palette, modeless dialogue) which stays open and displays different icons for different states.<br>
+<br>
+For AutoCAD - a "simple workaround" could be that you take the "zoom" toolbar, modify it to "my zoom" and change every icon to a flyout which different icons - one icon enables the zoom option, the other one disables it. The visual result is the same, the usage needs the click to open the flyout.<br>
+<br>
+I think that there are menucommands in Cuix which does the command you need and can change the displayed icon. But I'm not sure ... :-\</div>
+</article>
+<article class="post" id="msg12208">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2016-11-11 08:10 UTC</span>
+  </div>
+  <div class="post-body">Thanks for your reply peter, <br>
+Modifing any existing AutoCAD toolbar isn't going to do what i would like the toolbar to (not a fan of flyout buttons) but i thought opendcl could do just that. Thanks for your reply anyway!<br>
+<br>
+I have made a simple form to illustrate the idea. *EDIT* I figured out it should be a modeless dialog..<br>
+These buttons i thing have a "event when clicked", change appaerance and should trigger command that i called.<br>
+The lisps have the code to to this.<br>
+<br>
+(set_os_end)<br>
+(set_os_mid)<br>
+(set_os_cen)<br>
+<br>
+- how to activate the lisp in the opendcl dialog.<br>
+- how to load a .odcl. file ?<br>
+<br>
+Thanks for some helping out..<br>
+<br>
+<br>
+ <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2248/Knipsel.JPG">Knipsel.JPG</a> <span class="muted">(51966 bytes)</span></li><li><a href="../attachments/2249/taalbar snap. odcl as.txt">taalbar snap. odcl as.txt</a> <span class="muted">(751 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12212">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-11-12 20:47 UTC</span>
+  </div>
+  <div class="post-body">Edit:<br>
+<strong>Version 20180417:</strong><br>
+Two checks have been added to the code.<br>
+<strong>Version 20170129:</strong><br>
+The position of the form is now stored relative to the top left corner of the CAD window.<br>
+<strong>Version 20170125:</strong><br>
+If the stored position of the form would cause it to be (partially) outside the CAD window, the form is centered.<br>
+<strong>Version 20170118:</strong><br>
+Several improvements for the 20170117 code.<br>
+New function c:Osnaps-Toggle: Toggles the osnaps and changes the display of the form to match.<br>
+<strong>Version 20170117:</strong><br>
+For every workspace the position and state (hide/show) of the form is saved/restored separately.<br>
+New function c:Osnaps-FormToggle: Toggles the form.<br>
+<strong>Version 20161126:</strong><br>
+Added OZ (OSNAPZ) button.<br>
+The form now has KeepFocus set to false.<br>
+<strong>Version 20161116B:</strong><br>
+Event handlers for INT and APP were not correct.<br>
+<strong>Version 20161116:</strong><br>
+Updated code to hide GCE button.<br>
+Revised event handlers. Behavior now matched that of the BricsCAD toolbar.<br>
+Modified the ODCL: flat buttons 30x30.<br>
+<strong>Version 20161114:</strong><br>
+Added X button (switch OSMODE to zero).<br>
+(dcl-Sendstring) is no longer used.<br>
+<br>
+My suggestion:<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2391/BKG_Osnaps_20180417.zip">BKG_Osnaps_20180417.zip</a> <span class="muted">(7133 bytes)</span></li><li><a href="../attachments/2268/Osnaps.png">Osnaps.png</a> <span class="muted">(2053 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12213">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-11-12 21:40 UTC</span>
+  </div>
+  <div class="post-body"> 8)</div>
+</article>
+<article class="post" id="msg12214">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2016-11-13 22:05 UTC</span>
+  </div>
+  <div class="post-body">Thanks for this amazing good work!!  Highly effective and will same a lot of clicking.<br>
+I'm allmost there where i would want it to be.<br>
+<br>
+The big wish i still have is to have a 'clear osnap' button to work.<br>
+I called it 'btnCln' in the same fashion as the other buttons are called. <br>
+btnCln would be the one that would make them all red, a hard osnap=0 value.<br>
+<br>
+Here is my code ..for revision &amp; idea's..<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2253/Osnaps.lsp">Osnaps.lsp</a> <span class="muted">(13105 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12215">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-11-14 08:23 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=hanslammerts link=topic=2446.msg12214#msg12214 date=1479074703 wrote:</cite><br>
+Thanks for this amazing good work!!  Highly effective and will same a lot of clicking.<br>
+</blockquote>Thanks.<br>
+<br>
+<blockquote class="quote"><cite> author=hanslammerts link=topic=2446.msg12214#msg12214 date=1479074703 wrote:</cite><br>
+The big wish i still have is to have a 'clear osnap' button to work.<br>
+</blockquote>Have you tried the existing 'ON' button? This will not set the OSMODE to zero but does disable all osnaps.</div>
+</article>
+<article class="post" id="msg12216">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-11-14 09:00 UTC</span>
+  </div>
+  <div class="post-body">@hanslammerts:<br>
+I notice that you have changed the existing button event handlers.<br>
+Does this mean that:<br>
+(dcl-Sendstring "'_endpoint ")<br>
+does not work on AutoCAD?</div>
+</article>
+<article class="post" id="msg12219">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-11-14 11:25 UTC</span>
+  </div>
+  <div class="post-body">I have update the code anyway. See reply #3.</div>
+</article>
+<article class="post" id="msg12221">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2016-11-15 22:34 UTC</span>
+  </div>
+  <div class="post-body">Mucias gratias.<br>
+<br>
+.. A few remarks after testing and doing my things.<br>
+<br>
+1. shouldn't hide the gce button (&gt;AutoCAD 2017 has gce), i turned it this off ;   (dcl-Control-SetVisible Osnaps/Main/btnGce nil)<br>
+2. i cannot figure out how to set osmode = 0 seems some kind of bug that this will automaticly turn it on/off instead of resetten it all (to red buttons)<br>
+3. strange thing that the toolbar is shortening everytime i active it..(?) Why is this..? so i have set the 'enable resize button' : on<br>
+   (the button aligenment need some fixing, i can do that :) But what about the strange behaviour of the shortening at start up ??<br>
+<br>
+.. still, this is amazing stuff.. :) Thanks!<br>
+Fun to do some testing / programming on a multi-platform basis..<br>
+<br>
+https://youtu.be/mvAVqWTVKAI<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2255/wrong alignement.JPG">wrong alignement.JPG</a> <span class="muted">(18552 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12223">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-11-16 10:07 UTC</span>
+  </div>
+  <div class="post-body">1.<br>
+Actually AutoCAD &gt;=2016 has the GCE snap. I'll revise my code accordingly.<br>
+2.<br>
+If you press the 'X' button all buttons to the left of it should turn red and the 'X' button itself should turn green.<br>
+The 'ON/OFF' button has three states:<br>
+- ON+white: Osnap is on and one or more osnaps are active.<br>
+- OFF+black: Osnap is off and OSMODE is zero.<br>
+- OFF+gray: Osnap is off but OSMODE is not zero.<br>
+3.<br>
+I do not see misaligned buttons. You have to be more specific.<br>
+The resizing bug you see is caused by your own modifications of the code.</div>
+</article>
+<article class="post" id="msg12224">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-11-16 14:07 UTC</span>
+  </div>
+  <div class="post-body">See reply #3 for the updated version.</div>
+</article>
+<article class="post" id="msg12229">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2016-11-16 20:21 UTC</span>
+  </div>
+  <div class="post-body">Awsome!!!!! Will get back to you after testing and working with it. The way you code this makes me feel a bit like a fool.. But i am very happy this will save a bunch of useless shift clicking through stupid autocad menus.</div>
+</article>
+<article class="post" id="msg12231">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-11-16 21:49 UTC</span>
+  </div>
+  <div class="post-body">See reply #3 for the updated version. ;D</div>
+</article>
+<article class="post" id="msg12232">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2016-11-17 20:41 UTC</span>
+  </div>
+  <div class="post-body">General question..<br>
+i keephaving the issue that the toolbar is shrinking every time i close and re-open it?<br>
+Tried to prevent it by setting min width and working with a frame around the buttons. No effect :( <br>
+Is this only in AutoCAD happening?<br>
+</div>
+</article>
+<article class="post" id="msg12242">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-11-18 17:58 UTC</span>
+  </div>
+  <div class="post-body">@Hans:<br>
+Although the code does contain a portion to hide the GCE button and reduce the width of the dialog, your last post surprises me for two reasons:<br>
+1.<br>
+The code should only hide the GCE button if it is visible and therefore should execute only once per CAD-session.<br>
+2.<br>
+The code should not run on AC 2016 and 2017.<br>
+<br>
+To find the cause of the problem change line 48-61 to:<br>
+  (if<br>
+    (and<br>
+      (print Osnaps/Main)<br>
+      (print Osnaps/Main/btnGce)<br>
+      Osnaps/Main/btnGce ; To be absolutely safe.<br>
+      (print (dcl-Control-GetVisible Osnaps/Main/btnGce))<br>
+      (if (= "BRICSCAD" (strcase (getvar 'product)))<br>
+        (&gt; 16 (atoi (getvar '_vernum)))<br>
+        (&gt; 2016 (atoi (substr (print (ver)) 13))) ; https://www.theswamp.org/index.php?topic=36606.msg416136#msg416136<br>
+      )<br>
+    )<br>
+    (progn<br>
+      (dcl-Control-SetVisible Osnaps/Main/btnGce nil)<br>
+      (dcl-Control-SetWidth Osnaps/Main (- (dcl-Control-GetWidth Osnaps/Main) 32)) ; 32 is the button distance.<br>
+    )<br>
+  )<br>
+And report what you see in the Command Bar when the dialog is first displayed and then closed and reopened.<br>
+</div>
+</article>
+<article class="post" id="msg12255">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-11-20 11:11 UTC</span>
+  </div>
+  <div class="post-body">Can you provide a screencast to show what is happening?</div>
+</article>
+<article class="post" id="msg12260">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2016-11-20 20:54 UTC</span>
+  </div>
+  <div class="post-body">Turns out i did something to the that did it.  :-\<br>
+I have one thing that would be benificial, a Z/<s>Z</s> button for OSNAPZ like ON/OFF for osnap.<br>
+<br>
+;;  (setq osmz (getvar 'osnapz))  ;; etc... etc.. <br>
+inspiration: https://apps.autodesk.com/ACD/en/Detail/Index?id=9014648650809523218&amp;appLang=en&amp;os=Win32_64<br>
+</div>
+</article>
+<article class="post" id="msg12264">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-11-21 15:58 UTC</span>
+  </div>
+  <div class="post-body">@Hans:<br>
+For me the main goal of this little project was managing a modeless form across drawings, including drawings where the Lisp code is not loaded (two of the three reactors are there for this purpose). It was never my intention to create the 'perfect' Osnap toolbar. You are right: OSNAPZ plays a role, but so do OSOPTIONS and 3DOSMODE. Feel free to add buttons for any or all of these variables. I won't. ;D</div>
+</article>
+<article class="post" id="msg12268">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2016-11-22 22:25 UTC</span>
+  </div>
+  <div class="post-body">Ok. respect that, really like to thank you for your time &amp; effort. I like it allready as it is,  but there is allways something to wish for ;-)<br>
+While i'm using it i noticed i keep using the F3 key a Z osnap would therfore be more welcome, ..to me..</div>
+</article>
+<article class="post" id="msg12278">
+  <div class="post-head">
+    <span class="post-author">scott_cd</span>
+    <span class="post-date muted">2016-11-25 13:33 UTC</span>
+  </div>
+  <div class="post-body">Thanks for sharing this - What a fabulous function.<br>
+<br>
+I have taken the liberty of adding a couple of buttons and changing the colours of the buttons.<br>
+<br>
+I have added the following buttons: m2p .xy and OsnapZ<br>
+<br>
+I am afraid that I wasn't able to update the reactors as it is beyond my skill level.<br>
+<br>
+Thanks again<br>
+<br>
+Scott CD<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2265/Osnaps.odcl">Osnaps.odcl</a> <span class="muted">(1807 bytes)</span></li><li><a href="../attachments/2266/Osnaps.lsp">Osnaps.lsp</a> <span class="muted">(8009 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12282">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-11-26 12:33 UTC</span>
+  </div>
+  <div class="post-body">Since, apparently, the code is hard to understand for the average Lisper, I have changed my mind and have added an OZ (OSNAPZ) button. By using three separate update functions I hope that others will find the code easier to modify and extend.<br>
+See <a href="http://www.opendcl.com/forum/index.php?topic=2446.msg12212#msg12212" rel="nofollow noopener">{2}</a> for the updated version.</div>
+</article>
+<article class="post" id="msg12296">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2016-12-01 22:03 UTC</span>
+  </div>
+  <div class="post-body">Fantastic you made osnapz running so good Roy_043!!<br>
+What i did to it, is turning line 258 into this .. little tweak that i find usefull as graphical feedback by showing grid indicating Z is locked. <br>
+Will work great in 3D i know! Looks like the Revit 'show plane' &amp; 'pick plane' option. However, with AutoCAD you still have a lot more freedom in 3D imo.. <br>
+<br>
+(defun c:Osnaps/Main/btnOsnapz#OnClicked () (progn ((setvar 'osnapz (boole 6 (getvar 'osnapz) 1)) (setvar 'gridmode (boole 6 (getvar 'gridmode) 1)) (princ))))<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2269/2016-12-01_23-21-09.gif">2016-12-01_23-21-09.gif</a> <span class="muted">(2084803 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12297">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-12-02 10:00 UTC</span>
+  </div>
+  <div class="post-body">Showing the grid if OSNAPZ is On can be useful. But your code simply toggles the GRIDMODE independently from the OSNAPZ. So if the user has OSNAPZ=0 and GRIDMODE=1, clicking the OZ button will result in OSNAPZ=1 and GRIDMODE=0.<br>
+A better solution would be:<br>
+(defun c:Osnaps/Main/btnOsnapz#OnClicked () (setvar 'gridmode (setvar 'osnapz (boole 6 (getvar 'osnapz) 1))) (princ))</div>
+</article>
+<article class="post" id="msg12298">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2016-12-02 13:22 UTC</span>
+  </div>
+  <div class="post-body">Even better! Hold that thought for updating the code ( #3 ) :)<br>
+I set GRIDDISPLAY = 15 (adoptive and beyond limits) by default<br>
+<br>
+(dcl-Form-Show Osnaps/Main 750 0)<br>
+To start at top bottom<br>
+</div>
+</article>
+<article class="post" id="msg12333">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-01-17 18:18 UTC</span>
+  </div>
+  <div class="post-body">See <a href="http://www.opendcl.com/forum/index.php?topic=2446.msg12212#msg12212" rel="nofollow noopener">{2}</a> for the 20170117 version.</div>
+</article>
+<article class="post" id="msg12335">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2017-01-17 21:12 UTC</span>
+  </div>
+  <div class="post-body">Allright..!  like it Roy !)<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg12337">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-01-18 12:23 UTC</span>
+  </div>
+  <div class="post-body">See <a href="http://www.opendcl.com/forum/index.php?topic=2446.msg12212#msg12212" rel="nofollow noopener">{2}</a> for the 20170118 version.</div>
+</article>
+<article class="post" id="msg12338">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2017-01-18 23:02 UTC</span>
+  </div>
+  <div class="post-body">I decided to use it as F3. But you can set it F4 as well as this is by default the 3D objectsnap function.. </div>
+</article>
+<article class="post" id="msg12339">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2017-01-25 07:32 UTC</span>
+  </div>
+  <div class="post-body">Hi Roy <br>
+It needs a .._reset function for its location.<br>
+I noticed that it can stay on the disconected monitor..</div>
+</article>
+<article class="post" id="msg12341">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-01-25 16:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=hanslammerts link=topic=2446.msg12339#msg12339 date=1485329560 wrote:</cite><br>
+Hi Roy <br>
+It needs a .._reset function for its location.<br>
+I noticed that it can stay on the disconected monitor..<br>
+</blockquote>New version in <a href="http://www.opendcl.com/forum/index.php?topic=2446.msg12212#msg12212" rel="nofollow noopener">{2}</a>.<br>
+</div>
+</article>
+<article class="post" id="msg12344">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2017-01-27 09:40 UTC</span>
+  </div>
+  <div class="post-body">   ok!  :D</div>
+</article>
+<article class="post" id="msg12347">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-01-29 19:23 UTC</span>
+  </div>
+  <div class="post-body">... Minor tweak ;) see <a href="http://www.opendcl.com/forum/index.php?topic=2446.msg12212#msg12212" rel="nofollow noopener">{2}</a>.</div>
+</article>
+<article class="post" id="msg12440">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2017-03-18 22:36 UTC</span>
+  </div>
+  <div class="post-body">Hi there<br>
+<br>
+I'm wondering what keeps routines like beneith in combination with this OpenDCL toolbar from acting transparent.<br>
+Check this screenshot. I think it has somthing to do with the OpenDCL code how it works. Would be great if it can be overcome..<br>
+<br>
+Thanks anyway<br>
+Hans<br>
+<br>
+https://youtu.be/zAb26bR-emU<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+(defun ent-xline (pt vec lyr /)<br>
+  (entmake (list '(0 . "XLINE")<br>
+		 '(100 . "AcDbEntity")<br>
+		 (cons 8 lyr)<br>
+		 '(100 . "AcDbXline")<br>
+		 (cons 10 (trans pt 1 0))<br>
+		 (cons 11 vec))))<br>
+	   <br>
+(defun C:xv (/ pt)<br>
+  (while (setq pt (getpoint "\nSpecify Vertical XLINE position: "))<br>
+    (ent-xline pt (getvar "ucsydir") "X_hulplijn_")))<br>
+<br>
+<br>
+(defun C:xh (/ pt)<br>
+  (while (setq pt (getpoint "\nSpecify Horizontal XLINE position: "))<br>
+    (ent-xline pt (getvar "ucsxdir") "X_hulplijn_")))<br>
+</div>
+</article>
+<article class="post" id="msg12441">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-03-19 10:52 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=hanslammerts link=topic=2446.msg12440#msg12440 date=1489876618 wrote:</cite><br>
+I think it has something to do with the OpenDCL code how it works.</blockquote>The problem is caused by a limitation of the AutoCAD getpoint Lisp function:<br>
+<blockquote class="quote"><cite>http://docs.autodesk.com/ACD/2011/ENU/filesALR/WS1a9193826455f5ff1a32d8d10ebc6b7ccc-69fb.htm wrote:</cite>The user cannot enter another AutoLISP expression in response to a getpoint request.</blockquote><br>
+<br>
+In BricsCAD this limitation does not exist and the toolbar can be used transparently in your C:xv and C:xh functions without any issues.</div>
+</article>
+<article class="post" id="msg12442">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2017-03-19 12:41 UTC</span>
+  </div>
+  <div class="post-body">Would there be any other way to retieve positions other then getpoint, to make that work?</div>
+</article>
+<article class="post" id="msg12444">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-03-19 19:38 UTC</span>
+  </div>
+  <div class="post-body">Maybe:<br>
+(command "_.id" "\\")<br>
+(setq pt (getvar 'lastpoint))</div>
+</article>
+<article class="post" id="msg12822">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2018-04-14 09:45 UTC</span>
+  </div>
+  <div class="post-body">Dear Roy, if these some kind of 'opendcl installed check' function suitable for this one. That would be great.</div>
+</article>
+<article class="post" id="msg12831">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2018-04-17 10:28 UTC</span>
+  </div>
+  <div class="post-body">I have added two simple checks to the code. See <a href="http://opendcl.com/forum/index.php?topic=2446.msg12212#msg12212" rel="nofollow noopener">{2}</a> for the new version.<br>
+<pre class="code"><code>(setvar 'cmdecho 0)<br>
+(vl-cmdf "_Opendcl")<br>
+(setvar 'cmdecho 1)<br>
+<br>
+; 20180417<br>
+; ODCL check.<br>
+(if (not dcl-Project-Load)<br>
+  (progn<br>
+    (princ "\nError: OpenDCL runtime not available ")<br>
+    (exit)<br>
+  )<br>
+)<br>
+<br>
+; 20180417<br>
+; Dialog check.<br>
+(if (not (findfile "Osnaps.odcl"))<br>
+  (progn<br>
+    (princ "\nError: \"Osnaps.odcl\" file not found ")<br>
+    (exit)<br>
+  )<br>
+)</code></pre></div>
+</article>
+<article class="post" id="msg12841">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2018-04-19 10:38 UTC</span>
+  </div>
+  <div class="post-body">Splendid work!</div>
+</article>
+<article class="post" id="msg13079">
+  <div class="post-head">
+    <span class="post-author">kruuger78</span>
+    <span class="post-date muted">2018-12-11 18:24 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2446.msg12212#msg12212 date=1478983657 wrote:</cite><br>
+Edit:<br>
+<strong>Version 20180417:</strong><br>
+Two checks have been added to the code.<br>
+</blockquote><br>
+WOW!!! Fantastic stuff ?? Thanks Mr. Roy :)</div>
+</article>
+<article class="post" id="msg13089">
+  <div class="post-head">
+    <span class="post-author">kruuger78</span>
+    <span class="post-date muted">2018-12-17 06:49 UTC</span>
+  </div>
+  <div class="post-body">more eye friendly colors variant :)<br>
+also colors are saved to registery so can be different for each users.<br>
+kruuger<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2438/OS.png">OS.png</a> <span class="muted">(33532 bytes)</span></li><li><a href="../attachments/2439/Osnaps.lsp">Osnaps.lsp</a> <span class="muted">(16058 bytes)</span></li><li><a href="../attachments/2440/Osnaps.odcl">Osnaps.odcl</a> <span class="muted">(1291 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13105">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2019-01-13 15:30 UTC</span>
+  </div>
+  <div class="post-body">Another Idea. <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2443/OsnapBar.png">OsnapBar.png</a> <span class="muted">(4020 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13254">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2019-05-27 20:27 UTC</span>
+  </div>
+  <div class="post-body">Very nice Kruuger78!<br>
+I'm gonna use your more ellegant colors too<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

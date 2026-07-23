@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl-MessageBox language · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2999</p>
+    <h1>dcl-MessageBox language</h1>
+    <p class="meta">Started by domenicomaria ·
+      2026-05-28 16:35 UTC ·
+      6 replies · SMF topic #2999</p>
+<article class="post" id="msg14334">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2026-05-28 16:35 UTC</span>
+  </div>
+  <div class="post-body">(dcl-MessageBox  "aaaaaaaaa\n\nbbbbbbbbbbbb\n\ncccccccccccccccc\n\nddddddddddd\n\n" "title" 15 3)<br>
+<br>
+returns what is shown in the attached image ...<br>
+...<br>
+There are 2 buttons : "SI" and "NO"<br>
+...<br>
+But I want "YES" and not "SI" !<br>
+(I am in Italy but want use english language)<br>
+<br>
+Is there a way to obtain this ?<br>
+<br>
+https://www.theswamp.org/index.php?topic=60628.0<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2690/dmb1.png">dmb1.png</a> <span class="muted">(4610 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg14335">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2026-05-30 04:47 UTC</span>
+  </div>
+  <div class="post-body">Windows provides the button captions, so you would need to change it in Windows somehow. I'm afraid you'll need to create your own message box form if you want to customize it.</div>
+</article>
+<article class="post" id="msg14336">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2026-05-30 07:14 UTC</span>
+  </div>
+  <div class="post-body">This is no small feat.<br>
+<br>
+The form must <strong>resize</strong> based on the <strong>number of lines of text</strong>,<br>
+the <strong>font size</strong>, the <strong>font type</strong>, the <strong>max length of the strings</strong>, contain <strong>all the necessary icons</strong>, and have <strong>one </strong>or <strong>two </strong>or <strong>three buttons</strong>, with <strong>various different texts</strong>, with <strong>various different returns</strong>, <strong>positioned differently depending on the case</strong>, and specify <strong>which button should be the default</strong> ... !<br>
+<br>
+and I don't know if I forgot something !</div>
+</article>
+<article class="post" id="msg14346">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2026-06-05 13:21 UTC</span>
+  </div>
+  <div class="post-body">        // ----- ads_dcl_messagebox symbol (do not rename)<br>
+        static int ads_dcl_messagebox(void)<br>
+        {<br>
+                struct resbuf *pArgs =acedGetArgs () ;<br>
+ <br>
+                CString sMessage;<br>
+                if( !GetStringArgument( pArgs, sMessage ) )<br>
+                        return RSERR; //arguments expected<br>
+ <br>
+                CString sTitle = theWorkspace.GetAppKey();<br>
+                GetStringArgument( pArgs, sTitle, true );<br>
+ <br>
+                DWORD dwMsgBoxType = 0;<br>
+                //optional arguments<br>
+                int fButtonStyle = 0;<br>
+                int fIconStyle = 0;<br>
+                bool bShowHelpButton = false;<br>
+                int languageid = 0;<br>
+                if( GetIntArgument( pArgs, fButtonStyle, true ) )<br>
+                {<br>
+                        //convert the arguments into windows messagebox type flags<br>
+                        switch (fButtonStyle)<br>
+                        {<br>
+                        case 1: dwMsgBoxType = MB_ABORTRETRYIGNORE|MB_DEFBUTTON1; break;<br>
+                        case -1: case 0: case 2: dwMsgBoxType = MB_OK|MB_DEFBUTTON1; break;<br>
+                        case 3: dwMsgBoxType = MB_OKCANCEL|MB_DEFBUTTON1; break;<br>
+                        case 4: dwMsgBoxType = MB_RETRYCANCEL|MB_DEFBUTTON1; break;<br>
+                        case 5: dwMsgBoxType = MB_YESNO|MB_DEFBUTTON1; break;<br>
+                        case 6: dwMsgBoxType = MB_YESNOCANCEL|MB_DEFBUTTON1; break;<br>
+                        case 11: dwMsgBoxType = MB_ABORTRETRYIGNORE|MB_DEFBUTTON2; break;<br>
+                        case 13: dwMsgBoxType = MB_OKCANCEL|MB_DEFBUTTON2; break;<br>
+                        case 14: dwMsgBoxType = MB_RETRYCANCEL|MB_DEFBUTTON2; break;<br>
+                        case 15: dwMsgBoxType = MB_YESNO|MB_DEFBUTTON2; break;<br>
+                        case 16: dwMsgBoxType = MB_YESNOCANCEL|MB_DEFBUTTON2; break;<br>
+                        case 21: dwMsgBoxType = MB_ABORTRETRYIGNORE|MB_DEFBUTTON3; break;<br>
+                        case 26: dwMsgBoxType = MB_YESNOCANCEL|MB_DEFBUTTON3; break;<br>
+                        default: HandleArgValueError( pArgs ); return RSERR; //invalid argument value<br>
+                        }<br>
+                        if( GetIntArgument( pArgs, fIconStyle, true ) )<br>
+                        {<br>
+                                switch (fIconStyle)<br>
+                                {<br>
+                                case 0: break;<br>
+                                case 1: dwMsgBoxType |= MB_ICONEXCLAMATION; break;<br>
+                                case 2: dwMsgBoxType |= MB_ICONINFORMATION; break;<br>
+                                case 3: dwMsgBoxType |= MB_ICONQUESTION; break;<br>
+                                case 4: dwMsgBoxType |= MB_ICONSTOP; break;<br>
+                                default: HandleArgValueError( pArgs ); return RSERR; //invalid argument value<br>
+                                }<br>
+                                GetBoolArgument( pArgs, bShowHelpButton, true );<br>
+                        }<br>
+                }<br>
+ <br>
+                GetIntArgument(pArgs, languageid, true);<br>
+ <br>
+                if( !AssertOutOfArgs( pArgs ) )<br>
+                        return RSERR;<br>
+ <br>
+                if( bShowHelpButton )<br>
+                        dwMsgBoxType |= MB_HELP;<br>
+ <br>
+                acedRetInt(MessageBoxExW(theArxWorkspace.GetTopmostModalForm(), sMessage, sTitle, dwMsgBoxType, languageid));<br>
+                return (RSRSLT) ;<br>
+        }<br>
+<br>
+<br>
+<strong>written by AKA Daniel</strong><br>
+<br>
+<br>
+<strong>Owen, <br>
+do you think this code could be useful?</strong></div>
+</article>
+<article class="post" id="msg14347">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2026-06-05 17:12 UTC</span>
+  </div>
+  <div class="post-body">I doubt that anyone else will use it, but if you tested it and it works for your needs, I can add it.</div>
+</article>
+<article class="post" id="msg14348">
+  <div class="post-head">
+    <span class="post-author">Danielm103</span>
+    <span class="post-date muted">2026-06-06 02:15 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen, domenicomaria, it's required that the user have the language pack installed for the target language<br>
+I can't compile ODCL anymore since I removed all the vc80 stuff from my machine, here's a quick example<br>
+<br>
+<pre class="code"><code><br>
+ static int ADSPREFIX(foo(void))<br>
+ {<br>
+     int langid = 0;<br>
+     AcResBufPtr pArgs(acedGetArgs());<br>
+     if (pArgs)<br>
+     {<br>
+         switch (pArgs-&gt;restype)<br>
+         {<br>
+             case RTSHORT: langid = pArgs-&gt;resval.rint; break;<br>
+             case RTLONG: langid = pArgs-&gt;resval.rlong; break;<br>
+             default: break;<br>
+         }<br>
+         acedRetInt(MessageBoxExW(<br>
+             adsw_acadMainWnd(),<br>
+             L"Do you want to proceed with the action?",<br>
+             L"Confirmation",<br>
+             MB_YESNOCANCEL | MB_ICONQUESTION | MB_DEFBUTTON1, static_cast(langid)<br>
+         ));<br>
+<br>
+         return RSRSLT;<br>
+     }<br>
+     return RSERR;<br>
+ }<br>
+</code></pre> <br>
+<br>
+<pre class="code"><code><br>
+(foo 2052)<br>
+</code></pre><br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2691/mb1.png">mb1.png</a> <span class="muted">(7598 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg14349">
+  <div class="post-head">
+    <span class="post-author">Danielm103</span>
+    <span class="post-date muted">2026-06-06 02:23 UTC</span>
+  </div>
+  <div class="post-body">I should also note that passing 0 commands Windows to display the button text in the default system user interface language of the host platform</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

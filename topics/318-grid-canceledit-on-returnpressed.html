@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid_CancelEdit on ReturnPressed · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 318</p>
+    <h1>Grid_CancelEdit on ReturnPressed</h1>
+    <p class="meta">Started by fred_tomke ·
+      2008-05-13 09:48 UTC ·
+      6 replies · SMF topic #318</p>
+<article class="post" id="msg1409">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-13 09:48 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+For some releases I feel that it would be nice when an editable gridcell would be "closed" if the user presses return (to invoke grid_cancelitemedit). When the user presses return now (in 5.0.0.14 and 5.0.0.15 DEU), the cell stays in "open" mode and is still editable.<br>
+<br>
+1. Is this by design?<br>
+2. Is this a detail (better word for bug  ;) )?<br>
+3. May I add this as a new feature?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1410">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-13 12:03 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I've found out that in some cases the event CancelClose of the form is being called when the user presses return in an "open" cell in a grid. I got it during testing a different form than in my initial message.<br>
+<br>
+In the cases CancelClose will be called you can do this:<br>
+<br>
+<pre class="code"><code><br>
+  (defun c:layer_sc_layer_props_OnCancelClose (bCancelling /)<br>
+    (cond<br>
+      ((= bCancelling 1) (setq lstResult nil))<br>
+      (isEdit (dcl_Grid_CancelItemEdit layer_sc_layer_props_grd_props))<br>
+    ); cond<br>
+    (/= bCancelling 1)<br>
+  ); c:layer_sc_layer_props_OnCancelClose<br>
+<br>
+  (defun c:layer_sc_layer_props_grd_props_OnBeginLabelEdit (intRow intCol / lstItem)<br>
+    (setq isEdit T)<br>
+    ;; something senseful<br>
+  ); c:layer_sc_layer_props_grd_props_OnBeginLabelEdit<br>
+<br>
+  (defun c:layer_sc_layer_props_grd_props_OnEndLabelEdit (intRow intCol / lstItem intPic uValue intStyle)<br>
+    ;; something senseful<br>
+    (setq isEdit nil)<br>
+  ); c:layer_sc_layer_props_grd_props_OnEndLabelEdit<br>
+<br>
+  (defun c:layer_sc_layer_props_pb_accept ( /)<br>
+    (if isEdit (dcl_Grid_CancelItemEdit layer_sc_layer_props_grd_props))<br>
+    (setq lstResult (list "Something Senseful"))<br>
+    (dcl_form_close layer_sc_layer_props)<br>
+  ); c:layer_sc_layer_props_pb_accept<br>
+<br>
+  (defun c:layer_sc_layer_props_pb_cancel ( /)<br>
+    (setq lstResult nil)<br>
+    (dcl_form_close layer_sc_layer_props)<br>
+  ); c:layer_sc_layer_props_pb_cancel<br>
+<br>
+</code></pre><br>
+<br>
+Maybe somebody is looking for such a solution.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg1436">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-05-17 20:12 UTC</span>
+  </div>
+  <div class="post-body">Fred, can you be more specific about what cell styles behave this way?  The cell editor should decide what to do with a return press while editing, and it may very well be that some handle it incorrectly. I would expect the return press to be passed along to the form if the editor does not handle it.</div>
+</article>
+<article class="post" id="msg1439">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-17 20:53 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+please image a grid with cells for text input or integer input.<br>
+If you click in this cell you can edit the content. If you press Enter the cell is still editable (I'm not sure if EndLabelEdit is being called then). I thought I can remember that in earlier releases after pressing Enter the cell was not in editable mode but only selected.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1443">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-17 21:39 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen, maybe it could be more clear with a video.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/392/grid_onreturnpressed.gif">grid_onreturnpressed.gif</a> <span class="muted">(333286 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1448">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-05-18 15:43 UTC</span>
+  </div>
+  <div class="post-body">Fred, I created a modeless test form with a grid that has an "Integers" style cell. When I edit the cell and press , I get a call to OnEndLabelEdit followed by a call to OnCancelClose.  As you note, returning T from OnCancelClose prevents the dialog from closing.<br>
+<br>
+In this case, everything appears to be working as designed.</div>
+</article>
+<article class="post" id="msg1449">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-18 19:03 UTC</span>
+  </div>
+  <div class="post-body">Ok, thanks.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

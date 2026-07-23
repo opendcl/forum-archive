@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tests with OpenDCL 4.1.0.7 Alpha · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 54</p>
+    <h1>Tests with OpenDCL 4.1.0.7 Alpha</h1>
+    <p class="meta">Started by velasquez ·
+      2007-09-18 18:24 UTC ·
+      12 replies · SMF topic #54</p>
+<article class="post" id="msg236">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2007-09-18 18:24 UTC</span>
+  </div>
+  <div class="post-body">Working with OpenDCL 4.1.0.7 Alpha found the problems below:  <br>
+  <br>
+1 - alert on the function dcl_TextBox_SetFilter  <br>
+2 - GraphicButton stopped to work with files of icons  "*.ico"  <br>
+3 - dcl_Control_SetFontSize in this working different in Control of Label  <br>
+  <br>
+Were these problems already mentioned?  <br>
+  <br>
+I posted images to show this<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg237">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-09-19 00:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=54.msg236#msg236 date=1190139855 wrote:</cite><br>
+1 - alert on the function dcl_TextBox_SetFilter  <br>
+2 - GraphicButton stopped to work with files of icons  "*.ico"  <br>
+3 - dcl_Control_SetFontSize in this working different in Control of Label  <br>
+</blockquote><br>
+<br>
+1) This feature is not yet implemented. Can you describe how you are using it?<br>
+<br>
+2) Try setting both the Pressed and Unpressed picture properties for those buttons. Those properties were switched before Alpha 7, and Alpha 7 corrected this.<br>
+<br>
+3) SetFontSize changed in an earlier alpha to correct inconsistencies in its implementation for different controls. Try changing the sign of your font size (i.e. if you are setting a positive value, change it to negative) and let me know whether that solves the problem.</div>
+</article>
+<article class="post" id="msg238">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2007-09-19 17:17 UTC</span>
+  </div>
+  <div class="post-body">1) I am using dcl_TextBox_SetFilter in OnInitialize<br>
+<br>
+<pre class="code"><code>(defun c:JoyLoop_JoyMainLoop_OnInitialize (/)<br>
+;;;<br>
+  (Dcl_Form_Center JoyLoop_JoyMainLoop)<br>
+;;;<br>
+  (Dcl_BlockView_DisplayBlock JoyLoop_JoyMainLoop_JoyBlockIso "JoyIso")<br>
+;;;<br>
+;;;Testing Alpha 7  <br>
+;;;Not this working<br>
+  (dcl_TextBox_SetFilter JoyLoop_JoyMainLoop_TextBox10 ".0123456789")<br>
+)</code></pre><br>
+<br>
+2) The property PressedPicture accepted the icon file.  <br>
+The property Picture not accepts the icon file.  <br>
+Is it this what you wanted to explain?  <br>
+<br>
+3) I changed the value of SetFontSize for negative.  <br>
+This worked.  <br>
+To get FontSize 28 I needed to use (dcl_Control_SetFontSize JoyLoop_JoyMainLoop_Label12 -22).  <br>
+Does this difference exist?<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg239">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-09-19 18:25 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=54.msg238#msg238 date=1190222262 wrote:</cite><br>
+  (dcl_TextBox_SetFilter JoyLoop_JoyMainLoop_TextBox10 ".0123456789")<br>
+</blockquote><br>
+<br>
+This filter is almost identical to the filter for "Numeric" style. Until filters are implemented, you could change your text box style to "Numeric".<br>
+  <br>
+<br>
+<blockquote class="quote"><cite> author=velasquez link=topic=54.msg238#msg238 date=1190222262 wrote:</cite><br>
+2) The property PressedPicture accepted the icon file.  <br>
+The property Picture not accepts the icon file.  <br>
+Is it this what you wanted to explain?<br>
+</blockquote><br>
+<br>
+Can you email the .odcl file to me so I can have a look?<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=velasquez link=topic=54.msg238#msg238 date=1190222262 wrote:</cite><br>
+To get FontSize 28 I needed to use (dcl_Control_SetFontSize JoyLoop_JoyMainLoop_Label12 -22).  <br>
+</blockquote><br>
+<br>
+Setting font size to -22 means that you want the characters to be 22 pixels tall. A size of +28 means 28 "points", which means the size in pixels will change depending on your screen resolution.</div>
+</article>
+<article class="post" id="msg240">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2007-09-19 19:29 UTC</span>
+  </div>
+  <div class="post-body">Ok Owen<br>
+I will send for you the files .odcl and .lsp  <br>
+Thanks</div>
+</article>
+<article class="post" id="msg241">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-09-19 20:09 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=54.msg240#msg240 date=1190230161 wrote:</cite><br>
+I will send for you the files .odcl and .lsp  <br>
+</blockquote><br>
+<br>
+After researching this some more, I found that the "PressedPicture" is not the picture that displays when the button is pressed. Instead, it is the picture that displays when the mouse is over the button. Therefore, I have switched the picture properties back to the way they were before Alpha 7, and renamed the "PressedPicture" property to "MouseOverPicture" to make this more clear.</div>
+</article>
+<article class="post" id="msg242">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-09-19 22:17 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Seeing the pictures, I'm reminded ;<br>
+<br>
+With the rework to controls,<br>
+Can the text in textbox controls be justified vertically ( particularly to center ) ?</div>
+</article>
+<article class="post" id="msg243">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2007-09-20 13:24 UTC</span>
+  </div>
+  <div class="post-body">Why the property DropDownHeight of ComboBox doesn't work more?  <br>
+That is a bug or she will be removed of this control?</div>
+</article>
+<article class="post" id="msg244">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-09-21 02:26 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=54.msg241#msg241 date=1190232598 wrote:</cite><br>
+[quote author=velasquez link=topic=54.msg240#msg240 date=1190230161]<br>
+I will send for you the files .odcl and .lsp  <br>
+</blockquote><br>
+<br>
+After researching this some more, I found that the "PressedPicture" is not the picture that displays when the button is pressed. Instead, it is the picture that displays when the mouse is over the button. <strong>Therefore, I have switched the picture properties back to the way they were before Alpha 7, and renamed the "PressedPicture" property to "MouseOverPicture" to make this more clear.</strong><br>
+<br>
+Owen, Is this related ??<br>
+https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798572&amp;group_id=187950&amp;atid=923363 <br>
+Can you clarify your intent ? ie will the default pictures display as per previous versions.<br>
+</div>
+</article>
+<article class="post" id="msg245">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-09-21 02:44 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=54.msg239#msg239 date=1190226339 wrote:</cite><br>
+<br>
+[quote author=velasquez link=topic=54.msg238#msg238 date=1190222262]<br>
+To get FontSize 28 I needed to use (<strong>dcl_Control_SetFontSize </strong> JoyLoop_JoyMainLoop_Label12 -22).  <br>
+</blockquote><br>
+<br>
+Setting font size to -22 means that you want the characters to be 22 pixels tall. A size of +28 means 28 "points", which means the size in pixels will change depending on your screen resolution.<br>
+<br>
+<br>
+Reminder :<br>
+The Help for <em>dcl_Control_SetFontSize</em> will need to be updated ; <br>
+currently reads "This is a hidden property that can not be set directly."</div>
+</article>
+<article class="post" id="msg246">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-09-21 05:26 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=54.msg243#msg243 date=1190294659 wrote:</cite><br>
+Why the property DropDownHeight of ComboBox doesn't work more?  <br>
+That is a bug or she will be removed of this control?<br>
+</blockquote><br>
+<br>
+That is a bug. I should be fixed in Alpha 8. :)</div>
+</article>
+<article class="post" id="msg247">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-09-21 06:03 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=54.msg245#msg245 date=1190342669 wrote:</cite><br>
+The Help for <em>dcl_Control_SetFontSize</em> will need to be updated ;<br>
+</blockquote><br>
+<br>
+Done...</div>
+</article>
+<article class="post" id="msg248">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-09-21 08:29 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=54.msg247#msg247 date=1190354621 wrote:</cite><br>
+[quote author=Kerry Brown link=topic=54.msg245#msg245 date=1190342669]<br>
+The Help for <em>dcl_Control_SetFontSize</em> will need to be updated ;<br>
+</blockquote><br>
+<br>
+Done...<br>
+<br>
+<br>
+Thanks Owen !</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

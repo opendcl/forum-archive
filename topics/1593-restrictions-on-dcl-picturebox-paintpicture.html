@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Restrictions on dcl_PictureBox_PaintPicture · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1593</p>
+    <h1>Restrictions on dcl_PictureBox_PaintPicture</h1>
+    <p class="meta">Started by velasquez ·
+      2011-02-21 18:47 UTC ·
+      3 replies · SMF topic #1593</p>
+<article class="post" id="msg7797">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2011-02-21 18:47 UTC</span>
+  </div>
+  <div class="post-body">Working with dcl_PictureBox_PaintPicture was only possible to use images. ico.<br>
+This is correct for the method?<br>
+I posted the files to show it.<br>
+<br>
+Velasquez<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1556/LoadPictureFile.odcl">LoadPictureFile.odcl</a> <span class="muted">(2924 bytes)</span></li><li><a href="../attachments/1557/LoadPictureFile.LSP">LoadPictureFile.LSP</a> <span class="muted">(1099 bytes)</span></li><li><a href="../attachments/1558/images.zip">images.zip</a> <span class="muted">(2826 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7813">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-02-23 20:59 UTC</span>
+  </div>
+  <div class="post-body">The problem is with specifying T for the UseMask argument for all four images, when only the .ico image includes a transparency mask. I changed the T to nil in all but the first list, then it displayed each image as expected.</div>
+</article>
+<article class="post" id="msg7819">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2011-02-25 12:39 UTC</span>
+  </div>
+  <div class="post-body">I work with a PictureBox which has a fixed width but the height is variable.<br>
+First I get the height of PictureBox with dcl_Control_GetHeigh.<br>
+After I create an array with a standard image with LoadPictureFile.<br>
+The list size can create a problem? ?<br>
+I posted a partial image.<br>
+(dcl_PictureBox_PaintPicture LoadPictureFile_Form1_PictureBox1<br>
+				   (list <br>
+					 (list 0 0 106 T NIL) ;_ .png image -&gt; OK<br>
+					 (list 0 1 106 T NIL)<br>
+					 (list 0 2 106 T NIL)<br>
+					 (list 0 3 106 T NIL)<br>
+					 (list 0 4 106 T NIL)<br>
+					 (list 0 5 106 T NIL)<br>
+					 (list 0 6 106 T NIL)<br>
+					 (list 0 7 106 T NIL)<br>
+					 (list 0 8 106 T NIL)<br>
+					 (list 0 9 106 T NIL)<br>
+					 (list 0 10 106 T NIL)<br>
+					 (list 0 11 106 T NIL)<br>
+					 (list 0 12 106 T NIL)<br>
+					 (list 0 13 106 T NIL)<br>
+;;;					 ...<br>
+				   ) ;_ end of list<br>
+      )<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1562/degrade.png">degrade.png</a> <span class="muted">(8239 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7820">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-02-25 13:12 UTC</span>
+  </div>
+  <div class="post-body">Hi velasquez,<br>
+<br>
+I don't believe that the size of the list will be the problem but the time needed to be displayed because OnPaint will be called very very very often. An I suggest you to keep the taskmanager (for the amount of memory) in one of your eyes.<br>
+<br>
+Regards,<br>
+Fred </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

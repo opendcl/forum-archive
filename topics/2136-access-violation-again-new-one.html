@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>access violation again (new one) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2136</p>
+    <h1>access violation again (new one)</h1>
+    <p class="meta">Started by andrew.nao1 ·
+      2014-05-01 14:42 UTC ·
+      15 replies · SMF topic #2136</p>
+<article class="post" id="msg10657">
+  <div class="post-head">
+    <span class="post-author">andrew.nao1</span>
+    <span class="post-date muted">2014-05-01 14:42 UTC</span>
+  </div>
+  <div class="post-body">attached is the error i get along with the files<br>
+its a simple cut n paste<br>
+<br>
+in the acad text window this is appeared<br>
+<br>
+Command: (load "cutnpaste")<br>
+C:CUTNPASTE_CUTNPASTE_SLIDEVIEW2_ONCLICKED<br>
+<br>
+Command: cutnpaste<br>
+; error: bad xsubr(L) instruction (offs code):  18429 0<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2004/cutnpaste.odcl">cutnpaste.odcl</a> <span class="muted">(10602 bytes)</span></li><li><a href="../attachments/2005/cutnpaste.lsp">cutnpaste.lsp</a> <span class="muted">(573 bytes)</span></li><li><a href="../attachments/2006/3Capture.JPG">3Capture.JPG</a> <span class="muted">(26068 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10659">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-01 14:47 UTC</span>
+  </div>
+  <div class="post-body">Is this in AutoCAD 2015? Which Windows version and architecture?</div>
+</article>
+<article class="post" id="msg10660">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-01 14:53 UTC</span>
+  </div>
+  <div class="post-body">I could not reproduce the problem. I commented out the references to missing files in your lisp code, started AutoCAD 2015, loaded the .lsp, and entered the cutnpaste command. The form displayed. I clicked on one of the buttons, and the form closed. I then closed AutoCAD.</div>
+</article>
+<article class="post" id="msg10661">
+  <div class="post-head">
+    <span class="post-author">andrew.nao1</span>
+    <span class="post-date muted">2014-05-01 14:56 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2136.msg10659#msg10659 date=1398955667 wrote:</cite><br>
+Is this in AutoCAD 2015? Which Windows version and architecture?<br>
+</blockquote><br>
+yes this is acad 2015<br>
+window 7 64 bit<br>
+<br>
+<br>
+FTR, when i open the odcl files in the alpha version of the studio and save them<br>
+and try to run them in acad 2014. they wont load at all</div>
+</article>
+<article class="post" id="msg10663">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-01 16:07 UTC</span>
+  </div>
+  <div class="post-body">I opened cutnpaste.odcl in OpenDCL Studio 8.0.0.6, saved it, exited Studio, started AutoCAD 2014, loaded cutnpaste.lsp, entered the cutnpaste command, and the form displayed without error.</div>
+</article>
+<article class="post" id="msg10665">
+  <div class="post-head">
+    <span class="post-author">andrew.nao1</span>
+    <span class="post-date muted">2014-05-02 13:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2136.msg10663#msg10663 date=1398960457 wrote:</cite><br>
+I opened cutnpaste.odcl in OpenDCL Studio 8.0.0.6, saved it, exited Studio, started AutoCAD 2014, loaded cutnpaste.lsp, entered the cutnpaste command, and the form displayed without error.<br>
+</blockquote><br>
+<br>
+yes, it work no problem in 2014..<br>
+<br>
+2015 is the issue</div>
+</article>
+<article class="post" id="msg10667">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-02 15:05 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=andrew.nao1 link=topic=2136.msg10665#msg10665 date=1399036686 wrote:</cite><br>
+yes, it work no problem in 2014..<br>
+2015 is the issue<br>
+</blockquote><br>
+<br>
+You said in the previous message that it fails in AutoCAD 2014. Please clarify.</div>
+</article>
+<article class="post" id="msg10669">
+  <div class="post-head">
+    <span class="post-author">andrew.nao1</span>
+    <span class="post-date muted">2014-05-02 15:15 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2136.msg10667#msg10667 date=1399043112 wrote:</cite><br>
+[quote author=andrew.nao1 link=topic=2136.msg10665#msg10665 date=1399036686]<br>
+yes, it work no problem in 2014..<br>
+2015 is the issue<br>
+</blockquote><br>
+<br>
+You said in the previous message that it fails in AutoCAD 2014. Please clarify.<br>
+<br>
+<br>
+no sir, no mention of 2014 with this particular issue<br>
+</div>
+</article>
+<article class="post" id="msg10671">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-02 15:36 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=andrew.nao1 link=topic=2136.msg10661#msg10661 date=1398956203 wrote:</cite><br>
+FTR, when i open the odcl files in the alpha version of the studio and save them<br>
+and try to run them in acad 2014. they wont load at all<br>
+</blockquote><br>
+<br>
+Please clarify what you meant.</div>
+</article>
+<article class="post" id="msg10674">
+  <div class="post-head">
+    <span class="post-author">andrew.nao1</span>
+    <span class="post-date muted">2014-05-02 16:16 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2136.msg10671#msg10671 date=1399044967 wrote:</cite><br>
+[quote author=andrew.nao1 link=topic=2136.msg10661#msg10661 date=1398956203]<br>
+FTR, when i open the odcl files in the alpha version of the studio and save them<br>
+and try to run them in acad 2014. they wont load at all<br>
+</blockquote><br>
+<br>
+Please clarify what you meant.<br>
+<br>
+my mistake, i misunderstood since i have 2 issues going.<br>
+<br>
+when the odcl files are opened and saved in vers 8 studio then i run "cutnpaste" in 2014, i get the above error and then "project cannot be loaded"<br>
+if i open the files in ver7 studio and save them, they work fine</div>
+</article>
+<article class="post" id="msg10675">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-02 16:21 UTC</span>
+  </div>
+  <div class="post-body">Since I could not reproduce the problem, there is either a missing step, something specific to your environment, or human error. I recommend to try the steps on a different system to see if you can reproduce it.</div>
+</article>
+<article class="post" id="msg10676">
+  <div class="post-head">
+    <span class="post-author">andrew.nao1</span>
+    <span class="post-date muted">2014-05-02 17:38 UTC</span>
+  </div>
+  <div class="post-body">made a new odcl file.<br>
+this wont load at all in 2015. can you see if it loads for you<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2009/cutpas.odcl">cutpas.odcl</a> <span class="muted">(10599 bytes)</span></li><li><a href="../attachments/2010/CUTPAS.lsp">CUTPAS.lsp</a> <span class="muted">(534 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10678">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-03 08:04 UTC</span>
+  </div>
+  <div class="post-body">I commented out the references to missing files, then loaded the lisp file and entered CUTPAS. It displayed the dialog as expected. If I click on any button, the dialog closes.</div>
+</article>
+<article class="post" id="msg10688">
+  <div class="post-head">
+    <span class="post-author">andrew.nao1</span>
+    <span class="post-date muted">2014-05-05 13:40 UTC</span>
+  </div>
+  <div class="post-body">i wont for me, ive uninstalled odcl and acad 2015 cleaned out the registry and reinstalled.<br>
+<br>
+still the same</div>
+</article>
+<article class="post" id="msg10690">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-05 13:54 UTC</span>
+  </div>
+  <div class="post-body">Have you done exactly what I did? Have you tested on other systems? If you can find one that works and one that doesn't, then you can compare the differences to find the missing ingredient.</div>
+</article>
+<article class="post" id="msg10692">
+  <div class="post-head">
+    <span class="post-author">andrew.nao1</span>
+    <span class="post-date muted">2014-05-05 16:08 UTC</span>
+  </div>
+  <div class="post-body">the command-s fix any issue i was having in 2015 but 2014 has issues now. see other post for errors</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

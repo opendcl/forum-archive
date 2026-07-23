@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OnDocActivated causes &quot;no function definition&quot; · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2026</p>
+    <h1>OnDocActivated causes &quot;no function definition&quot;</h1>
+    <p class="meta">Started by npcdarkeldar666 ·
+      2013-09-12 12:06 UTC ·
+      3 replies · SMF topic #2026</p>
+<article class="post" id="msg9992">
+  <div class="post-head">
+    <span class="post-author">npcdarkeldar666</span>
+    <span class="post-date muted">2013-09-12 12:06 UTC</span>
+  </div>
+  <div class="post-body">It's me and my screenmenu again.<br>
+<br>
+This time I stumbled upon a problem with the OnDocActivated Event of the non-modal dialog.<br>
+Whenever I open a new DWG-file while my screenmenu is active (I leave it visible all the time) The first message in the textscreen is<br>
+<code>; Fehler: no function definition: C:SCREENMENU_SCREENMENU2_ONDOCACTIVATED</code><br>
+I'd guess this is cause because the screenmenu calls the event before AutoCAD has loaded the acad.lsp.<br>
+<br>
+Is there a way to prevent this behavior?<br>
+Like postponing the event until Lisp has finished loading or something like that.<br>
+<br>
+Kind regards <br>
+<br>
+Ingo P<br>
+</div>
+</article>
+<article class="post" id="msg9993">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-09-12 14:16 UTC</span>
+  </div>
+  <div class="post-body">Which version of AutoCAD?</div>
+</article>
+<article class="post" id="msg9995">
+  <div class="post-head">
+    <span class="post-author">npcdarkeldar666</span>
+    <span class="post-date muted">2013-09-12 15:19 UTC</span>
+  </div>
+  <div class="post-body">Sorry<br>
+<br>
+I forgot to mention it.<br>
+<br>
+This behavior occurs in:<br>
+<ul><br>
+AutoCAD 2013 (German)<br>
+AutoCAD 2014 (German)<br>
+</ul><br>
+<br>
+BricsCAD seems to be fine on this matter. (At least 13.2.9, which is the latest, I am currently running)<br>
+<br>
+I'll try to find some time this weekend to review my code and then I will upload the menu to this board for all to use.</div>
+</article>
+<article class="post" id="msg9998">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-09-12 18:35 UTC</span>
+  </div>
+  <div class="post-body">After thinking about this, I vaguely recall that it was expected behavior that the OnDocActivated handler would only be called when existing documents are reactivated (hence acaddoc.lsp would need to handle the case of a newly created document). It gets a little tricky to ensure that the handler is not executed before acaddoc.lsp is finished loading, but I will investigate to see if the situation can be improved. At the very least it should be consistent between AutoCAD, Bricscad, and ZWCAD.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

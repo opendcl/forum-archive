@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BlockView - Fatal Error · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 352</p>
+    <h1>BlockView - Fatal Error</h1>
+    <p class="meta">Started by jb ·
+      2008-05-30 19:33 UTC ·
+      9 replies · SMF topic #352</p>
+<article class="post" id="msg1517">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-05-30 19:33 UTC</span>
+  </div>
+  <div class="post-body">4.1.2.2<br>
+AutoCAD Architecture 2009<br>
+WinXP Pro (32)<br>
+<br>
+Load the 012-odcl.lsp into two(2) opened drawings. Call the command "test".  A modeless form appears with a list of the active documents blocks and a blockView control.  Select one of the blocks to display in the Blockview.  No close out of that drawing.  I get a Fatal Error.<br>
+<br>
+ ???<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/401/012-odcl.LSP">012-odcl.LSP</a> <span class="muted">(2863 bytes)</span></li><li><a href="../attachments/402/012.odcl">012.odcl</a> <span class="muted">(746 bytes)</span></li><li><a href="../attachments/403/012.lsp">012.lsp</a> <span class="muted">(2087 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1522">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-05-31 03:45 UTC</span>
+  </div>
+  <div class="post-body">The BlockView code is pretty bad and needs a major rewrite. I have fixed this particular issue for Alpha 17, but I wouldn't be surprised if there are other scenarios that result in the same crash.</div>
+</article>
+<article class="post" id="msg1526">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-05-31 14:14 UTC</span>
+  </div>
+  <div class="post-body">That's ashame, one of the nicest features of OpenDCL . . ..<br>
+<br>
+Any work-arounds??</div>
+</article>
+<article class="post" id="msg1527">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-05-31 16:29 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=352.msg1526#msg1526 date=1212243262 wrote:</cite><br>
+Any work-arounds??<br>
+</blockquote><br>
+<br>
+Nothing that I can think of off the top of my head.</div>
+</article>
+<article class="post" id="msg1532">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-06-02 15:41 UTC</span>
+  </div>
+  <div class="post-body">The following seems to work - I'll keep testing throughout the day . . ..<br>
+<br>
+<pre class="code"><code><br>
+(vl-load-com)<br>
+;;;		BeginClose					;<br>
+ (defun jb:BeginClose(calling-reactor event / )<br>
+   (if (dcl_Form_IsActive jb006_00)<br>
+    (dcl_BlockView_Clear jb006_00_BlockView1))<br>
+(if (dcl_Form_IsActive jb003_00)<br>
+    (progn(dcl_BlockView_Clear jb003_00_DwgView)<br>
+      (dcl_BlockView_Clear jb003_00_BlockView)<br>
+      )<br>
+  )<br>
+   (if (dcl_Form_IsActive jb004_00)<br>
+    (dcl_BlockView_Clear jb004_00_BlockView))<br>
+   (princ)<br>
+   )<br>
+<br>
+;;;		Construct the BeginClose Reactor				;<br>
+(defun jb::ConstructBeginCloseReactor  (/)<br>
+  (if (= (type *jbBeginCloseReactor*) 'VLR-Dwg-Reactor)<br>
+    (progn (vlr-remove *jbBeginCloseReactor*) (setq *jbBeginCloseReactor* nil)))<br>
+  (if (/= (type *jbBeginCloseReactor*) 'VLR-Dwg-Reactor)<br>
+    (setq *jbBeginCloseReactor*<br>
+           (VLR-Dwg-Reactor<br>
+             "jbTools Begin Close Event Reactor" ; Data associated with the editor reactor<br>
+             ;; call backs<br>
+             '<br>
+              ((:vlr-beginClose . jb:BeginClose)<br>
+               )) ;_ end of vlr-editor-reactor<br>
+          ))<br>
+<br>
+  (if (not (vlr-added-p *jbBeginCloseReactor*))<br>
+    (progn<br>
+    (vlr-add *jbBeginCloseReactor*)<br>
+    (vlr-set-notification *jbBeginCloseReactor* 'active-document-only)));added 09.26.2003<br>
+  (princ))<br>
+<br>
+<br>
+;;;				load reactors				;<br>
+<br>
+(if jb::ConstructBeginCloseReactor<br>
+  (jb::ConstructBeginCloseReactor))<br>
+<br>
+</code></pre></div>
+</article>
+<article class="post" id="msg8749">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2012-03-27 14:34 UTC</span>
+  </div>
+  <div class="post-body">I know this is reviving a very old thread but I'm having a problem with the blockview control.<br>
+<br>
+I wrote a routine a few years back and it's worked without a hitch up until I ran it on a machine running AutoCAD 2012 on Win7 x64. All of a sudden I started getting fatal errors when closing the drawing or when opening a new tab. It took me a while to track the source but I found it was triggered when the dialog showed the blockview. If I commented that line out I got no crashes.<br>
+<br>
+I then created a simple dialog with nothing more than a blockview and a close button. I then used this in a drawing with just one block and sure enough I get the same fatal errors.<br>
+<br>
+I haven't seen any other mention of this problem other than this post so I'm not sure whether it's still considered to be a bit of an iffy control or whether it has been tidied up and no longer problematic.<br>
+<br>
+Can anybody confirm whether or not there are any known issues with the blockview control and specifically on x64 2012?</div>
+</article>
+<article class="post" id="msg8751">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-03-27 17:14 UTC</span>
+  </div>
+  <div class="post-body">It is still open (see here: <a href="http://sourceforge.net/tracker/?func=detail&amp;aid=3432079&amp;group_id=187950&amp;atid=923363" rel="nofollow noopener">{2}</a>), but I could not reproduce it. I'll have another look. Do you have sample code as well to reproduce the problem?</div>
+</article>
+<article class="post" id="msg8753">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2012-03-28 00:46 UTC</span>
+  </div>
+  <div class="post-body">This is the simple dialog I created to check it wasn't something in my larger routine that triggered the crash. This is just a simple dialog that displays a block found in a drawing with a button that then closes the dialog. Once the dialog has been displayed, open a new drawing and 9 times out of 10 I get a fatal error immediately. Sometimes it may take 2-3 new sheets before a crash. If the dialog is opened and closed more than once and then a new sheet is opened I am pretty much guaranteed a fatal error.<br>
+<br>
+Please note that this error <span style="color:red"><strong>ONLY</strong></span> exists as far as I can see on <strong><span style="color:red">64bit AutoCAD 2012</span></strong>. The same (original) routine has run for a few years without a problem on AutoCAD 2010, 2011 and 2012 on the 32 bit platform and also runs on 2011 64bit. I note that on the bugtracker page that you (Owen) said <em>"I could not reproduce this on Windows 7 x64 using AutoCAD 2011"</em> and that is indeed right as the bug is only recorded as happening on 2012.<br>
+<br>
+<br>
+(defun c:bvt ( / bvdia )<br>
+  (setq bvdia<br>
+'("YWt6A6wMAAAbjV1wBuLDKDcxKj9ugHgZ3vtPZGy7/ThsTwQObGY4L/EU8vT2Ntyv7m4YP+4fPi9e"<br>
+"IJ5YkCAiHIJ30Pelp+2ggn9gQmSp5U8vZ9UE+IkgAW7gVRGMIImpKyOjIyshi1JTMGkvANWsZjtJ"<br>
+"MF/5b4c4fsLUfGg11Zz4sxa/aIVIHFXk7z5RBNqT6yA0OMxcNzalVcHiisysyPY43eva7mqiUmzF"<br>
+"Ii9TiLbG8Er1ILfcsLCmIDQYWxtCX0QXl0mki0j3CGgzTOxqw1jP4OvvVhSq1pDGJAkleW0/e7Tx"<br>
+"9hzFTvrtZmq1mHsUGVobaw0uUnpgTR8zp5nTkqqqhIbYirItYSWDufrhbgA6hsXB4HSyJyoH5auL"<br>
+"qETl8ZDo85Wxwgq4H0iGCNHU42HW4k8Vm8ljwkT9Ew4donOhT6MWOX9Futt7DxNwB5eZO0RcA000"<br>
+"6OFdaEZ+shXs8UcGq9HSwjmgAO+KtXCMjEPdlSg4IsWhFuMPaaVKJl/WOPns4nirpZP3TGa+Xydf"<br>
+"+U8338ds3Hy4dah6e5F6e1+Ux9xqsgghwSDtm39bqT28q+py/xplKAKkyRGL0a2Cm8DAEKRijo/q"<br>
+"nCVKwf2K0e/DiQrAC9rBQe4KBMAojLFAvBP6iWyY2iAxgHZah9qcRtu+bLxPNOeFWsE1hmCfRV/X"<br>
+"AOaa6XbhXQL/jge8OXZhW6I7ht2Z0WzgiIJrz4CEmh3FoXEgD1efeOSBp43RE1P7aDdZ0Bad0jTk"<br>
+"aPRo+s7T37p3bp/VnDS5LvtLT3FHkh/mYnu5OMJz49bpybGo1cKKCbSJ5j3cBMbazwi8Nr1a5/lq"<br>
+"7Q43z4wh7nxvCcEBOexLH4upcZSyU95rJpXaIMmB4ywHNKd/vP0A9ACvhQ/2mrl3TZto/EwLVoGH"<br>
+"NrPEC0TTSYvxtGGjRJGKtv8lOKv9mpQtYih7xxT4b/E9sl+b7g3258ZijH4/uU95P9m2IOROKZ9+"<br>
+"3+m/W4raHNDUIgsRbsA8hgw2q8GG5SvhEfdwpEEpg87qm2qZ/DtXZeSc/3yJchD/Bf37w4v5tZMx"<br>
+"HbbMLw==")<br>
+  )<br>
+  (dcl_project_import bvdia nil nil)<br>
+  (dcl_Form_Show bv_test_Form3)<br>
+  (dcl_Project_Unload "bv_test" t)<br>
+  (princ)<br>
+)<br>
+;;-----------------------------------------------------------------------------<br>
+(defun c:bv_test_Form3_OnInitialize ( / bloks indblok )<br>
+  (setq bloks (ssget "x" '((0 . "INSERT"))))<br>
+  (if bloks<br>
+    (progn<br>
+      (setq indblok (cdr (assoc 2 (entget (ssname bloks 0)))))<br>
+      (dcl_BlockView_DisplayBlock bv_test_Form3_BlockView1 indblok 0 0.9)<br>
+    )<br>
+    (alert "No blocks found")<br>
+  )<br>
+)<br>
+;;-----------------------------------------------------------------------------<br>
+(defun c:bv_test_Form3_btnOK_OnClicked (/)<br>
+  (dcl_BlockView_Clear bv_test_Form3_BlockView1)<br>
+  (dcl_Form_Close bv_test_Form3)<br>
+)<br>
+;;-----------------------------------------------------------------------------<br>
+</div>
+</article>
+<article class="post" id="msg8757">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-03-28 20:30 UTC</span>
+  </div>
+  <div class="post-body">Please test this in alpha 4 and let me know whether you still notice the crash.</div>
+</article>
+<article class="post" id="msg8758">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2012-03-29 07:13 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=352.msg8757#msg8757 date=1332966648 wrote:</cite><br>
+Please test this in alpha 4 and let me know whether you still notice the crash.<br>
+</blockquote><br>
+<br>
+Looking good so far. Tried multiple times and no crashes so far.<br>
+<br>
+One point of note, when I install the 7.0.0.4 studio, Avast anti-virus flags the 2013 64bit arx as malicious. All the others get installed but this one always gets binned. Not a problem as of yet but thought it may be worth mentioning.<br>
+<br>
+Oh and thanks for the quick fix - very much appreciated.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

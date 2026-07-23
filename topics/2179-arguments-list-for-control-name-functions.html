@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arguments List for CONTROL-NAME Functions · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2179</p>
+    <h1>Arguments List for CONTROL-NAME Functions</h1>
+    <p class="meta">Started by vosey ·
+      2014-10-08 12:44 UTC ·
+      3 replies · SMF topic #2179</p>
+<article class="post" id="msg10938">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2014-10-08 12:44 UTC</span>
+  </div>
+  <div class="post-body">I'm attempting to Trigger an event when I click into a cell within a Grid but without much success. <br>
+I thought the 'OnBeginLabelEdit' Event would be Perfect, so I copied into my Lisp File but I don't really understand<br>
+where to go from there.  My confusion lies around the function Argument List (Row Column), do these become variable<br>
+names that I can subsequently use?.  Also unsure of what to place into the body of the function? - I tried<br>
+<br>
+(defun c:#OnBeginLabelEdit (Row Column /)<br>
+	(alert "hello")<br>
+)<br>
+<br>
+Just to see when it triggered, but nothing seems to happen whatever I do.  I'm sure I'm missing something obvious but I just can't spot it.  Any help/Suggestions would be great. Thanks<br>
+(The Grid is within a Modal Dialog)</div>
+</article>
+<article class="post" id="msg10939">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2014-10-08 13:33 UTC</span>
+  </div>
+  <div class="post-body">Not too sure what happened, but it's now working !  - I restarted the Acad Session and all's fine..<br>
+<strong>(defun c:rd/Form1/Grid1#OnSelChanged (Row Column /)<br>
+	(alert (strcat (itoa Row) " - " (itoa Column)))<br>
+)</strong><br>
+Cheers<br>
+Pete</div>
+</article>
+<article class="post" id="msg10940">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2014-10-08 13:34 UTC</span>
+  </div>
+  <div class="post-body">Just realised - Now using OnSelChanged instead on OnBeginLabelEdit..</div>
+</article>
+<article class="post" id="msg10942">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-10-08 17:33 UTC</span>
+  </div>
+  <div class="post-body">OnBeginLabelEdit only fires for cell styles that support editing, so that may explain your initial observation.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

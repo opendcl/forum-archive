@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ActiveX sample and news of A21 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1159</p>
+    <h1>ActiveX sample and news of A21</h1>
+    <p class="meta">Started by fred_tomke ·
+      2010-02-01 15:37 UTC ·
+      9 replies · SMF topic #1159</p>
+<article class="post" id="msg6166">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-01 15:37 UTC</span>
+  </div>
+  <div class="post-body">Hello, Owen, I'm not sure whether to post as a reply on <a href="http://sourceforge.net/projects/opendcl/forums/forum/658811/topic/3537805" rel="nofollow noopener">{2}</a> or better here. That's why I do it here.<br>
+<br>
+I'm going to build up a ActiveX sample for OpenDCL. I hope that I only used standard controls so I hope everybody can load and show the project. While playing around with the controls I discovered some problems which I don't know whether they are bugs or not.<br>
+<br>
+I post them without any order of importance.<br>
+<br>
+<ul><br>
+Normally I can get the event function name of an activated event by calling something like (dcl_control_getproperty oControl "Clicked"). To avoid globale variables I tried to get the <strong>EnterCell </strong> event function name of the FlexGrid control in the project. It returned nil and I cannot set another function name at runtime. I don't know whether it's a bug or not.<br>
+Have a look at the function <strong>statusbar_text</strong>. There you can see a line  (dcl_AxObject_Get oPanel nil "Text"). If I call only (dcl_AxObject_Get oPanel "Text") instead then I get an error of too less arguments. I've found out that another argument must passed between control object and property name. The syntax in the control browser does not show this additional argument. Unfortunately, changing the text of the second panel has no effect. Maybe it is caused by the additional argument.<br>
+Some properties seem to be read-only although they're officially not. So I tried to make the vertical scrollbar of the richtext control visible. Maybe someone else has much more luck.<br>
+The prompting when a control fails to get imported should be improved. I have tried to import an instance of the HHCtrl component. After drawing a rectangle to locate the control nothing happens. I do remember a message in earlier releases that some controls are not desgined to be placed on a form. Otherwise the OpenDCL developer does not know why this happens (or better: does not happen).<br>
+In my first idea to such a ActiveX sample I wanted to show pdf and dwf files in a form. But unfortunately, OpenDCL editor crashed when locating an instance of dwf viewer component. Then I tried Adobe Reader control. When loading the form in AutoCAD, AutoCAD crashed immediately. But I remember a small sample in this forum, could be shown succesfully. Maybe both crashes depended on the existing ActiveX controls of the form where they should be placed at. I didn't investigate furthermore. Maybe somebody else will do that.<br>
+</ul><br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1259/screena.png">screena.png</a> <span class="muted">(17495 bytes)</span></li><li><a href="../attachments/1260/screenb.png">screenb.png</a> <span class="muted">(16810 bytes)</span></li><li><a href="../attachments/1261/ActiveX.odcl">ActiveX.odcl</a> <span class="muted">(33441 bytes)</span></li><li><a href="../attachments/1262/ActiveX.LSP">ActiveX.LSP</a> <span class="muted">(8241 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6167">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-01 15:58 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred, this is exactly the kind of feedback I was hoping for! I will go through your list as time permits and respond when I have someting to add.</div>
+</article>
+<article class="post" id="msg6168">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-01 16:33 UTC</span>
+  </div>
+  <div class="post-body">I did a quick test with the HHCtrl control. The problem is that the exact reason for the failure is not returned from the MFC function that handles control creation. It does display some debug utput when running under the debugger:<br>
+<br>
+SetClientSite on OLE control {ADB880A6-D8FF-11CF-9377-00AA003B7A11} failed.<br>
+&gt;&gt;&gt; Result code: 0x80004002<br>
+<br>
+This might indicate that the control is not happy with the window where it is being created, but that's just a guess. In other cases of failure, the reasons could be even more obscure. There could be a generic error message, but its only benefit would be to verify that control creation failed for some unknown reason.</div>
+</article>
+<article class="post" id="msg6169">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-01 16:37 UTC</span>
+  </div>
+  <div class="post-body">Owen, thank you for your reply. I'm glad that my post matches your desires :) .<br>
+<br>
+Meanwhile I was searching for a reference sample you've mentioned in you sourceforge post. And I have found a method:<br>
+Item method of the IButtons collection of the toolbar. But the control browser show a very special data type: I also found a 'Variant but in this case there is a single ' .<br>
+<br>
+There is another thing left. Does anybody have experiences in linking a imagelist control to a control's imagelist property? My toolbar shows no images because I didn't linked a imagelist yet. Can I link it also at design time or only at runtime or even no time?<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1263/screen.png">screen.png</a> <span class="muted">(34842 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6170">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-01 16:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1159.msg6168#msg6168 date=1265042034 wrote:</cite><br>
+There could be a generic error message, but its only benefit would be to verify that control creation failed for some unknown reason.<br>
+</blockquote><br>
+<br>
+Owen, it's just like in a marriage: communication is everything  :D . It's better to say that a control cannot be placed just before someone is coming up thinking it's a bug because nothing happens.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6171">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-01 17:50 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1159.msg6170#msg6170 date=1265042749 wrote:</cite><br>
+Owen, it's just like in a marriage: communication is everything  :D . It's better to say that a control cannot be placed just before someone is coming up thinking it's a bug because nothing happens.</blockquote><br>
+<br>
+I agree that feedback would be good. I'm not sure what form it should take, though. A modal message box would irritate me. I'd prefer a less intrusive form of feedback.</div>
+</article>
+<article class="post" id="msg6221">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-09 03:20 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1159.msg6166#msg6166 date=1265038663 wrote:</cite><br>
+<ul>Normally I can get the event function name of an activated event by calling something like (dcl_control_getproperty oControl "Clicked"). To avoid globale variables I tried to get the <strong>EnterCell </strong> event function name of the FlexGrid control in the project. It returned nil and I cannot set another function name at runtime. I don't know whether it's a bug or not.</ul><br>
+</blockquote><br>
+<br>
+That's a bug, now fixed for the next build.</div>
+</article>
+<article class="post" id="msg6222">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-09 05:41 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1159.msg6166#msg6166 date=1265038663 wrote:</cite><br>
+Have a look at the function <strong>statusbar_text</strong>. There you can see a line  (dcl_AxObject_Get oPanel nil "Text"). If I call only (dcl_AxObject_Get oPanel "Text") instead then I get an error of too less arguments. I've found out that another argument must passed between control object and property name. The syntax in the control browser does not show this additional argument. Unfortunately, changing the text of the second panel has no effect. Maybe it is caused by the additional argument.</blockquote><br>
+<br>
+There was a bug in the argument processing code that caused it to skip an argument. That is now fixed for the next build. The oher problem is unrelated. I don't know why, but the control returns an error when attempting to set any properties (as evidenced by the dcl_AxObject_Put function returning NIL). The error is "parameter not found", but as best I can tell, everything is correct when the Invoke function is called.</div>
+</article>
+<article class="post" id="msg6223">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-09 06:16 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1159.msg6166#msg6166 date=1265038663 wrote:</cite><br>
+Some properties seem to be read-only although they're officially not. So I tried to make the vertical scrollbar of the richtext control visible. Maybe someone else has much more luck.</blockquote><br>
+<br>
+I had no luck making the property writeable (it retuns an exception saying that it's read-only -- probably because they don't allow that property to be changed after the control is visible), but while investigating this problem I figured out how to get the status bar panels working.</div>
+</article>
+<article class="post" id="msg6224">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-09 07:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1159.msg6169#msg6169 date=1265042262 wrote:</cite><br>
+Meanwhile I was searching for a reference sample you've mentioned in you sourceforge post. And I have found a method:<br>
+Item method of the IButtons collection of the toolbar. But the control browser show a very special data type: I also found a 'Variant but in this case there is a single ' .</blockquote><br>
+<br>
+This is now fixed for the next build.<br>
+<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=1159.msg6169#msg6169 date=1265042262 wrote:</cite><br>
+There is another thing left. Does anybody have experiences in linking a imagelist control to a control's imagelist property? My toolbar shows no images because I didn't linked a imagelist yet. Can I link it also at design time or only at runtime or even no time?</blockquote><br>
+<br>
+It doesn't look like there is any way to set that at design time. If there was some certain way to determine programmatically that the property expects an image list COM object, I could add code to create the image list at design time via the property wizard, but unlike fonts and colors, there doesn't seem to be any standard way to determine that for the e list property.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

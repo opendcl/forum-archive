@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spell Check integration · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1361</p>
+    <h1>Spell Check integration</h1>
+    <p class="meta">Started by honkinberry ·
+      2010-10-27 20:45 UTC ·
+      6 replies · SMF topic #1361</p>
+<article class="post" id="msg7238">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-10-27 20:45 UTC</span>
+  </div>
+  <div class="post-body">We've had some users request some sort of Spell Check in our dialog boxes.<br>
+Although I know I take care of this from the appropriate keyup events (and if I knew what ActiveX library to call to validate the spelling), when it gets to underlining the text in the control that is spelled wrong, suddenly it seems like it would more appropriately be handled on the OpenDCL end.<br>
+To be clear, I feel that OpenDCL for AutoCAD Mac is a *way* higher priority.  But just throwing it out there, that an ability to set a control to SpellCheck would be really cool!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg7239">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-10-28 06:01 UTC</span>
+  </div>
+  <div class="post-body">Hi, honkinberry, what a nice idea! Since standard text box supports no partial underlined charchacters you should think about an other control for that. Have a look at the Microsoft RichText control. There are all properties and events you need for this!<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7253">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-10-28 22:21 UTC</span>
+  </div>
+  <div class="post-body">According to the info here (<a href="http://msdn.microsoft.com/en-us/library/system.windows.controls.spellcheck.aspx" rel="nofollow noopener">{2}</a>) there is a SpellCheck property for the control -- that doesn't seem available within OpenDCL.  Am I missing something simple?<br>
+<br>
+thanks!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg7254">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-10-28 22:38 UTC</span>
+  </div>
+  <div class="post-body">As far as I understood the content of your link it is not only a property: it is a whole class of .NET Framework 4.0 you can address to a textbox or a richtext control. Since OpenDCL seems to use the original Microsoft controls (MFC? COMCTL? not sure) this .NET class cannot be available. That's why no .NET FrameWork is currently needed for OpenDCL. But it would so when the spell checker class would have been integrated. But - I may be wrong. I'm sure when OpenDCL will support .NET controls in the future you can use them as ActiveX controls. I'd use RTF-control in the meantime.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7255">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-10-28 22:56 UTC</span>
+  </div>
+  <div class="post-body">Ah, I see, that's too bad, as that SpellCheck property seemed so elegantly simple!<br>
+<br>
+So with the RichText Control, it's back to finding my own dictionary, processing the KeyUp event, underlining the misspelled word, processing the RightClick event to access suggestions, and so on, correct?<br>
+<br>
+That just sounds like an awful lot of work, it might be better to just wait for the .NET control support.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg7256">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-10-29 02:04 UTC</span>
+  </div>
+  <div class="post-body">So it is! Or anybody has another idea.<br>
+Maybe you want to build an own ActiveX control which contains the .NET control.<br>
+But I have no idea to do that.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7257">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-10-29 03:45 UTC</span>
+  </div>
+  <div class="post-body">This sounds like a great idea. Owen, is there anyway it could be integrated into the ODCL textbox?<br>
+<br>
+Anyway I did some google'ing and found this ActiveX textbox with spell checking:<br>
+<a href="http://www.chadosoftware.com/old/aboutspt.htm" rel="nofollow noopener">{2}</a><br>
+Unfortunately it's $250, but maybe you could get the trial version working...<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

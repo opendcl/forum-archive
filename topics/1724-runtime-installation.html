@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runtime Installation · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1724</p>
+    <h1>Runtime Installation</h1>
+    <p class="meta">Started by PaulG ·
+      2011-11-22 21:12 UTC ·
+      6 replies · SMF topic #1724</p>
+<article class="post" id="msg8485">
+  <div class="post-head">
+    <span class="post-author">PaulG</span>
+    <span class="post-date muted">2011-11-22 21:12 UTC</span>
+  </div>
+  <div class="post-body">Sorry if this is somewhere on another post, but I am trying to find out which installations to use.<br>
+<br>
+Does runtime work the same way for users, where I can install it and load it by using the command "opendcl"?<br>
+<br>
+I have studio installed on my machine 6.0.2.3 and built a few dialog boxes with this version.<br>
+<br>
+I just downloaded 6.0.2.5, and ran the "runtime" installation on another user's computer, opened up Autocad and typed in "OpenDcl" and it told me "unknown command".  I like the idea that I can simply use the "opendcl" command to load the correct ARX file.<br>
+<br>
+We all have 64-bit WinXP, Autocad MEP 2010.<br>
+<br>
+What should I be using?  Do I need to download another version (older or newer)?<br>
+Do I need to have the lisp routine load the correct ARX file instead?<br>
+<br>
+Please help direct me.  Thank you in advance.<br>
+Paul</div>
+</article>
+<article class="post" id="msg8486">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2011-11-22 22:34 UTC</span>
+  </div>
+  <div class="post-body">You should only have to install the run-time on other end users PC's.<br>
+Any chance you installed the run-time before installing Acad?</div>
+</article>
+<article class="post" id="msg8487">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-11-22 22:46 UTC</span>
+  </div>
+  <div class="post-body">As Barry said, installing the runtime MSI should enable demand-loading via the OPENDCL command. Did the install finish without errors? If it doesn't work, something is wrong. One posibility is that you've disabled demand-loading of commands (this is set via the DEMANDLOAD system variable). Otherwise, there could be a permissions issue, or a bug in the installer for that matter.</div>
+</article>
+<article class="post" id="msg8489">
+  <div class="post-head">
+    <span class="post-author">PaulG</span>
+    <span class="post-date muted">2011-11-22 22:53 UTC</span>
+  </div>
+  <div class="post-body">Thanks a bunch for being so fast to respond.<br>
+<br>
+So then..., I ran "OpenDCL.Runtime.6.0.2.5.msi" to install the user version and it shows up in her  "Program Files/Common Files" The "OpenDCL" folder is there with all the arx files, so I believe it installed correctly.  And the DEMANDLOAD is set to 3, which should allow the opendcl command to work, I believe.  However, it doesn't, so I'm still puzzled.<br>
+<br>
+Any other ideas?<br>
+<br>
+-Paul<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8491">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-11-23 01:55 UTC</span>
+  </div>
+  <div class="post-body">Take a look in your registry to see if the demand-load keys got correctly installed. Depending on whether you installed for all users or only the current user, it is in either the HKLM or HKCU registry hive under Software\Autodesk\AutoCAD\R18.0\\Applications\OpenDCL. Verify that the value of LOADER points to the correct file. If it does, try loading the file manually by dragging and dropping into the AutoCAD drawing window. If it doesn't load manually, then the problem is with the file, not the demand-loading.</div>
+</article>
+<article class="post" id="msg8492">
+  <div class="post-head">
+    <span class="post-author">PaulG</span>
+    <span class="post-date muted">2011-11-23 05:15 UTC</span>
+  </div>
+  <div class="post-body">I'll check that out.  On the installation, I didn't have an option to choose whether it's for all users or just for this user.  Should have I seen something like that when running the runtime installer?</div>
+</article>
+<article class="post" id="msg8495">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-11-24 04:26 UTC</span>
+  </div>
+  <div class="post-body">You're right, there is no option for the runtime; it must be installed for all users.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

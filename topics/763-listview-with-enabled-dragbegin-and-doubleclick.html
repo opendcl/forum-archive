@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ListView with Enabled DragBegin and DoubleClick · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 763</p>
+    <h1>ListView with Enabled DragBegin and DoubleClick</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-05-17 22:16 UTC ·
+      6 replies · SMF topic #763</p>
+<article class="post" id="msg3727">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-17 22:16 UTC</span>
+  </div>
+  <div class="post-body">Hello, am I right that enabled AllowDragBegin supresses the release of OnDoubleClick in ListViews? As far as I remember it should work. Am I wrong?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3730">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-18 04:13 UTC</span>
+  </div>
+  <div class="post-body">The fixes for your recent bug report (<a href="https://sourceforge.net/tracker/?func=detail&amp;aid=2789772&amp;group_id=187950&amp;atid=923363" rel="nofollow noopener">{2}</a>) may have caused some things to change. Do you mean that OnDoubleClick never fires when AllowDragBegin is enabled?</div>
+</article>
+<article class="post" id="msg3731">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-18 05:57 UTC</span>
+  </div>
+  <div class="post-body">Yes, I can say OnDoubleClick never fires when AllowDragBegin is enabled. I tried to click thousand times in a second but it does not want to fire. Even in a modal form it is very difficult to fire on doubleclick.<br>
+<br>
+Hm, I'm wondering the relationship between giving back the correct column id with the calling of on doubleclick...<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3737">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-18 13:38 UTC</span>
+  </div>
+  <div class="post-body">The column id fix required a change in the sequence of Windows message processing and firing events, which is why it could have side effects. However, at the time I fixed the column id bug, I thought that I tested OnDoubleClick and it was not firing for column 0 even before the fix. I assumed this was the result of the second click being "eaten" by the hidden drag/drop window created by the first click, so I ignored it. Are you certain that it was firing in previous builds?</div>
+</article>
+<article class="post" id="msg3739">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-18 14:31 UTC</span>
+  </div>
+  <div class="post-body">Yes, because I'm just working on a layer tool for sorting object draw order by layer order. When doubleclicking a layer or a layergroup within another layergroup the layer properties of the doubleclicked layer / layergroup can be changed. That's why I know that doubleclicked worked.<br>
+<br>
+I have also a modal form with doubleclick event and enabled allowdragbegin. In this case doubleclick makes the selected layer blinking in the drawing.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3741">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-18 15:14 UTC</span>
+  </div>
+  <div class="post-body">Ok, I'll investigate to see what changed. Do you remember the latest working build?</div>
+</article>
+<article class="post" id="msg3746">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-20 05:57 UTC</span>
+  </div>
+  <div class="post-body">Sorry for the late answer, I was out.<br>
+<br>
+Since I saved all releases I will go back until I've found it.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

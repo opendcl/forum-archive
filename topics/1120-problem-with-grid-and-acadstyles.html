@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>problem with grid and acadstyles · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1120</p>
+    <h1>problem with grid and acadstyles</h1>
+    <p class="meta">Started by grrrr ·
+      2010-01-08 20:17 UTC ·
+      20 replies · SMF topic #1120</p>
+<article class="post" id="msg5936">
+  <div class="post-head">
+    <span class="post-author">grrrr</span>
+    <span class="post-date muted">2010-01-08 20:17 UTC</span>
+  </div>
+  <div class="post-body">hello,<br>
+<br>
+i try to program a grid with column styles depending on acad like acadlayer, linetype lineweight, textstyle. a sample is attached.<br>
+now the problems i run into:<br>
+<br>
+- problems with calculating the columnwidth on that acadtype styles<br>
+  because they are solved by pulldowns and containing an image.<br>
+  perhaps the solution is use of separate dialogs like colortype does.<br>
+<br>
+- clicking on lineweight-button version 6.0.0.18 has problems. the dialog hung and must be  <br>
+  escaped.<br>
+<br>
+- if you click an acadtype button the old value is lost.<br>
+<br>
+- ...GRID1_OnButtonClicked is not called by button click.<br>
+ <br>
+- row data read by   (dcl_Grid_AddString gridcontrol row ";") ignores parts <br>
+  without text.  aa;bb;;;;ff is parsed as "aa|bb|ff|  |  |  "  instead of  "aa|bb|  |  |  |ff".<br>
+<br>
+- if click on an acadtyped button the previous value is cleared. please look at layertype<br>
+  there should be a way to handle undefined values like an empty datafield or an not existing layer<br>
+  or simply 'no data set'. that should be kept until the user takes an existing value.<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1212/gridtest.zip">gridtest.zip</a> <span class="muted">(2984 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5937">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-08 20:54 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=grrrr link=topic=1120.msg5936#msg5936 date=1262981829 wrote:</cite><br>
+- clicking on lineweight-button version 6.0.0.18 has problems. the dialog hung and must be  <br>
+  escaped.<br>
+</blockquote><br>
+<br>
+I could not reproduce this in AutoCAD 2010.<br>
+<br>
+<blockquote class="quote"><cite> author=grrrr link=topic=1120.msg5936#msg5936 date=1262981829 wrote:</cite><br>
+- ...GRID1_OnButtonClicked is not called by button click.<br>
+</blockquote><br>
+<br>
+You need cells of style 4 for that event to be fired.<br>
+<br>
+<blockquote class="quote"><cite> author=grrrr link=topic=1120.msg5936#msg5936 date=1262981829 wrote:</cite><br>
+ - row data read by   (dcl_Grid_AddString gridcontrol row ";") ignores parts <br>
+  without text.  aa;bb;;;;ff is parsed as "aa|bb|ff|  |  |  "  instead of  "aa|bb|  |  |  |ff".</blockquote><br>
+<br>
+This should be reported as a bug.<br>
+</div>
+</article>
+<article class="post" id="msg5939">
+  <div class="post-head">
+    <span class="post-author">grrrr</span>
+    <span class="post-date muted">2010-01-08 21:15 UTC</span>
+  </div>
+  <div class="post-body">hello owen,<br>
+<br>
+thanks for reply. <br>
+<br>
+i have tested with bricscad 10<br>
+  clicking on lineweight-button version 6.0.0.18 has problems. the dialog hung and must be  <br>
+  escaped.<br>
+<br>
+<br>
+does not fail with 6.0.0.16<br>
+  clicking on lineweight-button version 6.0.0.18 has problems. the dialog hung and must be  <br>
+  escaped.<br>
+</div>
+</article>
+<article class="post" id="msg5940">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-09 00:25 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=grrrr link=topic=1120.msg5936#msg5936 date=1262981829 wrote:</cite><br>
+- clicking on lineweight-button version 6.0.0.18 has problems. the dialog hung and must be  <br>
+  escaped.<br>
+</blockquote><br>
+<br>
+The LineWeight ComboBox (CellStyle 33) works as expected for me in 6.0.0.18 , Acadm2010 WinXP32</div>
+</article>
+<article class="post" id="msg5941">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-09 00:30 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=grrrr link=topic=1120.msg5936#msg5936 date=1262981829 wrote:</cite><br>
+hello,<br>
+<br>
+- if you click an acadtype button the old value is lost.<br>
+<br>
+</blockquote><br>
+<br>
+The ComboBox CellStyles ( 21 27 30 32 33  ) in your sample all work as expected for me in 6.0.0.18 , Acadm2010 WinXP32</div>
+</article>
+<article class="post" id="msg5943">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-09 01:26 UTC</span>
+  </div>
+  <div class="post-body"><br>
+General note:<br>
+Are you pressing ENTER in the Grid Controls ??<br>
+<br>
+To stop the form closing refer FAQ<br>
+<em>Question:</em> How can I prevent the form from closing when the cursor is in Grid or Textbox control and I push Enter key?<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=1061.0" rel="nofollow noopener">{2}</a><br>
+<br>
+This may solve a potential issue.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5953">
+  <div class="post-head">
+    <span class="post-author">grrrr</span>
+    <span class="post-date muted">2010-01-09 10:00 UTC</span>
+  </div>
+  <div class="post-body">hi,<br>
+<br>
+with a2007 there are no problems with showing the comboboxes<br>
+<br>
+with brx10 on lineweight an error occures ( 2 attached jpg)<br>
+with brx10 no linetypes are displayed ( 1 attached jpg)<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1220/brx10_gridtest_linetype_no_types.jpg">brx10_gridtest_linetype_no_types.jpg</a> <span class="muted">(15927 bytes)</span></li><li><a href="../attachments/1221/a2007_gridtest_linetype.jpg">a2007_gridtest_linetype.jpg</a> <span class="muted">(17349 bytes)</span></li><li><a href="../attachments/1222/error_gridtest_lineweigth.jpg">error_gridtest_lineweigth.jpg</a> <span class="muted">(10356 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5954">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-09 23:07 UTC</span>
+  </div>
+  <div class="post-body">These controls are not yet fully implemented in Bricsys. I've made some effort to prevent serious crashes when using them, but the problem cannot be completely resolved until those controls are fully implemented in Bricscad.</div>
+</article>
+<article class="post" id="msg5956">
+  <div class="post-head">
+    <span class="post-author">grrrr</span>
+    <span class="post-date muted">2010-01-10 14:42 UTC</span>
+  </div>
+  <div class="post-body">hi owen,<br>
+<br>
+thanks for reply.<br>
+do you write a bug report for bricscad or should i do that.<br>
+<br>
+the popup for the layerstyle has only the width of the column.<br>
+on linetype or lineweight the popups are expanded.<br>
+please note the pictures<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1223/layer_lwt_style_popups.zip">layer_lwt_style_popups.zip</a> <span class="muted">(42179 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5965">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-11 06:26 UTC</span>
+  </div>
+  <div class="post-body">Bricsys is already aware of the problem with the AcUi controls. The dropdown width issue should now be fixed in Alpha 19. I've also fixed the AddString parsing bug, so it should now correctly parse "empty" tokens in the delimited string.</div>
+</article>
+<article class="post" id="msg5990">
+  <div class="post-head">
+    <span class="post-author">grrrr</span>
+    <span class="post-date muted">2010-01-13 09:12 UTC</span>
+  </div>
+  <div class="post-body">hi owen,<br>
+<br>
+i have tested in 6.0.0.19<br>
+the addString parsing bug with empty tokens works well,<br>
+the dropdown width and height too.<br>
+on bricscad the lineweight control still fires an exception.<br>
+<br>
+thanks for your fast reaction.</div>
+</article>
+<article class="post" id="msg6086">
+  <div class="post-head">
+    <span class="post-author">grrrr</span>
+    <span class="post-date muted">2010-01-25 14:14 UTC</span>
+  </div>
+  <div class="post-body">hi,<br>
+i have tested around with gridstyles but i am not happy about.<br>
+all gridstyles based on not native string data are not well supported.<br>
+the autocad data is missing and can't be got. <br>
+what shall i do with 'rot', 'grün', 'blau', vonlayer for acad_colordlg? <br>
+maybe written in japones. thats not what acad supports.<br>
+what i want for color is 0,1, ...256.... <br>
+the original acad data, not the label. <br>
+the same story occures with acad_truecolordlg or other controls.<br>
+there should be something like dcl_grid_cellvalue available.<br>
+but the input should be changed from labeldata to valuedata<br>
+now it works for colordata like 0,1,2,...256... but the reverse operation<br>
+is not available. i get 'rot',grün'... vonlayer.<br>
+<br>
+the solution could be input and output for those who want to deal with labeldata<br>
+as is and additional api calls for those who will deal with internal data like <br>
+((62 . 112) (420 . 1762913)) as string for truecolor <br>
+or 0, 1 for checkboxes.<br>
+<br>
+i have added sample code for testing<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1240/gridtest.lsp">gridtest.lsp</a> <span class="muted">(12794 bytes)</span></li><li><a href="../attachments/1241/gridtest.odcl">gridtest.odcl</a> <span class="muted">(1336 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6089">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-25 15:00 UTC</span>
+  </div>
+  <div class="post-body">See if Grid_GetCellImages returns the values you're looking for. In "special" cells, the cell image value is coopted for the associated integer value.</div>
+</article>
+<article class="post" id="msg6097">
+  <div class="post-head">
+    <span class="post-author">grrrr</span>
+    <span class="post-date muted">2010-01-25 20:04 UTC</span>
+  </div>
+  <div class="post-body">hi owen, <br>
+sounds good!</div>
+</article>
+<article class="post" id="msg6102">
+  <div class="post-head">
+    <span class="post-author">grrrr</span>
+    <span class="post-date muted">2010-01-25 21:02 UTC</span>
+  </div>
+  <div class="post-body">hi owen,<br>
+<br>
+sorry that failes<br>
+for true color the return is always (-1 -1).<br>
+for ac color 155 the return is (155 -1)<br>
+now i will test other ones<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6106">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-25 22:43 UTC</span>
+  </div>
+  <div class="post-body">For true color you're stuck with the raw text, because true colors are complex types (RGB, ACI, or color book).</div>
+</article>
+<article class="post" id="msg6119">
+  <div class="post-head">
+    <span class="post-author">grrrr</span>
+    <span class="post-date muted">2010-01-26 20:41 UTC</span>
+  </div>
+  <div class="post-body">thanks owen,<br>
+<br>
+think i am experienced enough to make workarounds.<br>
+i dont like quick and dirty. <br>
+what i wan't is a solution quite right, without tricks.<br>
+<br>
+special the label data for color is depending on localization.<br>
+for labeling that makes sense an is welcome, but for programming there <br>
+should be the underlaying data available used in acad environment.<br>
+in this case the data returned from acad_truecolordlg.<br>
+</div>
+</article>
+<article class="post" id="msg6133">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-27 15:49 UTC</span>
+  </div>
+  <div class="post-body">Perhaps you could change the cell style to 4 and use your own ButtonClicked event handler to display the true color dialog.</div>
+</article>
+<article class="post" id="msg6141">
+  <div class="post-head">
+    <span class="post-author">grrrr</span>
+    <span class="post-date muted">2010-01-27 18:58 UTC</span>
+  </div>
+  <div class="post-body">hello owen,<br>
+<br>
+thanks for the tip, but how can i distinguish between more than one of my own subtypes( maybe 31 for true color, 32 for lineweight and 33 for linetype). can userdata assigned to a colum or cell for coding that? <br>
+<br>
+btw: dcl_grid_addstring does not trim leading and trailing space.<br>
+please have a look at my last sample( first tab - third column textstyle)<br>
+<br>
+lg<br>
+</div>
+</article>
+<article class="post" id="msg6142">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-27 19:40 UTC</span>
+  </div>
+  <div class="post-body">If you don't want to hardcode your cell positions, you could coopt the CellDropList for extra identifying information. I don't think AddString should trim leading and trailing spaces. Do you think it should?</div>
+</article>
+<article class="post" id="msg6143">
+  <div class="post-head">
+    <span class="post-author">grrrr</span>
+    <span class="post-date muted">2010-01-27 19:55 UTC</span>
+  </div>
+  <div class="post-body">hi owen,<br>
+<br>
+yes i think so. addstring and insertstring should, because there are delimiters.<br>
+if there are WS as delimiter its a must. it makes only sense for the labels <br>
+if the font is a fix font then you could use SP for offset, oh no. <br>
+greetings from the old punchcards.<br>
+i believe not to distiguishe between '' and ' ' meaning data is 'nil' or 'blank'.<br>
+that should be the same.<br>
+lg</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

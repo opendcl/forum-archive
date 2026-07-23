@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>i think i have a bug here · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1644</p>
+    <h1>i think i have a bug here</h1>
+    <p class="meta">Started by andrew ·
+      2011-06-27 19:54 UTC ·
+      5 replies · SMF topic #1644</p>
+<article class="post" id="msg8143">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2011-06-27 19:54 UTC</span>
+  </div>
+  <div class="post-body">im using version 6.0.2.3 and i have attched my project files.<br>
+<br>
+in my dwg preview, i have the double click checked off in events.<br>
+in my code im using the correct syntax and it doesnt work<br>
+however, if i put the single click event syntax in my code, the double click event works.<br>
+<br>
+i did an ms office update earlier in the day, and i thought it might have been that. so i uninstalled odcl studio and reinstalled it, and its still doing it.<br>
+<br>
+hopefully someone can take a look and tell me if its me or not?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1626/dwghist.lsp">dwghist.lsp</a> <span class="muted">(3815 bytes)</span></li><li><a href="../attachments/1627/dwghist.odcl">dwghist.odcl</a> <span class="muted">(26317 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8146">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-06-28 02:20 UTC</span>
+  </div>
+  <div class="post-body">Can you upload a simplified example with only a single form and a single control?</div>
+</article>
+<article class="post" id="msg8148">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-28 06:50 UTC</span>
+  </div>
+  <div class="post-body">andrew, is it allowed, to give you a hint out of topic? There is a merge_confirmation dialog in the odcl project. Have a look at the dcl_messagebox function, you can display such a form with dcl_messagebox, too.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8149">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-28 07:00 UTC</span>
+  </div>
+  <div class="post-body">andrew,<br>
+<br>
+we have no luck with your code because the history-file is missing at our workstations. <br>
+<br>
+To avoid errors at startup I've changed the OnInitialize:<br>
+<br>
+(defun c:dwghist_dwghist_display_OnInitialize (/ datafile ofile curline file_content_list)<br>
+  (dcl_ListView_AddColumns dwghist_dwghist_display_ListView1(list (list "File Name" 0 500)))<br>
+ <br>
+  (setq datafile (strcat "D:\\dwg-history" (menucmd "M=$(edtime,$(getvar,date), MON DD YYYY)") ".txt")) <br>
+  (dcl_Control_SetText dwghist_dwghist_display_ComboBox1 datafile)<br>
+  (if (setq ofile (open datafile "r"))<br>
+    (progn<br>
+      (while (setq curline (read-line ofile))<br>
+	(setq file_content_list (cons curline file_content_list))<br>
+      ); while<br>
+      (close ofile)<br>
+      (if (setq file_content_list (reverse file_content_list))<br>
+	(dcl_ListView_FillList dwghist_dwghist_display_ListView1 (mapcar 'list file_content_list))<br>
+      ); if<br>
+    ); progn<br>
+  ); if<br>
+) ;end OnInitialize<br>
+<br>
+Please make sure that you have to check always the list you are given to ListView_Filllist, because otherwise an error will ocuur.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8152">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2011-06-28 12:48 UTC</span>
+  </div>
+  <div class="post-body">Owen, ill work on getting a simple version uploaded<br>
+<br>
+Fred, This is somewhat old code from another mega project file im breaking apart so somethings were done when i first started doing ODCL when i get to that part ill change it up.<br>
+As for the history file, its just a text file with the path to a dwg file (including the dwg name)<br>
+<br>
+when i get around to messing with the code today ill be sure to check on what you suggested<br>
+<br>
+thanks</div>
+</article>
+<article class="post" id="msg8157">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-28 13:55 UTC</span>
+  </div>
+  <div class="post-body">Hello, andrew, I believe you've missed something, because I cannot find any event handler for c:dwghist_dwghist_display_DwgPreview1_OnDblClicked.<br>
+Regards,<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to avoid shutting down AutoCAD on every modification on codes · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2411</p>
+    <h1>How to avoid shutting down AutoCAD on every modification on codes</h1>
+    <p class="meta">Started by Tharwat ·
+      2016-08-18 06:09 UTC ·
+      7 replies · SMF topic #2411</p>
+<article class="post" id="msg12046">
+  <div class="post-head">
+    <span class="post-author">Tharwat</span>
+    <span class="post-date muted">2016-08-18 06:09 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+I am working on a program with OpenDCL palette so during writing AutoLISP codes logically I need to test the program to see the result of functions / codes and how the codes work in general but the problem is that every time I modify my codes or even adding a new Button or Label , Edit Box ... etc, I need to exit AutoCAD and restart it once again to be able to test the codes out and to see the new changes / adds to my palette.<br>
+<br>
+Is there any way to work around this bothering and time consuming process to avoid shutting down AutoCAD on every modification on codes?<br>
+<br>
+Thank you in advance.</div>
+</article>
+<article class="post" id="msg12047">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-08-18 06:56 UTC</span>
+  </div>
+  <div class="post-body"><code>(dcl-Project-Load ProjectFilePath [as String] <strong>{ForceReload [as Boolean]}</strong> {NewProjectKey [as String]})</code></div>
+</article>
+<article class="post" id="msg12048">
+  <div class="post-head">
+    <span class="post-author">Tharwat</span>
+    <span class="post-date muted">2016-08-18 07:51 UTC</span>
+  </div>
+  <div class="post-body">Thank you roy , that works great.<br>
+<br>
+I already have that function at the first line of the program but without <span style="color:blue">T</span> symbol to force a reload and this is cool option indeed.<br>
+I have read the help document for the previous said function but I still don't know what is the meaning of the NewProjectKey in the function ? although that I kept this option empty and the function works without it.</div>
+</article>
+<article class="post" id="msg12050">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-08-18 20:37 UTC</span>
+  </div>
+  <div class="post-body">Hi, you are correct: leave the NewProjectKey empty in general.<br>
+Using this argument you can load your project.odcl with an alternative projectname. So call your form (and controls) not by (dcl_form_show project/form) but with (dcl_form_show project2/form).<br>
+<br>
+Not sure if anybody is using it in productive environments.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg12056">
+  <div class="post-head">
+    <span class="post-author">Tharwat</span>
+    <span class="post-date muted">2016-08-19 10:54 UTC</span>
+  </div>
+  <div class="post-body">Thank you Fred for your reply and input.<br>
+<br>
+I just have another question about Combo Box in palette which is the background color of Combo Box.<br>
+<br>
+The problem is that the color changes to background color of palette itself so this matter would make the current layer name a bit hard to read as shown in the attached image:<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2224/Palette.jpg">Palette.jpg</a> <span class="muted">(22752 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12057">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-08-19 11:10 UTC</span>
+  </div>
+  <div class="post-body">Hi, yes you are right. Not sure if this is by design. I didn't use the built-in layercombobox.<br>
+I'll add a ticket.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg12058">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-08-19 14:13 UTC</span>
+  </div>
+  <div class="post-body">The layer combo is implemented in the host app, so it's possible OpenDCL cannot override background color. Furthermore, if 'Use Visual Style' is enabled for the control, then your current Windows theme can override any custom color selection for the control.</div>
+</article>
+<article class="post" id="msg12059">
+  <div class="post-head">
+    <span class="post-author">Tharwat</span>
+    <span class="post-date muted">2016-08-19 14:24 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2411.msg12058#msg12058 date=1471616029 wrote:</cite><br>
+if 'Use Visual Style' is enabled for the control, then your current Windows theme can override any custom color selection for the control.<br>
+</blockquote><br>
+Actually when I disabled the Visual Style it did show the ComboBox's layers clearly as if it is normal ComboBox with a list of strings added to it which means that it is much better than setting this option on / being enabled. me thinks.<br>
+<br>
+Thank you.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

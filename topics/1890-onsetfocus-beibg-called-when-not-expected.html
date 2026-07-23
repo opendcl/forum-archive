@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OnSetFocus beibg called when not expected · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1890</p>
+    <h1>OnSetFocus beibg called when not expected</h1>
+    <p class="meta">Started by Jim ·
+      2012-09-08 00:10 UTC ·
+      2 replies · SMF topic #1890</p>
+<article class="post" id="msg9293">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2012-09-08 00:10 UTC</span>
+  </div>
+  <div class="post-body">I have a tree control with nodes that, when touched, turn the tab on a tabstrip. Even though a textBox on the tab, is at the bottom of the z-order, an OnSetFocus event can fire. Only one of several nodes is doing this. I can't see anything in the code causing this. Can OpenDCL do it sometimes?</div>
+</article>
+<article class="post" id="msg9294">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-09-08 01:02 UTC</span>
+  </div>
+  <div class="post-body">Are you saying that after changing the current tab, the OnSetFocus fires on a textbox that does not get focus? Or it does get focus, but you don't think it should?</div>
+</article>
+<article class="post" id="msg9295">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2012-09-08 19:49 UTC</span>
+  </div>
+  <div class="post-body">Ok... here is what my testing has revealed to me:<br>
+<br>
+Position of a control on a form has no affect on who gets focus first.<br>
+The design time Z/Tab order does.<br>
+Labels higher in the Z/Tab order have no affect.<br>
+This would make sense because one would not normally be interested in having a label be a tab stop.<br>
+<br>
+In my case, I was not paying close attention to who was at the top of Z/Tab order.<br>
+It would be best to place a check box or button first and any edit boxes below. <br>
+OnKillFocus, OnEditChanged, and OnSetFocus are common events for editboxes <br>
+that should only fire when the user arrives there on purpose.<br>
+<br>
+After my tab was displayed I was immediately removing focus in code making the unwanted events hard figure.<br>
+Its all sorted now.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

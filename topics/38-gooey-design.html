@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gooey Design · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 38</p>
+    <h1>Gooey Design</h1>
+    <p class="meta">Started by jb ·
+      2007-08-09 13:56 UTC ·
+      9 replies · SMF topic #38</p>
+<article class="post" id="msg151">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2007-08-09 13:56 UTC</span>
+  </div>
+  <div class="post-body">So I've been working on a feasibility study for the last couple of weeks using Adobe Indesign CS3 - what a wonderful product.  The software uses these really nice, minimal palettes: the text is small, the buttons are tiny, but it works really well.  If you think about it, once you've learned what buttons do what, a form really doesn't need highly descriptive controls.  Microsoft type forms, including AutoCAD really take up too much space: they really could be made more "minimal".<br>
+<br>
+OK, so after working in CS3 I wanted to create a form for AutoCAD that used the same minimal approach.  This is a quick little "LayerWalk" routine that uses a very minimal OpenDCL modeless form:<br>
+<br>
+<img src="http://www.studio2405.com/jdb/jbLayerWalk.jpg" alt="" loading="lazy"><br>
+<br>
+So copy the code into VLIDE and check it out:<br>
+<br>
+<pre class="code"><code><br>
+(vl-load-com)<br>
+<br>
+(if (not (vl-bb-ref 'jbLwalk))<br>
+  (vl-bb-set<br>
+    'jbLwalk<br>
+    (dcl_project_import<br>
+      (strcat<br>
+	"YWt6A8EpAADwQIP7BuKTJqMRZTtu4c2duhP9dG+uKDYeOt6fn9oNgmvZdtczP7wXFORqbizbDECR"<br>
+"pxDQQEvPpNQ8nHF+d4/8+nqBfpzdNgJBK0L76dQRA5/TbGzcYcLeXMCipY3QCcPtRMC4EPbH72Ib"<br>
+"AOCn5ePnoZLgub/tr5nwxAuMApIqVxfaS3HGTHhu3aEuG0zlsSZHTRGXZ00Tlxccm4ost1wErMiz"<br>
+"wic06TNFfbOYGrRONqDOEwNE5TGXlyrslofnDDAxMBnY8yJU4+NXs657uV6wqQCdXE4Hpv1/gP8v"<br>
+"2BXAgN/c4SuKdTyhGbOEj+FK8u27hB+pRBZLFBmzeFctveFquQ08oa2fhizDqNbnMJN83xgBVxCZ"<br>
+"ayP9dqE+uk5WzHhtzv8uzWH73dFRvHYpS3gzhoGHzLTeEXq6Y8G8rqmmjzV/g7/ewbttx50tXNam"<br>
+"9ZC0l1p72UQjg6wvsQmwOmcShrCdlRmq0wU34w0UqAzVbuFVZ4Iqr0EtijFqoxf504/O6U8KxGPK"<br>
+"CMWnEiyWRR+7TZIcuS1mBMU1s6OEWBRgF1vt1RH3OoG4HFCcnPBU9SK6G4J8iawwcoOuHMZyq7uk"<br>
+"HdHs68wnSVeCw/aceHUylLOjsocDgvY5+qsreMNS3llniuaBqel0/UBubqGqT59Gv95moL9zW0WB"<br>
+"nJKiuq7RvBWK3p1a9AAr0Z1eWOubEZ+EQlPeTP3wnBqzHbldfJzFJ74oexLLYVkA1I33E7DQF6LK"<br>
+"VRlTGeZHFUeJ9c3Cf8hXGQF4uicwQ/fNegSfEmp4uaem4p3Q7MAu6D1sG4dvpHG0DFZ+G9lcQh/2"<br>
+"zIzz2S9LsXNPFzmWgLzdaATfk2RepGT+FiX7IBa1sZY/rkgAotUXvArigbcfVcsNCvumn196g8VG"<br>
+"jDMQo7sPAu+mVRrL5N5RML0LaFe5sCCXpo+EBuYw40Z5Zc3CBrHUoqNPKVuojF+JAhB1sd2wXnzt"<br>
+"CgIfV88qW6DVsB/ZrFHYjE5b2IyhZFpwgHxlbPDRo+MOxfHF6/Q9wunL+uBWpIio4FxilJNqB3iR"<br>
+"Uk5zYekWppD4MExAzicMu2eqQQyTikARGAfrcL4EH6CJZ8yXE8DYOt6gGiEpinn7gPoquF3Lq/gp"<br>
+"O9H2Nbrn1eSLNNXwWZAAT2AdQH3nOwHML05c+Df6J2sPEbB0FmH9DMbXeQqTdkavIP/FMMppQuxX"<br>
+"fzQ98CU3PZBI/WD7I9SdSqASZEEv5PBCw1fCp3IgFa1NaoRMSgd9Nj3tsa8H4seQPe0lGw+ilaIj"<br>
+"jAa9o5mWkax8Sr0PaNV4RR4aj6TQiaDDgq45qZ4d5oGI5q2OvPZ8YiS2zCHEzYAc6sDT8XgFJSE6"<br>
+"f7fbLoBNLFZq/KR5DFcOdxRhSs4TWuonWhoogTsQ5WAllmCEEw6DAnGP+Vx1GyhLGiiBm37sc5PF"<br>
+"1qW8QK4A+SBWzVRfzQTrPhNd5XuTmnMjeBMBVx6CE83uKFPfssw9GItU/wRYVnO9/0EyDHk0gPnl"<br>
+""))))<br>
+<br>
+(defun jb104:GetLayers ( / llist ret)<br>
+     (vlax-for x(vla-get-layers(vla-get-ActiveDocument(vlax-get-acad-object)))<br>
+       (setq llist(append llist(list(vla-get-name x)))))<br>
+  (setq ret(ACAD_STRLSORT llist))<br>
+  ret<br>
+)<br>
+(defun c:jb104_00_OnDocActivated ( /)<br>
+  (dcl_ListBox_Clear jb104_00_ListBox)<br>
+  (dcl_ListBox_AddList jb104_00_ListBox (jb104:GetLayers))<br>
+  <br>
+)<br>
+(defun c:jb104_00_OnInitialize ( /)	   <br>
+  (dcl_ListBox_AddList jb104_00_ListBox (jb104:GetLayers))<br>
+)<br>
+<br>
+(defun c:jb104_00_cl_OnClicked ( /)<br>
+     (dcl_form_close jb104_00)<br>
+)<br>
+<br>
+(defun c:jb104_00_thaw_OnClicked ( /)<br>
+  (dcl_ListBox_SelItemRange jb104_00_ListBox 0 (dcl_ListBox_GetCount jb104_00_ListBox)0)<br>
+  (command "-layer" "_thaw" "*" "")<br>
+)<br>
+<br>
+(defun c:jb104_00_on_OnClicked ( /)<br>
+  (dcl_ListBox_SelItemRange jb104_00_ListBox 0 (dcl_ListBox_GetCount jb104_00_ListBox)0)<br>
+  (command "-layer" "_on" "*" "")<br>
+)<br>
+<br>
+(defun c:jb104_00_CheckBox7_OnClicked (nValue /)<br>
+     (c:jb104_00_OnDocActivated)<br>
+)<br>
+<br>
+(defun c:jb104_00_ref_OnClicked ( /)<br>
+     (c:jb104_00_OnDocActivated)<br>
+)<br>
+<br>
+<br>
+(defun c:jb104_00_ListBox_OnSelChanged (nSelection sSelText / rValue layers)<br>
+     (Setq rValue (dcl_ListBox_GetSelectedItems jb104_00_ListBox)<br>
+	   layers(vla-get-layers(vla-get-ActiveDocument(vlax-get-acad-object)))<br>
+	   Value (dcl_Control_GetValue jb104_00_CheckBox7))<br>
+  (if Value<br>
+  (foreach x rValue<br>
+    (vla-put-layeron(vla-item layers x):vlax-true))<br>
+    (foreach x rValue<br>
+    (vla-put-layeron(vla-item layers x):vlax-false)))<br>
+)<br>
+<br>
+(defun c:jb104_00_CheckBox7_OnClicked (nValue /)<br>
+     (dcl_ListBox_SelItemRange jb104_00_ListBox 0 (dcl_ListBox_GetCount jb104_00_ListBox)0)<br>
+)<br>
+<br>
+;;;							;<br>
+;;;		Command Interface			;<br>
+;;;							;<br>
+<br>
+(defun c:jbLayerWalk  (/ )<br>
+  (defun EnsureProjectLoaded  (project / project-path)<br>
+    (if	(not (setq project-path (dcl_Project_Load project)))<br>
+      (progn <br>
+	(alert (strcat "ODCL project \"" project "\" failed to load!"))<br>
+	(exit) <br>
+	)))<br>
+  (EnsureProjectLoaded "jb104") <br>
+  (if (not (dcl_Form_IsActive jb104_00))<br>
+    (dcl_Form_Show jb104_00))<br>
+  (princ))<br>
+<br>
+<br>
+;;;							;<br>
+;;;		Floating Form				;<br>
+;;;		Document Opened				;<br>
+;;;							;<br>
+<br>
+(defun jb:Laywalk_IsFloating  (/ )<br>
+  (defun EnsureProjectLoaded  (project / project-path)<br>
+    (if	(not (setq project-path (dcl_Project_Load project)))<br>
+      (progn <br>
+	(alert (strcat "ODCL project \"" project "\" failed to load!"))<br>
+	(exit) <br>
+	)))<br>
+  (EnsureProjectLoaded "jb104") <br>
+  (if (dcl_Form_IsActive jb104_00)<br>
+    (c:jb104_00_OnDocActivated))<br>
+  (princ))<br>
+<br>
+(jb:Laywalk_IsFloating)<br>
+</code></pre></div>
+</article>
+<article class="post" id="msg161">
+  <div class="post-head">
+    <span class="post-author">tlindell</span>
+    <span class="post-date muted">2007-08-15 02:07 UTC</span>
+  </div>
+  <div class="post-body">That's a really good observation.  Modeless/dockable forms should always make the most of the space they use.  That's been a big pet peeve for me and hope to make many forms like this.  I think you took it to an even higher level than I've attempted, so there's something to strive for :)<br>
+<br>
+I was also trying to figure out how to store and load the dialog code within the defun code today.  Looks like I've found the answer by your example code!</div>
+</article>
+<article class="post" id="msg166">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2007-08-15 11:47 UTC</span>
+  </div>
+  <div class="post-body">Glad to be of help.  I'm going to start uploading more examples as time allows - so stay tuned!</div>
+</article>
+<article class="post" id="msg170">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-08-15 16:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=38.msg151#msg151 date=1186667767 wrote:</cite><br>
+(if (not (vl-bb-ref 'jbLwalk))<br>
+  (vl-bb-set<br>
+    'jbLwalk<br>
+    (dcl_project_import<br>
+      (strcat<br>
+	"YWt6A8EpAADwQIP7BuKTJqMRZTtu4c2duhP9dG+uKDYeOt6fn9oNgmvZdtczP7wXFORqbizbDECR"<br>
+"pxDQQEvPpNQ8nHF+d4/8+nqBfpzdNgJBK0L76dQRA5/TbGzcYcLeXMCipY3QCcPtRMC4EPbH72Ib"<br>
+"AOCn5ePnoZLgub/tr5nwxAuMApIqVxfaS3HGTHhu3aEuG0zlsSZHTRGXZ00Tlxccm4ost1wErMiz"<br>
+...<br>
+</blockquote><br>
+<br>
+James, I just want to point out that it is no longer necessary to concatenate the strings with (strcat).  The (dcl_project_import) function will accept multiple string arguments and concatenate them itself, thus saving a lot of time and memory consumption over the "(strcat) into one single string" method.</div>
+</article>
+<article class="post" id="msg171">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2007-08-15 16:37 UTC</span>
+  </div>
+  <div class="post-body">So we just loose the (strcat . . . ) and call <br>
+<br>
+<pre class="code"><code> <br>
+(dcl_project_import<br>
+"YWt6A8EpAADwQIP7BuKTJqMRZTtu4c2duhP9dG+uKDYeOt6fn9oNgmvZdtczP7wXFORqbizbDECR"<br>
+"pxDQQEvPpNQ8nHF+d4/8+nqBfpzdNgJBK0L76dQRA5/TbGzcYcLeXMCipY3QCcPtRMC4EPbH72Ib"<br>
+"AOCn5ePnoZLgub/tr5nwxAuMApIqVxfaS3HGTHhu3aEuG0zlsSZHTRGXZ00Tlxccm4ost1wErMiz"<br>
+. . . )<br>
+</code></pre><br>
+<br>
+Cool! Thanks Owen.<br>
+</div>
+</article>
+<article class="post" id="msg176">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-08-16 06:55 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=38.msg171#msg171 date=1187195836 wrote:</cite><br>
+So we just loose the (strcat . . . ) and call ...<br>
+</blockquote><br>
+<br>
+Close. The argument needs to be a list of strings like this:<br>
+(dcl_project_import '(<br>
+"string1"<br>
+"string2"<br>
+))<br>
+<br>
+See DistSample2.lsp in the examples folder for a sample.</div>
+</article>
+<article class="post" id="msg178">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2007-08-16 11:26 UTC</span>
+  </div>
+  <div class="post-body">Even better: so I can just copy and past the OpenDCLForm.LSP contents into the (dcl_Project_import . . .) function!<br>
+<br>
+Thankyou Owen!</div>
+</article>
+<article class="post" id="msg200">
+  <div class="post-head">
+    <span class="post-author">tlindell</span>
+    <span class="post-date muted">2007-08-18 00:30 UTC</span>
+  </div>
+  <div class="post-body">I didn't get a chance to say this on the sourceforge forums, but I really appreciate being able to do this for distributting purposes rather than relying on a second file like DCL does.</div>
+</article>
+<article class="post" id="msg203">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2007-08-19 13:47 UTC</span>
+  </div>
+  <div class="post-body">Owen, do we even need the .odcl file?  Can we just use the .lsp file??  If I'm going to wrap it in a VLX or FAS then there in lies the security . . ..</div>
+</article>
+<article class="post" id="msg204">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-08-19 14:28 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=38.msg203#msg203 date=1187531260 wrote:</cite><br>
+Owen, do we even need the .odcl file?</blockquote><br>
+<br>
+James, you can use only the .lsp file if you prefer. The only advantage of using an .odcl file is that it's smaller.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

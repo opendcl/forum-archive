@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Keeping the &quot;CurrentSelection&quot; in Listbox controls when re-entering modal form · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2469</p>
+    <h1>Keeping the &quot;CurrentSelection&quot; in Listbox controls when re-entering modal form</h1>
+    <p class="meta">Started by Carsten ·
+      2017-01-09 17:17 UTC ·
+      2 replies · SMF topic #2469</p>
+<article class="post" id="msg12327">
+  <div class="post-head">
+    <span class="post-author">Carsten</span>
+    <span class="post-date muted">2017-01-09 17:17 UTC</span>
+  </div>
+  <div class="post-body">Hi Forum, <br>
+<br>
+just asking for a quick feed-back on whether I understand correctly the nature of the "CurrentSelection" in the ListBox control:<br>
+When "re-entering" a modal form the "List" property of the ListBox is still remembered, so it is populated with the same items as before the "Form_close" <br>
+But the "CurrentSelection" returns -1, even though an item was selected before the form was closed. <br>
+<br>
+I guess it has to do with the "CurrentSelection" of the ListBox not being a Property but something else?<br>
+Therefore it is necessary to have variables for the current selections of all ListBox's so that user selections from before the "Form_Close" can be re-established? <br>
+(Which is just what I am trying to avoid). <br>
+<br>
+Thanks in advance<br>
+Carsten</div>
+</article>
+<article class="post" id="msg12329">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2017-01-12 04:09 UTC</span>
+  </div>
+  <div class="post-body">You are correct, that there is no property for current selection, or selection of any kind. Selection state is something handled entirely by the list box control itself. Therefore, an instance of a list box control must exist in order for "selection" to have any meaning. When the control goes away, so does selection state.<br>
+<br>
+Indeed, your own code is free to define a "current selection" and apply it during OnInitialize.</div>
+</article>
+<article class="post" id="msg12331">
+  <div class="post-head">
+    <span class="post-author">Carsten</span>
+    <span class="post-date muted">2017-01-12 13:58 UTC</span>
+  </div>
+  <div class="post-body">Thanks for response. <br>
+No problem to maintain the CurrentSelection through the code, just wanted to make sure I was not coding something which could already be handled by the control. <br>
+<br>
+BR<br>
+Carsten</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

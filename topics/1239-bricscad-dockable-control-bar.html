@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bricscad dockable control bar, · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1239</p>
+    <h1>Bricscad dockable control bar,</h1>
+    <p class="meta">Started by Danielm103 ·
+      2010-03-26 15:04 UTC ·
+      5 replies · SMF topic #1239</p>
+<article class="post" id="msg6632">
+  <div class="post-head">
+    <span class="post-author">Danielm103</span>
+    <span class="post-date muted">2010-03-26 15:04 UTC</span>
+  </div>
+  <div class="post-body">looks a little off when docked...see pic. works great though : )<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1360/Capture.PNG">Capture.PNG</a> <span class="muted">(27854 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6640">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2010-03-27 18:14 UTC</span>
+  </div>
+  <div class="post-body">Indeed this is great news.<br>
+<br>
+Just for info though, I've posted 6 bugs on the Opendcl bug tracker (begining with the prefix "Brx ControlBar - ..").  I attach my simple test project here also, if others want to re-check my observations.  (I am using Windows XP).<br>
+<br>
+<br>
+Fundamental bugs that prevent useage at the moment:<br>
+<br>
+1.  You can only load a ControlBar project once in a Bricscad session.  If wont reload a second time. Test by pasting  (dcl_project_load "BrxControlBarTest" T) on the command line.<br>
+<br>
+2.  You can only show a ControlBar (dcl_form_show) once in a Bricscad session.  Test by pasting (dcl_Form_Show BrxControlBarTest_ControlBarTest1) on the commandline.<br>
+<br>
+3. There is a conflict with dragging toolbars over the ControlBar.  They sometimes dock incorrectly and when you drag them off, Bricscad crashes.<br>
+<br>
+Other bugs:<br>
+<br>
+4. The geometry of the controls are not quite right when the toolbar is docked, as illustrated in Daniel's post.<br>
+<br>
+5. The ControlBar when launched does not show at the correct width.<br>
+<br>
+6. dcl_Control_SetWidth function doesnot work correctly when the ControlBar is docked. Test by pasting (dcl_Control_SetWidth BrxControlBarTest_ControlBarTest1 100) on the commandline.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1361/BrxControlBarTest.zip">BrxControlBarTest.zip</a> <span class="muted">(1294 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6647">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2010-03-29 09:22 UTC</span>
+  </div>
+  <div class="post-body">Ah great, thanks Owen, ODCL Runtime 6.0.0.25. has worked around some of these Bricscad code bugs.  <br>
+<br>
+Here are the results of round 2 of my testing:<br>
+<br>
+Fundamental bugs:<br>
+<br>
+1. You can only load a ControlBar project once in a Bricscad session..... - Fixed.<br>
+<br>
+2. You can only show a ControlBar (dcl_form_show) once in a Bricscad session.... -Fixed.<br>
+<br>
+3.  There is a conflict with dragging toolbars over the ControlBar....  - Problem persists.<br>
+<br>
+Other bugs:<br>
+<br>
+4.  The geometry of the controls are not quite right when the toolbar is docked... - Fixed.<br>
+<br>
+5.  The ControlBar when launched does not show at the correct width. - Problem persists.<br>
+<br>
+6.  dcl_Control_SetWidth function doesnot work correctly. - Problem persists.<br>
+<br>
+<br>
+Owen, now the geometry of the controls has been fixed, its enabled me to find a new bug:<br>
+<br>
+The "Right from Right" property of a control are measured from different sides of the drag bar on a docked ControlBar's edge in AutoCAD and Bricscad.  See attached image.  <em></em> Would you like this added to the Bug tracker too? <br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1364/Right from Right.jpg">Right from Right.jpg</a> <span class="muted">(22294 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6648">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-29 11:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Danner link=topic=1239.msg6647#msg6647 date=1269854563 wrote:</cite><br>
+Would you like this added to the Bug tracker too? </blockquote><br>
+<br>
+Yes, thanks, that would be a good one to add.</div>
+</article>
+<article class="post" id="msg6653">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2010-03-29 16:47 UTC</span>
+  </div>
+  <div class="post-body">Problems persist in Bricscad Pro 10.3.9 beta.</div>
+</article>
+<article class="post" id="msg6665">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2010-03-30 11:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Danner link=topic=1239.msg6647#msg6647 date=1269854563 wrote:</cite><br>
+<br>
+Here are the results of round 2 of my testing:<br>
+<br>
+Fundamental bugs:<br>
+<br>
+1. You can only load a ControlBar project once in a Bricscad session..... - Fixed.<br>
+<br>
+2. You can only show a ControlBar (dcl_form_show) once in a Bricscad session.... -Fixed.<br>
+<br>
+</blockquote><br>
+<br>
+Hi Owen, just noticed if you close the ControlBar whilst its floating  rather than docked, these 2 bugs persist.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

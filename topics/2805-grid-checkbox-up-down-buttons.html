@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid checkbox / up&amp;down buttons · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2805</p>
+    <h1>Grid checkbox / up&amp;down buttons</h1>
+    <p class="meta">Started by blacsteel ·
+      2022-01-17 20:03 UTC ·
+      2 replies · SMF topic #2805</p>
+<article class="post" id="msg13646">
+  <div class="post-head">
+    <span class="post-author">blacsteel</span>
+    <span class="post-date muted">2022-01-17 20:03 UTC</span>
+  </div>
+  <div class="post-body">I have a question about grid. <br>
+<br>
+First thing, I added the check boxes to each row, but how can I store a variable as string of the element in first column of the row that has been checked? <br>
+<br>
+And second thing, I would like to make two buttons, UP and DOWN so the selected row would go up or down on the grid. Didn't find any help with that in samples, so maybe someone has an idea how to do that?<br>
+<br>
+Thank you for your time.</div>
+</article>
+<article class="post" id="msg13654">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2022-02-25 12:20 UTC</span>
+  </div>
+  <div class="post-body">Hello, I afraid, you already have a solution.<br>
+<br>
+1) check box: not sure, whether I understood correct, but you have to check the event OnEndLabelEdit you get notified when the checkbox content has been changed storing it in a dictionary  to get access to the results after the for was closed.<br>
+<br>
+2) Yes, I did it too, it need a couple ofwork:<br>
+- store cell values of the row in a list<br>
+- remove the row (dcl-Grid-DeleteRow )<br>
+- insert a new row in the desired line using the stored values (dcl-Grid-InsertRow )<br>
+<br>
+Hope it helps<br>
+Fred</div>
+</article>
+<article class="post" id="msg13669">
+  <div class="post-head">
+    <span class="post-author">blacsteel</span>
+    <span class="post-date muted">2022-05-04 13:23 UTC</span>
+  </div>
+  <div class="post-body">Tanks! I figured out 1) in the meantime yes, but you helped me with 2) a lot, I made it work</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

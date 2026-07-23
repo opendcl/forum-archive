@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Error message when the event runs DCL_FORM_CLOSEALL · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2098</p>
+    <h1>Error message when the event runs DCL_FORM_CLOSEALL</h1>
+    <p class="meta">Started by garcigj ·
+      2014-02-25 09:00 UTC ·
+      4 replies · SMF topic #2098</p>
+<article class="post" id="msg10408">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-02-25 09:00 UTC</span>
+  </div>
+  <div class="post-body">Error message when the event runs DCL_FORM_CLOSEALL<br>
+<br>
+OpenDCL Runtime [8.0.0.3]<br>
+Autocad 2014<br>
+Windows 7<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1961/25-02-2014 9-54-08.png">25-02-2014 9-54-08.png</a> <span class="muted">(10292 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10409">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-02-25 14:37 UTC</span>
+  </div>
+  <div class="post-body">Please create a simple project that I can use to reproduce the problem.</div>
+</article>
+<article class="post" id="msg10411">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-02-25 16:42 UTC</span>
+  </div>
+  <div class="post-body">Owen, <br>
+<br>
+I can not reproduce the errors in a simple test, but in my project is giving error. Do not know why. <br>
+<br>
+I put the test project. but as I said before, it works well. <br>
+I send by MP project with which the error occurs, just to try it.<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1962/Example_01.odcl">Example_01.odcl</a> <span class="muted">(720 bytes)</span></li><li><a href="../attachments/1963/Example_01.lsp">Example_01.lsp</a> <span class="muted">(1654 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10413">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-02-25 19:56 UTC</span>
+  </div>
+  <div class="post-body">Thanks, I was able to reproduce the problem (the tab pages were the key), and this is now fixed for the next build. Keep in mind that using (dcl-Form-CloseAll) can potentially close forms that are not from your application. It's almost always best to close only your forms by calling (dcl-Form-Close) for each open form.</div>
+</article>
+<article class="post" id="msg10414">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-02-25 20:04 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+<br>
+I have set up for this application (dcl-Form-Close), if you notice tapeworm commented with ";;" <br>
+<br>
+I'll have to look at this more closely to applications that use multiple palettes and modeless dialog <br>
+<br>
+I do not want to use DCL_FORM_CLOSEALL in published applications. <br>
+<br>
+Thanks and regards.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

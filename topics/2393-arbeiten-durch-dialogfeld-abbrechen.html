@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arbeiten durch Dialogfeld abbrechen · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/11-german.html">GERMAN</a> /
+      Topic 2393</p>
+    <h1>Arbeiten durch Dialogfeld abbrechen</h1>
+    <p class="meta">Started by CADwiesel ·
+      2016-07-27 12:50 UTC ·
+      1 replies · SMF topic #2393</p>
+<article class="post" id="msg11979">
+  <div class="post-head">
+    <span class="post-author">CADwiesel</span>
+    <span class="post-date muted">2016-07-27 12:50 UTC</span>
+  </div>
+  <div class="post-body">In einer Schleife werden aus Zeichnungen Blockvorschaubilder erstellt. Das Ganze passiert während eine Palette geöffnet ist. Wenn diese Unterfunktion startet, soll gleich ein neuer Dialog mit einem Fortschrittsbalken angezeigt werden.<br>
+Durch einen Abbruchbutton in diesem Dialog würde ich gerne die weitere Ausführung der Funktion abbrechen wollen.<br>
+Jetzt habe ich einen modalen und einen nicht modalen Dialog ausprobiert. Aber ich schaffe es nicht die Ausführung der Funktion zu unterbrechen.<br>
+der nicht modale Dialog wird zwar angezeigt, es ist aber nicht möglich dem eine Aktion bei dem Klick auf den Button abzuringen, weil er wohl nie den Focus erhält.<br>
+der modale Dialog wartet natürlich bei der Initialisierung darauf das irgendwas mit ihm passiert und so lange wird nicht weiter gemacht.<br>
+<br>
+muss ich eine Palette nehmen?<br>
+wie gehts?</div>
+</article>
+<article class="post" id="msg12029">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-08-16 05:33 UTC</span>
+  </div>
+  <div class="post-body">Hi, jaaaaa - das geht nicht.<br>
+Warum? Ganz einfach - one after the other: Lisp läuft in einem roten Faden ab.<br>
+Was Du willst, ist in einem separaten Thread Einfluss auf den Hauptthread zu nehmen.<br>
+Der Tastendruck und die damit verbundene Ausführung der Ereignisfunktion reichen da bereits.<br>
+In C# mache ich das mit dem BackgroundWorker.<br>
+<br>
+Denn während AutoCAD Deine Lisp abarbeitet, hat AutoCAD zu tun und mag keine "äußeren Einflussnahmen". Ich kenne das Problem und habe schon einige Kopfstände damit verbracht.<br>
+<br>
+VG, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

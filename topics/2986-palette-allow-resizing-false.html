@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PALETTE, ALLOW RESIZING=FALSE · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2986</p>
+    <h1>PALETTE, ALLOW RESIZING=FALSE</h1>
+    <p class="meta">Started by domenicomaria ·
+      2025-11-26 17:37 UTC ·
+      8 replies · SMF topic #2986</p>
+<article class="post" id="msg14291">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2025-11-26 17:37 UTC</span>
+  </div>
+  <div class="post-body">I tried using <strong>PALETTES</strong>...<br>
+<br>
+<strong>It would be great if they worked properly!</strong><br>
+<br>
+I set "<strong>allow resizing</strong>" to "<strong>false</strong>"<br>
+<br>
+but it was <strong>useless</strong>... it was a<strong>lways possible to resize</strong> the palette... <br>
+<br>
+then I set "width", "max width", and "min width" to have the same value, <br>
+and I did the same by assigning the same value <br>
+to "height", "min height", and "max height"... <br>
+<br>
+and it seemed to work, <br>
+but every time (with "auto hide" enabled) <br>
+the palette was hidden or shown, <br>
+<strong>the size changed unpredictably...</strong></div>
+</article>
+<article class="post" id="msg14292">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2025-11-26 17:46 UTC</span>
+  </div>
+  <div class="post-body">probably the first simple thing to fix is "<strong>allow resizing</strong>" : <br>
+<br>
+if it's <strong>set to "false"</strong>,the <strong>palette should NEVER change size</strong>, <br>
+for any reason...</div>
+</article>
+<article class="post" id="msg14293">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2025-11-26 21:41 UTC</span>
+  </div>
+  <div class="post-body">Palettes are child windows inside a dock. The dock is user sizable, and it can have other palettes alongside your palette, so your palette isn't in control of the dock size. If you set a palette resizable=false, then it really does not resize, but that does not prevent the dock from being resized. It just means your palette may be smaller or larger than the dock, instead of resizing with it. The dock does take into consideration the min/max sizes of all palettes in the same dock, so that does give some control, but it doesn't force the dock to be a certain size in case there are conflicting requirements among multiple palettes.</div>
+</article>
+<article class="post" id="msg14294">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2025-11-27 04:39 UTC</span>
+  </div>
+  <div class="post-body">What you say is certainly correct...<br>
+... but there's more...<br>
+... something's not working...<br>
+in any case...<br>
+<br>
+keep in mind that I use Bricscad.<br>
+<br>
+I'm sending you some images...<br>
+If there are too many, delete them.<br>
+<br>
+Thanks<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2667/6.png">6.png</a> <span class="muted">(7230 bytes)</span></li><li><a href="../attachments/2668/5.png">5.png</a> <span class="muted">(15562 bytes)</span></li><li><a href="../attachments/2669/4.png">4.png</a> <span class="muted">(19970 bytes)</span></li><li><a href="../attachments/2670/2.png">2.png</a> <span class="muted">(23629 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg14295">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2025-11-27 05:15 UTC</span>
+  </div>
+  <div class="post-body">It seems that it is possible to control the "height" of the palette... <br>
+<br>
+... while the <strong>"width" is absolutely out of my control</strong>...</div>
+</article>
+<article class="post" id="msg14298">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2025-12-04 04:32 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen.<br>
+<br>
+Try playing a little with this lisp, please ... <br>
+<br>
+you have to <strong>drag </strong>the palette using the "title bar" ...<br>
+and sometime let it to <strong>dock</strong><br>
+and after <strong>drag </strong>it again<br>
+and do this 10, 20 ... <strong>30 times</strong> ... please<br>
+<br>
+And it will show you <strong>its unpredictable behaviour</strong> ... !<br>
+<br>
+<br>
+<br>
+<pre class="code"><code>(defun PALETTE-TEST ()<br>
+<br>
+	(dcl-project-import<br>
+		'("YWt6A9QFAACdGFNZBuITLbUUaj9qQ0MYWBtiWnpcnFQeOj84WI00nCyu+zBKQAC+903e50I2PHKn"<br>
+		"Guf7kIN7aUBsjn/8ZSnEjX2Cfe32nDRfk8dL49CX/SsqqUMDEKPE0WTwcR1alYZS5Ma5J5zE9MWC"<br>
+		"OH7AcHw9e3QqZxGfQNiO/g3wzT0rPWPKVqsumMH0gUmbh2xkgmTU3jDX/1RY1iuQI2flu1RTMOzh"<br>
+		"WqXe02ykolWgCHOt6qXq2INSLdSEpSTKqdgqiWRLoO49r8Lbr2ZGfWmPMUxSyBsKz7gnnBQd6yGJ"<br>
+		"Z105ZPfUxf1/inPJm02euWG95VZaTsx2osSe8bYZsLm8AWwAWqaBM7cDbYO5/PE7J4GgtYfJnJFF"<br>
+		"n6F2gSqSQW3CX8ZuG49IePGSJ5yjpzKsjanO+mtSzpiwt7dRZzPGdSex9Ljgjo7sqEypS/2B1yBw"<br>
+		"ULMyIZuAZGDusqF0ArNMLbYiD9TtBkC4KAf2M6FMHcayG+MimMC/K4nDkoxsJS/MyF0jy2XOR58g"<br>
+		"9YBVv1F7wW5CWojKtWhNz+PiHxL1ItUmmKXljdEN/K8in/0J8SwlQEEQN4485MmW2SsCIIYQvqDp"<br>
+		"cV+xqFSDYwGkjjuPC0qOKDJJZY5RvTFaiKX/SbxjtIN5nKEA5PWgh5Gs+UE8AiABUZOOYGDpjZm8"<br>
+		"g7HzwWcOrYSUOL6AAi2O8p6V/Ivj4ukkicPlwxqBeQk5tms=")<br>
+	)<br>
+<br>
+	(dcl-form-show "pltt-test" "pltt-test")<br>
+)<br>
+<br>
+(defun C:PT () (PALETTE-TEST) )</code></pre><br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2671/PT-02.jpg">PT-02.jpg</a> <span class="muted">(45129 bytes)</span></li><li><a href="../attachments/2672/PT-01.jpg">PT-01.jpg</a> <span class="muted">(44456 bytes)</span></li><li><a href="../attachments/2673/pltt-test.lsp">pltt-test.lsp</a> <span class="muted">(927 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg14299">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2025-12-04 04:39 UTC</span>
+  </div>
+  <div class="post-body">...<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2676/PT-03.jpg">PT-03.jpg</a> <span class="muted">(37083 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg14303">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2025-12-12 17:44 UTC</span>
+  </div>
+  <div class="post-body">While doing some testing, I was pleased and surprised to discover that <br>
+if I set "allow resizing" to True, <br>
+<strong>the palette behaves exactly as I wanted, without any errors or strangeness.</strong> <br>
+<br>
+In practice, there should be a very simple error to correct. <br>
+That is, <strong>invert the "allow resizing" values</strong>... <br>
+<br>
+<strong>True have to mean False, and False have to mean True</strong>... <br>
+<br>
+Owen, what do you think? <br>
+<br>
+It seems to be easy !<br>
+<br>
+ciao</div>
+</article>
+<article class="post" id="msg14304">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2025-12-13 01:12 UTC</span>
+  </div>
+  <div class="post-body">I think it is working as intended. I think you're mixing up the palette control with the dock that contains it. Consider my explanation in note 2. The Allow Resizing property controls the behavior of the palette control when the containing dock resizes. It does not control the dock.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

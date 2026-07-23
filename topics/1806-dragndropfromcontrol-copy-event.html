@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DragnDropFromControl Copy event · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1806</p>
+    <h1>DragnDropFromControl Copy event</h1>
+    <p class="meta">Started by honkinberry ·
+      2012-05-22 21:55 UTC ·
+      11 replies · SMF topic #1806</p>
+<article class="post" id="msg8890">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2012-05-22 21:55 UTC</span>
+  </div>
+  <div class="post-body">I'm implementing Drag n Drop on a Tree Control.<br>
+I see that the icon changes to the Copy icon when the user holds down the Ctrl key, but I don't see any way to intercept this.  It would seem there would need to be an additional Flags argument passed to DragnDropFromControl in order to know if that was the case, correct?<br>
+Is there a recommendation on how to handle this?<br>
+<br>
+Many, many thanks as always!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg8891">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2012-05-22 22:04 UTC</span>
+  </div>
+  <div class="post-body">ah, I hate to be That Guy, but I think I just answered my own question.<br>
+In DragBegin I can return the bit code of what is allowed, as well as in DragOver.<br>
+But since I'm only concerned with Move vs. Copy, when a successful Drag operation is completed, if the Node of the source item is still around, I can safely assume that the user had the Ctrl key down, yes?  And when the source Key node is gone, then that must have been a successful Move operation.<br>
+Does that sound right?<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg8892">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2012-05-22 23:13 UTC</span>
+  </div>
+  <div class="post-body">Nope, that didn't work either.<br>
+In the Drag complete event after a Move, GetItemHandle still returns the source node.<br>
+And whether Moving or Copying, there is no difference in the DropPoint argument, and even the GetSelectedItem still returns the same source node for a Move.<br>
+So sorry, still stumped. Thanks for any help!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg8893">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-05-23 00:05 UTC</span>
+  </div>
+  <div class="post-body">The general design goal is for the built-in drag/drop behavior to be usable as-is, but if you implement any of the drag and drop event handlers, you're expected to handle everything and the built-in behavior is not used. Since it sounds like you're only copying and moving existing nodes around, I wonder what exactly you need that the built in behavior doesn't provide. The built in behavior may simply need to be fixed or improved. On the other hand, I'm not sure I understand the problem. It would help if you could upload a very simple project along with instructions to reproduce the problem.</div>
+</article>
+<article class="post" id="msg8894">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2012-05-23 03:30 UTC</span>
+  </div>
+  <div class="post-body">Here you go.<br>
+<br>
+First, I need to know what node was dragged onto what node.<br>
+That's pretty easy, I just need a global var to store the key from the DragDropBegin method.<br>
+<br>
+But I also need to know if the user was holding Ctrl, which presents the user with a nice Copy icon during the drag.<br>
+<br>
+As for the built-in behavior -- when I Move a node, it just disappears.  I don't see how that could possibly be usable as-is, I will always need to recreate the node in the destination location, yes?<br>
+If the user holds down Ctrl and gets the Copy icon, the source node stays there, but there is no node automatically created at the destination, correct?  And no ability for me to ascertain that the Ctrl key was depressed.<br>
+<br>
+Many thanks for your help!<br>
+<br>
+--J<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1738/treelist.zip">treelist.zip</a> <span class="muted">(1240 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8907">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-05-28 02:06 UTC</span>
+  </div>
+  <div class="post-body">You say "when I Move a node, it just disappears". I can't reproduce that. When I move, it reappears as a child of the node I dropped it on. When I copy, the original stays, but a new copy appears. I just took your sample file and unchecked the two handled events on the tree control.<br>
+<br>
+I can see how it would be useful to know whether the drop is a move or copy in the drop handler. A new argument could be added, but that would break existing code. Hopefully in this case the built in behavior will work for you.</div>
+</article>
+<article class="post" id="msg8909">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2012-05-30 19:07 UTC</span>
+  </div>
+  <div class="post-body">I need my handled events, however.<br>
+After a user drags an item, there are corresponding files that need to moved/copied, and updates in a database that need to be effected.<br>
+I also need the Drag Over event, so that I can dynamically set the allowable operations of Move, Copy, Disallow.<br>
+Not to mention just the confirmation screen -- "Are you sure you wish to move/copy the selected item?"<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg8910">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-05-31 00:31 UTC</span>
+  </div>
+  <div class="post-body">In that case, your best bet is probably to treat every drop as a copy, then fire off a post process check (perhaps using <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Function/DelayedInvoke.htm" rel="nofollow noopener">{2}</a>) to see whether the source is still there, and handle the situation appropriately if it is no longer present.</div>
+</article>
+<article class="post" id="msg8911">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2012-05-31 16:49 UTC</span>
+  </div>
+  <div class="post-body">I think I'm going to allow only Move operations, then have a custom confirmation screen that allows selecting Move or Copy.<br>
+<br>
+I'd really like all the code to be self-contained within the functions handling the dialog box, and not have to require a public callable function, global variables for source and destination key, and then have access back to the dialog box to add the new node.<br>
+<br>
+I have all the code I need for this, and it's all very familiar to the version we did with a TreeList control for the Visual Basic version of the application.  Yet there, the OLECompleteDrag passes a parameter for the style of drag:<br>
+<a href="http://msdn.microsoft.com/en-us/library/x013da05(v=vs.80).aspx" rel="nofollow noopener">{2}</a><br>
+<br>
+I understand that changing the number of parameters for the DragDropFromControl Event would break existing code, but it would also make the event far more usable.  As it is, I can't really do anything with it off the shelf.  A treelist correlates with something -- block definitions, source drawings, organization chart, you name it.  So in any real-world usage, a drag drop event requires something else to be done to effect the user's intent.<br>
+I would offer, that the simplest fix, would be to move the Event fire to *after* the default dragdrop behavior.  In this case, I could query the treelist to see if the source node was still there, or if it had been copied, and then perform all my additional cleanup routines.<br>
+<br>
+Thanks for the info!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg8912">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-05-31 17:15 UTC</span>
+  </div>
+  <div class="post-body">It isn't possible to change the event handler timing because the return value from the drop event handler is needed as the ultimate return value of the initiating drag operation, but you can already postpone a *notification* using the technique I mentioned earlier, so not much would be gained anyway. If I could get some feedback from users of drop handler events, I might be persuaded to add a new argument to the drop handler even though it would break existing code.</div>
+</article>
+<article class="post" id="msg8947">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2012-06-22 16:55 UTC</span>
+  </div>
+  <div class="post-body">Any word on this?<br>
+We've implemented this feature, and the quirkiness is already soliciting feedback from users.<br>
+<br>
+Here's what we have:<br>
+a TreeList control, with DragBegin (that sets what can and can't be moved/copied), DragOver (which sets where things can/can't be dropped), and DragDropFromControl (which confirms the operation, then moves the files, updates the database with the new filenames).<br>
+As I have a custom DragDropFromControl, the default control behavior is what is most troublesome.  If the user clicks No, the node still disappears!  Poof!  Gone!  But it's not in the new location.  And I can't add it back if they click No, because that event hasn't happened yet, so the node is actually still there when my code fires.<br>
+<br>
+What would be simplest would be if I could prevent the default behavior from happening at all, depending on my return value of DragDropFromControl.  That would seem to be the easiest change for any existing code, yes?<br>
+<br>
+But in addition to that, I need to be able to know if the user was holding down Ctrl for Copy.  This is a standard with other DragDrop handlers.  I get that either changing DropPoint, or adding an additional parameter will break existing code -- but again, how can any existing code actually accomplish anything if it can't tell if the operation is a Move or Copy?  Or add a simple confirmation screen to DragDrop operation?<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg8948">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-06-22 21:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=honkinberry link=topic=1806.msg8947#msg8947 date=1340384101 wrote:</cite><br>
+Any word on this?</blockquote><br>
+<br>
+I'm not sure what you mean. If you're asking whether the OpenDCL user community has provided any new feedback on this subject, the answer is "no".<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=honkinberry link=topic=1806.msg8947#msg8947 date=1340384101 wrote:</cite><br>
+What would be simplest would be if I could prevent the default behavior from happening at all, depending on my return value of DragDropFromControl.  That would seem to be the easiest change for any existing code, yes?<br>
+</blockquote><br>
+<br>
+I think it's bad UI design to display a modal dialog during a drop, but it might be possible to use the return value without too much disruption. It would be the same return value as DragOverFromControl, with the same meaning. The change could break existing code if the existing event handler happens to return an integer, but the odds would be fairly small.<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=honkinberry link=topic=1806.msg8947#msg8947 date=1340384101 wrote:</cite><br>
+...how can any existing code actually accomplish anything if it can't tell if the operation is a Move or Copy?  Or add a simple confirmation screen to DragDrop operation?<br>
+</blockquote><br>
+<br>
+The drag/drop design is based on a philosophy of insulating the drag from the drop. A well designed drop handler does not know or care about the source of the drop, and vice versa. That means the drop handler should always treat a drop as "insert a new item", then let the drag handler decide what to do with the original item based on the drop type. A modal UI (which is what I assume you mean by "simple confirmation screen") freezes the drag/drop message pump while it's in the middle of a drop, which is a risky business and not recommended. If the goal is to let the user back out after an inadvertent drag, then it would be better to provide an "Undo" mechanism or a way to disable drag/drop at runtime and only enable it on demand.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PARTIAL SOLVED[6.0.0.16] Filter Style on textbox not apply ! · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1088</p>
+    <h1>PARTIAL SOLVED[6.0.0.16] Filter Style on textbox not apply !</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-12-15 23:36 UTC ·
+      10 replies · SMF topic #1088</p>
+<article class="post" id="msg5727">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-15 23:36 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I would like to set dynamically the textbox's "filter style".<br>
+<br>
+Here are my files (see below)<br>
+<br>
+I need to show again the dialog box.<br>
+<br>
+Best regards , Stéphan.<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1164/text_box.lsp">text_box.lsp</a> <span class="muted">(852 bytes)</span></li><li><a href="../attachments/1165/text_box.odcl">text_box.odcl</a> <span class="muted">(992 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5730">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-15 23:46 UTC</span>
+  </div>
+  <div class="post-body">Hi Stephan,<br>
+<br>
+did it work in earlier releases? I'm not sure, but I believe to remember that it is not possible to switch between FilterStyles at runtime. But I may be wrong...<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5733">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-15 23:52 UTC</span>
+  </div>
+  <div class="post-body">Fred is correct, it is not possible to change the filter style after the control is created. There have been improvements to the infrastructure in 6.0 so that this might be possible with some work, but the way the filter works internally makes it complicated to do.</div>
+</article>
+<article class="post" id="msg5739">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-16 00:07 UTC</span>
+  </div>
+  <div class="post-body">Fred: maybe do not work in earlier release, never use it  ;D<br>
+<br>
+Owen :<br>
+<br>
+Cannot set before dialog was shown  :(<br>
+<br>
+So, find a solution, but still .... "diy"<br>
+<br>
+<br>
+(dcl_Control_SetFilterStyle ... 0)<br>
+  (dcl_Form_Close ...)<br>
+  (dcl_Form_Show ...)<br>
+<br>
+<br>
+And using Initialise Event.<br>
+<br>
+Best regards</div>
+</article>
+<article class="post" id="msg5741">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-16 00:18 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Possible solution :<br>
+<br>
+Have 2 textbox controls.<br>
+Depending on the requirements, show only the one required by simply making the other not-visible. I have done this, but need to design one control slightly longer than the other so they are selectable in the Editor/Studio.</div>
+</article>
+<article class="post" id="msg5744">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-16 00:24 UTC</span>
+  </div>
+  <div class="post-body">Yes, Kerry is right, I'd prefer different textboxes, too.<br>
+Or - just a thought- a grid with only one cell. If you need another style just clear the grid and create a new cell.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5745">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-16 01:53 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+Actually, I'm wondering if it's a good idea from an enduser's view to have the textbox filters different at different times. Would this lead to confusion.<br>
+<br>
+Comment on close/show for form. I don't see a problem with this, depending on how much work needed to be done at initialisation.<br>
+Knowing how you intended using this would help us make an informed decision.<br>
+<br>
+Hope that translates well.<br>
+<br>
+Kerry<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5750">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-16 04:22 UTC</span>
+  </div>
+  <div class="post-body">I think he just wants to support a user option to show or hide the entered password, which I think is a good idea. I would probably try Fred's dual textbox approach.</div>
+</article>
+<article class="post" id="msg5751">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-16 10:03 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=1088.msg5745#msg5745 date=1260928396 wrote:</cite><br>
+Actually, I'm wondering if it's a good idea from an enduser's view to have the textbox filters different at different times. Would this lead to confusion.<br>
+</blockquote><br>
+<br>
+Hello Kerry,<br>
+<br>
+I understood what you mean, but, i my case, i have to make a lot of dialog box, so i made some "generic" one, which i used every times i needed to .<br>
+I send some parameters like filter, default text, to customise them.<br>
+<br>
+Best regards, Stéphan.</div>
+</article>
+<article class="post" id="msg5752">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-16 10:58 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=stephan_35 link=topic=1088.msg5751#msg5751 date=1260957797 wrote:</cite><br>
+I send some parameters like filter, default text, to customise them.<br>
+</blockquote><br>
+<br>
+Stephan, I know what you mean, I did it too in the old ObjectDCL with listviews when it was not possible to change the selection style from single to multiple at runtime. For that case I draw two identical listviews (with the exception of this only property), even with the same events and generic event function names for both. In the OnInitialize event I wrote<br>
+<br>
+(if isMultipleSelection<br>
+  (progn<br>
+    (dcl_control_setVisible MyProj_MyForm_LstSingle nil)<br>
+    (setq oListViewControl MyProj_MyForm_LstMultiple)<br>
+  ); progn<br>
+  (progn<br>
+    (dcl_control_setVisible MyProj_MyForm_LstMultiple nil)<br>
+    (setq oListViewControl MyProj_MyForm_LstSingle)<br>
+  ); progn<br>
+); if<br>
+(dcl_control_setvisible oListViewControl T)<br>
+<br>
+And I go on accessing the right listview using the variable oListViewControl.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5753">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-16 11:30 UTC</span>
+  </div>
+  <div class="post-body">Thanks for help fred,<br>
+<br>
+Sorry, I'm not agree with working two item to do one action, and i prefer to work only with one text_box or one list_view (didn't have any test with listview).<br>
+<br>
+Work fine for myself now .  ;)<br>
+<br>
+Best regards</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

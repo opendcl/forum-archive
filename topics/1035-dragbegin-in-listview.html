@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DragBegin in ListView · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1035</p>
+    <h1>DragBegin in ListView</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-11-27 13:55 UTC ·
+      5 replies · SMF topic #1035</p>
+<article class="post" id="msg5331">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-27 13:55 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+something must have been changed. I can tell that the following was not so in OpenDCL 5.1.2.3 .<br>
+<br>
+I have a palette.<br>
+There is a listview in the palette.<br>
+DragBegin is not allowed.<br>
+When shift key will be pressed OnKeyDown will be relesed to allow DragBegin (my idea was to allow only Drag&amp;Drop by holding shift key to avoid unwanted moving)<br>
+While holding shift key another list view item is being picked to select a range of items. AllowDragBegin is still active.<br>
+When clicking the other listview item for selecting a range OnDragBegin and OnDragDropFromControl will be released although I didn't drag long enough that drag&amp;drop should be started. In the end the latest picked item will disappear although nothing happens in the OnDragDropFromControl event.<br>
+<br>
+Released events:<br>
+lst_prop_OnClicked = start of range<br>
+lst_prop_OnKeyDown: 16 - 42 = press shift key<br>
+lst_prop_OnKeyDown: 16 - 16426 (multiple times while holding shift key)<br>
+lst_prop_OnClicked = End of range<br>
+lst_prop_OnSetFocus<br>
+lst_prop_OnDragnDropBegin<br>
+lst_prop_OnDragnDropFromControl<br>
+lst_prop_OnKeyUp: 16 - -16342<br>
+<br>
+That would be dangerous if clicking an item in a listview with enabled and allowed DragBegin and enabled and allowed Drop would cause the remove of items.<br>
+<br>
+I hope that I early find the time for the sample...<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1064/A14.gif">A14.gif</a> <span class="muted">(139888 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5340">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-28 09:19 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+I'm not sure if it is a bug or just missing of know-how:<br>
+<br>
+If I load the sample I attached I see layernames in the list. If I click one it disappears although my code does nothing.<br>
+What am I doing wrong?<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1067/layerorder.odcl">layerorder.odcl</a> <span class="muted">(1372 bytes)</span></li><li><a href="../attachments/1068/layerorder.LSP">layerorder.LSP</a> <span class="muted">(4024 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5341">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-11-28 10:39 UTC</span>
+  </div>
+  <div class="post-body">Hello Fred  <br>
+Execelente this work.  <br>
+I could not test your code.  <br>
+Do you can me to say if a Tool Tip exists to show the text that is occult for the size of the field?<br>
+<br>
+Thanks.  <br>
+velasquez</div>
+</article>
+<article class="post" id="msg5350">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-28 19:32 UTC</span>
+  </div>
+  <div class="post-body">Hi velasquez,<br>
+<br>
+<blockquote class="quote">I could not test your code. </blockquote><br>
+Are there any error messages?  Does it not work? :-\<br>
+<br>
+<blockquote class="quote">a Tool Tip exists to show the text that is occult for the size of the field?</blockquote><br>
+As far as I know there are no tooltips for trunked listview items. But there are tooltips for trunked tree nodes and items.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5354">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-29 03:56 UTC</span>
+  </div>
+  <div class="post-body">Fred,<br>
+<br>
+You say <blockquote class="quote">DragBegin is not allowed.</blockquote><br>
+however the <em>Drag/Drop Allow Begin</em> property in the ODCL is set to true ???<br>
+<br>
+Without change, and without code analysis :<br>
+<br>
+Command: LAYERORDER<br>
+edt_info=&gt; OnkeyUp<br>
+<br>
+Mouseover Pallete<br>
+edt_info=&gt; OnMouseEntered<br>
+<br>
+LeftClick LayerName<br>
+edt_info=&gt;  OnDragnDropBegin <br>
+                OnDragnDropFromControl<br>
+Selected LayerName is removed from List. <br>
+<br>
+Mouseover Pallete<br>
+edt_info=&gt; OnMouseEntered<br>
+LayerName is restored to (bottom of)  List<br>
+<br>
+//==<br>
+<br>
+Shift LeftClick Layername <br>
+edt_info=&gt;  OnDragnDropBegin <br>
+                OnDragnDropFromControl<br>
+                OnKeydown<br>
+List is highlighted from top (or from highlighted) to newly selected item<br>
+Selected item is removed from List<br>
+<br>
+//==<br>
+Ctrl Click on unhighlighted list<br>
+Selection Highlights<br>
+edt_info=&gt;  OnDragnDropBegin <br>
+                OnDragnDropFromControl<br>
+<br>
+subsequent CtrlClick<br>
+Previous stays highlighted<br>
+Selection Highlights<br>
+edt_info=&gt;  OnDragnDropBegin <br>
+                OnDragnDropFromControl<br>
+                OnKeyDown <br>
+<br>
+<br>
+//==<br>
+AltClick  <br>
+<br>
+as LeftClick<br>
+ <br>
+<br>
+//==<br>
+Of interest:<br>
+Sometimes a series of the OnMouseEntered event fire ... can't isolate cause, but one situation is when cursor is near the "X" close icon.<br>
+<br>
+                      </div>
+</article>
+<article class="post" id="msg5355">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-29 07:48 UTC</span>
+  </div>
+  <div class="post-body">Kerry, as you can see at the Screenshot both are different programs. The first one is my final product. The code I've uploaded is a smaller sample for debugging. In the smaller sample is AllowDragBegin enabled, you are right.<br>
+And you can reproduce the problem that on clicking the item the clicked item will be removed.<br>
+<br>
+Working with the shift key at the first screenshot is caused by the effect that OnDblClicked was not released when DragBegin is allowed.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

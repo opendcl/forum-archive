@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3 ODCL control question? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 127</p>
+    <h1>3 ODCL control question?</h1>
+    <p class="meta">Started by JTHWAMAN ·
+      2007-12-31 13:43 UTC ·
+      7 replies · SMF topic #127</p>
+<article class="post" id="msg499">
+  <div class="post-head">
+    <span class="post-author">JTHWAMAN</span>
+    <span class="post-date muted">2007-12-31 13:43 UTC</span>
+  </div>
+  <div class="post-body">3 ODCL control question?<br>
+<br>
+01.How presses down  After the button,<br>
+appears  picture, how is setup ?<br>
+<br>
+02.How in  presses down "ENTER" after , <br>
+joins the material to  ?<br>
+<br>
+03. the number of words surpasses the scope,<br>
+Why can show, how is setup ?<br>
+<br>
+Thank you for your offered to help.<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg500">
+  <div class="post-head">
+    <span class="post-author">JTHWAMAN</span>
+    <span class="post-date muted">2007-12-31 13:44 UTC</span>
+  </div>
+  <div class="post-body">odcl file<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg506">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-01-01 02:33 UTC</span>
+  </div>
+  <div class="post-body">I'm not sure I understand you, but I'll try to answer your questions.<br>
+1. You have 2 options here a) you an use "dcl_Control_SetVisible" to hide &amp; show controls at run-time in the Button Clicked event b) You can re-size you form at run-time so it scrolls up &amp; down on the button clicked event.<br>
+2. You can use a text box &amp; the "ReturnPressed" Event &amp; append the text to a ListBox. See the "ListBoxCopyPaste" example for a demo of this.<br>
+3. I'm not sure what you're asking on this one, sorry?</div>
+</article>
+<article class="post" id="msg507">
+  <div class="post-head">
+    <span class="post-author">JTHWAMAN</span>
+    <span class="post-date muted">2008-01-01 07:15 UTC</span>
+  </div>
+  <div class="post-body">I according to yours method hypothesis,<br>
+but or has the problem,<br>
+enclosed file.<br>
+Requests the help to inspect.<br>
+<br>
+<pre class="code"><code><br>
+(defun c:qtest ( / )<br>
+<br>
+;;;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br>
+(defun c:ODCL_008T_TS_OnSize (nWidth nHeight /)<br>
+(dcl_control_setwidth ODCL_008_TS nWidth)<br>
+)<br>
+<br>
+<br>
+;;;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br>
+(defun c:ODCL_008T_TS_GBN0_OnClicked ( / )<br>
+(if (= (dcl_control_getwidth ODCL_008_TS nHeight) 35)<br>
+(SETQ nWidth 105)<br>
+(SETQ nWidth 35)<br>
+)<br>
+(SETQ nHeight (dcl_control_getwidth ODCL_008_TS nHeight))<br>
+(c:ODCL_008T_TS_OnSize nWidth nHeight)<br>
+)<br>
+<br>
+<br>
+;;;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br>
+(defun c:ODCL_008T_TS_GBN1_OnClicked ( / )<br>
+(if (= (dcl_Control_GetVisible ODCL_008_TS_RE0) nil)<br>
+(progn<br>
+(dcl_Control_SetVisible ODCL_008_TS_RE0 t)<br>
+(dcl_Control_SetVisible ODCL_008_TS_TBX0 t)<br>
+(dcl_Control_SetVisible ODCL_008_TS_LBL1 t)<br>
+)<br>
+(progn<br>
+(dcl_Control_SetVisible ODCL_008_TS_RE0 nil)<br>
+(dcl_Control_SetVisible ODCL_008_TS_TBX0 nil)<br>
+(dcl_Control_SetVisible ODCL_008_TS_LBL1 nil)<br>
+)<br>
+)<br>
+)<br>
+<br>
+(DCL_LOADPROJECT "ODCL_008.odcl" T)<br>
+(dcl_FORM_SHOW ODCL_008_TS)<br>
+<br>
+(PRINC))<br>
+</code></pre><br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg511">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-01-02 05:14 UTC</span>
+  </div>
+  <div class="post-body">Try this:<br>
+(make sure you're using the latest build V:4.1.2.1)<br>
+<br>
+<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg512">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-01-02 06:51 UTC</span>
+  </div>
+  <div class="post-body">Sorry I forgot to mention that, currently it too complicated to get the form size and resize you form based on that, as it returns the size with the titlebar &amp; form borders. These could be different on each users PC, so you'll never get the same resolutes. So I use the pic. box as the switch. </div>
+</article>
+<article class="post" id="msg515">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-01-02 21:05 UTC</span>
+  </div>
+  <div class="post-body">So JTHWAMAN, I just realized you could use:<br>
+(dcl_Form_GetControlArea ODCL_008_TS)<br>
+To check your forms height, then do the form resizing based on that, instead of using the Pic. box as the switch as I did in my example.<br>
+</div>
+</article>
+<article class="post" id="msg520">
+  <div class="post-head">
+    <span class="post-author">JTHWAMAN</span>
+    <span class="post-date muted">2008-01-04 13:18 UTC</span>
+  </div>
+  <div class="post-body">Thanks BazzaCAD </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

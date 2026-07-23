@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Error message with ListView · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1255</p>
+    <h1>Error message with ListView</h1>
+    <p class="meta">Started by Jürg Menzi ·
+      2010-04-14 08:30 UTC ·
+      7 replies · SMF topic #1255</p>
+<article class="post" id="msg6724">
+  <div class="post-head">
+    <span class="post-author">Jürg Menzi</span>
+    <span class="post-date muted">2010-04-14 08:30 UTC</span>
+  </div>
+  <div class="post-body">Hi to all<br>
+<br>
+That's my first post in this forum - nice to see some known names...8-)<br>
+<br>
+Ok, in short<br>
+ODCL is new for me, so I do my first steps with this product. Most of the<br>
+features are easy to handle, but then I got an error in a ListView and<br>
+I don't know what's the reason for:<br>
+<br>
+(defun WLK_0010 (Cus Cul / CusLst DefCus FrmNme HdrLst SelMde SelRec)<br>
+ (setq FrmNme "frmSelPro"<br>
+       CusLst (mapcar '(lambda (l) (WLK_0014 (cdr l))) Cul)<br>
+       DefCus (cond ((LkListPos CusLst Cus)) (0))<br>
+       HdrLst (list<br>
+               (list (LkGetPrompt 0 137 0) 0 10)<br>
+               (list (LkGetPrompt 0 138 0) 0 10)<br>
+               (list (LkGetPrompt 0 139 0) 0 10)<br>
+               (list (LkGetPrompt 0 140 0) 0 10)<br>
+              )<br>
+       SelMde (atoi (LkGetAssoc "Lk:Mde" (cdr (nth DefCus Cul))))<br>
+       SelRec (atoi (LkGetAssoc "Lk:Rec" (cdr (nth DefCus Cul))))<br>
+ )<br>
+ (dcl_Form_Show Lk:Nme FrmNme)<br>
+ (dcl_Control_SetTitleBarText Lk:Nme FrmNme (strcat Lk:Nme (LkGetPrompt 1 100 0)))<br>
+ (dcl_Control_SetCaption Lk:Nme FrmNme "lblAppNme" (strcat Lk:Nme " " Lk:Ver))<br>
+ (dcl_Control_SetCaption Lk:Nme FrmNme "lblCpyRgt" Lk:Cpr)<br>
+ (dcl_Control_SetValue Lk:Nme FrmNme "optUseFld" SelMde)<br>
+ (dcl_Control_SetValue Lk:Nme FrmNme "optUseFil" (boole 6 1 SelMde))<br>
+ (dcl_Control_SetValue Lk:Nme FrmNme "chkRecFld" SelRec)<br>
+ (dcl_Control_SetEnabled Lk:Nme FrmNme "chkRecFld" (= SelMde 1))<br>
+ (dcl_ListView_AddColumns Lk:Nme FrmNme "lstSelPro" HdrLst) ;&lt;-- Error line<br>
+ (dcl_ListView_FillList Lk:Nme FrmNme "lstSelPro" CusLst)<br>
+ (dcl_ListView_SetCurSel Lk:Nme FrmNme "lstSelPro" DefCus)<br>
+ DefCus<br>
+)<br>
+<br>
+Does somebody know what's the reason for this message?<br>
+The rest of the code works without any problems...<br>
+<br>
+Thx, Jürg<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1372/ODCL-Error.jpg">ODCL-Error.jpg</a> <span class="muted">(12380 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6725">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-04-14 11:34 UTC</span>
+  </div>
+  <div class="post-body">Hi Jörg, <br>
+<br>
+hello to this forum. At first something about special chars (like ä ö ü and so on): Have a look <a href="http://www.opendcl.com/forum/index.php?topic=1183.0" rel="nofollow noopener">{2}</a> to change the language of your profile to make sure that your name will be displayed correctly.<br>
+<br>
+Are you sure that your ListView was named correctly?<br>
+<br>
+What is the return of <br>
+(eval (read (strcat Lk:Nme "_" FrmNme "_" "lstSelPro")))<br>
+when the form is shown?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6726">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-04-14 11:47 UTC</span>
+  </div>
+  <div class="post-body">In addition to my answer:<br>
+<br>
+Whenever argument 0 is criticized the form cannot be found in the list of active forms or the control cannot be found in the list of child controls of the given form. Either the project isn't loaded yet, the form is not active yet or the form or control has another name as given.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6727">
+  <div class="post-head">
+    <span class="post-author">Jürg Menzi</span>
+    <span class="post-date muted">2010-04-14 13:12 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred<br>
+<br>
+Profile changed...<br>
+<br>
+<blockquote class="quote">Are you sure that your ListView was named correctly?</blockquote><br>
+Yes, see below<br>
+<br>
+<blockquote class="quote">What is the return of <br>
+(eval (read (strcat Lk:Nme "_" FrmNme "_" "lstSelPro")))<br>
+when the form is shown?</blockquote><br>
+nil<br>
+<br>
+I can't understand the fact that the other controls are working perfect, but not the ListView.<br>
+<br>
+Thx for the quick response<br>
+Jürg<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1373/ODCL-Studio.jpg">ODCL-Studio.jpg</a> <span class="muted">(14301 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6728">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-04-14 13:38 UTC</span>
+  </div>
+  <div class="post-body">Yes, I'm sure you can get it after (dcl_project_load "myProj" T) or after restarting AutoCAD.<br>
+Why? Because (eval (read (strcat Lk:Nme "_" FrmNme "_" "lstSelPro"))) is nil in your case. You will see that (eval (read (strcat Lk:Nme "_" FrmNme "_" "optUseFil"))) is not nil.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6730">
+  <div class="post-head">
+    <span class="post-author">Jürg Menzi</span>
+    <span class="post-date muted">2010-04-14 17:12 UTC</span>
+  </div>
+  <div class="post-body">Duhhh,<br>
+<br>
+Shame on me, a typical beginner's mistake!<br>
+Instead using the VB form logic I had the stoneage DCL in my mind.<br>
+Have a look to the positon of '(dcl_Form_Show Lk:Nme FrmNme)' in my code...<br>
+<strong>OnInitialize </strong>was the magic word!<br>
+<br>
+Sorry to keep you busy with my scrap! &gt;:(<br>
+Cheers<br>
+Jürg<br>
+<br>
+BTW, works now like a charm :D</div>
+</article>
+<article class="post" id="msg6732">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-04-14 21:40 UTC</span>
+  </div>
+  <div class="post-body">Welcome Jorg (BTW, your name still displays incorrectly for me). For what it's worth, the (dcl_Control_SetXxx) functions did not produce an exception because setting static control properties does not require an instance of the control. If, instead of the project/form/control method, you had used the Lisp variable to specify the control, those calls would also have resulted in exceptions because the variable's value is set only while the control exists.</div>
+</article>
+<article class="post" id="msg6733">
+  <div class="post-head">
+    <span class="post-author">Jürg Menzi</span>
+    <span class="post-date muted">2010-04-15 06:27 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1255.msg6732#msg6732 date=1271281248 wrote:</cite><br>
+Welcome Jorg (BTW, your name still displays incorrectly for me).</blockquote><br>
+Hmmm, I've changed my profile as Fred recommended. The correct character is the umlaut ü (ue).<br>
+And...<br>
+thanks for your explanations about the odcl mechanism.<br>
+<br>
+Cheers<br>
+Jüerg</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

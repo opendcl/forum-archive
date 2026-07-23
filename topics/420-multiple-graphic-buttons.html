@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Multiple Graphic Buttons · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 420</p>
+    <h1>Multiple Graphic Buttons</h1>
+    <p class="meta">Started by scottcd ·
+      2008-09-09 11:19 UTC ·
+      3 replies · SMF topic #420</p>
+<article class="post" id="msg1889">
+  <div class="post-head">
+    <span class="post-author">scottcd</span>
+    <span class="post-date muted">2008-09-09 11:19 UTC</span>
+  </div>
+  <div class="post-body">I am having problems with the following code as it seems to only toggle graphicbutton1.<br>
+<br>
+Is it just me being thick, or is it a bug?<br>
+<br>
+Cheers<br>
+<br>
+Scott<br>
+<br>
+Using version 1.0.0.24<br>
+Acad 2006<br>
+<br>
+<br>
+<pre class="code"><code>(defun c:nlc ()<br>
+<br>
+  (dcl_Project_Load "Nortec_Layer_Control" T)<br>
+  (dcl_Form_Show Nortec_Layer_Control_Form1)<br>
+  (princ)<br>
+)<br>
+<br>
+(defun c:Nortec_Layer_Control_Form1_GraphicButton1_OnClicked (/) ; Basement<br>
+  (if (= (dcl_Control_GetBackColor Nortec_Layer_Control_Form1_GraphicButton1) -256)<br>
+    (progn						    ; FREEZE Basement<br>
+      (dcl_Control_SetBackColor<br>
+	Nortec_Layer_Control_Form1_GraphicButton1<br>
+	855551<br>
+      )<br>
+      (command "layer" "Freeze" "*basement*" "")<br>
+    )<br>
+    (progn						    ; THAW Basement<br>
+      (dcl_Control_SetBackColor<br>
+	Nortec_Layer_Control_Form1_GraphicButton1<br>
+	65280<br>
+      )<br>
+      (command "layer" "thaw" "*basement*" "")<br>
+    )<br>
+  )<br>
+)<br>
+<br>
+(defun c:Nortec_Layer_Control_Form1_GraphicButton2_OnClicked (/) ;Ground<br>
+  (if (= (dcl_Control_GetBackColor Nortec_Layer_Control_Form1_GraphicButton2) -256)<br>
+    (progn						    ; FREEZE Ground<br>
+      (dcl_Control_SetBackColor<br>
+	Nortec_Layer_Control_Form1_GraphicButton2<br>
+	855551<br>
+      )<br>
+      (command "layer" "Freeze" "*ground*" "")<br>
+    )<br>
+    (progn						    ; THAW Ground<br>
+      (dcl_Control_SetBackColor<br>
+	Nortec_Layer_Control_Form1_GraphicButton2<br>
+	65280<br>
+      )<br>
+      (command "layer" "thaw" "*ground*" "")<br>
+    )<br>
+  )<br>
+)<br>
+<br>
+(defun c:Nortec_Layer_Control_Form1_GraphicButton3_OnClicked (/) ;First<br>
+  (if (= (dcl_Control_GetBackColor Nortec_Layer_Control_Form1_GraphicButton3) -256)<br>
+    (progn						    ; FREEZE First<br>
+      (dcl_Control_SetBackColor<br>
+	Nortec_Layer_Control_Form1_GraphicButton3<br>
+	855551<br>
+      )<br>
+      (command "layer" "Freeze" "*First*" "")<br>
+    )<br>
+    (progn						    ; THAW First<br>
+      (dcl_Control_SetBackColor<br>
+	Nortec_Layer_Control_Form1_GraphicButton3<br>
+	65280<br>
+      )<br>
+      (command "layer" "thaw" "*First*" "")<br>
+    )<br>
+  )<br>
+)<br>
+<br>
+(defun c:Nortec_Layer_Control_Form1_GraphicButton4_OnClicked (/) ;Second<br>
+  (if (= (dcl_Control_GetBackColor Nortec_Layer_Control_Form1_GraphicButton4) -256)<br>
+    (progn						    ; FREEZE Second<br>
+      (dcl_Control_SetBackColor<br>
+	Nortec_Layer_Control_Form1_GraphicButton4<br>
+	855551<br>
+      )<br>
+      (command "layer" "Freeze" "*Second*" "")<br>
+    )<br>
+    (progn						    ; THAW Second<br>
+      (dcl_Control_SetBackColor<br>
+	Nortec_Layer_Control_Form1_GraphicButton4<br>
+	65280<br>
+      )<br>
+      (command "layer" "thaw" "*second*" "")<br>
+    )<br>
+  )<br>
+)<br>
+</code></pre><br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/472/Nortec_Layer_Control.odcl">Nortec_Layer_Control.odcl</a> <span class="muted">(767 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1890">
+  <div class="post-head">
+    <span class="post-author">scottcd</span>
+    <span class="post-date muted">2008-09-09 11:47 UTC</span>
+  </div>
+  <div class="post-body">I think I have sorted it out<br>
+<br>
+I initially created graphicbutton1 and then copied it to create the other buttons.<br>
+<br>
+I deleted the copied buttons and created them manually and it now seems to work.<br>
+<br>
+Not sure if this is a bug or the way it is intended to work?<br>
+<br>
+Cheers<br>
+<br>
+Scott<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg1893">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-09-09 18:13 UTC</span>
+  </div>
+  <div class="post-body">Once you enable an event in the events tab, the name of the callback function becomes "fixed".  Copying the button after the event was enabled would have resulted in all buttons calling the same event handler.  You could have manually edited the event handler function name after the copies were made (or just unchecked then rechecked the event, which would have refreshed the event handler function name).<br>
+<br>
+This behavior is a side effect of how event handlers were designed in the original ObjectDCL.</div>
+</article>
+<article class="post" id="msg1899">
+  <div class="post-head">
+    <span class="post-author">scottcd</span>
+    <span class="post-date muted">2008-09-10 11:32 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

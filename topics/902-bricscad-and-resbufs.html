@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bricscad and resbufs · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/4-source-code.html">Source Code</a> /
+      Topic 902</p>
+    <h1>Bricscad and resbufs</h1>
+    <p class="meta">Started by Danielm103 ·
+      2009-09-03 23:11 UTC ·
+      1 replies · SMF topic #902</p>
+<article class="post" id="msg4503">
+  <div class="post-head">
+    <span class="post-author">Danielm103</span>
+    <span class="post-date muted">2009-09-03 23:11 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Hi Owen<br>
+something you might want to be aware of. Bricscad does not automatically free the resbuf returned by acedGetArgs as AutoCAD does, you must explicitly call acutRelRb. I have filed a bug report with Bricsys regarding this, but I don't think it has been fixed yet.<br>
+calling acutRelRb and setting the pointer to NULL seems to make both platforms happy. <br>
+</div>
+</article>
+<article class="post" id="msg4504">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-04 01:22 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the heads up. Since acutRelRb() on the returned list is a no-op in AutoCAD, an easy solution would be to call acutRelRb on both platforms (except that for OpenDCL that would mean adding acutRelRb in 446 places). I just did a quick test, and the more serious problem is that in Bricscad every call to acedGetArgs returns a new copy of the argument resbuf. This causes the OpenDCL argument processing algorithm to fail because it calls acedGetArgs a second time to get back to the head of the list for calculating which argument triggered the argument processing exception. All this because Autodesk forgot to type the returned resbuf* as const in the R13 header file.<br>
+<br>
+Hopefully Bricsys fixes their implementation to match AutoCAD's, then I won't need to worry about it.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GetControls method · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 192</p>
+    <h1>GetControls method</h1>
+    <p class="meta">Started by fred_tomke ·
+      2008-02-18 22:37 UTC ·
+      3 replies · SMF topic #192</p>
+<article class="post" id="msg845">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-02-18 22:37 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I don't want to add this as a bug report until I know whether it's a bug or not:<br>
+<br>
+In the attachment you'll find a project file and a lisp. When the form will be initialized all controls shall be enabled (there are cases when all control will be disabled). To make sure that I won't forget a control I use the GetControls method.<br>
+<br>
+(mapcar '(lambda (x) (dcl_Control_SetEnabled x T)) (cdr (dcl_Form_GetControls constr_sc_hedge)))<br>
+<br>
+But with OpenDCL 5.0.0.5 the SetEnabled will be refused (invalid argument type, argument 0). I could swear that it worked in 5.0.0.3.<br>
+Are the controls invalid which are given by dcl_Form_GetControls?<br>
+<br>
+Fred<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg847">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-19 02:05 UTC</span>
+  </div>
+  <div class="post-body">This is a bug. I added some code to identify the type of pointer, and I forgot to update the GetControls function.  I will fix this for Alpha 6.</div>
+</article>
+<article class="post" id="msg848">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-19 02:19 UTC</span>
+  </div>
+  <div class="post-body">Fred, I am making one additional change for Alpha 6 that will affect your code. I am removing the form control from the list returned by GetControls. This will eliminate the need to worry about whether the form is always the first in the list. In any case, GetForms will return those controls in Alpha 6.</div>
+</article>
+<article class="post" id="msg850">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-02-19 07:08 UTC</span>
+  </div>
+  <div class="post-body">thanks, that's good to know<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

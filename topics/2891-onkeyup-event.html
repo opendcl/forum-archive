@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OnKeyUp event · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2891</p>
+    <h1>OnKeyUp event</h1>
+    <p class="meta">Started by Dovys ·
+      2023-10-24 19:40 UTC ·
+      7 replies · SMF topic #2891</p>
+<article class="post" id="msg13906">
+  <div class="post-head">
+    <span class="post-author">Dovys</span>
+    <span class="post-date muted">2023-10-24 19:40 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+I am trying to use OnKeyUp event on TextBox, it works if I use letter buttons, but if I try to use buttons above letter buttons like button "@" in text box I see symbol "@", but function KeyUp gives me number "2" in variable Character.<br>
+I try to get non English letters from this buttons after I set Keyboard layout to my language and here are some letters on buttons "@", "$" and so on.<br>
+Like button "@" have letter "Č" and button "$" have letter "Ė". But I only get number 2 or 4.</div>
+</article>
+<article class="post" id="msg13907">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2023-10-24 20:57 UTC</span>
+  </div>
+  <div class="post-body">Hi, that depends on the keys you need to input @ character. For the German keyboard layout I need to press AltGr to get @ sign. So the numer 2 and 4 are the key codes for the additional key.<br>
+I hope it was understandable.<br>
+With regards, Fred</div>
+</article>
+<article class="post" id="msg13908">
+  <div class="post-head">
+    <span class="post-author">Dovys</span>
+    <span class="post-date muted">2023-10-25 05:35 UTC</span>
+  </div>
+  <div class="post-body">I don't understand if we talk about same thing so I will try to explain in more details.<br>
+<br>
+I use Visual Studio Code as my IDE. I have run lisp with OpenDCL in debug mode from VSC.<br>
+After I open GUI made with OpenDCL in AutoCAD and enter symbol into text box I see @ but in VSC variable "Character" is 2<br>
+<br>
+<pre class="code"><code>(defun c:Savartos/Main/TBGNew#OnKeyUp (Character RepeatCount Flags /) </code></pre><br>
+<br>
+Because of this if I want to check if symbol @ was entered I don't know how, because in lisp I only see number 2. I have attached image.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2579/Debug-lisp.png">Debug-lisp.png</a> <span class="muted">(15501 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13909">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2023-10-25 08:31 UTC</span>
+  </div>
+  <div class="post-body">Hi, I'm not sure if you know that many events will be fired for a single @-char?<br>
+I attached a small example for demonstration. I hope I'm on the right path, sorry if not.<br>
+With regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2580/KeyTestProject.odcl">KeyTestProject.odcl</a> <span class="muted">(1038 bytes)</span></li><li><a href="../attachments/2581/KeyTestProject.lsp">KeyTestProject.lsp</a> <span class="muted">(1905 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13910">
+  <div class="post-head">
+    <span class="post-author">Dovys</span>
+    <span class="post-date muted">2023-10-25 13:14 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+yes, I know here are more events on key press.<br>
+I have tested you code (attached image). In window you can see 6 events.<br>
+1) Shift key Down.<br>
+2) @ key Down.<br>
+3) Shift key Up.<br>
+4) @ key Up.<br>
+5) 2 key Down.<br>
+6) 2 key Up.<br>
+<br>
+And in Input you can see @2<br>
+shift key Char is unknown and ASCII is 16, but in case of @ and 2 both are Char 2 and ASCII 50. This means it is not possible to get @ symbol (and all other symbols in this button row on keyboard) in lisp.<br>
+Input text box have symbol @ but lisp have events of two key presses.<br>
+<br>
+Writing this messages I got how can I get it. All I need from key up event is only even itself, but I don't need Character variable, I just need to read content of text box.<br>
+In my code only one letter can be entered in text box and this letter needs to be in hard coded list and not be in list of already entered letters.<br>
+<br>
+Thanks for help.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2582/keytest.png">keytest.png</a> <span class="muted">(9840 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13911">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2023-10-25 13:40 UTC</span>
+  </div>
+  <div class="post-body">That means, you have a solution now?<br>
+Fred</div>
+</article>
+<article class="post" id="msg13912">
+  <div class="post-head">
+    <span class="post-author">Dovys</span>
+    <span class="post-date muted">2023-10-25 14:30 UTC</span>
+  </div>
+  <div class="post-body">Yes.<br>
+<pre class="code"><code>(defun c:Savartos/Main/TBGNew#OnKeyUp (Character RepeatCount Flags / letter) <br>
+  (setq letter (dcl-Control-GetText Savartos/Main/TBGNew))<br>
+)</code></pre><br>
+I just ignore "Character RepeatCount Flags" and take text from text box with dcl-Control-GetText</div>
+</article>
+<article class="post" id="msg13913">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2023-10-25 15:40 UTC</span>
+  </div>
+  <div class="post-body">Great! I only use KeyDown in some ListViews and grids to recognize, when Delete was pressed. Changes in textboxes I always check with EditChanged or Update event.<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

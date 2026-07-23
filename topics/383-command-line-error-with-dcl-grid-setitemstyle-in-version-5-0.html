@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Command line error with dcl_Grid_SetItemStyle in version 5.0.0.15 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 383</p>
+    <h1>Command line error with dcl_Grid_SetItemStyle in version 5.0.0.15</h1>
+    <p class="meta">Started by hgcad ·
+      2008-07-24 14:48 UTC ·
+      2 replies · SMF topic #383</p>
+<article class="post" id="msg1693">
+  <div class="post-head">
+    <span class="post-author">hgcad</span>
+    <span class="post-date muted">2008-07-24 14:48 UTC</span>
+  </div>
+  <div class="post-body">Command line error when dcl_Grid_SetItemStyle in 5.0.0.15 is set to 30 or 20<br>
+<br>
+eg. below<br>
+<br>
+Command:<br>
+Document "C:\Program Files\Program 2004\qcTs01.dwg" has a command in <br>
+progress.<br>
+Hit enter to cancel or : R<br>
+*Cancel*<br>
+<br>
+Can someone help please.<br>
+Thank you in advance.<br>
+<br>
+hgcad</div>
+</article>
+<article class="post" id="msg1694">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-07-24 15:26 UTC</span>
+  </div>
+  <div class="post-body">Is this on a modal or modeless form?<br>
+When are you trying to change the ItemStyle, OnInitialization or later?<br>
+Maybe it's a version 5.0.0.15 bug &amp; you should try it in version 5.0.0.19.<br>
+</div>
+</article>
+<article class="post" id="msg1700">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-07-25 08:50 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+at first try with Alpha 19 like Barry said. It should work. I use this, too. If it doesn't work, just try a trick:<br>
+<br>
+Try to create a new drawing before calling your command. Change back to the drawing before and retry. Can you reproduce the problem?<br>
+Sometimes AutoCAD does not finish/cancel a command completely. Then this message also occur even if you have no other application running. After starting the opening command or new command everyting works fine. It's not seldom in Civil 3D.<br>
+<br>
+If you can reproduce this after new command then have a look into your application if any command was started before. Please note, that some events won't work very well if a command is active and the control or even the form uses EventInvoke=AllowCommand. The events cannot be called transparently. But I'm not sure it this will help in this case. Maybe you should debug this. Watch the systemvariables cmdnames and cmdactive while debugging.<br>
+<br>
+Fred<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

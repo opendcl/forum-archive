@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DwgPreview image · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2117</p>
+    <h1>DwgPreview image</h1>
+    <p class="meta">Started by kenkrupa ·
+      2014-03-29 18:59 UTC ·
+      8 replies · SMF topic #2117</p>
+<article class="post" id="msg10514">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2014-03-29 18:59 UTC</span>
+  </div>
+  <div class="post-body">Creating an app to display a selected dwg from a list from a data file. Created a nice big DwgPreview tool, with background color black (Model Space). But the image displayed is much smaller, with the rest of the background turning white! This tool does not seem to have an AutoSize option (like the Picture Box). Am I missing something, or is this a limitation that cannot be overcome?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1985/DwgPreview.jpg">DwgPreview.jpg</a> <span class="muted">(12086 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10515">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-03-29 19:11 UTC</span>
+  </div>
+  <div class="post-body">Which version of OpenDCL?</div>
+</article>
+<article class="post" id="msg10516">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2014-03-29 19:13 UTC</span>
+  </div>
+  <div class="post-body">8.0.0.4</div>
+</article>
+<article class="post" id="msg10517">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-03-29 20:24 UTC</span>
+  </div>
+  <div class="post-body">I've done quite a bit of work on that control in 8.0.0.4, so it's very possible that I broke something. Can you attach or email a simple sample that I can use to reproduce the problem?</div>
+</article>
+<article class="post" id="msg10518">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2014-03-29 20:53 UTC</span>
+  </div>
+  <div class="post-body">Here it is, highly stripped down and hard-coded to display the one dwg sent.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1986/DwgPreviewTest.zip">DwgPreviewTest.zip</a> <span class="muted">(13580 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10519">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-03-30 16:40 UTC</span>
+  </div>
+  <div class="post-body">I took a look at the DwgPreview control code and tested your sample. The control is designed to display the preview bitmap at its saved size unless it must be shrunk to fit (i.e. it is not designed to enlarge, even if there is space). I did some tests, and enlarging is technically possible, but it generally doesn't look very appealing. I've decided to leave the sizing code as it currently works. If you need more fidelity, I recommend to use the Block View control instead.<br>
+<br>
+I have fixed the background color bug for the next build.</div>
+</article>
+<article class="post" id="msg10520">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-03-30 17:25 UTC</span>
+  </div>
+  <div class="post-body">Perhaps related: After saving the file in BricsCAD V14 the DwgPreview shows inverted colors. I believe that this may be due to the use of a different image format for the preview in BC.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1987/VERTBRDR_BricsCAD14.dwg">VERTBRDR_BricsCAD14.dwg</a> <span class="muted">(14819 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10521">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2014-03-30 17:41 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2117.msg10519#msg10519 date=1396197644 wrote:</cite><br>
+I recommend to use the Block View control instead.<br>
+</blockquote><br>
+<br>
+Block View - I never guessed that it would also do drawings. Perfect! Thanks Owen.</div>
+</article>
+<article class="post" id="msg10522">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-03-30 18:32 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2117.msg10520#msg10520 date=1396200347 wrote:</cite><br>
+After saving the file in BricsCAD V14 the DwgPreview shows inverted colors.</blockquote><br>
+<br>
+Thanks, this should also be fixed in the next build.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

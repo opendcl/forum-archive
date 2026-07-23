@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AutoCAD tuecolordlg &lt;&gt; OpenDCL · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 552</p>
+    <h1>AutoCAD tuecolordlg &lt;&gt; OpenDCL</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-02-18 08:22 UTC ·
+      16 replies · SMF topic #552</p>
+<article class="post" id="msg2499">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-18 08:22 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+'cause I just translate the OLEColor.htm and the Color.htm:<br>
+<br>
+If you use the (acad_truecolordlg)-function of AutoCAD to change the color of an object or a layer you have to work quite differently to OpenDCL to get the right OLEColorIndex. Here is a sample:<br>
+<br>
+this r g b color is given: <br>
+(setq lstRGB (list 123 234 56)) <br>
+ <br>
+When preset the right color in (acad_truecolordlg ...) I have to make <br>
+(setq lstRGBForAcad <strong>(reverse lstRGB)</strong>) <br>
+(setq intRGBForAcad (+ (+ (lsh (caddr lstRGBForAcad ) 16) (lsh (cadr lstRGBForAcad ) 8 )) (car lstRGBForAcad ))) <br>
+ <br>
+When set the backcolor of an picturebox to show the changed color I have to make<br>
+ <br>
+(setq lstRGBForODCL lstRGB) <br>
+(setq intRGBForODCL (+ (+ (lsh (caddr lstRGBForODCL ) 16) (lsh (cadr lstRGBForODCL ) 8 )) (car lstRGBForODCL ))) <br>
+<br>
+Just for whom who needs. I will document this difference in the function GetOLEColorValue.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7048">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-07-21 15:57 UTC</span>
+  </div>
+  <div class="post-body">I'm having exactly this problem, but I'm not seeing where you are getting your RGB values from.<br>
+When the user picks a Truecolor from the Acad Truecolor dialog -- let's say 255,235,51, I get a return value of 16771891.<br>
+Yet picking the same color in the OpenDCL Editor, I get 3402751.<br>
+How do I convert from acad_truecolordlg return value to what OpenDCL wants?<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg7052">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-07-21 23:12 UTC</span>
+  </div>
+  <div class="post-body"><br>
+The difference is :<br>
+<br>
+RGB 255,235,51  is hex FF EB 33 which is decimal 16771891<br>
+<br>
+however ActiveX colors are based on the colors as BGR.<br>
+<br>
+If you feed 33ebff into this<br>
+<a href="http://www.easycalculation.com/hex-converter.php" rel="nofollow noopener">{2}</a><br>
+<br>
+you'll get 3402751 which is the OLEColor number needed by OpenDCL<br>
+<br>
+whereas ffeb33 will return 16771891 <br>
+<br>
+The ole number is based on<br>
+R<br>
++ G*255<br>
++ B*65536<br>
+<br>
+== 3402751<br>
+<br>
+Hope that helps<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg7053">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-07-21 23:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=honkinberry link=topic=552.msg7048#msg7048 date=1279727878 wrote:</cite><br>
+&lt; .. &gt;<br>
+How do I convert from acad_truecolordlg return value to what OpenDCL wants?<br>
+<br>
+--J<br>
+<br>
+</blockquote><br>
+<br>
+<br>
+Forgot to add :<br>
+<br>
+(dcl_GetOLEColorValue (list 255 235 51)) ;=&gt;&gt;  3402751 <br>
+<br>
+</div>
+</article>
+<article class="post" id="msg7054">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-07-21 23:55 UTC</span>
+  </div>
+  <div class="post-body">That helps a bit, but I still have no idea how to decode 16771891 to hex or RGB.<br>
+So given an Acad truecolor decimal value...<br>
+I decode it into Hex, then reverse the list, then encode back into decimal?<br>
+Or, once I've decoded it into Hex, encode just each RGB into decimal, which can be passed to GetOLEColor.<br>
+<br>
+Seems like GetOLEColor either needs an additional parameter or an additional helper function, as this is a pretty standard operation in my opinion.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg7055">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-07-22 00:05 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+OK, If you know the   Acad truecolor decimal <br>
+<br>
+try this<br>
+<br>
+<br>
+using this converter<br>
+<br>
+<br>
+<br>
+(defun TrueColor-split (c /)<br>
+  (list<br>
+    (lsh (fix c) -16) <br>
+    (lsh (lsh (fix c) 16) -24)<br>
+    (lsh (lsh (fix c) 24) -24)<br>
+  )  <br>
+)<br>
+<br>
+<br>
+<br>
+<br>
+and if the Truecolor is known as 16771891<br>
+<br>
+<br>
+(dcl_GetOLEColorValue (TrueColor-split 16771891 ))<br>
+<br>
+;;==&gt;&gt; 3402751<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg7057">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-07-22 00:11 UTC</span>
+  </div>
+  <div class="post-body">and just for completeness<br>
+<br>
+(defun TrueColor-make (r g b /)<br>
+  (+ (lsh (fix r) 16)<br>
+     (lsh (fix g) 8)<br>
+     (fix b)<br>
+   )<br>
+)<br>
+<br>
+<br>
+(TrueColor-make 255 235 51)<br>
+<br>
+;; returns the TrueColor from RGB<br>
+;;==&gt;&gt; 16771891<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+(defun OCEColor-make (r g b /)<br>
+  (+ (fix r)<br>
+     (lsh (fix g) 8)     <br>
+     (lsh (fix b) 16)<br>
+   )<br>
+)<br>
+<br>
+(OCEColor-make 255 235 51)<br>
+<br>
+;; returns the OCEColor from RGB<br>
+;;==&gt;&gt; 3402751</div>
+</article>
+<article class="post" id="msg7058">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-07-22 00:21 UTC</span>
+  </div>
+  <div class="post-body">You're a genuis!<br>
+Thank you.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg7059">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-07-22 00:23 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=honkinberry link=topic=552.msg7058#msg7058 date=1279758118 wrote:</cite><br>
+You're a genuis!<br>
+--J<br>
+<br>
+</blockquote><br>
+<br>
+No .. I just stand on the shoulders of giants.<br>
+<br>
+<blockquote class="quote"><cite> author=honkinberry link=topic=552.msg7058#msg7058 date=1279758118 wrote:</cite><br>
+Thank you.<br>
+<br>
+--J<br>
+<br>
+</blockquote><br>
+<br>
+You're most welcome.</div>
+</article>
+<article class="post" id="msg7061">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-07-22 00:45 UTC</span>
+  </div>
+  <div class="post-body">Well, it's a good thing you're humble, because your work is not done.  :)<br>
+<br>
+For some colors, I'm getting Invalid Argument Type.<br>
+Here are some of the values that threw the error:<br>
+(dcl_getolecolorvalue (18 208 237))<br>
+(dcl_getolecolorvalue (19 34 236))<br>
+(dcl_getolecolorvalue (222 226 29))<br>
+<br>
+Thanks again for your god-like assistance!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg7064">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-07-22 00:48 UTC</span>
+  </div>
+  <div class="post-body">You have to trick AutoCAD into not treating your list as a DXF list. One way to do that is to pass at least one element as a real number (your examples don't quote the list, which I assume is an oversight):<br>
+(dcl_getolecolorvalue '(18.0 208 237))<br>
+</div>
+</article>
+<article class="post" id="msg7065">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-07-22 00:55 UTC</span>
+  </div>
+  <div class="post-body">Worked perfectly, thanks!<br>
+<br>
+So of course Truecolor-split becomes:<br>
+<br>
+(defun TrueColor-split (c /)  <br>
+  (list  <br>
+    (+ (lsh (fix c) -16) 0.0)<br>
+    (lsh (lsh (fix c) 16) -24)  <br>
+    (lsh (lsh (fix c) 24) -24)  <br>
+  )    <br>
+)  <br>
+<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg7066">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-07-22 01:29 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+Personally :<br>
+I wouldn't change TrueColor-split because the return is correct.<br>
+<br>
+The Problem is with the parameters for  dcl_GetOLEColorValue <br>
+NOT with the return from TrueColor-split in it's pure form as a stand alone function.<br>
+<br>
+(dcl_GetOLEColorValue (TrueColor-split 16771891 )) works for me .. does it work for you ?<br>
+<br>
+<br>
+<br>
+I'd either pre-process the input to dcl_GetOLEColorValue ..<br>
+something like <br>
+(dcl_GetOLEColorValue (mapcar '+  '(0. 0 0)  (TrueColor-split 16771891 ) )) if necessary<br>
+<br>
+or use something like  <br>
+<br>
+<br>
+<br>
+(defun OCEColor-make_From-TrueColor (c /)<br>
+  (+ (fix (lsh (fix c) -16))<br>
+     (lsh (fix (lsh (lsh (fix c) 16) -24)) 8)<br>
+     (lsh (fix (lsh (lsh (fix c) 24) -24)) 16)<br>
+  )<br>
+)<br>
+<br>
+<br>
+(OCEColor-make_From-TrueColor 16771891 )<br>
+<br>
+;;=&gt; 3402751<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg7067">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-07-22 04:08 UTC</span>
+  </div>
+  <div class="post-body">Good point.<br>
+Or even wrap GetOLEColorValue with a function that can handle color as an AutoCAD color, even hex value, RGB, whatever, and then converts and preps as necessary.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg8497">
+  <div class="post-head">
+    <span class="post-author">EricStiles</span>
+    <span class="post-date muted">2011-11-26 07:26 UTC</span>
+  </div>
+  <div class="post-body">I know this is an old post but I'm going to add to it anyway.<br>
+<br>
+When using Freds line of code in the original post which converts RGB color to OLE color. <br>
+(setq intOLE (+ (+ (lsh (caddr lstRGB) 16) (lsh (cadr lstRGB) 8 )) (car lstRGB))) <br>
+<br>
+It works great until Green and Blue are set to zero and you only have a RED value.  When setting a background color of an OpenDCL object, for example a rectangle, it defaults to the Autocad Pallett not versions of RED.   So an RGB value of 255,0,0 should be very RED but instead its Autocad pallett of 255 which is White.</div>
+</article>
+<article class="post" id="msg8498">
+  <div class="post-head">
+    <span class="post-author">EricStiles</span>
+    <span class="post-date muted">2011-11-26 07:53 UTC</span>
+  </div>
+  <div class="post-body">I figured out a fix, add 16777216 to Freds results and it works.<br>
+For example:<br>
+(setq intOLE (+ (+ (+ (lsh (caddr lstRGB) 16) (lsh (cadr lstRGB) 8 )) (car lstRGB)) 16777216))</div>
+</article>
+<article class="post" id="msg8499">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-11-27 20:37 UTC</span>
+  </div>
+  <div class="post-body">Hi Eric, sounds interesting, I hadn't that problem yet.<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

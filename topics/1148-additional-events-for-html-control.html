@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Additional events for HTML Control · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1148</p>
+    <h1>Additional events for HTML Control</h1>
+    <p class="meta">Started by honkinberry ·
+      2010-01-25 17:12 UTC ·
+      5 replies · SMF topic #1148</p>
+<article class="post" id="msg6091">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-01-25 17:12 UTC</span>
+  </div>
+  <div class="post-body">Is there any chance we could get additional events for the HTML Control in the future?<br>
+Specifically, and most importantly, a BeginNavigation.  Then additionally some method of accessing the DOM would be great.<br>
+I work a lot with SketchUp, which has its Web Dialog class.  Having the ability to add action callbacks to HTML elements really opens up the ability to use HTML for a variety of dialog box uses.  Here's their documentation if curious:<br>
+<a href="http://code.google.com/intl/hu-HU/apis/sketchup/docs/ourdoc/webdialog.html" rel="nofollow noopener">{2}</a><br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg6092">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-25 17:21 UTC</span>
+  </div>
+  <div class="post-body">Due to the way it is hosted inside an MFC control, the OpenDCL control is pretty difficult to expose beyond the basics. It will still be hampered by the limitations of AutoLISP, but using the ActiveX web browser control instead of the built in HTML control may open a lot more possibilities.</div>
+</article>
+<article class="post" id="msg6099">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-01-25 20:41 UTC</span>
+  </div>
+  <div class="post-body">Don't know why I didn't think of that.<br>
+That does have a BeforeNavigate Event.  I'll give that a shot and post my progress.<br>
+Thanks!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg6110">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-01-26 04:36 UTC</span>
+  </div>
+  <div class="post-body">Well this definitely has potential, but I've hit a snag, wondering if there is a solution.<br>
+<br>
+The Microsoft Web Browser Control, inserted as an ActiveX Control, certainly does have a BeforeNavigate2 event.  Yet I can't seem to find a way to stop the navigation from happening.  MSDN says to set the Cancel parameter to true (<a href="http://msdn.microsoft.com/en-us/library/aa768326(VS.85).aspx)" rel="nofollow noopener">{2}</a> -- yet I believe the limitations of ActiveX through AutoLISP mean this is not passed ByRef, correct?<br>
+Anyway, I have tried throwing a (dcl_AxControl_Invoke  "Stop") in the OnBeforeNavigate2 event, but even that won't stop it from the pending navigation.  Also tried Quit, putting it into Offline mode, anything.<br>
+So for now, am just firing Form_Close from within the Navigate2 event, which certainly works, but there are times I don't really want the whole dialog to go away.<br>
+<br>
+In case anyone is curious what exactly I'm after -- Browsing a catalog is one of those cases where it is ideally presented in HTML format.  As well, most manufacturers already have HTML content for their products.  So it potentially can be a very slick method of choosing a particular item -- look through a web page of benches, with little images and text and such -- then when you click a button in the HTML, that DWG is downloaded and inserted, or whatever else might be desired.<br>
+So to get all that to work, all I need is to intercept the Navigate event, so that a bogus link like "odcl:additem(9)" will then cause the dialog box to close, and whatever else we want to happen to happen.<br>
+<br>
+Many thanks for any thoughts!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg6111">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-26 04:56 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=honkinberry link=topic=1148.msg6110#msg6110 date=1264480610 wrote:</cite><br>
+MSDN says to set the Cancel parameter to true (<a href="http://msdn.microsoft.com/en-us/library/aa768326(VS.85).aspx)" rel="nofollow noopener">{2}</a> -- yet I believe the limitations of ActiveX through AutoLISP mean this is not passed ByRef, correct?</blockquote><br>
+<br>
+Exactly. However, there could be a solution to the case where there is only one ByRef parameter, and where that parameter is strictly a return value. The solution would be to omit the argument when calling the event handler, and use the event handler's return value as the value for that parameter.<br>
+<br>
+I've actually been meaning to implement his functionality, but I was waiting for an actual case where it would be useful. Since you've found such a case, you can be the lucky victim to test it in practice.</div>
+</article>
+<article class="post" id="msg6113">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-01-26 16:55 UTC</span>
+  </div>
+  <div class="post-body">Sounds like a plan!<br>
+You just let me know when there's something for me to test.<br>
+<br>
+--J<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

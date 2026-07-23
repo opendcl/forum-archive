@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Support for AutoCAD OEM · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/4-source-code.html">Source Code</a> /
+      Topic 1281</p>
+    <h1>Support for AutoCAD OEM</h1>
+    <p class="meta">Started by kevinkitt ·
+      2010-05-19 18:51 UTC ·
+      6 replies · SMF topic #1281</p>
+<article class="post" id="msg6875">
+  <div class="post-head">
+    <span class="post-author">kevinkitt</span>
+    <span class="post-date muted">2010-05-19 18:51 UTC</span>
+  </div>
+  <div class="post-body">Hello we use OpenDCL in a handful of our stuff, and we are currently developing and AutoCAD OEM product using 2011.  Would it be possible to get a build of the opendcl18.arx (32 bit) made using the OEM SDK that Autodesk provides us?  Or some instructions on compiling just the runtime that I need.<br>
+<br>
+Thanks.<br>
+Kevin</div>
+</article>
+<article class="post" id="msg6876">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-05-19 20:02 UTC</span>
+  </div>
+  <div class="post-body">That's a good question. I'm only vaguely familiar with OEM, but I know enough about it to be dangerous.<br>
+<br>
+Firstly, you will need an AutoCAD OEM license that includes the AutoLISP interpreter, otherwise the runtime won't be very useful. I don't know much about that, but I mention it just in case you didn't consider that.<br>
+<br>
+Since the runtime links to the AutoCAD editor, you will need to build a custom version linked to your OEM license. This is not difficult if you have Visual Studio. I think Fred Tomke posted some detailed instructions for building the entire project. Those instructions would be a good starting point.<br>
+<br>
+To build the custom runtime, you will need the OpenDCL source code on your computer along with Visual Studio 2008 and your OEM libraries and headers. You can download the source code from SourceForge in various ways. I use the TortoiseSVN SubVersion client.<br>
+<br>
+You will need all the source code installed, but you'll only need to build the specific runtime modules that you need, so most of the project can be ignored. Off the top of my head, I think the only changes you should need to make to the stock project are to set the include and library directories to point to your OEM libraries.<br>
+<br>
+Once the runtime modules are built, you'll need to figure out how to load them. I would use registry based demand loading to load them automatically.<br>
+<br>
+That should be a fairly accurate, albeit brief, overview of the steps to take.</div>
+</article>
+<article class="post" id="msg6877">
+  <div class="post-head">
+    <span class="post-author">kevinkitt</span>
+    <span class="post-date muted">2010-05-19 20:20 UTC</span>
+  </div>
+  <div class="post-body">I have the OEM ready to go and have already loaded and played with other non OpenDCL lsp files.  I also was in contact with the guys over at DOSLib and they were very helpful (and fast) in compiling me a version of DOSLib for the OEM.  <br>
+So the last third party link that i need is with OpenDCL.  I have downloaded the source code but honestly i am not a C guy, and the OpenDCL project is much larger than anythink i have played with before. <br>
+<br>
+I will look and see if i can find instructions.  But my first couple of attempts in the dark have not worked.</div>
+</article>
+<article class="post" id="msg6878">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-05-20 04:45 UTC</span>
+  </div>
+  <div class="post-body">I dug around, but I can't find any step-by-step instructions, so maybe I'm wrong that Fred posted something. Which version(s) of OEM do you need to build for?  Do you have Visual Studio 2008 SP1 installed and working?  If so, let me know what happens when you try to build the runtime project.</div>
+</article>
+<article class="post" id="msg6879">
+  <div class="post-head">
+    <span class="post-author">kevinkitt</span>
+    <span class="post-date muted">2010-05-20 12:40 UTC</span>
+  </div>
+  <div class="post-body">FYI I asked Fred about the instructions.  He has not finished the tutorial yet.  But said he would look into it.</div>
+</article>
+<article class="post" id="msg6880">
+  <div class="post-head">
+    <span class="post-author">kevinkitt</span>
+    <span class="post-date muted">2010-05-20 13:05 UTC</span>
+  </div>
+  <div class="post-body">Sorry guys i got it working now.  Had linking issues with paths to the SDK.</div>
+</article>
+<article class="post" id="msg7046">
+  <div class="post-head">
+    <span class="post-author">cmwade77</span>
+    <span class="post-date muted">2010-07-19 17:24 UTC</span>
+  </div>
+  <div class="post-body">I am curious about your AutoCAD OEM product, is this one that you are planning on selling or is it something for internal use only? If it is one you are planning on selling, I am curious what advantages it has over plain AutoCAD?</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

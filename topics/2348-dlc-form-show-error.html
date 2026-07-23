@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dlc-form-show error · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2348</p>
+    <h1>dlc-form-show error</h1>
+    <p class="meta">Started by Lube ·
+      2016-01-22 17:42 UTC ·
+      7 replies · SMF topic #2348</p>
+<article class="post" id="msg11772">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2016-01-22 17:42 UTC</span>
+  </div>
+  <div class="post-body">Hello guys, I hope this is the right forum for this question..<br>
+<br>
+I've some problem with my add-on.. I've to reload it in order to avoid this error: <br>
+<br>
+<img src="http://i.imgur.com/sR9QZo7.png" alt="" loading="lazy"><br>
+<br>
+  (dcl-Form-Show cordoli/cordoli 50 300)<br>
+<br>
+Thanks for support!</div>
+</article>
+<article class="post" id="msg11773">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-01-27 08:44 UTC</span>
+  </div>
+  <div class="post-body">Hi, Lube, sorry for the late answer.<br>
+This error only occurs if your project is not loaded or the name of your form does not match to the variable.<br>
+There's no other reason.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11778">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2016-01-29 14:30 UTC</span>
+  </div>
+  <div class="post-body">Hello!<br>
+<br>
+Well it's strange..<br>
+<br>
+I have two programs made with OpenDCL in autoload<br>
+<img src="http://i.imgur.com/PwNTdSY.png" alt="" loading="lazy"><br>
+<br>
+And now a video about the problem:<br>
+<a href="https://knowledge.autodesk.com/community/screencast/6435f1fc-4725-4099-82db-9b9258e5c01f" rel="nofollow noopener">{2}</a><br>
+<br>
+As you can see it works only when i reload it, and when i do that the other one stops working ...</div>
+</article>
+<article class="post" id="msg11779">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-01-30 22:58 UTC</span>
+  </div>
+  <div class="post-body">I suspect that you have two different projects using the same lisp symbol names, so they are stomping on each other's lisp symbols.</div>
+</article>
+<article class="post" id="msg11785">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2016-02-01 08:51 UTC</span>
+  </div>
+  <div class="post-body">Hello! Thanks for your answer.. Can you help me to find the error? <br>
+<br>
+(defun load-cordoli (/)<br>
+<br>
+  (load-project nil "cordoli") ;per distribuzione<br>
+  <br>
+  (dcl-Form-Show cordoli/cordoli 50 300)<br>
+<br>
+<br>
+  )<br>
+<br>
+and:<br>
+<br>
+(defun load-cobiax (/)<br>
+  (setvar "CMDECHO" 0)<br>
+<br>
+<br>
+<br>
+  (load-project nil "Cobiax") ;per distribuzione<br>
+  (dcl-Form-Show Cobiax/Main)<br>
+<br>
+  (vl-cmdf "._undefine" "cancella")<br>
+  (vl-cmdf "._undefine" "_delete")<br>
+<br>
+  (vl-cmdf "._undefine" "copia")<br>
+  (vl-cmdf "._undefine" "_copy")<br>
+<br>
+  (setvar "CMDECHO" 1)<br>
+<br>
+  )<br>
+<br>
+In must be there, right?</div>
+</article>
+<article class="post" id="msg11786">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-02-01 13:31 UTC</span>
+  </div>
+  <div class="post-body">Lisp symbol names are defined in the .odcl file by specifying the form or control's <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Property/VarName.htm" rel="nofollow noopener">{2}</a> property.</div>
+</article>
+<article class="post" id="msg11787">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2016-02-01 14:23 UTC</span>
+  </div>
+  <div class="post-body">but all the var name are empty.. so it will be // and the project is diffent ("cobiax" and  "cordoli")<br>
+<br>
+mmh.. maybe i din't get it :(</div>
+</article>
+<article class="post" id="msg11793">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2016-02-08 09:34 UTC</span>
+  </div>
+  <div class="post-body">Ok, I fixed it!<br>
+<br>
+The problem was the line "load-project". The function name was the same for two different content!<br>
+<br>
+Thanks :)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

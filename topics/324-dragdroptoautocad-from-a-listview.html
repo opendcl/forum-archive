@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DragDropToAutoCAD from a listview · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 324</p>
+    <h1>DragDropToAutoCAD from a listview</h1>
+    <p class="meta">Started by fred_tomke ·
+      2008-05-15 07:49 UTC ·
+      10 replies · SMF topic #324</p>
+<article class="post" id="msg1430">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-15 07:49 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+what type coordinates are given by DragDropToAutoCAD-event? I thought that were UCS-coordinates but testing with 5.0.0.15 DEU on Map 2009 they have their origin on viewports's upper left corner. I do not know if the coordinates are DCS-coordinates so I can convert them by using trans-function. In ObjectDCL that were UCS coordinates.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1437">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-05-17 20:18 UTC</span>
+  </div>
+  <div class="post-body">Fred, those should be screen coordinates relative to the top left corner of the screen. As best I can tell, this behavior is identical to the original ObjectDCL code.</div>
+</article>
+<article class="post" id="msg1441">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-17 20:58 UTC</span>
+  </div>
+  <div class="post-body">Hm, <br>
+as I wrote I thought that could be screen coordinates (DCS). But using trans-function I had no success. Is there a good solution to get the right coordinate of active coordinate system?<br>
+<br>
+Does anybody have experiences with it?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1444">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-18 06:41 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+I had a quick check. I used DragDropToAutoCAD in ObjectDCL from a tree and I get UCS-coordinates. Maybe there is a different handling between listview and tree? I don't know...<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1446">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-05-18 14:43 UTC</span>
+  </div>
+  <div class="post-body">It's possible that the treeview was different. In the case of passing UCS coordinates, how would you know which viewport the coordinates are from?  It seems to me there would need to be a viewport number in addition to the coordinates.</div>
+</article>
+<article class="post" id="msg1447">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-05-18 15:28 UTC</span>
+  </div>
+  <div class="post-body">I've now changed the code to pass both UCS coordinates and a viewport number for the DragnDropToAutoCAD event. Please check this out in Alpha 15 and let me know whether it works as you expect.</div>
+</article>
+<article class="post" id="msg1450">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-18 19:04 UTC</span>
+  </div>
+  <div class="post-body">Ok thanks, I will have a try.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1452">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-18 19:12 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+just a question for my knowledge: do you rewrite the code for listview and tree for this event dragdroptoautocad twice or is it the same code?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1453">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-05-19 04:16 UTC</span>
+  </div>
+  <div class="post-body">For the treeview and listview it is the same code, but some other controls still use the old drag and drop code (also changed to now pass UCS coordinates and a viewport number).</div>
+</article>
+<article class="post" id="msg1456">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-19 10:32 UTC</span>
+  </div>
+  <div class="post-body">Thank you, Owen.<br>
+<br>
+BTW. I've found out that dragging a file (LSP, ARX, DWG) from Windows Explorer into the drawing area of AutoCAD causes the call of DragDropToAutoCAD, too, when a palette (maybe with dockable, modeless forms, too, I didn't test it). The normal workflow (loading a lisp, an arx or adding the dropped dwg as a block) only works properly after closing the palette. Is this wanted?<br>
+<br>
+Steps to reproduce:<br>
+- Open AutoCAD<br>
+- Load the project from http://www.opendcl.com/forum/index.php?action=dlattach;topic=325.0;attach=389 and the latest lisp http://www.opendcl.com/forum/index.php?action=dlattach;topic=325.0;attach=394. May be you have to drag and drop the palette into the middle of window (I've forgotten the right word for the opposite of "anchor"). <br>
+- Call command LAF<br>
+- Drop a listview  item to AutoCAD. An alert is shown.<br>
+- Now try to drag a dwg file from Windows Explorer to AutoCAD (into the modelspace). The same alert will be shown.<br>
+- Close the palette. Try to drag a dwg file from Windows Explorer to AutoCAD (into the modelspace). The file is going to be inserted into the drawing.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1511">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-05-24 19:12 UTC</span>
+  </div>
+  <div class="post-body">I believe this is fixed in Alpha 16.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

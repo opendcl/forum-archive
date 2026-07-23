@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>grid GetColumnImageList · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1665</p>
+    <h1>grid GetColumnImageList</h1>
+    <p class="meta">Started by johnM ·
+      2011-08-04 17:46 UTC ·
+      2 replies · SMF topic #1665</p>
+<article class="post" id="msg8260">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2011-08-04 17:46 UTC</span>
+  </div>
+  <div class="post-body">my grid has 2 column header images that i toggle between, index 0 and 1<br>
+when i change a column header image to index 1 and call dcl_Control_GetColumnImageList<br>
+it returns all 0's when one column should be a 1<br>
+if i use dcl_Grid_GetColumnImage to check that column image it returns 1 (as it should)<br>
+</div>
+</article>
+<article class="post" id="msg8261">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-08-04 18:33 UTC</span>
+  </div>
+  <div class="post-body">The ColumnImageList property is currently implemented as a design-time only property that is used to create the grid, then ignored for the remainder of the grid's lifetime. This could be changed, but it would take some work.</div>
+</article>
+<article class="post" id="msg8263">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2011-08-04 18:42 UTC</span>
+  </div>
+  <div class="post-body">that would be a good addition when ever it can happen<br>
+but for now i used this to get the info (incase any one else has the same question)<br>
+(setq climg '());_current image list<br>
+(setq cnt 0)<br>
+(repeat (dcl_Grid_GetColumnCount QD_ELE1_ELE1_Grid1)<br>
+(setq climg (cons (dcl_Grid_GetColumnImage QD_ELE1_ELE1_Grid1 cnt)climg))<br>
+(setq cnt (1+ cnt))<br>
+);_repeat<br>
+(setq climg (reverse climg));_flip old list  <br>
+<br>
+thanks for the quick responce</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

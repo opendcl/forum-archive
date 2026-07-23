@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Label and On_clicked event. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 100</p>
+    <h1>Label and On_clicked event.</h1>
+    <p class="meta">Started by Cider ·
+      2007-11-26 21:17 UTC ·
+      3 replies · SMF topic #100</p>
+<article class="post" id="msg412">
+  <div class="post-head">
+    <span class="post-author">Cider</span>
+    <span class="post-date muted">2007-11-26 21:17 UTC</span>
+  </div>
+  <div class="post-body">Hi, somehow I can't get a label with the On_Clicked event to work. I'm using Version 4.0.3.1 and the Form the labels reside is modeless.<br>
+All the text &amp; radio buttons work as expected. EventInvoke = 1. Am I missing something here? Any help would be appreciated.<br>
+<br>
+Fine software, btw!<br>
+<br>
+S!<br>
+<br>
+Martin</div>
+</article>
+<article class="post" id="msg413">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-11-27 05:28 UTC</span>
+  </div>
+  <div class="post-body">Works for me with Ver 4.1.2.0 (latest)<br>
+By the way; ver 4.0.3.0 is 4 months old .. may be time to update :-)<br>
+<br>
+<br>
+Tested with both Modal and modeless .. <br>
+With EventInvoke set to either 0 or 1 for the modeless.<br>
+<br>
+<pre class="code"><code>;;---------------------------------------------------------------------------------<br>
+;; Modal Form.<br>
+(DEFUN C:LabelTest (/)<br>
+    (DCL_LOADPROJECT "20071009-LabelTest" T)<br>
+    (DCL_FORM_SHOW 20071009-LabelTest_Form1)<br>
+    (PRINC)<br>
+)<br>
+;;--------------------------------------<br>
+(DEFUN c:20071009-LabelTest_Form1_Label1_OnClicked (/)<br>
+    (DCL_MESSAGEBOX (STRCAT "To Do: code must be added to event handler\r\n"<br>
+                            "c:20071009-LabelTest_Form1_Label1_OnClicked"<br>
+                            "To do"<br>
+                    )<br>
+    )<br>
+)<br>
+(DEFUN c:20071009-LabelTest_Form1_TextButton4_OnClicked (/)<br>
+    (DCL_MESSAGEBOX "To Do: code must be added to event handler\r\n"<br>
+                    "c:20071009-LabelTest_Form1_TextButton4_OnClicked"<br>
+                    "To do"<br>
+    )<br>
+)<br>
+;;---------------------------------------------------------------------------------<br>
+;;---------------------------------------------------------------------------------<br>
+;; Modeless Form.<br>
+(DEFUN C:LabelTest2 (/)<br>
+    (DCL_LOADPROJECT "20071009-LabelTest" T)<br>
+    (DCL_FORM_SHOW 20071009-LabelTest_Form2)<br>
+    (PRINC)<br>
+)<br>
+;;--------------------------------------<br>
+<br>
+(DEFUN c:20071009-LabelTest_Form2_Label1_OnClicked (/)<br>
+    (DCL_MESSAGEBOX (STRCAT "To Do: code must be added to event handler\r\n"<br>
+                            "c:20071009-LabelTest_Form2_Label1_OnClicked"<br>
+                            "To do"<br>
+                    )<br>
+    )<br>
+)</code></pre><br>
+<br>
+Edit:<br>
+Code attachments and Picture. (for members)<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg416">
+  <div class="post-head">
+    <span class="post-author">Cider</span>
+    <span class="post-date muted">2007-11-28 07:35 UTC</span>
+  </div>
+  <div class="post-body">Thanks Kerry, Ver.4.1.2.0 does the trick.<br>
+<br>
+S!<br>
+<br>
+Martin </div>
+</article>
+<article class="post" id="msg417">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-11-28 07:43 UTC</span>
+  </div>
+  <div class="post-body"><br>
+You're Welcome.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

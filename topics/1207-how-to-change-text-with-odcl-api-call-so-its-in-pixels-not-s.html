@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to change text with odcl api call so its in pixels, not scaled to monitor · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1207</p>
+    <h1>How to change text with odcl api call so its in pixels, not scaled to monitor</h1>
+    <p class="meta">Started by jmaeding ·
+      2010-03-16 22:38 UTC ·
+      5 replies · SMF topic #1207</p>
+<article class="post" id="msg6482">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-03-16 22:38 UTC</span>
+  </div>
+  <div class="post-body">I have the code to change all other props, but I don't see the one for pixels/scaled to monitor.<br>
+I have to do this for every control I have, several hundred.<br>
+advice appreciated, thx</div>
+</article>
+<article class="post" id="msg6483">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-03-16 22:40 UTC</span>
+  </div>
+  <div class="post-body">also, why is text height set to negative in the example code I've seen?<br>
+I tried that but its not the trigger to use pixels...</div>
+</article>
+<article class="post" id="msg6484">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-03-16 22:45 UTC</span>
+  </div>
+  <div class="post-body">How's this...<br>
+<a href="http://www.opendcl.com/HelpFiles/index.php?page=Advanced/Tips.htm" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg6485">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-03-16 22:49 UTC</span>
+  </div>
+  <div class="post-body">hmm, I just tried that with no luck, maybe I fooled myself? naahhhh :)<br>
+thx for lightning fast reply, let me give it another go</div>
+</article>
+<article class="post" id="msg6486">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-03-16 23:04 UTC</span>
+  </div>
+  <div class="post-body">stoked, I was wrong! neg sizes do set to pixels.  Love those easy ones.<br>
+thx for the help</div>
+</article>
+<article class="post" id="msg6487">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-03-16 23:43 UTC</span>
+  </div>
+  <div class="post-body">and here is my code for doing an entire folder of odcl.lsp type files:<br>
+<br>
+(defun c:DoODCL ( / FILE NEWODCLPATH PASSWORD PATH)<br>
+  (setq path "C:\\CAD_SUPPORT\\ODCL Files\\")<br>
+  (foreach file (vl-directory-files path "*.odcl.lsp" 1)<br>
+    (fixsets path file nil)<br>
+  )<br>
+)<br>
+<br>
+(defun fixsets (path odclfile password / )  <br>
+  (setq project (dcl_project_load (strcat path odclfile)))  <br>
+  (if (not project)  <br>
+    (exit)  <br>
+  )  <br>
+  (foreach form (dcl_project_getforms project)  <br>
+    (foreach control (dcl_form_getcontrols form)<br>
+      (progn<br>
+        (setq props (dcl_control_getproperties control))<br>
+        ;do not do flexgrids, do by hand<br>
+        (if (not (member "AllowBigSelection" props))<br>
+          (progn  <br>
+            ;set all fonts to MS Shell Dlg<br>
+            ;(dcl_control_getproperty control "(Name)")<br>
+            (if (member "Font" props)<br>
+;;;              (IF (vl-catch-all-error-p (vl-catch-all-apply '(lambda () (dcl_control_setproperty control "Font"  "MS Shell Dlg"))))<br>
+;;;                (princ)<br>
+;;;              )<br>
+              (dcl_control_setproperty control "Font"  "MS Shell Dlg")<br>
+            )<br>
+            ;convert sizes, neg numbers for pixel scaling<br>
+            (if (member "FontSize" props)<br>
+              (cond<br>
+                ((= (abs (dcl_control_getproperty control "FontSize")) 8)<br>
+                  (dcl_control_setproperty control "FontSize" -10)<br>
+                )<br>
+                ((= (abs (dcl_control_getproperty control "FontSize")) 12)<br>
+                  (dcl_control_setproperty control "FontSize" -14)<br>
+                )<br>
+                ;else<br>
+                (1<br>
+                 (dcl_control_setproperty control "FontSize" (* -1 (abs (dcl_control_getproperty control "FontSize"))))<br>
+                )<br>
+              )<br>
+            )<br>
+            ;no visual styles<br>
+            (if (member "UseVisualStyle" props)  <br>
+              (dcl_control_setproperty control "UseVisualStyle" nil)<br>
+            )<br>
+          )<br>
+        )<br>
+      )<br>
+    )  <br>
+  )<br>
+  ;save project file<br>
+  (dcl_project_saveas project (strcat path "New-" odclfile) password)  <br>
+)<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

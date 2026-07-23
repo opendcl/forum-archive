@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Adding Items to a Layer Combo Box · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2128</p>
+    <h1>Adding Items to a Layer Combo Box</h1>
+    <p class="meta">Started by awybo ·
+      2014-04-11 13:59 UTC ·
+      5 replies · SMF topic #2128</p>
+<article class="post" id="msg10566">
+  <div class="post-head">
+    <span class="post-author">awybo</span>
+    <span class="post-date muted">2014-04-11 13:59 UTC</span>
+  </div>
+  <div class="post-body">Hi guys,<br>
+<br>
+I'm wondering if there is a way to add an entry to a layer combo box (a combo box whose style is 13).<br>
+<br>
+The addlist and addstring methods don't seem to work on a "layer-styled" combobox (which may be intentional?).<br>
+<br>
+Here is why I want to do this:<br>
+<br>
+The built in layer-styled combobox works great but I would like to add in one more item which will be something like "Current". This is part of a configuration menu for a module and if "Current" is selected then later in the code the program will use whatever layer is current when it needs a target layer.<br>
+<br>
+Maybe you have some insight on a better way to do this or have done something similar in the past?</div>
+</article>
+<article class="post" id="msg10567">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-04-11 14:01 UTC</span>
+  </div>
+  <div class="post-body">Have you already tested dcl-ComboBox-AddString method?<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10568">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-11 14:23 UTC</span>
+  </div>
+  <div class="post-body">The current implementation is designed to keep the combo contents synchronized with the layers in the active drawing. I have an idea though, and will look at how AddString could be supported.</div>
+</article>
+<article class="post" id="msg10573">
+  <div class="post-head">
+    <span class="post-author">awybo</span>
+    <span class="post-date muted">2014-04-11 17:22 UTC</span>
+  </div>
+  <div class="post-body">Yep, I tested dcl_ComboBox_AddString and dcl_ComboBox_AddList. I use these two methods elsewhere for non layer-type combo box and they work great. It is only with the layer-type combo box that they don't seem to have any effect. Thanks for looking into this.</div>
+</article>
+<article class="post" id="msg11906">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2016-06-10 08:14 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2128.msg10568#msg10568 date=1397226203 wrote:</cite><br>
+The current implementation is designed to keep the combo contents synchronized with the layers in the active drawing. I have an idea though, and will look at how AddString could be supported.<br>
+</blockquote><br>
+<br>
+Any joy with this Owen, I'd really like to have control over the layer names that are displayed.<br>
+ie : pass a filtered list of names to the control and only have those display.</div>
+</article>
+<article class="post" id="msg11936">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-07-02 01:56 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry link=topic=2128.msg11906#msg11906 date=1465546442 wrote:</cite><br>
+Any joy with this Owen, I'd really like to have control over the layer names that are displayed.<br>
+ie : pass a filtered list of names to the control and only have those display.<br>
+</blockquote><br>
+<br>
+I haven't had time to test, but I'm pretty sure you can now add items to the list, and these are preserved when the list is repopulated. I'm not so sure about deleting items. I guess you probably can delete items, but I'm not sure how complicated it is to keep the unwanted items out as the list is automatically repopulated on document activation changes or changes in the active document layer table.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

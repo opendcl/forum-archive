@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Push button - not all function are running in button-event · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2368</p>
+    <h1>Push button - not all function are running in button-event</h1>
+    <p class="meta">Started by cadplayer ·
+      2016-04-30 12:06 UTC ·
+      4 replies · SMF topic #2368</p>
+<article class="post" id="msg11867">
+  <div class="post-head">
+    <span class="post-author">cadplayer</span>
+    <span class="post-date muted">2016-04-30 12:06 UTC</span>
+  </div>
+  <div class="post-body">Hello!<br>
+I don´t realy understand what´s the diffrent between modal and unmodal Dialog.<br>
+But in my case I have a problem, once I click Ok-Button in my Dialog and not all functions in Ok-Button-click-event would be run.<br>
+Have somebody has have same problems and could it solve ?!</div>
+</article>
+<article class="post" id="msg11868">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-04-30 13:54 UTC</span>
+  </div>
+  <div class="post-body">Look at the Event Invoke property of the modeless dialog.</div>
+</article>
+<article class="post" id="msg11869">
+  <div class="post-head">
+    <span class="post-author">cadplayer</span>
+    <span class="post-date muted">2016-04-30 17:26 UTC</span>
+  </div>
+  <div class="post-body">Thank you Roy, that´s solved it!</div>
+</article>
+<article class="post" id="msg11871">
+  <div class="post-head">
+    <span class="post-author">cadplayer</span>
+    <span class="post-date muted">2016-05-03 06:18 UTC</span>
+  </div>
+  <div class="post-body">Hello again!<br>
+Something is strange her, I have open dcl-dialog and push button "Ok" then it should request: "Do you want table... " but this question doesn´t display:<br>
+<br>
+(defun cd:CreateTable(lst / r)<br>
+    ;error: Can't reenter LISP.<br>
+    ;https://www.theswamp.org/index.php?topic=43587.0<br>
+    (opendcl_init_ui 1)<br>
+    (setq r (getstring t "\nDo you want Project Datas in Tableform Press : "))<br>
+    (if (= "" r)<br>
+        (cd:AddTable (reverse lst) "Project datas") ; output dynamically Textresults<br>
+        )        <br>
+    )<br>
+<br>
+Take a look on this video, may understand it better http://screencast.com/t/ukKo5OfX</div>
+</article>
+<article class="post" id="msg11872">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-05-04 10:59 UTC</span>
+  </div>
+  <div class="post-body">Your video is confusing. You say "the question doesn't display", yet the "Do you want ... " prompt is clearly visible in the command line.<br>
+In general it is better to supply (simplified) .lsp and .odcl files when trying to address such issues.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

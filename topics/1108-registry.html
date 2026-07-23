@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Registry · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/19-deployment.html">Deployment</a> /
+      Topic 1108</p>
+    <h1>Registry</h1>
+    <p class="meta">Started by balathi ·
+      2010-01-03 23:12 UTC ·
+      2 replies · SMF topic #1108</p>
+<article class="post" id="msg5861">
+  <div class="post-head">
+    <span class="post-author">balathi</span>
+    <span class="post-date muted">2010-01-03 23:12 UTC</span>
+  </div>
+  <div class="post-body">I am trying to write some files to registry and retrive the same for startup suite. Please help me to locate where I have gone wrong. the source code shown under write to registry but deletes once AutoCAD is closed and even when it is written in registry it won't showup in startup suit or if some has better way of doing this using IS tools <br>
+SOURCE CODE<br>
+(vl-registry-write Reg "NumStartup" "3")<br>
+		(vl-registry-write Reg	"1Startup" "C:\\Program Files\\AutoCAD 2007\\Support\\ProgSup\\LISP\\TBarFiles.LSP")<br>
+		(vl-registry-write Reg		"2Startup" "C:\\Program Files\\AutoCAD 2007\\Support\\ProgSup\\LISP\\MyForm.lsp")<br>
+		(vl-registry-write Reg		"3Startup" "C:\\Program Files\\AutoCAD 2007\\Support\\ProgSup\\LISP\\ProgINI.LSP")<br>
+				(setq Reg   (strcat "HKEY_CURRENT_USER\\" (vlax-product-key) "\\Profiles\\"  (getvar "cprofile")    "\\Dialogs\\Appload\\Startup"))<br>
+		(vl-registry-read  Reg  "1Startup")<br>
+</div>
+</article>
+<article class="post" id="msg5862">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-04 07:29 UTC</span>
+  </div>
+  <div class="post-body">Hi, BALAKRISHNA,<br>
+<br>
+I had a quicktext and I've found out that once you've set the values via Lisp, the files won't be loaded until you have called the startup dialog manually and close without changing anything After a restart the files will be loaded. But I have no idea why AutoCAD does not load the files without showing the startup dialog.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5867">
+  <div class="post-head">
+    <span class="post-author">balathi</span>
+    <span class="post-date muted">2010-01-04 11:29 UTC</span>
+  </div>
+  <div class="post-body">hi Fred,<br>
+Thanks for the early response, you are right. after running Lisp, I have Noticed all entries in the registry, Just Closing ACAD and reopening did all the trick<br>
+CHEERS</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

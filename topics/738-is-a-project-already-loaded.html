@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Is a project already loaded... · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 738</p>
+    <h1>Is a project already loaded...</h1>
+    <p class="meta">Started by mr nick ·
+      2009-04-30 09:21 UTC ·
+      12 replies · SMF topic #738</p>
+<article class="post" id="msg3599">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-04-30 09:21 UTC</span>
+  </div>
+  <div class="post-body">Is there any way of determining if a project is already loaded - or more particularly if it is unloaded? In one of my routines I have a multiple dialogs all built into the same project and in most circumstances they are all pretty much standalone items that are loaded and unloaded on an 'as-needed' basis but due to a particular set of circumstances in the cause/effect of some aspects of my routine there are rare instances where a routine can be called from inside another but both routines have an 'unload' call in them. As a result, when the first unload call is passed, all is well and good but then the second unload goes out and I get an error message because the project has been previously unloaded. So what I need to try and determine is whether there is actually anything to unload or not - or possibly a similar outcome as happens when you load a project that is already loaded - i.e. nothing happens and no error message is issued.</div>
+</article>
+<article class="post" id="msg3600">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-04-30 10:09 UTC</span>
+  </div>
+  <div class="post-body"><br>
+You could try something like this ..<br>
+<br>
+<br>
+(if (not (= (type StuffIsLoaded) 'str))<br>
+    (setq StuffIsLoaded (dcl_project_load "KDUB_SteelSections"))<br>
+    ;; else<br>
+    ;; it's already loaded<br>
+)<br>
+<br>
+(if (= (type StuffIsLoaded) 'str)<br>
+    (progn (dcl_project_unload "KDUB_SteelSections")<br>
+           (setq StuffIsLoaded nil)<br>
+    )<br>
+)<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3601">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-04-30 10:36 UTC</span>
+  </div>
+  <div class="post-body">Thanks Kerry - a better approach than the one I was considering of reloading the project directly before the unload call.</div>
+</article>
+<article class="post" id="msg3602">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-30 11:27 UTC</span>
+  </div>
+  <div class="post-body">So why don't you use <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Function/GetProjects.htm" rel="nofollow noopener">{2}</a> method?<br>
+<br>
+(if (member "KDUB_SteelSections" (dcl_GetProjects)) (dcl_project_unload "KDUB_SteelSections"))<br>
+<br>
+or<br>
+<br>
+(if (not (member "KDUB_SteelSections" (dcl_GetProjects))) (dcl_project_load "KDUB_SteelSections")))<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3603">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-04-30 11:32 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=738.msg3602#msg3602 date=1241090859 wrote:</cite><br>
+So why don't you use GetProjects method?<br>
+</blockquote><br>
+<br>
+Because I didn't know it existed. But now I do  ;D<br>
+<br>
+Thanks Fred.</div>
+</article>
+<article class="post" id="msg3604">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-30 12:39 UTC</span>
+  </div>
+  <div class="post-body">Why do you need to unload the project in the first place?</div>
+</article>
+<article class="post" id="msg3605">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-04-30 12:53 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=738.msg3604#msg3604 date=1241095176 wrote:</cite><br>
+Why do you need to unload the project in the first place?<br>
+</blockquote><br>
+<br>
+To quote from the help file...<br>
+<em><strong>This method unloads a project, freeing its memory.</strong></em><br>
+<br>
+If there is no need to unload a project, why would such an option exist?</div>
+</article>
+<article class="post" id="msg3606">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-30 13:27 UTC</span>
+  </div>
+  <div class="post-body">There are cases where a project needs to be unloaded, but they are unusual and rare. What is your reason?</div>
+</article>
+<article class="post" id="msg3607">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-04-30 13:40 UTC</span>
+  </div>
+  <div class="post-body">If it's possible to free up some memory, however much or little, then that's a good thing in my book - every little helps.</div>
+</article>
+<article class="post" id="msg3624">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-05-01 23:39 UTC</span>
+  </div>
+  <div class="post-body"><br>
+In the cold light of day ...<br>
+Nick;<br>
+You dont need to check prior to loading <br>
+(<span style="color:blue">dcl_project_load </span>  .... This function does nothing if the project is already loaded, unless the optional ForceReload argument is T<br>
+<br>
+and Fred; yes ! Using the <span style="color:blue">dcl_getProjects</span> Method would be better. :)</div>
+</article>
+<article class="post" id="msg3625">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-02 05:32 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=mr nick link=topic=738.msg3607#msg3607 date=1241098841 wrote:</cite><br>
+If it's possible to free up some memory, however much or little, then that's a good thing in my book - every little helps.<br>
+</blockquote><br>
+<br>
+Freeing up physical memory is always good, but the OS can do a good job of that by paging inactive physical memory to disk. I'd guess that in the vast majority of cases you will see zero performance impact by leaving a project loaded. It takes time to unload a project, so unloading a project means you're paying an immediate performace penalty for negligible future gains.</div>
+</article>
+<article class="post" id="msg3626">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-02 10:16 UTC</span>
+  </div>
+  <div class="post-body">Hm, how much memory does a loaded project need?<br>
+Ok, memory will be needed when a project will be loaded. But much more memory will be addressed, when a form will be shown and will be freed up when the form will be closed again. So the needed memory of the simply loaded project should be very minimal.<br>
+<br>
+That's the way I explain it myself, but this may be completely wrong. So please correct me.<br>
+<br>
+When I was on ObjectDCL I had one single odc-file for all forms. Loading the project took a recognizable time. But now when I convert all these projects to OpenDCL I devide them into several projects (for layers, blocks, certain managers, migration, and so on). So in this case some projects are not loaded if not commands are called which uses forms from these projects. That also helps decreasing the use of memory.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3627">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-02 16:20 UTC</span>
+  </div>
+  <div class="post-body">A loaded project will generally consume memory equal to roughly 3 to 4 times the project file size. As you point out, loading and (to a smaller extent) unloading projects can take a noticeable amount of time, whereas an unused project will have its physical memory paged to disk, thus resulting in zero physical memory consumed.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

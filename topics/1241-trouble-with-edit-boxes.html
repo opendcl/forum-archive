@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trouble with edit boxes · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1241</p>
+    <h1>Trouble with edit boxes</h1>
+    <p class="meta">Started by hmspe ·
+      2010-03-28 22:16 UTC ·
+      5 replies · SMF topic #1241</p>
+<article class="post" id="msg6642">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2010-03-28 22:16 UTC</span>
+  </div>
+  <div class="post-body">First real project in ODCL.  I've worked on this about 6 hours over two days and am getting nowhere.  Probably something really simple.  I've read through all the samples and looked at most of the code posted in the forums but I'm coming up empty.  <br>
+<br>
+Two problems:<br>
+1.  Reloading the lsp file in Autocad 2010 after editing the lisp in Textpad or the ODCL does not appear to update the files in Autocad -- I get the same operation as before the edits unless I close and re-open Autocad.  Is this normal?<br>
+2.  The first time I run this I can enter data, but the Cancel and OK buttons do not work.  If I exit (upper right X) then run again I see the previous data and the OK button works, but the variables that should print after close are all nil.  Before I added the edit boxes I could get data on the option buttons.<br>
+<br>
+This is obviously a work in progress.  I don't have all the initialization done, and I haven't done anything with the bottom edit box yet.<br>
+<br>
+Also, has there been a syntax change for edit boxes?  The samples seem to have the form c:faultdrop_FaultBox_AFC-data_OnEditChanged (NewValue /) but the GUI cut and paste shows the form c:AFC-data_OnEditChanged (NewValue /)<br>
+<br>
+Any help would be appreciated.<br>
+<br>
+Martin<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1362/faultdrop.lsp">faultdrop.lsp</a> <span class="muted">(5720 bytes)</span></li><li><a href="../attachments/1363/faultdrop.odcl">faultdrop.odcl</a> <span class="muted">(2828 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6643">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-03-29 02:21 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">1.  Reloading the lsp file in Autocad 2010 after editing the lisp in Textpad or the ODCL does not appear to update the files in Autocad -- I get the same operation as before the edits unless I close and re-open Autocad.  Is this normal?</blockquote><br>
+<br>
+to force a reload of the ODCL when debugging , use the 'reload' flag:<br>
+(dcl_Project_Load "t:\faultdrop" T)<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6644">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-03-29 02:25 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><br>
+Also, has there been a syntax change for edit boxes?  The samples seem to have the form c:faultdrop_FaultBox_AFC-data_OnEditChanged (NewValue /) but the GUI cut and paste shows the form c:AFC-data_OnEditChanged (NewValue /)</blockquote><br>
+<br>
+Some of the Events are named c:AFC-data_xxx because you have the VarName set to 'AFC-data' for those controls. You will get a solution that is less confusing if you forgo the use of the VarName property untill you are comfortable with the Editor.</div>
+</article>
+<article class="post" id="msg6645">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-03-29 02:33 UTC</span>
+  </div>
+  <div class="post-body">I haven't tried to load or run the code, so I haven't tested the OK and close issue ; <br>
+but I'd move the (print .... actions from the c:faultdrop_FaultBox_btnOK_OnClicked  into c:efault and <br>
+use a conditional to test the value of result after (setq Result (dcl_Form_Show faultdrop_faultbox))<br>
+<br>
+ie use something like<br>
+(dcl_Form_Close faultdrop_FaultBox 1001) ; &lt;== nore value<br>
+<br>
+Then<br>
+(setq Result (dcl_Form_Show faultdrop_faultbox))<br>
+(cond<br>
+   ( (= 1001 Result)<br>
+         (do your mojo here)<br>
+   )<br>
+ ;....<br>
+)<br>
+  <br>
+<br>
+<br>
+This will also make the code easier to read (in my opinion). </div>
+</article>
+<article class="post" id="msg6652">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2010-03-29 16:40 UTC</span>
+  </div>
+  <div class="post-body">Kerry,<br>
+<br>
+Thanks for the suggestions.  I'm getting closer but still have a few bugs to squash.  I'm finding this very frustrating -- I spent around 4 hours on this since you posted and nothing I tried seemed to do anything, then a few minutes ago I added a setq with a dummy variable to try to see if OnInitialize was firing (it did not seem to be since none of the fields were being preset), and suddenly it mostly works.  At this point I'm seeing:<br>
+<br>
+   Command: EF<br>
+   Backtrace:<br>
+   [0.23] (VL-BT)<br>
+   [1.19] (C:EF)<br>
+   [2.15] (#)<br>
+   [3.12] (# "(C:EF)" T #)<br>
+   :CALLBACK-ENTRY.6 (:CALLBACK-ENTRY)<br>
+   :ARQ-SUBR-CALLBACK.3 (nil 0)<br>
+   _OPENDCL<br>
+   OpenDCL Runtime [6.0.0.24] loaded<br>
+   <br>
+   Command: ; error: bad argument type: consp 0<br>
+   <br>
+   1001<br>
+   &lt;&lt; other variables are returning nil &gt;&gt;<br>
+<br>
+<br>
+No more time to play at the moment.  <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1365/faultdrop.lsp">faultdrop.lsp</a> <span class="muted">(6440 bytes)</span></li><li><a href="../attachments/1366/faultdrop.odcl">faultdrop.odcl</a> <span class="muted">(2802 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6654">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2010-03-29 17:25 UTC</span>
+  </div>
+  <div class="post-body">Followup:<br>
+<br>
+The consp error was due to code in (defun set_AWGs   that should have been removed.  Everything after the end of the (cond   is unnecessary.<br>
+<br>
+The "will not run on first open" problem was due to having the sub-functions inside the main function.  If the sub-functions are all independent the code runs on the first call.<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problems with AUBlockTool.lsp and BC11 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1618</p>
+    <h1>Problems with AUBlockTool.lsp and BC11</h1>
+    <p class="meta">Started by roy_043 ·
+      2011-05-03 08:55 UTC ·
+      5 replies · SMF topic #1618</p>
+<article class="post" id="msg7957">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-05-03 08:55 UTC</span>
+  </div>
+  <div class="post-body">Hello everybody,<br>
+<br>
+I'm just starting out with OpenDCL (6.0.2.3) and have been reading the tutorial by Barry Ralphs. I can't get the palette form of the second lesson to display properly in Bricscad (11.2.12). I have already tried the files in the "Final" folder with the same result: none of the controls are visible in the form. _MasterDemo.lsp (also containing a palette form) works fine however. What is going wrong?<br>
+<br>
+Regards, Roy.<br>
+<br>
+Edit: both AUBlockTool_Final.lsp and AUBlockTool.odcl are in the search path.<br>
+Edit2: removed final from the subject header</div>
+</article>
+<article class="post" id="msg7958">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-05-03 13:10 UTC</span>
+  </div>
+  <div class="post-body">Palette forms are not yet working correctly in Bricscad. I probably should revisit palettes in Bricscad to see if there is any way to improve their operation, but I believe the problems are in the Bricscad code, not in the OpenDCL code. Control bars are working pretty well in the latest versions of Bricscad.  If you're brave, you could copy and paste all the controls from the palette onto a new control bar form, then delete the palette and rename the control bar to the palette's name, and this would probably work in Bricscad without any changes in the lisp code.</div>
+</article>
+<article class="post" id="msg7959">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-05-03 14:34 UTC</span>
+  </div>
+  <div class="post-body">Thank you Owen. I will follow your advice and create a control bar form. I now see that _MasterDemo.lsp also uses this form type.</div>
+</article>
+<article class="post" id="msg7964">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-05-04 11:32 UTC</span>
+  </div>
+  <div class="post-body">Hello everybody,<br>
+<br>
+Halfway through the AUBlockTool tutorial I am hitting a few snags. As advised by Owen I am using a Control Bar instead of a Palette.<br>
+1.<br>
+I was playing around with the Min Height and the Min Width of the Control Bar (this is not in the tutorial) and I notice that these sizes are not respected if the Control Bar is undocked.<br>
+2.<br>
+After starting the command with AUBT, using:<br>
+<pre class="code"><code>(dcl_Control_GetValue AUBlockTool_PalBlkTool_SliderBarXScale)</code></pre><br>
+before that slider has been moved returns 0 even though the Min Value of the slider is 1.<br>
+3.<br>
+Moving the scale sliders causes multiple lines like this one:<br>
+<pre class="code"><code>(c:AUBlockTool_PalBlkTool_SliderBarXScale_OnScroll 2)</code></pre><br>
+to be entered in the BC Scroll History.<br>
+4.<br>
+Using the Multi Insert button I cannot insert a block. Replacing the insert command with a simple:<br>
+<pre class="code"><code>(command "_redraw")</code></pre><br>
+also doesn't work. It seems there is a focus issue underlying this problem.<br>
+<br>
+Regards, Roy.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1604/AUBlockTool.odcl">AUBlockTool.odcl</a> <span class="muted">(2695 bytes)</span></li><li><a href="../attachments/1605/AUBlockTool.lsp">AUBlockTool.lsp</a> <span class="muted">(5779 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7971">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-05-07 12:34 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=1618.msg7964#msg7964 date=1304508738 wrote:</cite><br>
+4.<br>
+Using the Multi Insert button I cannot insert a block. Replacing the insert command with a simple:<br>
+<pre class="code"><code>(command "_redraw")</code></pre><br>
+also doesn't work. It seems there is a focus issue underlying this problem.<br>
+</blockquote>My mistake entirely: I failed to change Event Invoke to 1 for this button.</div>
+</article>
+<article class="post" id="msg7972">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-05-09 07:41 UTC</span>
+  </div>
+  <div class="post-body">Some additional issues:<br>
+5.<br>
+Control Bar resizing issue (the Control Bar has a Min Width and is docked on the left side of the screen):<br>
+5a.<br>
+After some playing around with the width of the Control Bar you can drag the "resize bar" to a position that is well within the Min Width (the Control Bar does not become smaller than the Min Width).<br>
+5b.<br>
+After the previous action to make the Control Bar a few pixels wider you have to move the "resize bar" much further to the right than those few pixels.<br>
+6.<br>
+If you close BC while the Control Bar is open you get a crash_report.txt. I have tried to solve this by using the OnEnteringNoDocState event and this function:<br>
+<pre class="code"><code><br>
+(defun c:AUBlockTool_PalBlkTool_OnEnteringNoDocState (/)<br>
+  (dcl_Form_Close AUBlockTool_PalBlkTool)<br>
+)<br>
+</code></pre><br>
+but this also results in a crash_report.txt as well as a brx_log.txt.<br>
+7.<br>
+I notice (after changing c:AUBlockTool_PalBlkTool_OnInitialize) that a ListBox will retain its content when a dialog is redisplayed but not its CurSel.<br>
+8.<br>
+Contrary to the OpenDCL Help ListBox_GetCurSel returns nil if there is no selection. This is not a big problem of course:<br>
+<pre class="code"><code>(&lt; nil 0) ; =&gt; T</code></pre><br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

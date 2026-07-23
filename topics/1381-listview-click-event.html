@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ListView Click Event · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/11-german.html">GERMAN</a> /
+      Topic 1381</p>
+    <h1>ListView Click Event</h1>
+    <p class="meta">Started by OPLisp ·
+      2010-11-15 16:26 UTC ·
+      6 replies · SMF topic #1381</p>
+<article class="post" id="msg7324">
+  <div class="post-head">
+    <span class="post-author">OPLisp</span>
+    <span class="post-date muted">2010-11-15 16:26 UTC</span>
+  </div>
+  <div class="post-body">Hallo zusammen,<br>
+<br>
+ich habe eine erweiterte Liste mit MultipleSelection und ShowSelectAlways<br>
+(siehe Datei ListView.bmp). Die Anzahl der Reihen ist variabel.<br>
+<br>
+Mein Ziel ist es auf die Auswahl des Users direkt zu reagieren, um unzulässige<br>
+Reihen der Selektion (blaue Markierung) wieder zu entfernen.<br>
+In DCL geht dies unter action_tile geht das ganz gut.<br>
+<br>
+In OPENDCL würde ich das Ereignis <strong>Clicked</strong> nehmen und mit der Methode<br>
+(dcl_ListView_GetSelectedNths Projekt_Form_lstView) <br>
+auslesen.<br>
+Bewerten und neu belegen mit <br>
+(dcl_ListView_SetCurSel Projekt_Form_lstView -1)<br>
+(dcl_ListView_SetCurSel Projekt_Form_lstView index)<br>
+<br>
+Das Problem ist aber, dass <strong>Clicked</strong> bei einer Fensterwahl  P1 nach P2 nicht ausgelöst wird.<br>
+Gleichzeitig fand aber tatsächlich eine Auswahl statt, dies ist auch für den User sichtbar.  <br>
+Dies passiert natürlich nicht wenn ich von P2 nach P1 oder über eine andere Sammelmethode wähle.<br>
+<strong>Clicked </strong> wird als nur abgefeuert wenn man in den Zellen beginnt.<br>
+<br>
+<strong>MouseDown</strong> wird immer gefeuert, nur da habe ich noch keinen Einfluss auf die Selektion.<br>
+Bei <strong>MouseUp</strong> konnte ich keine klare Linie erkennen.<br>
+<br>
+<strong>MouseDown </strong> benütze ich auch um der ListView gleich den Fokus zu geben<br>
+(dcl_Control_SetFocus Projekt_Form_lstView)<br>
+Sonst geht  bei der ersten Fensterwahl (P2 P1) die blaue Markierung gar nicht.<br>
+<br>
+Mit welchem Ereignis kann ich auf jeden Fall die Selektion erfassen und neu setzen?<br>
+<br>
+Danke für Ihre Mithilfe!<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1472/ListView.bmp">ListView.bmp</a> <span class="muted">(231754 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7325">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-11-15 20:54 UTC</span>
+  </div>
+  <div class="post-body">Hallo, ja das Problem kenne ich leider. Ich hatte gehofft, dass dies im Zuge meines <a href="http://sourceforge.net/tracker/?func=detail&amp;aid=2654702&amp;group_id=187950&amp;atid=923366" rel="nofollow noopener">{2}</a> Eingang findet. Es wäre gut, könnte man dieses Feature-Request dahingehend konkretisieren, dass ein OnSelChanged wie in der ListBox auch in der ListView zur Verfügung stünde (Steter Tropfen höhlt den Stein  ;) ).<br>
+<br>
+Bis dahin bleibt mir nichts anderes übrig als zu raten, innerhalb des OnMouseUp die Prüfung einzubauen. Eigentlich müsste es so sein, dass es ein kein OnMouseUp ohne OnMouseDown gibt.<br>
+<br>
+Tipp: Setze den Fokus durch OnMouseOver, wenn nicht das ListView bereits den Fokus hat. Ich guck morgen früh mal nach einem Beispiel. Mir dröhnt grad die Rübe ...<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg7327">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-11-16 07:39 UTC</span>
+  </div>
+  <div class="post-body">Hallo,<br>
+<br>
+auch wenn anbei ein zumindest halbwegs funktionierender Workaround zu finden ist, fände ich es besser, gäbe es ein OnSelChanged-Ereignis.<br>
+Der Nachteil im beiliegenden Code: ziehst Du einen Rahmen für die Auswahl und lässt die linke Maustaste außerhalb des Dialogs los, bekommt das kein Event mit.<br>
+<br>
+Aber vielleicht kommt es Deinem Ziel etwas näher...<br>
+<br>
+VG, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1473/proj.odcl">proj.odcl</a> <span class="muted">(1001 bytes)</span></li><li><a href="../attachments/1474/proj.LSP">proj.LSP</a> <span class="muted">(3247 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7328">
+  <div class="post-head">
+    <span class="post-author">OPLisp</span>
+    <span class="post-date muted">2010-11-16 09:58 UTC</span>
+  </div>
+  <div class="post-body">Hallo Fred,<br>
+<br>
+danke erstmal für Deine Dateien da sind gute Hinweise drin. Die Ereignisse funktionieren <br>
+bis auf OnMouseUp.<br>
+Du schreibst wenn ein Rahnmen gezogen und die linke Maustaste außerhalb los<br>
+gelassen wird funktioniert es nicht. Ich stelle aber fest, wenn die Maus innerhalb der<br>
+ListView logelassen wird (auch auf den Zellen), wird MouseUp nicht gefeuert.<br>
+Auch wenn ich die die Reihe 'Nicht markierbar', oder eine andere anklicke (Maus wird ja wieder los-<br>
+gelassen) nichts passiert.<br>
+Und das ist mein Problem. Ich arbeite mit OpenDCL 5.1.2.3<br>
+<br>
+Gruß<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg7330">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-11-16 10:28 UTC</span>
+  </div>
+  <div class="post-body">Hallo, das ist suspekt. Ich habe es mit 6.0.1.2 getestet und da funktioniert es. Habe 5.1.2.3 nicht mehr im Einsatz.<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg7332">
+  <div class="post-head">
+    <span class="post-author">OPLisp</span>
+    <span class="post-date muted">2010-11-16 10:54 UTC</span>
+  </div>
+  <div class="post-body">Fred,<br>
+<br>
+also noch einmal genau das MouseUp Ereignis funktioniert bei mir nur wenn ich auf einen Zelltext beginne,<br>
+die Maus leicht verschiebe und dann loslasse. Damit kann ich aber nicht sammeln.<br>
+Mit der Maus alleine kann ich sammeln wie in meiner BitMap gezeigt. Hier funktioniert aber das MouseUp<br>
+Event nicht.<br>
+Arbeitet die Version 6.0.1.2 zuverlässig mit AutoCAD 2010 ?</div>
+</article>
+<article class="post" id="msg7334">
+  <div class="post-head">
+    <span class="post-author">OPLisp</span>
+    <span class="post-date muted">2010-11-16 13:00 UTC</span>
+  </div>
+  <div class="post-body">Also unter 6.0.1.3 funktioniert das MouseUp Event.<br>
+und unter 5.1.2.3 nur wie beschrieben.<br>
+Ich hoffe 6.0.1.3 läuft sonst stabil und ist bald als 'stably version'<br>
+zum herunterladen.<br>
+<br>
+Das war's!<br>
+<br>
+Gruß<br>
+<br>
+ </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

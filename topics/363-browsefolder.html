@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BrowseFolder · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 363</p>
+    <h1>BrowseFolder</h1>
+    <p class="meta">Started by fred_tomke ·
+      2008-06-20 14:03 UTC ·
+      6 replies · SMF topic #363</p>
+<article class="post" id="msg1589">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-20 14:03 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+this works very well.<br>
+(dcl_browsefolder "Wählen Sie das Projektverzeichnis: " "C:\\" "C:\\" 81)<br>
+<br>
+But I want to see other drives, too. Then I would use <br>
+(dcl_browsefolder "Wählen Sie das Projektverzeichnis: " "C:\\" 81)<br>
+But unfortunately, I get an exception. What am I doing wrong?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1590">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-06-20 17:02 UTC</span>
+  </div>
+  <div class="post-body">Currently, if you pass the first string argument, you must pass the second string argument as well. I will change this to accept only a single string argument.</div>
+</article>
+<article class="post" id="msg1591">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-20 22:18 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+the second string is useful if the user only shall select a folder below the preselected folder. Other drives and folders are not allowed. We had an OpenDCL training today and the "student" liked this very much. But we also tried to get the "Create new folder" button. But we didn't get this when leaving out the second string.<br>
+<br>
+I hope it was understandable  :)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1596">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-06-21 04:19 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I'm not sure I understand.  Are you saying that passing an empty string is not the same as omitting the argument?</div>
+</article>
+<article class="post" id="msg1599">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-21 06:35 UTC</span>
+  </div>
+  <div class="post-body">Yes, you're right that's different. I'll give you an example:<br>
+<br>
+Case 1:<br>
+(dcl_browsefolder "Wählen Sie das Projektverzeichnis: " "D:\\bündig")<br>
+<br>
+Case 2:<br>
+(dcl_browsefolder "Wählen Sie das Projektverzeichnis: " "D:\\bündig" "D:\\")<br>
+<br>
+The second string allows only to select a folder only under "D:\\".<br>
+<br>
+Interesting, isn't it?  :) It would be nice to keep it.<br>
+<br>
+So my initial question was: what do I have to do to have the Create new folder button when I DON'T want to limit the folder selection.<br>
+<br>
+work: (dcl_browsefolder "Wählen Sie das Projektverzeichnis: " "D:\\bündig" "D:\\" 81)<br>
+doesn't work: (dcl_browsefolder "Wählen Sie das Projektverzeichnis: " "D:\\bündig" 81)<br>
+<br>
+How can I find the place in the code where this function is defined?<br>
+How can I debug that?<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/424/case_1.jpg">case_1.jpg</a> <span class="muted">(63173 bytes)</span></li><li><a href="../attachments/425/case_2.jpg">case_2.jpg</a> <span class="muted">(55624 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1601">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-06-21 18:17 UTC</span>
+  </div>
+  <div class="post-body">Have you tried (dcl_browsefolder "Wählen Sie das Projektverzeichnis: " "D:\\bündig" nil 81)?</div>
+</article>
+<article class="post" id="msg1603">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-21 21:31 UTC</span>
+  </div>
+  <div class="post-body">Thank you. Thats it! We should add this to the documentation.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

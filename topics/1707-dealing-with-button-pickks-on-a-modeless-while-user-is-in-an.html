@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dealing with button pickks on a modeless, while user is in an acad command · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1707</p>
+    <h1>dealing with button pickks on a modeless, while user is in an acad command</h1>
+    <p class="meta">Started by jmaeding ·
+      2011-10-20 17:22 UTC ·
+      3 replies · SMF topic #1707</p>
+<article class="post" id="msg8420">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2011-10-20 17:22 UTC</span>
+  </div>
+  <div class="post-body">I have a few modeless dialogs my progs use.<br>
+If the user is in the middle of some other lisp function, and they pick a button on the modeless, the code for the modeless cannot run, as that would interrupt the other function running - right?<br>
+Is there any way to allow the modeless code to run for that button in a graceful way?<br>
+Let's assume i have code for both the original command the user is running, as well as the dialog and callbacks.<br>
+Does the synchronous or asynchronous property of the button have anything to do with it?<br>
+<br>
+I say button, but really what is going on is the user is switching the value of a dropdown list while in another command.  I guess I could disable the modeless at start of command to prevent this, but the error catching of the command must be perfect to re-enable the modeless when done, rather fragile. <br>
+<br>
+Currently, I have to save the state of the dropdown, then check its state whenever commands are run that rely on it.  The problem is that when the user changes the dropdown while within another command, its code does not run, but the user thinks it worked because the dropdown shows the new value.</div>
+</article>
+<article class="post" id="msg8421">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-10-20 18:02 UTC</span>
+  </div>
+  <div class="post-body">In general, I would design a modeless dialog so that UI elements are disabled while they won't work.  In your case, editor reactors should reliably capture command and lisp state changes, but my first choice would be to use a document reactor to monitor document locking (and in addition, respond appropriately to the form's EnteringNoDocState event).  Of course the best solution would be a combo that doesn't need to execute any event handlers, but that isn't always possible.</div>
+</article>
+<article class="post" id="msg8423">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2011-10-20 20:54 UTC</span>
+  </div>
+  <div class="post-body">thanks for the reply Owen, I'll probably have to disable the controls on the modeless as they do trigger other things to happen normally.<br>
+<br>
+While I talking, I am seeing the need for various genric add in functions my lisps need, that .net does well.<br>
+Given that you can make a lispfunction with .net, I keep thinking someone will make a library of lisp fucntions with .net and sell it.  Might not sell for much, but things like a decent directory selector and color dialog with truecolor tab would be useful. thx</div>
+</article>
+<article class="post" id="msg8425">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-10-21 07:23 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+<blockquote class="quote">decent directory selector </blockquote> <br>
+How about <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Function/SelectFolder.htm" rel="nofollow noopener">{2}</a>?<br>
+<br>
+<blockquote class="quote">color dialog with truecolor tab </blockquote><br>
+How about (acad_truecolordlg ...)?<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

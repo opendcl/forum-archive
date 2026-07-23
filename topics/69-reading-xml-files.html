@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reading XML files? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 69</p>
+    <h1>Reading XML files?</h1>
+    <p class="meta">Started by nwgeo ·
+      2007-10-15 23:55 UTC ·
+      3 replies · SMF topic #69</p>
+<article class="post" id="msg287">
+  <div class="post-head">
+    <span class="post-author">nwgeo</span>
+    <span class="post-date muted">2007-10-15 23:55 UTC</span>
+  </div>
+  <div class="post-body">I might have posted this with the last question, but it is an entirely different subject, so I thought I'd better post this by itself.  My interest in dialog box code is two-fold. <br>
+<br>
+1) There is quite a bit of VB-esque looking functionality now with this DLL and it is a far cry better than the old "yellow" looking, clunky diabox code of yester year.<br>
+<br>
+2) I would like to be able to take the contents of an XML file and display the results of a user query in a listbox.<br>
+<br>
+Has anyone come across a suitable way to read XML files from a LISP interpreter?  I'm looking to read around 7,500 rows of address records into memory, have the user type in an address number, then display the results in a listbox [e.g. all addresses that match the house number entered in a text box].<br>
+<br>
+I could read an XML file exported from Access  or go the old-fashoned way and kludge together a LISP-type list like this:<br>
+<br>
+(setq addrls (list <br>
+  ("123" (<br>
+    ("123 MAIN STREET")<br>
+    ("123 44TH AVE NE")<br>
+    ("123 91ST PLACE")<br>
+  ))<br>
+   ...... [and so on for all unique address numbers]<br>
+)));end SETQ addrls<br>
+<br>
+Sorry for all of the detail, but I thought I'd better err on the side of "too much information" rather saying, "Hey, I need help...."<br>
+<br>
+TIA for any ideas or for pointing me to another resource.  Can't wait to get coding with this library!<br>
+</div>
+</article>
+<article class="post" id="msg289">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2007-10-16 03:16 UTC</span>
+  </div>
+  <div class="post-body">Have a look here: http://www.theswamp.org/index.php?topic=541.0<br>
+</div>
+</article>
+<article class="post" id="msg292">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-10-16 10:18 UTC</span>
+  </div>
+  <div class="post-body">nwgeo,<br>
+<br>
+I can't post my XML library, unfortunately , (well not the source anyway   ;) )<br>
+.. but I'll give you an option ...<br>
+If you are doing a lot of manipulation of datasets perhaps have a look at ADOLISP by Jon  Fleming.<br>
+His Library is at http://acad.fleming-group.com/index.html<br>
+Look for <em>ADOLISP Database Library </em> <br>
+<br>
+You can then use conventional SQL style queries which may speed up your searching .. and you'll have the advantage of not needing to convert your Access BD, just use it as is.<br>
+<br>
+<br>
+<strong>edit:</strong>  fixed fat finger spelling<br>
+<br>
+  </div>
+</article>
+<article class="post" id="msg295">
+  <div class="post-head">
+    <span class="post-author">nwgeo</span>
+    <span class="post-date muted">2007-10-16 15:25 UTC</span>
+  </div>
+  <div class="post-body">Thanks Kerry,<br>
+<br>
+I'll check it out.  This has been a challenge for me, trying to stay AWAY from the MDAC and other database driver related issues.  I just cringe everytime there is a service pack release or a version of Access changes becuase I know I'm going to be getting the phone calls.  If I can connect directly to an Access query, that would save the intermediate step of exporting an XML formatted file.  Thanks for the link and info.<br>
+<br>
+Still, I'll be watching out for any XML-related posts as this seems to be the format of choice for information [graphic and non-graphic] for interchange between applications.  It just makes sense to be ready with an AutoCAD-based solution as well.<br>
+<br>
+: I did follow ths link and found out that it does rely on the existance of "msado15.dll"  The LISP code explicitly goes searching around on the host machine:<br>
+<br>
+            (findfile<br>
+              (if (getenv "systemdrive")<br>
+                (strcat<br>
+                  (getenv "systemdrive")<br>
+                  "\\program files\\common files\\system\\ado\\msado15.dll"<br>
+                )<br>
+                "c:\\program files\\common files\\system\\ado\\msado15.dll"<br>
+              )<br>
+<br>
+<br>
+Perhaps there is just no getting around this :(  <br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

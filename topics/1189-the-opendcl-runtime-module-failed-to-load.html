@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>&quot;The OpenDCL RUntime module failed to load.&quot; · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1189</p>
+    <h1>&quot;The OpenDCL RUntime module failed to load.&quot;</h1>
+    <p class="meta">Started by Oak3s ·
+      2010-02-24 23:31 UTC ·
+      15 replies · SMF topic #1189</p>
+<article class="post" id="msg6353">
+  <div class="post-head">
+    <span class="post-author">Oak3s</span>
+    <span class="post-date muted">2010-02-24 23:31 UTC</span>
+  </div>
+  <div class="post-body">AutoCAD Message:<br>
+"The OpenDCL Runtime module failed to load. Please repair the OpenDCL installation and try again."<br>
+<br>
+This is my first post. Hello. :) bummer first post though.<br>
+<br>
+I currently have AutoCAD 2008 and 2010 installed on this 64bit machine.<br>
+<br>
+The order of events I have went through:<br>
+<br>
+&gt;Installed OpenDCL Studio 5.1.2.3 (at least that is what the About says)<br>
+&gt;After install - Drag and drop the _MasterDemo.lsp file into 08. I got the message above.<br>
+&gt;Closed ODCL and AutoCAD<br>
+&gt;Drag and drop _MasterDemo.lsp into 2010. Same message.<br>
+&gt;ran OpenDCL.Runtime.5.1.2.3.msi<br>
+&gt;added folders to support file search paths - same errors.<br>
+<br>
+In another post (which I cant seem to find now) some code was posted as help to this problem:<br>
+ (defun c:TestIt (/ odcl_arxpath)  <br>
+   (vl-load-com) <br>
+   (princ (strcat "\n   Demand Load Setting :"  <br>
+                  (itoa (getvar "demandload"))  <br>
+                  "\n"  <br>
+          )  <br>
+   )  <br>
+   (setq  <br>
+     odcl_arxpath (vl-registry-read (strcat "HKEY_LOCAL_MACHINE\\"  <br>
+                                            (vlax-product-key) <br>
+                                            "\\Applications\\OpenDCL"  <br>
+                                    )  <br>
+                                    "Loader"  <br>
+                  )  <br>
+   )  <br>
+   (princ  <br>
+     (strcat "\n   ArxPath : " (VL-PRINC-TO-STRING odcl_arxpath) "\n")  <br>
+   )  <br>
+   (princ)  <br>
+) <br>
+<br>
+This is the output:<br>
+<pre class="code"><code>Demand Load Setting :3<br>
+<br>
+   ArxPath : C:\Program Files (x86)\Common Files\OpenDCL\OpenDCL.x64.17.arx</code></pre><br>
+<br>
+Any help would be very much appreciated. I was indirectly directed to OpenDCL from users at theswamp.org. From what I have read I am pretty excited to dive in. I am a bit slow to get into .net though I want to. For now though, I really want this to work. Thank you.<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6354">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-02-24 23:57 UTC</span>
+  </div>
+  <div class="post-body">Welcome to the team Oak3s.<br>
+Hmmm, you shouldn't be getting that error with these results of TestIt...<br>
+You did have AutoCAD installed before installing OpenDCL, right?<br>
+You're not moving the ARX's to anther folder or on the network, right?</div>
+</article>
+<article class="post" id="msg6355">
+  <div class="post-head">
+    <span class="post-author">Oak3s</span>
+    <span class="post-date muted">2010-02-24 23:57 UTC</span>
+  </div>
+  <div class="post-body">I have made some headway.<br>
+<br>
+I manually loaded OpenDCL.x64.17.arx. I havent tested things completely but I was able to drag and drop the _MasterDemo.lsp.<br>
+<br>
+For anyone with similar error:<br>
+<pre class="code"><code><br>
+<br>
+Command: arx<br>
+<br>
+Enter an option [?/Load/Unload/Commands/Options]: load<br>
+<br>
+OpenDCL Runtime [5.1.2.3] loaded</code></pre><br>
+<br>
+When I picked load I was able to browse to C:\Program Files (x86)\Common Files\OpenDCL\OpenDCL.x64.17.arx<br>
+<br>
+I hope I posted this soon enough. Also hope this helps anyone with a similar problem.</div>
+</article>
+<article class="post" id="msg6356">
+  <div class="post-head">
+    <span class="post-author">Oak3s</span>
+    <span class="post-date muted">2010-02-24 23:59 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=1189.msg6354#msg6354 date=1267055842 wrote:</cite><br>
+You did have AutoCAD installed before installing OpenDCL, right?<br>
+You're not moving the ARX's to anther folder or on the network, right?<br>
+</blockquote><br>
+You are correct. AutoCAD was installed already (both 2008 and 2010).<br>
+The ARX's were not moved.<br>
+<br>
+Thanks Berry for the welcome.</div>
+</article>
+<article class="post" id="msg6357">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-02-25 01:29 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Welcome to the forum Oak3s.<br>
+<br>
+What happens when you type 'OPENDCL' in a new drawing ?</div>
+</article>
+<article class="post" id="msg6360">
+  <div class="post-head">
+    <span class="post-author">Oak3s</span>
+    <span class="post-date muted">2010-02-25 16:40 UTC</span>
+  </div>
+  <div class="post-body">When I first start up AutoCAD I get the 'Unknown command' message.<br>
+If I load the ARX manually and then close the drawing, then type 'opendcl' I dont get a message at all.</div>
+</article>
+<article class="post" id="msg6362">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-25 17:40 UTC</span>
+  </div>
+  <div class="post-body">Start AutoCAD, then enter the following to get the value of the LoadCtrls demand-load registry key:<br>
+(vl-load-com)<br>
+(vl-registry-read (strcat "HKEY_LOCAL_MACHINE\\" (vlax-product-key) "\\Applications\\OpenDCL" ) "LoadCtrls")<br>
+<br>
+If these values are all set corrctcly, and the runtime .arx file is accessible, then AutoCAD should demand load the file when you enter the OPENDCL command.</div>
+</article>
+<article class="post" id="msg6363">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-02-25 17:43 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Oak3s link=topic=1189.msg6360#msg6360 date=1267116050 wrote:</cite><br>
+When I first start up AutoCAD I get the 'Unknown command' message.<br>
+If I load the ARX manually and then close the drawing, then type 'opendcl' I dont get a message at all.<br>
+</blockquote><br>
+<br>
+If you don't get a message at all, that's good. It means it's already loaded. But it should demand load, without you having to load it manually.<br>
+Now that you've got it working manually, does the demand loading work or do you always have to load it manually?<br>
+I noticed in your fist post you said you installed both the studio &amp; the run-time. You shouldn't have to install both. Just install the Studio (it includes the run-time). Maybe you installed different versions of the Studio &amp; the run-time...<br>
+</div>
+</article>
+<article class="post" id="msg6364">
+  <div class="post-head">
+    <span class="post-author">Oak3s</span>
+    <span class="post-date muted">2010-02-25 18:05 UTC</span>
+  </div>
+  <div class="post-body">I installed the runtime because of the original error message.<br>
+<br>
+When I run Owens code:<br>
+<br>
+<pre class="code"><code>Command: (vl-registry-read (strcat "HKEY_LOCAL_MACHINE\\" (vlax-product-key) <br>
+"\\Applications\\OpenDCL" ) "LoadCtrls")<br>
+12</code></pre><br>
+<br>
+Then Opendcl returns:<br>
+<pre class="code"><code>Command: opendcl<br>
+Unknown command "OPENDCL".  Press F1 for help.</code></pre><br>
+<br>
+I have to load it when I start AutoCAD. I do not have to load it with every new drawing.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6365">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-25 18:20 UTC</span>
+  </div>
+  <div class="post-body">Given what you have posted, it appears that something is causing AutoCAD's demand load feature to fail. Are you running any other add-ons or Windows utilities (like anti-virus software) that could be interfering? Is this plain AutoCAD, or a vertical variant?</div>
+</article>
+<article class="post" id="msg6366">
+  <div class="post-head">
+    <span class="post-author">Oak3s</span>
+    <span class="post-date muted">2010-02-25 18:46 UTC</span>
+  </div>
+  <div class="post-body">There are no add-ons to plain AutoCAD other than custom cui/lisp's. If anti-virus software is interfering I am not getting any report of it doing so. The AV software (as I understand it) is through a server. I dont even know what it is. :) Just started a few weeks back.</div>
+</article>
+<article class="post" id="msg6368">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-25 19:05 UTC</span>
+  </div>
+  <div class="post-body">Strange. Does AutoCAD's IMAGE command work correctly?</div>
+</article>
+<article class="post" id="msg6369">
+  <div class="post-head">
+    <span class="post-author">Oak3s</span>
+    <span class="post-date muted">2010-02-25 20:13 UTC</span>
+  </div>
+  <div class="post-body">:) If by work correctly you mean bringing up the xrefs. If I put in -image then I get the image option at commandline. If I attach everything seems to work as expected. Though I have never really put this into much practice. Seems to work though.</div>
+</article>
+<article class="post" id="msg6370">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-25 20:28 UTC</span>
+  </div>
+  <div class="post-body">The IMAGE command relies on the same demand loading feature that OPENDCL uses, so if it works for the IMAGE command, it should work for the OPENDCL command. I'd sure like to know why it doesn't.</div>
+</article>
+<article class="post" id="msg7755">
+  <div class="post-head">
+    <span class="post-author">blasto</span>
+    <span class="post-date muted">2011-02-09 14:46 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+sorry for bringing up an old thread but I'm having the same problem right now. I've been using 2008 &amp; OpenDCL5.1.2.1 recently I've updated to 2011 and removed 2008. opendcl didn't work at my first attempt and I removed it and installed 5.1.2.3 version. <br>
+<br>
+It still doesn't load at the startup. If I manually load .arx everything works but how do I make it load automatically? Thanks</div>
+</article>
+<article class="post" id="msg7756">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-02-09 15:30 UTC</span>
+  </div>
+  <div class="post-body">I'm not sure why it's not demand loading correctly, but I wonder if you somehow have multiple versions installed.  I recommend to upgrade to OpenDCL 6 to see if that fixes the problem.  OpenDCL 6 is more stable than 5.1 by now, so you should probably upgrade anyway.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

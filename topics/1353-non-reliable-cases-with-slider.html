@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Non reliable cases with Slider · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1353</p>
+    <h1>Non reliable cases with Slider</h1>
+    <p class="meta">Started by Slavko.Ivanovic ·
+      2010-10-17 01:00 UTC ·
+      1 replies · SMF topic #1353</p>
+<article class="post" id="msg7216">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2010-10-17 01:00 UTC</span>
+  </div>
+  <div class="post-body"><br>
+I have notice some things about slider. <br>
+Need opinion.<br>
+Copy this code and load.<br>
+<br>
+;; Events<br>
+(defun c:slider_Form1_Slider1_OnScroll (Value /)<br>
+ (dcl_MessageBox<br>
+  "To Do: code must be added to event handler\r\nc:slider_Form1_Slider1_OnScroll"<br>
+  "To do"<br>
+ )<br>
+)<br>
+(defun c:slider_Form2_Slider1_OnScroll (Value /)<br>
+ (dcl_MessageBox<br>
+  "To Do: code must be added to event handler\r\nc:slider_Form2_Slider1_OnScroll"<br>
+  "To do"<br>
+ )<br>
+)<br>
+(defun c:slider_Form1_OnInitialize (/) (dcl_Control_SetValue slider_Form1_Slider1 5))<br>
+(defun c:slider_Form2_OnInitialize (/) (dcl_Control_SetValue slider_Form2_Slider1 5))<br>
+<br>
+;; Load and show <br>
+(dcl_project_import<br>
+ '("YWt6A9MeAAC7eV1aBuKTJjURYjtugFi6lV9IdDQ+Byb/K3YefWWTtc/zenk+Nj48IFnGOhXR80mn"<br>
+"puydRvZ1eXBeDH53uvfhvi2cXw+aeknQNmJGXPt+WVDu5tEUWaWjy6gSQqCmVZpjsxIBLaNDQyMh"<br>
+"K4lJxSkR0FxHDemuOn0Lshx3RX6CSnaiswFPYOf6YitgrdIsO387Yh0X/NtUtVugUY7S3/wP6LTK"<br>
+"sGwxzrBi8WyB2Ret+dM08Z3SLR/hHOMe174M7xNUpB3zqMSIJpmvzLBYU7TmnMu8FXNNZr7uCmQP"<br>
+"3sUayoVuOUQAWh1hBmD1Atv1Yj0Cfce6bjfdhh39KXKA4KNZJlCPUbgAW75dTQZsgErg/QWIR+K6"<br>
+"fCCep75MseSoBf2LnCJqiITxB7SVeIH+Q8mgUQevhnIIvIW7Ech4UsGhRqGPYPmhbIXJcBWD0XOA"<br>
+"uJ7RcoCpQzFyj6Vmwvspmwdx+1AG6NEF99E0aYJmJm7xxOBhHjfjR/K6592o5/0Zw5dTC0SW1OfU"<br>
+"+L+NfwBOox+fzSRwQjW0U88w7TkCw0PIKJFJpc1sl9KCn87wkImIUsuOb62AsYgiypIVRgR5nMht"<br>
+"QlmBW+0ArJ/dHKEb4prvns6e8fKDQBnpJ/ORCYYXv9ligCuOQPm7JY8A+cvB/ROZyrgFpKcbYJxP"<br>
+"jYI92IMf/dFnlEKSkmvPwZKOV79RZ6xgSYb6v1Fk8lZioV0YQui08eSJj9aDTWwUNfVfxw2qLEUJ"<br>
+"4j9MM8xL+6bJkQTzkeMY1ENUYmridWALFvDCIFyN6e9Z4fubTca+jMIMA+jbL4wA7wLpZFA8uG5x"<br>
+"5hpLElySde33wErtjMfXgee/4WSC97/oqnW/5XPhHvqYB7CVOkgnAPCpqW7hSc/GFo47aQUBtfIg"<br>
+"TojYv6HHZ8BQixNYjPwTyZ658/nCnuxpiv0VAco4WI38mQPXoVOppqIa/bmY5BDHt3XIKW94pWYE"<br>
+"bhKVdtgJnnvt0mvXvyqQmtabzpvam96b1pvai8Ob9Jvsm+Sb3JvUmzyB0kWj7PHQdR+Mp4Vq/Qz/"<br>
+"t1uhz96Yl85r4OwIxFjs0ve+eJBEfCspO1EucTqf1IhgrCnXjXZ9mX5ISQ6g+2lGibbjyr7Xiux2"<br>
+"DZZevBr98LCVVArn1TU9V5+RuIxa/RLtUZX0CjuJ7gdQ8DGOxNLwIzY2yqjIRNFFsBvTVUPxEdEj"<br>
+"Z6jQBe9gbMzpjz0cEenLNbbN6xXpzqBxv2sSEHZwO+DU6EZtayXbJGiTIt5s4B7H1mQmNBurvtwD"<br>
+"WSsrqScB9Ik7gTDVIFBPyuLUaFsjW6vVwiUdw/zUmR3UsDsr6abEvi0ktcNny/PN4eTolaQMrCmr"<br>
+"3JksKgtH7WDLvKV0DVW60wCzUrq1FzwC3dTG5Q7JPEHd9FAJkEYE1dTNlbBcBNVFkTzmIDjc85ew"<br>
+"Ga4loyc85jCwnrCUMAOhC5SwRYnv2qJ5YTeo29TJ+74od/9vCpKBSIxr3HG7v/l2LesSyIOqXX02"<br>
+"NVvRXjJb8d+xKwuRtt/ltoHzNIJ+X2/QXFo8yUvb/+52hH8R7SucCNiyxnSj8NSg4KXTJPuohnRP"<br>
+"64tVOk+FCfZTNiTnCsKrk1c31WEKy4KAferOz6s="))<br>
+(dcl_form_show slider_form1)<br>
+(dcl_MessageBox "Case two is same, but reversed" "Now")<br>
+(dcl_form_show slider_form2)<br>
+<br>
+<br>
+<em>also, i find some very small cosmetics:<br>
+missing left parenthesis in copy-ready event in studio</em><br>
+<br>
+(defun c:slider_Form2_Slider1_OnReleasedCapture Value /)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:slider_Form2_Slider1_OnReleasedCapture" "To do")<br>
+)<br>
+<br>
+<br>
+<br>
+Slavko</div>
+</article>
+<article class="post" id="msg7218">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-10-18 05:32 UTC</span>
+  </div>
+  <div class="post-body">Good catch. I've fixed the scroll event bug for beta 3, and added the missing parenthesis in the help file.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

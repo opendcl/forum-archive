@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PictureBox load remote image? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1598</p>
+    <h1>PictureBox load remote image?</h1>
+    <p class="meta">Started by honkinberry ·
+      2011-03-09 18:05 UTC ·
+      8 replies · SMF topic #1598</p>
+<article class="post" id="msg7831">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2011-03-09 18:05 UTC</span>
+  </div>
+  <div class="post-body">I'd like my PictureBox control to display jpg images that are either saved locally, or referenced to an http location.  I've experimented with having a WebBrowser and PictureBox control on the form, and toggling between them, but the PictureBox control is just simply superior for displaying images (it scales the image automatically and fluidly through dialog resize, it doesn't have scroll bars, etc).<br>
+So is there a trick to getting it to load an http image, or perhaps is this something that can be added to the wishlist?<br>
+Many thanks for any info.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg7832">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-03-09 19:12 UTC</span>
+  </div>
+  <div class="post-body">Hi, honkinberry, hm, I'd focus the picturebox. I may be wrong, but wasn't there any ActiveX code to downlaod a file? You only have to do the same as the Web-Browsers do: download the file (internally, of course) and display it. The only thing you need is the downloading code.<br>
+<br>
+Regards,<br>
+Fred</div>
+</article>
+<article class="post" id="msg7833">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2011-03-09 19:39 UTC</span>
+  </div>
+  <div class="post-body">honkinberry,<br>
+What version are you using?<br>
+The "LoadPictureFile" works fine for me in the latest build 6.0.2.1<br>
+<br>
+(dcl_PictureBox_LoadPictureFile mytest_Form1_PictureBox1 "D:\\pic1.jpg" T)<br>
+<br>
+I've also used the HTML control to show images without scroll bars. I write the HTML file on the fly:<br>
+<pre class="code"><code><br>
+ Html, body {Overflow:auto;}<br>
+</code></pre><br>
+<br>
+I'm not sure why I used Overflow:auto instead of Overflow:hidden, but try them both...<br>
+</div>
+</article>
+<article class="post" id="msg7887">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2011-03-21 17:40 UTC</span>
+  </div>
+  <div class="post-body">Sorry for the delay in replying, I was out of the country.<br>
+<br>
+In the example you have, you are loading from the D:\ drive.  That works, yes.<br>
+I'd like to also load from an http location, which does not seem to work with the latest build.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg7889">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-03-21 17:55 UTC</span>
+  </div>
+  <div class="post-body">Look at Barry's HTML control example; it is loading from an HTTP server.</div>
+</article>
+<article class="post" id="msg7890">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2011-03-21 18:24 UTC</span>
+  </div>
+  <div class="post-body">Yes, but in OP, I indicated I would like to use a PictureBox, instead of an Http Control, as I find the picture scaling to be more controllable.<br>
+My ideal would be to use a PictureBox control for both local and remote content.<br>
+If I cannot open remote content with it, then I can download the jpg on the fly, but I'd like to avoid doing that, hence asking if I'm missing some trick to getting a PictureBox to load remote content.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg7891">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-03-21 18:35 UTC</span>
+  </div>
+  <div class="post-body">If the remote content is on your own server, you could map it to a local file path via WebDAV or something, but otherwise I don't think there is any way to dynamically link a picturebox to a remote image file via HTTP.</div>
+</article>
+<article class="post" id="msg9983">
+  <div class="post-head">
+    <span class="post-author">Abigail111</span>
+    <span class="post-date muted">2013-09-03 08:19 UTC</span>
+  </div>
+  <div class="post-body">I also want to know a tricks to load image.I often <a href="http://www.rasteredge.com/how-to/csharp-imaging/load-from-file/" rel="nofollow noopener">{2}</a> in a difficult way.I want to know is there any easy way to load image?Thanks</div>
+</article>
+<article class="post" id="msg9985">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-09-03 11:51 UTC</span>
+  </div>
+  <div class="post-body">Hi, Abigail,<br>
+<br>
+your link shows a way I also use: extract images from icons or create a thumbnail in a temporary file at  runtime to load them afterwards in OpenDCL.<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

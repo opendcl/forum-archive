@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>vlx namespace helper · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 1000</p>
+    <h1>vlx namespace helper</h1>
+    <p class="meta">Started by Slavko.Ivanovic ·
+      2009-11-01 11:36 UTC ·
+      0 replies · SMF topic #1000</p>
+<article class="post" id="msg5080">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2009-11-01 11:36 UTC</span>
+  </div>
+  <div class="post-body"><br>
+While creating specific app i have need to modify existing project for<br>
+compiling to separate VLX namespace. So, cause i always let odcl<br>
+to manage symbol names, and to avoid vl-doc-ref for every symbol i<br>
+write 3 sub to handle VLX namespace relation.<br>
+test attached.<br>
+compiled .vlx and .odcl are in attachment<br>
+<br>
+<br>
+;;	test OpenDCL for compiling in separate vlx namespace<br>
+<br>
+;;	For loading put VLXNS.odcl in ACAD support path,<br>
+<br>
+;;	Appload VLXNS.vlx<br>
+<br>
+;;;	by Slavko Ivanovic, slavko.ivanovich@gmail.com<br>
+<br>
+;;||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+;; Import dcl_*** functions from doc to VLX.<br>
+;; For calling BEFORE calling dcl_Project_Load or dcl_Project_Import.<br>
+;; OpenDCL.arx must be loaded in Acad previously, of course.<br>
+(DEFUN si-vlx-Import-OpenDCL (/ ~pa)<br>
+   (OR DCL_GETVERSION<br>
+       (VL-ARX-IMPORT<br>
+          (STRCAT "OpenDCL"<br>
+                  (IF (AND (SETQ ~pa (GETENV "PROCESSOR_ARCHITECTURE"))<br>
+                           (&lt; 1 (STRLEN ~pa))<br>
+                           (EQ "64" (SUBSTR ~pa (1- (STRLEN ~pa))))<br>
+                      )<br>
+                     ".x64."<br>
+                     "."<br>
+                  )<br>
+                  (SUBSTR (GETVAR "acadver") 1 2)<br>
+                  ".arx"<br>
+          )<br>
+       )<br>
+   )<br>
+)<br>
+<br>
+;;||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+;; Clone assigned symbol references for all Forms in given project, from Doc to Vlx.<br>
+;; For calling BEFORE calling dcl_form_show func.<br>
+;; Argument @prn = project name as STRING <br>
+(DEFUN si-vlx-Import-Forms (@prn / ~r)<br>
+   (MAPCAR '(LAMBDA (@sym) (SET @sym (VL-DOC-REF @sym)))<br>
+           (MAPCAR 'READ<br>
+                   (MAPCAR '(LAMBDA (@f) (STRCAT @prn "_" (DCL_CONTROL_GETPROPERTY @f "(Name)")))<br>
+                           (DCL_PROJECT_GETFORMS @prn)<br>
+                   )<br>
+           )<br>
+   )<br>
+)<br>
+;;||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+;; Clone assigned symbol references for all Controls in given Form, from Doc to Vlx.<br>
+;; For calling INSIDE _OnInitialize - first thing to call.<br>
+;; Arguments @prj = project name as STRING  |  @fn = Form name as STRING<br>
+(DEFUN si-vlx-Import-Controls (@prn @fn)<br>
+   (SETQ @fn (STRCAT @prn "_" @fn))<br>
+   (MAPCAR '(LAMBDA (@sym) (SET @sym (VL-DOC-REF @sym)))<br>
+           (MAPCAR 'READ<br>
+                   (MAPCAR '(LAMBDA (@cn) (STRCAT @fn "_" @cn))<br>
+                           (MAPCAR '(LAMBDA (@c) (DCL_CONTROL_GETPROPERTY @c "(Name)"))<br>
+                                   (DCL_FORM_GETCONTROLS (VL-SYMBOL-VALUE (READ @fn)))<br>
+                           )<br>
+                   )<br>
+           )<br>
+   )<br>
+)<br>
+<br>
+<br>
+;;||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+;;||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+;; TEST FUNKCIJA :<br>
+(DEFUN c:vlxns (/ ~prj)<br>
+   ;;<br>
+   ;;<br>
+   ;;load event functions<br>
+   (SETQ<br>
+      ~evf (LIST ;;Form1 initialization<br>
+                 (DEFUN c:VLXNS_Form1_OnInitialize (/)<br>
+                    (si-vlx-Import-Controls ~prj "Form1")<br>
+                                           ;***** 3. si-vlx-Import-Controls IN ONINITIALIZE function *****<br>
+                 )<br>
+                 ;;Form2 initialization<br>
+                 (DEFUN c:VLXNS_Form2_OnInitialize (/)<br>
+                    (DCL_MESSAGEBOX<br>
+                       "Form2 Form Dont Have (si-vlx-Import-Controls) in _OnInitialize func."<br>
+                       "Initialization of Form2"<br>
+                       2<br>
+                       2<br>
+                    )<br>
+                 )<br>
+                 ;; Form1 buttons<br>
+                 (DEFUN c:VLXNS_Form1_TextButton1_OnClicked (/ ~p ~w)<br>
+                    (SETQ ~p (DCL_CONTROL_GETPOS VLXNS_Form1_TextButton1))<br>
+                    (OR (AND (= (CAR ~p) 24) (SETQ ~w 184)) (SETQ ~w 24))<br>
+                    (DCL_CONTROL_SETPOS VLXNS_Form1_TextButton1 ~w (CADR ~p) (CADR (REVERSE ~p)) (CAR (REVERSE ~p)))<br>
+                 )<br>
+                 (DEFUN c:VLXNS_Form1_TextButton2_OnClicked (/) (PRINC))<br>
+                 ;; Form2 buttons<br>
+                 (DEFUN c:VLXNS_Form2_TextButton1_OnClicked (/ ~p ~w)<br>
+                    (SETQ ~p (DCL_CONTROL_GETPOS VLXNS_Form2_TextButton1))<br>
+                    (OR (AND (= (CAR ~p) 184) (SETQ ~w 24)) (SETQ ~w 184))<br>
+                    (DCL_CONTROL_SETPOS VLXNS_Form2_TextButton1 ~w (CADR ~p) (CADR (REVERSE ~p)) (CAR (REVERSE ~p)))<br>
+                 )<br>
+                 (DEFUN c:VLXNS_Form2_TextButton2_OnClicked (/)<br>
+                    (si-vlx-Import-Controls "VLXNS" "Form2")<br>
+                    (DCL_CONTROL_SETCAPTION VLXNS_Form2_TextButton1 "Click Me Again Now.")<br>
+                    (PRINC)<br>
+                 )<br>
+           )<br>
+   )<br>
+   ;;event functions loaded<br>
+   ;;<br>
+   ;;<br>
+   ;;main start<br>
+   (si-vlx-Import-OpenDCL)                 ;***** si-vlx-Import-OpenDCL 1. BEFORE LOADING *****<br>
+   (SETQ ~prj (DCL_PROJECT_LOAD (FINDFILE "VLXNS.odcl") T))<br>
+   (si-vlx-Import-Forms ~prj)              ;***** si-vlx-Import-Forms 2. BEFORE SHOWING *****<br>
+   (DCL_FORM_SHOW VLXNS_form1)<br>
+   (DCL_FORM_SHOW VLXNS_form2)<br>
+   ;;main end<br>
+   ;;<br>
+   ;;<br>
+   (MAPCAR '(LAMBDA (x) (SET x nil)) (CONS '~evf ~evf)) ; kill events<br>
+   (PRINC)<br>
+)<br>
+;;||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+(prompt "\n* Type VLXNS for test.")<br>
+;;||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+<br>
+<br>
+nothing, just feel like share.<br>
+<br>
+oh wait, there is something:<br>
+did i maybe missed some native dcl** method for vlx namespaces?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1009/VLXNS.zip">VLXNS.zip</a> <span class="muted">(5240 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

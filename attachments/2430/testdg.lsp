@@ -1,0 +1,5 @@
+(defun C:TESTDG ()
+(dcl_Project_Load "TEST" T)
+(dcl-Form-Show test/frmTest)
+(dcl-Form-Center test/frmTest)
+)

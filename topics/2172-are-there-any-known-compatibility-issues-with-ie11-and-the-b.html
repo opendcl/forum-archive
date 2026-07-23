@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Are there any known compatibility issues with IE11 and the browser control? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2172</p>
+    <h1>Are there any known compatibility issues with IE11 and the browser control?</h1>
+    <p class="meta">Started by mr nick ·
+      2014-09-22 13:34 UTC ·
+      9 replies · SMF topic #2172</p>
+<article class="post" id="msg10881">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2014-09-22 13:34 UTC</span>
+  </div>
+  <div class="post-body">As per the title - are there any known problems?<br>
+<br>
+The reason I ask, all the machines at our company are running IE8 and my code works just fine but when I run the same code on my home machine which is running the same AutoCAD version (Architecture 2014) but has IE11 installed I get a strange error.<br>
+<br>
+My code basically shows a dialog box with a browser control and that control shows a short bit of html code - all very basic. On our work machines we can run this caode all day long without a hitch but on my home machine I can run it once and then on the second run it crashes - the dialog box appears but the html is not there and then AutoCAD crashes and I get a debug box telling me that acad.exe has crashed and the fault module is mshtml.dll.<br>
+<br>
+If I run this code once then fully close AutoCAD and restart I can run it again but if I ever attempt a second run I get the same error. I am loathe to install IE11 on my work machine in case it is the cause and then I'll have to faff about removing it etc which is never an easy task.<br>
+<br>
+At this point I haven't provided any sample code as I just wanted to test the water and see if there weere any known bugs that may explain what is happening here.<br>
+<br>
+Another 'possible' trigger may be to do with my machine setup - I had been running AutoCAD 2015 but due to a lot of problems surrounding COMMAND-S (a whole other subject...) I removed it and went back to 2014 and since then I have had quite a few niggling problems crop up so I'm not sure if my HTML problem is possibly being caused by whatever the downgrade has messed up.<br>
+<br>
+**EDIT**<br>
+I should just clarify something here. When I say I can't run the code a second time , I actually mean I can't run it in a second drawing in the same AutoCAD session. If I run it once and then close that drawing then open a new drawing and try to run the same code it crashes. <br>
+<br>
+**EDIT **<br>
+OK, I made a quick sample. Load this into Drawing1 and it runs fine, showing the webpage as expected. Load the same code into Drawing2 in the same AutoCAD session and the dialog appears but with no webpage and then AutoCAD crashes (for me anyway).<br>
+<br>
+(setq testdia<br>
+'("YWt6A4YHAAA4MhUEBuLTKscQaj9uA80ZteB+JzxMp7T5Dr62pqa1UN8/9rXmlXmSi2RlkdBTJr5c"<br>
+"z018bDr+dnaGfjD3VTo67o9/An5sKTh8BgerzeDgV8J1NrLWBYQLKcPU0B0IykglFvEybSsiPG1g"<br>
+"/gkH3vkhR2ZUH2hb8g/gzg3+TJhWUtV3MhziRt66QqFP0Ijctsm843QJiB3/TO0iJz1TH+K9QLUn"<br>
+"2NICfZwPDFAmuNTLbW7pkxAexxjHVOzTFlMp1yc8ZMAGNaxornGdX/uIPU2nvSa/O6o3GKDeEZXa"<br>
+"UxywXv2mHaiTs5ON//qYUAwTlveZmNm8KWqQDYRRF73CKZkpbQYpe3nOa4wvRil5T/148AxSjxr3"<br>
+"CdMPwDg3jbwnzmBBLYbHvDFrgNBCJC1GmVuPcWlfX0yp7/G8VW9kkmaQqba4ah/yHADlrvpnD+DA"<br>
+"NH1AeQJ1iZbSiOAdVqhm5FcimKLarzj5ctke3MWxRnWD/A0BO+QrAIX39nMKtJ9WyJl1DQWuGMr8"<br>
+"G7SyvUIoC4Y6nzlUNXFrAN6OA/sFKmhl9+WFrUb1fLlcw9ePU55umY1OaVzDTvlVdKnd9gSh2mTo"<br>
+"qwczHyNtzwBXdsDTgqKXsJEPGzC7mtvBENYF4PCL4bYRRIXokfWMmQ1q+S6B3dS30ZAAKIAtKoNf"<br>
+"YCyEvbCA+IYJrJ/stmEpowY8nxf78VdyUWdhoz3FK4IcQ8u2nzWniSSGheGMdjXKsMqBx/FML2g9"<br>
+"Vc/AJGviicQpIclUNgvR/G9a1Z4wBOVUxqvHVNKAzrzPUqMyg/lSgz0oKK2fiWl/II/P")<br>
+)<br>
+(defun c:test/Form1#OnInitialize (/)<br>
+  (dcl-Html-Navigate test/Form1/Html1 "www.msn.com")<br>
+)<br>
+(defun c:test/Form1/TextButton1#OnClicked (/)<br>
+  (dcl-Form-Close test/Form1)<br>
+)<br>
+(dcl-Project-Import testdia nil nil)<br>
+(dcl-Form-Show test/Form1)<br>
+</div>
+</article>
+<article class="post" id="msg10882">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-09-22 19:12 UTC</span>
+  </div>
+  <div class="post-body">Hi, I had no problems in drawing2.<br>
+IE 11.0.9600.17207<br>
+Win 7 x64<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10884">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-09-22 20:32 UTC</span>
+  </div>
+  <div class="post-body">This might be related to the mshtml.dll unhandled exception crash that others have reported. This started after a recent Windows Update, and it appears to be the fault of Microsoft's web browser code. I don't know of any solution, but I would hope that a future update will fix the problem. I have not spent a lot of time trying to determine exactly which update is to blame, but it's interesting that you do not experience the problem on the IE8 machines. I'm curious whether those machine are otherwise up-to-date on Windows updates.</div>
+</article>
+<article class="post" id="msg10888">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2014-09-23 00:40 UTC</span>
+  </div>
+  <div class="post-body">Thanks to both of you for your responses. <br>
+<br>
+My version of IE is <span style="color:red">11.0.9600.17280</span> so maybe that is why Freds machine does not display the same problem. Having done a quick search on that release number I see a few posts related to stability issues so you may well have hit on something there Owen. I'll see if there is any way I can remove the latest IE updates to get me back to a lower version and see if that helps.<br>
+<br>
+As for our work machines, Windows updates are disabled by policy and only select updates are deployed by our ICT team. On the whole pretty much nothing gets updated which is very often a problem for us but in this one instance it seems that their paranoia and vigilance has paid dividends.</div>
+</article>
+<article class="post" id="msg10890">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2014-09-23 01:27 UTC</span>
+  </div>
+  <div class="post-body">Well, I have now removed two updates to get me back to the same IE release as Fred but unfortunately the problem still persists. The error message still tells me that the fault is caused by mshtml.dll albeit now a different version number. Looks like it may possibly be a combination of updates that is the cause.<br>
+<br>
+Fred, can I ask what is the latest date of any updates installed on your machine? It seems that in the last few days I have received around 40 updates and then during August it looks like I got two updates and it was in among all these that the two IE11 updates were bundled. </div>
+</article>
+<article class="post" id="msg10891">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-09-23 02:51 UTC</span>
+  </div>
+  <div class="post-body">The first mshtml.dll crash report was posted on July 29, if that helps any.</div>
+</article>
+<article class="post" id="msg10892">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2014-09-23 07:07 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2172.msg10891#msg10891 date=1411440712 wrote:</cite><br>
+The first mshtml.dll crash report was posted on July 29, if that helps any.<br>
+</blockquote><br>
+<br>
+OK, I've now gone one version further back on IE (now at 11.0.9600.17126) and my code works once again. Not sure why it won't work on the same version as Fred is using - I even tried reinstalling the update and seeing if my code remained working but to no avail so I removed it again.<br>
+<br>
+I have now blocked this update - <span style="color:red"><strong>KB2962872</strong></span> for reference - and will keep an eye on all future IE updates.</div>
+</article>
+<article class="post" id="msg10896">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-09-23 15:53 UTC</span>
+  </div>
+  <div class="post-body">Excellent sleuthing work! Did you notice Issue 1 in the "Known Issues" section of the <a href="http://support.microsoft.com/kb/2962872" rel="nofollow noopener">{2}</a>?</div>
+</article>
+<article class="post" id="msg10898">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2014-09-23 15:59 UTC</span>
+  </div>
+  <div class="post-body">I didn't spot that but having just read it, it claims that installing 2976627 fixes the problem - but I can quite adamamently confirm that it did not fix for me.</div>
+</article>
+<article class="post" id="msg10920">
+  <div class="post-head">
+    <span class="post-author">Robert</span>
+    <span class="post-date muted">2014-09-28 09:06 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+And my program is also frequently crash during frequent html traffic. I use Windows 7 Pro 64bit, vanilla AutoCAD 2012, OpenDCL 7.0.1.4., IE 11.0.9600.17280 update 11.0.12. and my own online license server to control validity of license key at program startup and periodically thereafter. The first few test goes well and then AutoCAD crash (Mshtml.dll error in the Event Log). The problem appeared after MS Windows 7 (IE KB2962872) update in July. The situation improved somewhat after Windows 7 update in August. In addition, I got to stability when I stopped to use the NOMUTT options which I used to prevent the appearance of too many empty "command" lines that generate OpenDCL's calls. In cases when AutoCAD does not crash, after regular AutoCAD closing for a moment pops up window with some kind of error and the record appears in the Event Log (acad.exe error). AutoCAD is often crashes while using the program in the development phase (lisp version) than in the production phase (VLX version). <br>
+<br>
+On my other computer with the Windows XP Pro 32bit version with IE8 and AutoCAD12 with all patches this problem does not occur. <br>
+<br>
+I'm worried that I'll get a lot of user complaints about the stability of the program, which does not depend directly of my program.<br>
+<br>
+Best regards</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

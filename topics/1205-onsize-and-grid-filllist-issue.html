@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OnSize and  Grid_FillList issue. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1205</p>
+    <h1>OnSize and  Grid_FillList issue.</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2010-03-15 03:23 UTC ·
+      11 replies · SMF topic #1205</p>
+<article class="post" id="msg6453">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-03-15 03:23 UTC</span>
+  </div>
+  <div class="post-body">I have a modal form with a GridControl.<br>
+<br>
+If the form has the OnSize event ON the GridControl fields are not populating ( except for the first column)<br>
+<br>
+This applies if  either (dcl_Grid_FillList .... OR (dcl_Grid_AddRow ... are used.<br>
+<br>
+I've tried to set a global flag to stop resizing during initializing but have had no sucess.<br>
+<br>
+For the attached, toggle the form OnSize event on to see the problem.<br>
+<br>
+Regards<br>
+...<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1330/KDUB_Properties.LSP">KDUB_Properties.LSP</a> <span class="muted">(4187 bytes)</span></li><li><a href="../attachments/1331/Props.odcl">Props.odcl</a> <span class="muted">(935 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6454">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-15 05:32 UTC</span>
+  </div>
+  <div class="post-body">This is now fixed for the next build (which is waiting for the next Bricscad beta to be released).</div>
+</article>
+<article class="post" id="msg6457">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-03-15 09:01 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Thanks Owen.<br>
+<br>
+I've just arrived at home now, so don't have source, but ..<br>
+<br>
+I also had issues with the <br>
+(dcl_Grid_CalcColumnWidth  Label [as String])<br>
+and<br>
+(dcl_Grid_SetColumnWidth  Column [as Long] Width [as Long])<br>
+<br>
+The resulting column was about 1/4 as wide as it should have been. <br>
+<br>
+If you need I'll post code  tomorrow.<br>
+<br>
+//-----------<br>
+<br>
+Any idea on timeframe for the release ?<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6460">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-15 15:36 UTC</span>
+  </div>
+  <div class="post-body">As I recall, CalcColumnWidth does not account for the cell image or non-standard cell contents. I expect a new Bricscad beta either this week or next.  If it goes too long, I'll try to undo the changes I made and release a new build that supports the current beta.</div>
+</article>
+<article class="post" id="msg6470">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-03-15 20:01 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Owen,<br>
+There were no images or non-standard content in the cells. I was using the sample posted, trying to achieve a compact dialog.</div>
+</article>
+<article class="post" id="msg6471">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-15 20:26 UTC</span>
+  </div>
+  <div class="post-body">Can you upload a version the demonstrates the problem?</div>
+</article>
+<article class="post" id="msg6473">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-03-15 23:52 UTC</span>
+  </div>
+  <div class="post-body">sure<br>
+<br>
+added : on WinXP SP3 AC2010Mechanical<br>
+<br>
+Replace the initialize event code with this :<br>
+<br>
+;;------------------------------------------------------- <br>
+;;   <br>
+(defun c:Props_Main_OnInitialize (/ )<br>
+   ;;| Set the Label TitleText |;<br>
+   (dcl_Control_SetCaption Props_Main_Label (car PropsData))<br>
+   ;;| Set the Column Header Names |;<br>
+   (dcl_Control_SetColumnCaptionList Props_Main_Grid (cadr PropsData))<br>
+   ;;<br>
+   (setq GridData  (cadddr PropsData)<br>
+         RowCount  (length GridData)<br>
+         CellStyle (caddr PropsData)<br>
+         RowIndex  0<br>
+   )<br>
+   ;;<br>
+   (dcl_Control_SetColumnStyleList Props_Main_Grid (List 0 CellStyle))<br>
+<br>
+   (dcl_Grid_FillList Props_Main_Grid GridData)<br>
+   ;;<br>
+   ;;<br>
+  (dcl_Control_SetHeight Props_Main (+ 85 (* RowCount 24)) )<br>
+<br>
+   (setq headerWidths (mapcar '(lambda (x) (dcl_Grid_CalcColumnWidth Props_Main_Grid x))<br>
+                              (cadr PropsData)<br>
+                      )<br>
+         ;; test various values<br>
+         col1          (dcl_Grid_CalcColumnWidth Props_Main_Grid "Column")<br>
+         col2          (dcl_Grid_CalcColumnWidth Props_Main_Grid "Value")<br>
+         col1x         (dcl_Grid_CalcColumnWidth Props_Main_Grid "TEST567890")<br>
+         col2x         (dcl_Grid_CalcColumnWidth Props_Main_Grid "123")<br>
+   )<br>
+   (dcl_Control_SetColumnWidthList Props_Main_Grid headerWidths)<br>
+   (prompt<br>
+      (strcat "\nheaderWidths :" (VL-PRIN1-TO-STRING headerWidths)))<br>
+   (princ)<br>
+)<br>
+;;------------------------------------------------------- <br>
+;;  <br>
+<br>
+The values returned are <br>
+headerWidths :(35 27)<br>
+and the col1 cells don't populate.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1338/PropertiesGrid.png">PropertiesGrid.png</a> <span class="muted">(12348 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6475">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-16 02:26 UTC</span>
+  </div>
+  <div class="post-body">The CalcColumnWidth function is intended for use with cells within the grid, not the header cells as you're assuming in the sample code. Since the header cells use a larger font, I don't know whether you can reliably scale for those. When used for the normal grid content, it looks like you need to add at least 1 pixel to account for the column divider.</div>
+</article>
+<article class="post" id="msg6476">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-03-16 02:36 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Sorry, I don't understand your response.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6477">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-16 02:56 UTC</span>
+  </div>
+  <div class="post-body">Your first column is a header column, so the header cell layout causes the calculated width to be incorrect. You can cheat by adding and/or multiplying the calclated width by some factor. That may or may not be reliable. I did a quick test, and the second column works fine at a width of (+ 1 (dcl_Grid_CalcColumnWidth Props_Main_Grid "First Value")).</div>
+</article>
+<article class="post" id="msg6478">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-03-16 03:11 UTC</span>
+  </div>
+  <div class="post-body"><br>
+I needed to double the value returned from the dcl_Grid_CalcColumnWidth to make the text visible for both columns.<br>
+<br>
+I tried to double click on the header divider to change the column width ... works fine<br>
+<br>
+<br>
+Then I changed the okClicked event function to<br>
+<br>
+;;------------------------------------------------------- <br>
+;;  <br>
+(defun c:Props_Main_ok_OnClicked (/)<br>
+   (prompt (strcat "\nNew headerWidths :"<br>
+                   (VL-PRIN1-TO-STRING (dcl_Control_GetColumnWidthList Props_Main_Grid))<br>
+           )<br>
+   )<br>
+)<br>
+<br>
+but it appears to only return the initial column width ... it does not report the changes.<br>
+<br>
+Regards<br>
+</div>
+</article>
+<article class="post" id="msg6479">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-03-16 03:13 UTC</span>
+  </div>
+  <div class="post-body">I also moved the cell population code to the end of the OnInitialize Function<br>
+<br>
+;;------------------------------------------------------- <br>
+;;   <br>
+(defun c:Props_Main_OnInitialize (/)<br>
+   ;;| Set the Label TitleText |;<br>
+   (dcl_Control_SetCaption Props_Main_Label (car PropsData))<br>
+   ;;<br>
+   (setq GridData  (cadddr PropsData)<br>
+         RowCount  (length GridData)<br>
+         CellStyle (caddr PropsData)<br>
+         RowIndex  0<br>
+   )<br>
+   ;;<br>
+   (dcl_Control_SetColumnStyleList Props_Main_Grid (List 0 CellStyle))<br>
+   ;;<br>
+   ;;<br>
+   (dcl_Control_SetHeight Props_Main (+ 85 (* RowCount 24)))<br>
+   (setq headerWidths (mapcar '(lambda (x) (dcl_Grid_CalcColumnWidth Props_Main_Grid x))<br>
+                              (cadr PropsData)<br>
+                      )<br>
+   )<br>
+   (dcl_Control_SetColumnWidthList Props_Main_Grid (list 70 54))      ;headerWidths)<br>
+   ;;  (dcl_Control_SetWidth Props_Main (+ 70 54 25))<br>
+   ;;| Set the Column Header Names |;<br>
+   (dcl_Control_SetColumnCaptionList Props_Main_Grid (cadr PropsData))<br>
+   (dcl_Grid_FillList Props_Main_Grid GridData)<br>
+   ;; (prompt (strcat "\nheaderWidths :" (VL-PRIN1-TO-STRING headerWidths)))<br>
+   (princ)<br>
+)<br>
+;;------------------------------------------------------- <br>
+;;  </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

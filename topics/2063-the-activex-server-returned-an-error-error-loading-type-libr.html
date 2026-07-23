@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The ActiveX server returned an error:Error loading type library DLL · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2063</p>
+    <h1>The ActiveX server returned an error:Error loading type library DLL</h1>
+    <p class="meta">Started by mclisp ·
+      2013-11-23 17:42 UTC ·
+      7 replies · SMF topic #2063</p>
+<article class="post" id="msg10171">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2013-11-23 17:42 UTC</span>
+  </div>
+  <div class="post-body">hello to all<br>
+I have many Lisp macros work correctly with Autocad 2008 32bit Prosteel.<br>
+Now I have installed Autocad 2014 Prosteel 64-bit, some macro gives me an error ..... The activeX server,<br>
+As an example, the routine works correctly, creates the shape, the error is only one message at a command line autocad<br>
+ <br>
+I return this error:<br>
+LOG #<br>
+The ActiveX server returned an error:Error loading type library DLL<br>
+TheActiveX serverreturned an error:Error loading type library DLL<br>
+ 0<br>
+<br>
+(vl-load-com);ok<br>
+(setq acadapp (vlax-get-acad-object));is ok<br>
+(setq KsShape (vla-getinterfaceobject acadapp "PSCOMWRAPPER.Ks_ComCreateShape" ))<strong>&lt;-error</strong><br>
+(vlax-invoke KsShape "SetInsertPoints" #z1 #z2);is ok<br>
+(vlax-invoke KsShape "Create");is ok create shape<br>
+<br>
+<br>
+you have any suggestions<br>
+thanks</div>
+</article>
+<article class="post" id="msg10172">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-11-23 20:10 UTC</span>
+  </div>
+  <div class="post-body">Hi, this is not OpenDCL-related, am I right?<br>
+I have heared about similar problems at other computers when trying to create a dictionary using AddObject <br>
+(setq oVarsDic (vla-addobject oDic strName "AcDbDictionary"))<br>
+or trying to get an instance of AutoCAD-truecolor object using <br>
+(setq strRel (strcat "AutoCAD.AcCmColor." (substr (getvar "ACADVER") 1 2)<br>
+(setq oColor (vlax-invoke-method (vlax-get-acad-object) 'GetInterfaceObject strRel))<br>
+Because it worked in the past and it still work on many other workstations, the AutoCAD-installation was declared as invalid on the workstation where the error occurs.<br>
+<br>
+Make sure that antivirus is not running during installation. And sometimes make sure that the first start of AutoCAD on a workstation is done as Administator.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10173">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-11-23 21:36 UTC</span>
+  </div>
+  <div class="post-body">As Fred said, it doesn't look like this is related to OpenDCL. Most likely reason for the error is that you haven't registered the 64-bit COM object that you're trying to create. Note that the 32-bit COM object will not load into the 64-bit AutoCAD process.</div>
+</article>
+<article class="post" id="msg10174">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2013-11-24 08:22 UTC</span>
+  </div>
+  <div class="post-body">Thank you for your reply,<br>
+Have patience I'm a beginner.<br>
+I confirm that this error is not OpenDCL.<br>
+I think I understand that the error is due to a lack of registration of COM objects.<br>
+These COM objects are part of an application for Autocad.<br>
+Together with COM.ARX file there are two files called<br>
+Register.Com.ARX and Register.Com32.ARX and I tried to load these files but do not load and give me error<br>
+<br>
+ acrxGetApiVersion not found in c:\..........\register.com.arx.<br>
+ Make sure the app links with rxapi.lib and export the symbol.AcRxDynamicLinker failed to load 'c:\.........\register._com.arx'<br>
+ C:\.......\acad.exe Unable to load Register.Com.arx file.<br>
+<br>
+I guess these files are used to record them the COM.<br>
+How do you use?<br>
+Do you have any advice<br>
+Thanks again<br>
+</div>
+</article>
+<article class="post" id="msg10176">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-11-24 16:32 UTC</span>
+  </div>
+  <div class="post-body">Maybe those files are designed for use by regsvr32.exe. You should ask the author or check the documentation; there is really no way for us to know.</div>
+</article>
+<article class="post" id="msg10178">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-11-25 07:13 UTC</span>
+  </div>
+  <div class="post-body">Hm, give it a try to start AutoCAD as Administrator (right click &gt; Admin privileges), because regsvr32 only can be run as Admin. Only just to try.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10179">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2013-11-25 08:34 UTC</span>
+  </div>
+  <div class="post-body">Thanks to all for the two responses<br>
+I've tried everything, but it does not work.<br>
+I understand that it is difficult, now I try to write to the author.<br>
+I will let you know<br>
+thanks</div>
+</article>
+<article class="post" id="msg10193">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2013-11-30 14:58 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+This was a problem with the path to the safety of Autocad 2014, reading the guide indicated to use the variable TRUSTEDPATHS, I do not recommend it, here I made a big fuss.<br>
+To operate Autocad I reinstalled.<br>
+I recommend you put these path in Tools-&gt; Options-&gt; Trusted Locations.<br>
+Thanks</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

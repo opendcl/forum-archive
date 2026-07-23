@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Focus Marker Problem DwgPreview SlideView · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1689</p>
+    <h1>Focus Marker Problem DwgPreview SlideView</h1>
+    <p class="meta">Started by roy_043 ·
+      2011-10-04 20:15 UTC ·
+      5 replies · SMF topic #1689</p>
+<article class="post" id="msg8352">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-10-04 20:15 UTC</span>
+  </div>
+  <div class="post-body">Bricscad 11.4.6<br>
+OpenDCL  6.0.2.5<br>
+Win XP<br>
+<br>
+I am working on a 'dwg browser' that can display DwgPreviews and SlideViews. I notice a problem with the dotted line ('focus marker') that appears in the preview or slide that has the focus.<br>
+<br>
+1.<br>
+First display of dialog: Focus marker is correctly on slide A000.<br>
+<br>
+2<br>
+Hit Tab: Focus is on slide A001 but there is no focus marker.<br>
+<br>
+3.<br>
+Hit Tab: Focus is on preview A002 and there is a focus marker.<br>
+<br>
+4.<br>
+Hit Tab: Focus is on preview A003, but both A002 and A003 have a focus marker.<br>
+<br>
+5.<br>
+Hit Tab: Focus is on slide A004 but there is no focus marker on the slide and the focus markers on A002 and A003 are still visible.<br>
+<br>
+6.<br>
+Continue hitting Tab: Focus markers on A002 and A003 stay visible until they receive the focus again: then the markers disappears.<br>
+<br>
+7.<br>
+After temporarily switching to a different application and coming back to the cad program the focus marker is correct.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1672/FocusMarkerProblem_DwgPreview_SlideView.png">FocusMarkerProblem_DwgPreview_SlideView.png</a> <span class="muted">(2992 bytes)</span></li><li><a href="../attachments/1673/FocusMarkerProblem_DwgPreview_SlideView.zip">FocusMarkerProblem_DwgPreview_SlideView.zip</a> <span class="muted">(20523 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8353">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-10-05 11:12 UTC</span>
+  </div>
+  <div class="post-body">Hi, I recommend you to set or remove highlighting rectangle by yourself using <br>
+<br>
+(dcl_SlideView_SetHighlight  Color [als Color])<br>
+(dcl_SlideView_RemoveHighlight )<br>
+(dcl_DWGPreview_SetHighlight  Color [als Color])<br>
+(dcl_DWGPreview_RemoveHighlight )<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8360">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-10-06 15:27 UTC</span>
+  </div>
+  <div class="post-body">Thank you Fred for your answer. Your suggestion makes sense, but a slide with a highlight looks different.<br>
+Strange how the highlight rectangle has two different offsets... Perhaps a Bricscad thing?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1674/BKG_BlockBrowser_Highlight.png">BKG_BlockBrowser_Highlight.png</a> <span class="muted">(4321 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8361">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-10-06 15:29 UTC</span>
+  </div>
+  <div class="post-body">Try to remove the focus rectangle by focussing another control after OnSetFocus.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8375">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-10-10 17:11 UTC</span>
+  </div>
+  <div class="post-body">There was a bug in the slide view control that caused a focus change to not trigger a repaint. This should now be fixed in the OpenDCL 7 alpha build.</div>
+</article>
+<article class="post" id="msg8387">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-10-12 19:30 UTC</span>
+  </div>
+  <div class="post-body">The problem has indeed been solved in OpenDCL 7 alpha. Nice work.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

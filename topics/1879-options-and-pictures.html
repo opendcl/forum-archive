@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Options and pictures · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1879</p>
+    <h1>Options and pictures</h1>
+    <p class="meta">Started by caddman6425 ·
+      2012-08-24 17:13 UTC ·
+      2 replies · SMF topic #1879</p>
+<article class="post" id="msg9224">
+  <div class="post-head">
+    <span class="post-author">caddman6425</span>
+    <span class="post-date muted">2012-08-24 17:13 UTC</span>
+  </div>
+  <div class="post-body">Hi all,<br>
+Don't even know where to begine with this one.  Let me see if I can explain.  I've got a picture box that I want to change pictures by the choice of two different option list.  Hmmmm, that sounds like a pretty good explanation to me, great  Also, one of the option list has a scroll bar in it and when I test it now, the text gets jumbled up when I play with it.  OK, maybe that's too much explaining, lets show pictures.<br>
+<br>
+Oh, I guess I'd better ask what I need, OK, How do I do it?  <br>
+I know how to get the Member style to work,<br>
+<br>
+ ;;;                                      Members                                                           ;;;<br>
+ (defun c:MemStyleQty_OnSelChanged (ItemIndexOrCount Value /)<br>
+	 (setq mbrs ItemIndexOrCount)<br>
+	 (princ)<br>
+ ); end defun<br>
+<br>
+Then I use a cond statment like the following:<br>
+<br>
+    ((= mbrs 2)<br>
+     (progn<br>
+	    (command <br>
+	     "-MemberStyle" "_New" memstyna "_Component"<br>
+		   "_Edit" "1" "_Name"	"Section" "STart"<br>
+		   "_SHape" memshna "" "_ENd"	"_SHape"<br>
+		   memshna "" "" "_Add" "_Edit"<br>
+		   "2" "_Name" "Section" "_Start" "_SHape"<br>
+		   memshna   "_Offset" ""	custWidth ""<br>
+		   "" "_ENd" "_SHape"	memshna "_Offset"<br>
+		   ""	"" ""	"" "" ""	"" ""	""<br>
+	     ); End command<br>
+     ); End progn    <br>
+    ); End predicate2<br>
+<br>
+So I was thinking, would I do, or add to the cond for the other options?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1806/Structural Member Creator v.03.2.lsp">Structural Member Creator v.03.2.lsp</a> <span class="muted">(9090 bytes)</span></li><li><a href="../attachments/1805/Capture 1.png">Capture 1.png</a> <span class="muted">(102745 bytes)</span></li><li><a href="../attachments/1807/Structural Member Creator.odcl">Structural Member Creator.odcl</a> <span class="muted">(22651 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9227">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-08-24 20:54 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=caddman6425 link=topic=1879.msg9224#msg9224 date=1345828423 wrote:</cite>the text gets jumbled up when I play with it.</blockquote>This is related to the background color. Try changing it to -16.<br>
+<br>
+<blockquote class="quote"><cite> author=caddman6425 link=topic=1879.msg9224#msg9224 date=1345828423 wrote:</cite><br>
+So I was thinking, would I do, or add to the cond for the other options?<br>
+</blockquote>A lot depends on the structure/logic of your program and the -MemberStyle command. The dialog now suggests that the user must pick from three option lists. But some combinations of options are not logical: double+steel+pine=nonsense.<br>
+Please note that the ItemIndexOrCount argument of the (c:MemStyleQty_OnSelChanged) function is zero-based. So mbrs will have a value in the 0-3 range and not the 1-4 range.<br>
+<br>
+In theory something like this would work:<br>
+(cond<br>
+  ((and (= mbrs "Single") (= option "Lumber") (= Material "Pine"))<br>
+    ; Do something.<br>
+  )<br>
+  ((and (= mbrs "Single") (= option "Lumber") (= Material "Spruce"))<br>
+    ; Do something else.<br>
+  )<br>
+  ;; etc.<br>
+)<br>
+<br>
+But it would result in a very long (cond) structure.</div>
+</article>
+<article class="post" id="msg9228">
+  <div class="post-head">
+    <span class="post-author">caddman6425</span>
+    <span class="post-date muted">2012-08-24 23:56 UTC</span>
+  </div>
+  <div class="post-body">Oh, thanks so very much on the heads up on the 0 based option list.  And again thanks for the backgroud color thing and the slider problem.  BUT, most of all thanks on the heads up on the code help!!!! ;D</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid restriction or bug? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1539</p>
+    <h1>Grid restriction or bug?</h1>
+    <p class="meta">Started by Slavko.Ivanovic ·
+      2010-11-18 13:04 UTC ·
+      4 replies · SMF topic #1539</p>
+<article class="post" id="msg7504">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2010-11-18 13:04 UTC</span>
+  </div>
+  <div class="post-body">There is a undocumented restriction or bug for grid control (methods for adding rows).<br>
+<br>
+If I define colums IN RUNTIME using<br>
+...(dcl_Grid_AddColumns GridCtrl ((Caption Justification ColumnWidth ColumnImageIndex) ...)),<br>
+...and after add rows with<br>
+...dcl_Grid_AddString, dcl_Grid_AddRow or dcl_Grid_InsertRow,<br>
+...new cells WILL NOT inherit the ColumnImageIndex and Justification from their columns.<br>
+<br>
+Is this true, and why?<br>
+...and if it is true, what is the point of arguments Justification and ColumnImageIndex<br>
+in Grid_AddColumns method?<br>
+<br>
+Thanx.<br>
+<br>
+Slavko<br>
+</div>
+</article>
+<article class="post" id="msg7514">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-11-18 17:17 UTC</span>
+  </div>
+  <div class="post-body">Those values are for the column header itself, not the grid rows. The various "column default" properties are different and independent of the column header.</div>
+</article>
+<article class="post" id="msg7518">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2010-11-18 18:40 UTC</span>
+  </div>
+  <div class="post-body"><br>
+So, in run-time i can not create and set , for example third column to be justified Right.<br>
+Justification of columns <strong>must</strong> be defined in studio (project)?<br>
+<br>
+Is this true?</div>
+</article>
+<article class="post" id="msg7519">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-11-18 22:32 UTC</span>
+  </div>
+  <div class="post-body">Default alignments are defined in a separate property (that is not shown in the property pane):<br>
+<a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Property/ColumnAlignmentList.htm" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg7537">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2010-11-19 13:36 UTC</span>
+  </div>
+  <div class="post-body"><br>
+ :-[<br>
+I'm a square.<br>
+<br>
+<br>
+Usually i was using predefined grid columns. <br>
+This was the first time that i needed dynamic change of many grid properties.<br>
+Also I'm aware now , that i can not instantly find all needed properties that OpenDCL offer, even if i<br>
+liked to think so, and also, that i am becoming very lazy  :D.<br>
+<br>
+Thanx Owen.<br>
+<br>
+Slavko<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

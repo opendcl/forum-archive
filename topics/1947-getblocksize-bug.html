@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GetBlockSize bug? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1947</p>
+    <h1>GetBlockSize bug?</h1>
+    <p class="meta">Started by honkinberry ·
+      2013-02-19 23:17 UTC ·
+      11 replies · SMF topic #1947</p>
+<article class="post" id="msg9572">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2013-02-19 23:17 UTC</span>
+  </div>
+  <div class="post-body">dcl_GetBlockSize appears to be returning (Height Width), not (Width Height) as the documentation states.<br>
+<br>
+I have attached a couple blocks that are clearly wider than they are tall.<br>
+<br>
+Speaking of those blocks, the reason came up due to the shadow layers in the block.  I would love an expansion of GetBlockSize to include some overload capabilities.  Namely, being able to exclude objects by type (Attribute Definitions most commonly, but also Solid Hatches), or to supply a layer list or even layer wildcard pattern to ignore.  Often we have non-plot or other layered linework around our blocks that we don't want counted with the block width.<br>
+<br>
+--J<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1864/Archive.zip">Archive.zip</a> <span class="muted">(106551 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9573">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-02-20 03:42 UTC</span>
+  </div>
+  <div class="post-body">That is a bug, now fixed for the next build. Apparently that function isn't used very often, because that bug has been there for a very long time.</div>
+</article>
+<article class="post" id="msg9574">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-02-20 09:27 UTC</span>
+  </div>
+  <div class="post-body">FWIW: In BricsCAD attribute definitions are disregarded by (dcl_GetBlockSize). Tested with a non-constant attribute definition.<br>
+<br>
+<blockquote class="quote"><cite> author=honkinberry link=topic=1947.msg9572#msg9572 date=1361315843 wrote:</cite><br>
+I would love an expansion of GetBlockSize</blockquote><br>
+As a workaround I was going to suggest making nested objects temporarily invisible. I use this method to get the (vla-getboundingbox) function to disregard attribute references. But (dcl_GetBlockSize) does not take the visibility of objects into account. And (vla-getboundingbox) doesn't work on block definitions.</div>
+</article>
+<article class="post" id="msg9576">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-02-20 16:07 UTC</span>
+  </div>
+  <div class="post-body">I think (vla-getboundingbox) should work on the entities in a block definition. The OP wanted to ignore some entities, so the correct way to calculate the desired size is to iterate over all entities in the block and accumulate the extents of each.</div>
+</article>
+<article class="post" id="msg9577">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2013-02-20 23:05 UTC</span>
+  </div>
+  <div class="post-body">Thank you Owen!<br>
+And yes, my intention was to get some of the same functionality that we currently have in our troublesome iteration function, I much prefer offloading to Owen, and I'll just tell him when it doesn't work, like this time!  :)<br>
+<br>
+Thanks again, you rock.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg9578">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2013-02-20 23:07 UTC</span>
+  </div>
+  <div class="post-body">And hey, Owen, now that I think about....<br>
+<br>
+What are the chances of just changing the *documentation*, rather than the code?<br>
+<br>
+You know, the problem of different users with different version, etc, etc.<br>
+What do you think?<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg9579">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-02-21 01:45 UTC</span>
+  </div>
+  <div class="post-body">When the code and documentation don't match, there is no getting around the risk of someone's code breaking no matter what you do. Remember, the original OpenDCL code did not have this bug, so there is very possibly still code out there that expects the width first. In any case, it's consistent with other functions to return width before height, so it's a pretty easy call to change the code. Look for an update this weekend.</div>
+</article>
+<article class="post" id="msg9580">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-02-21 08:19 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1947.msg9576#msg9576 date=1361376446 wrote:</cite><br>
+... so the correct way to calculate the desired size is to iterate over all entities in the block and accumulate the extents of each.<br>
+</blockquote><br>
+<br>
+Perhaps something like this:<br>
+<br>
+<br>
+; Source:    Tony Tanzillo<br>
+;            Via: http://www.theswamp.org/index.php?topic=35254.msg404955#msg404955<br>
+; Principle: (mapcar 'min '(1 2) '(3 4 6) '(0 5 0) '(-1 8 -1))<br>
+(defun PointListBoundingbox (lst)<br>
+  (if lst<br>
+    (list<br>
+      (apply 'mapcar (cons 'min lst))<br>
+      (apply 'mapcar (cons 'max lst))<br>
+    )<br>
+  )<br>
+)<br>
+<br>
+(defun ObjectBoundingbox (object / ptBL ptTR)<br>
+  (vla-getboundingbox object 'ptBL 'ptTR)<br>
+  (list (vlax-safearray-&gt;list ptBL) (vlax-safearray-&gt;list ptTR))<br>
+)<br>
+<br>
+; BlockDefObject: Valid block definition (as vla-object)<br>
+; PredFunc:       Predicate function that takes an object as its single argument (as subr or sym)<br>
+(defun BlockDefObjectBoundingbox (blockDefObject predFunc / return)<br>
+  (if (= (type predFunc) 'sym) (setq predFunc (eval predFunc)))<br>
+  (vlax-for object blockDefObject<br>
+    (if (predFunc object)<br>
+      (setq return (cons (ObjectBoundingbox object) return))<br>
+    )<br>
+  )<br>
+  (PointListBoundingbox (apply 'append return))<br>
+)<br>
+<br>
+; Example:<br>
+; =============================================<br>
+(defun MyPredicate (object)<br>
+  (/= (strcase (vla-get-objectname object)) "ACDBLINE")<br>
+)<br>
+(setq myBlockDefObject<br>
+  (vla-item<br>
+    (vla-get-blocks (vla-get-activedocument (vlax-get-acad-object)))<br>
+    "MyBlock"<br>
+  )<br>
+)<br>
+(BlockDefObjectBoundingbox myBlockDefObject 'MyPredicate)<br>
+; =============================================<br>
+</div>
+</article>
+<article class="post" id="msg9585">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2013-03-01 00:05 UTC</span>
+  </div>
+  <div class="post-body">vla-getboundingbox fails every once in a while, depending on the object.<br>
+Like pretty much any code from TT, it looks elegant, but doesn't work.<br>
+<br>
+I'm not sure what magic juju beans Owen used with GetBlockSize, but I've seen several instances where vla-getboundingbox fails, and GetBlockSize works.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg9586">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-03-01 08:22 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=honkinberry link=topic=1947.msg9585#msg9585 date=1362096343 wrote:</cite><br>
+Like pretty much any code from TT<br>
+</blockquote>What is TT?</div>
+</article>
+<article class="post" id="msg9617">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2013-03-29 05:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=1947.msg9586#msg9586 date=1362126160 wrote:</cite><br>
+[quote author=honkinberry link=topic=1947.msg9585#msg9585 date=1362096343]<br>
+Like pretty much any code from TT<br>
+</blockquote>What is TT?<br>
+<br>
+<br>
+Tony Tanzillo<br>
+<br>
+<blockquote class="quote">Like pretty much any code from TT, it looks elegant, but doesn't work.</blockquote><br>
+The grammar here makes this sound like NONE of Tony's code works.<br>
+I'm sure honkinberry meant something like :<br>
+'This code is elegant, like most of Tony's code. Unfortunately I cant get it to work for the following reasons : ..... "<br>
+<br>
+Regards<br>
+Kerry</div>
+</article>
+<article class="post" id="msg9624">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-03-30 10:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry link=topic=1947.msg9617#msg9617 date=1364535098 wrote:</cite><br>
+[quote author=roy_043 link=topic=1947.msg9586#msg9586 date=1362126160]<br>
+[quote author=honkinberry link=topic=1947.msg9585#msg9585 date=1362096343]<br>
+Like pretty much any code from TT<br>
+</blockquote>What is TT?<br>
+<br>
+Tony Tanzillo<br>
+Ah, of course. My powers of deduction must have been dormant when I asked that question. ::)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

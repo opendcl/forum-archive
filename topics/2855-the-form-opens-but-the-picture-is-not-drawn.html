@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The form opens but the picture is not drawn · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2855</p>
+    <h1>The form opens but the picture is not drawn</h1>
+    <p class="meta">Started by little_figd ·
+      2023-04-26 09:58 UTC ·
+      1 replies · SMF topic #2855</p>
+<article class="post" id="msg13811">
+  <div class="post-head">
+    <span class="post-author">little_figd</span>
+    <span class="post-date muted">2023-04-26 09:58 UTC</span>
+  </div>
+  <div class="post-body">I try to make a drawing through the form, I made a code using DCL, the form itself opens, but the drawing does not appear. tell me please what i did wrong.  <br>
+I attach the code<br>
+<br>
+<br>
+<br>
+(command "OPENDCL")<br>
+(defun c:Main ()<br>
+  (dcl_Project_Load "D:\Lb4" T)<br>
+  (dcl_Form_Show Lb4_Form1)<br>
+  (princ)<br>
+  )<br>
+ (defun c:Lb4/Form1/TextButton1#OnClicked (/)<br>
+    (setq CoordX (atof(dcl-Control-GetText Lb4/Form1/TextBox1)))<br>
+    (setq CoordY (atof(dcl-Control-GetText Lb4/Form1/TextBox2)))<br>
+	 (setq d (atof(dcl-Control-GetText Lb4/Form1/TextBox3)))<br>
+	 (setq a (atof(dcl-Control-GetText Lb4/Form1/TextBox4)))<br>
+	 (setq b (atof(dcl-Control-GetText Lb4/Form1/TextBox5)))<br>
+<br>
+(defun Lb4(d a b CoordX CoordY)<br>
+<br>
+ (setq StartPoint (list CoordX CoordY))<br>
+<br>
+ (command "circle" StartPoint (/ d 2))<br>
+  <br>
+ (setq p1 (list (- 0 (/ a 2)) (- 0 (/ b 2)))<br>
+       p2 (list (/ a 2) (/ b 2)))<br>
+  (command "rectang" p1 p2)<br>
+  (dcl_messagebox (strcat "done"))<br>
+  (dcl_Form_Close Lb4_Form1)<br>
+)<br>
+ )<br>
+</div>
+</article>
+<article class="post" id="msg13819">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2023-05-07 17:47 UTC</span>
+  </div>
+  <div class="post-body">Hello, the command will not work, until the form is open.<br>
+See https://opendcl.com/forum/index.php?topic=1080.0<br>
+<br>
+With regards, <br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

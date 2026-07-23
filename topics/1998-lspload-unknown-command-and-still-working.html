@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LspLoad: &quot;Unknown command&quot; - and still working · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/19-deployment.html">Deployment</a> /
+      Topic 1998</p>
+    <h1>LspLoad: &quot;Unknown command&quot; - and still working</h1>
+    <p class="meta">Started by Peter2 ·
+      2013-08-07 22:54 UTC ·
+      2 replies · SMF topic #1998</p>
+<article class="post" id="msg9858">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-08-07 22:54 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+I started to try LspLoad and Innosetup and made these steps:<br>
+<br>
+- write a Lisp, include the ODCL-code<br>
+- the lisp has (simplfied):<br>
+<br>
+(princ "hello")<br>
+(command "doslib")<br>
+(command "opendcl")<br>
+(defun c:test ()<br>
+   (alert "test)<br>
+)<br>
+<br>
+- compiled to "test.VLX"<br>
+- Used Innosetup for a package <br>
+  -  which copies VLX + LspLoad + OpenDCL runtime files + Doslib to an userdefined folder<br>
+  -  creates all registry-entries for "Applications" for (renamed) LspLoad + ODCL + Doslib<br>
+  - LOADCTRLS is 4 - command invoke<br>
+<br>
+To make it short - it works, but with a confusing error. Here is my (modified and translated) protocol<br>
+<br>
+<br>
+Command: test     ----&gt; this is my first command<br>
+Unknown Command "test"". Press F1 for help.<br>
+<br>
+Command:    ----&gt; here Acad continues without new user-interaction<br>
+hello    ----&gt; this is from "princ"<br>
+doslib    ----&gt; this is from (command "doslib") plus autoload<br>
+DOSLib 9.0.1<br>
+Copyright © 1992-2012, Robert McNeel and Associates<br>
+<br>
+DOSLib Loaded.<br>
+<br>
+Command: opendcl     ----&gt; this is from (command "opendcl")<br>
+OpenDCL Runtime loaded<br>
+<br>
+Command:    ----&gt; here ends the first command: everything loaded, nothing started and "unknown command" above<br>
+<br>
+Command: test     ----&gt; this is my second command<br>
+4      ----&gt; this is maybe the value of "loadctrls" (4)<br>
+Lisp is executed ...<br>
+<br>
+<br>
+So my questions are:<br>
+- Is it correct that the first command reports "unknown" and load everything?<br>
+- Is it possible that "first load" and "first execution" is done at the same time?<br>
+<br>
+Thanks<br>
+<br>
+Peter</div>
+</article>
+<article class="post" id="msg9859">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-08-08 01:50 UTC</span>
+  </div>
+  <div class="post-body">AutoCAD has to switch between application context (to load the .arx module) and document context (to load the lisp file), and (primarily) for that reason it's not practical to define the command immediately when the LspLoad .arx module loads. Therefore, you should define the LOADCTRLS to load at startup, and either load your entire application at startup as well, or at least load a short lisp file that defines stub commands which load the real application (redefining themselves in the process) the first time the command is used.</div>
+</article>
+<article class="post" id="msg9868">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-08-09 14:58 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1998.msg9859#msg9859 date=1375926645 wrote:</cite><br>
+... or at least load a short lisp file that defines stub commands which load the real application (redefining themselves in the process) the first time the command is used.</blockquote><br>
+Thanks Owen, I will take a look.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

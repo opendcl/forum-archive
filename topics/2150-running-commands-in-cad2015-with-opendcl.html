@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Running commands in CAD2015 with OpenDCL · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2150</p>
+    <h1>Running commands in CAD2015 with OpenDCL</h1>
+    <p class="meta">Started by dioneib ·
+      2014-06-14 21:01 UTC ·
+      2 replies · SMF topic #2150</p>
+<article class="post" id="msg10754">
+  <div class="post-head">
+    <span class="post-author">dioneib</span>
+    <span class="post-date muted">2014-06-14 21:01 UTC</span>
+  </div>
+  <div class="post-body">I have a program running smoothly with AutoCAD 2014.<br>
+<br>
+In AutoCAD 2015 I am not succeeding.<br>
+<br>
+The forms are loaded OpenDCL complete and work perfectly.<br>
+<br>
+But when you click the OK button, which triggers lisp routines, the error occurs when invoking any AutoCAD command.<br>
+<br>
+The EventInvoke proriedade the button is set to the value 1.<br>
+<br>
+Yet the lisp commands are not executed.<br>
+<br>
+Below is the code that put the executed when you click the OK button:<br>
+<br>
+<strong><span style="color:red"><strong>(dcl-Control-SetEventInvoke Proj_Trif / Form_Define_Tanque / TB_Ok 1)<br>
+(dcl-Form-Close Proj_Trif / Form_Define_Tanque)<br>
+(TD_TANQUE_SUPERIOR PT_SUP)<br>
+</strong></span></strong><br>
+The defun TD_TANQUE_SUPERIOR must perform a series of CAD commands and works perfectly on anteirores versions to AutoCAD 2015.<br>
+<br>
+I do not want to believe it is necessary modficar overused my LISP code.<br>
+<br>
+I still remember that the program should work in versions 2009 to 2015.<br>
+<br>
+Agredeço advance for any assistance.<br>
+<br>
+hugs<br>
+Dionei</div>
+</article>
+<article class="post" id="msg10755">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-06-14 23:59 UTC</span>
+  </div>
+  <div class="post-body">I answered <a href="http://forums.autodesk.com/t5/Visual-LISP-AutoLISP-and-General/Passing-variable-to-quot-vla-SendCommand-quot/td-p/5095560/jump-to/first-unread-message" rel="nofollow noopener">{2}</a>. In short, executing code after (dcl-Form-Close) is not safe. Nothing has changed in that respect in AutoCAD 2015. What you have may work if Windows processes window messages quickly enough, but it is not safe in any version of AutoCAD.</div>
+</article>
+<article class="post" id="msg11191">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2015-01-25 17:18 UTC</span>
+  </div>
+  <div class="post-body">I got here because I found a similar problem, running a command at OK with a modal dialog. Worked fine prior to R2015, so <em>something </em>did change. Took me hours stripping down my program to even determine that running a command was the problem. But other stuff of mine (also modal) runs commands no problem, so I wondered what's different. Found the answer:<br>
+<br>
+The stuff that works does <u>not </u>run a command right in the OK_OnClicked function, which closes the form. That's what the problem app was getting away with prior to R2015. I fixed it by using return values of the close, like so:<br>
+<br>
+<pre class="code"><code><br>
+  (defun c:cmdOK_OnClicked (/)<br>
+    (dcl_Form_Close frmMyForm 3) ; anything but 1 or 2<br>
+    ; don't do anything else here<br>
+  )<br>
+  (defun c:cmdCancel_OnClicked ()<br>
+    (dcl_Form_Close frmMyForm 2) ; 2 is standard for Cancel<br>
+  )<br>
+<br>
+  (setq return (dcl_Form_Show frmMyForm))<br>
+  (cond<br>
+    ((= return 3) ; OK <br>
+      (command "line" "0,0" (getvar "viewctr") "") ; no problem!<br>
+    )   <br>
+  );cond<br>
+</code></pre><br>
+<br>
+Maybe this will help someone else.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

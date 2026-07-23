@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BlockView-DisplayDWG - problems with drawing order · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2392</p>
+    <h1>BlockView-DisplayDWG - problems with drawing order</h1>
+    <p class="meta">Started by Peter2 ·
+      2016-07-26 17:27 UTC ·
+      10 replies · SMF topic #2392</p>
+<article class="post" id="msg11974">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-07-26 17:27 UTC</span>
+  </div>
+  <div class="post-body">I made some traffic signs, e.g. the "Stop" sign - only red and white hatch pattern ("Solid"). Now I have problems to display it correct - see attachment. It is OK in "DWG Thumbnail" (Explorer) and when opening in AutoCAD and with CAD-viewer from Cadsofttools. Same problems with most of the other signs too - are there any hints to solve it? When creating the drawing I had to use rather often the command "drawing order" ...<br>
+I used this code<br>
+(dcl-BlockView-DisplayDwg Signaltafel/Signaltafel/SigTaf_Block1 strDwgFileName)<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2211/stop_other-software.jpg">stop_other-software.jpg</a> <span class="muted">(25834 bytes)</span></li><li><a href="../attachments/2212/301.dwg">301.dwg</a> <span class="muted">(76696 bytes)</span></li><li><a href="../attachments/2213/stop_opendcl.jpg">stop_opendcl.jpg</a> <span class="muted">(15256 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12033">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-08-16 11:47 UTC</span>
+  </div>
+  <div class="post-body">Yeah, I know this, unfortunately. I had some tests with the render mode property. 2d optimized works at its best for me. The other point was to select the objects in the right order when creating the block: do not select them by window but each single drawing entity beginning in the background (solids) and going to front. The latest entity is the top most element.<br>
+Hope the minimizes the effect. Otherwise you have to substract the text's boundary from the background solid. :(<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg12035">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-08-16 12:06 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2392.msg12033#msg12033 date=1471348031 wrote:</cite><br>
+... the right order when creating the block....</blockquote><br>
+The traffic sign are not blocks inside a DWG, they are single DWGs for its own (see attachment above) - with some problems of drawing order too ...</div>
+</article>
+<article class="post" id="msg12039">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-08-16 13:46 UTC</span>
+  </div>
+  <div class="post-body">Hi, I've created a sample and added a ticket. Please note (but I'm sure you already know this), that FileExplorer and DWGPreview are using the thumbnail while BlockView is using GSView. I recommend you to use DWGPreview instead of BlockView for symbol libraries.<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2219/301ft.png">301ft.png</a> <span class="muted">(35804 bytes)</span></li><li><a href="../attachments/2220/301ft.zip">301ft.zip</a> <span class="muted">(51123 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12044">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-08-17 07:31 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred<br>
+<br>
+I made a dialogue with displays all current types of display - see attachment. The problem of DWGview and DWGListe is the huge unused / wasted area:<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2221/OpenDCL_Bilddarstellung.bmp">OpenDCL_Bilddarstellung.bmp</a> <span class="muted">(1665915 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12045">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-08-17 11:46 UTC</span>
+  </div>
+  <div class="post-body">You can solve the issue by changing the 'hard order' (the order in which the entities have been created). To do this manually you would have to create in-place copies of entities in the right order and then erase the originals. This would not be easy and you would probably lose some associativity. But with some Lisp code you can automate this process:<br>
+; (KGA_Block_DrawOrder_To_HardOrder (vla-get-modelspace (vla-get-activedocument (vlax-get-acad-object))))<br>
+(defun KGA_Block_DrawOrder_To_HardOrder (blkObj / newLst oldLst sortArr sortTblObj)<br>
+  (if<br>
+    (and<br>
+      (= :vlax-false (vla-get-isxref blkObj))<br>
+      (= :vlax-true (vla-get-hasextensiondictionary blkObj))<br>
+      (not<br>
+        (vl-catch-all-error-p<br>
+          (setq sortTblObj<br>
+            (vl-catch-all-apply<br>
+              'vla-item <br>
+              (list (vla-getextensiondictionary blkObj) "ACAD_SORTENTS")<br>
+            )<br>
+          )<br>
+        )<br>
+      )<br>
+    )<br>
+    (progn<br>
+      (vla-getfulldraworder sortTblObj 'sortArr :vlax-false)<br>
+      (setq oldLst (mapcar 'vlax-variant-value (vlax-safearray-&gt;list sortArr)))<br>
+      (if (setq newLst (vlax-invoke (vla-get-database blkObj) 'copyobjects oldLst))<br>
+        (mapcar 'vla-delete oldLst)<br>
+      )<br>
+      newLst<br>
+    )<br>
+  )<br>
+)<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg12049">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-08-18 20:29 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+unfortunately, I had some troubles in the past with the ACAD_SORTENTS-Diactionary: in many cases the order of entities in the list did not match to the current drawingorder.<br>
+<br>
+Peter, do you remember <a href="http://www.opendcl.com/forum/index.php?topic=1990.msg9851#msg9851" rel="nofollow noopener">{2}</a>? There you can see a sample using DWGPreview. The key is to place the model correctly in the moment before saving the "symbol" to get the right preview.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg12051">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-08-18 20:56 UTC</span>
+  </div>
+  <div class="post-body">I used the current project with the display of existing WMF, but for further projects it could be important again.<br>
+<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=2392.msg12049#msg12049 date=1471552196 wrote:</cite><br>
+...to place the model correctly in the moment before saving the "symbol" to get the right preview.<br>
+...</blockquote><br>
+You mean that I have to fit the size of my Acad-window to the proportion of the drawing, so for my traffic-signs I need a window with width=height (proportion = square)?</div>
+</article>
+<article class="post" id="msg12052">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-08-19 04:43 UTC</span>
+  </div>
+  <div class="post-body">No, I meant it right inversely: zoom to the extents of the symbol before saving. But you are right: resizing AutoCAD window that the ratio of the window is equal to the symbol could help.<br>
+The both pictures demonstrate it quite well: for the first one I zoomed to the symbol's extents right before saving.<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2222/a.PNG">a.PNG</a> <span class="muted">(41549 bytes)</span></li><li><a href="../attachments/2223/b.PNG">b.PNG</a> <span class="muted">(37511 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12053">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-08-19 07:32 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2392.msg12049#msg12049 date=1471552196 wrote:</cite>unfortunately, I had some troubles in the past with the ACAD_SORTENTS-Diactionary: in many cases the order of entities in the list did not match to the current drawingorder.</blockquote><br>
+I use BricsCAD and I have not come across any issues with the ACAD_SORTENTS dictionary. I believe Peter2 uses BricsCAD as well.</div>
+</article>
+<article class="post" id="msg12055">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-08-19 08:21 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2392.msg12053#msg12053 date=1471591952 wrote:</cite><br>
+.. I believe Peter2 uses BricsCAD as well.</blockquote><br>
+Yes, I use (develop for ..) both AutoCAD and BricsCAD.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

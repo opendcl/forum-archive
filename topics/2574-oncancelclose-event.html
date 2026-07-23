@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OnCancelClose event · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2574</p>
+    <h1>OnCancelClose event</h1>
+    <p class="meta">Started by vladgothe ·
+      2018-02-14 23:57 UTC ·
+      2 replies · SMF topic #2574</p>
+<article class="post" id="msg12754">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2018-02-14 23:57 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I have a small problem and I don't know how to solve it. I want to prevent the user to close the form by pressing the ESCAPE key and at the same time I want to be able to close the form by pressing the "X" button from the titlebar. From what I understood, in OnCancelClose event, pressing the ESC key or clicking the X button is the same thing. One of my users was confused why the red "X" button wasn't working.<br>
+<br>
+I have this code:<br>
+<pre class="code"><code><br>
+(defun c:MyForm#OnCancelClose (Reason /)<br>
+(/= isESCWasPressed 0)<br>
+)<br>
+</code></pre><br>
+This prevents the ESC key to close the form, but also prevents the X button to close the form. How can i activate the X button, while the ESC key is "disabled"?<br>
+Thanks in advance and sorry for my bad english.</div>
+</article>
+<article class="post" id="msg12755">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2018-02-15 12:46 UTC</span>
+  </div>
+  <div class="post-body">I have an idea for this situation: when the user presses ESCAPE or X to hide the form (the form is modeless) and when the user presses ENTER to show the form. </div>
+</article>
+<article class="post" id="msg12756">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2018-02-16 11:39 UTC</span>
+  </div>
+  <div class="post-body">Maybe you can use:<br>
+<pre class="code"><code>(acet-sys-keystate 27)</code></pre><br>
+<br>
+Alternatively: remove the titlebar and create your own 'X' button.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HTML Control, send commands back to autocad? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1603</p>
+    <h1>HTML Control, send commands back to autocad?</h1>
+    <p class="meta">Started by techjunkie80 ·
+      2011-03-20 12:45 UTC ·
+      5 replies · SMF topic #1603</p>
+<article class="post" id="msg7875">
+  <div class="post-head">
+    <span class="post-author">techjunkie80</span>
+    <span class="post-date muted">2011-03-20 12:45 UTC</span>
+  </div>
+  <div class="post-body">Okay, so I've figured out a fairly easy way of sending commands from autocad directly to an html interface by changing the url to something like<br>
+javascript:my_command()<br>
+however I'm not sure how I'd go about calling an autocad command from javascript on the html page.<br>
+<br>
+For anyone else attempting this the best method I've got so far is to send a command to the window via the syntax above and then use the html page's title attr to communicate back with autocad, basically <br>
+1. autocad sends command to html window via the syntax above<br>
+2. html window sets title to "received"<br>
+3. autocad loops waiting for the title to change to something other than "received", e.g. "done" or command line code to run<br>
+4. autocad sends a "javascript:recieved()" message after it detects the above change<br>
+5. html sets window title back to "waiting"<br>
+<br>
+but this won't allow me to initiate an action by a user clicking on a button the html page(only works if autocad initiates the communication), is there a way I can setup an event handler to detect changes to the title field or some ActiveX snippet that would allow the javascript -&gt; autocad communication?<br>
+<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg7877">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-03-20 16:10 UTC</span>
+  </div>
+  <div class="post-body">Please identify what you mean by "html interface" and "html window". Perhaps some sample code would help explain what you're trying to do.</div>
+</article>
+<article class="post" id="msg7880">
+  <div class="post-head">
+    <span class="post-author">techjunkie80</span>
+    <span class="post-date muted">2011-03-20 18:41 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1603.msg7877#msg7877 date=1300637419 wrote:</cite><br>
+Please identify what you mean by "html interface" and "html window". Perhaps some sample code would help explain what you're trying to do.<br>
+</blockquote><br>
+The OpenDCL HTML object. Basically I want to click an html  in the html page of the OpenDCL HTML object and have it run an autocad command.<br>
+<br>
+<br>
+Draw Line<br>
+<br>
+<br>
+and when I click Draw Line (on the html page inside the OpenDCL HTML object) it will draw a line in autocad.<br>
+<br>
+I can access the html page of the OpenDCL HTML object by altering the url to a 'javascript:' url, but I need to do the reverse and affect AutoCAD using the html page of the OpenDCL HTML object.</div>
+</article>
+<article class="post" id="msg7881">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-03-20 20:56 UTC</span>
+  </div>
+  <div class="post-body">Try triggering your command from within the OnNavigationComplete handler.  You could reload the page to trigger it on demand.</div>
+</article>
+<article class="post" id="msg7882">
+  <div class="post-head">
+    <span class="post-author">techjunkie80</span>
+    <span class="post-date muted">2011-03-20 22:26 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1603.msg7881#msg7881 date=1300654584 wrote:</cite><br>
+Try triggering your command from within the OnNavigationComplete handler.  You could reload the page to trigger it on demand.<br>
+</blockquote><br>
+The OnNavigationComplete handler only appears to fire when the page has finished loading after the (dcl_Html_Navigate ) function, forcing a page refresh using javascript or manually refreshing via F5 on the html page itself doesn't seem to fire the handler.<br>
+<br>
+I'm afraid my only option left is to figure out an activex way to send the commands from javascript to autocad.<br>
+<br>
+Thanks for the suggestions though ;)</div>
+</article>
+<article class="post" id="msg7883">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-03-21 00:44 UTC</span>
+  </div>
+  <div class="post-body">Hmm, in that case, I would try using the Microsoft Web Browser ActiveX control instead of the built in HTML control. That one should expose a lot more events, one of which would surely work for this purpose.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

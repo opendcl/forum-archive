@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crash with splwow64 in Bricscad · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1683</p>
+    <h1>Crash with splwow64 in Bricscad</h1>
+    <p class="meta">Started by honkinberry ·
+      2011-09-27 18:40 UTC ·
+      2 replies · SMF topic #1683</p>
+<article class="post" id="msg8339">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2011-09-27 18:40 UTC</span>
+  </div>
+  <div class="post-body">We just received a most unusual crash report.<br>
+This is with the latest OpenDCL, Bricscad 11.4.5, and Windows 7.64.<br>
+The dialog box in question has a Picture Box and a Slide View.<br>
+Upon initialization, a slide from an SLB is loaded into the Slide View, and the PictureBox has a SetBackColor call to a medium grey.<br>
+One user has reported that in some instances, the dialog does not appear, and Windows reports Bricscad has stopped responding, waiting for splwow64.exe<br>
+<br>
+As that is a print spooler process, I'm baffled!  Is there something in OpenDCL that causes this process to start, and if so, can we disable printing support or something as a way of getting around the issue?<br>
+Or if you have any other ideas!<br>
+<br>
+Thanks as always!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg8341">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-09-28 04:00 UTC</span>
+  </div>
+  <div class="post-body">OpenDCL would not have anything to do with the print spooler process. Is it possible you're introducing some kind of infinite loop that is using up all the CPU cycles? That would be my best guess if it really is related to your dialog. You could try disabling things one-at-a-time in your dialog to see if the problem disappears.</div>
+</article>
+<article class="post" id="msg8344">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2011-09-28 16:25 UTC</span>
+  </div>
+  <div class="post-body">Well, there's certainly no infinite loops going on.<br>
+But I do see that splwow64.exe starts with Windows, I just don't see how it's related to our dialog or OpenDCL at all.<br>
+Thanks!<br>
+<br>
+--J<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

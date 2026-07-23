@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DragnDrop / HitPointTest · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2915</p>
+    <h1>DragnDrop / HitPointTest</h1>
+    <p class="meta">Started by DW ·
+      2024-03-04 06:26 UTC ·
+      0 replies · SMF topic #2915</p>
+<article class="post" id="msg13986">
+  <div class="post-head">
+    <span class="post-author">DW</span>
+    <span class="post-date muted">2024-03-04 06:26 UTC</span>
+  </div>
+  <div class="post-body">After discovering problems with HitPointTest and high-resolution monitors, I came across [url="https://opendcl.com/forum/index.php?msg=13296"]this post which was helpful to bring to attention the registry key AppliedDPI - thanks honkinberry. Tried to add a reply to the post but seems a database error is preventing it...<br>
+<br>
+If anyone else is searching for a solution to the issue of HitPointTest giving incorrect results at varying screen resolutions, I found the following approach to work. <br>
+<br>
+Where screen resolution varies from 96dpi (which seems to be the default for correct operation),  I use the scale factor between 96dpi and the higher resolution to recalculate the value returned by DropPoint.  HitPointTest then processes the adjusted value. <br>
+<br>
+In my case, I'm using a ListView control and need both coordinates...<br>
+<br>
+<pre class="code"><code>(defun c:xlsfmt_to_OnDragnDropFromControl<br>
+       (ProjectName FormName ControlName DropPoint / rc dpi)<br>
+  ;; get screen resolution <br>
+  (setq	dpi<br>
+	(vl-registry-read<br>
+	  "HKEY_CURRENT_USER\\Control Panel\\Desktop\\WindowMetrics"<br>
+	  "AppliedDPI"<br>
+	)<br>
+  )<br>
+  (if (&lt; 96 dpi)<br>
+    ;; the difference in resolution of a 1080p monitor and anything else is calculated<br>
+    ;; say 1080p @ 100% = 96 dpi, 3840 x 2160 @ 150% = 144 dpi<br>
+    ;; 96 / 144 = 0.66667 which is the scaling factor applied to DropPoint<br>
+    (setq DropPoint<br>
+	   (mapcar '(lambda (x) (roundval (* (/ (float 96) (float dpi)) x) 1))<br>
+		   DropPoint<br>
+	   )<br>
+    )<br>
+    ;; otherwise do nothing<br>
+  )<br>
+  ;; HitPointTest then reports the correct relative coordinates<br>
+  (setq rc (dcl_ListView_HitPointTest xlsfmt_to (car DropPoint) (cadr DropPoint)))<br>
+    ; do something with rc ...<br>
+)   ; end defun<br>
+<br>
+(defun RoundVal	(value to)<br>
+  (setq to (abs to))<br>
+  (* to<br>
+     (fix (/ ((if (minusp value)<br>
+		-<br>
+		+<br>
+	      )<br>
+	       value<br>
+	       (* to 0.5)<br>
+	     )<br>
+	     to<br>
+	  )<br>
+     )<br>
+  )<br>
+)</code></pre></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trigger an event using code · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2327</p>
+    <h1>Trigger an event using code</h1>
+    <p class="meta">Started by Lube ·
+      2015-11-06 09:53 UTC ·
+      3 replies · SMF topic #2327</p>
+<article class="post" id="msg11698">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2015-11-06 09:53 UTC</span>
+  </div>
+  <div class="post-body">Hello guys, I've a question!<br>
+Is it possible to trigger an event without using the mouse? Directly from source code?<br>
+(defun c:Pippo/Main/R_fuoco#OnSelChanged (ItemIndexOrCount Value /)<br>
+  (verifica_R (/ (dcl-ComboBox-GetItemData Pippo/Main/R_fuoco ItemIndexOrCount) 1.0))<br>
+)<br>
+<br>
+Thanks :)<br>
+Dennis</div>
+</article>
+<article class="post" id="msg11699">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2015-11-06 10:17 UTC</span>
+  </div>
+  <div class="post-body">I'm doing it this way:<br>
+(c:Pippo/Main/R_fuoco#OnSelChanged (dcl-ComboBox-GetCurSel Pippo/Main/R_fuoco) T)<br>
+<br>
+But I'm not sure if it's the best way</div>
+</article>
+<article class="post" id="msg11701">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-11-06 11:02 UTC</span>
+  </div>
+  <div class="post-body">Yes, I also use this. Fred</div>
+</article>
+<article class="post" id="msg11703">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2015-11-06 12:10 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

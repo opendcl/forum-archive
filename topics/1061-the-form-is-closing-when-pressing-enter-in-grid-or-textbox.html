@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The form is closing when pressing Enter in Grid or Textbox · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/20-faqs.html">FAQs</a> /
+      Topic 1061</p>
+    <h1>The form is closing when pressing Enter in Grid or Textbox</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-12-06 23:13 UTC ·
+      0 replies · SMF topic #1061</p>
+<article class="post" id="msg5527">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-06 23:13 UTC</span>
+  </div>
+  <div class="post-body"><strong>Question:</strong> How can I prevent the form from closing when the cursor is in Grid or Textbox control and I push Enter key?<br>
+<br>
+<strong>Answer:</strong> You can use the OnCancelClose event to prevent the form from closing after pushing Enter key in Grid control or Textbox. The returning value of the event function has to be T if the form should not be closed. Note, that you have to make sure that there's at least one way to close the form. Calling dcl_form_close does not release OnCancelClose.<br>
+<br>
+<br>
+(defun c:MyProject_MyForm_OnCancelClose (intIsESC)<br>
+  ;; intIsESC = 1 when ESC key was pressed, the closing button in the titlebar was clicked<br>
+  (/= intIsESC 1)<br>
+); c:MyProject_MyForm_OnCancelClose <br>
+<br>
+<br>
+In the attachment there is a more complex sample for grid and textbox.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1114/textinput.odcl">textinput.odcl</a> <span class="muted">(1396 bytes)</span></li><li><a href="../attachments/1115/textinput.LSP">textinput.LSP</a> <span class="muted">(4297 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

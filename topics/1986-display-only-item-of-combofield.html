@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Display only item of ComboField · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1986</p>
+    <h1>Display only item of ComboField</h1>
+    <p class="meta">Started by Peter2 ·
+      2013-07-25 12:21 UTC ·
+      7 replies · SMF topic #1986</p>
+<article class="post" id="msg9782">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-07-25 12:21 UTC</span>
+  </div>
+  <div class="post-body">I have a combo-field where I use<br>
+<br>
+Title: "This is my title"<br>
+List: "Item 1|Item 2|Item 3"<br>
+<br>
+Starting the dialogue I always see the title and have to click to see my Items.<br>
+<br>
+Is there an internal way to display the list immediately? Or do I have to use LSP for correct display?</div>
+</article>
+<article class="post" id="msg9790">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-07-25 19:55 UTC</span>
+  </div>
+  <div class="post-body">I don't think there's any way to programmatically open the dropdown. You can of course use a simple combo that always displays the list as a listbox.</div>
+</article>
+<article class="post" id="msg9794">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-07-25 19:59 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1986.msg9790#msg9790 date=1374782106 wrote:</cite><br>
+.....You can of course use a simple combo that always displays the list as a listbox.</blockquote><br>
+ ???  ???<br>
+I think I have to take a little more time to understand it .. (as said above, it is my first small project).</div>
+</article>
+<article class="post" id="msg9795">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-07-26 04:22 UTC</span>
+  </div>
+  <div class="post-body">To clarify, by "simple combo" I meant a combo box control with Style set to 1 - Simple. Just now when I tested this, I inserted a combo control, changed the Style property, changed the List property to a|b|c|d, then tried to resize the control so it will display the list. It was "stuck" as a standard combo. I had to close the form window and reopen it, then the simple combo control could be resized to display the list. I hope that helps .</div>
+</article>
+<article class="post" id="msg9796">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-07-26 07:26 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen<br>
+<br>
+thanks for your reply. Now I attached two screenshots to explain what I mean:<br>
+<br>
+Image 1 shows the properties: I have Style 2, no title and three items.<br>
+<br>
+Image  2 shows the dialogue when it is started: The list is empty because there is no title (if I enter a title the title is displayed).<br>
+<br>
+Question:<br>
+When the dialogue starts I don't want to see the (empty or existing) title, I want to see the first item of my list.<br>
+-&gt; What to do?<br>
+<br>
+Thank you.<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1881/ODCL_List_1.jpg">ODCL_List_1.jpg</a> <span class="muted">(50418 bytes)</span></li><li><a href="../attachments/1882/ODCL_List_2.jpg">ODCL_List_2.jpg</a> <span class="muted">(6024 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9797">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-07-26 16:07 UTC</span>
+  </div>
+  <div class="post-body">I'm not sure I understand completely, but I think that if you set the Text property equal to a value in the list, then that value should be automatically selected in the list when the combo is initialized.</div>
+</article>
+<article class="post" id="msg9798">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-07-26 17:00 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1986.msg9797#msg9797 date=1374854828 wrote:</cite><br>
+... if you set the Text property equal to a value in the list, then that value should be automatically selected in the list when the combo is initialized.<br>
+</blockquote><br>
+Yes, this is what I want. I thought (hoped) that there is a property like "Display list items instead of title", but I will use this solution.<br>
+<br>
+Thanks and have a fine weekend.</div>
+</article>
+<article class="post" id="msg9837">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-08-05 04:24 UTC</span>
+  </div>
+  <div class="post-body">Hi, Peter, there was a similar question in the past how to open a DropDown list automatically.<br>
+You only have to set the focus to the combobox and to send the Cursor Down key.<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hatch Control: How to change the .pat file? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2305</p>
+    <h1>Hatch Control: How to change the .pat file?</h1>
+    <p class="meta">Started by roy_043 ·
+      2015-08-28 21:04 UTC ·
+      7 replies · SMF topic #2305</p>
+<article class="post" id="msg11593">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-08-28 21:04 UTC</span>
+  </div>
+  <div class="post-body">While playing with @AllSamples.lsp I noticed that the Hatch Control always uses the definitions from default.pat (I am using BricsCAD) irrespective of the measurement setting. It seems there is no way to change this or am I missing something?</div>
+</article>
+<article class="post" id="msg11594">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-08-29 10:07 UTC</span>
+  </div>
+  <div class="post-body">Actually the Hatch Control is aware of the measurement setting. It is used to determine the pixel to drawing unit ratio.<br>
+<br>
+In a metric drawing 1 pixel equals 1 drawing unit.<br>
+In an imperial drawing 25.4 pixels equal 1 drawing unit.<br>
+<br>
+Displaying imperial hatch definitions at a given scale in a metric drawing results in a much denser preview in the Hatch Control.</div>
+</article>
+<article class="post" id="msg11595">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-08-29 11:02 UTC</span>
+  </div>
+  <div class="post-body">FWIW: My suggestion for (c:Hatches/Hatch#OnInitialize):<br>
+(defun c:Hatches/Hatch#OnInitialize (/ scale idx)<br>
+  (setq scale (rtos (dcl-Control-GetHatchScale Hatches/Hatch/Hatch1) 2 1))<br>
+  (setq idx (dcl-ComboBox-FindStringExact Hatches/Hatch/ComboBox2 scale))<br>
+  (if (&lt; idx 0)<br>
+    (progn<br>
+      (setq idx 0)<br>
+      (setq scale (dcl-ComboBox-GetLBText Hatches/Hatch/ComboBox2 idx))<br>
+      (dcl-Control-SetHatchScale Hatches/Hatch/Hatch1 (atof scale))<br>
+      (dcl-Control-SetHatchScale Hatches/Hatch/Hatch2 (atof scale))<br>
+    )<br>
+  )<br>
+  (dcl-ComboBox-SetCurSel Hatches/Hatch/ComboBox2 idx)<br>
+)</div>
+</article>
+<article class="post" id="msg11601">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-09-02 16:57 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the feedback!<br>
+<br>
+It's a good idea to change the derivation of scale to use (rtos (...) 2 1) since the scale combo is hardcoded to use decimal format, but I'm curious what is gained by setting hatch scale when the current scale is not found in the combo. Under what conditions would that occur?</div>
+</article>
+<article class="post" id="msg11602">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-09-02 18:00 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2305.msg11601#msg11601 date=1441213063 wrote:</cite><br>
+Under what conditions would that occur?<br>
+</blockquote>The original code assumes that the scale of the Hatch Control can be missing from ComboBox2. In that case ComboBox2 will display the first available scale in the list instead of the actual scale of the Hatch Control. But the Hatch Controls are not updated accordingly. I find this inconsistent. But of course all this is academic in a way. The programmer should ensure that the Hatch Controls have the same scale which should be present in the scale list.<br>
+<br>
+Original code:<br>
+(defun c:Hatches/Hatch#OnInitialize (/ scale idx)<br>
+  (setq scale (rtos (dcl-Control-GetHatchScale Hatches/Hatch/Hatch1) 2 0))<br>
+  (setq idx (dcl-ComboBox-FindString Hatches/Hatch/ComboBox2 scale))<br>
+  (if (&lt; idx 0) (setq idx 0))<br>
+  (dcl-ComboBox-SetCurSel Hatches/Hatch/ComboBox2 idx)<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg11603">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-09-02 18:07 UTC</span>
+  </div>
+  <div class="post-body">In testing, I found that there is a real bug in that the selected hatch pattern is not remembered between invocations of the sample. Your change doesn't help, because it fails when the selected scale was 10 (rtos returns "10.0", which isn't found in the list). So I changed it like this, which I think is simpler and more consistent:<br>
+<br>
+<br>
+(defun c:Hatches/Hatch#OnInitialize (/ scale idx)<br>
+	(setq idx (dcl-ComboBox-GetCurSel Hatches/Hatch/ComboBox2))<br>
+	(if (&lt; idx 0)<br>
+		(progn<br>
+			(setq idx 0)<br>
+			(dcl-ComboBox-SetCurSel Hatches/Hatch/ComboBox2 0)<br>
+		)<br>
+	)<br>
+	(setq scale (dcl-ComboBox-GetLBText Hatches/Hatch/ComboBox2 idx))<br>
+	(c:Hatches/Hatch/ComboBox2#OnSelChanged nil scale)<br>
+)</div>
+</article>
+<article class="post" id="msg11604">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-09-03 08:49 UTC</span>
+  </div>
+  <div class="post-body">I agree that this is the most elegant way to both solve the inconsistent scale issue and display the selected pattern when the dialog is initialized. And you are right, my code doesn't work with the current odcl scale list which is "5.0|7.5|10" instead of "5.0|7.5|10.0".<br>
+<br>
+But I have caused us to go off on a tangent. My reason for starting this topic is:<blockquote class="quote"><cite> author=roy_043 link=topic=2305.msg11593#msg11593 date=1440795884 wrote:</cite><br>
+While playing with @AllSamples.lsp I noticed that the Hatch Control always uses the definitions from default.pat (I am using BricsCAD) irrespective of the measurement setting. It seems there is no way to change this or am I missing something?<br>
+</blockquote>If MEASUREMENT=1 the 'iso' .pat file should be used I think. Or there should be a way for the programmer to specify the .pat file.</div>
+</article>
+<article class="post" id="msg11610">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-09-04 12:58 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2305.msg11604#msg11604 date=1441270173 wrote:</cite><br>
+If MEASUREMENT=1 the 'iso' .pat file should be used I think. Or there should be a way for the programmer to specify the .pat file.<br>
+</blockquote><br>
+<br>
+The current solution is to adjust the pattern scale based on the MEASUREMENT setting of the current document. Unfortunately, using the MEASUREMENT setting from the current document leaves a mysterious link from the control to settings in a database whose document happened to be current at the time the control's hatch pattern was last updated.<br>
+<br>
+I will go ahead and change the code to base the control's MEASUREMENT setting on the current document's MEASUREMENT. This doesn't solve the linkage problem, but it should cause the control to use the same .pat file as the current document.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

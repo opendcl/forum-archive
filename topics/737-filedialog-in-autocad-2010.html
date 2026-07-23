@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FileDialog in AutoCAD 2010 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 737</p>
+    <h1>FileDialog in AutoCAD 2010</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-04-30 06:16 UTC ·
+      7 replies · SMF topic #737</p>
+<article class="post" id="msg3596">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-30 06:16 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+before adding a bug report I want to be sure that I'm doing nothing wrong.<br>
+<br>
+I have a FileDialog that works correctly in AutoCAD 2009 (see attached file).<br>
+<br>
+<br>
+(dcl_project_load "lvman")<br>
+(setq strExt ".d81")<br>
+(dcl_form_show lvman_sc_gaeb_import (getvar "DWGPREFIX") (strcat "*" strExt) strExt)<br>
+<br>
+<br>
+In AutoCAD 2010 I get an exception, in AutoCAD 2009 it works fine.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/697/lvman.odcl">lvman.odcl</a> <span class="muted">(41206 bytes)</span></li><li><a href="../attachments/698/Result2010.png">Result2010.png</a> <span class="muted">(14446 bytes)</span></li><li><a href="../attachments/699/Result2009.png">Result2009.png</a> <span class="muted">(57565 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3610">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-04-30 17:06 UTC</span>
+  </div>
+  <div class="post-body">Worked OK for me, but I didn't include any of the optional arguments with the (dcl_Form_Show).<br>
+Maybe start removing those &amp; see if it works....<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/708/OpenFile.png">OpenFile.png</a> <span class="muted">(120905 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3612">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-30 18:27 UTC</span>
+  </div>
+  <div class="post-body">Thanks, Barry, am I right that you were testing on XP?<br>
+I had the chance to test on three other computers, but they're all using AutoCAD 2010 on XP. On all these XP workstations FileDialog worked fine. Now it is the question if it is a matter of Vista or a matter of this notebook...<br>
+<br>
+<blockquote class="quote">but I didn't include any of the optional arguments with the (dcl_Form_Show).</blockquote><br>
+The optional arguments are necessary in this case for initial folder and initial extension.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3615">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-04-30 21:28 UTC</span>
+  </div>
+  <div class="post-body">Yes I'm on XP.<br>
+</div>
+</article>
+<article class="post" id="msg3616">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-01 01:45 UTC</span>
+  </div>
+  <div class="post-body">It seems that MFC creates a new Vista style file dialog by default in Vista, and the Vista style dialog does not allow the use of a custom template. I've now changed the code to create an old style file dialog in Vista; this should resolve the problem.</div>
+</article>
+<article class="post" id="msg3628">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-03 23:02 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen, I just had a test with the same FileDialog on Vista and Civil 3D 2009. In this case it works very fine. In AutoCAD 2010 on the same machine it crashes. Maybe it is no Vista-depended problem?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3629">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-04 00:55 UTC</span>
+  </div>
+  <div class="post-body">I would guess that C3D has disabled Vista style file dialogs.</div>
+</article>
+<article class="post" id="msg3640">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-06 21:51 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen, I have a notebook with Vista 32 Bit, where Vista-Styles are used. I have installed Map 2008, Map 2009, Civil 2009, AutoCAD 2010, Civil 2010. Using 5.1.0.4 FileDialog works now in all AutoCAD releases. Thanks Owen.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

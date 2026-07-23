@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tabstrip problem - limitation? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1745</p>
+    <h1>Tabstrip problem - limitation?</h1>
+    <p class="meta">Started by kenkrupa ·
+      2012-01-26 20:19 UTC ·
+      4 replies · SMF topic #1745</p>
+<article class="post" id="msg8570">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2012-01-26 20:19 UTC</span>
+  </div>
+  <div class="post-body">Is there a known limitation on number of tabs in a tabstrip? I have one with 7 tabs. When I try to add another, I get an error when I reload it (see attached image, top). This happens the second time I reload after adding the tab, even when using a test function with minimal code. Once this occurs, any other app using ODCL is also totally bonked, getting the error in the image bottom. I need to restart AutoCAD to clear the problem. I find that I can exit and re-display the dialog repeatedly if I do not do the forced reload each time, but that's not too convenient for developing the dialog.<br>
+<br>
+Running 6.0.2.3 with ACA 2012 on Win7/64.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1701/Tabstrip errors.png">Tabstrip errors.png</a> <span class="muted">(13230 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8572">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-01-26 21:09 UTC</span>
+  </div>
+  <div class="post-body">Can you give me a simple sample file with the steps to reproduce this? It's likely due to something that got corrupted in the .odcl file, so make sure you keep a copy of the "bad" file as you may not be able to reproduce the problem if you start from scratch.</div>
+</article>
+<article class="post" id="msg8575">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2012-01-29 17:41 UTC</span>
+  </div>
+  <div class="post-body">Here is the problem file, with a simple lisp to run it (attached zip). Extract to a folder on the search path, load the .lsp, and use WOODBEAMS command to run. First time is fine, next time it gives the error. Removing the last tab stops the error.<br>
+<br>
+One thing I have noticed is that I have been seeing a bogus sub-form in the list, showing the last tab twice (see image). The form does not have this tab twice, just the listing. I've been seeing this for a while now, well before attempting to add the eighth tab. If I go to the tabstrip Properties dlg, click on Tab/Pages, and OK, it goes away. But once I Save, exit, then re-open it, it comes right back. Is this something that does happen ordinarily? Or have I been seeing a symptom of a corrupted file for some time? <br>
+<br>
+Any way to fix this, or do I need to start over?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1702/Tabstrip errors2.png">Tabstrip errors2.png</a> <span class="muted">(3591 bytes)</span></li><li><a href="../attachments/1703/WoodBeams_Test.zip">WoodBeams_Test.zip</a> <span class="muted">(57226 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8576">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-01-30 03:58 UTC</span>
+  </div>
+  <div class="post-body">It looks like the problem here is due to an unnamed tab page. The property wizard is ignoring the unnamed page, then adding a tab page with a duplicate index when you add a new tab. The duplicate index is what causes the runtime problems.<br>
+<br>
+I've added code to remove a duplicate tab page when loading the project, so the next build will load and display this corrupted project file without error. I've also added code to create a "Tab N" name for an unnamed tab so that it gets displayed in the list and so that adding a new page doesn't stomp on it. With this second change, opening the corrupt tab control's property wizard, then pressing  to apply any changes, should update the tab strip's TabCaptions property to give the formerly unnamed tab page a name.<br>
+<br>
+Hopefully these two changes will resolve the issue by the next build. In the meantime, you can give the phantom tab a name by adding a name to the list in the Tab Captions property of the tab strip control, then saving and re-opening the project.</div>
+</article>
+<article class="post" id="msg8582">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2012-01-30 16:40 UTC</span>
+  </div>
+  <div class="post-body">Thank you Owen. It took me a bit more stumbling around than you described, but I did manage to straighten it out. No more error.<br>
+ :)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

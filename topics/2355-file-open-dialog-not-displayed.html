@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>File Open Dialog not displayed? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2355</p>
+    <h1>File Open Dialog not displayed?</h1>
+    <p class="meta">Started by donnieworld ·
+      2016-03-09 21:50 UTC ·
+      4 replies · SMF topic #2355</p>
+<article class="post" id="msg11821">
+  <div class="post-head">
+    <span class="post-author">donnieworld</span>
+    <span class="post-date muted">2016-03-09 21:50 UTC</span>
+  </div>
+  <div class="post-body">What am I missing? I've reduced this to the bare minimum but cannot get a File Dialog to display? It just returns nil. In BricsCAD v16?<br>
+<br>
+(defun c:fdtest ( / )<br>
+	(command "_OPENDCL")<br>
+	(dcl-Project-Load "FileOpenTest")<br>
+	(setq sFile (dcl-Form-Show FileOpenTest/frmImport))<br>
+)<br>
+<br>
+(defun c:FileOpenTest/frmImport#OnInitialize (/)<br>
+	  (dcl-MessageBox "We got here")<br>
+)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2198/FileOpenTest.odcl">FileOpenTest.odcl</a> <span class="muted">(535 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11822">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-03-10 01:32 UTC</span>
+  </div>
+  <div class="post-body">Can you attach your .odcl file?</div>
+</article>
+<article class="post" id="msg11823">
+  <div class="post-head">
+    <span class="post-author">donnieworld</span>
+    <span class="post-date muted">2016-03-10 02:34 UTC</span>
+  </div>
+  <div class="post-body">I attached it to the original post. It is a project with nothing but the file dialog. I was struggling in another project and created this as a test.<br>
+<br>
+I'm on Windows 10 as well.</div>
+</article>
+<article class="post" id="msg11824">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-03-10 15:59 UTC</span>
+  </div>
+  <div class="post-body">It seems to be working fine on Windows 7, so maybe the problem is specific to Windows 10. I don't have an easy way to test at the moment, so hopefully someone else can test on Windows 10 to see if the behavior is reproducible there.<br>
+<br>
+BTW, I noticed that your OnInitialize event function name doesn't match the name in the .odcl. You can uncheck and recheck the event to update the name in the .odcl file.</div>
+</article>
+<article class="post" id="msg11826">
+  <div class="post-head">
+    <span class="post-author">DW</span>
+    <span class="post-date muted">2016-03-10 23:43 UTC</span>
+  </div>
+  <div class="post-body">I've noticed the same behavior in Windows 7 in both BricsCAD v16 and AutoCAD with 8.0.3.0, however with 8.0.1.0 the file dialog displays correctly.  I haven't checked 8.0.4.0 </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

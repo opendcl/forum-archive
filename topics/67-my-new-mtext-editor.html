@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My new Mtext Editor · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 67</p>
+    <h1>My new Mtext Editor</h1>
+    <p class="meta">Started by bazzacad ·
+      2007-10-13 00:28 UTC ·
+      8 replies · SMF topic #67</p>
+<article class="post" id="msg284">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2007-10-13 00:28 UTC</span>
+  </div>
+  <div class="post-body">I got tired of trying to remember all these strange UNICODE addresses to place our custom symbols into mtext so I created this little dialog to help me out...<br>
+Check out the video here...<br>
+<a href="http://www.screencast.com/t/Lzphx8Mg3ws" rel="nofollow noopener">{2}</a><br>
+</div>
+</article>
+<article class="post" id="msg285">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2007-10-15 10:50 UTC</span>
+  </div>
+  <div class="post-body">Barry, very nice.  Is there any way to delete the right click paste operation?  Not really a big deal though.<br>
+<br>
+Nice one!<br>
+<br>
+<br>
+jb</div>
+</article>
+<article class="post" id="msg293">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-10-16 10:21 UTC</span>
+  </div>
+  <div class="post-body">Neat Barry !</div>
+</article>
+<article class="post" id="msg299">
+  <div class="post-head">
+    <span class="post-author">Matt W</span>
+    <span class="post-date muted">2007-10-16 18:50 UTC</span>
+  </div>
+  <div class="post-body">Pretty cool.... Don't suppose you'd like to share?</div>
+</article>
+<article class="post" id="msg304">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2007-10-17 17:23 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=67.msg285#msg285 date=1192445458 wrote:</cite><br>
+Barry, very nice.  Is there any way to delete the right click paste operation?  Not really a big deal though.<br>
+<br>
+Nice one!<br>
+<br>
+<br>
+jb<br>
+</blockquote><br>
+<br>
+I really wish I could find away to not have to click inside the editor &amp; paste. (I actually use CTRL+V but used the right so you could see the operation on-screen). The prob. is the Mtext editor takes full focus and there doesn't seam to be any way to interact with it. I was hoping there might be a .NET why of doing it, but I don't know much about .NET so this was the best workaround I could think up. If anyone knows how to do a paste programmatically into the mtext editor any help would be much appreciated.</div>
+</article>
+<article class="post" id="msg307">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2007-10-17 17:55 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Matt W link=topic=67.msg299#msg299 date=1192560646 wrote:</cite><br>
+Pretty cool.... Don't suppose you'd like to share?<br>
+</blockquote><br>
+<br>
+OK here's my code.<br>
+Note, these UNICODE addresses are hard coded to my font "Archs.shx" so you'd have to modify it to work with your font.<br>
+Also, it's currently not setup to handle multiple fonts.<br>
+<strong>You'll also need DosLib to run the code.</strong><br>
+<br>
+Here's an example on how to set it up for creating a new Mtext object:<br>
+<pre class="code"><code>(defun c:mt (/)<br>
+  (setq inspt (getpoint "\nInsertion Point: "))<br>
+  (initdia)<br>
+  (load "MTClipboadSymbols")<br>
+  (dcl_Project_Load "clip.odcl")    <br>
+  (dcl_Form_Show clip_Form1)<br>
+  (dcl_SetCmdBarFocus)<br>
+  (command ".mtext" inspt pause)<br>
+  (dcl_Form_Close clip_Form1)<br>
+)</code></pre><br>
+You'd have to do the same for Dtext &amp; Mleaders...<br>
+<br>
+For Dbl. Clk. editing of objects, you'll have to edit your CUI per the screen shot below...<br>
+<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg315">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2007-10-18 11:59 UTC</span>
+  </div>
+  <div class="post-body">Just for the record, Autodesk blatantly stole my Double Click options idea and didn't even bother to acknowledge the fact that I've provided the option of customizing double click actions since v2002!<br>
+<br>
+<img src="http://www.studio2405.com/jdb/dbb.jpg" alt="" loading="lazy"><br>
+<br>
+Oh well . . .  ::)<br>
+<br>
+Barry, what do you use doslib for in this routine??</div>
+</article>
+<article class="post" id="msg316">
+  <div class="post-head">
+    <span class="post-author">Matt W</span>
+    <span class="post-date muted">2007-10-18 13:15 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=67.msg307#msg307 date=1192643730 wrote:</cite><br>
+[quote author=Matt W link=topic=67.msg299#msg299 date=1192560646]<br>
+Pretty cool.... Don't suppose you'd like to share?<br>
+</blockquote><br>
+<br>
+OK here's my code.<br>
+<br>
+<br>
+Cool.... Thanks!<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=jb link=topic=67.msg315#msg315 date=1192708788 wrote:</cite><br>
+Barry, what do you use doslib for in this routine??<br>
+</blockquote><br>
+<br>
+Looks like copying/pasting to/from the Clipboard.</div>
+</article>
+<article class="post" id="msg328">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2007-10-19 17:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Matt W link=topic=67.msg316#msg316 date=1192713302 wrote:</cite><br>
+[quote author=jb link=topic=67.msg315#msg315 date=1192708788]<br>
+Barry, what do you use doslib for in this routine??<br>
+</blockquote><br>
+Looks like copying/pasting to/from the Clipboard.<br>
+<br>
+<br>
+Actually just to the clipboad. From just used the OS CTRL+V<br>
+I think I've seen an all lisp version of putting to the clipboard, but didn't want to deal with it, since I already had DosLib.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

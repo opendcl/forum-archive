@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Feature Request / Workaround for Float validation · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 866</p>
+    <h1>Feature Request / Workaround for Float validation</h1>
+    <p class="meta">Started by docsaintly ·
+      2009-08-07 19:14 UTC ·
+      4 replies · SMF topic #866</p>
+<article class="post" id="msg4275">
+  <div class="post-head">
+    <span class="post-author">docsaintly</span>
+    <span class="post-date muted">2009-08-07 19:14 UTC</span>
+  </div>
+  <div class="post-body">I am working with textboxes and trying to get a real (float) value back. Under the text box properties I can select to restrain the type to integer, string, or autocad number type. Integer obviously doesn't work, I could use a string, but i'd have to somehow be able to compare the text value of the box before and after the edit. This could be done but it would be quite cumbersome (using Set Focus / KillFocus to store a "global" variable for the box to compare). The autocad type doesn't work because I want the user to be able to type 1/16" or 0.0625.<br>
+<br>
+Any ideas?</div>
+</article>
+<article class="post" id="msg4276">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-08-07 21:03 UTC</span>
+  </div>
+  <div class="post-body">You can use the TextBox_SetFilter method to set a custom filter when Filter Style is set to 'String'. In addition, you can handle EditChanged or KillFocus to validate the contents.</div>
+</article>
+<article class="post" id="msg4277">
+  <div class="post-head">
+    <span class="post-author">docsaintly</span>
+    <span class="post-date muted">2009-08-07 21:14 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+   Thanks a lot. I think the (dcl_textboc_setfilter txtCellX "0123456789./" will achieve what I want as far as making sure it's what it should be. However, when I tried the EditChanged and Update events, the value they were giving were the same as the textbox.text value. Maybe my logic is flawed but I thought that the EditChanged or Update method would return the value the user was trying to enter, and the Textbox.text value would be the value before the user changed it. Otherwise, how can I compare the new value to the old unless I set a global to store the text every time it's changed.</div>
+</article>
+<article class="post" id="msg4278">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-08-07 21:31 UTC</span>
+  </div>
+  <div class="post-body">Yes, if you need to know what changed, you have to track it yourself. That's why I suggested to just validate in OnKillFocus and not worry about what or how it changed. Internally there is infrastructure to validate before it changes (by using the assigned filter), but there's no simple way to expose that to lisp.</div>
+</article>
+<article class="post" id="msg4279">
+  <div class="post-head">
+    <span class="post-author">docsaintly</span>
+    <span class="post-date muted">2009-08-07 22:08 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+   Thanks for the advice. The only reason I care about what was in the box before is because if it was in the box it was valid text, so if the user enters invalid text I wanted to revert to that. I guess I can just make it 0.0 and tell the users to make sure they don't put in bad text.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

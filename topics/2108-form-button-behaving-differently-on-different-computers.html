@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>fORM bUTTON BEHAVING DIFFERENTLY ON DIFFERENT COMPUTERS · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2108</p>
+    <h1>fORM bUTTON BEHAVING DIFFERENTLY ON DIFFERENT COMPUTERS</h1>
+    <p class="meta">Started by jrupert ·
+      2014-03-14 21:10 UTC ·
+      1 replies · SMF topic #2108</p>
+<article class="post" id="msg10459">
+  <div class="post-head">
+    <span class="post-author">jrupert</span>
+    <span class="post-date muted">2014-03-14 21:10 UTC</span>
+  </div>
+  <div class="post-body">I have a form (JMR-1.jpg and JMR-2.jpg attached) where when selecting the Insert NDI button, different results are happening.<br>
+<br>
+The execution is that when selected, a mtext object should be inserted at a user prompted location.  JMR-1.jpg shows proper results.<br>
+<br>
+On other computers sometimes only the first 5 or 6 characters are displayed and on another computer the backslashes are not displayed along wit the first character after the backslash.<br>
+<br>
+Could this be a font issue?  Does anyone have a clue as to where to start in resolving this issue?<br>
+<br>
+Thank you in advance!<br>
+<br>
+CODE:<br>
+<br>
+;;;---NDI STAMP INSERT<br>
+(DEFUN c:GBSCC_FormGBSCC_BTNInsertNDI_OnClicked ( / )<br>
+    (command "textstyle" "GBS_Standard")<br>
+    (command "layer" "set" "text" "")<br>
+    (setq dwgPath (strcat (getvar "dwgprefix") (getvar "dwgname")))<br>
+<br>
+    (setq d (rtos (getvar "CDATE") 2 6)<br>
+          yr (substr d 3 2)<br>
+          mo (substr d 5 2)<br>
+          day (substr d 7 2)<br>
+    )<br>
+    (setq dateNow (strcat mo "/" day "/" yr))<br>
+    (setq initials (dcl_Control_GetText GBSCC_FormGBSCC_TBInitials))<br>
+    (setq gbspn (dcl_Control_GetText GBSCC_FormGBSCC_TBGBSPN))<br>
+    (setq thickness (dcl_Control_GetText GBSCC_FormGBSCC_CBoxThickness))<br>
+    (setq material (dcl_Control_GetText GBSCC_FormGBSCC_CBoxMaterial))<br>
+    (setq revision (dcl_Control_GetText GBSCC_FormGBSCC_TBRevisionLevel))<br>
+<br>
+    (DCL_FORM_CLOSE GBSCC_FormGBSCC)<br>
+<br>
+    (setq pt1 (GETPOINT "\nSelect UPPER-LEFT CORNER of NDI STAMP insertion Point: "))<br>
+    (setq pt2 (GETCORNER pt1 "\nSelect LOWER-RIGHT CORNER of NDI STAMP insertion Point: "))<br>
+<br>
+    (setq PN (strcat "GBS PN: " gbspn))<br>
+    (setq TH (strcat "THICKNESS: " thickness))<br>
+    (setq MT (strcat "MATERIAL: " material))<br>
+    (setq RV (strcat "REVISION: " revision))<br>
+    <br>
+    (command "mtext" pt1 pt2 dwgpath dateNow initials PN TH MT RV "")<br>
+<br>
+)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1970/JMR-1.jpg">JMR-1.jpg</a> <span class="muted">(13723 bytes)</span></li><li><a href="../attachments/1971/JMR-2.jpg">JMR-2.jpg</a> <span class="muted">(18442 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10460">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-03-15 05:44 UTC</span>
+  </div>
+  <div class="post-body">Mtext control codes are preceded with a backslash. You'll need to escape your backslashes, else valid character combinations will be interpreted as control codes.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

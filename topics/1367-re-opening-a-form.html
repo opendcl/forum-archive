@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Re-opening a Form · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1367</p>
+    <h1>Re-opening a Form</h1>
+    <p class="meta">Started by JEdwardL ·
+      2010-11-02 18:27 UTC ·
+      12 replies · SMF topic #1367</p>
+<article class="post" id="msg7272">
+  <div class="post-head">
+    <span class="post-author">JEdwardL</span>
+    <span class="post-date muted">2010-11-02 18:27 UTC</span>
+  </div>
+  <div class="post-body">I have a main form that displays a second form then closes.  I want to return to the original form upon closing the second one, but haven't been successful.  I can get the second form to display and when I press the exit button its supposed to close the current one and show the first.<br>
+<br>
+I'm not sure if I'm working the Form_Show and Form_Close functions properly...there doesn't seem to be a lot of documentation about them.<br>
+<br>
+Thanks,<br>
+<br>
+J</div>
+</article>
+<article class="post" id="msg7274">
+  <div class="post-head">
+    <span class="post-author">JEdwardL</span>
+    <span class="post-date muted">2010-11-02 18:45 UTC</span>
+  </div>
+  <div class="post-body">Never mind...I just discovered the Form_Hide function.<br>
+<br>
+J</div>
+</article>
+<article class="post" id="msg7276">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-11-03 06:27 UTC</span>
+  </div>
+  <div class="post-body">Hi, have you already seen this?<br>
+<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=1080.0" rel="nofollow noopener">{2}</a><br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7277">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-11-03 06:31 UTC</span>
+  </div>
+  <div class="post-body">... and <a href="http://www.opendcl.com/HelpFiles/index.php?lang=DEU&amp;page=Concepts/Development.htm" rel="nofollow noopener">{2}</a><br>
+and <a href="http://www.opendcl.com/HelpFiles/index.php?lang=ENU&amp;page=Concepts/Development.htm" rel="nofollow noopener">{2}</a><br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7302">
+  <div class="post-head">
+    <span class="post-author">JEdwardL</span>
+    <span class="post-date muted">2010-11-07 20:53 UTC</span>
+  </div>
+  <div class="post-body">OK, I give up...I can't see any reason that this code and dialog won't work.  I've simplified my dialog to the point that the only controls that are functional are the OK and the Cancel button, but I still get an ADS error message.  Could it possible be because I'm working on a USB drive?  I've had quirks like that before, but all the files are on the same drive so that shouldn't be a problem.<br>
+<br>
+Please tell me where I'm going wrong.<br>
+<br>
+Thank you<br>
+<br>
+J<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1468/SIDFunctions1.odcl">SIDFunctions1.odcl</a> <span class="muted">(4037 bytes)</span></li><li><a href="../attachments/1469/SID Functions1.LSP">SID Functions1.LSP</a> <span class="muted">(945 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7303">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-11-07 21:26 UTC</span>
+  </div>
+  <div class="post-body">You're setting continue to nil in both return cases.  It looks like you intended to set it to T when the return value is 2.</div>
+</article>
+<article class="post" id="msg7304">
+  <div class="post-head">
+    <span class="post-author">JEdwardL</span>
+    <span class="post-date muted">2010-11-07 21:49 UTC</span>
+  </div>
+  <div class="post-body">This code is a very simplified version of the SELECTIONS.LSP code provided with the OpenDCL samples.  Apparently that routine doesn't care how the WHILE loop terminates, perhaps because the list is already defined and nothing remains to be done on termination of the form.  Anyway, it seems to work for SELECTIONS, but not for me.</div>
+</article>
+<article class="post" id="msg7305">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-11-07 22:07 UTC</span>
+  </div>
+  <div class="post-body">I'm sure someone will help if you post some code that demonstrates the problem.</div>
+</article>
+<article class="post" id="msg7306">
+  <div class="post-head">
+    <span class="post-author">JEdwardL</span>
+    <span class="post-date muted">2010-11-07 23:32 UTC</span>
+  </div>
+  <div class="post-body">I think I discovered what the problem is.  When I created the form I copied some controls from another form in the project and then re-named the control.  Unfortunately, it looks like ODCL isn't accepting this edited control name.  When I created a couple of new buttons from scratch the code ran just fine.  What do I need to do to get ODCL to accepted the edited name?<br>
+<br>
+Thanks,<br>
+<br>
+J</div>
+</article>
+<article class="post" id="msg7307">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-11-08 00:05 UTC</span>
+  </div>
+  <div class="post-body">Are you referring to event handler function names?  You can edit those in the events pane, or use Tools -&gt; Reset Event Names to reset them for all events in a form.</div>
+</article>
+<article class="post" id="msg7308">
+  <div class="post-head">
+    <span class="post-author">JEdwardL</span>
+    <span class="post-date muted">2010-11-08 00:42 UTC</span>
+  </div>
+  <div class="post-body">I didn't know that.  Thanks for the tip.  Like I said at the beginning, I'm new to OpenDCL.</div>
+</article>
+<article class="post" id="msg7309">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-11-08 14:22 UTC</span>
+  </div>
+  <div class="post-body">when i load up your code, i only get the 1 form showing, the other form doesnt have code to load it.<br>
+it looks like your missing close forms and show forms code<br>
+<br>
+can you give a little better description of what you are trying to accomplish?<br>
+</div>
+</article>
+<article class="post" id="msg7311">
+  <div class="post-head">
+    <span class="post-author">JEdwardL</span>
+    <span class="post-date muted">2010-11-08 21:01 UTC</span>
+  </div>
+  <div class="post-body">I was having trouble with Form_Close on the two buttons.  I reduced the problem to its simplest elements and that's what you see.  It turns out that the function names in the odcl file had not been re-set after I copied and renamed them.<br>
+<br>
+Thanks,<br>
+<br>
+<br>
+J</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

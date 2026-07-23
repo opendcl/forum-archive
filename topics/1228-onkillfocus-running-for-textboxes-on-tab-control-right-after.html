@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OnKillFocus running for textboxes on tab control, right after form show · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1228</p>
+    <h1>OnKillFocus running for textboxes on tab control, right after form show</h1>
+    <p class="meta">Started by jmaeding ·
+      2010-03-23 22:28 UTC ·
+      7 replies · SMF topic #1228</p>
+<article class="post" id="msg6568">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-03-23 22:28 UTC</span>
+  </div>
+  <div class="post-body">I have a modal form with a tab control that has 6 tabs.<br>
+Each tab has several textboxes.  I typically have textboxes run the OnKillFocus and OnReturnPressed events to trigger that the user is done with that textbox, and I noticed the OnKillFocus function runs immediately after the form show, even before the initialize event code.  Isn't the initialize the very very first event that can run after a form show?<br>
+In addition, the tab control runs its OnChanged event before initialize also.<br>
+I am pretty sure this is not proper behavior for 6.0...23, as it worked on version 4.1.<br>
+Its having a pretty major effect on things so I want to check.<br>
+thanks</div>
+</article>
+<article class="post" id="msg6569">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-03-23 22:30 UTC</span>
+  </div>
+  <div class="post-body">feel free to move this to runtime issues, I should have put it there</div>
+</article>
+<article class="post" id="msg6586">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-03-24 16:12 UTC</span>
+  </div>
+  <div class="post-body">no replies, guess I better do an example project to demonstrate.<br>
+Funny thing is, last time I did this, the issue turned out to be something I solved by removing the varname from my flexgrid control in the editor.  The name was the same as the auto-assigned one, but the varname seemed to prevent the runtime for updating the flexgrid props.  I'm almost thinking you should just get rid of the varname altogether and force us to update code :)<br>
+I'll post back in a bit with exmaple....</div>
+</article>
+<article class="post" id="msg6592">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-24 17:04 UTC</span>
+  </div>
+  <div class="post-body">There is no law that says OnInitialize must be the first event, but if it's not the first event, there should be a good reason at least. In this case, I'd say there is no good reason. However I'd like to see your sample.</div>
+</article>
+<article class="post" id="msg6609">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-25 06:18 UTC</span>
+  </div>
+  <div class="post-body">jmaeding,<br>
+<br>
+Note that Tab_OnSelChanged event will be fired at creation time. That means it is before OnInitialize.<br>
+Note that Textbox_OnKillFocus will be fired on creation tim if it is the first control in the Z/Tab order list. As far as I remember it is valid also for each tab!<br>
+<br>
+That are two samples of event which are fired before OnInitialize.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6650">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-03-29 16:25 UTC</span>
+  </div>
+  <div class="post-body">wow, I believe that is exactly what I am seeing.<br>
+I did not run into this before, but maybe because I had buttons at top of z order (by accident).<br>
+I cleeaned up the z order when doing the transition to ver 6, and saw issues.<br>
+I guess I have to put state checking code in my textbox validation functions.<br>
+thx</div>
+</article>
+<article class="post" id="msg6717">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-04-07 17:04 UTC</span>
+  </div>
+  <div class="post-body">I'm thinking it is a bad thing for controls to fire events before OnInitialize of form they are owned by.<br>
+When is that ever useful?<br>
+It is bad because it wastes time firing the callbacks which are looking at default values for the controls.<br>
+The default values are never what you want, so it causes confusion in the program for nothing.<br>
+What I have to do now is set a global var before calling form_show, then use that flag in my OnKillFocus callbacks to not validate the control.<br>
+Is there some way to prevent the events from firing before form starts initializing?</div>
+</article>
+<article class="post" id="msg6718">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-04-07 18:18 UTC</span>
+  </div>
+  <div class="post-body">now that i am using flags to avoid callbacks running before form initializes, are there other events besides onkillfocus, and the OnChanged for tabs?<br>
+Is there any way for me to investigate other than a test project with every event in the world set to run?</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

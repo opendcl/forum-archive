@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modal ListBox Control_SetSorted · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 723</p>
+    <h1>Modal ListBox Control_SetSorted</h1>
+    <p class="meta">Started by Jim ·
+      2009-04-18 01:17 UTC ·
+      3 replies · SMF topic #723</p>
+<article class="post" id="msg3523">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2009-04-18 01:17 UTC</span>
+  </div>
+  <div class="post-body">In OnInitialize set ListBox  Control_SetSorted T or nil then launch modal from. <br>
+The first time form launches a change of property does not take effect.<br>
+The second time form launches sort property reflects change.<br>
+<br>
+Jim</div>
+</article>
+<article class="post" id="msg3524">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-18 02:08 UTC</span>
+  </div>
+  <div class="post-body">Setting Sorted to true has no effect on items already in the list at that point. During OnInitialize, the items in the List property are already in the list. Of course, the next time the list box is created, Sorted will be true during creation, so the List items will be sorted as they are inserted during listbox creation.</div>
+</article>
+<article class="post" id="msg3525">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2009-04-18 14:13 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen, that helps.<br>
+<br>
+I think you are saying that the SetSorted property must be set to true prior to form show (creation time) for the list box to sort. Changing the sort property is not possible while a modal form is displayed unless in response to an event, and in that case, the change is not reflected until the form is recreated. <br>
+<br>
+Is this behavior typical for other properties that typically are set at design time?</div>
+</article>
+<article class="post" id="msg3526">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-18 20:24 UTC</span>
+  </div>
+  <div class="post-body">It's not that you can't set Sort at runtime, it's just that changing the property does not affect existing list items -- it only affects items that are subsequently added.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

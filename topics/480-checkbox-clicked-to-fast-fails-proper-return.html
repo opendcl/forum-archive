@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CheckBox clicked to fast fails proper return · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 480</p>
+    <h1>CheckBox clicked to fast fails proper return</h1>
+    <p class="meta">Started by Jim ·
+      2008-11-22 22:38 UTC ·
+      10 replies · SMF topic #480</p>
+<article class="post" id="msg2139">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-11-22 22:38 UTC</span>
+  </div>
+  <div class="post-body">Beta 5.0.1.3 <br>
+I saw the post on fast clicking check boxes.<br>
+Why does that control have a DblClick event?<br>
+<br>
+With DblClick set true in control, event does not fire.<br>
+Where are we on this?<br>
+Jim</div>
+</article>
+<article class="post" id="msg2143">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-11-23 14:02 UTC</span>
+  </div>
+  <div class="post-body">It doesn't seem very useful to handle the double click event on a check box, but I just tested and it worked fine for me on Vista.</div>
+</article>
+<article class="post" id="msg2144">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-11-23 14:26 UTC</span>
+  </div>
+  <div class="post-body">I see that the Value property is not yet updated when the DBlClicked event handler is called. Is that what you're referring to?  I've fixed that for Beta 4.</div>
+</article>
+<article class="post" id="msg2145">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-11-23 14:32 UTC</span>
+  </div>
+  <div class="post-body">As far as I could tell, when the check box was DblClicked the associated lisp function was not called. <br>
+</div>
+</article>
+<article class="post" id="msg2146">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-11-23 14:50 UTC</span>
+  </div>
+  <div class="post-body">Can you provide some code and information about your system so I can reproduce the problem?</div>
+</article>
+<article class="post" id="msg2148">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-11-23 16:10 UTC</span>
+  </div>
+  <div class="post-body">Yes. When I get back from breakfast.<br>
+When both events are checked in OpenDCL<br>
+and both events are defined in lisp<br>
+<br>
+Click yields click<br>
+<br>
+DblClick yields click DblClick</div>
+</article>
+<article class="post" id="msg2149">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-11-23 16:13 UTC</span>
+  </div>
+  <div class="post-body">Also:<br>
+<br>
+WinXP SP3<br>
+Mechanical Desktop 2004 DX SP 2 (using vanilla)<br>
+Beta 5.0.1.3<br>
+<br>
+Cheers,<br>
+Jim<br>
+</div>
+</article>
+<article class="post" id="msg2150">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-11-23 18:08 UTC</span>
+  </div>
+  <div class="post-body">Test file attached<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/516/DblClick.zip">DblClick.zip</a> <span class="muted">(965 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2153">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-11-24 00:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Jim Short link=topic=480.msg2148#msg2148 date=1227456630 wrote:</cite><br>
+Click yields click<br>
+DblClick yields click DblClick<br>
+</blockquote><br>
+<br>
+A double click is exactly that: a click event followed by a double-click event. Is that what you are seeing? If so, that is by design.</div>
+</article>
+<article class="post" id="msg2154">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-11-24 00:13 UTC</span>
+  </div>
+  <div class="post-body">Here is what I see when I double-click on the checkbox three times:<br>
+Command: Clicked<br>
+Command: DblClicked<br>
+Command: Clicked<br>
+Command: DblClicked<br>
+Command: Clicked<br>
+Command: DblClicked<br>
+<br>
+Are you seeing something different?</div>
+</article>
+<article class="post" id="msg2156">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-11-24 00:48 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+Please excuse my ignorance. I expect that DblClick is working then, if that they way it is designed. <br>
+I am saving the check box state while in the click event. I can cause the check mark<br>
+to fall out of sink with the the record change.<br>
+<br>
+Why won't entmakex work in check box event? My dictionary functions fail there. See post in OpenDCL Lisp forum.<br>
+I tried this in two odcl projects. I had much more difficulty with the complicated one with the check box on the tabbed control.<br>
+<br>
+BTW I am having fewer lockups with Beta 5.0.1.3<br>
+<br>
+Cheers,<br>
+Jim</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

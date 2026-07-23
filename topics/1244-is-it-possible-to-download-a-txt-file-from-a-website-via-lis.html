@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Is it possible to download a txt file from a website via lisp? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1244</p>
+    <h1>Is it possible to download a txt file from a website via lisp?</h1>
+    <p class="meta">Started by Hypersonic ·
+      2010-03-30 00:24 UTC ·
+      15 replies · SMF topic #1244</p>
+<article class="post" id="msg6659">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2010-03-30 00:24 UTC</span>
+  </div>
+  <div class="post-body">Is it possibly with autolisp via vl-copy (or other means) to download, or <br>
+copy a file off a website i.e. to get some form data from a text file?<br>
+An example of the path where it is at (not functional , just an example)<br>
+<br>
+<a href="http://stansspecialwebpage/stationformdata/formdata_bob.txt" rel="nofollow noopener">{2}</a><br>
+<br>
+i.e. I want to end up with the file formdata_bob.txt on my local hard <br>
+drive....<br>
+<br>
+Thanks!</div>
+</article>
+<article class="post" id="msg6660">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-03-30 00:38 UTC</span>
+  </div>
+  <div class="post-body">Try this:<br>
+<br>
+<br>
+(defun GetFromWeb (strUrl / webObj stat res errobj)<br>
+  (vl-load-com)<br>
+  ;; Set up variables<br>
+  (setq webObj nil stat nil res nil)<br>
+  ;; Create a new reference to the WinHttp object<br>
+  (setq webObj (vlax-invoke-method (vlax-get-acad-object) 'GetInterfaceObject "WinHttp.WinHttpRequest.5.1"))<br>
+  ;; Fetch web page<br>
+  (vlax-invoke-method webObj 'Open "GET" strUrl :vlax-false)<br>
+  (setq errobj (vl-catch-all-apply 'vlax-invoke-method (list webObj 'Send)))<br>
+  (if (null (vl-catch-all-error-p errobj))<br>
+    (progn<br>
+      (setq stat (vlax-get-property webObj 'Status))<br>
+      (if (= stat 200)<br>
+        (progn<br>
+          (setq res (vlax-get-property webObj 'ResponseText));_ Return the response value<br>
+        )<br>
+        (princ (strcat "\n!!! WEB server error: " (vlax-get-property webObj 'StatusText) "!!!"))<br>
+      )<br>
+    );_ progn<br>
+    (princ (strcat "\n!!! WEB server error:\n" (vl-catch-all-error-message errobj)))<br>
+  )<br>
+  res  <br>
+)<br>
+<br>
+(GetFromWeb "http://stansspecialwebpage/stationformdata/formdata_bob.txt")<br>
+<br>
+<br>
+Of course it fails since the file doesn't exist...<br>
+But this does works:<br>
+(GetFromWeb "http://www.opendcl.com/version/version.txt")<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6661">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2010-03-30 02:34 UTC</span>
+  </div>
+  <div class="post-body">"5.1.2.3" awesome!<br>
+<br>
+Is there a similar method to "post" to a url??<br>
+<br>
+Thanks  ;D</div>
+</article>
+<article class="post" id="msg6662">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-03-30 03:25 UTC</span>
+  </div>
+  <div class="post-body">This code should work both ways...<br>
+We use this some GetFromWeb function to pass arguments to .PHP files, then the .PHP code writes to the database...<br>
+I'm not sure how you'd write to a .TXT file, but I'm sure .PHP could handle it, it's just over my head.</div>
+</article>
+<article class="post" id="msg6663">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-30 07:37 UTC</span>
+  </div>
+  <div class="post-body">Barry, that's cool!  8)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6664">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2010-03-30 07:52 UTC</span>
+  </div>
+  <div class="post-body">Wow! Thanks for the code Barry and thanks Hypersonic for suggesting.</div>
+</article>
+<article class="post" id="msg6667">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2010-03-30 12:47 UTC</span>
+  </div>
+  <div class="post-body">Barry, any chance you could show an example of writing to the web server url?  <br>
+<br>
+Thanks, this stuff is way beyond me......need all the coaching I can get!</div>
+</article>
+<article class="post" id="msg6676">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-03-31 18:07 UTC</span>
+  </div>
+  <div class="post-body">OK to write to our in-house database, I do this:<br>
+<br>
+<br>
+  (setq webObj nil strUrl (strcat "http://www/officedb/common/cadEvent.php?action=add&amp;cadID=" TMaCADProjDBNum "&amp;user=" Draftername "&amp;event=" Event "&amp;dwg=" dwg))<br>
+  (setq webObj (vlax-invoke-method (vlax-get-acad-object) 'GetInterfaceObject "WinHttp.WinHttpRequest.5.1"))<br>
+  (vlax-invoke-method webObj 'Open "GET" strUrl :vlax-true)<br>
+  (vlax-invoke-method webObj 'Send)<br>
+<br>
+<br>
+Then the "cadEvent.php" file takes over from there &amp; parses the arguments from the URL &amp; posts them to the database.<br>
+I can't post "cadEvent.php" as it's pretty complicated &amp; only writes to a mySQL database, so that doesn't sound like what you're trying to do. FYI, this is our "Big Brother" code that logs who's working on what (shown below)...<br>
+<br>
+This link shows how to get PHP to write to a text file on your web server (assuming you have a web server with PHP running on it):<br>
+<a href="http://www.tizag.com/phpT/filewrite.php" rel="nofollow noopener">{2}</a><br>
+So maybe that will help.<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1367/CadLog.png">CadLog.png</a> <span class="muted">(105285 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6677">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2010-03-31 18:18 UTC</span>
+  </div>
+  <div class="post-body">Thanks, and I think we have been able to use the php to write to the text file, and then with a program similar to the one you posted, we were able to get the file to download to my local pc hard drive.<br>
+<br>
+The part I am stuck on now is how to use autolisp to send a text file back to the web server so the web program can then pull input from that.... (at least I think that is how it should work?)<br>
+<br>
+Thanks!</div>
+</article>
+<article class="post" id="msg6678">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-31 18:22 UTC</span>
+  </div>
+  <div class="post-body">Sound's interesting Barry. I solve this using ADODB.Connection object using the ODBC Driver MyODBC. Then I can handle it like an Access Database like calling SQL-statements and so on. But accessing MySQL using server hosted PHP-file is a great deal.<br>
+<br>
+Thanks Barry.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6679">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-03-31 19:38 UTC</span>
+  </div>
+  <div class="post-body">The ADODB connection stuff always seamed like a pain to work with....<br>
+This is a pretty easy solution, in my opinion.<br>
+</div>
+</article>
+<article class="post" id="msg6680">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-04-01 07:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1244.msg6678#msg6678 date=1270059767 wrote:</cite><br>
+Sound's interesting Barry. I solve this using ADODB.Connection object using the ODBC Driver MyODBC. Then I can handle it like an Access Database like calling SQL-statements and so on. But accessing MySQL using server hosted PHP-file is a great deal.<br>
+<br>
+Thanks Barry.<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+Fred, Are you able to do that with a 64bit system ?<br>
+</div>
+</article>
+<article class="post" id="msg6681">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-04-01 08:29 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=1244.msg6680#msg6680 date=1270105353 wrote:</cite><br>
+Fred, Are you able to do that with a 64bit system ?<br>
+</blockquote><br>
+<br>
+Yes we are able to have access to Access databases and MySQL databases from Win7 x64.<br>
+<br>
+Using ODBC to get access to MySQL you'll need to configure the database with the ODBC x64 manager of Win7 x64.<br>
+For Access you need to install the Access Database Engine 2010 x64.<br>
+Works very well for us.<br>
+<br>
+That awakes my bad conscience again that I wanted to built a database access sample to show the interaction of OpenDCL, Drag&amp;Drop and databases... I'll need to invent the 48-hour-day...  :-\<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6682">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-04-01 09:06 UTC</span>
+  </div>
+  <div class="post-body">You using the driver Beta Fred ?<br>
+<br>
+<a href="http://www.microsoft.com/downloads/details.aspx?familyid=C06B8369-60DD-4B64-A44B-84B371EDE16D&amp;displaylang=en" rel="nofollow noopener">{2}</a><br>
+<br>
+to read 2007 and 2003 ??</div>
+</article>
+<article class="post" id="msg6683">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-04-01 09:43 UTC</span>
+  </div>
+  <div class="post-body">Yes. Note that it is needed to uninstall an existing 32-Bit Office before installiing the ADE. I know it's a mess, but it's also the only chance to solve. In the end you will have the chance again to connect Access databases in AutoCAD Map via FDO again.  :)<br>
+<br>
+Using the ADE you don't connect the Jet provider anymore.<br>
+<a href="http://www.altova.com/Access-Database-OLEDB-32bit-64bit.html" rel="nofollow noopener">{2}</a><br>
+<br>
+<strong>Sample for creating an MS Access database file:</strong><br>
+<br>
+(defun DB_ACCESS_CREATE (strFile / strExistFile oAdox sConn odbv)<br>
+  (cond<br>
+    ((not (DB_INIT_ADO)) nil)<br>
+    ((and (setq strExistFile (findfile strFile)) (not (vl-file-delete strExistFile))) nil)<br>
+    (T (setq oAdox (vlax-get-or-create-object "ADOX.Catalog"))<br>
+     (setq sConn (strcat "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" strFile ";"))<br>
+     (if (vl-catch-all-error-p (vl-catch-all-apply 'vlax-invoke-method (list oAdox 'Create sConn)))<br>
+       (progn<br>
+	 (vlax-release-object oAdox)<br>
+	 (setq oAdox nil)<br>
+       ); progn<br>
+       (progn<br>
+	 (setq odbv (vlax-get oAdox 'ActiveConnection))<br>
+	 (vlax-release-object oAdox)<br>
+       ); progn<br>
+     )); if<br>
+  ); cond<br>
+<br>
+  odbv<br>
+); DB_ACCESS_CREATE<br>
+<br>
+For x86 this Provider works as well - even without the Access Database Engine for Office 2010 x64.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6695">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2010-04-02 00:57 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Hi guys, I am using a connection string like this for and Access database on a local server.<br>
+Can I use something like this and have the Access database on a web server and access through a URL path?<br>
+<br>
+(setq ConnectString (strcat "Driver={Microsoft Access Driver (*.mdb)};Dbq=" mdb_file ";Uid=" UserName ";Pwd=" Password ";"))<br>
+<br>
+(setq ConnectionObject (ADOLISP_ConnectToDB ConnectString UserName Password))<br>
+<br>
+<br>
+Thanks!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to fill ComboBox List from ADOLisp query result List · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2088</p>
+    <h1>How to fill ComboBox List from ADOLisp query result List</h1>
+    <p class="meta">Started by jrupert ·
+      2014-01-22 17:10 UTC ·
+      8 replies · SMF topic #2088</p>
+<article class="post" id="msg10354">
+  <div class="post-head">
+    <span class="post-author">jrupert</span>
+    <span class="post-date muted">2014-01-22 17:10 UTC</span>
+  </div>
+  <div class="post-body">I have a List from a query of SQL database.  I need to fill a ComboBox List from this query list.<br>
+I have tried...<br>
+(setq L1 (cdr Result))<br>
+(dcl_ComboBox_Clear GBSCC_FormGBSCC_CBoxType)<br>
+(dcl_Control_SetList GBSCC_FormGBSCC_CBoxType L1)<br>
+<br>
+but I get an error: <br>
+Invalid argument type<br>
+Function: dcl_Control_SetList<br>
+Argument: 2<br>
+<br>
+Can anyone inform me how to accomplish this task.</div>
+</article>
+<article class="post" id="msg10355">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-01-23 00:11 UTC</span>
+  </div>
+  <div class="post-body">Hello, the list must be a list of strings.<br>
+<br>
+<br>
+(setq lstResult (list "Line1" "Line2" "Line3"))<br>
+(dcl_Control_SetList GBSCC_FormGBSCC_CBoxType lstResult)<br>
+<br>
+;; in the past I did<br>
+(dcl_ComboBox_Clear GBSCC_FormGBSCC_CBoxType)<br>
+(dcl_Control_AddList GBSCC_FormGBSCC_CBoxType lstResult)<br>
+<br>
+<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10356">
+  <div class="post-head">
+    <span class="post-author">jrupert</span>
+    <span class="post-date muted">2014-01-23 17:55 UTC</span>
+  </div>
+  <div class="post-body">Fred...Thank you for your response!<br>
+I guess I did not fully qualify my question, but your answer is correct.<br>
+<br>
+As the result list from a ADOLisp query contains at least (1) sub-list, representing the data values, the real question that I had was how to parse the result query list.<br>
+<br>
+The result query list has a structure of (("") ("value") ("value") ("value")...etc).<br>
+<br>
+If I understand correctly, the combobox list structure needs to be ("value" "value" ...etc).<br>
+<br>
+What I was questioning was how to parse the result list into a list that would be accepted by the combobox.  I finally came up with the following.<br>
+<br>
+(if (setq Result (ADOLisp_DoSQL ConnectionObject SQLStatement))<br>
+                (progn<br>
+                    ;CAPTURE SUB-LIST OF LIST<br>
+                    (setq L1 (cdr Result))<br>
+<br>
+                    ;CONVERT QUERY LIST L1 TO CBoxMaterial ITEMS LIST<br>
+                    ;...GET NUMBER OF ELEMENTS IN QUERY LIST<br>
+                    (setq numItems (length L1))<br>
+<br>
+                    ;CREATE COUNTER<br>
+                    (setq cntr 1)<br>
+<br>
+                    ;CREATE LIST-OF-STRINGS FROM 1ST VALUE OF QUERY LIST<br>
+                    (setq L (list (car (car L1))))<br>
+<br>
+                    ;APPEND VALUES FROM QUERY LIST TO LIST-OF-STRINGS "L"<br>
+                    (while (&lt; cntr numItems)<br>
+                        (setq L (append L (list (car (nth cntr L1)))))<br>
+                        (setq cntr (+ cntr 1))<br>
+                    )<br>
+                   <br>
+                    (dcl_ComboBox_Clear GBSCC_FormGBSCC_CBoxMaterial)<br>
+                    (dcl_Control_SetList GBSCC_FormGBSCC_CBoxMaterial L)<br>
+                )<br>
+<br>
+                (alert "Query Failed")<br>
+            )<br>
+<br>
+I have posted this in an attempt to allow others not to go thru the frustration that I did in finally figuring this out.  This took days searching on the NET to finally piece it together.  Relevant help documentation for AutoLisp, OpenDCL, etc. is difficult at best to find.<br>
+<br>
+Again, Thank you for your response!<br>
+</div>
+</article>
+<article class="post" id="msg10357">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-23 19:45 UTC</span>
+  </div>
+  <div class="post-body">For general lisp questions you'll get more help at <a href="http://www.theswamp.org/index.php?board=2.0" rel="nofollow noopener">{2}</a> or the <a href="http://forums.autodesk.com/t5/Visual-LISP-AutoLISP-and-General/bd-p/130" rel="nofollow noopener">{2}</a>.<br>
+<br>
+In this case you should use the (mapcar) function:<br>
+(setq L (mapcar 'car L1))</div>
+</article>
+<article class="post" id="msg10358">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-01-24 07:08 UTC</span>
+  </div>
+  <div class="post-body">Hi, Owen is right. Do never, never, never a (setq mylist (append mylist (list newitem)) in your code.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10359">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2014-01-28 00:31 UTC</span>
+  </div>
+  <div class="post-body">Hi, Fred.  8)<br>
+I often used this, you said that 3 never codes.<br>
+Would you tell me why never ?<br>
+Is there any critical reason ?<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg10360">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-01-28 07:05 UTC</span>
+  </div>
+  <div class="post-body">Hi, khann, it's not OpenDCL related but test both of the commands. You should feel a recognizable difference.<br>
+(defun c:test1(/ intCnt lstVal )<br>
+  (setq intCnt 0<br>
+	lstVal '())<br>
+  (repeat 20000<br>
+    (setq lstVal (append lstVal (list (setq intCnt (1+ intCnt)))))<br>
+  ); repeat<br>
+  (princ)<br>
+); test1<br>
+<br>
+<br>
+(defun c:test2(/ intCnt lstVal)<br>
+  (setq intCnt 0<br>
+	lstVal '())<br>
+  (repeat 20000<br>
+    (setq lstVal (cons (setq intCnt (1+ intCnt)) lstVal))<br>
+  ); repeat<br>
+  (setq lstVal (reverse lstVal))<br>
+  (princ)<br>
+); test2<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10361">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2014-01-28 08:38 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred! for your sample codes.<br>
+I tested the two.<br>
+<br>
+"Test1" takes about 14 seconds.<br>
+But "Test2" just 5s.<br>
+<br>
+Now I could see what you mean.<br>
+Thanks !!!  ::)<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg10363">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-01-28 14:24 UTC</span>
+  </div>
+  <div class="post-body">5 seconds for test2 seems to be too much. It should take less than a second (so it was on my notebook).<br>
+Back to your initial question: for the case you need an ID as integer value and a string as a display value, you can fill the combo line with the text and assign the integer values as internal data. <br>
+<br>
+(setq lstValues (sqlite_query strSQLiteFile "SELECT ID,NAME FROM STRM_STREETS_TBD"))<br>
+(dcl_Control_SetList cbbDomain (mapcar '(lambda (x) (cdr (assoc "NAME" x))) lstValues)<br>
+(dcl_Control_SetItemData cbbDomain (mapcar '(lambda (x) (cdr (assoc "ID" x))) lstValues)<br>
+<br>
+(defun c:cbbDomain_OnSelChanged (intIndex strName)<br>
+  (setq intSelectedStreet (dcl_ComboBox_GetItemData cbbDomain intIndex))<br>
+); c:cbbDomain_OnSelChanged<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

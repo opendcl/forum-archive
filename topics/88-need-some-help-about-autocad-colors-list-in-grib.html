@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[Need some help] About &quot;AutoCAD Colors List&quot; in grib · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 88</p>
+    <h1>[Need some help] About &quot;AutoCAD Colors List&quot; in grib</h1>
+    <p class="meta">Started by colder ·
+      2007-11-17 01:07 UTC ·
+      1 replies · SMF topic #88</p>
+<article class="post" id="msg371">
+  <div class="post-head">
+    <span class="post-author">colder</span>
+    <span class="post-date muted">2007-11-17 01:07 UTC</span>
+  </div>
+  <div class="post-body">ver: 4.1.1.5 beta<br>
+<br>
+In "Grib". When I set columns style as "AutoCAD Colors List". I choose color like "123", and then use "dcl_Grid_GetRowItems". The return value is "Color 123"<br>
+<br>
+But, how can I use "dcl_Grid_AddRow" to set that value?</div>
+</article>
+<article class="post" id="msg386">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-11-21 01:43 UTC</span>
+  </div>
+  <div class="post-body">In this case, you have to do three things:<br>
+1) Add the cell, with the correct text.<br>
+2) Add your custom color to the color list.<br>
+3) Set the image index of the cell tot he index of the color in the list.<br>
+<br>
+For 2, you'll have to find the registry key where AutoCAD saves custom colors for the color listbox and add your custom color to the list. For 3, you have to call (dcl_Grid_SetItemImage) to set the zero-based index of the color in the list.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

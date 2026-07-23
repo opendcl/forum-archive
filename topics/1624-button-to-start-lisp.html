@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Button to start lisp · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1624</p>
+    <h1>Button to start lisp</h1>
+    <p class="meta">Started by Atwist ·
+      2011-05-16 19:15 UTC ·
+      4 replies · SMF topic #1624</p>
+<article class="post" id="msg7992">
+  <div class="post-head">
+    <span class="post-author">Atwist</span>
+    <span class="post-date muted">2011-05-16 19:15 UTC</span>
+  </div>
+  <div class="post-body">Hello all<br>
+<br>
+I have a make a textbutton <br>
+<br>
+(defun c:start_Start_Tekstlayer25_OnClicked (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:start_Start_Tekstlayer25_OnClicked" "To do")<br>
+)<br>
+But where put I the code to start the lisp.<br>
+I'm do not find in the samples of opendcl.<br>
+<br>
+Atwist</div>
+</article>
+<article class="post" id="msg7993">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-05-16 20:55 UTC</span>
+  </div>
+  <div class="post-body">Hello and welcome, it depends on what do you want to do. The "dcl_messagebox" line of your code sample is the line where do you have to put your code in.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg7994">
+  <div class="post-head">
+    <span class="post-author">Atwist</span>
+    <span class="post-date muted">2011-05-17 07:57 UTC</span>
+  </div>
+  <div class="post-body">Thanks (Danke) Fred,<br>
+<br>
+Looks like this??<br>
+01.(defun c:start_Start_Tekstlayer25_OnClicked (/)  <br>
+02.  (load"cl";cl;)  <br>
+03.) <br>
+<br>
+Atwist</div>
+</article>
+<article class="post" id="msg7997">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-05-17 18:40 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+looks like a type mismatch?<br>
+I'm sure you meant<br>
+<br>
+<br>
+(defun c:start_Start_Tekstlayer25_OnClicked (/)    <br>
+  (load "mylisp.lsp")<br>
+); c:start_Start_Tekstlayer25_OnClicked <br>
+<br>
+<br>
+Make sure that you don't make changes in the drawing within an event handler of a modal form using entmake or entmod. It could be that these changes will be suppressed.<br>
+<br>
+Regards,<br>
+Fred</div>
+</article>
+<article class="post" id="msg7999">
+  <div class="post-head">
+    <span class="post-author">Atwist</span>
+    <span class="post-date muted">2011-05-17 19:15 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred,<br>
+<br>
+I'ts works<br>
+<br>
+Thanks</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

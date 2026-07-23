@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>set caption retuning nil error? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1343</p>
+    <h1>set caption retuning nil error?</h1>
+    <p class="meta">Started by andrew ·
+      2010-09-20 16:06 UTC ·
+      2 replies · SMF topic #1343</p>
+<article class="post" id="msg7177">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-09-20 16:06 UTC</span>
+  </div>
+  <div class="post-body">im sure im just forgetting something simple but i can not set the caption<br>
+the dialog box pops up but the caption isnt being set<br>
+im using v6.0.0.27<br>
+<br>
+here is my code snippet<br>
+check_file = a time string<br>
+<br>
+<pre class="code"><code><br>
+	;; Ensure OpenDCL Runtime is (quietly) loaded<br>
+	(setq cmdecho (getvar "CMDECHO"))<br>
+	(setvar "CMDECHO" 0)<br>
+	(command "_OPENDCL")<br>
+	(setvar "CMDECHO" cmdecho)<br>
+<br>
+<br>
+; call the method to load the odcl file.<br>
+(dcl_Project_Load "stkfilecheck" T)<br>
+<br>
+(defun display_notice (/)<br>
+(dcl_Form_Show stkfilecheck_Form1 )<br>
+;(dcl_Control_SetCaption stkfilecheck_Form1_Label1 check_file)<br>
+)<br>
+<br>
+(if (/= check_file_time "11:20 AM")<br>
+ (display_notice)<br>
+ (dcl_Control_SetCaption stkfilecheck_Form1_Label1 check_file)<br>
+)<br>
+<br>
+</code></pre></div>
+</article>
+<article class="post" id="msg7179">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-09-20 16:38 UTC</span>
+  </div>
+  <div class="post-body">If your form is a modal dialog, then the (dcl_control_setcaption) call in your example would occur after the dialog is closed. Try putting that code in the form's OnInitialize event handler instead.</div>
+</article>
+<article class="post" id="msg7180">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-09-20 17:04 UTC</span>
+  </div>
+  <div class="post-body">thanks Owen that did the trick </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

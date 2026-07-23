@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to set a checkbox as checked · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2484</p>
+    <h1>How to set a checkbox as checked</h1>
+    <p class="meta">Started by scott_cd ·
+      2017-02-10 12:57 UTC ·
+      8 replies · SMF topic #2484</p>
+<article class="post" id="msg12397">
+  <div class="post-head">
+    <span class="post-author">scott_cd</span>
+    <span class="post-date muted">2017-02-10 12:57 UTC</span>
+  </div>
+  <div class="post-body">I am trying to set a checkbox and I am not sure of the correct syntax and I am using the following code:<br>
+<br>
+ (dcl-Control-SetProperty Tree_Survey/Form1/CheckBox7 1)<br>
+<br>
+I understand that<br>
+<br>
+0 = unchecked<br>
+1 = checked<br>
+2 = indeterminate<br>
+<br>
+Using control property as below what is the PropertyApiName ?<br>
+<br>
+(dcl-Control-SetProperty Tree_Survey/Form1/CheckBox7 PropertyApiName [as String] NewValue [as Varies])<br>
+<br>
+Thanks in advance<br>
+Scott<br>
+</div>
+</article>
+<article class="post" id="msg12398">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2017-02-10 13:15 UTC</span>
+  </div>
+  <div class="post-body">(dcl-Control-SetValue Tree_Survey/Form1/CheckBox7 1)<br>
+<br>
+best regards<br>
+marco</div>
+</article>
+<article class="post" id="msg12399">
+  <div class="post-head">
+    <span class="post-author">scott_cd</span>
+    <span class="post-date muted">2017-02-10 13:36 UTC</span>
+  </div>
+  <div class="post-body">(dcl-Control-SetValue Tree_Survey/Form1/CheckBox7 1)<br>
+<br>
+Hi Marco<br>
+<br>
+Thanks forthat.<br>
+<br>
+I have as you suggested changed it to set value but I still get the following error - see attached image?<br>
+<br>
+Nil value not allowed ?<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2306/error.JPG">error.JPG</a> <span class="muted">(22043 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12400">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-02-10 14:02 UTC</span>
+  </div>
+  <div class="post-body">The error message suggests that Tree_Survey/Form1/CheckBox7 control does not exist.</div>
+</article>
+<article class="post" id="msg12401">
+  <div class="post-head">
+    <span class="post-author">scott_cd</span>
+    <span class="post-date muted">2017-02-10 14:08 UTC</span>
+  </div>
+  <div class="post-body">Would it help if I post my odcl file?</div>
+</article>
+<article class="post" id="msg12402">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-02-10 14:09 UTC</span>
+  </div>
+  <div class="post-body">Sure.</div>
+</article>
+<article class="post" id="msg12403">
+  <div class="post-head">
+    <span class="post-author">scott_cd</span>
+    <span class="post-date muted">2017-02-10 14:11 UTC</span>
+  </div>
+  <div class="post-body">my odcl file is attached.<br>
+<br>
+Thanks for helping<br>
+<br>
+Scott<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2307/Tree_Survey.odcl">Tree_Survey.odcl</a> <span class="muted">(2737561 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12404">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-02-10 14:27 UTC</span>
+  </div>
+  <div class="post-body">Initializing the dialog must be done in an event handler called OnInitialize (to quote the Help).<br>
+(defun c:Tree_Survey/Form1#OnInitialize (/)<br>
+  (dcl-Control-SetValue Tree_Survey/Form1/CheckBox7 1)<br>
+)</div>
+</article>
+<article class="post" id="msg12405">
+  <div class="post-head">
+    <span class="post-author">scott_cd</span>
+    <span class="post-date muted">2017-02-10 14:30 UTC</span>
+  </div>
+  <div class="post-body">Yes that makes sense... ;D<br>
+<br>
+Thanks again.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

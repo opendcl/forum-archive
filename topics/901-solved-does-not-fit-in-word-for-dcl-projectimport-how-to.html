@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[SOLVED] Does not fit in word ! for dcl_ProjectImport, how to ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 901</p>
+    <h1>[SOLVED] Does not fit in word ! for dcl_ProjectImport, how to ?</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-09-03 08:27 UTC ·
+      13 replies · SMF topic #901</p>
+<article class="post" id="msg4486">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-03 08:27 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+Here is my code to save an lisp file.<br>
+In this file i would like to set the variable for import the project.<br>
+<br>
+<br>
+(setq $project:name (dcl_Project_Load (strcat $path "project.odcl") T))<br>
+	  ; Make the lisp file ;Construction du fichier projet Lisp OpenDCL<br>
+	  (setq #File (open (strcat (strcat $path "Constantes_odcl.lsp")) "w"))<br>
+	  (if #file<br>
+	    (progn<br>
+	      (write-line (strcat "(setq $opendcl \"" (setq $opendcl (dcl_Project_Export $project:name)) "\")") #file)<br>
+	      (close #file)<br>
+	      ; Unload project ;Décharge le projet<br>
+	      (dcl_Project_UnLoad $project:name)<br>
+	      ; Open lisp file ; Réouvre le fichier<br>
+	      (load (strcat (strcat $path "Constantes_odcl.lsp"))) ; Failed here !!!<br>
+	      )<br>
+	    )<br>
+	  (dcl_project_import $opendcl)<br>
+	  ; Show palette ;Affichage de la palette<br>
+	  (dcl_Form_Show DynaBib_Pal1)<br>
+<br>
+<br>
+Yes, Failed to load lisp file, because string too much long!<br>
+<br>
+(setq $opendcl "too much long string here")<br>
+<br>
+<br>
+I would like to be able to make this file like this (see in example):<br>
+<br>
+<br>
+(setq project<br>
+            '(<br>
+                "YWt6A20SAADAoypBBuKTKTUSKztmgFDDvn83WlYjKwzT3hP22gg0l0u45lXk1sPKQLS8Mz0RRSxX"<br>
+                Many lines here ! ...<br>
+                "jDCBFPYBxvLSDwxjswy5uQG0K+fe"<br>
+            )        <br>
+        )<br>
+<br>
+<br>
+My sting $opendcl have return code \r\n, but i don't really remember (or know) wich vlisp order will help me to explode this string.<br>
+<br>
+Thanks for help !<br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg4487">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-03 10:24 UTC</span>
+  </div>
+  <div class="post-body">ok, i do it another way :<br>
+<br>
+The lenght of string was 71846 byte,<br>
+I saved it in a text file for check like this :<br>
+<br>
+(write-line (strcat ";" (VL-PRIN1-TO-STRING (dcl_Project_Export $project:name))) #file)<br>
+<br>
+<br>
+Check lisp:<br>
+<br>
+;"YWt6Az9YAwB482FhBuKSA3kiahmEgb0jkBwc9Om1W4mxmwk5bO3mHJHk/CNtBakmPr/s1lY7zx+R\r\nI88e...<br>
+<br>
+<br>
+Then i made a function to explode the string into a list of 76 byte per line.<br>
+Then added this into my check lisp:<br>
+<br>
+<br>
+;"YWt6Az9YAwB482FhBuKSA3kiahmEgb0jkBwc9Om1W4mxmwk5bO3mHJHk/CNtBakmPr/s1lY7zx+R\r\nI88e...<br>
+(setq &amp;opendcl (list<br>
+"YWt6Az9YAwB482FhBuKSA3kiahmEgb0jkBwc9Om1W4mxmwk5bO3mHJHk/CNtBakmPr/s1lY7zx+R"<br>
+....<br>
+))<br>
+<br>
+<br>
+After this, i read my check lisp and added all string of my list in an alone string .. (hope someone understand !)<br>
+<br>
+<br>
+	      (foreach $tmp &amp;opendcl<br>
+		(setq $opendcl (strcat $opendcl $tmp))<br>
+		)<br>
+<br>
+<br>
+Right ?<br>
+<br>
+Now, i rewrite again my result into my check lisp<br>
+<br>
+(write-line (strcat ";" (VL-PRIN1-TO-STRING $opendcl)) #file)<br>
+<br>
+<br>
+Now my check lisp file contain:<br>
+<br>
+;"YWt6Az9YAwB482FhBuKSA3kiahmEgb0jkBwc9Om1W4mxmwk5bO3mHJHk/CNtBakmPr/s1lY7zx+R\r\nI88e...<br>
+(setq &amp;opendcl (list<br>
+"YWt6Az9YAwB482FhBuKSA3kiahmEgb0jkBwc9Om1W4mxmwk5bO3mHJHk/CNtBakmPr/s1lY7zx+R"<br>
+....<br>
+))<br>
+;"YWt6Az9YAwB482FhBuKSA3kiahmEgb0jkBwc9Om1W4mxmwk5bO3mHJHk/CNtBakmPr/s1lY7zx+R\r\nI88e...<br>
+<br>
+<br>
+Look like the same ???<br>
+<br>
+Check again the length of my new string .<br>
+<br>
+oh oh ! not the same lenght, (69674) but same string in my file !<br>
+<br>
+What's wrong ? <br>
+<br>
+Thanks for help .</div>
+</article>
+<article class="post" id="msg4488">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-03 10:45 UTC</span>
+  </div>
+  <div class="post-body">ok contain some non printable ascii !<br>
+Will try another way .</div>
+</article>
+<article class="post" id="msg4489">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-03 12:50 UTC</span>
+  </div>
+  <div class="post-body">Work this way :<br>
+<br>
+<br>
+(setq &amp;opendcl (vl-string-&gt;list (setq $opendcl(dcl_Project_Export $project:name))))<br>
+(write-line (strcat "(setq &amp;opendcl \(quote" (VL-PRINc-TO-STRING &amp;opendcl) "\)\)") #file)<br>
+(close #file)<br>
+(load (strcat (strcat $path "Constantes_odcl.lsp")))<br>
+(setq $opendcl (vl-list-&gt;string &amp;opendcl))<br>
+(dcl_Project_UnLoad $project:name)<br>
+(dcl_project_import $opendcl)<br>
+<br>
+<br>
+Now, this tools make a lisp file, to set variable input for dcl_Project_import.<br>
+<br>
+Just have to put a test if odcl file is present for making it.<br>
+<br>
+Impossible to integer it in fas file :<br>
+<blockquote class="quote"><br>
+does not fit in word: 71846<br>
+</blockquote></div>
+</article>
+<article class="post" id="msg4492">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-03 14:43 UTC</span>
+  </div>
+  <div class="post-body">You have the right idea breaking it into a list of strings, but there's no need to add the (setq $opendcl) part.  Instead, make it a plain old list, then (setq $opendcl (load "")).</div>
+</article>
+<article class="post" id="msg4494">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-03 15:40 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=901.msg4492#msg4492 date=1251989002 wrote:</cite><br>
+You have the right idea breaking it into a list of strings, but there's no need to add the (setq $opendcl) part.  Instead, make it a plain old list, then (setq $opendcl (load "")).<br>
+</blockquote><br>
+<br>
+I don't really understand what you mean by old list  ...   :-[<br>
+<br>
+I don't know how to solve the problem of non printable char with breaking into list, that's why i tried to breaking them into ascii code.<br>
+<br>
+My final problem is that the filed is too long "does not fit in word".<br>
+<br>
+Thanks, best regards.</div>
+</article>
+<article class="post" id="msg4496">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-03 18:20 UTC</span>
+  </div>
+  <div class="post-body">Try saving the file from Studio with a .lsp extension, then open the resulting file in Notepad and Save As to the same name, but change the encoding to ANSI.  Does the ANSI encoded file work for you?</div>
+</article>
+<article class="post" id="msg4497">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-03 19:01 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=901.msg4496#msg4496 date=1252002046 wrote:</cite><br>
+Try saving the file from Studio with a .lsp extension, then open the resulting file in Notepad and Save As to the same name, but change the encoding to ANSI.  Does the ANSI encoded file work for you?<br>
+</blockquote><br>
+<br>
+I tried to save from studio [6.0.0.2], set lisp file, Saving the project, nothing append !<br>
+<br>
+I never did it before .<br>
+<br>
+Did i miss something with studio ?<br>
+<br>
+Thanks.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4498">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-03 19:03 UTC</span>
+  </div>
+  <div class="post-body">If nothing happened, then you missed something. What exactly did you do?</div>
+</article>
+<article class="post" id="msg4499">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-03 19:08 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=901.msg4498#msg4498 date=1252004602 wrote:</cite><br>
+If nothing happened, then you missed something. What exactly did you do?<br>
+</blockquote><br>
+<br>
+Ok, <br>
+<br>
+First, open the project with studio 6.0.0.2<br>
+<br>
+Then, Set AutoLisp File Name : "H:\...\...\Project_odcl.lsp"<br>
+<br>
+Then , in menu Tools, select Write events to lisp file.<br>
+<br>
+Then, Save the project .... I don't know what action i have to do ....<br>
+<br>
+Then quit the project<br>
+<br>
+Then verify my lisp file ... nothing inside ?<br>
+<br>
+Thanks<br>
+<br>
+<br>
+Thanks<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4500">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-03 19:28 UTC</span>
+  </div>
+  <div class="post-body">When you save the file, type a filename with a .lsp extension.</div>
+</article>
+<article class="post" id="msg4501">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-03 19:41 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=901.msg4500#msg4500 date=1252006117 wrote:</cite><br>
+When you save the file, type a filename with a .lsp extension.<br>
+</blockquote><br>
+<br>
+Ok , i'm so stupid ... !!!<br>
+<br>
+Yes, i have to go to the file menu, then save as a lisp File !<br>
+<br>
+Very sorry to have disturb you  :-[<br>
+<br>
+Work fine now !<br>
+<br>
+Will now go to bed ... and send you back tomorrow.<br>
+<br>
+Thanks owen.<br>
+<br>
+Best regards.<br>
+</div>
+</article>
+<article class="post" id="msg4510">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-04 20:42 UTC</span>
+  </div>
+  <div class="post-body">Hello owen,<br>
+<br>
+Here are some words for some news.<br>
+<br>
+I confirm you that it's necessary to change saved opendcl lisp file to ansi code, with 6.0.0.2 Studio editor.<br>
+<br>
+But not with 5.1.2.1 Studio editor (Wich have a little bug, it added 2 strange ascii code before all data .<br>
+<br>
+I give up trying to make myself lisp file with dcl_export (Maybe try again next week) , because i must insert my "(setq $opendcl" before data, due to compiling into fas file.<br>
+<br>
+Thanks, best regards.</div>
+</article>
+<article class="post" id="msg4516">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-06 09:01 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+Here is my soluce, if it can help somebody.<br>
+<br>
+Why ?<br>
+Because, i wanted to integer the dcl_ProjectImport inside a compiled fas file, so impossible to launch a load order inside.<br>
+<br>
+How ?<br>
+Two case, first odcl file is present, so read-it normaly, then export it in a lisp file, wich would be integer in the next compiled fas file. with my exemple.<br>
+Second cas, odcl file is absent, so, your soft tools will use the precompiled definition of odcl.<br>
+<br>
+Wich soluce ?<br>
+As you can see, i tried several method, the highter problem was to break the ascii code without lost special char for non printable ascii.<br>
+Every try to work directly with string were aborted !<br>
+First, transform all ascii into an list of ascii code.<br>
+Second, because it's impossible to integer a long list into a lisp file, i have to break this list into several inside list (hope understand)<br>
+thirs, save this list into a lisp file which is include in the list of file to be compiled in the fas file...<br>
+<br>
+here is code, as is.<br>
+<br>
+Function to create the included list of list.<br>
+<br>
+<br>
+(defun @vl-string-to-list-in-len ( $string #len / &amp;tmp &amp;stmp &amp;result )<br>
+  (setq &amp;tmp (vl-string-&gt;list $string)) ; Transfert en liste<br>
+  (setq #cpt 1 &amp;stmp nil)<br>
+  (foreach #tmp &amp;tmp<br>
+    ; si on dépasse le nombre par sous liste<br>
+    (if ( &gt; #cpt #len)<br>
+      (progn<br>
+	(if &amp;result<br>
+	  (setq &amp;result (append &amp;result (list &amp;stmp)))<br>
+	  (setq &amp;result (list &amp;stmp))<br>
+	  )<br>
+	(setq #cpt 1 &amp;stmp nil)<br>
+	)<br>
+      )<br>
+    	(if &amp;stmp<br>
+	  (setq &amp;stmp (append &amp;stmp (list #tmp)))<br>
+	  (setq &amp;stmp (list #tmp))<br>
+	  )<br>
+	(setq #cpt (1+ #cpt))<br>
+    )<br>
+  ; ajoute le solde<br>
+  (if &amp;result<br>
+	  (setq &amp;result (append &amp;result (list &amp;stmp)))<br>
+	  (setq &amp;result (list &amp;stmp))<br>
+	  )<br>
+  )<br>
+<br>
+<br>
+Now, here is the first step, load odcl, then break it to list in list.<br>
+<br>
+(setq $project:name (dcl_Project_Load (strcat $path "Project.odcl") T))<br>
+	; Exporte le projet<br>
+	(setq &amp;opendcl (@vl-string-to-list-in-len (dcl_Project_Export $project:name "By AD-Informatique") 76))<br>
+	(setq #File (open (strcat (strcat $path "FileToIncludeInFas_odcl.lsp")) "w"))<br>
+	(write-line (strcat "(setq &amp;opendcl \(quote" (VL-PRINc-TO-STRING &amp;opendcl) "\)\)") #file)<br>
+	(close #file)<br>
+<br>
+<br>
+Now load just saved file to check it !<br>
+<br>
+<br>
+	; On Controle !<br>
+	(load (strcat $path "FileToIncludeInFas_odcl.lsp"))<br>
+	; On recréé la structure<br>
+	(setq &amp;opendcl:loaded nil)<br>
+	(foreach &amp;tmp &amp;opendcl<br>
+	  (if &amp;opendcl:loaded<br>
+	    (setq &amp;opendcl:loaded (append &amp;opendcl:loaded &amp;tmp))<br>
+	    (setq &amp;opendcl:loaded &amp;tmp)<br>
+	    )<br>
+	  )<br>
+	;(length &amp;opendcl:loaded)<br>
+	(setq $opendcl (vl-list-&gt;string &amp;opendcl:loaded))<br>
+	(setq $project:name (dcl_project_import $opendcl "By AD-Informatique"))<br>
+<br>
+<br>
+<br>
+PS: You have to insert all control as needed.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

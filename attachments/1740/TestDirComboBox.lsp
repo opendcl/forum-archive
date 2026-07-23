@@ -1,0 +1,11 @@
+(defun c:TestDirComboBox_Form1_ComboBox1_OnSelChanged (ItemIndexOrCount Value /)
+  (print Value)
+)
+
+(defun c:TestDir ()
+  (setvar 'cmdecho 0)
+  (command "OPENDCL")
+  (setvar 'cmdecho 1)
+  (dcl_Project_Load "TestDirComboBox")
+  (dcl_Form_Show TestDirComboBox_Form1)
+)

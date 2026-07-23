@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DragnDropBegin doesn't catch the selected item [6.0.0.2] · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 895</p>
+    <h1>DragnDropBegin doesn't catch the selected item [6.0.0.2]</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-09-01 11:04 UTC ·
+      9 replies · SMF topic #895</p>
+<article class="post" id="msg4445">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-01 11:04 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+After several try, getSelectedItem return item after the Drag &amp; Drop Action, so , it's feel like DragnDropFromControl event before modification.<br>
+<br>
+With 6.0.0.1 DragnDropbegin always gave back the good GetSelectedItem because it was impossible to move an item !!! (CTRL &amp; SHIFT Key inibited)<br>
+<br>
+Sometimes DragnDropBegin event  failed, and never be called again , can't really know why !!!<br>
+<br>
+More strange, giving back these string "(_&gt;" again, without textbox ???<br>
+<br>
+Thanks again ;)<br>
+<br>
+Best regards</div>
+</article>
+<article class="post" id="msg4452">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-01 15:12 UTC</span>
+  </div>
+  <div class="post-body">You provide a lot of excellent feedback, but your posts would be much more readable if you slowed down, used less punctuation and fewer emoticons, and instead concentrate on providing information. Your English is fine; that is not a problem. I have a rough idea what you are talking about here, but please rephrase your problem clearly, with step by step instructions to reproduce it.</div>
+</article>
+<article class="post" id="msg4462">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-01 16:50 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=895.msg4452#msg4452 date=1251817928 wrote:</cite><br>
+You provide a lot of excellent feedback, but your posts would be much more readable if you slowed down, used less punctuation and fewer emoticons, and instead concentrate on providing information. Your English is fine; that is not a problem. I have a rough idea what you are talking about here, but please rephrase your problem clearly, with step by step instructions to reproduce it.<br>
+</blockquote><br>
+<br>
+Ok !<br>
+<br>
+I promise you to try to use fewer emoticons .<br>
+<br>
+Thanks for my english .<br>
+<br>
+As you explain me in this post : <a href="http://www.opendcl.com/forum/index.php?topic=896.msg4458#msg4458" rel="nofollow noopener">{2}</a><br>
+When the TreeControl event invoke is set to asynchronous, when i *press* the mouse on a unselected item, and move it to another item in the tree, after *release* the mouse boutton, the OnDragnDropBegin is call ! but not OnDragnDropFromControl.<br>
+<br>
+But the action of move was already finished, so , impossible to catch the selected item.<br>
+<br>
+That was i wanted to explain to you, because OnDragnDropFromControl was not called !<br>
+<br>
+<br>
+<br>
+For these string "(_&gt;" , i think you answer me at this post <a href="http://www.opendcl.com/forum/index.php?topic=894.msg4460#msg4460" rel="nofollow noopener">{2}</a><br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg4465">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-01 17:08 UTC</span>
+  </div>
+  <div class="post-body">Yes, for your purposes, you must use 'Synchronous' events, otherwise the event handlers will be called after the drag and drop operation is complete. Once the new evant handler code and drag/drop code are working without problems, it will be easier to add new events for giving more control over drag/drop operations.</div>
+</article>
+<article class="post" id="msg4469">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-01 19:24 UTC</span>
+  </div>
+  <div class="post-body">Hello owen.<br>
+<br>
+So, that's a problem for me to say if this post is solved or not.<br>
+<br>
+Because of event invoke must be set to synchronous, otherwise DragnDropBegin cannot catch the correct selecteditem at the beginning of drag and drop .<br>
+<br>
+If any idea or suggest to catch item and return it to autocad lisp without modify eventinvoke may be usefull ... i think.<br>
+<br>
+Anyway , thanks.<br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg4470">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-01 19:46 UTC</span>
+  </div>
+  <div class="post-body">Hello owen,<br>
+<br>
+Maybe the beginning of an issue :<br>
+<br>
+I tried with some more events asynchronous :<br>
+OnClicked, OnSelChanged, OnDragnDropBegin, OnDragnDropFromControl, OnDragnDropToAutocad.<br>
+<br>
+Onclicked always return the new selected item after move action.<br>
+<strong>OnSelChanged return the selected item before action !</strong><br>
+OnDragnDropBegin return the new selected item after move action.<br>
+OnDragnDropFromControl return the drop position as it have to do !<br>
+OnSelChanged (again) return the newer selected item after action.<br>
+<br>
+OnSelChanged can be my issue !<br>
+<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg4472">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-01 21:40 UTC</span>
+  </div>
+  <div class="post-body">Do you understand why it works that way? It's not clear from your post.</div>
+</article>
+<article class="post" id="msg4474">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-02 07:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=895.msg4472#msg4472 date=1251841258 wrote:</cite><br>
+Do you understand why it works that way? It's not clear from your post.<br>
+</blockquote><br>
+<br>
+Hello owen.<br>
+<br>
+I wrote the event in the order of displayed messages .<br>
+Displayed with (alert "") order.<br>
+<br>
+Now, i really understand the difference of all of them, some send back data keeped in memory (i suppose), and some send back data use by my order (dcl_getselecteditem) !<br>
+And (dcl_getselecteditem) send data in actual position of treeControl .... that was my error !<br>
+<br>
+Your new arx correct also some bug, and it's now possible to use more event on the same control.<br>
+<br>
+Can i suggest you something ?<br>
+Maybe shoulb not be better to send back data of OnClicked event like OnSelChanged Event ?<br>
+I mean keep in memory item wich was clicked . <br>
+OnClicked(label key / ) <br>
+<br>
+and let user the choice of use it or no .....<br>
+ <br>
+Anyway, Thanks for all <br>
+<br>
+Best regards</div>
+</article>
+<article class="post" id="msg4478">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-02 14:16 UTC</span>
+  </div>
+  <div class="post-body">Yes, modifying OnClicked would solve the latency problem, but it would also introduce an incompatibility that would require existing code to be changed. In any case, since OnClicked is common, I prefer to keep it generic. There could (in theory) be actions that cause OnClicked to fire that are of no interest in your case, so OnSelChanged is more appropriate than OnClicked in any case.</div>
+</article>
+<article class="post" id="msg4514">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-05 22:16 UTC</span>
+  </div>
+  <div class="post-body">Hello owen,<br>
+<br>
+Just one thing, if DragnDropBegin event is not activate , OnSelectChange doesn't catch the selected item with a Drag &amp; Drop action !<br>
+<br>
+That mean if a want to know wich item was selected, i have to activate DragnDropBegin event, even if I did not need it!<br>
+<br>
+That is not a problem for me at the moment.<br>
+<br>
+Thanks.<br>
+<br>
+Best regards.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

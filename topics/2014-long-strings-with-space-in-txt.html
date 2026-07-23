@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Long strings with space in TXT · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2014</p>
+    <h1>Long strings with space in TXT</h1>
+    <p class="meta">Started by Peter2 ·
+      2013-08-19 12:05 UTC ·
+      4 replies · SMF topic #2014</p>
+<article class="post" id="msg9936">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-08-19 12:05 UTC</span>
+  </div>
+  <div class="post-body">I have a TXT, justification right, and a long string (Path) with spaces.<br>
+<br>
+Problem:<br>
+The dialogue displays only the first part  of the string, until the space: "H:\Eigene"<br>
+<br>
+Example from Textscreen ("Befehl" = "Command"):<br>
+<br>
+OpenDCL Laufzeitumgebung [7.0.0.12] wurde geladen<br>
+<br>
+Befehl: (dcl_control_getproperty attrib_fill_dialog_txtsteuerdatei1 "Caption")<br>
+"H:\\Eigene <br>
+Dateien\\Vorlagen_CAD\\Plankopf_Langenthal\\Plankopf_DWG-Neu_GLP.ini"<br>
+<br>
+Befehl: (setq x (dcl_control_getproperty attrib_fill_dialog_txtsteuerdatei1 <br>
+"Caption"))<br>
+"H:\\Eigene <br>
+Dateien\\Vorlagen_CAD\\Plankopf_Langenthal\\Plankopf_DWG-Neu_GLP.ini"<br>
+<br>
+Befehl: (type x)<br>
+STR<br>
+<br>
+Befehl: (dcl_control_setproperty attrib_fill_dialog_txtsteuerdatei1 "Caption" x)<br>
+T<br>
+<br>
+Befehl: (dcl_control_setproperty attrib_fill_dialog_txtsteuerdatei1 "Caption" <br>
+"das ist ein text")<br>
+T<br>
+<br>
+Befehl: (dcl_control_setproperty attrib_fill_dialog_txtsteuerdatei1 "Caption" x)<br>
+T<br>
+<br>
+Befehl: !x<br>
+"H:\\Eigene <br>
+Dateien\\Vorlagen_CAD\\Plankopf_Langenthal\\Plankopf_DWG-Neu_GLP.ini"<br>
+<br>
+<br>
+- The space itself is not the problem, because "das ist ein text" works fine.<br>
+- The width of the TXT-field is enough to display the string<br>
+- Also the value is OK, it works with entire string, but display only a part.<br>
+<br>
+- But you can see it above: <br>
+Autocad makes a CR/LF in the space because it is too long for textscreen. Maybe this is the reason?</div>
+</article>
+<article class="post" id="msg9937">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-08-19 12:24 UTC</span>
+  </div>
+  <div class="post-body">I assume by "TXT" you mean a Label control. It is normal to wrap text at the nearest space character, and what you describe is normal text wrapping. Therefore, the label is not wide enough to display the caption. Start removing characters from the end of the string until it no longer wraps to demonstrate that the text wrapping is indeed the reason for what you observe.</div>
+</article>
+<article class="post" id="msg9939">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-08-19 13:28 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2014.msg9937#msg9937 date=1376915049 wrote:</cite><br>
+I assume by "TXT" you mean a Label control. ...</blockquote><br>
+Yes. Sorry for the wrong words, but re-translating from German ODCL to English Forum creates some incorrect word..<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=2014.msg9937#msg9937 date=1376915049 wrote:</cite><br>
+....It is normal to wrap text at the nearest space character, and what you describe is normal text wrapping. Therefore, the label is not wide enough to display the caption. ....</blockquote><br>
+Yes again. <br>
+But what to do when I want no wrapping? "Auto Wrap" and "Label Wrap" are not available for Label controls, and Buttons seem to wrap too...<br>
+There will be long string (paths), and usually I used in DCL "right align" to display the important part of the path. The less important beginning of the path disappeared at the left side of the control.</div>
+</article>
+<article class="post" id="msg9940">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-08-19 15:28 UTC</span>
+  </div>
+  <div class="post-body">I see what you are trying to achieve. I think your best bet is to shorten the caption programmatically. I believe there is a style bit in Windows for text labels that automatically shortens displayed text by inserting ..., but unfortunately that style bit is not exposed in OpenDCL Label controls. Another option is to use a different control, maybe a Text Box or even something exotic like a Grid, and try to fake it. Maybe someone else has a better idea.</div>
+</article>
+<article class="post" id="msg9941">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-08-19 15:33 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2014.msg9940#msg9940 date=1376926084 wrote:</cite><br>
+...I think your best bet is to shorten the caption programmatically. ...</blockquote><br>
+Hmmmmh. This is possible, but I have to modify my code because "..getProperties.." is used to find a file. When I shorten the string (the path) I have to store the entire string in another value..</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Listbox error · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 424</p>
+    <h1>Listbox error</h1>
+    <p class="meta">Started by scottcd ·
+      2008-09-11 09:15 UTC ·
+      2 replies · SMF topic #424</p>
+<article class="post" id="msg1902">
+  <div class="post-head">
+    <span class="post-author">scottcd</span>
+    <span class="post-date muted">2008-09-11 09:15 UTC</span>
+  </div>
+  <div class="post-body">I have the following list of layers<br>
+<br>
+!layerlist<br>
+("0" "aaaa" "bbbb" "cccc" "dddd" "ffff" "hhhh" "xxxxx" "zzzzz")<br>
+<br>
+Command: (type layerlist)<br>
+LIST<br>
+<br>
+I attempt to add the list to the list box using the following code<br>
+<br>
+<pre class="code"><code>(defun c:Nortec_Layer_Control_Form1_GraphicButton12_OnClicked (/)<br>
+  (dcl_Form_Show Nortec_Layer_Control_Form2)<br>
+  (dcl_ListBox_AddList Nortec_Layer_Control_Form2_ListBox1 layerlist)  <br>
+)</code></pre><br>
+<br>
+I get a runtime error:<br>
+Error: NIL value not allowed<br>
+Function: dcl_listbox_addlist<br>
+Argument 0<br>
+<br>
+Any ideas what I am doing wrong?<br>
+<br>
+Thanks<br>
+<br>
+Scott<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg1903">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-09-11 14:42 UTC</span>
+  </div>
+  <div class="post-body">Scott, if this is a modal form then the (dcl_ListBox_AddList) function will not execute until after the form is closed and the value of Nortec_Layer_Control_Form2_ListBox1 is set back to Nil.  Instead, put that code in an OnInitialize event handler and enable the OnInitialize event for the form.</div>
+</article>
+<article class="post" id="msg1905">
+  <div class="post-head">
+    <span class="post-author">scottcd</span>
+    <span class="post-date muted">2008-09-11 15:08 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen,<br>
+<br>
+I hope I can keep the questions to a minimum. I appreciate the help, and hopefully others can lean from my attempts as well ;D<br>
+<br>
+Cheers<br>
+<br>
+Scott<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

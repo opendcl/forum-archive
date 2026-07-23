@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>listbox_addlist problem for a beginner · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1623</p>
+    <h1>listbox_addlist problem for a beginner</h1>
+    <p class="meta">Started by borsa ·
+      2011-05-11 09:33 UTC ·
+      8 replies · SMF topic #1623</p>
+<article class="post" id="msg7978">
+  <div class="post-head">
+    <span class="post-author">borsa</span>
+    <span class="post-date muted">2011-05-11 09:33 UTC</span>
+  </div>
+  <div class="post-body">Hello, <br>
+I've programmed with DCL and now I'm trying to migrate to OpenDCL becauseit is more complete but I have some problems on the trials.<br>
+I try to fill a listbox with a list but does not write anything when display the dialog (only has a listbox)<br>
+I have read the forum Mesg but I'm lost. What am I doing wrong?<br>
+<br>
+I tried addlist and setlist but no success<br>
+<br>
+I'm sorry because English is not my native language<br>
+<br>
+Thank you for teaching<br>
+<br>
+<br>
+<br>
+(defun C:ODCL0200 ( / )<br>
+  (getTowN)<br>
+  (command "_OPENDCL")<br>
+  (dcl_Project_Load "D:/design/lisp_cim/0300.odcl" T)<br>
+  (dcl_Form_Show 0300_ODCL02 )<br>
+  (princ)<br>
+)<br>
+<br>
+(defun c:odcl_0200_OnInicialize (/)<br>
+;  (dcl_ListBox_Clear TowListN)<br>
+;  (dcl_Control_SetList 0300_ODCL02_ListBox1 aux01)<br>
+  (dcl_ListBox_AddList 0300_ODCL02_ListBox1 Aux01)<br>
+<br>
+)<br>
+<br>
+(defun GetTowN (/ aux01 )<br>
+  (setq k 12)<br>
+  (setq n 1)<br>
+  (setq aux01 (list nil))<br>
+  (Repeat k<br>
+    (setq aux01 (append aux01 (list (strcat "Item N." (Itoa n)))))<br>
+    (setq n (1+ n))<br>
+) )<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg7979">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-05-11 11:10 UTC</span>
+  </div>
+  <div class="post-body">Hi borsa,<br>
+<br>
+There are two problems with your code:<br>
+- wrong name for initialize function<br>
+- GetTowN did not function correctly.<br>
+<br>
+<br>
+(defun C:ODCL0200 ( / )<br>
+  (command "_OPENDCL")<br>
+  (dcl_Project_Load "D:/design/lisp_cim/0300.odcl" T)<br>
+  (dcl_Form_Show 0300_ODCL02 )<br>
+  (princ)<br>
+)<br>
+<br>
+(defun c:0300_ODCL02_OnInitialize (/)<br>
+  (dcl_ListBox_Clear 0300_ODCL02_ListBox1)<br>
+  (dcl_ListBox_AddList 0300_ODCL02_ListBox1 (GetTowN))<br>
+)<br>
+<br>
+(defun GetTowN (/ aux01 n k)<br>
+  (setq k 12)<br>
+  (setq n 1)<br>
+  (repeat k<br>
+    (setq aux01 (append aux01 (list (strcat "Item N." (Itoa n)))))<br>
+    (setq n (1+ n))<br>
+  )<br>
+  aux01<br>
+)<br>
+<br>
+<br>
+Note: you must check the initialize event for your form.<br>
+<br>
+Regards, Roy.</div>
+</article>
+<article class="post" id="msg7980">
+  <div class="post-head">
+    <span class="post-author">borsa</span>
+    <span class="post-date muted">2011-05-11 15:44 UTC</span>
+  </div>
+  <div class="post-body">Hi Roy<br>
+<br>
+Just one question, have you checked your lisp code attached?. I've loaded your code in cad and the listbox is still empty. Perhaps I have another mistake but I want to be sure.<br>
+<br>
+In my lisp code "Aux01" is already alist so I can add it to the listbox with the function addlist and not through the function "GetTowN" as in your code. isn´t it?<br>
+<br>
+Thanks for your help.</div>
+</article>
+<article class="post" id="msg7981">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2011-05-11 18:32 UTC</span>
+  </div>
+  <div class="post-body">Roy's code is correct.<br>
+If it's not working for you, you probably don't have the "OnInitialize" even checked, or you changed the name of one of your controls.<br>
+If you attach your .lsp &amp; .odcl we can probably track down the issue.<br>
+</div>
+</article>
+<article class="post" id="msg7982">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-05-11 18:43 UTC</span>
+  </div>
+  <div class="post-body">@ BazzaCAD: Thank you for that confirmation. And also thank you for your great OpenDCL Beginners Tutorial!<br>
+<br>
+@ borsa:<br>
+<br>
+Your function (GetTowN) doesn't work the way you think. Because aux01 is a local variable in (GetTowN) using<br>
+<pre class="code"><code><br>
+(dcl_ListBox_AddList 0300_ODCL02_ListBox1 Aux01)<br>
+</code></pre><br>
+in c:odcl_0200_OnInicialize will not work properly.<br>
+And after this code:<br>
+<pre class="code"><code><br>
+(setq aux01 (list nil))<br>
+</code></pre><br>
+aux01 is not an empty list but a list with one element: (nil)<br>
+<br>
+Regards, Roy.</div>
+</article>
+<article class="post" id="msg7983">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-05-12 05:07 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+in addition to what was written I want to add <strong>dcl_control_setlist</strong>, because the listbox control still contains its items when re-showing the form:<br>
+<br>
+<br>
+(defun c:0300_ODCL02_OnInitialize (/)  <br>
+  (dcl_ListBox_SetList 0300_ODCL02_ListBox1 (GetTowN))  <br>
+); c:0300_ODCL02_OnInitialize<br>
+<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg7985">
+  <div class="post-head">
+    <span class="post-author">borsa</span>
+    <span class="post-date muted">2011-05-12 07:28 UTC</span>
+  </div>
+  <div class="post-body">I'm sorry. I'm checking the dialog and note the Initialize event is not marke, may be the result of all the changes I do to try and also my mistakes.<br>
+<br>
+Now the code runs properly.<br>
+<br>
+Thanks to everyone </div>
+</article>
+<article class="post" id="msg7987">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-05-12 12:02 UTC</span>
+  </div>
+  <div class="post-body">@ Fred: No doubt you mean: dcl_<strong>Control</strong>_SetList.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg7988">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-05-12 13:06 UTC</span>
+  </div>
+  <div class="post-body">Yes, you're right.  ;)<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HELP for beginers!!! · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2289</p>
+    <h1>HELP for beginers!!!</h1>
+    <p class="meta">Started by MaxOlekhno ·
+      2015-07-23 20:33 UTC ·
+      1 replies · SMF topic #2289</p>
+<article class="post" id="msg11512">
+  <div class="post-head">
+    <span class="post-author">MaxOlekhno</span>
+    <span class="post-date muted">2015-07-23 20:33 UTC</span>
+  </div>
+  <div class="post-body">Hi!<br>
+I'm begining learn OpenDCL! I'll try tutorial exmaple  Hello!  Can't run application. Civil3D 2014  OpenDCL Current Build [8.0.0.15] and OpenDCL Runtime Current Build [8.0.0.15]<br>
+The LSP file from site:<br>
+<br>
+<br>
+; the following command will ensure the <br>
+; appropriate OpenDCL ARX file is loaded.<br>
+(command "_OPENDCL")<br>
+<br>
+(defun c:Hello ()<br>
+   ; call the method to load the HelloWorld.odcl file.<br>
+   (dcl_Project_Load "HelloWorld" T)<br>
+   ; call the method to show the Hello World dialog box example.<br>
+   (dcl_Form_Show HelloWorld_Form1)<br>
+   (princ)<br>
+)<br>
+<br>
+; This fires just before the form is shown.<br>
+(defun c:HelloWorld_Form1_OnInitialize (/)<br>
+   (dcl_Control_SetCaption HelloWorld_Form1_Label1 "Type Something:") ; Change the labels Caption.<br>
+)<br>
+<br>
+; This gets called when the OK button is clicked<br>
+(defun c:HelloWorld_Form1_TextButton1_OnClicked (/)<br>
+   (setq sText (dcl_Control_GetText HelloWorld_Form1_TextBox1)) ; Get the Text property from the Text Box.<br>
+   (dcl_messagebox (strcat "You typed: " sText)) ; Show a MessageBox with the user entered text.<br>
+   (dcl_Form_Close HelloWorld_Form1) ; Close the form.<br>
+   (princ)<br>
+)<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2144/err1.jpg">err1.jpg</a> <span class="muted">(26964 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11515">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-07-24 16:43 UTC</span>
+  </div>
+  <div class="post-body">Make sure that the HelloWorld.odcl file is in your Civil 3D support path, or else you could specify the complete file path in the lisp code:<br>
+(dcl_Project_Load "C:\\path\\to\\HelloWorld" T)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example of using ActiveX inside OpenDCL ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1021</p>
+    <h1>Example of using ActiveX inside OpenDCL ?</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-11-20 11:38 UTC ·
+      3 replies · SMF topic #1021</p>
+<article class="post" id="msg5190">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-20 11:38 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I would like to know if it's easy to use activeX inside openDCL, and if anybody already use these ???<br>
+<br>
+Thanks for help.<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg5192">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-20 11:47 UTC</span>
+  </div>
+  <div class="post-body">Hi Stepjan, you mean an ActiveX control? It is as easy as you can trust that the user has installed it. I have used it at my ObjectDCL dialogs. But some admins did not install the controls I needed or the control was unregistered. Then error messages came up and I gave up.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5195">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-20 12:00 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+By the merest chance, would you use the ActiveX control treeview?<br>
+I'm having some trouble with setting objects OpenDCL, and I wanted to attempt the side of ActiveX ...<br>
+<br>
+I found this :<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=149.msg829#msg829" rel="nofollow noopener">{2}</a><br>
+<blockquote class="quote"><br>
+(dcl_AxControl_DoMethod  "Add"      )<br>
+<br>
+The arguments are more fully described at:<br>
+<a href="http://msdn2.microsoft.com/en-us/library/aa443386(VS.60).aspx" rel="nofollow noopener">{2}</a><br>
+<br>
+To test the tree control, I tried the following:<br>
+<br>
+(setq Nodes (dcl_AxControl_GetProperty  "Nodes"))<br>
+; now Nodes is an OLE Object, and we use (dcl_AxObject_*) syntax<br>
+(Setq NewNode (dcl_AxObject_DoMethod Nodes "Add"))<br>
+; NewNode is also an OLE Object<br>
+(dcl_AxObject_SetProperty NewNode "Text" "MyNewTreeItem")<br>
+; this should work, but the call into the tree control fails with a COM error<br>
+(setq text (dcl_AxObject_GetProperty Node "Text")) ;this works fine<br>
+(dcl_AxObject_Close NewNode) ;release the node<br>
+(dcl_AxObject-Close Nodes) ;release the nodes collection<br>
+<br>
+I'm not sure why the call to set the 'Text' property fails, but I will investigate this. The code above should work, and at least it can demonstrate the basic steps.<br>
+</blockquote><br>
+Thank you for your help<br>
+Best regards</div>
+</article>
+<article class="post" id="msg5198">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-20 16:35 UTC</span>
+  </div>
+  <div class="post-body">If you encounter any problems with the ActiveX tree control, post them here.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

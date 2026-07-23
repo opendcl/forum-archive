@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>help with BlockList Control !!! · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 770</p>
+    <h1>help with BlockList Control !!!</h1>
+    <p class="meta">Started by khann ·
+      2009-05-26 11:41 UTC ·
+      4 replies · SMF topic #770</p>
+<article class="post" id="msg3780">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2009-05-26 11:41 UTC</span>
+  </div>
+  <div class="post-body">Hi. Anybody has a sample code of BlockList control for previewing the blocks of External DWG?<br>
+<br>
+Control Browser saying : The block list control displays a list of all blocks defined in the current drawing file or in an external .dwg file.<br>
+<br>
+But it's still out of my fingers.<br>
+<br>
+For previewing blocks must use Blockview control?</div>
+</article>
+<article class="post" id="msg3783">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-26 14:08 UTC</span>
+  </div>
+  <div class="post-body">No, blocklist displays a list of all blocks defined in the current drawing file or in an external .dwg file as you quoted correctly.<br>
+<br>
+What you need is either a <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Control/DwgPreview.htm" rel="nofollow noopener">{2}</a> or a <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Control/DwgList.htm" rel="nofollow noopener">{2}</a> Control.<br>
+<br>
+Fred<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3784">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-26 14:13 UTC</span>
+  </div>
+  <div class="post-body">Ok, khann, my fault. I've read your initial message again and now I know that you mean the block previews of the external DWG.<br>
+<br>
+Then you are right with a block list.<br>
+<br>
+Set the style property to 0 in OpenDCL Studio.<br>
+At runtime of your dialog you have to load the DWG file using<br>
+<br>
+(dcl_BlockList_LoadDwg MyProj_MyForm_MyBlockList strDWGFileName)<br>
+<br>
+After that the blocks should be shown in the list.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3785">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-26 14:50 UTC</span>
+  </div>
+  <div class="post-body">Finally, I attached a sample. Please notice that the block previews must be stored into the external DWG file otherwise it won't work (you see a dummy then).<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/742/BlockList.LSP">BlockList.LSP</a> <span class="muted">(1334 bytes)</span></li><li><a href="../attachments/743/BlockList.odcl">BlockList.odcl</a> <span class="muted">(855 bytes)</span></li><li><a href="../attachments/744/blocklist.png">blocklist.png</a> <span class="muted">(22218 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3788">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2009-05-27 00:29 UTC</span>
+  </div>
+  <div class="post-body"> :) Wonderful! Thank you very much Fred, you're so kind!  <br>
+That's really what I need.<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

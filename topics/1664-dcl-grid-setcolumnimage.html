@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_Grid_SetColumnImage · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1664</p>
+    <h1>dcl_Grid_SetColumnImage</h1>
+    <p class="meta">Started by johnM ·
+      2011-08-03 20:23 UTC ·
+      7 replies · SMF topic #1664</p>
+<article class="post" id="msg8253">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2011-08-03 20:23 UTC</span>
+  </div>
+  <div class="post-body">(dcl_Grid_GetColumnImage QD_ELE1_ELE1_Grid1 1) returns 0 (there is no image at column header)<br>
+(dcl_Grid_SetColumnImage QD_ELE1_ELE1_Grid1 1 0) returns dcl error "no image at specific index"<br>
+i have 4 images set up. dcl gave them numbers 100 101 102 103<br>
+i use 3 images for buttons with no issue<br>
+i am trying to use an image when the uset clicks a button<br>
+no mater what number i use for (dcl_Grid_SetColumnImage QD_ELE1_ELE1_Grid1 1 0 or 100 or 102 ect...) <br>
+i get the error.<br>
+<br>
+using studio 6.0.2.5<br>
+<br>
+ </div>
+</article>
+<article class="post" id="msg8254">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-08-03 21:15 UTC</span>
+  </div>
+  <div class="post-body">He, he, in that case the internal image list of the grid will be used, not the project's image list. Double click the grid in the z/tab panel to add the needed images there. Grid, tree, and listview have an internal image list.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8255">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2011-08-03 21:21 UTC</span>
+  </div>
+  <div class="post-body">thanks for that quick responce<br>
+i just figured it out and was going to post<br>
+i was clicking on everything but the properties of the grid<br>
+</div>
+</article>
+<article class="post" id="msg8256">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2011-08-03 21:37 UTC</span>
+  </div>
+  <div class="post-body">i spoke too soon<br>
+how would i set it to none<br>
+i have only 1 image the image index is 0<br>
+if i use -1 or 1 i get the error</div>
+</article>
+<article class="post" id="msg8257">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-08-03 21:54 UTC</span>
+  </div>
+  <div class="post-body">Hi, John, I had no try, but have a test with (dcl_Control_SetColumnImageList  -1).<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg8258">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2011-08-03 22:13 UTC</span>
+  </div>
+  <div class="post-body">no luck it expects 2 arguments 1=column# 2=image index<br>
+-1 for index results in an error<br>
+the help file and properties says that the function should return Boolean (T if successful; otherwise NIL)<br>
+that leads me to believe that there is a bug or a fix needed to add the -1 option.<br>
+<br>
+work around:<br>
+i made a blank transparent image and then had it load on initalize<br>
+then i have the other image as index 1 so i can toggle between the two<br>
+it works, but i prefer not to have the column header text shifted to the right unless the image is applied<br>
+<br>
+<strong>other note</strong>: i also found out that all the images must be the same size or else they will all take on index 0 size<br>
+i made a 5x5 blank so the text would not shift that much but the index 1 image was 22x22 and when i set the image on the grid column to image 1 only a little part showed.</div>
+</article>
+<article class="post" id="msg8259">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-08-04 14:05 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=johnM link=topic=1664.msg8258#msg8258 date=1312409595 wrote:</cite><br>
+<strong>other note</strong>: i also found out that all the images must be the same size or else they will all take on index 0 size<br>
+</blockquote><br>
+<br>
+That's right. That's by design.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8262">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-08-04 18:41 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=johnM link=topic=1664.msg8256#msg8256 date=1312407477 wrote:</cite><br>
+how would i set it to none<br>
+i have only 1 image the image index is 0<br>
+if i use -1 or 1 i get the error<br>
+</blockquote><br>
+<br>
+That might be a bug. There is a quirk with the grid control such that resetting the image to -1 will remove the image but not the space it occupied, so it's possible that the code intentionally prevents removing an image once it is set. For that reason, I'm not entirely certain that the behavior is a bug. It should at least be documented in any case.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

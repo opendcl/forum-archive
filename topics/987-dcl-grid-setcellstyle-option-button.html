@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_Grid_SetCellStyle &gt;&gt; option button · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/21-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 987</p>
+    <h1>dcl_Grid_SetCellStyle &gt;&gt; option button</h1>
+    <p class="meta">Started by s.barszczewski ·
+      2009-10-23 15:14 UTC ·
+      4 replies · SMF topic #987</p>
+<article class="post" id="msg5029">
+  <div class="post-head">
+    <span class="post-author">s.barszczewski</span>
+    <span class="post-date muted">2009-10-23 15:14 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+Runtime 6.0.0.9<br>
+<br>
+as you can see below I'm filling grid with data, in column 1 and 2 there should be checbox and it works but in column 3 there should be option button and layer name , but when I run lisp in autocad it doesn't show option button there is ony blank space left for button .<br>
+I've atached a screenshoot from autocad<br>
+<br>
+(repeat (length bb_lista_warstw)<br>
+  <br>
+  (setq nrow (dcl_Grid_AddRow "manwar" "Form1" "Grid1" (rtos (1+ bb_licz) 2 0) "" "" (nth 1 (nth bb_licz bb_lista_warstw) )))<br>
+  <br>
+  (setq bb_licz (1+ bb_licz))<br>
+  <br>
+  (dcl_Grid_SetCellStyle "manwar" "Form1" "Grid1" nrow 1 1)<br>
+  (dcl_Grid_SetCellStyle "manwar" "Form1" "Grid1" nrow 2 1)<br>
+  (dcl_Grid_SetCellStyle "manwar" "Form1" "Grid1" nrow 3 2)<br>
+    <br>
+);repeat<br>
+<br>
+Any ideas ?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/994/grid.jpg">grid.jpg</a> <span class="muted">(58374 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5035">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-23 20:02 UTC</span>
+  </div>
+  <div class="post-body">Can you upload a simple sample that demonstrates the problem? Alternatively, provide step by step instructions for reproducing it in the Grid sample.</div>
+</article>
+<article class="post" id="msg5044">
+  <div class="post-head">
+    <span class="post-author">s.barszczewski</span>
+    <span class="post-date muted">2009-10-26 06:48 UTC</span>
+  </div>
+  <div class="post-body">here lisp file and odcl file with example <br>
+<br>
+The aim is to make option button visible in every row in column 3 , in current state it isn't shown<br>
+<br>
+(dcl_Project_Load "manwar" T)<br>
+(dcl_Form_Show "manwar" "Form1")<br>
+<br>
+<br>
+(dcl_Grid_Clear "manwar" "Form1" "Grid1")<br>
+<br>
+; list of layers data definition In orginal it's read from file<br>
+(setq bb_lista_warstw<br>
+       (list<br>
+	 (list "bb_w_attyka" "K_attyka" "220" "continuous")<br>
+	 (list "bb_w_belka" "K_belka" "3" "continuous")<br>
+	 (list "bb_w_hatch" "K_hatch" "9" "continuous")<br>
+	 (list "bb_w_kota" "K_kota" "6" "continuous")<br>
+	 (list "bb_w_obrys_plyty" "K_obrys_plyty" "5" "continuous")<br>
+	 (list "bb_w_opis_otw_w_stropie" "K_opis_otw_w_stropie" "240" "continuous")<br>
+	 (list "bb_w_opis_otw_w_scianie" "K_opis_otw_w_scianie" "230" "continuous")<br>
+	 (list "bb_w_opis_plyty" "K_opis_plyty" "2" "continuous")<br>
+	 (list "bb_w_opis_przekroj" "K_opis_przekroj" "80" "continuous")<br>
+	 (list "bb_w_os_konst" "K_os_konst" "252" "ACAD_ISO10W100")<br>
+	 (list "bb_w_otwor_w_stropie" "K_otwor_w_stropie" "232" "continuous")<br>
+	 (list "bb_w_otwor_w_scianie" "K_otwor_w_scianie" "20" "continuous")<br>
+	 (list "bb_w_K_przekroj" "k_przekroj" "52" "continuous")<br>
+	 (list "bb_w_schody" "K_schody" "100" "continuous")<br>
+	 (list "bb_w_K_slup_zelbnad" "K_slup_zelb_nad" "200" "HIDDEN2")<br>
+	 (list "bb_w_slup_zelb_pod" "K_slup_zelb_pod" "50" "continuous")<br>
+	 (list "bb_w_solid" "K_solid" "16" "continuous")<br>
+	 (list "bb_w_strop" "k_strop" "192" "continuous")<br>
+	 (list "bb_w_sciana_zelb_nad" "K_sciana_zelb_nad" "210" "HIDDEN2")<br>
+	 (list "bb_w_sciana_zelb_pod" "K_sciana_zelb_pod" "40" "continuous")<br>
+	 );list<br>
+      );setq<br>
+<br>
+(setq bb_licz 0)<br>
+<br>
+(repeat (length bb_lista_warstw)<br>
+  <br>
+  (setq nrow (dcl_Grid_AddRow "manwar" "Form1" "Grid1" (rtos (1+ bb_licz) 2 0) "" "" (nth 1 (nth bb_licz bb_lista_warstw) )))<br>
+  (setq bb_licz (1+ bb_licz))<br>
+  (dcl_Grid_SetCellStyle "manwar" "Form1" "Grid1" nrow 1 1)<br>
+  (dcl_Grid_SetCellStyle "manwar" "Form1" "Grid1" nrow 2 1)<br>
+  (dcl_Grid_SetCellStyle "manwar" "Form1" "Grid1" nrow 3 2)<br>
+  <br>
+  <br>
+);repeat<br>
+<br>
+(dcl_Control_Redraw "manwar" "Form1" "Grid1")<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/998/manwar.odcl">manwar.odcl</a> <span class="muted">(1658 bytes)</span></li><li><a href="../attachments/999/manwar.LSP">manwar.LSP</a> <span class="muted">(1905 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5049">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-26 19:52 UTC</span>
+  </div>
+  <div class="post-body">Thanks, this bug is now fixed for the next build. Everything works correctly if you perform the initialization inside an OnInitialize event handler instead of waiting until after (dcl_Form_Show) returns, so you can use that as a workaround in the meantime.</div>
+</article>
+<article class="post" id="msg5052">
+  <div class="post-head">
+    <span class="post-author">s.barszczewski</span>
+    <span class="post-date muted">2009-10-27 09:23 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the solution . It works :) <br>
+<br>
+Best Regards<br>
+Sebastian </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

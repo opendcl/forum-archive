@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TreeLabelEdit · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 728</p>
+    <h1>TreeLabelEdit</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-04-24 05:42 UTC ·
+      6 replies · SMF topic #728</p>
+<article class="post" id="msg3548">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-24 05:42 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I want to prevent the user from renaming some labels in a tree. But some may be edited. As I remember I can solve this using CancelLabelEdit in the OnBeginLabelEdit event. But unfortunately, it stays editable. I use the tree in a palette. What am I doing wrong?<br>
+<br>
+<br>
+(defun c:layer_sc_ltm_tree_OnBeginLabelEdit (uKey /)<br>
+  (if (member (dcl_Tree_GetItemText layer_sc_ltm_tree uKey) '("Standard-Layertheme" "Standard-Layergroup"))<br>
+    (dcl_Tree_CancelLabelEdit layer_sc_ltm_tree)<br>
+  ); if<br>
+); c:layer_sc_ltm_tree_OnBeginLabelEdit<br>
+<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3549">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-24 06:02 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I did some tests and I have the feeling that (dcl_Tree_CancelLabelEdit layer_sc_ltm_tree)  is without any effect?!<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3559">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-25 15:44 UTC</span>
+  </div>
+  <div class="post-body">I've now made some changes to the code so that CancelLabelEdit works as expected from within the OnBeginLabelEdit event handler.</div>
+</article>
+<article class="post" id="msg3563">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-27 06:18 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen!<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3569">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-28 19:31 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I don't know whether it belongs to the same case or not but shouldn't it be possible to change the item label within OnEndLabelEdit?<br>
+<br>
+<br>
+(defun c:layer_sc_ltm_tree_OnBeginLabelEdit (uKey)<br>
+  (setq ***ltm_label_name*** (cons uKey (dcl_Tree_GetItemText layer_sc_ltm_tree uKey)))<br>
+); c:layer_sc_ltm_tree_OnBeginLabelEdit<br>
+<br>
+(defun c:layer_sc_ltm_tree_OnEndLabelEdit (strNewValue uKey / oObj oState)<br>
+  (cond<br>
+    ((not ***ltm_label_name***) nil)<br>
+    ((not (setq oObj (get_vlaObject_from_handle uKey))) nil)<br>
+    ((or (not strNewValue)<br>
+	 (= (setq strNewValue (vl-string-trim " " strNewValue)) "")<br>
+	 (= strNewValue (cdr ***ltm_label_name***))) nil)<br>
+    ((apply 'or (mapcar '(lambda (x) (vl-string-search x strNewValue))<br>
+			'("&lt;" "&gt;" "/" "\\" "\"" ";" ":" "?" "*" "|" "~" "+" "." "," "=" "'" "´" "`"))) nil)<br>
+    ((&lt; (setq intPic (car (dcl_Tree_GetItemImages layer_sc_ltm_tree uKey))) 2)<br>
+     (if (and (not (member (strcase strNewValue)<br>
+			   (vl-remove (strcase (cdr ***ltm_label_name***))<br>
+			     (mapcar 'strcase (mapcar 'vla-get-name (LTM_THEMES_LIST nil))))))<br>
+	      (not (member (strcase strNewValue)<br>
+			   (vl-remove (strcase (cdr ***ltm_label_name***))<br>
+			     (mapcar 'strcase (mapcar 'vla-get-name (LTM_STATES_LIST)))))))<br>
+       (vla-put-name oObj strNewValue)<br>
+       (dcl_Tree_SetItemText layer_sc_ltm_tree uKey (cdr ***ltm_label_name***)) ;; &lt;- this line does not work<br>
+     ))<br>
+<br>
+    (T (dcl_Tree_SetItemText layer_sc_ltm_tree uKey (cdr ***ltm_label_name***))) ;; &lt;- this line does not work<br>
+  ); cond<br>
+); c:layer_sc_ltm_tree_OnEndLabelEdit<br>
+<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3589">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-30 01:01 UTC</span>
+  </div>
+  <div class="post-body">The problem is that the edited label gets set *after* OnEndLabelEdit returns, so it overwrites whatever you set from within the event handler. Luckily, there is a way to cancel the edit, so I added code to cancel the edit if the OnEndLabelEdit event handler calls SetItemLabel. This change should allow calls to SetItemLabel to work from within the event handler.</div>
+</article>
+<article class="post" id="msg3597">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-30 06:19 UTC</span>
+  </div>
+  <div class="post-body">Thanks, Owen!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

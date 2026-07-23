@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modeless form works, modal does not (?) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/21-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 23</p>
+    <h1>Modeless form works, modal does not (?)</h1>
+    <p class="meta">Started by hermanm ·
+      2007-07-23 05:00 UTC ·
+      2 replies · SMF topic #23</p>
+<article class="post" id="msg107">
+  <div class="post-head">
+    <span class="post-author">hermanm</span>
+    <span class="post-date muted">2007-07-23 05:00 UTC</span>
+  </div>
+  <div class="post-body">form shows, but unable to access controls, in modal version<br>
+<br>
+Get error msg:<br>
+<br>
+The control  variable argument passed to dcl_Control_SetText was NIL<br>
+<br>
+same result in a2k6,a2k8<br>
+latest ODCL , WinXp<br>
+<br>
+(?)<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg108">
+  <div class="post-head">
+    <span class="post-author">hermanm</span>
+    <span class="post-date muted">2007-07-23 05:47 UTC</span>
+  </div>
+  <div class="post-body">I think I get it - LISP gets suspended when the form is active, variables go out of scope when form is dismissed.<br>
+<br>
+IOW, similar to native dcl</div>
+</article>
+<article class="post" id="msg109">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-23 05:56 UTC</span>
+  </div>
+  <div class="post-body">yes ...<br>
+To do what you want, use the Initialize event ..<br>
+<br>
+<pre class="code"><code><br>
+<br>
+;;Test3 - MODAL .. revised kwb<br>
+<br>
+(DEFUN test3 (/ c:Test3_Form1_OnInitializ)<br>
+    (VL-LOAD-COM)<br>
+    ;;------------------------------------------------------<br>
+    (DEFUN c:Test3_Form1_OnInitialize (/)<br>
+        (DCL_CONTROL_SETTEXT Test3_Form1_Textbox1 "FooBar")<br>
+    )<br>
+    ;;------------------------------------------------------   <br>
+    (DCL_PROJECT_LOAD "Test3.odcl" T)<br>
+    (DCL_FORM_SHOW Test3_Form1)<br>
+    (PRINC)<br>
+)<br>
+<br>
+<br>
+<br>
+(PRINC "\nTest3 loaded")<br>
+(PRINC)</code></pre><br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

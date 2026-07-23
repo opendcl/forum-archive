@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Verhalten von Paletten · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/11-german.html">GERMAN</a> /
+      Topic 1165</p>
+    <h1>Verhalten von Paletten</h1>
+    <p class="meta">Started by Arcuso ·
+      2010-02-04 15:31 UTC ·
+      1 replies · SMF topic #1165</p>
+<article class="post" id="msg6186">
+  <div class="post-head">
+    <span class="post-author">Arcuso</span>
+    <span class="post-date muted">2010-02-04 15:31 UTC</span>
+  </div>
+  <div class="post-body">Hallo Forum !<br>
+<br>
+1.) Palette zugeklappt (nirgendwo angedockt) erstmalig aufrufen<br>
+Beim erstmaligen Aufruf erscheint die Palette zunächst im ACAD-Fenster links angedockt.<br>
+Da sie mehr breit als hoch ist, möchte ich sie als Standard immer zugeklappt und platzsparend irgendwo am Rande ruhen lassen.<br>
+<br>
+2.) Palette automatisch zuklappen als eine mit Lisp steuerbare Eigenschaft ?<br>
+Eine andere Palette möchte ich temporär aufgeklappt halten und die Daten von fortlaufend geklickten Blöcken sofort in den Feldern anzeigen. Erst am Ende der Auswahl soll die Lisp-Routine die Palette zuklappen, ohne einen weiteren Knopf drücken zu müssen.<br>
+<br>
+3.) Palette nur dann automatisch zuklappen, wenn kein Element den Fokus hat.<br>
+Wenn mehrere Eingabefelder enthalten sind und man interaktiv im Grafik-Editor etwas macht, hätte man gerne, dass die Palette offen bleibt, wenn ein Feld den Fokus hat. Sonst muss man nach dem erneuten Aufklappen dieses Feld wieder suchen.<br>
+<br>
+4.) Nicht-modalen Dialog minimieren<br>
+Könnte man ihn, um Platz am Bildschirm zu sparen, wie in Windows üblich, auch in der Task-Leiste mit allen Werten verfügbar halten?<br>
+Oft möchte man zwischendurch mit AutoCAD etwas grafisch erledigen und dann den Dialog wieder unverändert darstellen.<br>
+Ein 2.Monitor ist nicht immer verfügbar, wo man sich die Fenster und Paletten permanent auslagern kann.<br>
+</div>
+</article>
+<article class="post" id="msg6190">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-04 19:53 UTC</span>
+  </div>
+  <div class="post-body">Hallo,<br>
+<br>
+zu 1.<br>
+<br>
+Derzeit gibt es noch nicht die Möglichkeit, die Paletten-API von Autodesk zu steuern und Vorgabewerte zu setzen, was ich auch befürworten würde. Ich hatte zwischenzeitlich von Autodesk Tipps dazu erhalten und bereits den Entwicklern gepostet. Jetzt muss es nur noch jemand einbauen ...<br>
+<br>
+zu 2.<br>
+<br>
+Näherungsweise kann man es mit der Paletten-Eigenschaft KeepFocus erreichen: Ist KeepFocus T, wird die Palette nicht mehr automatisch zugeklappt, wenn Automatisch ausblenden aktiv ist.<br>
+<br>
+zu 3.<br>
+<br>
+Ich habe gerade so einen Fall (siehe Screenshot). Das kannst Du mit SetFocus und KillFocus erzielen. Innerhalb von SetFocus rufst Du (dcl_control_setkeepfocus MyProject_MyForm T) und in KillFocus (dcl_control_setkeepfocus MyProject_MyForm nil) auf.<br>
+<br>
+zu 4.<br>
+<br>
+Ja, da guckst Du bitte mal bei den Samples den FormMover an. Da kann man einen Knopf klicken und der Dialog verkleinert sich.<br>
+Ansonsten bei den nicht-modalen Dialogen die Hide-Methode beachten.<br>
+<br>
+VG, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1272/searchlist.gif">searchlist.gif</a> <span class="muted">(79500 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

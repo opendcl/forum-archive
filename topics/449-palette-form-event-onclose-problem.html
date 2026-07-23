@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Palette Form event OnClose problem · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 449</p>
+    <h1>Palette Form event OnClose problem</h1>
+    <p class="meta">Started by garcigj ·
+      2008-10-08 11:12 UTC ·
+      2 replies · SMF topic #449</p>
+<article class="post" id="msg2016">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2008-10-08 11:12 UTC</span>
+  </div>
+  <div class="post-body">No data are saved to dictionaries with vlax-ldata-xxx onclose during the event at kind FORM PALETTE. Perhaps this document readOnly during the event ...?<br>
+<br>
+OpenDcl Version: 5.0.0.25<br>
+Form: Palette<br>
+Event Invoke Form: 0 - Keep Focus OR 1 -Allow (Command)<br>
+Autocad versión: 2008<br>
+<br>
+(defun c:EspaciosTiempos_EP-FechasPKs_OnClose ( / TabAct)<br>
+  (Setq TabAct (dcl_Tab_GetCurSel (vl-doc-ref 'EspaciosTiempos_EP-FechasPKs_TabControl1)))<br>
+  (ET-SaveValTabs TabAct)<br>
+  (Vlax-ldata-put "ET_FECHAS&amp;PKS" "TabActive" TabAct)<br>
+  (dcl_MessageBox (strcat "OnClose event does not save data dictionary vlax-ldata-xxx \n\n"))<br>
+  (princ)<br>
+)<br>
+<br>
+After Collapse:<br>
+<br>
+(Vlax-ldata-get "ET_FECHAS&amp;PKS" "TabActive") == NIL<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/492/OpenDcl_EventClose_Capture_01.gif">OpenDcl_EventClose_Capture_01.gif</a> <span class="muted">(108578 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2017">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-08 12:26 UTC</span>
+  </div>
+  <div class="post-body">Hello garcigj <br>
+<br>
+1.<br>
+<br>
+<strong>Don't use Ldata. Ldata may destroy your drawing. Some developers got many problems cause they have used LDATA.<br>
+See here: http://ww3.cad.de/foren/ubb/Forum145/HTML/001629.shtml#000005</strong>. If you want to have secure access to the data use real dictionaries for huge data structures or EED for short data (for instance keys).<br>
+<br>
+2.<br>
+<br>
+When we have used LDATA a long time ago, we've found out that LDATA could not be written until the drawing was saved the first time.<br>
+<br>
+3.<br>
+<br>
+Try to write EED's instead of LData. Maybe that will work.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2020">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-10-08 18:59 UTC</span>
+  </div>
+  <div class="post-body">Great looking form garcigj.<br>
+Do you think you can post a still screen shot of it here:<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=416.0" rel="nofollow noopener">{2}</a><br>
+<br>
+So I can show it at AU.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

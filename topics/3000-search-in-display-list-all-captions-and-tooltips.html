@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Search in .. / Display list  all Captions and Tooltips · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 3000</p>
+    <h1>Search in .. / Display list  all Captions and Tooltips</h1>
+    <p class="meta">Started by Peter2 ·
+      2026-06-01 12:02 UTC ·
+      1 replies · SMF topic #3000</p>
+<article class="post" id="msg14337">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2026-06-01 12:02 UTC</span>
+  </div>
+  <div class="post-body">In many software products the settings are incredible long, and so there is often a "search in settings" functions. The same would be nice for my palette with is a little bit overloaded by buttons and functions.<br>
+<br>
+I have a ..<br>
+- modeless palette<br>
+- with 5 tabs<br>
+- with each of them 15 buttons with caption and tooltips<br>
+<br>
+Now I would like to create a list which consists of ..<br>
+"name of the tab - caption of button - Tooltip", like ..<br>
+<br>
+"Drawing - Red line - Draw a red line on layer water"<br>
+"Drawing - Blue Line - Draw a blue line on layer street"<br>
+"Modify - Red2Blue - Changes all red-water-lines to blue-street-lines"<br>
+<br>
+At the moment I'm fighting with all objects and functions, so I would like to ask if there is already an existing snippet?<br>
+<br>
+Thanks in advance!<br>
+Peter</div>
+</article>
+<article class="post" id="msg14338">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2026-06-02 09:14 UTC</span>
+  </div>
+  <div class="post-body">Here is my current code, which searches all entries for Caption and ToolTipTitle. If one of them exists, it concatenates it with the name of the control.<br>
+<br>
+It does not..<br>
+- find and consider the type of the control<br>
+- know the name of the tab where the control is situated.<br>
+<br>
+Improvements are welcomed!<br>
+<br>
+<pre class="code"><code><br>
+    (setq project htp/palette)<br>
+    <br>
+    ; Caption und/oder TooltipTitle auflisten<br>
+    (foreach control (dcl-form-getcontrols project) <br>
+        (setq showflag nil)<br>
+        (setq props (dcl-Control-GetProperties control))<br>
+        (if (member "Caption" props) <br>
+            (progn <br>
+                (setq kurz (dcl-Control-GetProperty control "Caption"))<br>
+                (if (/= kurz "") <br>
+                    (setq showflag t)<br>
+                )<br>
+            )<br>
+            (progn <br>
+                (setq kurz "----")<br>
+            )<br>
+        )<br>
+        (if (member "ToolTipTitle" props) <br>
+            (progn <br>
+                (setq lang (dcl-Control-GetProperty control "ToolTipTitle"))<br>
+                (if (/= lang "") <br>
+                    (setq showflag t)<br>
+                )<br>
+            )<br>
+            (progn <br>
+                (setq lang "----")<br>
+            )<br>
+        )<br>
+        (if showflag <br>
+            (progn <br>
+                (setq name (dcl-Control-GetProperty control "(Name)"))<br>
+                ; Version A: princ<br>
+                (setq info (strcat "\n" kurz "\t" lang "\t" name))<br>
+                (princ info)<br>
+                ; Version B: Add data to datasheet<br>
+                (dcl-Grid-AddRow htp/palette/Datenblatt kurz lang name)<br>
+            )<br>
+        ) ; if<br>
+    ) ; foreach<br>
+<br>
+<br>
+<br>
+</code></pre><br>
+<br>
+---</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

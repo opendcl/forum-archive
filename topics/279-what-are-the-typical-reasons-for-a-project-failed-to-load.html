@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>what are the typical reasons for a &quot;project failed to load!&quot; · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 279</p>
+    <h1>what are the typical reasons for a &quot;project failed to load!&quot;</h1>
+    <p class="meta">Started by zeeboy ·
+      2008-04-09 16:47 UTC ·
+      20 replies · SMF topic #279</p>
+<article class="post" id="msg1241">
+  <div class="post-head">
+    <span class="post-author">zeeboy</span>
+    <span class="post-date muted">2008-04-09 16:47 UTC</span>
+  </div>
+  <div class="post-body">sorry i haven't kept up with OpenDCL!  I'm now in an different job and language.<br>
+<br>
+but i'm trying to do some personally and i'm trying to get my old code to work and i'm getting "project failed to load!".  I tried the (LOAD "C:/Program Files/OpenDCL Studio/Examples/_MasterDemo.LSP") and even some of those examples get "project failed to load!".<br>
+<br>
+I'm using AutoCAD 2007.<br>
+<br>
+Thanks for any help that you can provide.<br>
+<br>
+doug</div>
+</article>
+<article class="post" id="msg1242">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-04-09 16:52 UTC</span>
+  </div>
+  <div class="post-body">What version of OpenDCL do you have installed?<br>
+</div>
+</article>
+<article class="post" id="msg1243">
+  <div class="post-head">
+    <span class="post-author">zeeboy</span>
+    <span class="post-date muted">2008-04-09 17:36 UTC</span>
+  </div>
+  <div class="post-body">4.1.2.1</div>
+</article>
+<article class="post" id="msg1244">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-04-09 22:28 UTC</span>
+  </div>
+  <div class="post-body">If you drag "C:/Program Files/OpenDCL Studio/Examples/_MasterDemo.LSP" into your Acad window all the other example should load form the MasterDemo's interface when click on the buttons. If you are trying to load any of the other examples manually, you'll have to add "C:/Program Files/OpenDCL Studio/Examples" to your Acad support path. If you're trying to load older ObjectDCL files, you'll have to open them in the editor first &amp; re-save them so they get updated. (make backup first).<br>
+You'll also need to update your code to use:<br>
+(dcl_Project_Load ....)<br>
+the old (dcl_loadproject ..) is obsolete</div>
+</article>
+<article class="post" id="msg1279">
+  <div class="post-head">
+    <span class="post-author">zeeboy</span>
+    <span class="post-date muted">2008-04-13 16:19 UTC</span>
+  </div>
+  <div class="post-body">the issue was mine obviously ;)<br>
+<br>
+i had an old version of the arx loading.<br>
+<br>
+thanks for your assistance!</div>
+</article>
+<article class="post" id="msg2211">
+  <div class="post-head">
+    <span class="post-author">ElectroBOG</span>
+    <span class="post-date muted">2008-12-05 10:13 UTC</span>
+  </div>
+  <div class="post-body">use <br>
+<strong>OpenDCL.Studio.ENU.5.0.1.4</strong><br>
+and <strong>AutoCAD 2009</strong> <strong>rus</strong> and <strong>eng</strong><br>
+<br>
+I wanted to run an example _<strong>MasterDemo</strong><br>
+<br>
+<span style="color:red"><strong>AutoCAD eror</strong></span><br>
+<br>
+The OpenDCL Runtime module failed to load. Please repair the OpenDCL installation and try again.<br>
+<br>
+command line<br>
+Command: (LOAD "C:/Program Files/OpenDCL Studio/ENU/Samples/_MasterDemo.lsp")<br>
+OpenDCL sample programs.<br>
+Enter "DEMO" to run the sample.<br>
+OpenDCL Unknown command "OPENDCL".  Press F1 for help.<br>
+<br>
+Command:<br>
+Application Error: 2 :- quit / exit abort<br>
+<br>
+<strong>what's the problem?</strong><br>
+<br>
+Sorry for my English ;)</div>
+</article>
+<article class="post" id="msg2213">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-12-05 12:28 UTC</span>
+  </div>
+  <div class="post-body">Hi, ElectroBOG, or better: sdrasdwuitjes, towaritsch?  ;)<br>
+<br>
+at first: welcome to this board!<br>
+Secondly: my English is worse, too. So, if anybody won't understand what you wrote - she/he will ask what you meant. No fear! Just post.<br>
+<br>
+At last: OpenDCL was not loaded. OPENDCL command only exist if a certain reg key exist. So, give me the key of the AutoCAD release you use. Togehther we will create a registry key file to add this feature to AutoCAD.<br>
+<br>
+Have a look at the registry and find this path: HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\<br>
+Which AutoCAD releases and products you use? See the picture at the bottom.<br>
+<br>
+Here is the registry file content for Civil 3D 2008 German.<br>
+<pre class="code"><code><br>
+Windows Registry Editor Version 5.00<br>
+<br>
+[HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R17.1\ACAD-6000:407\Applications\OpenDCL]<br>
+"Loader"="C:\\Programme\\Gemeinsame Dateien\\OpenDCL\\OpenDCL.17.arx"<br>
+"Description"="OpenDCL"<br>
+"LoadCtrls"=dword:0000000c<br>
+<br>
+[HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R17.1\ACAD-6000:407\Applications\OpenDCL\Commands]<br>
+"OPENDCL"="OPENDCL"<br>
+<br>
+</code></pre><br>
+<br>
+What you have to do is to copy the content above to notepad and save it to a reg-file, acad2009_rus.reg or similiar.<br>
+Then replace<br>
+- R17.1 with R17.2 (for 2009)<br>
+- ACAD-6000:407 with the key for the russian or english product (i don't know)<br>
+- C:\\Programme\\Gemeinsame Dateien with the top common files folder. In the folder you should find the OpenDCL folder, too. Don't move this !!!<br>
+<br>
+Save the file. Double click the file to add the content to the registry.<br>
+Restart AutoCAD. It should work now.<br>
+<br>
+Normally, this should be added automatically when installing OpenDCL.<br>
+I do not use the OPENDCL command in my code. I load the ARX-file using (arxload).<br>
+<br>
+Regards,<br>
+Fred<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/529/autocad.png">autocad.png</a> <span class="muted">(6622 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2215">
+  <div class="post-head">
+    <span class="post-author">ElectroBOG</span>
+    <span class="post-date muted">2008-12-05 13:33 UTC</span>
+  </div>
+  <div class="post-body">Looked registry, there was record <br>
+HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R17.2\ACAD-7006:419\Applications\OpenDCL - good<br>
+This AutoCAD MEP 2009 rus<br>
+but I did not try it then run the example in the AutoCAD MEP 2009 rus, now runs all works <br>
+<br>
+I tried to run the example in the AutoCAD Electrical 2009 rus<br>
+but there was no record in <br>
+HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R17.2\ACAD-7007:419\Applications - no OpenDCL<br>
+This AutoCAD Electrical 2009 rus<br>
+and <br>
+HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R17.2\ACAD-7006:409\Applications - no OpenDCL<br>
+This AutoCAD MEP 2009 en<br>
+because I install it later<br>
+<br>
+now prescribed<br>
+<br>
+[HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R17.2\ACAD-7007:419\Applications\OpenDCL]<br>
+"Loader"="C:\\Program Files\\Common Files\\OpenDCL\\OpenDCL.17.arx"<br>
+"Description"="OpenDCL"<br>
+"LoadCtrls"=dword:0000000c<br>
+<br>
+[HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R17.2\ACAD-7007:419\Applications\OpenDCL\Commands]<br>
+"OPENDCL"="OPENDCL"<br>
+<br>
+[HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R17.2\ACAD-7006:409\Applications\OpenDCL]<br>
+"Loader"="C:\\Program Files\\Common Files\\OpenDCL\\OpenDCL.17.arx"<br>
+"Description"="OpenDCL"<br>
+"LoadCtrls"=dword:0000000c<br>
+<br>
+[HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R17.2\ACAD-7006:409\Applications\OpenDCL\Commands]<br>
+"OPENDCL"="OPENDCL"<br>
+<br>
+it works <br>
+<br>
+mean for the Russian version AutoCAD Electrical 2009 not added automatically when installing OpenDCL<br>
+<br>
+good luck<br>
+<br>
+ps<br>
+AutoCAD Mechanical 2009 rus checked everything set automatically<br>
+HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R17.2\ACAD-7005:419\Applications\OpenDCL<br>
+<br>
+ps ps<br>
+and for MEP and Electrical not been instal<br>
+<br>
+I think when you install an application, and is one more search is not <br>
+for the first time it was the MEP 7006 (Electrical following 7007) <br>
+in the second Mechanical 7005 (following MEP and Electrical)<br>
+</div>
+</article>
+<article class="post" id="msg2220">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-12-06 18:50 UTC</span>
+  </div>
+  <div class="post-body">I've read this thread.  In the end, it's not clear to me whether there is a bug.  If you installed AutoCAD MEP 2009 *after* OpenDCL, then it would not recognize the _OPENDCL command.  That is expected  Simply performing a repair install in this case should register it properly for demand loading in AutoCAD MEP 2009.</div>
+</article>
+<article class="post" id="msg2232">
+  <div class="post-head">
+    <span class="post-author">ElectroBOG</span>
+    <span class="post-date muted">2008-12-07 07:00 UTC</span>
+  </div>
+  <div class="post-body">Error is that if you have more than one product based on AutoCAD, the installer OpenDCL is a first, while the rest is not installed <br>
+This is evident from my previous post, when <br>
+the first case - a ACAD MEP (ACAD-700<span style="color:red"><strong>6</strong></span>) and ACAD Electrical (ACAD-700<span style="color:red"><strong>7</strong></span>)<br>
+OpenDCL installed only for ACAD MEP <br>
+The second case - a ACAD Mechanical (ACAD-700<span style="color:red"><strong>5</strong></span>) ACAD MEP (ACAD-700<span style="color:red"><strong>6</strong></span>) and ACAD Electrical (ACAD-700<span style="color:red"><strong>7</strong></span>)<br>
+OpenDCL installed only for ACAD Mechanical</div>
+</article>
+<article class="post" id="msg2233">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-12-07 17:04 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=ElectroBOG link=topic=279.msg2232#msg2232 date=1228633200 wrote:</cite><br>
+Error is that if you have more than one product based on AutoCAD, the installer OpenDCL is a first, while the rest is not installed <br>
+</blockquote><br>
+<br>
+OpenDCL installs correctly on all flavors of AutoCAD on my US English Windows Vista system.  Which .msi did you install?  What is the exact version and language of your Windows installation?</div>
+</article>
+<article class="post" id="msg2234">
+  <div class="post-head">
+    <span class="post-author">ElectroBOG</span>
+    <span class="post-date muted">2008-12-07 18:27 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=279.msg2233#msg2233 date=1228669494 wrote:</cite><br>
+Which .msi did you install?</blockquote><br>
+OpenDCL.Studio.ENU.5.0.1.4.msi<br>
+<blockquote class="quote">What is the exact version and language of your Windows installation?</blockquote><br>
+Windows XP Pro. SP3 x86 Russian<br>
+<blockquote class="quote">OpenDCL installs correctly on all flavors of AutoCAD on my US English Windows Vista system.</blockquote><br>
+However, several installed flavors of AutoCAD?</div>
+</article>
+<article class="post" id="msg2235">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-12-07 20:07 UTC</span>
+  </div>
+  <div class="post-body">Thanks, I've found and fixed the problem for Beta 5.</div>
+</article>
+<article class="post" id="msg3371">
+  <div class="post-head">
+    <span class="post-author">zeeboy</span>
+    <span class="post-date muted">2009-04-03 03:01 UTC</span>
+  </div>
+  <div class="post-body">I'm back again! :)<br>
+<br>
+Yet another job but back to the AutoCAD world!<br>
+<br>
+I've got all my OpenDCL projects loaded, the _MasterDemo.lsp loads and shows the palette but when I click on any of the demo buttons the all result in the similar:<br>
+---------------------------<br>
+AutoCAD Message<br>
+---------------------------<br>
+Project failed to load!<br>
+The file could not be found or an error occurred while reading the file.<br>
+[C:\Program Files (x86)\OpenDCL Studio\ENU\Samples\Modeless.odcl]<br>
+---------------------------<br>
+OK   <br>
+---------------------------<br>
+<br>
+I'm using AutoCAD 2008 32 bit on a Vista 64 bit with AutoCAD 2007 also loaded.  I have the latest version of OpenDCL loaded.<br>
+<br>
+Again each of my projects loads and runs fine.<br>
+<br>
+I've added the following paths to my Support file paths:<br>
+C:\Program Files (x86)\Common Files\OpenDCL<br>
+C:\Program Files (x86)\OpenDCL Studio\ENU\Samples<br>
+<br>
+Thanks for your suggestions!<br>
+<br>
+Doug</div>
+</article>
+<article class="post" id="msg3373">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-03 10:50 UTC</span>
+  </div>
+  <div class="post-body">It sounds like some registry entries did not get written during installation. Did you install the MSI file under a user account, perhaps?</div>
+</article>
+<article class="post" id="msg3374">
+  <div class="post-head">
+    <span class="post-author">zeeboy</span>
+    <span class="post-date muted">2009-04-03 13:00 UTC</span>
+  </div>
+  <div class="post-body">I'm an administrator on this machine, not a Standard user.  Is that what you were referring to?<br>
+<br>
+I've rerun the OpenDCL.Studio.ENU.5.1.0.1.msi and it still doesn't work.<br>
+<br>
+Any other suggestions?<br>
+<br>
+Thanks!</div>
+</article>
+<article class="post" id="msg3376">
+  <div class="post-head">
+    <span class="post-author">zeeboy</span>
+    <span class="post-date muted">2009-04-03 13:59 UTC</span>
+  </div>
+  <div class="post-body">I'll add that it looks like anything new I create doesn't load as well.  But it has been a while since I've create an OpenDCL project.<br>
+<br>
+I've also uninstalled the AutoCAD 2007 version I had loaded and rerun the MSI to no success.<br>
+<br>
+It is really weird to me that projects I wrote years ago in the same folder as the new one I just created work but the new one doesn't! :(<br>
+<br>
+I'll keep working on it. :)<br>
+<br>
+Thanks in advance for any suggestions!<br>
+Doug</div>
+</article>
+<article class="post" id="msg3377">
+  <div class="post-head">
+    <span class="post-author">zeeboy</span>
+    <span class="post-date muted">2009-04-03 14:27 UTC</span>
+  </div>
+  <div class="post-body">I uninstalled OpenDCL.Studio.ENU.5.1.0.1 and installed OpenDCL.Studio.ENU.4.1.2.2, recreated my new project and everything is working including the demos for OpenDCL.Studio.ENU.4.1.2.2.<br>
+<br>
+Thanks!<br>
+Doug</div>
+</article>
+<article class="post" id="msg3379">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-03 16:54 UTC</span>
+  </div>
+  <div class="post-body">It almost sounds like you have several versions of OpenDCL Runtime installed, and the older one is loading. Are you perhaps loading an older version via acad.rx, or via the Startup Suite?<br>
+<br>
+I don't know why it would cause any problem, but there is no need to add anything to your support path. I would remove the two paths you added.</div>
+</article>
+<article class="post" id="msg3380">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-04-03 17:30 UTC</span>
+  </div>
+  <div class="post-body">Also did you install the Runtime &amp; the Studio? (you only need the Studio)<br>
+Where you mostly having issues with the sample project or your own also.<br>
+The sample projects search a register key to figure out where to load from. <br>
+I'm wondering if a 32 bit Acad on a 64 bit OS, is causing it to load from the wrong folder.<br>
+Just a thought....</div>
+</article>
+<article class="post" id="msg3474">
+  <div class="post-head">
+    <span class="post-author">zeeboy</span>
+    <span class="post-date muted">2009-04-13 19:42 UTC</span>
+  </div>
+  <div class="post-body">I did have Runtime &amp; the Studio installed, but I also think I may have had an older version loading from an add-on.  I uninstalled everything, removed the folders from the Support Path and renamed the OpenDCL.17.arx in the add-on folder that was found.  I then loaded the latest version of the Studio, copied the OpenDCL.17.arx from the C:\Program Files (x86)\Common Files\OpenDCL to that add-on folder and now all works beautifully!<br>
+<br>
+Thanks for both your suggestions!<br>
+<br>
+doug</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

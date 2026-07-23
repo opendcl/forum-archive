@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>grid dropdown combo list problems · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1592</p>
+    <h1>grid dropdown combo list problems</h1>
+    <p class="meta">Started by VovKa ·
+      2011-02-18 17:51 UTC ·
+      5 replies · SMF topic #1592</p>
+<article class="post" id="msg7791">
+  <div class="post-head">
+    <span class="post-author">VovKa</span>
+    <span class="post-date muted">2011-02-18 17:51 UTC</span>
+  </div>
+  <div class="post-body">(dcl_Grid_StartCellEdit  Row Column) does not work on cells of type 36 (dropdown combo list)<br>
+<br>
+(car (dcl_Grid_GetCellDropList  Row Column)) for cells of type 36 (dropdown combo list) is in reverse order<br>
+<br>
+OpenDCL.Studio.ENU.6.0.2.1</div>
+</article>
+<article class="post" id="msg7793">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-02-20 18:19 UTC</span>
+  </div>
+  <div class="post-body">I have fixed the (dcl_Grid_GetCellDropList) reverse order bug. (dcl_Grid_StartCellEdit) is working for me. Make sure you set the cell style before setting the drop list, otherwise the list gets reset when you change the cell style.</div>
+</article>
+<article class="post" id="msg7809">
+  <div class="post-head">
+    <span class="post-author">VovKa</span>
+    <span class="post-date muted">2011-02-23 17:17 UTC</span>
+  </div>
+  <div class="post-body">thanks for the reply, Owen<br>
+but<br>
+here -&gt; <a href="http://www.opendcl.com/forum/index.php?topic=700.msg3445#msg3445" rel="nofollow noopener">{2}</a> Fred posted an example of using grid control - one can use Enter to start editing a cell in the next row<br>
+i've changed c:userdata_input_OnInitialize function to demonstrate "the bug"<br>
+(defun c:userdata_input_OnInitialize (/ nRow)<br>
+      (foreach lstItem lstData<br>
+          (setq nRow (dcl_Grid_AddRow userdata_input_grd_data<br>
+                                      (list (car lstItem) (cdr lstItem))<br>
+                     )<br>
+          )<br>
+          (dcl_Grid_SetCellStyle userdata_input_grd_data nRow 1 36)<br>
+          (dcl_Grid_SetCellDropList userdata_input_grd_data nRow 1 '("1" "2" "3"))<br>
+      )<br>
+  )<br>
+run the code, type something in the first row, then press Enter, nothing will happen</div>
+</article>
+<article class="post" id="msg7811">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-02-23 20:46 UTC</span>
+  </div>
+  <div class="post-body">I tested your modified version of Fred's code. It appears to work if I just click in the cell without entering anything, but it does not work after typing something. I can't easily tell whether this is due to a bug in (dcl_Grid_StartCellEdit) or a bug in the lisp code, but the fact that it works if nothing is entered leads me to believe the bug is in the lisp code.</div>
+</article>
+<article class="post" id="msg7818">
+  <div class="post-head">
+    <span class="post-author">VovKa</span>
+    <span class="post-date muted">2011-02-24 22:42 UTC</span>
+  </div>
+  <div class="post-body">i found one more thing<br>
+load Fred's code (with my modification) into vlide<br>
+set the breakpoint just at the beginning of <strong>C:userdata_input_grd_data_OnEndLabelEdit</strong> (before <strong>cond</strong>)<br>
+run the code<br>
+type something in first row<br>
+hit Enter<br>
+acad switches to vlide<br>
+press <strong>Continue</strong><br>
+acad switches back<br>
+now you are in the second row and <u>editing</u><br>
+</div>
+</article>
+<article class="post" id="msg7821">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-02-25 17:37 UTC</span>
+  </div>
+  <div class="post-body">From your description, it seems to be working as I would expect.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

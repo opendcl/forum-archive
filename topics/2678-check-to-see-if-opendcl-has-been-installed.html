@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Check to see if OpenDCL has been installed. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2678</p>
+    <h1>Check to see if OpenDCL has been installed.</h1>
+    <p class="meta">Started by EricStiles ·
+      2019-05-06 02:26 UTC ·
+      5 replies · SMF topic #2678</p>
+<article class="post" id="msg13235">
+  <div class="post-head">
+    <span class="post-author">EricStiles</span>
+    <span class="post-date muted">2019-05-06 02:26 UTC</span>
+  </div>
+  <div class="post-body">I share my lisp programs with others in my company.  I often don't know who they are. Some of my lisp programs use OpenDCL.  In my lisp code I would like to have a way to check to see if OpenDCL has been installed and if not, send the user a message letting him or her know that they need to install it first and/or contact me for help.  And close the lisp program properly.  <br>
+Does anyone know of a way in lisp to check the computer to see if OpenDCL has been installed?</div>
+</article>
+<article class="post" id="msg13236">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2019-05-06 04:13 UTC</span>
+  </div>
+  <div class="post-body">Hi, the only way I see without running OpenDCL command is to search the Windows registry whether the key HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R\ACAD-\Applications\OpenDCL\Commands exists and the files "C:\Program Files (x86)\Common Files\OpenDCL\OpenDCL.x64..arx" exist.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg13237">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2019-05-06 06:24 UTC</span>
+  </div>
+  <div class="post-body">The first part of Tom's suggestion can look like this (tested on BricsCAD):<br>
+<pre class="code"><code>; (OpenDclInstalled_P)<br>
+(defun OpenDclInstalled_P ()<br>
+  (and<br>
+    (vl-registry-read<br>
+      (strcat<br>
+        "HKEY_LOCAL_MACHINE\\"<br>
+        (vlax-product-key)<br>
+        "\\Applications\\OpenDCL\\Commands"<br>
+      )<br>
+      "OPENDCL"<br>
+    )<br>
+  )<br>
+)</code></pre><br>
+<br>
+IMO this test would be enough.</div>
+</article>
+<article class="post" id="msg13238">
+  <div class="post-head">
+    <span class="post-author">EricStiles</span>
+    <span class="post-date muted">2019-05-07 01:19 UTC</span>
+  </div>
+  <div class="post-body">Thank you Fred and Roy and thanks for the code Roy.  I only know Lisp and messing with the registry scared me.  I didn't realize there were some VB functions for this.<br>
+I was hoping there was a way for (Command "OpenDCL") to return something to let you know it failed.  But I'll try your code when I get a chance.</div>
+</article>
+<article class="post" id="msg13239">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2019-05-07 07:36 UTC</span>
+  </div>
+  <div class="post-body">The command function always return nil. But if the OpenDCL command fails all ODCL functions will not be available in that CAD session. Checking for that is easy enough.</div>
+</article>
+<article class="post" id="msg13262">
+  <div class="post-head">
+    <span class="post-author">hanslammerts</span>
+    <span class="post-date muted">2019-06-16 20:33 UTC</span>
+  </div>
+  <div class="post-body">I turned it into these. Works for me. <br>
+Thanks for way to do a registry call<br>
+<br>
+<pre class="code"><code>(defun c:opendclcheck ()<br>
+    (if (vl-registry-read (strcat "HKEY_LOCAL_MACHINE\\"<br>
+                                  (vlax-product-key)<br>
+                                  "\\Applications\\OpenDCL\\Commands"<br>
+                          )<br>
+                          "OPENDCL"<br>
+        )<br>
+        (princ "ok")<br>
+        (princ "not ok")<br>
+    )<br>
+)</code></pre><br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

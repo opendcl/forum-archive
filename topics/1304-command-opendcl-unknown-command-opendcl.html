@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>(command &quot;_opendcl&quot;) ==&gt; Unknown command &quot;OPENDCL&quot; ?? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/19-deployment.html">Deployment</a> /
+      Topic 1304</p>
+    <h1>(command &quot;_opendcl&quot;) ==&gt; Unknown command &quot;OPENDCL&quot; ??</h1>
+    <p class="meta">Started by Hypersonic ·
+      2010-06-27 12:55 UTC ·
+      12 replies · SMF topic #1304</p>
+<article class="post" id="msg6978">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2010-06-27 12:55 UTC</span>
+  </div>
+  <div class="post-body">Hi all, I trying to get opendcl to run on autocad 2011 on xp pro 64 bit system.<br>
+<br>
+I have tried installing OpenDCL.Studio.ENU.6.0.0.26.msi and also OpenDCL.Runtime.5.1.2.3.msi<br>
+<br>
+neither seem to be working.  I have recently been able to install autocad 2011 on a windows 7 (64bit) and everything worked.<br>
+<br>
+Any thoughts on what I might be doing wrong?<br>
+<br>
+Thanks!</div>
+</article>
+<article class="post" id="msg6979">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-06-27 14:52 UTC</span>
+  </div>
+  <div class="post-body">OpenDCL 5 did not support AutoCAD 2011. You should install only the latest OpenDCL Studio 6 (which includes the runtime). I run it on a Windows 7 64-bit system, but it should work on XP 64 bit as well.  I'd uninstall everything you installed, then start over and install only OpenDCL Studio 6.</div>
+</article>
+<article class="post" id="msg6980">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2010-06-27 16:56 UTC</span>
+  </div>
+  <div class="post-body">I uninstalled everything.  Rebooted,  reinstall version 6 studio...<br>
+Same problem.   :(</div>
+</article>
+<article class="post" id="msg6981">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-06-27 19:17 UTC</span>
+  </div>
+  <div class="post-body">Are you installing with administrative permissions? Have a look in your registry to check whether the demand-load registry keys are being created during installation:<br>
+HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R18.1\ACAD-XXXX:XXX\Applications\OpenDCL</div>
+</article>
+<article class="post" id="msg6982">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2010-06-27 19:48 UTC</span>
+  </div>
+  <div class="post-body">This is what is shows in the registry.....ugh<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1414/SP32-20100627-154741.gif">SP32-20100627-154741.gif</a> <span class="muted">(32952 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6983">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2010-06-27 19:56 UTC</span>
+  </div>
+  <div class="post-body">I'm going to try a full de-install of acad and everything.... let you know in about 2 hours. :)</div>
+</article>
+<article class="post" id="msg6984">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-06-27 20:06 UTC</span>
+  </div>
+  <div class="post-body">Check your DEMANDLOAD system variable to make sure that demand loading is enabled. Also, ensure that the .arx is where it shows in the 'Loader' key, and that it loads without error (just drag and drop it into AutoCAD). Finally, verify that there isn't an overriding entry in the HKCU registry hive. Otherwise I don't know why it wouldn't be loading.</div>
+</article>
+<article class="post" id="msg6985">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2010-06-27 23:03 UTC</span>
+  </div>
+  <div class="post-body">Reinstall didn't seem to work.<br>
+Droping it on the acad screen did.<br>
+So I just added it to the appload starup suite.  That seems to do the trick...<br>
+<br>
+Thank you for your help :D</div>
+</article>
+<article class="post" id="msg7092">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-08-03 16:47 UTC</span>
+  </div>
+  <div class="post-body">We're having I believe the same issue.<br>
+Two different machines, both XP64, both with AutoCAD 2010.<br>
+(command "OPENDCL") fails, but manually loading the Arx does work.<br>
+On both machines confirmed that Demand Load is turned on.<br>
+On one machine, adding the Arx to the startup suite worked.<br>
+But on the other, it is showing up as loaded, but upon firing any OpenDCL functions (my guess is loading the project, but I haven't tracked down the exact line of code), getting:<br>
+"This file does not have a program associated with it for performing this action"<br>
+<br>
+It's possible the latest version of Odcl that was forcibly reinstalled was 6.0.23.<br>
+<br>
+As always, thanks for any thoughts!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg7094">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-08-03 18:13 UTC</span>
+  </div>
+  <div class="post-body">Did you check all the things I listed in my earlier message?  There are a finite number of possible explanations, so it's just a matter of checking all the possibilities.</div>
+</article>
+<article class="post" id="msg7096">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-08-03 18:19 UTC</span>
+  </div>
+  <div class="post-body">Demandload was turned on.<br>
+In the Registry was just the single entry for Loader, and if I copied that text, arxload could correctly load it.<br>
+<br>
+We're going to do another WebMeeting and find out more info from the client.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg7097">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-08-03 18:43 UTC</span>
+  </div>
+  <div class="post-body">Make sure that LoadCtrls is present and set to 0x0000000c (12), and that there is a Command subkey with a string value OPENDCL = "OPENDCL". You should also check the HKCU hive, as it can override the settings in HKLM. Finally, make sure you're looking at the right registry key by calling (vl-load-com)(vlax-product-key) in AutoCAD.</div>
+</article>
+<article class="post" id="msg7098">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-08-03 18:48 UTC</span>
+  </div>
+  <div class="post-body">Wouldn't you know it, I get logged into the user's machine, and OpenDCL was working perfectly.<br>
+He was misreporting which dialog box was not working.  It was instead the one that was using Shell.Application.Open to spawn default web browser, which is what was generating the error.<br>
+I didn't have the patience to track down if indeed it was necessary to add OpenDCL to the Startup Suite to get it to work with XP64, although that was the case with the other machine.<br>
+Sorry for the false alarm, thanks as always for your incredible support.<br>
+<br>
+--J<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

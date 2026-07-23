@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>List Box Events · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/21-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 687</p>
+    <h1>List Box Events</h1>
+    <p class="meta">Started by docsaintly ·
+      2009-04-01 00:21 UTC ·
+      5 replies · SMF topic #687</p>
+<article class="post" id="msg3330">
+  <div class="post-head">
+    <span class="post-author">docsaintly</span>
+    <span class="post-date muted">2009-04-01 00:21 UTC</span>
+  </div>
+  <div class="post-body">I was thoroughly enjoying the automatic behavior of the list boxes. I set two up side by side and it handled all the dragging and dropping of items from one to another. However, i want to make it so once a new item is dragged into a listbox another listbox will update. It seems that once I added a "DragnDropFromOther" event this default behavior went away. I was thinking it was because once i added the event I was in charge of how it handled drag and drops, but then I tried SetFocus and it had the same effect. Can anyone help? </div>
+</article>
+<article class="post" id="msg3331">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-01 01:37 UTC</span>
+  </div>
+  <div class="post-body">You are exactly right about the automatic behavior going away once you add your own DragDropFromOther handler, but SetFocus should not have anything to do with it. I'll bet that you still have that event (or DragnDropFromControl) enabled.</div>
+</article>
+<article class="post" id="msg3332">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-01 02:35 UTC</span>
+  </div>
+  <div class="post-body">I was going to suggest using OnSelChanged to detect when items are dropped into the list, but I found that SelChanged was not being fired when Drag/Drop Allow Begin was enabled.  I've fixed this for the next build.  A better solution would be an OnListModified event, but that will need to be left for another day.</div>
+</article>
+<article class="post" id="msg3334">
+  <div class="post-head">
+    <span class="post-author">docsaintly</span>
+    <span class="post-date muted">2009-04-01 04:35 UTC</span>
+  </div>
+  <div class="post-body">Owen, you got to it before I could. After posting i tried all the methods to see how they reacted and noticed that the onselchange didn't work as I had hoped. How often are releases done? Also, is it possible to put a function in that will assume the responsibility of the automatic behavior? Or maybe if we could get a chunk of the code so we could put it in and make small changes or append to it as we need?<br>
+<br>
+It seems like a waste to have to completely rewrite what happens when an item is dropped into a list just to have it do another action on top of it.<br>
+<br>
+Thanks for the quick response. I grow ot love opendcl more and more as I see the ease of it's interfaces.</div>
+</article>
+<article class="post" id="msg3335">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-04-01 04:47 UTC</span>
+  </div>
+  <div class="post-body">Owen usually posts a new build every Sunday night, if he's not too busy on other projects. With Acad2010 shipping I could foresee him being busy on other projects in the near future, but he'll have to confirm that. When he gets the "OnSelChanged" firing with Drag/Drop it looks like it will salve your issue. You should be able to use the default Drag/Drop behavior and add onto it in the "OnSelChanged" event.... :)<br>
+</div>
+</article>
+<article class="post" id="msg3338">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-01 10:49 UTC</span>
+  </div>
+  <div class="post-body">It would be nice to be able to "extend" the built-in behavior, but backward compatibility is very important, and the current behavior is a good compromise between maintaining backward compatibility and extending the power of drag/drop, without creating too much work for me. I'll release the next update this weekend.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

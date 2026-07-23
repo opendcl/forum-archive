@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DCL_DIRFILES and x64 - OpenDcl 5.1.2.3 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 972</p>
+    <h1>DCL_DIRFILES and x64 - OpenDcl 5.1.2.3</h1>
+    <p class="meta">Started by DW ·
+      2009-10-17 07:09 UTC ·
+      2 replies · SMF topic #972</p>
+<article class="post" id="msg4921">
+  <div class="post-head">
+    <span class="post-author">DW</span>
+    <span class="post-date muted">2009-10-17 07:09 UTC</span>
+  </div>
+  <div class="post-body">Thanks for dcl_dirfiles - I had been using doslib's dos_find function until discovering this - seems faster and also means I don't have to load doslib.<br>
+<br>
+Not sure if this has been reported before and if it has been addressed in the latest releases, but when testing with 64 bit Opendcl and AutoCAD 2010 I get 'no function definition error' for dcl_dirfiles.  Everything else works fine and no errors with this function and x32 bit OpenDcl.<br>
+</div>
+</article>
+<article class="post" id="msg4923">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-17 13:07 UTC</span>
+  </div>
+  <div class="post-body">That function is working for me in AutoCAD 2010 x64. I suspect the problem is that your OpenDCL runtime is not loaded when you use the function. Make sure you execute the OPENDCL command before you attempt to call (dcl_dirfiles) by e.g. (command "OPENDCL"). Does that help?</div>
+</article>
+<article class="post" id="msg4961">
+  <div class="post-head">
+    <span class="post-author">DW</span>
+    <span class="post-date muted">2009-10-18 05:49 UTC</span>
+  </div>
+  <div class="post-body">:o... Oops I shouldn't jump to conclusions so easily - after checking once more what version of OpenDCL was loading I found it wasn't 5.1.2.3 but an earlier version... There are no issues with this function in a 64 bit environment after making sure the 5.1.2.3 runtime is installed. <br>
+<br>
+Thanks for your most excellent work on this Owen.<br>
+ </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

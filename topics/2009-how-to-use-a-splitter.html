@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>how to use a splitter · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2009</p>
+    <h1>how to use a splitter</h1>
+    <p class="meta">Started by balisteor ·
+      2013-08-13 14:25 UTC ·
+      11 replies · SMF topic #2009</p>
+<article class="post" id="msg9901">
+  <div class="post-head">
+    <span class="post-author">balisteor</span>
+    <span class="post-date muted">2013-08-13 14:25 UTC</span>
+  </div>
+  <div class="post-body">For some reason I cannot find out how splitters are supposed to work. nor can I find basic help on these. so nevermind how upsetting this is for me, I would like someone to take a look at this and tell me what I'm doing wrong.  I have each listbox alignment edges set to the splitter but when it is moved, the two listboxes stay put  and when I perform a redraw on the form they still do nothing. I'm assuming I'm not supposed to resize, move the listboxes on my own (which is what I've currently been doing) because isn't the splitter supposed to to do that?  So I'm quite confused. I'm sure this is a lisp code problem and I need to add more, I just need someone to politely tell me what it is I need to add.<br>
+<br>
+<br>
+(attached are opendcl and lisp file)<br>
+Thanks.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1901/splittertest.odcl">splittertest.odcl</a> <span class="muted">(692 bytes)</span></li><li><a href="../attachments/1902/splittertest.lsp">splittertest.lsp</a> <span class="muted">(148 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9902">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-08-13 14:41 UTC</span>
+  </div>
+  <div class="post-body">You need to set the list box edge position to be relative to the splitter. Use the Properties wizard and choose Splitter1 to align the appropriate left or right edge to the splitter. You do not need any lisp code. Please take a look at the Splitter sample if you have trouble understanding how the splitter works.</div>
+</article>
+<article class="post" id="msg9904">
+  <div class="post-head">
+    <span class="post-author">balisteor</span>
+    <span class="post-date muted">2013-08-13 14:52 UTC</span>
+  </div>
+  <div class="post-body">Are they not already? the right edge of listbox1 is set to splitter1, and the left edge of listbox2 is set to splitter1.  and splitter 1 the left and right is set to itself.</div>
+</article>
+<article class="post" id="msg9905">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-08-13 14:54 UTC</span>
+  </div>
+  <div class="post-body">The file you attached does not have the list box edges aligned to the splitter.</div>
+</article>
+<article class="post" id="msg9906">
+  <div class="post-head">
+    <span class="post-author">balisteor</span>
+    <span class="post-date muted">2013-08-13 15:00 UTC</span>
+  </div>
+  <div class="post-body">I know this is going to sound stupid, I'm not seeing the error, and in the sample that matches what I have done. but the sample works   So could you change that odcl file to working order and re-attach it? and see if it will work for me?</div>
+</article>
+<article class="post" id="msg9907">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-08-13 15:21 UTC</span>
+  </div>
+  <div class="post-body">Here are the steps to fix your file:<br>
+<br>
+1) Download splittertest.odcl from the previous post and open it in Studio.<br>
+2) In the project tree, double click on Modeless\Form1 to open it for editing.<br>
+3) In the Z-Order tab, double click on ListBox1 to open the property wizard.<br>
+4) On the Geometry tab, change Right Side Alignment to Splitter1 and press .<br>
+5) In the Z-Order tab, double click on ListBox2 to open the property wizard.<br>
+6) On the Geometry tab, change Left Side Alignment to Splitter1 and press .<br>
+7) Save the modified file.</div>
+</article>
+<article class="post" id="msg9908">
+  <div class="post-head">
+    <span class="post-author">balisteor</span>
+    <span class="post-date muted">2013-08-13 16:05 UTC</span>
+  </div>
+  <div class="post-body">something is getting my editor mixed up, it gets the splitter stuck on itself, and the listbox1 left alignment stuck on the splitter, when i did your exact steps, it worked! for the first time ever!  And it made me a little upset because I cannot figure out why..   When i remake a new one and create all them together again like i did the first time it gets stuck and wont work and i cannot get them fixed. So I will go through all my steps again and see what is causing this error of i can. then report back. (video attached of error)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1903/20130813_0958_27.gif">20130813_0958_27.gif</a> <span class="muted">(1436126 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9909">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-08-13 16:14 UTC</span>
+  </div>
+  <div class="post-body">If you can provide exact steps to reproduce that from a new project, I would like to investigate further. I think the editor should not allow a splitter to be aligned to itself; I will investigate that as well.</div>
+</article>
+<article class="post" id="msg9910">
+  <div class="post-head">
+    <span class="post-author">balisteor</span>
+    <span class="post-date muted">2013-08-13 16:28 UTC</span>
+  </div>
+  <div class="post-body">I'm using version 7.0.0.13<br>
+<br>
+ok, so I make a new project, add a modal or mode-less dialog and add a splitter. it automatically assigns the edges to itself.. no matter what i do. if its a vertical splitter (moves up and down) it assigns the top and bottom to itself as well.<br>
+So i was thinking why did it work when I downloaded my own file?<br>
+<br>
+So i saved this new form, and re-opened it, and then it works. it gets rid of the bug, so its only when i make them the first time. if it is saved, closed and then re-opened it seems to fix itself.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1904/20130813_1036_36.gif">20130813_1036_36.gif</a> <span class="muted">(782607 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9911">
+  <div class="post-head">
+    <span class="post-author">balisteor</span>
+    <span class="post-date muted">2013-08-13 17:08 UTC</span>
+  </div>
+  <div class="post-body">Now I see why this never worked for me. I've worked for hours on a project and could never get the splitter to work, but now if i just save the project and re-open it it I can edit it and make it work.<br>
+<br>
+I assume its only my computer doing this though, it doesn't seem that anyone else has encountered this, But why I do not know.<br>
+<br>
+Hopefully it's easy for you to figure out.<br>
+again if it helps -&gt; I'm using v7.0.0.13, Windows 7</div>
+</article>
+<article class="post" id="msg9912">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-08-13 17:17 UTC</span>
+  </div>
+  <div class="post-body">Thanks, I was able to reproduce the problem. It is now fixed for the next build.</div>
+</article>
+<article class="post" id="msg9913">
+  <div class="post-head">
+    <span class="post-author">balisteor</span>
+    <span class="post-date muted">2013-08-13 17:35 UTC</span>
+  </div>
+  <div class="post-body">Thanks to you for helping me think a little harder, I have a workaround and can now use them.<br>
+I now have my first splitter and it works!<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1905/20130813_1130_07.gif">20130813_1130_07.gif</a> <span class="muted">(1654966 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

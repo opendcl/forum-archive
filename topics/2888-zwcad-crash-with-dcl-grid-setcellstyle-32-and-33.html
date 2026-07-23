@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZwCAD crash with dcl-Grid-SetCellStyle 32 and 33 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2888</p>
+    <h1>ZwCAD crash with dcl-Grid-SetCellStyle 32 and 33</h1>
+    <p class="meta">Started by Blade ·
+      2023-09-21 05:51 UTC ·
+      1 replies · SMF topic #2888</p>
+<article class="post" id="msg13899">
+  <div class="post-head">
+    <span class="post-author">Blade</span>
+    <span class="post-date muted">2023-09-21 05:51 UTC</span>
+  </div>
+  <div class="post-body">I have a custom layer properties grid.<br>
+<pre class="code"><code>(dcl-Grid-SetCellStyle myGrig row col 32) ;LineWeight cell style<br>
+(dcl-Grid-SetCellStyle myGrig row col 33) ;LineType cell style</code></pre><br>
+When I click on a cell with cell style 32 and 33 the ZwCAD 2022 and also 2023 crashes. (BricsCAD and AutoCAD does not crash)<br>
+It was tested with OpenDCL 9.2.1.2 and 9.1.5.2</div>
+</article>
+<article class="post" id="msg13900">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2023-09-23 22:48 UTC</span>
+  </div>
+  <div class="post-body">I could reproduce this in the Grid sample. Their CAdUiComboBox::SetStyleMask() function crashes. For the next build of OpenDCL I have added a preprocessor guard to skip this SetStyleMask() call on ZWCAD. The problem should be reported to ZWSOFT developers if you have contact with them.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Enable and Disable · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 946</p>
+    <h1>Enable and Disable</h1>
+    <p class="meta">Started by eptownie1988 ·
+      2009-09-30 02:04 UTC ·
+      3 replies · SMF topic #946</p>
+<article class="post" id="msg4755">
+  <div class="post-head">
+    <span class="post-author">eptownie1988</span>
+    <span class="post-date muted">2009-09-30 02:04 UTC</span>
+  </div>
+  <div class="post-body">I am having trouble writing the code for the following situation.<br>
+<br>
+I have a checkbox that is enabled and a textbox that is disabled and I want the dialog to function as follows:<br>
+<br>
+If the checkbox is selected then I want to enable to textbox for input (this I have accomplished)<br>
+<br>
+(defun c:ITEXT_Form1_Node_CheckBox_OnClicked (nValue /)<br>
+  (dcl_Control_SetEnabled ITEXT_Form1_Node_TextBox T)<br>
+)<br>
+<br>
+<br>
+If the checkbox is unselected I want to redisable the textbox.  This is where I am stuck.<br>
+<br>
+Any help would be appreciated.  Thank you.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4756">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-09-30 02:15 UTC</span>
+  </div>
+  <div class="post-body">Try...<br>
+<br>
+<br>
+(defun c:ITEXT_Form1_Node_CheckBox_OnClicked (nValue /)<br>
+  (if (= nValue 1)<br>
+    (dcl_Control_SetEnabled ITEXT_Form1_Node_TextBox T)<br>
+    (dcl_Control_SetEnabled ITEXT_Form1_Node_TextBox nil)<br>
+  )<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg4757">
+  <div class="post-head">
+    <span class="post-author">eptownie1988</span>
+    <span class="post-date muted">2009-09-30 02:38 UTC</span>
+  </div>
+  <div class="post-body">Barry:<br>
+<br>
+Thank you I was on the right track but I was trying to use (2) two if statements in front of the (DCL_Control_SetEnabled.....) lines of code.  This forum has definitely the best moderators I have ever experienced in a forum.  I have posted several questions and received replies very quickly and with accurate information from the start.  OpenDCL is an amazing program as well are the people who support it.  Keep up the great work.</div>
+</article>
+<article class="post" id="msg4761">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-09-30 17:15 UTC</span>
+  </div>
+  <div class="post-body">thx, glad we can help. :)<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

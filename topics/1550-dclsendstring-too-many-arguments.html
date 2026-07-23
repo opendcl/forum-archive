@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dclsendstring too many arguments · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1550</p>
+    <h1>dclsendstring too many arguments</h1>
+    <p class="meta">Started by andrew ·
+      2010-12-06 15:40 UTC ·
+      4 replies · SMF topic #1550</p>
+<article class="post" id="msg7583">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-12-06 15:40 UTC</span>
+  </div>
+  <div class="post-body">having an issue with a project im working on.<br>
+<br>
+the following code works however when trying to send a acad command thru i get a "too many arguments" error <br>
+<br>
+can someone point out what im doing wrong?<br>
+<br>
+<pre class="code"><code><br>
+<br>
+(defun zoomtext (/)<br>
+(command "_.zoom" "_w" xy1 xy2)<br>
+)<br>
+<br>
+(defun c:oSTKBK_Form1_find_OnClicked (/)<br>
+<br>
+<br>
+(SETQ SS1 (SSGET "X" (LIST (CONS 0 "TEXT"))))<br>
+(SETQ SSL (SSLENGTH SS1))<br>
+(SETQ CNT1 0)<br>
+(setq kk "Next")<br>
+(SETQ OLDS (strcase (dcl_Control_GetText oSTKBK_Form1_TextBox1)))<br>
+(WHILE (and (SETQ EN (SSNAME SS1 CNT1)) (eq kk "Next"))<br>
+(SETQ ED (ENTGET EN))<br>
+(SETQ ET (CDR (ASSOC 1 ED)))<br>
+(IF (WCMATCH ET (STRCAT "*" OLDS "*")) (PROGN<br>
+(setq x1x (car (cdr (assoc 10 ed))))<br>
+(setq y1y (cadr (cdr (assoc 10 ed))))<br>
+(setq sclxy (CDR (assoc 40 ed)))<br>
+(setq x2x (rtos (- x1x (* sclxy 30))))<br>
+(setq x3x (rtos (+ x1x (* sclxy 30))))<br>
+(setq y2y (rtos (+ y1y (* sclxy 20))))<br>
+(setq y3y (rtos (- y1y (* sclxy 20))))<br>
+(setq xy1 (strcat x2x "," y3y))<br>
+(setq xy2 (strcat x3x "," y2y))<br>
+(dcl_sendstring "_.zoom" "_w" xy1 xy2)  &lt;--- this is the issue<br>
+(dcl_sendstring "zoomtext ")  &lt;-- this doesnt work either<br>
+(setq xyx 1)<br>
+(setq lyr1 (cdr (assoc 8 ed)))<br>
+(setq lyr2 "0")<br>
+(while (&lt;= xyx 5)<br>
+(setq ed (subst (cons 8 lyr2) (assoc 8 ed) ed))<br>
+(entmod ed)<br>
+(setq ed (subst (cons 8 lyr1) (assoc 8 ed) ed))<br>
+(entmod ed)<br>
+(setq xyx (+ xyx 1))<br>
+);end while<br>
+(defun c:oSTKBK_Form1_next_OnClicked (/)<br>
+(setq kk "Next")<br>
+)<br>
+)<br>
+)<br>
+(SETQ CNT1 (1+ CNT1))<br>
+) <br>
+<br>
+) ; end find onclick<br>
+[\code]<br>
+<br>
+any help is appreciated</code></pre></div>
+</article>
+<article class="post" id="msg7584">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-12-06 15:51 UTC</span>
+  </div>
+  <div class="post-body">The separate zoomtext function is how I would handle this. How does it fail?</div>
+</article>
+<article class="post" id="msg7586">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-12-06 18:05 UTC</span>
+  </div>
+  <div class="post-body">I got it to work by doing the following<br>
+<br>
+(dcl_sendstring "(zoomtext) ") <br>
+<br>
+the other way, it just wouldnt call the function<br>
+and the way with the command in it, gave me too many arguments.<br>
+<br>
+got it working though<br>
+thanks</div>
+</article>
+<article class="post" id="msg7587">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-12-06 18:22 UTC</span>
+  </div>
+  <div class="post-body">Ah yes, you would need to define it as (defun c:zoomext ...) if you want to run it like a command.</div>
+</article>
+<article class="post" id="msg7591">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-12-07 17:53 UTC</span>
+  </div>
+  <div class="post-body">oh  :o<br>
+duh on my part, that explains everything now lol<br>
+<br>
+thanks Owen</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

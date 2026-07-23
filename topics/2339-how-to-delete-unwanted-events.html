@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to delete unwanted events · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2339</p>
+    <h1>How to delete unwanted events</h1>
+    <p class="meta">Started by ScottBolton ·
+      2015-12-01 14:28 UTC ·
+      2 replies · SMF topic #2339</p>
+<article class="post" id="msg11737">
+  <div class="post-head">
+    <span class="post-author">ScottBolton</span>
+    <span class="post-date muted">2015-12-01 14:28 UTC</span>
+  </div>
+  <div class="post-body">In my Splash exercise I create a <strong>c:splash/Form1#OnTimer</strong> event. Once my splash screen has disappeared that function is still available - how do I remove it?</div>
+</article>
+<article class="post" id="msg11738">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-12-01 14:52 UTC</span>
+  </div>
+  <div class="post-body">Hi, in modal forms I place the events in the private symbol list of the defun:<br>
+(defun c:mytest (/ c:splash/Form1#OnTimer) ... )<br>
+<br>
+In modeless forms you can set the symbols to nil manually.<br>
+(setq c:splash/Form1#OnTimer nil)<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11739">
+  <div class="post-head">
+    <span class="post-author">ScottBolton</span>
+    <span class="post-date muted">2015-12-01 16:25 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred.  I'd tried both methods but get the message <strong>; error: no function definition: C:SPLASH/FORM1#ONTIMER</strong>.<br>
+<br>
+My modeless code is:<br>
+<br>
+(dcl-Project-Load "splash.odcl" nil)<br>
+(dcl-Form-Show splash/Form1)<br>
+(dcl-Form-StartTimer splash/Form1 5000)<br>
+(defun c:splash/Form1#OnTimer ()<br>
+  (dcl-Project-Unload "splash" T)<br>
+  (princ)<br>
+  )<br>
+<br>
+Presumably I'm setting c:splash/Form1#OnTimer to nil before the 5 seconds has elapsed.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Method AddColumns - what is wrong? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 373</p>
+    <h1>Method AddColumns - what is wrong?</h1>
+    <p class="meta">Started by Zibster ·
+      2008-07-04 10:57 UTC ·
+      1 replies · SMF topic #373</p>
+<article class="post" id="msg1638">
+  <div class="post-head">
+    <span class="post-author">Zibster</span>
+    <span class="post-date muted">2008-07-04 10:57 UTC</span>
+  </div>
+  <div class="post-body">I have problem with GridControl.<br>
+Inteliigent Help:<br>
+<br>
+AutoLISP Syntax:<br>
+(dcl_Grid_AddColumns bik_Siatki_frmSiatki_gridStand <br>
+	(list (list  <br>
+	sColText [as String] <br>
+	Optional nJustification [as Integer] <br>
+	Optional nColWidth [as Integer] <br>
+	Optional nImageListIndex [as Integer]) <br>
+...))<br>
+<br>
+In my code:<br>
+<br>
+(dcl_Grid_AddColumns bik_Siatki_frmSiatki_gridStand <br>
+	   (list  (list 0  "Lp" 1 30)<br>
+		  (list 2  (nth 0 lstNaglowki) 1 50)<br>
+		  (list 3  (nth 1 lstNaglowki) 1 40)<br>
+		  (list 4  (nth 2 lstNaglowki) 1 40)<br>
+		  (list 5  (nth 3 lstNaglowki) 1 40)<br>
+		  (list 6  (nth 4 lstNaglowki) 1 40)<br>
+		  (list 7  (nth 5 lstNaglowki) 1 40)<br>
+            )<br>
+)<br>
+<br>
+My list lstNaglowki:<br>
+(setq lstNaglowki (list "Typ" "Długość " "Szerokość " "Rozstaw wzdłużny " "Rozstaw poprzeczny " "Wysięg przód " "Wysięg prawy " ))<br>
+<br>
+what is wrong?<br>
+When I used ver. 4.0.2 all was okey,<br>
+now I have 5.0.0.18 and ... --&gt; attach<br>
+<br>
+Zbyszek<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/435/error.jpg">error.jpg</a> <span class="muted">(43469 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1640">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-07-04 12:35 UTC</span>
+  </div>
+  <div class="post-body">Look carefully at the Intelligent Help for AddColumns.  Notice that the column index argument has been removed.  Just remove the first item in each sublist, and make sure you add columns sequentially, then your code should work.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

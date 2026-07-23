@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid questions · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 314</p>
+    <h1>Grid questions</h1>
+    <p class="meta">Started by fred_tomke ·
+      2008-05-08 14:25 UTC ·
+      4 replies · SMF topic #314</p>
+<article class="post" id="msg1392">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-08 14:25 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I have three problems with a grid. Use the attached project and lisp with A14.<br>
+<br>
+1. 4 of 6 switchable icons do not work. The only difference is that the preset icons are not the first which were defined in setitemstyle-method. An example: when I use (dcl_grid_setitemstyle grid row col 3 4 5) and I continue with (dcl_control_setitemimage control row col 4) the images can be switched, but not when using (dcl_control_setitemimage control row col 5).<br>
+<br>
+2. I can preset ACI color in the rgb-style cell using (dcl_Grid_SetItemStyle grid row col 31 83). Then the right color will be shown. But no text is shown. When I add the text later then an rgb color 0,0,0 will be set. How can I avoid that? Or better: how can I make sure that the color number is shown as text, too? In this cell ACI, RGB and color books shall be selectable. That's why cell style 20 and 30 are not good in this case.<br>
+<br>
+3. How to preset a lineweight value?<br>
+<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/384/grid_problems.zip">grid_problems.zip</a> <span class="muted">(4363 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1401">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-09 07:58 UTC</span>
+  </div>
+  <div class="post-body">Workaround for number 1:<br>
+<br>
+Assign the item style 3 with the switchable icons ordered by the current state: the first icon must be the icon which shall be shown during initialization:<br>
+<br>
+<pre class="code"><code><br>
+(setq lstPic (list 1 2)); 1 = true, 2 = false<br>
+(setq lstPic (if (= uCurrentValue :vlax-true) (vl-sort lstPic '&lt;) (vl-sort lstPic '&gt;))) ; uCurrentValue is the current property's value<br>
+(dcl_Grid_SetItemStyle layer_sc_layer_props_grd_props intRow 1 3 (car lstPic) (last lstPic))<br>
+(dcl_Grid_SetItemImage layer_sc_layer_props_grd_props intRow 1 (car lstPic))<br>
+</code></pre><br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1407">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-13 07:07 UTC</span>
+  </div>
+  <div class="post-body">Ok, Owen told me to use GetItemCheck and SetItemCheck for my first problem:<br>
+<br>
+<pre class="code"><code><br>
+(setq lstPic (list 1 2)); 1 = true, 2 = false<br>
+(dcl_Grid_SetItemStyle layer_sc_layer_props_grd_props intRow 1 3 (car lstPic) (last lstPic))<br>
+(dcl_Grid_SetItemCheck layer_sc_layer_props_grd_props intRow 1 (if (= (last lstItem) :vlax-true) 0 1))<br>
+</code></pre><br>
+<br>
+That works very fine!<br>
+<br>
+Thanks, Owen!   ;D<br>
+Fred</div>
+</article>
+<article class="post" id="msg1415">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-05-14 19:06 UTC</span>
+  </div>
+  <div class="post-body">Setting a true color cell's text resets its image index, but it should work as you expect if you set the text first, then the image index. The logic for converting a color value into displayable text is contained within the "editor" for the cell (in this case the true color dialog), so it is only used when interactively editing the cell contents.<br>
+<br>
+For lineweight cells, the image index specifies the lineweight in hundredths.  That is, a lineweight of 1.00 millimemeters is specified as an image index of 100.</div>
+</article>
+<article class="post" id="msg1426">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-14 23:10 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen,<br>
+<br>
+lineweight preselection works very well but I have to have it in mind to set the text (0.53 mm) at first and only after that I have to use setitemstyle with the lineweight value.<br>
+<br>
+Yes, the preselection of ACI colors works very well now. Are there any experiences in preselect colors from color books?<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

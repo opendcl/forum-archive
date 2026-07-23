@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tutorial lsp erros · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/21-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1022</p>
+    <h1>Tutorial lsp erros</h1>
+    <p class="meta">Started by cadguy1685 ·
+      2009-11-22 23:53 UTC ·
+      3 replies · SMF topic #1022</p>
+<article class="post" id="msg5206">
+  <div class="post-head">
+    <span class="post-author">cadguy1685</span>
+    <span class="post-date muted">2009-11-22 23:53 UTC</span>
+  </div>
+  <div class="post-body">Hello all,<br>
+<br>
+I'm a total OPDCL Newb but looking forword to learning this.  Anyways I'm having a problem with the _masterdem.lsp. this is the error I get.<br>
+<br>
+<blockquote class="quote">Command: (LOAD "C:/Program Files/OpenDCL Studio/ENU/Samples/_MasterDemo.lsp")<br>
+OPENDCLDEMO<br>
+Unknown command "OPENDCL".  Press F1 for help.<br>
+; error: An error has occurred inside the *error* functionno function <br>
+definition: DCL_FORM_ISACTIVE</blockquote><br>
+<br>
+any ideas?</div>
+</article>
+<article class="post" id="msg5208">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-23 00:02 UTC</span>
+  </div>
+  <div class="post-body">You must first install the OpenDCL Studio MSI file on your computer. End users of your program will need to install the OpenDCL Runtime MSI file.</div>
+</article>
+<article class="post" id="msg5209">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-23 00:33 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+If you have met the suggestion posted by Owen, and still have problems ;<br>
+<br>
+Please advise if you have the Studio Editor or the Runtime Installed ?  ( must be one or the other ) <br>
+<br>
+which version is installed ?<br>
+<br>
+run this Lsp code (command TESTIT ) and advise result.<br>
+<br>
+<br>
+(defun c:TestIt (/ odcl_arxpath)<br>
+  (vl-load-com)<br>
+  (princ (strcat "\n   Demand Load Setting :"<br>
+                 (itoa (getvar "demandload"))<br>
+                 "\n"<br>
+         )<br>
+  )<br>
+  (setq<br>
+    odcl_arxpath (vl-registry-read (strcat "HKEY_LOCAL_MACHINE\\"<br>
+                                           (vlax-product-key)<br>
+                                           "\\Applications\\OpenDCL"<br>
+                                   )<br>
+                                   "Loader"<br>
+                 )<br>
+  )<br>
+  (princ<br>
+    (strcat "\n   ArxPath : " (VL-PRINC-TO-STRING odcl_arxpath) "\n")<br>
+  )<br>
+  (princ)<br>
+)<br>
+<br>
+<br>
+ps:<br>
+Welcome to the Forum :)</div>
+</article>
+<article class="post" id="msg5210">
+  <div class="post-head">
+    <span class="post-author">cadguy1685</span>
+    <span class="post-date muted">2009-11-23 00:42 UTC</span>
+  </div>
+  <div class="post-body">Well this is what I did.  I originally installed the OpenDCL studio first.  I didn't have AutoCAD installed on this laptop as I was not home at the time.  I later insallted AutoCAD2009 and tried the lisp and got the error.  I did read the first post and I new for sure I installed the Studio version first.  So i just decided to run the msi file again and do a "repair".  This seems to have fixed the problem.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

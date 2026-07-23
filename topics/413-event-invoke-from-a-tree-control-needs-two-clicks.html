@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Event invoke from a tree control needs two clicks? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 413</p>
+    <h1>Event invoke from a tree control needs two clicks?</h1>
+    <p class="meta">Started by architrave ·
+      2008-08-29 21:40 UTC ·
+      4 replies · SMF topic #413</p>
+<article class="post" id="msg1848">
+  <div class="post-head">
+    <span class="post-author">architrave</span>
+    <span class="post-date muted">2008-08-29 21:40 UTC</span>
+  </div>
+  <div class="post-body">I am using a dockable form with a tree control. I want to get one point from AutoCAD when I rigthclick on one item of the tree.<br>
+<br>
+Everything works correct excep that I have to click twice (one for getting the focus on AutoCAD window and the second to select the point).<br>
+<br>
+However if I try to do the same operation but using a button control there is no need of two clicks.<br>
+<br>
+Can I avoid the double click when using tree controls.<br>
+<br>
+I am using th 4.1.2.2 version<br>
+<br>
+Thank you very much</div>
+</article>
+<article class="post" id="msg1849">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-08-29 21:53 UTC</span>
+  </div>
+  <div class="post-body">Hello architrave &amp; welcome to the team.<br>
+Try adding (dcl_SetCmdBarFocus) to your RightClick Event.<br>
+So Acad will take focus before you pick inside the window.<br>
+</div>
+</article>
+<article class="post" id="msg1850">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-08-29 21:58 UTC</span>
+  </div>
+  <div class="post-body">Or you can uncheck the "Keep Focus" property on your dockable form.<br>
+</div>
+</article>
+<article class="post" id="msg1851">
+  <div class="post-head">
+    <span class="post-author">architrave</span>
+    <span class="post-date muted">2008-08-29 22:06 UTC</span>
+  </div>
+  <div class="post-body">I had the EventInvoke property set to 1-Allow (Command ... ) and it did not worked.<br>
+<br>
+However, (dcl_SetCmdBarFocus)  works perfectly. <br>
+<br>
+Thank you very much.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg1859">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-08-30 03:06 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=413.msg1850#msg1850 date=1220047128 wrote:</cite><br>
+Or you can uncheck the "Keep Focus" property on your dockable form.<br>
+</blockquote><br>
+<br>
+OpenDCL 4.1 doesn't have that property .</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

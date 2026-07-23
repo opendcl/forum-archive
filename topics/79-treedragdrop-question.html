@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TreeDragDrop question · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 79</p>
+    <h1>TreeDragDrop question</h1>
+    <p class="meta">Started by fred_tomke ·
+      2007-10-29 08:42 UTC ·
+      6 replies · SMF topic #79</p>
+<article class="post" id="msg342">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2007-10-29 08:42 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I've attached a small project and a lisp. (using Beta 2)<br>
+<br>
+Please load it. A dockabled form with two parent items will be shown.<br>
+Drag is allowed in the tree.<br>
+Drop is allowed in the tree.<br>
+Click one item after the other. After clicking one item SelChange event will be released after moving the mouse one pixel. After disabling the AllowDrag property, selchanged event will be fired immediately.<br>
+I found out that OnClick event will be fired immediately after clicking in the tree only when AllowDrag property is disabled but it will only be released (when AllowDrag property is enabled) after clicking an already selected item a second time. Thats why I added the event OnSelChanged.<br>
+<br>
+Maybe it depends on the eventinvoke.<br>
+<br>
+If a video could explain it better, so let me know.<br>
+<br>
+I place my note here in case of the fact these things could be by design. On the other hand I didn't find an option to upload files in this forum http://sourceforge.net/forum/forum.php?forum_id=658811 .<br>
+<br>
+Regards,<br>
+Fred<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg345">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-11-02 05:15 UTC</span>
+  </div>
+  <div class="post-body">Fred, I believe this is working as designed. When drag 'n drop is enabled, mousedown initiates a drag operation. However, it is normal Windows behavior that if the mouse is released again before moving outside the double-click rectangle, the drag operation is cancelled.<br>
+<br>
+The problem with the OnSelChanged event not firing until you move the mouse is due to the EventInvoke setting; change it to 0 for the tree control and that event fires as soon as the mouse button is pressed down. The OnClick event does seem to behave a bit strangely when DragDropAllowBegin is true, but I don't see anything unusual in the code, so I think it is working in the way that Microsoft designed the tree control.</div>
+</article>
+<article class="post" id="msg346">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2007-11-02 09:19 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+thank you for your reply.<br>
+Unfortunately, I need the AllowCommand value in EventInvoke because some things won't work with keep focus. If I use the value 0 I cannot start several commands in AutoCAD (picking points etc.).<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg347">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-11-02 18:29 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=79.msg346#msg346 date=1193995198 wrote:</cite><br>
+Unfortunately, I need the AllowCommand value in EventInvoke because some things won't work with keep focus. If I use the value 0 I cannot start several commands in AutoCAD (picking points etc.).</blockquote><br>
+<br>
+I don't think there is any way to do those things while a drag operation is in progress. You could use SendString to send commands from the handler, but the effect would be no different than if you had set EventInvoke to 1.  In either case, AutoCAD will wait to process the command input until the drag operation is completed.</div>
+</article>
+<article class="post" id="msg348">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2007-11-02 21:30 UTC</span>
+  </div>
+  <div class="post-body">Sorry, Owen, I'm afraid there is a misunderstanding. I don't want to do anything in AutoCAD while drag&amp;drop process. But I have to enable it for sorting elements in the tree. On the other hand allowcommand must be set to start autocad commands by doubleclicking a tree item. The problem I explained does only occur if both is enabled: AllowDrag for individual sorting and EventInvoke=AllowCommand for starting AutoCAD-commands after double click.<br>
+<br>
+In other forms I solved this problem with a toggle in the dialog for enabling drag&amp;drop. I explained this toggle to the customers that some don't want to start drag&amp;drop unexpectively. Who don't want to use drag&amp;drop they should disable drag&amp;drop. But this explanation only covers this problem: OnClick event will be fired immediately after clicking in the tree only when AllowDrag property is disabled but it will only be released (when AllowDrag property is enabled) after clicking an already selected item a second time.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg349">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-11-03 02:20 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=79.msg348#msg348 date=1194039026 wrote:</cite><br>
+On the other hand allowcommand must be set to start autocad commands by doubleclicking a tree item.</blockquote><br>
+<br>
+In that case, I think you can leave EventInvoke set to 0, but in the double click event handler, use (dcl_SendString) to send the command.</div>
+</article>
+<article class="post" id="msg350">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2007-11-03 06:51 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen, I'll try that next week.<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

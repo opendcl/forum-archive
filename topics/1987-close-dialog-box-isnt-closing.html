@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>close dialog box isnt closing · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1987</p>
+    <h1>close dialog box isnt closing</h1>
+    <p class="meta">Started by andrew ·
+      2013-07-29 16:10 UTC ·
+      2 replies · SMF topic #1987</p>
+<article class="post" id="msg9799">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2013-07-29 16:10 UTC</span>
+  </div>
+  <div class="post-body">im sure its something im doing, or not doing<br>
+or maybe i dont have something in the right order<br>
+i even tried to strip the code down to just call the dialog and close it with a button and it still doesnt close.<br>
+<br>
+maybe someone can look at this and tell me why?<br>
+<br>
+attached are my files<br>
+thanks<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1883/newtb.odcl">newtb.odcl</a> <span class="muted">(1236 bytes)</span></li><li><a href="../attachments/1884/newtb.lsp">newtb.lsp</a> <span class="muted">(4057 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9800">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-07-29 16:57 UTC</span>
+  </div>
+  <div class="post-body">The problem is that your event handlers are not defined until after the form is closed. Put your event handler defun's at the beginning of your (defun C:BL), or keep them global (i.e. define them outside the C:BL function scope). In any case, they should be defined *before* your code displays the form with (dcl_Form_Show).</div>
+</article>
+<article class="post" id="msg9801">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2013-07-29 17:25 UTC</span>
+  </div>
+  <div class="post-body"> :o :o i knew it was something stupid like that... thanks Owen</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

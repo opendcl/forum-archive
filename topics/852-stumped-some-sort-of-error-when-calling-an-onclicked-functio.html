@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stumped:  some sort of error when calling an onclicked function · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/21-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 852</p>
+    <h1>Stumped:  some sort of error when calling an onclicked function</h1>
+    <p class="meta">Started by thatcadguy ·
+      2009-07-17 13:31 UTC ·
+      2 replies · SMF topic #852</p>
+<article class="post" id="msg4225">
+  <div class="post-head">
+    <span class="post-author">thatcadguy</span>
+    <span class="post-date muted">2009-07-17 13:31 UTC</span>
+  </div>
+  <div class="post-body">Basically, I've made this little program and when OpenDCL calls the function:<br>
+<br>
+(defun c:LayZer_Dia_AddButton_OnClicked (/)<br>
+  (LayZer_addLayers (dcl_ListBox_GetSelectedItems LayZer_Dia_Layerlist))<br>
+  (princ)<br>
+)<br>
+<br>
+It produces the error: Command: ; error: invalid AutoCAD command: nil<br>
+<br>
+Yet, when I run (LayZer_addLayers (dcl_ListBox_GetSelectedItems LayZer_Dia_Layerlist)) at the command prompt, the function completes successfully.<br>
+<br>
+I added a prompt statement into the onclicked function to see if it was even being called and yes, it is.  For some reason OpenDCL just doesn't like calling my function when it's called from another (tried putting that statement in the closebutton_onclicked function, same error).  I've looked at my layzer_addlayers function and made sure there are no errors; made sure the layzerlayerdata list is full before it runs...don't know what to do here.  Everything should run fine but it doesn't.<br>
+<br>
+Attached is everything you'll need to reproduce the error (hopefully).  Thanks in advance for any help.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/847/layzer.zip">layzer.zip</a> <span class="muted">(5120 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4228">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-07-17 15:59 UTC</span>
+  </div>
+  <div class="post-body">This is working as expected when Event Invoke is set to 'Synchronous'. Try changing to to 'Asynchronous', then you can call (command) from your event handlers. You might have to wait for the next build, because it fixes a bug which caused modeless dialog event handlers to ignore the Event Invoke setting.</div>
+</article>
+<article class="post" id="msg4230">
+  <div class="post-head">
+    <span class="post-author">thatcadguy</span>
+    <span class="post-date muted">2009-07-17 19:23 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

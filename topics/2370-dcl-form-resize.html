@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DCL-Form-Resize · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2370</p>
+    <h1>DCL-Form-Resize</h1>
+    <p class="meta">Started by amc.dicsac ·
+      2016-05-12 22:44 UTC ·
+      5 replies · SMF topic #2370</p>
+<article class="post" id="msg11875">
+  <div class="post-head">
+    <span class="post-author">amc.dicsac</span>
+    <span class="post-date muted">2016-05-12 22:44 UTC</span>
+  </div>
+  <div class="post-body">Hello such'm using this "DCL-Form-Resize" function in the following code, but I can not do that again take the initial size was.<br>
+<br>
+(defun c:PALETA1DEU/Prototipo1/btsize#OnAccionado ()<br>
+(if  (= 295 (dcl-Control-SetMinHeight PALETA1DEU/Prototipo1) )<br>
+   (progn (dcl-Form-Resize PALETA1DEU/Prototipo1  162 640)<br>
+               (dcl-Form-Resize PALETA1DEU/Prototipo1  162 295)<br>
+)<br>
+)<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg11876">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-05-13 07:32 UTC</span>
+  </div>
+  <div class="post-body">Where are you 'taking the original size' in the code? And why are you using dcl-Form-Resize twice?</div>
+</article>
+<article class="post" id="msg11878">
+  <div class="post-head">
+    <span class="post-author">amc.dicsac</span>
+    <span class="post-date muted">2016-05-13 15:13 UTC</span>
+  </div>
+  <div class="post-body">Hello such what I try to do is create a button that allows me to resize the high, similar to what is done with the properties palette AutoCAD that allows us to expand and extend the items</div>
+</article>
+<article class="post" id="msg11879">
+  <div class="post-head">
+    <span class="post-author">amc.dicsac</span>
+    <span class="post-date muted">2016-05-13 17:47 UTC</span>
+  </div>
+  <div class="post-body">where it can be the error  :-\<br>
+<br>
+(defun c:PALETA1DEU/Prototipo1/btsize#OnAccionado ( / )<br>
+(if (= (Car (dcl-Form-GetControlArea PALETA1DEU/Prototipo1)) 295)<br>
+		(progn<br>
+			(dcl-Form-Resize PALETA1DEU/Prototipo1 162 640)<br>
+			(dcl-Control-SetPicture PALETA1DEU/Prototipo1/btsize 242)<br>
+		);_ progn<br>
+		(progn<br>
+			(dcl-Form-Resize PALETA1DEU/Prototipo1 162 295)<br>
+			(dcl-Control-SetPicture PALETA1DEU/Prototipo1/btsize 241)<br>
+		);_ progn<br>
+	);_ if<br>
+(princ))<br>
+</div>
+</article>
+<article class="post" id="msg11880">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-05-13 18:23 UTC</span>
+  </div>
+  <div class="post-body">You may have to undock the palette for the resizing to work.</div>
+</article>
+<article class="post" id="msg11881">
+  <div class="post-head">
+    <span class="post-author">amc.dicsac</span>
+    <span class="post-date muted">2016-05-13 18:37 UTC</span>
+  </div>
+  <div class="post-body">Hello thanks, but already I found the error<br>
+<br>
+ (defun c:PALETA1DEU/Prototipo1/btsize#OnAccionado ( / )<br>
+(if (= (cadr (dcl-Form-GetControlArea PALETA1DEU/Prototipo1)) 295)<br>
+		(progn<br>
+			(dcl-Form-Resize PALETA1DEU/Prototipo1 162 640)<br>
+			(dcl-Control-SetPicture PALETA1DEU/Prototipo1/btsize 242)<br>
+		);_ progn<br>
+		(progn<br>
+			(dcl-Form-Resize PALETA1DEU/Prototipo1 162 295)<br>
+			(dcl-Control-SetPicture PALETA1DEU/Prototipo1/btsize 241)<br>
+		);_ progn<br>
+	);_ if<br>
+)<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

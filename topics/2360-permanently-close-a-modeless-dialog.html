@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Permanently close a Modeless Dialog · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2360</p>
+    <h1>Permanently close a Modeless Dialog</h1>
+    <p class="meta">Started by Emiliano ·
+      2016-04-13 16:43 UTC ·
+      6 replies · SMF topic #2360</p>
+<article class="post" id="msg11840">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2016-04-13 16:43 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+I have realized a Modeless Dialog.<br>
+During its use, according to the user settings dialog changes in width and height dimension.<br>
+Subsequently, the user presses OK.<br>
+At the end of the lisp function connected to Ok there is the following code<br>
+<br>
+(dcl-Form-Close NomeApp_Form/NomeForm)<br>
+<br>
+However, if the user opens the Dialogue it is the old size and settings, while I would like that the Dialog is reset to the initial settings.<br>
+How can I do?</div>
+</article>
+<article class="post" id="msg11841">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-04-14 08:21 UTC</span>
+  </div>
+  <div class="post-body">(dcl-Control-SetHeight  NewValue [as Long])<br>
+(dcl-Control-SetWidth  NewValue [as Long])</div>
+</article>
+<article class="post" id="msg11842">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2016-04-14 08:25 UTC</span>
+  </div>
+  <div class="post-body">Maybe I have explained badly.<br>
+I wish that after closing the dialog, when I open it again, it must be found with the default settings.<br>
+Currently after reopening I find all compiled textbox, and I do not want this</div>
+</article>
+<article class="post" id="msg11843">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-04-15 07:52 UTC</span>
+  </div>
+  <div class="post-body">I don't understand what you mean by 'compile textbox' or the settings you are referring to.</div>
+</article>
+<article class="post" id="msg11844">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2016-04-15 08:00 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2360.msg11843#msg11843 date=1460706733 wrote:</cite><br>
+I don't understand what you mean by 'compile textbox' or the settings you are referring to.<br>
+</blockquote><br>
+<br>
+To reproduce the problem:<br>
+1. Close AutoCAD<br>
+2. Open AutoCAD<br>
+3. Open the Modeless Dialog<br>
+4. Fill in some TextBox: thanks to the code that I put in the event OnEditChanged, filling these TextBox the Dialog width changes<br>
+5. Close the dialog (eg. With the "X" or a button with (dcl-Form-Close NomeApp_Form/NomeForm)<br>
+6. Reopen the Modeless Dialog<br>
+<br>
+<br>
+I wish that the open dialogue with the passage 6, was equal to the dialog opened with the step 3, before the compilation of the TextBox.<br>
+I achieved this by code, however I think there is a way (that I do not know) to reset everything to the initial state.<br>
+<br>
+I hope I was clear this time.</div>
+</article>
+<article class="post" id="msg11845">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-04-15 10:34 UTC</span>
+  </div>
+  <div class="post-body">ODCL stores the Height, Width, TopLeftX and TopLeftY of each dialog in the registry.<br>
+As far as I know the only alternative to my first answer is deleting that information from the registry before relaunching the dialog.</div>
+</article>
+<article class="post" id="msg11846">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2016-04-15 13:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2360.msg11845#msg11845 date=1460716477 wrote:</cite><br>
+ODCL stores the Height, Width, TopLeftX and TopLeftY of each dialog in the registry.<br>
+As far as I know the only alternative to my first answer is deleting that information from the registry before relaunching the dialog.<br>
+</blockquote><br>
+<br>
+I did as you suggested in the first answer and it works.<br>
+However it seemed more logical if there was something to do this automatically.<br>
+<br>
+Thanks anyway</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

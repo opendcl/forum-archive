@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OtionList question · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1186</p>
+    <h1>OtionList question</h1>
+    <p class="meta">Started by velasquez ·
+      2010-02-19 13:30 UTC ·
+      11 replies · SMF topic #1186</p>
+<article class="post" id="msg6326">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-02-19 13:30 UTC</span>
+  </div>
+  <div class="post-body">Is it possible to remove the mark of the selection of an item of OptionList?  <br>
+In OptionButton this mark doesn't exist.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1308/OptionList.png">OptionList.png</a> <span class="muted">(8038 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6327">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-19 13:46 UTC</span>
+  </div>
+  <div class="post-body">Hi, as far as I remember (somebody may correct me), this is controlled by the SetAnchorIndex method in ListBoxes.<br>
+So maybe the question is: wouldn't it be good for consistency of OpenDCL controls to provide such methods like GetAnchorIndex, GetTopIndex, SetAnchorIndex, SetTopIndex for ListBoxes as well as for ListViews, DWGList, BlockList and OptionList? Just a thought of mine, I may be wrong... But if so, we should add it as a feature request.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6329">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-19 14:48 UTC</span>
+  </div>
+  <div class="post-body">The anchor index is the base item for a multiple selection. Since the optionlist control doesn't support multiple selection, it would not make sense to set the anchor index. It would be easy to not paint the focus rectangle, but that focus rectangle serves an important function for keyboard only users.</div>
+</article>
+<article class="post" id="msg6330">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-02-19 15:53 UTC</span>
+  </div>
+  <div class="post-body">This doesn't seem to be important with OptionButton.  <br>
+The selection of the item shows more than the rectangle.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1309/OptionList.png">OptionList.png</a> <span class="muted">(8502 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6331">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-19 19:04 UTC</span>
+  </div>
+  <div class="post-body">Why do you think it is not important?</div>
+</article>
+<article class="post" id="msg6332">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-02-19 19:32 UTC</span>
+  </div>
+  <div class="post-body">It is just my thought.  <br>
+I believe that the Item just selected it is already enough to show this.  <br>
+In this case I will continue working with OptionButton.</div>
+</article>
+<article class="post" id="msg6335">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-02-19 21:36 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=1186.msg6332#msg6332 date=1266607948 wrote:</cite><br>
+It is just my thought.  <br>
+I believe that the Item just selected it is already enough to show this.  <br>
+In this case I will continue working with OptionButton.<br>
+</blockquote><br>
+<br>
+velasquez, this doesn't mean that the item was selected, it means that it has focus...<br>
+If you look at the Acad Options window vid. below you'll see that it does the same thing, both when you pick &amp; when you use the keyboard.<br>
+<br>
+Owen, I think I found a small bug because of this topic. Note in my vids, the last picked item has the focus box around it even when you keyboard away from it..<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1310/Ops.gif">Ops.gif</a> <span class="muted">(189102 bytes)</span></li><li><a href="../attachments/1311/OptLst.gif">OptLst.gif</a> <span class="muted">(62994 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6338">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-19 22:31 UTC</span>
+  </div>
+  <div class="post-body">I can't reproduce the focus rectangle painting problem in Windows 7 / AutoCAD 2010.</div>
+</article>
+<article class="post" id="msg6340">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-02-19 23:58 UTC</span>
+  </div>
+  <div class="post-body">Ya this was on Win XP, Acad2008.<br>
+Oh ya prob. on 5.1.2.3, I'll check v6...</div>
+</article>
+<article class="post" id="msg6341">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-02-20 00:06 UTC</span>
+  </div>
+  <div class="post-body">OK you're right. In 6.0.0.22 I don't have the focus box issue anymore.<br>
+<br>
+But now I see a new issue (or one I thought we visited before).<br>
+Now the OptionsLists keep repainting themselves as I pass the mouse over them &amp; they get darker &amp; darker...<br>
+WinXP, Acad2008 &amp; Acad2010, Default XP theme<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1312/OptLstRepaint.gif">OptLstRepaint.gif</a> <span class="muted">(294141 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6342">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-02-20 00:23 UTC</span>
+  </div>
+  <div class="post-body">hmmm never mind, I think it's just something wrong with that Messagebox Demo file.<br>
+I even tried it on Win7 Acad2010 &amp; I still get that darkening effect, but when I run one of my newer projects with OptionsLists in it, they're fine..</div>
+</article>
+<article class="post" id="msg6343">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-20 01:08 UTC</span>
+  </div>
+  <div class="post-body">I have the same problem with the message box demo. I think it's some combination of anti-aliasing and overlapping controls (in this case the frame) that causes it, but I have never been able to solve it.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

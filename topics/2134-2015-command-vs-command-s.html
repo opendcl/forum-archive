@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2015 &amp; (command) vs (command-s) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2134</p>
+    <h1>2015 &amp; (command) vs (command-s)</h1>
+    <p class="meta">Started by Joel Roderick ·
+      2014-04-28 13:26 UTC ·
+      8 replies · SMF topic #2134</p>
+<article class="post" id="msg10638">
+  <div class="post-head">
+    <span class="post-author">Joel Roderick</span>
+    <span class="post-date muted">2014-04-28 13:26 UTC</span>
+  </div>
+  <div class="post-body">I haven't completely researched this, but wanted to get a post started to potentially save some headaches.  I have code that works in 2010-2014 but crashes in 2015.  I have isolated the issue to event functions that use (command) or (vl-cmdf).<br>
+<br>
+I was able to resolve the crash by swapping (command) with (command-s).  My suspicion is that this is some sort of asynchronous/synchronous issue introduced in 2015.<br>
+<br>
+So far simply replacing (command) or (vl-cmdf) with (command-s) has fixed the issue.<br>
+<br>
+I think (command-s) was introduced in 2014.  The differences are documented here:<br>
+<a href="http://help.autodesk.com/cloudhelp/2015/ENU/AutoCAD-AutoLISP/files/GUID-5C9DC003-3DD2-4770-95E7-7E19A4EE19A1.htm" rel="nofollow noopener">{2}</a>.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg10639">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-28 14:21 UTC</span>
+  </div>
+  <div class="post-body">Do the crashes occur every time you call (command), or is this in intermittent problem? I haven't done any testing with (command) in 2015, but I will take a look to see if there's anything I could do in OpenDCL to prevent the crashes.</div>
+</article>
+<article class="post" id="msg10640">
+  <div class="post-head">
+    <span class="post-author">Joel Roderick</span>
+    <span class="post-date muted">2014-04-28 14:28 UTC</span>
+  </div>
+  <div class="post-body">It seems to be consistent behavior.<br>
+<br>
+I have had to change each call to (command).  All is working fine now.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg12126">
+  <div class="post-head">
+    <span class="post-author">TopoWAR</span>
+    <span class="post-date muted">2016-10-12 14:14 UTC</span>
+  </div>
+  <div class="post-body">Hello, I have the following code was applied to all lisp functions, correct?<br>
+<br>
+(if command-s (command-s "line") (command "line"))</div>
+</article>
+<article class="post" id="msg12127">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-10-12 14:38 UTC</span>
+  </div>
+  <div class="post-body">I would use:<br>
+((if command-s command-s command) "line" ...)<br>
+Or:<br>
+(if (not command-s) (setq command-s command))<br>
+...<br>
+(command-s "line" ...)</div>
+</article>
+<article class="post" id="msg12138">
+  <div class="post-head">
+    <span class="post-author">TopoWAR</span>
+    <span class="post-date muted">2016-10-20 16:50 UTC</span>
+  </div>
+  <div class="post-body">roy, <br>
+hello, I initially try to use this option, but I open each drawing gives me this message:<br>
+<br>
+<strong>assignment to protected symbol:<br>
+COMMAND<br>
+enter break loop?<br>
+<br>
+yes no</strong><br>
+<br>
+(if (not command-s) (setq command-s command))</div>
+</article>
+<article class="post" id="msg12139">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-10-20 17:41 UTC</span>
+  </div>
+  <div class="post-body">I don't understand the error message. How can command-s be a protected symbol in an AutoCAD version that does not even have that Lisp function?<br>
+<br>
+Mind you, I can't get either of my suggestions to work on BricsCAD V12 (the last version without command-s). :-[<br>
+The First suggestion does work on later BricsCAD versions.<br>
+<br>
+Does my first suggestion work on AutoCAD?</div>
+</article>
+<article class="post" id="msg12140">
+  <div class="post-head">
+    <span class="post-author">TopoWAR</span>
+    <span class="post-date muted">2016-10-20 17:45 UTC</span>
+  </div>
+  <div class="post-body">the error is in autocad, I guess you can not replace command-s by command, should be a protected function and therefore the error, right message?<br>
+<br>
+(if (not command-s) (setq command-s command))<br>
+assignment to protected symbol:<br>
+COMMAND<br>
+enter break loop?<br>
+<br>
+yes no<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg12375">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2017-02-03 09:18 UTC</span>
+  </div>
+  <div class="post-body">Hi...  Just wondered whether this issue is likely to be resolved, or do we need to update our code to remove instances of 'command' and 'vl-cmdf'?.  I am experiencing what appears to be a similar issue to those previously reported.  My lisp code runs fine in any Acad version up to and including Acad Release 2013, but now when using Acad Map3d 2017 I cannot seem to get past any 'command' of 'vl-cmdf' calls irrespective of whether or not an OpenDCL Dialog is 'live'.<br>
+  What's happening is that any AutoCAD 'command' or 'vl-cmdf' call (from my lisp file) will display the most recently loaded odcl dialog box (although the box has been closed earlier), and when any button is pressed on the 'unwanted' dialog, the system will pause for a few seconds, and then a 'Fatal Error' will invoke.   Changing 'command' and 'vl-cmdf' to 'command-s' seems to get over the problem, but I have tens of thousands of lines of code spread widely and the task of updating virtually all of them fills me with dread.  I have to add that I think OpenDCL is a fantastic tool, and I'm happy to update my code if that's the only way through this.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

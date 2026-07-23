@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Xdata from grid · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2115</p>
+    <h1>Xdata from grid</h1>
+    <p class="meta">Started by vladgothe ·
+      2014-03-28 10:12 UTC ·
+      5 replies · SMF topic #2115</p>
+<article class="post" id="msg10505">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2014-03-28 10:12 UTC</span>
+  </div>
+  <div class="post-body">In my project, I had a grid in a modal form. I used a button to fetch data from current selected row in grid and assign it as xdata in a polyline. Soon, I realised I need a modeless form, so I remade all the controls for the new form. The problem is that the function which assigned xdata is not working anymore and I don't know why.<br>
+Can somebody help me?<br>
+I used OpenDCL Studio 8.0.0.4.<br>
+This is the project:<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1983/RGI.odcl">RGI.odcl</a> <span class="muted">(1697 bytes)</span></li><li><a href="../attachments/1984/RGI.lsp">RGI.lsp</a> <span class="muted">(12407 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10506">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-03-28 11:07 UTC</span>
+  </div>
+  <div class="post-body">Hi, I have just not the chance to test but make sure that the control that invokes modifying entities has set event invoke to asynchronously.<br>
+Fred</div>
+</article>
+<article class="post" id="msg10507">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2014-03-28 11:44 UTC</span>
+  </div>
+  <div class="post-body">I did what you said, but still doesn't work. Maybe it's a bug. When the form was modal, it worked perfectly, but after I changed it with the modeless form, it doesn't work anymore.</div>
+</article>
+<article class="post" id="msg10508">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-03-28 12:25 UTC</span>
+  </div>
+  <div class="post-body">Stating that something "doesn't work" is not very useful for someone to help you solve the problem. What are the exact steps you take, what do you expect to happen, and what actually happens? If there is an error, what is the error message? What have you done to pinpoint the source of the problem? Have you verified that your event handler is called as expected? Have you stepped through the event handler in the debugger to see where it fails?</div>
+</article>
+<article class="post" id="msg10509">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-03-28 13:37 UTC</span>
+  </div>
+  <div class="post-body">The problem is not related to ODCL at all.<br>
+The problem:<br>
+(setq e (entget obj))<br>
+(setq e1 (list (list -3 (list "SIGMA"<br>
+			  (cons 1000 an) (cons 1000 jud) (cons 1000 bcpi) (cons 1000 nrcerere)   <br>
+		))))<br>
+(append (entget obj) e1)<br>
+(entmod (entget obj))<br>
+Should be:<br>
+(setq e (entget obj))<br>
+(setq e1 (list (list -3 (list "SIGMA"<br>
+			  (cons 1000 an) (cons 1000 jud) (cons 1000 bcpi) (cons 1000 nrcerere)   <br>
+		))))<br>
+(entmod (append e e1))<br>
+<br>
+I advise you to improve your coding style:<br>
+- Localize variables.<br>
+- Indent your code.<br>
+- Use more meaningful names for dialog controls.</div>
+</article>
+<article class="post" id="msg10510">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2014-03-28 13:53 UTC</span>
+  </div>
+  <div class="post-body">Thanks, Roy, that was my bad. I posted an older code. The application will not be in english language and I tried to translate it to be readable by others. I modified the code as you wrote, but entmod is not working. Maybe it's my computer's fault.<br>
+<br>
+UPDATE: I forgot to set event invokes to asynchronous. Now it's working properly. <br>
+I'm not a programmer, I work as a surveyor, but sometimes I write for myself such applications to ease my work. Thank you for advices!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

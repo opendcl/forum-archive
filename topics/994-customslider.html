@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CustomSlider · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 994</p>
+    <h1>CustomSlider</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-10-27 13:38 UTC ·
+      3 replies · SMF topic #994</p>
+<article class="post" id="msg5053">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-27 13:38 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+now it's on me to publish something. Maybe it could help others, too. I'm looking forward to append another sample for a range selector next week.<br>
+<br>
+<strong>Short sample description</strong><br>
+Custom slider, custom scrollbar.<br>
+<br>
+<strong>Requirements</strong><br>
+OpenDCL Runtime 6.0.0.10<br>
+<br>
+<strong>Used OpenDCL functionalities</strong><br>
+<ul><br>
+Resizable modeless form<br>
+Preventing a form from closing after pressing Return in the textbox<br>
+Working with OnPaint event of a picture box<br>
+Working with temorary drawings and images in a picturebox<br>
+Working with mouse events<br>
+Working with integer values in textboxes<br>
+Working with comboboxes and drop down lists<br>
+event logging and publishing<br>
+</ul><br>
+<br>
+<strong>Long sample description, genesis</strong><br>
+I have a form with a standard windows scroll bar (<a href="http://opendcl.com/wordpress/wp-content/gallery/samples/signothek_1.gif" rel="nofollow noopener">{2}</a>). Many users asked me why mouse wheel is not supported for this control. They are familiar with scrolling in listviews but they want to do it with the previews, too. That’s why I decided to create my own scrollbar control based on a picture control. The disadvantage of the control is that the current windows style cannot be applied very easy. But there are millions of further possibilities for individual styles. <br>
+<br>
+<strong>Features of the test dialog</strong><br>
+<ul><br>
+You can scroll the scrollbar/slider by mouse or by keys.<br>
+You can set the percentage value into the textbox.<br>
+The small increment can be any value below 20 and below large increment.<br>
+The large increment can be any value below 50 and over small increment.<br>
+The styles can be changed between standard scrollbar, picture defined sliders and solid based selectors.<br>
+The border style can frame the scrollbar if you need. In some cases (like standard scrollbar) it make sense, the bullet style looks much better without frame.<br>
+The event log demonstrates the events and the given arguments. It should be turned off if it is not needed.<br>
+</ul><br>
+<br>
+<strong>Features of the scrollbar/slider</strong><br>
+<ul><br>
+Click left mouse button over the scrollbar button, the value changes a large step up.<br>
+Click left mouse button below the scrollbar button, the value changes a large step down.<br>
+Click left mouse button on the scrollbar button, the value is changed to the defined destination.<br>
+Click right mouse button anywhere on the scrollbar, the value is changed to the defined destination.<br>
+When scrolling mousewheel up, the value changes a small step up.<br>
+When scrolling mousewheel down, the value changes a small step down.<br>
+When scrolling mousewheel while pressing shift key, the value changes in a large step.<br>
+When pressing PageUp key the value changes a large step up.<br>
+When pressing PageDown key the value changes a large step down.<br>
+When pressing Pos1 key the value changes to top.<br>
+When pressing End key the value changes to bottom.<br>
+When pressing Left or Up arrow key, the value changes a small step up.<br>
+When pressing Right or Down arrow key, the value changes a small step down.<br>
+</ul><br>
+<br>
+<strong>Notes for implementation:</strong><br>
+If you're interested in doing something like that in a case AutoCAD is going to hard work after each scroll (especially searching for drawings and showing them in a DWGPreview like in the screenshot above) you should decrease the number of scrolling events. So, for example, do only update the previews after OnMouseUp and not while OnMouseMove. The number of calling events is too much for doing that.<br>
+<br>
+Enjoy it!<br>
+<br>
+Fred<br>
+<br>
+ Due to some type mismatches I've uploaded a new release of the <strong>slider.lsp</strong>. Changes only in the documentations.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1002/slider.png">slider.png</a> <span class="muted">(15277 bytes)</span></li><li><a href="../attachments/1004/slider.odcl">slider.odcl</a> <span class="muted">(2764 bytes)</span></li><li><a href="../attachments/1005/slider.lsp">slider.lsp</a> <span class="muted">(21014 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5054">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-27 14:53 UTC</span>
+  </div>
+  <div class="post-body">Well done, Fred. Do you mind if I include this as a standard sample?</div>
+</article>
+<article class="post" id="msg5055">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-27 15:38 UTC</span>
+  </div>
+  <div class="post-body">Wow looks cool, thx Fred.</div>
+</article>
+<article class="post" id="msg5056">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-27 16:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=994.msg5054#msg5054 date=1256655216 wrote:</cite><br>
+Well done, Fred. Do you mind if I include this as a standard sample?<br>
+</blockquote><br>
+<br>
+Yes, if you do it, it would be a honor for me.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,11 @@
+(defun c:testFormClose (/)  
+  (vl-load-com)
+  (command "_OPENDCL")
+  (dcl_Project_Load "testFormClose" T)
+  (dcl_Form_Show testFormClose/Form1)
+)
+
+(defun c:testFormClose/Form1/TextButton1#OnClicked (/)
+  (dcl-Form-Close testFormClose/Form1)
+  (command "insert" "testFormClose" pause "" "" "")
+)

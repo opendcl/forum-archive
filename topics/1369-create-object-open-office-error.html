@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create object - Open Office - Error · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1369</p>
+    <h1>Create object - Open Office - Error</h1>
+    <p class="meta">Started by hvcrou ·
+      2010-11-03 15:39 UTC ·
+      14 replies · SMF topic #1369</p>
+<article class="post" id="msg7280">
+  <div class="post-head">
+    <span class="post-author">hvcrou</span>
+    <span class="post-date muted">2010-11-03 15:39 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+have to generate an integration with the ods file open office, I am connecting to it using (vlax-get-or-create-object "com.sun.star.ServiceManager") which returns nil and no object and loaded. Can anyone help me?<br>
+Thanks.<br>
+</div>
+</article>
+<article class="post" id="msg7281">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-11-03 16:42 UTC</span>
+  </div>
+  <div class="post-body">This seems to be a VLisp issue &amp; not an OpenDCL issue. I'd try posting over at: <a href="http://www.theswamp.org" rel="nofollow noopener">{2}</a> &amp; you may get a better response. Let me know if you get it working though, as we use Open Office also.</div>
+</article>
+<article class="post" id="msg7289">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-11-04 06:30 UTC</span>
+  </div>
+  <div class="post-body">Hi, have a look <a href="http://www.theswamp.org/index.php?topic=35157.0" rel="nofollow noopener">{2}</a>.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7293">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-11-04 18:55 UTC</span>
+  </div>
+  <div class="post-body">Ya I looked at that too, but it doesn't look like he ever got it to work...<br>
+<br>
+All he did was:<br>
+<br>
+(defun lancer_oOo()<br>
+  (vlax-get-or-create-object "com.sun.star.ServiceManager")<br>
+)<br>
+<br>
+then does nothing with it...</div>
+</article>
+<article class="post" id="msg7297">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-11-04 22:42 UTC</span>
+  </div>
+  <div class="post-body">Ok, now I'm not sure whether this topic is solved or not. If not, I'd copy some code to address OOffice worksheet into this topic. But I'm not sure if I should...<br>
+  :-\<br>
+Fred</div>
+</article>
+<article class="post" id="msg7310">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-11-08 18:49 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1369.msg7297#msg7297 date=1288910541 wrote:</cite><br>
+If not, I'd copy some code to address OOffice worksheet into this topic. But I'm not sure if I should...<br>
+  :-\<br>
+Fred<br>
+</blockquote><br>
+<br>
+If you have some working code, I'd like to see it....<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg7312">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-11-09 09:46 UTC</span>
+  </div>
+  <div class="post-body">Hi, let's do it:<br>
+<br>
+So you get access to an empty StarCalc Document:<br>
+<br>
+<br>
+(defun ooffice_calc_new (/ strDocType strVer strNam strFile oDesktop oService oStruct oCalc arrProps)<br>
+  (if (and ;; check if OOffice is installed<br>
+	   (setq strDocType "StarCalcDocument")<br>
+	   (setq strVer (vl-registry-read (strcat "HKEY_CLASSES_ROOT\\soffice." strDocType "\\CurVer")))<br>
+	   (setq strNam (vl-registry-read (strcat "HKEY_CLASSES_ROOT\\" strVer)))<br>
+	   (setq strFile (vl-registry-read (strcat "HKEY_CLASSES_ROOT\\" strVer "\\protocol\\StdFileEditing\\server")))<br>
+	   (findfile strFile))<br>
+    (progn<br>
+      (grtext -1 "I'm loading OpenOffice StarCalc, please wait...")<br>
+      (setq oService (vlax-get-or-create-object "com.sun.star.ServiceManager"))<br>
+      (setq oDesktop (vlax-invoke-method oService "createInstance" "com.sun.star.frame.Desktop"))<br>
+      (setq oStruct (vlax-invoke-method oService "Bridge_GetStruct" "com.sun.star.beans.PropertyValue"))<br>
+      (vlax-put-property oStruct "Name" "Hidden")<br>
+      (vlax-put-property oStruct "Value" :vlax-false)<br>
+      (setq arrProps (vlax-make-safearray vlax-vbvariant (cons 0 0)))<br>
+      (vlax-safearray-put-element arrProps 0 oStruct)<br>
+      (setq oCalc (vlax-invoke-method oDesktop "LoadComponentFromURL" "private:factory/scalc" "_blank" 0 arrProps))<br>
+      (vlax-release-object oStruct)<br>
+      (vlax-release-object oDesktop)<br>
+      (vlax-release-object oService)<br>
+    ); progn<br>
+  (grtext -1 "")<br>
+  ); if<br>
+  oCalc<br>
+); ooffice_calc_new<br>
+<br>
+<br>
+Get active sheet:<br>
+<br>
+(defun ooffice_sheet_getactive (oDoc / oController)<br>
+  (setq oController (vlax-get oDoc 'CurrentController))<br>
+  (setq oSheet (vlax-get oController 'ActiveSheet))<br>
+  (vlax-release-object oController)<br>
+  oSheet<br>
+); ooffice_sheet_getactive<br>
+<br>
+Set content<br>
+<br>
+<br>
+(defun ooffice_cell_setcontent (oSheet nRow nCol doDestroy uValue lstFormat / oCell symbValType)<br>
+  (setq oCell (vlax-invoke-method oSheet 'GetCellByPosition nCol nRow)<br>
+	symbValType (type uValue))<br>
+  (cond<br>
+    ((= symbValType 'STR) (vlax-put oCell 'String uValue))<br>
+    ((= symbValType 'INT) (vlax-put oCell 'NumberFormat 3) (vlax-put oCell 'Value uValue))<br>
+    ((= symbValType 'REAL) (vlax-put oCell 'NumberFormat 4) (vlax-put oCell 'Value uValue))<br>
+    ((= symbValType 'LIST) (vlax-put oCell 'String (vl-prin1-to-string uValue)))<br>
+  ); cond<br>
+  (if lstFormat (mapcar '(lambda (x) (vl-catch-all-apply 'vlax-invoke-method (list oCell 'setPropertyValue (car x) (cdr x)))) lstFormat))<br>
+  (if doDestroy<br>
+    (progn<br>
+      (vlax-release-object oCell)<br>
+      T<br>
+    ); progn<br>
+    oCell<br>
+  ); if<br>
+); ooffice_cell_setcontent<br>
+<br>
+In the end you can use <br>
+<br>
+(if (and (setq oCalc (ooffice_calc_new))<br>
+           (setq oSheet (ooffice_sheet_getactive oCalc)))<br>
+  (ooffice_cell_setcontent  oSheet 0 0 T "MyData" (list (cons "CharHeight" 12.0) (cons "CharWeight" 150)))<br>
+); if<br>
+<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7313">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2010-11-09 14:03 UTC</span>
+  </div>
+  <div class="post-body">wow</div>
+</article>
+<article class="post" id="msg7314">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2010-11-09 15:07 UTC</span>
+  </div>
+  <div class="post-body">Fred, that is awesome.  Thanks for posting.  Good example to learn from, so we might be able to do other things with Open Office.<br>
+<br>
+-Kevin</div>
+</article>
+<article class="post" id="msg7315">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-11-09 18:48 UTC</span>
+  </div>
+  <div class="post-body">Wow Fred, you da man, thx. :)</div>
+</article>
+<article class="post" id="msg7329">
+  <div class="post-head">
+    <span class="post-author">Patrick_35</span>
+    <span class="post-date muted">2010-11-16 10:08 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=1369.msg7310#msg7310 date=1289242150 wrote:</cite><br>
+[quote author=Fred Tomke link=topic=1369.msg7297#msg7297 date=1288910541]<br>
+If not, I'd copy some code to address OOffice worksheet into this topic. But I'm not sure if I should...<br>
+  :-\<br>
+Fred<br>
+</blockquote><br>
+<br>
+If you have some working code, I'd like to see it....<br>
+<br>
+<br>
+<br>
+Hello<br>
+<br>
+I come to stumble upon this post, and the tools available to work.<br>
+<br>
+You just get a little  ;)<br>
+<br>
+For example<br>
+<pre class="code"><code><br>
+(setq My_Appli (lancer_ooo)) ; Launch open Office<br>
+(setq My_File (ouvrir_fichier My_Appli "c:/test/toto1.xls")) ; Open File<br>
+(ecrire_cellule My_File (feuille_active My_File) "A1" "Value") ; Write Cell<br>
+(setq Value (lire_cellule My_File (feuille_active My_File) "A1")) ; Read Cell<br>
+(sauver_fichier My_File) ; Save File<br>
+(fermer_fichier My_File) ; Close File<br>
+(fermer_appli (list My_Appli My_File)) ; Close Open Office<br>
+</code></pre><br>
+<br>
+And the same work with Excel or Open Office<br>
+<pre class="code"><code><br>
+(or (setq My_Appli (lancer_excel)) ; Launch Excel<br>
+  (setq My_Appli (lancer_ooo)) ; Launch open Office<br>
+)<br>
+(setq My_File (ouvrir_fichier My_Appli "c:/test/toto1.xls")) ; Open File<br>
+(ecrire_cellule My_File (feuille_active My_File) "A1" "Value") ; Write Cell<br>
+(setq Value (lire_cellule My_File (feuille_active My_File) "A1")) ; Read Cell<br>
+(sauver_fichier My_File) ; Save File<br>
+(fermer_fichier My_File) ; Close File<br>
+(fermer_appli (list My_Appli My_File)) ; Close Excel or Open Office<br>
+</code></pre><br>
+<br>
+@+</div>
+</article>
+<article class="post" id="msg7331">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-11-16 10:49 UTC</span>
+  </div>
+  <div class="post-body">Thanks Patrick, but where did you get the API from (I mean functions like lancer_ooo, ouvrir_fichier, ...)?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7333">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-11-16 10:54 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1369.msg7331#msg7331 date=1289904566 wrote:</cite><br>
+Thanks Patrick, but where did you get the API from (I mean functions like lancer_ooo, ouvrir_fichier, ...)?<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+Sorry, Patrick, I've found it. I had tomatoes on my eyes  ::)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7508">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-11-18 14:30 UTC</span>
+  </div>
+  <div class="post-body">Hi, Barry asked me in a PM how to get access to an odt-file. After several hours of head crashing I leave it as is and give you the low level sample. I wanted to get it paragraph by paragraph. But unfortunately, it's hard for me to translate Java samples to AutoLisp.<br>
+<br>
+I think, Patrick has much more experiences with OpenOffice than I. Maybe he can uncover the secrets of the OpenOffice API.<br>
+<br>
+Here is my sample:<br>
+<br>
+(defun ooffice_writer_content (strDoc / strDocType strVer strNam strFile oDesktop oService oStruct<br>
+			                oWriter strContent oText arrProps string_subst)<br>
+  (if (and ;; check if OOffice is installed<br>
+	   (setq strDocType "StarWriterDocument")<br>
+	   (setq strVer (vl-registry-read (strcat "HKEY_CLASSES_ROOT\\soffice." strDocType "\\CurVer")))<br>
+	   (setq strNam (vl-registry-read (strcat "HKEY_CLASSES_ROOT\\" strVer)))<br>
+	   (setq strFile (vl-registry-read (strcat "HKEY_CLASSES_ROOT\\" strVer "\\protocol\\StdFileEditing\\server")))<br>
+	   (findfile strFile))<br>
+    (progn<br>
+      (grtext -1 "I'm loading OpenOffice Writer, please wait...")<br>
+<br>
+      (defun string_subst (strNew strOld strText)<br>
+	(while (vl-string-search strOld strText)<br>
+	  (setq strText (vl-string-subst strNew strOld strText))<br>
+	); while<br>
+	strText<br>
+      ); string_subst<br>
+<br>
+      (if (and strDoc (member (substr strDoc 2 1) (list ":" "\\")))<br>
+	(setq strDoc (strcat "file:///" (string_subst "/" "\\" strDoc)))<br>
+	(setq strDoc "private:factory/swriter")<br>
+      ); if<br>
+      <br>
+      (setq oService (vlax-get-or-create-object "com.sun.star.ServiceManager"))<br>
+      (setq oDesktop (vlax-invoke-method oService "createInstance" "com.sun.star.frame.Desktop"))<br>
+      (setq oStruct (vlax-invoke-method oService "Bridge_GetStruct" "com.sun.star.beans.PropertyValue"))<br>
+      (vlax-put-property oStruct "Name" "Hidden")<br>
+      (vlax-put-property oStruct "Value" :vlax-false)<br>
+      (setq arrProps (vlax-make-safearray vlax-vbvariant (cons 0 0)))<br>
+      (vlax-safearray-put-element arrProps 0 oStruct)<br>
+      (setq oWriter (vlax-invoke-method oDesktop "LoadComponentFromURL" strDoc "_blank" 0 arrProps))<br>
+      (setq oText (vlax-invoke oWriter 'getText))<br>
+      (setq strContent (vlax-invoke oText 'getString))<br>
+      (vlax-release-object oText)<br>
+      (vlax-release-object oWriter)<br>
+      (vlax-release-object oStruct)<br>
+      (vlax-release-object oDesktop)<br>
+      (vlax-release-object oService)<br>
+    ); progn<br>
+  (grtext -1 "")<br>
+  ); if<br>
+  strContent<br>
+); ooffice_writer_content<br>
+<br>
+Here you can find the Java sample: <a href="http://wiki.services.openoffice.org/wiki/API/Samples/Java/Writer/TextDocumentStructure" rel="nofollow noopener">{2}</a> .<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg7515">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-11-18 17:40 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transparency in images · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 762</p>
+    <h1>Transparency in images</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-05-17 19:43 UTC ·
+      13 replies · SMF topic #762</p>
+<article class="post" id="msg3725">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-17 19:43 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I use backcolor for menuitems. But unfortunately it does not work anymore but I do know that it worked in earlier releases (5.0.2.4, 5.1.0.2).<br>
+I attached a sample to demonstrate.<br>
+<br>
+When the mouse will be moved over a menuitem (a text and 3 images within a frame) that background shall be colored. Although the three images ob the right are transparent they're still showing the backcolor of the form.<br>
+<br>
+How must I change the code to update the images that they're showing the control behind?<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/729/090517.zip">090517.zip</a> <span class="muted">(22910 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3726">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-17 19:48 UTC</span>
+  </div>
+  <div class="post-body">Hm, I could fence the problem:<br>
+<br>
+before calling the command HOVER of the sample place the mouse on the screen where a menuitem will be shown. Call the command then. If the form appears, the menuitem under the mouse cursor is shown with the correct backcolor, otherwise with the wrong. See the attached images.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/730/correct.png">correct.png</a> <span class="muted">(4709 bytes)</span></li><li><a href="../attachments/731/notcorrect.png">notcorrect.png</a> <span class="muted">(4735 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3729">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-18 04:07 UTC</span>
+  </div>
+  <div class="post-body">Picture Box controls cache a copy of what is initially displayed on the screen, then repaint the control by simply copying from the cache. When you change the background, you have to refresh the cached copy by calling (dcl_PictureBox_Refresh).<br>
+<br>
+What has changed recently is that the cache is now used all the time. In the past, the cache was used only after certain function calls. That inconsistency caused some unexpected behavior (see the bug tracker).</div>
+</article>
+<article class="post" id="msg3732">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-18 06:14 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+I'm not really glad with it. I added a newer lsp-file for testing. Moving the mouse over the menuitems the layout behaves unexpected.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/732/stillso.png">stillso.png</a> <span class="muted">(1757 bytes)</span></li><li><a href="../attachments/733/Hover.LSP">Hover.LSP</a> <span class="muted">(4039 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3738">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-18 13:44 UTC</span>
+  </div>
+  <div class="post-body">I guess you mean the text disappears? I can't reproduce that here, but any time you have overlapping controls the repainting order is more or less random, so this is not surprising. Have you considered drawing your text and pictures directly onto a single picture box for each menu item?</div>
+</article>
+<article class="post" id="msg3740">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-18 15:06 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+<blockquote class="quote">Have you considered drawing your text and pictures directly onto a single picture box for each menu item?</blockquote><br>
+<br>
+I hope I understand you right but I think I have done so.<br>
+You see one single picture in the back: the whole colored area is one single picture box.<br>
+Onto the background picture there is one label at left hand side then a source picture, then an arrow and on the right hand side the result picture.<br>
+<br>
+These 4 controls in front of the background picture are using backcolor -24. In this test I only tried to switch the visibility of the background picture and I had to refresh the controls in front of it.<br>
+<br>
+I also had another test. I switched the visibility of the background picture AND the backcolor of the 4 controls in front of the background picture between red (if mouseover) and -16 (if mouseoff). This worked very well and was much more performant than using transparent pictures. But going back to change the backcolor of all controls of one menuitem should not be the goal of transparent controls, I think.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3742">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-18 15:16 UTC</span>
+  </div>
+  <div class="post-body">You misunderstood what I meant. I meant to eliminate your overlapping controls so that there is only a single control for each menu item.</div>
+</article>
+<article class="post" id="msg3747">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-20 06:06 UTC</span>
+  </div>
+  <div class="post-body">I cannot imagine what this could be. If I delete the background image it is very difficult to highlight the whole menuitem. Am I wrong, when I thought that transparent controls are introduced for overlapping? A fixed text on an image for instance.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3748">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-20 15:39 UTC</span>
+  </div>
+  <div class="post-body">I've posted before that Windows does not support overlapping controls, according to Microsoft. The problems that have been discussed here before are the reason why it is not supported -- because Windows has no mechanism for guaranteeing that they are painted in the correct order.<br>
+<br>
+Overlapping controls work fine in cases where neither control does any painting at the same locations. For example, text inside a frame results in the text control and the frame control overlapping, however neither paints in the same location so the end result looks fine.<br>
+<br>
+So, to answer your question, transparent controls are designed to allow the form background to show through. It may work with overlapping controls in some specific cases, but it does not work in general when controls overlap.<br>
+<br>
+In your case, there is no need for overlapping controls, so the problem can be solved by removing all controls except the background picture box, and drawing everything on the background picture box.</div>
+</article>
+<article class="post" id="msg3757">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-22 06:41 UTC</span>
+  </div>
+  <div class="post-body">Aaaah, now I got it - you mean using PaintPicture and DrawWrappedText.<br>
+I must say, I've never used it before. I will give it a try.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3759">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-22 15:51 UTC</span>
+  </div>
+  <div class="post-body">Hi, Owen<br>
+<br>
+I had a test. It works quite fine. I can switch between backcolors -16 and red, but not between -24 and read. It seems that it won't get updated after setting backcolor -24. Is there anything I missed to do?<br>
+<br>
+(defun hover (intMethode / intItem oControl)<br>
+    (foreach intItem (vl-remove intMethode '(1 2 3 4 5 6))<br>
+      (setq oControl (eval (read (strcat "gis1_sc_overlay_pic_" (itoa intItem)))))<br>
+      (if (/= (dcl_Control_GetBackColor oControl) -24)<br>
+	(progn<br>
+	  (dcl_Control_SetBackColor oControl -24)<br>
+	); progn<br>
+      ); if<br>
+    ); foreach<br>
+    <br>
+    (if (and intMethode (setq oControl (eval (read (strcat "gis1_sc_overlay_pic_" (itoa intMethode)))))<br>
+	     (/= (dcl_Control_GetBackColor oControl) 12040191))<br>
+      (progn<br>
+	(dcl_Control_SetBackColor oControl 12040191)<br>
+      ); progn<br>
+    ); if<br>
+  ); hover<br>
+<br>
+Fred<br>
+<br>
+I attached the sample.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/735/test_hover.LSP">test_hover.LSP</a> <span class="muted">(5565 bytes)</span></li><li><a href="../attachments/736/gis1.odcl">gis1.odcl</a> <span class="muted">(24755 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3760">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-22 16:47 UTC</span>
+  </div>
+  <div class="post-body">This is now fixed for beta 2 (and it works very well now -- good job!).</div>
+</article>
+<article class="post" id="msg3766">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-25 07:52 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+yes, this looks nice, but unfortunately all of the forms which includes picture boxes with a default image (set in the editor), the images in the picture boxes are not shown anymore even if the content of the picture box won't be changed at runtime. These pictureboxes will stay empty.<br>
+<br>
+The attachment shows an area with 3 fixed images behind each radio button which are not changed at runtime. In 5.1.1.2 they are not shown anymore.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/738/noimage.png">noimage.png</a> <span class="muted">(2537 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3770">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-25 15:27 UTC</span>
+  </div>
+  <div class="post-body">I introduced a new bug in Beta 2 that causes the picture to be deleted the first time it's refreshed. This is now fixed for Beta 3.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

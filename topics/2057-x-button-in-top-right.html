@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>&quot;X&quot; button in top right · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2057</p>
+    <h1>&quot;X&quot; button in top right</h1>
+    <p class="meta">Started by Syncmas ·
+      2013-11-06 21:48 UTC ·
+      3 replies · SMF topic #2057</p>
+<article class="post" id="msg10155">
+  <div class="post-head">
+    <span class="post-author">Syncmas</span>
+    <span class="post-date muted">2013-11-06 21:48 UTC</span>
+  </div>
+  <div class="post-body">Is there any way to prevent the "X" in the title bar from showing up in dialogs?<br>
+<br>
+I have a couple of old commands that were converted over to OpenDCL and they open settings dialogs, and prompt a user to select an object. If the user hits enter or esc everything is handled and terminates properly. If the user presses that "X", the dialog closes and I am still waiting for an object selection. The type of dialog is a control panel and maybe it needs to be shifted to another type. I am a OpenDCL and lisp rookie so maybe there is a simple way of doing it that I have just not found yet.<br>
+Any tips would be appreciated.<br>
+<br>
+Thanks<br>
+  Scott<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg10156">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-11-06 22:13 UTC</span>
+  </div>
+  <div class="post-body">There isn't any way to remove the "X". If I understand correctly, the user presses a button, which starts a command at the command line, and you want to make sure that if the user closes the control bar, the command is cancelled. You should be able to do this fairly easily.<br>
+<br>
+The first part of the solution is to track when your command is active. I would probably do that by disabling the button that activated it, then re-enabling the button when the command finishes.<br>
+<br>
+The second part of the solution is to handle the form's <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Event/Close.htm" rel="nofollow noopener">{2}</a> event, and in there check whether your command is active (e.g. by checking whether the button is disabled), and if it is cancel it.</div>
+</article>
+<article class="post" id="msg10157">
+  <div class="post-head">
+    <span class="post-author">Syncmas</span>
+    <span class="post-date muted">2013-11-06 22:40 UTC</span>
+  </div>
+  <div class="post-body">Is it possible to handle the close event on a form that does not have a CancelClose event?</div>
+</article>
+<article class="post" id="msg10158">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-11-07 01:58 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Syncmas link=topic=2057.msg10157#msg10157 date=1383777621 wrote:</cite><br>
+Is it possible to handle the close event on a form that does not have a CancelClose event?<br>
+</blockquote><br>
+<br>
+Yes, it should be.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

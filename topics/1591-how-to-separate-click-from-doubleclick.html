@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to separate click from doubleclick ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1591</p>
+    <h1>How to separate click from doubleclick ?</h1>
+    <p class="meta">Started by krunch ·
+      2011-02-16 09:49 UTC ·
+      16 replies · SMF topic #1591</p>
+<article class="post" id="msg7769">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-02-16 09:49 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+I have a PictureBox that reacts to click and doubleclick by doing 2 differents things, but the OnClick event is always triggered before OnDblClicked (same for OnMouseDown and OnMouseDblClick)...<br>
+How do you prevent OnClick when OnDblClicked ??</div>
+</article>
+<article class="post" id="msg7770">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-02-16 10:45 UTC</span>
+  </div>
+  <div class="post-body">Hi, that's right, OnDoubleClick means automatically that OnClick was fired before (same in all other controls and AFAIK in all other programming languages).<br>
+Please have a look at MouseMove - it also will be called at OnClicked. So maybe you can check the time between two clicks.<br>
+<br>
+Regards<br>
+Fred</div>
+</article>
+<article class="post" id="msg7771">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-02-16 12:51 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+Thanks.. if I include onMouseMove the sequences I get are :<br>
+- clic : (m) c m<br>
+- dbleclic : (m) c m d c c m<br>
+<br>
+where : m = onMouseMove (+ a first (m) if the control hadn't focus) / c = onClicked / d = onDoubleClick<br>
+<br>
+Not simple... :-(<br>
+<br>
+I'll search how to use TIMER in these sequences, but meanwhile if someone has already made that...</div>
+</article>
+<article class="post" id="msg7781">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-02-17 20:05 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+I've tried something with dcl_DelayedInvoke... but this function has many inconvenients : can't prevent the command name on the command line (?) and especially the command became the last one in the interface, user accessible..<br>
+Please do you confirm that's a wrong way ?<br>
+<br>
+(defun c:Untitled_Form1_PictureBox1_OnClicked (/)<br>
+  (setvar "CMDECHO" 0) ; no ?<br>
+  (setvar "NOMUTT" 1)<br>
+  (or *double (dcl_DelayedInvoke 350 "Do"))<br>
+)<br>
+(defun c:Untitled_Form1_PictureBox1_OnDblClicked (/)<br>
+  (setq *double T)<br>
+)<br>
+(defun c:Do ()<br>
+  (if *double (princ "\nClicClic!") (princ "\nClic!"))<br>
+  (setq *double nil)<br>
+  (setvar "CMDECHO" 1)<br>
+  (setvar "NOMUTT" 0)<br>
+  (princ)<br>
+)</div>
+</article>
+<article class="post" id="msg7782">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-02-17 21:52 UTC</span>
+  </div>
+  <div class="post-body">I think you are fighting a losing battle, and you should change your design instead.</div>
+</article>
+<article class="post" id="msg7783">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-02-17 21:55 UTC</span>
+  </div>
+  <div class="post-body">Hi krunch,<br>
+<br>
+Maybe we should focus on WHY it is necessary to separate OnClick from OnDblClick. Maybe there are other solutions for that.<br>
+<br>
+An (very up-to-date) example: I have a list view. When I click on an item, OnClick will be called and immediately the event function takes a look into a database with a complex query and shows the result in a grid (!!!) below the listview. Works fine. But clearing the grid, executing the SQL command and refilling the grid takes a recognizeble amount of time. So when I doublick an item, a subform has to be shown. But since OnClicked is fired, too, before OnDblClicked could be fired, the time is over that Windows could recognize my double click as a double click and it accepts it for two single clicks  &gt;:( That's why I introduced a intLastClick variable to store the latestly selected listview item to leave the content of OnClick event out and finally Windows recognizes my double click as a double click.<br>
+<br>
+So that's why I think we should talk about what you're trying to do and maybe we'll find a solution.<br>
+<br>
+Regards,<br>
+Fred<br>
+<br>
+ Owen said the sentence of my post in a much shorter way :)</div>
+</article>
+<article class="post" id="msg7785">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-02-17 22:23 UTC</span>
+  </div>
+  <div class="post-body">Hi, thanks for your answers<br>
+<br>
+Yes, that the same problem : OnClick triggers before OnDoubleClick and make unwanted result, that's why I start from triggers order..<br>
+<br>
+So, what I make is a "button" (a PictureBox indeed) that inverse(-) on click / erase a value onDoubleClick... the value is in a textbox, the button is before (contiguous) the textbox.. simple!<br>
+The problem is not only "esthetic" (the fact that I see "-" for a split second before the value is erased), because some textboxes must receive "1" instead of "" (erase) on doubleclick (scale factor).. so in that case I get "-1" and not "1".. <br>
+So I think I have to separate the 2 events<br>
+<br>
+Hoping to have been explicit..<br>
+Regards</div>
+</article>
+<article class="post" id="msg7786">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-02-17 22:52 UTC</span>
+  </div>
+  <div class="post-body">Hm, krunch, I wanna play around with that. Would you be so kind to create a small example to demonstrate? Maybe with only the image (as button) and the textbox. Thing what I cannot imagine, is, that I don't believe that the customer is familiar with that procedure. But maybe I would change my mind if I "feel" it by myself. by default I'd use 2 different buttons for two different actions. Or you devide the image in the left area and the right area ...<br>
+<br>
+Regards,<br>
+Fred</div>
+</article>
+<article class="post" id="msg7787">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-02-18 11:18 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+Sure!.. I made a simplified sample..<br>
+<br>
+I precise that :<br>
+<br>
+It's for <a href="http://www.opendcl.com/forum/index.php?topic=1558.0" rel="nofollow noopener">{2}</a> (end of the page), so there's not 2 but 9 textboxes (may be +3 for columns), and when you click or doubleclick it updates the transformation... <br>
+The buttons (which will be more discrete and small) are placed in front of each textbox, and I manage inputs with <a href="http://www.opendcl.com/forum/index.php?topic=1555.0" rel="nofollow noopener">{2}</a> (btw I've also made a feature request <a href="http://sourceforge.net/tracker/?func=detail&amp;aid=3185214&amp;group_id=187950&amp;atid=923366" rel="nofollow noopener">{2}</a>)<br>
+<br>
+<blockquote class="quote">Thing what I cannot imagine, is, that I don't believe that the customer is familiar with that procedure</blockquote>As I try it I think it's really easy to adopt..<br>
+<br>
+Thanks for interest<br>
+Regards<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1550/Untitled.odcl">Untitled.odcl</a> <span class="muted">(1311 bytes)</span></li><li><a href="../attachments/1551/Untilted.lsp">Untilted.lsp</a> <span class="muted">(1089 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7794">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-02-21 14:03 UTC</span>
+  </div>
+  <div class="post-body">Ok I think I give up..  :(<br>
+According to the sequences there's no perfect way. I could wait at the next <em>OnMouseMove</em> afer <em>OnClicked-OnMouseMove</em> but it means that a simple click is "validated" by this next <em>OnMouseMove</em>, so it's triggered only when I move after click..<br>
+<br>
+I think I will make a button divided into 2 parts (+/- up and reset down)...  or maybe right-clic for reset / left-clic for inverse (+/-) ?<br>
+<br>
+Thanks<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg7795">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-02-21 14:13 UTC</span>
+  </div>
+  <div class="post-body">Please do you confirm there's now way for the particularity of dcl_DelayedInvoke (can't prevent the command name on the command line (?) and especially the command became the last one in the interface, user accessible..) and no way to DelayedInvoke a standart function (not c:) ? Thanks in advance</div>
+</article>
+<article class="post" id="msg7796">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-02-21 16:01 UTC</span>
+  </div>
+  <div class="post-body">Hi, krunch, sorry, I haven't seen your sample yet. I'll try it later this evening.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7798">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-02-21 20:18 UTC</span>
+  </div>
+  <div class="post-body">Hello, krunch,<br>
+<br>
+hm, have you ever thought about right click on the imagebutton?<br>
+<br>
+On the other hand I've found out that OnClicked will be fired twice so I hope Owen could pay attention to this topic again. :)<br>
+<br>
+I've changed your sample and I attached it again. When you doubleclick an imagebutton, you can see the following lines in the command line.<br>
+<br>
+<pre class="code"><code>PictureBox1_OnClicked<br>
+PictureBox1_OnDblClicked<br>
+PictureBox1_OnClicked</code></pre><br>
+<br>
+I'm not sure whether this behaviour is wanted. Maybe Owen can light up this for us.<br>
+I'll recommend you to use two different buttons for two different things - otherwise you will have to fight battles with your customers. I mean discussions about usability.<br>
+<br>
+Regards,<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7799">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-02-22 09:03 UTC</span>
+  </div>
+  <div class="post-body">Yes I came to the same conclusion : when DoubleClicked there's no way to prevent the 1st OnClicked event.. except with a delayed device, but DelayedInvoke operates as an AutoCad command, so it's no good  :(<br>
+<br>
+Thanks Fred</div>
+</article>
+<article class="post" id="msg7812">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-02-23 20:48 UTC</span>
+  </div>
+  <div class="post-body">Fred, I'm not sure what exactly I'm supposed to test to reproduce this. Can you attach sample files in a new reply?</div>
+</article>
+<article class="post" id="msg7814">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-02-23 21:08 UTC</span>
+  </div>
+  <div class="post-body">Hi, Owen, sorry, I've forgotten to attach.<br>
+The thing is, that OnClicked will be fired twice when you doubleclick on the image.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1560/Untitled.odcl">Untitled.odcl</a> <span class="muted">(1214 bytes)</span></li><li><a href="../attachments/1561/Untilted.lsp">Untilted.lsp</a> <span class="muted">(1256 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7815">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-02-23 21:40 UTC</span>
+  </div>
+  <div class="post-body">I'm not sure why the OnClicked event gets triggered in this case, but I've hacked a workaround for the next build that should solve the problem.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

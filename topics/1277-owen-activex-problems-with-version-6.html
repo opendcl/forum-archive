@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Owen...ActiveX problems with version 6 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1277</p>
+    <h1>Owen...ActiveX problems with version 6</h1>
+    <p class="meta">Started by funkitect ·
+      2010-05-12 22:21 UTC ·
+      10 replies · SMF topic #1277</p>
+<article class="post" id="msg6852">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2010-05-12 22:21 UTC</span>
+  </div>
+  <div class="post-body">Owen, <br>
+<br>
+I'm having a few problem migrating to version 6 of OpenDCL with regards to my ActiveX vsflexgrid control by ComponentOne.<br>
+<br>
+1.  When using methods that return data, the data is returned embedded in a list.  For instance, when using a method that returns the index of the last child node....the index is supposed to be returned as an integer it is returned as a integer within a list.<br>
+<br>
+2.  Event OnCellButtonClick never fires.  Other events seem to fire normally.<br>
+<br>
+I haven't been keeping up-to-date with all the changes with this new version 6 so maybe there are changes that I am not aware of that are causing these problems.   It would be nice to update the Migration Guide to include migration to version 6.<br>
+<br>
+James LeVieux</div>
+</article>
+<article class="post" id="msg6853">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-05-13 14:10 UTC</span>
+  </div>
+  <div class="post-body">I think there are only 3 or 4 people that were using ActiveX controls prior to 6, so there isn't much input to draw from. Please document what you learn so that it can be included in the migration guide (or perhaps better, a separate document).<br>
+<br>
+The return list includes the new values of arguments that were passed by reference; in the past, those arguments' return values were discarded.<br>
+</div>
+</article>
+<article class="post" id="msg6855">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2010-05-13 16:57 UTC</span>
+  </div>
+  <div class="post-body">OK.  The list is by design....I can live with that.  I will start a list of migration issues with ActiveX.  Can we rely that the first item on the returned list is the intended return value and the rest of the items, if they exist, are the byRef arguments?  If there are multiple byRef arguments  returned how can we tell which one is which?<br>
+<br>
+Any idea why OnCellButtonClick is not firing?<br>
+<br>
+James<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6856">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-05-13 21:46 UTC</span>
+  </div>
+  <div class="post-body">Hi, James, I have no sample for it. Can you give one to demonstrate your problem, please?<br>
+Fred</div>
+</article>
+<article class="post" id="msg6857">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-05-15 14:54 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=funkitect link=topic=1277.msg6855#msg6855 date=1273769836 wrote:</cite><br>
+Can we rely that the first item on the returned list is the intended return value and the rest of the items, if they exist, are the byRef arguments?  If there are multiple byRef arguments  returned how can we tell which one is which?</blockquote><br>
+<br>
+The list is always the return value followed by all ByRef arguments in order. The ByRef arguments are displayed with an apostrophe prefix in the control browser. BTW, ActiveX event handlers can now return their values to the control (it used to be discarded), so any events that use the return value could behave differently now.<br>
+<br>
+I have no idea why OnCellButtonClick wouldn't fire. Does it contain any unusual arguments? Is your handler function name correct?</div>
+</article>
+<article class="post" id="msg6859">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2010-05-15 18:14 UTC</span>
+  </div>
+  <div class="post-body">Fred and Owen,<br>
+<br>
+There are some subtle differences with what is going on with ActiveX events that I haven't quite figured out yet.  I did find that due to the "difference" one of my events was interfering with the OnCellButtonClick event.  I was able to clear this up by using the OnClick event instead of the OnBeforeMouseDown event.  I don't know why this fixed the problem!   I'll have to take a closer look at the byRef arguments to see if they might be the culprit...it seems very likely.  Otherwise, everything looks great in version 6 so far for me.<br>
+<br>
+James</div>
+</article>
+<article class="post" id="msg6860">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-05-15 19:55 UTC</span>
+  </div>
+  <div class="post-body">Thank you for sharing your experiences. Unfortunately, I have no experiences in using FlexGrid yet.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6861">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-05-15 21:17 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=funkitect link=topic=1277.msg6859#msg6859 date=1273947282 wrote:</cite><br>
+I don't know why this fixed the problem!</blockquote><br>
+<br>
+One possibility would be that whatever you returned from OnBeforeMouseDown was telling the control to cancel the "click". Take a look at that event's signature and see if the return value is meaningful.</div>
+</article>
+<article class="post" id="msg7299">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2010-11-05 05:50 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+<br>
+I'm finally able to (and really need to) get back to this ActiveX issue.  One difference that I have found is that certain functions behave differently than in version 5.  The function below in ver 5 return a rownumber (as Integer) but now returns a list containing the row number as the only item in the list.  The documentation says that the return value for dcl_AxControl_Invoke "varies" but it seems that if a value is returned it is always returned within a list...so the return type is a list.  Correct?<br>
+<br>
+(dcl_AxObject_Invoke "GetNodeRow" arg1 arg2) ;returns integer 2 in version 5<br>
+(dcl_AxObject_Invoke "GetNodeRow" arg1 arg2) ;returns list (2) in version 6<br>
+<br>
+The other issue that I have found is more of a best-practice thing.  If any event is passed a "Cancel" argument, you should always return the value of cancel at the end of the event function.  If you don't and the event happens to return a non-nil value then all code triggered by the event will be cancelled as shown below:<br>
+<br>
+Good practice:<br>
+<br>
+<br>
+(defun c:lm4grid1_OnBeforeEdit (Row Col Cancel / )<br>
+	;....your code here....<br>
+	(if YouNeedTo (setq Cancel t))  <br>
+	Cancel  ;Return the value of cancel<br>
+)<br>
+<br>
+Bad practice:<br>
+<br>
+(defun c:lm4grid1_OnBeforeEdit (Row Col Cancel / )<br>
+	;....your code here....<br>
+	(setq x 4)  ;function returns 4 which is non-nil....cancels all your event code!<br>
+<br>
+)<br>
+<br>
+So basically all the all the activeX stuff works fine as far as I can tell.  I would just change the documentation for dcl_AxObject_Invoke to more clearly state what is returned<br>
+<br>
+Thanks for all your help,<br>
+<br>
+James LeVieux</div>
+</article>
+<article class="post" id="msg7300">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-11-05 14:36 UTC</span>
+  </div>
+  <div class="post-body">James:<br>
+<br>
+  I installed the latest C1 VSFlexGrid ActiveX control, and on my system the control browser displays the GetNodeRow return value correctly as a list of 1 long. I guess you meant it should be documented that this is a change from 5.1 to 6 -- but you may be the only one affected as I don't think many were using ActiveX controls in earlier versions.</div>
+</article>
+<article class="post" id="msg7301">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2010-11-05 16:33 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+<br>
+I see the parenthesis that you have in the Control Browser under Return Type now .... (Long).  I guess I was just not taking those parenthesis literally since the text below says that it, "Returns the number of a row's parent..." and does not specifically state that it returns a list containing the number.  This became especially misleading to me since it used to return a Long (not a list) in ver 5.  I guess we'll just have to chalk this one up as "just one of those crazy frustrating things".<br>
+<br>
+Hopefully this thread will save somebody having similar problems in the future!<br>
+<br>
+Thanks for your attention to this,<br>
+<br>
+James</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>I tried to use Barry's code, I think I am not using it correctly to upload data · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1251</p>
+    <h1>I tried to use Barry's code, I think I am not using it correctly to upload data</h1>
+    <p class="meta">Started by Hypersonic ·
+      2010-04-05 15:38 UTC ·
+      10 replies · SMF topic #1251</p>
+<article class="post" id="msg6702">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2010-04-05 15:38 UTC</span>
+  </div>
+  <div class="post-body">Thank you Barry for the code, I am trying to adapt it to put data into a file I have on my web server.<br>
+I think I have butchered it somehow....<br>
+<br>
+I tried, maybe I have not formated something properly?<br>
+<br>
+I am really not sure about how to format the new data to push into the file.....<br>
+Based on what you had, I think it follows the file path?  I tried " this is new data for the file"....<br>
+<br>
+Thanks for the help, I know I am asking for a lot of help, I just am really stuck with this  :P<br>
+<br>
+<br>
+This is what I tried.....<br>
+(defun push ()<br>
+<br>
+(setq webObj nil)<br>
+<br>
+(setq strUrl (strcat "http://stampingsolutionsgroup.com/rcmtool/stationformdata/formdata_bob.txt" " this is new data for the file")) <br>
+ <br>
+ (setq webObj (vlax-invoke-method (vlax-get-acad-object) 'GetInterfaceObject "WinHttp.WinHttpRequest.5.1"))<br>
+  <br>
+ (vlax-invoke-method webObj 'Open "GET" strUrl :vlax-true) <br>
+<br>
+ (vlax-invoke-method webObj 'Send)  <br>
+<br>
+<br>
+);end defun</div>
+</article>
+<article class="post" id="msg6703">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-04-05 16:44 UTC</span>
+  </div>
+  <div class="post-body">That's definitely not going to work.... :)<br>
+You're just sending a URL to a file named "formdata_bob.txt this is new data for the file"<br>
+You need to send "this is new data for the file" as an argument to a PHP file &amp; have the PHP file pars the arguments &amp; write to the "formdata_bob.txt" file.<br>
+I'll see if a can but a working example together...</div>
+</article>
+<article class="post" id="msg6705">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-04-05 19:18 UTC</span>
+  </div>
+  <div class="post-body">OK I think I got a little working example for ya.<br>
+(Note; I know very little PHP, I just hacked this together from the PHP Tutorial link I gave you before)<br>
+Try this:<br>
+<br>
+<br>
+(defun push (file temp1 temp2 / )<br>
+  (setq webObj nil)<br>
+  (setq strUrl (strcat "http://www.opendcl.com/temp/FileWrite.php?file=" file  "&amp;temp1=" temp1 "&amp;temp2=" temp2))<br>
+  (setq webObj (vlax-invoke-method (vlax-get-acad-object) 'GetInterfaceObject "WinHttp.WinHttpRequest.5.1"))<br>
+  (vlax-invoke-method webObj 'Open "GET" strUrl :vlax-true)<br>
+  (vlax-invoke-method webObj 'Send) <br>
+);end defun<br>
+<br>
+(push "formdata_bob.txt" "Hello" "World")<br>
+<br>
+<br>
+PHP code:<br>
+<pre class="code"><code><br>
+&lt;?php<br>
+<br>
+//get variables from URL<br>
+$myFile = $_GET['file'];<br>
+$temp1 = $_GET['temp1'];<br>
+$temp2 = $_GET['temp2'];<br>
+<br>
+//Open file &amp; write to it<br>
+$fh = fopen($myFile, 'w') or die("can't open file");<br>
+$stringData = $temp1 . "/t";<br>
+fwrite($fh, $stringData);<br>
+$stringData = $temp2 . "/t";<br>
+fwrite($fh, $stringData);<br>
+fclose($fh);<br>
+<br>
+//echo variables for debugging in the browser, not returned to Lisp<br>
+echo $myFile . "/t";<br>
+echo $temp1 . "/t";<br>
+echo $temp2 . "/t";<br>
+<br>
+?&gt;<br>
+</code></pre><br>
+<br>
+This assumes the .PHP &amp; .TXT file are in the same folder, has no error checking or security.<br>
+I'll leave these file up in the "www.opendcl.com/temp[url=http://][url=http://][url=http://]" folder for you to play with, but will take them down in a few day.<br>
+Hope this helps...<br>
+<br>
+Barry<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1371/FileWrite2.zip">FileWrite2.zip</a> <span class="muted">(367 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6712">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2010-04-06 20:45 UTC</span>
+  </div>
+  <div class="post-body">Thanks Barry, I think I am getting it now, I will give it a try!</div>
+</article>
+<article class="post" id="msg6713">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2010-04-06 23:52 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+I tried that method, it would not allow me access to the temp directory Barry listed, something about permisions....<br>
+So I tweaked the code to point at my web server.... but it does not seem to work.<br>
+So I entered the commands in one at a time on the command line making sure the StrURl was set first.<br>
+<br>
+It returns nil where it should be opening the web object, I am guessing this is not what it should do....<br>
+Any thoughts?<br>
+<br>
+<br>
+Command: *Cancel*<br>
+Command: !strurl<br>
+"http://www.stampingsolutionsgroup.com/home/wihon/public_html/bquinn/FileWrite.p<br>
+hp?file=formdata_bob.txt&amp;temp1=Hello&amp;temp2=World"<br>
+Command: (setq webObj (vlax-invoke-method (vlax-get-acad-object) <br>
+'GetInterfaceObject "WinHttp.WinHttpRequest.5.1")) #<br>
+Command: (vlax-invoke-method webObj 'Open "GET" strUrl :vlax-true)<br>
+nil<br>
+Command: (vlax-invoke-method webObj 'Send)<br>
+nil<br>
+<br>
+<br>
+File used is below....<br>
+<br>
+<br>
+(defun push (file temp1 temp2 / )  <br>
+  (setq webObj nil)  <br>
+  (setq strUrl (strcat "http://www.stampingsolutionsgroup.com/home/wihon/public_html/bquinn/FileWrite.php?file=" file  "&amp;temp1=" temp1 "&amp;temp2=" temp2))  <br>
+  (setq webObj (vlax-invoke-method (vlax-get-acad-object) 'GetInterfaceObject "WinHttp.WinHttpRequest.5.1"))  <br>
+  (vlax-invoke-method webObj 'Open "GET" strUrl :vlax-true) <br>
+  (vlax-invoke-method webObj 'Send)   <br>
+);end defun  <br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6714">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-04-07 00:39 UTC</span>
+  </div>
+  <div class="post-body">Did you put "FileWrite.php" &amp; "formdata_bob.txt" on your web server?<br>
+When I go to: <a href="http://www.stampingsolutionsgroup.com/home/wihon/public_html/bquinn/FileWrite.php" rel="nofollow noopener">{2}</a><br>
+or: <a href="http://www.stampingsolutionsgroup.com/home/wihon/public_html/bquinn/formdata_bob.txt" rel="nofollow noopener">{2}</a><br>
+<br>
+I get file not found, so it don't look like it....</div>
+</article>
+<article class="post" id="msg6715">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-04-07 00:43 UTC</span>
+  </div>
+  <div class="post-body">Yes these 2 lines always return nil<br>
+<br>
+   (vlax-invoke-method webObj 'Open "GET" strUrl :vlax-true) <br>
+   (vlax-invoke-method webObj 'Send) </div>
+</article>
+<article class="post" id="msg6716">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2010-04-07 12:15 UTC</span>
+  </div>
+  <div class="post-body">Hi Barry, I will work on the path, its hard to tell where the stuff is at with the Cpanel interface, (or maybe its just my lack of web-site understanding!)<br>
+<br>
+Thanks, Bob.</div>
+</article>
+<article class="post" id="msg6719">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2010-04-07 20:36 UTC</span>
+  </div>
+  <div class="post-body"><br>
+o.k. I think I got the paths correct, but no go still......<br>
+<br>
+<a href="http://stampingsolutionsgroup.com/bquinn/formdata_bob.txt" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg6720">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-04-07 21:28 UTC</span>
+  </div>
+  <div class="post-body">OK you got 1 out of 2 done:<br>
+<a href="http://stampingsolutionsgroup.com/bquinn/FileWrite.php" rel="nofollow noopener">{2}</a><br>
+Still has File not found....</div>
+</article>
+<article class="post" id="msg6723">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2010-04-11 11:39 UTC</span>
+  </div>
+  <div class="post-body">Hi Barry, thanks for all your help! I think we got it going, something about case sensitive paths, and they didn't match or something!<br>
+<br>
+Thanks for all your help!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

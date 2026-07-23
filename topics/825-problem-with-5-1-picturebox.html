@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>problem with 5.1 picturebox · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 825</p>
+    <h1>problem with 5.1 picturebox</h1>
+    <p class="meta">Started by Amsterdamned ·
+      2009-06-22 09:21 UTC ·
+      14 replies · SMF topic #825</p>
+<article class="post" id="msg4091">
+  <div class="post-head">
+    <span class="post-author">Amsterdamned</span>
+    <span class="post-date muted">2009-06-22 09:21 UTC</span>
+  </div>
+  <div class="post-body">Hello there<br>
+<br>
+Since I changed all my stuff to 5.1 I get a funny problem with a picture box in one of my files. <br>
+<br>
+The wmf files I load do not seem to fit anymore. Is there a setting that forces the picture to fit the box?<br>
+<br>
+Thanks<br>
+<br>
+Bernd  <br>
+</div>
+</article>
+<article class="post" id="msg4094">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-22 12:35 UTC</span>
+  </div>
+  <div class="post-body">Can you post screen shots showing both what you get and what you should get?</div>
+</article>
+<article class="post" id="msg4095">
+  <div class="post-head">
+    <span class="post-author">Amsterdamned</span>
+    <span class="post-date muted">2009-06-22 13:38 UTC</span>
+  </div>
+  <div class="post-body">I would if i knew how to do that..... :o</div>
+</article>
+<article class="post" id="msg4096">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-06-22 17:58 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Amsterdamned link=topic=825.msg4095#msg4095 date=1245677911 wrote:</cite><br>
+I would if i knew how to do that..... :o<br>
+</blockquote><br>
+<br>
+Click the "Additional Options" link below, then you can browse to attach an image.<br>
+Do you need help creating the screen shot?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/821/attach.png">attach.png</a> <span class="muted">(28508 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4103">
+  <div class="post-head">
+    <span class="post-author">Amsterdamned</span>
+    <span class="post-date muted">2009-06-24 12:54 UTC</span>
+  </div>
+  <div class="post-body">Yes, that would be nice. If i take the sreen shot, i can insert it into word. But how can i make a one for that forum? I now made a pdf form my word file.....<br>
+<br>
+Bernd<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/823/not good.pdf">not good.pdf</a> <span class="muted">(17578 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4105">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-24 13:08 UTC</span>
+  </div>
+  <div class="post-body">That's a lot more work than necessary for creating a screen shot, but it works.  What is the value of the 'Auto Size' property of the picture box?  Can you post (or email) the .odcl file?</div>
+</article>
+<article class="post" id="msg4106">
+  <div class="post-head">
+    <span class="post-author">Amsterdamned</span>
+    <span class="post-date muted">2009-06-24 13:28 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+<br>
+that value is "False". I don't want the control to resize, i want the image to fit the control.</div>
+</article>
+<article class="post" id="msg4108">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-24 17:36 UTC</span>
+  </div>
+  <div class="post-body">I cannot reproduce the problem here. Can you post the .wmf file you're using, along with the lisp code that you use to load it?</div>
+</article>
+<article class="post" id="msg4113">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-25 14:49 UTC</span>
+  </div>
+  <div class="post-body">I tested with your .wmf files, and they appear to be working correctly for me. Loading them with the Stretch argument set to T causes them to appear smaller than necessary because the .wmf contains a lot of unused canvas in the width direction. The images you attached in your earlier post show the .wmf loaded with Stretch set to NIL, but you told me via email that you use Stretch set to T. Therefore, I'll guess that you're using NIL, which would mean the resulting size is dependent on your display resolution and Windows font settings.</div>
+</article>
+<article class="post" id="msg4114">
+  <div class="post-head">
+    <span class="post-author">Amsterdamned</span>
+    <span class="post-date muted">2009-06-25 15:36 UTC</span>
+  </div>
+  <div class="post-body"> Oke. If it is depending on machine settings, I will have another problem (see my other post). I need to get that dock able form work on different computers where I don’t have any influence on their settings… How can I accomplish that?<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4115">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-25 15:51 UTC</span>
+  </div>
+  <div class="post-body">You'll have to set Stretch to T.</div>
+</article>
+<article class="post" id="msg4116">
+  <div class="post-head">
+    <span class="post-author">Amsterdamned</span>
+    <span class="post-date muted">2009-06-26 11:16 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+<br>
+with stretch you mean the auto size?<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4117">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-26 12:07 UTC</span>
+  </div>
+  <div class="post-body">No, I'm referring to the Stretch argument to (dcl_PictureBox_LoadPictureFile).</div>
+</article>
+<article class="post" id="msg4118">
+  <div class="post-head">
+    <span class="post-author">Amsterdamned</span>
+    <span class="post-date muted">2009-06-26 13:51 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+Thanks, that was the problem Id didn’t even know that option was there…  :o<br>
+Was that in 4.1 already there as well? Anyhow, it works perfect.<br>
+<br>
+Thanks,<br>
+<br>
+Bernd<br>
+</div>
+</article>
+<article class="post" id="msg4119">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-26 15:22 UTC</span>
+  </div>
+  <div class="post-body">The Stretch argument has been there from the beginning as far as I know.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

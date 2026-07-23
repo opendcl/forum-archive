@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bug in ComboBox 4.1.2.2? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 371</p>
+    <h1>Bug in ComboBox 4.1.2.2?</h1>
+    <p class="meta">Started by velasquez ·
+      2008-07-03 14:22 UTC ·
+      16 replies · SMF topic #371</p>
+<article class="post" id="msg1628">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-07-03 14:22 UTC</span>
+  </div>
+  <div class="post-body">OpenDCL version 4.1.2.2  <br>
+AutoCAD 2007 and 2009  <br>
+Control ComboBox  <br>
+Why DropDown not for in the last visible item of the list?  <br>
+This didn't happen before.  <br>
+That is a bug or I are making some wrong thing?<br>
+I posted a video to show.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/432/ComboBox.zip">ComboBox.zip</a> <span class="muted">(830673 bytes)</span></li><li><a href="../attachments/433/Combo.jpg">Combo.jpg</a> <span class="muted">(22115 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1632">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-07-03 22:37 UTC</span>
+  </div>
+  <div class="post-body">Hello, velasquez,<br>
+<br>
+wasn't there a property dropdown height for comboboxes also in odcl 4? I'm not sure. In release 5 there is one. You only have to increase the dropdown height (not the height property!!! I mean DropDownHeight).<br>
+<br>
+But maybe I misunderstood you...<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1642">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-07-04 20:02 UTC</span>
+  </div>
+  <div class="post-body">Hello Fred  <br>
+I am talking about the movement of the mouse on the list.  <br>
+This makes the list to slide.  <br>
+This never happened.  <br>
+See the video that I posted.  <br>
+  <br>
+Velasquez<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/436/ComboBox Move.zip">ComboBox Move.zip</a> <span class="muted">(354894 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1643">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-07-05 00:11 UTC</span>
+  </div>
+  <div class="post-body">Does anything change if you set the NoIntegralHeight property to false?</div>
+</article>
+<article class="post" id="msg1644">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-07-05 13:35 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,  <br>
+I didn't see the property NoIntegralHeight for ComboBox in <strong>OpenDCL 4.1.2.2</strong> <br>
+Do I need to change through LISP?</div>
+</article>
+<article class="post" id="msg1645">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-07-05 19:00 UTC</span>
+  </div>
+  <div class="post-body">That property may not have existed in OpenDCL 4.1.  I recommend to upgrade to OpenDCL 5 to see if the problem has been addressed.</div>
+</article>
+<article class="post" id="msg1646">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-07-05 19:36 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen  <br>
+    <br>
+I found the property inside of OpenDCL.17.arx 4.1.2.2  <br>
+  <br>
+See as I placed dcl_Control_SetNoIntegralHeight inside of the function OnInitialize<br>
+<br>
+<pre class="code"><code>(defun c:DuctilCAD_DuctilCAD_MainForm_OnInitialize (/)<br>
+;;;Joga a lista de fontes no comboBox<br>
+    (dcl_ComboBox_AddList<br>
+      DuctilCAD_DuctilCAD_MainForm_ComboBox4<br>
+      JoyFontList<br>
+    ) ;_ fim de dcl_ComboBox_AddList<br>
+;;; <br>
+;;;Seleciona o primeiro item no ComboBox<br>
+    (dcl_ComboBox_SetCurSel<br>
+      DuctilCAD_DuctilCAD_MainForm_ComboBox4<br>
+      0<br>
+    ) ;_ fim de dcl_ComboBox_SetCurSel<br>
+<br>
+;;;<br>
+;;;TESTING<br>
+    (dcl_Control_SetNoIntegralHeight<br>
+      DuctilCAD_DuctilCAD_MainForm_ComboBox4<br>
+      0<br>
+    ) ;_ fim de dcl_Control_GetNoIntegralHeight<br>
+;;;<br>
+  )</code></pre><br>
+    <br>
+Nothing does happen if I inform a wrong value for the property.  <br>
+I will test with OpenDCL 5.0</div>
+</article>
+<article class="post" id="msg1647">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-07-06 13:05 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,  <br>
+I made the test of ComboBox in OpenDCL 5.0.0.19.  <br>
+The problem with the sliding of the List continues.  <br>
+It is difficult to select the last visible item of the list.  <br>
+The property NoIntegralHeight, appears in the file ARX but she doesn't work.  <br>
+See in the image the error message in AutoCAD 2007 and 2009.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/437/NoIntegralHeight.JPG">NoIntegralHeight.JPG</a> <span class="muted">(17178 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1649">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-07-07 10:41 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=371.msg1647#msg1647 date=1215349533 wrote:</cite><br>
+The property NoIntegralHeight, appears in the file ARX but she doesn't work.  <br>
+</blockquote><br>
+<br>
+In OpenDCL 5 you must pass T or NIL for boolean properties.</div>
+</article>
+<article class="post" id="msg1650">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-07-07 12:39 UTC</span>
+  </div>
+  <div class="post-body">No value works T or Nil 1 or 0.  <br>
+In AutoCAD 2007 and 2009.   <br>
+Please see in the image that the function NoIntegralHeight is not found.  <br>
+<pre class="code"><code>;;;Funcoes de inicializacao<br>
+  <strong>(defun c:DuctilCAD_DuctilCAD_MainForm_OnInitialize (/)<br>
+    (dcl_Control_SetNoIntegralHeight<br>
+      DuctilCAD_DuctilCAD_MainForm_ComboBox4<br>
+      T<br>
+    ) ;_ fim de dcl_Control_GetNoIntegralHeight</strong><br>
+;;;<br>
+;;;Joga a lista de fontes no comboBox<br>
+    (dcl_ComboBox_AddList<br>
+      DuctilCAD_DuctilCAD_MainForm_ComboBox4<br>
+      JoyFontList<br>
+    ) ;_ fim de dcl_ComboBox_AddList<br>
+;;; <br>
+;;;Seleciona o primeiro item no ComboBox<br>
+    (dcl_ComboBox_SetCurSel<br>
+      DuctilCAD_DuctilCAD_MainForm_ComboBox4<br>
+      0<br>
+    ) ;_ fim de dcl_ComboBox_SetCurSel<br>
+;;;<br>
+  ) ;_ fim de defun<br>
+</code></pre><br>
+Thanks<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/441/NoIntegralHeight.png">NoIntegralHeight.png</a> <span class="muted">(14259 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1651">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-07-07 13:52 UTC</span>
+  </div>
+  <div class="post-body">Hello, I can reproduce that NoIntegralHeight property is supported by ListBox but not by Combobox.<br>
+But I've still no solution to avoid autoscroll in comboboxes.<br>
+<br>
+I've attached an example of mine. I can reproduce this but I must say that it doesn't really hurt me (if DropDownHeight is high enough).<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/442/ComboBoxAutoScroll.gif">ComboBoxAutoScroll.gif</a> <span class="muted">(586455 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1652">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-07-07 14:02 UTC</span>
+  </div>
+  <div class="post-body">Hello Fred  <br>
+The problem is that not always DropDownHeight is high enough.  <br>
+In my case it cannot be.  <br>
+Thanks  <br>
+Velasquez</div>
+</article>
+<article class="post" id="msg1653">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-07-07 14:29 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I see now that the NoIntegralHeight property is only for list boxes.<br>
+<br>
+After some experimenting, it looks like you can prevent the auto scrolling if you set the DropDownHeight so that there are no partial items showing.  For example, a standard string combo on my system uses an item height of 13 pixels, plus a 1 pixel border at both the top and bottom, so any size of ((N * 13) + 2) for an integer N displays exactly N rows and does not auto scroll.<br>
+<br>
+I did notice that the Height property of combo boxes is not correctly updated when they are initially placed, and this affects the dropdown height calculation. The Height property gets corrected in the editor if you attempt to vertically resize a combo.</div>
+</article>
+<article class="post" id="msg1654">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-07-07 17:24 UTC</span>
+  </div>
+  <div class="post-body">Thank you for the attention Owen,  <br>
+Could you show me an example for the correct use of DropDownHeight?  <br>
+Excuse my English it is not good.<br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg1655">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-07-07 22:16 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,  <br>
+I understood and I applied your method for DropDownHeight.  <br>
+ComboBox worked perfectly in OpenDCL 4.1.2.2 and OpenDCL 5.0.0.19 with AutoCAD 2007 and 2009.  <br>
+Once again thank you for your attention.</div>
+</article>
+<article class="post" id="msg1766">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-08-04 11:33 UTC</span>
+  </div>
+  <div class="post-body">I didn't get to do this to work for ComboBox style Font Drop List.</div>
+</article>
+<article class="post" id="msg1769">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-08-05 00:17 UTC</span>
+  </div>
+  <div class="post-body">In Alpha 22 it should work for the font combo as well.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

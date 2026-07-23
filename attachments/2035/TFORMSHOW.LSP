@@ -1,0 +1,46 @@
+
+(defun c:TFORM ( )
+	(defun c:formTest_OnInitialize ( )
+		(setq LstNamLay (list "ALINHAMENTOPREDIAL" "DIVISAS"))
+	)
+	(defun c:btnOK_OnClicked ( )
+		(InitProcess)
+	)
+	(dcl_project_load "TESTEFORMBUG" T)
+	(if (not (dcl_form_isactive formTest))
+		(progn
+			(dcl_Form_Show formTest)
+		)
+	)
+)
+
+(defun InitProcess ( )
+	(dcl_Form_Close formTest)
+	(vl-cmdf "-layer" "n" (nth 0 LstNamLay) "c" 7 (nth 0 LstNamLay) "lt" "Continuous" (nth 0 LstNamLay) "")
+	(vl-cmdf "-layer" "n" (nth 1 LstNamLay) "c" 7 (nth 1 LstNamLay) "lt" "Continuous" (nth 1 LstNamLay) "")
+	(SaveRestoreStatusLayers 0)
+
+	;Only test code
+	(setq i 0)
+	(while (< i 100)
+		(princ (strcat "\nCount: " (itoa (+ i 1))))
+		(setq i (+ i 1))
+	)
+	(SaveRestoreStatusLayers 1)
+	(princ)
+)
+
+(defun SaveRestoreStatusLayers ( FlagAcao )
+	(cond
+		((= FlagAcao 0)
+			(if (member "CONFLAYDWG" (layerstate-getnames))
+				(progn
+					(layerstate-delete "CONFLAYDWG")
+				)
+			)
+			(layerstate-save "CONFLAYDWG" nil nil)
+		)
+		((= FlagAcao 1) (layerstate-restore "CONFLAYDWG" nil nil))
+	)
+	(vl-cmdf "regen")
+)

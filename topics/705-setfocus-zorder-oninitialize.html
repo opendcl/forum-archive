@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SetFocus / ZOrder / OnInitialize · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/21-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 705</p>
+    <h1>SetFocus / ZOrder / OnInitialize</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-04-08 12:49 UTC ·
+      4 replies · SMF topic #705</p>
+<article class="post" id="msg3429">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-08 12:49 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I have a form with only three buttons. Depending on the latest button the user has clicked the next time this button should have the Initial focus. When reading the great online help there is written that I shouldn't use SetFocus method within OnInitialize event. But ZOrder method doesn't seem to have any effect? What else can I do to set the focus to a control within OnInitialize event?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3433">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-08 12:53 UTC</span>
+  </div>
+  <div class="post-body">Are you calling ZOrder from within OnIntialize, or from your button's OnClicked handler?</div>
+</article>
+<article class="post" id="msg3436">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-08 13:01 UTC</span>
+  </div>
+  <div class="post-body">I call it within OnInitialize:<br>
+<br>
+<br>
+(defun c:start_of_codesnippet ()<br>
+  (defun c:signothek_sc_assistent_cmdatend_OnInitialize (/)<br>
+    (dcl_Control_SetPicture signothek_sc_assistent_cmdatend_pb_draw (if (= intTopol 1) 186 184))<br>
+    (dcl_Control_SetCaption signothek_sc_assistent_cmdatend_pb_draw (if (= intTopol 1) "Neues Flächenobjekt\r\nsofort zeichnen" "Neues Linienobjekt\r\nsofort zeichnen"))<br>
+<br>
+    (cond<br>
+      ((= intDoAfter 3) (dcl_Control_ZOrder signothek_sc_assistent_cmdatend_pb_ov 1))<br>
+      ((= intDoAfter 2) (dcl_Control_ZOrder signothek_sc_assistent_cmdatend_pb_acad 1))<br>
+      (T (dcl_Control_ZOrder signothek_sc_assistent_cmdatend_pb_draw 1))<br>
+    ); cond<br>
+  ); c:signothek_sc_assistent_cmdatend_OnInitialize<br>
+<br>
+  (defun c:signothek_sc_assistent_cmdatend_pb_ov ()<br>
+    (dcl_form_close signothek_sc_assistent_cmdatend 3)<br>
+  ); c:signothek_sc_assistent_cmdatend_pb_ov<br>
+<br>
+  (defun c:signothek_sc_assistent_cmdatend_pb_draw ()<br>
+    (dcl_form_close signothek_sc_assistent_cmdatend 1)<br>
+  ); c:signothek_sc_assistent_cmdatend_pb_draw<br>
+<br>
+  (defun c:signothek_sc_assistent_cmdatend_pb_acad ()<br>
+    (dcl_form_close signothek_sc_assistent_cmdatend 2)<br>
+  ); c:signothek_sc_assistent_cmdatend_pb_acad<br>
+<br>
+  (if (not (setq intDoAfter (ReadFromRegistry "Planzeichenkatalog" "AssistLastCmdAtEnd"))) (setq intDoAfter 2))<br>
+  (setq intDoAfter (dcl_form_show signothek_sc_assistent_cmdatend))<br>
+  (WriteToRegistry "Planzeichenkatalog" "AssistLastCmdAtEnd" intDoAfter)<br>
+    <br>
+  (cond<br>
+    ((= intDoAfter 3) (SelectObjectInDatabase))<br>
+    ((= intDoAfter 1) (DrawNewObject))<br>
+  ); cond<br>
+<br>
+); end of codesnippet<br>
+<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3443">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-09 02:05 UTC</span>
+  </div>
+  <div class="post-body">This problem is caused by a bug in the ZOrder method, now fixed for the next build.</div>
+</article>
+<article class="post" id="msg3446">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-09 09:20 UTC</span>
+  </div>
+  <div class="post-body">Thanks, Owen, great!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

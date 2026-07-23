@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Drawing made by DrawLine is unstable · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1599</p>
+    <h1>Drawing made by DrawLine is unstable</h1>
+    <p class="meta">Started by krunch ·
+      2011-03-14 11:20 UTC ·
+      7 replies · SMF topic #1599</p>
+<article class="post" id="msg7838">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-14 11:20 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+I try to use DrawLine to change a PictureBox appearance instead of changing it's Picture property.<br>
+<br>
+But I first meet this problem : the drawing made by DrawLine is erased when the cursor passes over the PictureBox (rollover). It's cleared only the first time...<br>
+This problem appears when the PictureBox has a OnClick event<br>
+<br>
+Please try the sample below, then disabled PictureBox_OnClick event, save and run again.<br>
+<br>
+Another thing I wonder (I don't know if it's normal) is why DrawLine doesn't work when called from OnInitialize.. it must be called before to make the "first" drawing ?<br>
+(defun c:go ()<br>
+  (command "OPENDCL")<br>
+  (dcl_Project_Load "draw" T)<br>
+  (dcl_Form_Show draw_Form1)<br>
+  (Draw)<br>
+  (princ)<br>
+)<br>
+(defun c:draw_Form1_OnInitialize (/)<br>
+  (Draw) ; this one doesn't work ??<br>
+  (princ)<br>
+)<br>
+(defun c:draw_Form1_TextButton1_OnClicked (/)<br>
+  (Draw)<br>
+)<br>
+(defun Draw ()<br>
+  (dcl_PictureBox_DrawLine draw_Form1_PictureBox1 '((22 10 22 34 0) (10 22 34 22 0)))<br>
+)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1567/draw.odcl">draw.odcl</a> <span class="muted">(924 bytes)</span></li><li><a href="../attachments/1568/draw.lsp">draw.lsp</a> <span class="muted">(361 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7842">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-14 14:31 UTC</span>
+  </div>
+  <div class="post-body">Something more in a specific case (superposition Picture + drawing with DrawLine) : this is the same sample, but the PictureBox has a Picture<br>
+In this case the drawing is also erased by a click on the PictureBox, please try the new sample below.<br>
+<br>
+Same thing : the problem disappears if you disable the OnClick event in the PictureBox (or if you delete the picture in the PictureBox).<br>
+<br>
+Note: OnClick event is enabled and <em>c:draw+_Form1_PictureBox1_OnClicked</em> doesn't exist in Lisp, but no error alert is fired ?<br>
+<br>
+Lisp is the same :<br>
+ (defun c:go ()<br>
+   (command "OPENDCL")<br>
+   (dcl_Project_Load "draw+" T)<br>
+   (dcl_Form_Show draw+_Form1)<br>
+<br>
+   (Draw)<br>
+   (princ)<br>
+ )<br>
+ (defun c:draw+_Form1_OnInitialize (/)<br>
+   (Draw) ; this one doesn't work ??  <br>
+   (princ)<br>
+ )<br>
+ (defun c:draw+_Form1_TextButton1_OnClicked (/)<br>
+   (Draw)<br>
+ )<br>
+ (defun Draw ()<br>
+   (dcl_PictureBox_DrawLine draw+_Form1_PictureBox1 '((22 10 22 34 0) (10 22 34 22 0)))<br>
+ )<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1572/draw+.odcl">draw+.odcl</a> <span class="muted">(1113 bytes)</span></li><li><a href="../attachments/1573/draw+.lsp">draw+.lsp</a> <span class="muted">(386 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7843">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-15 09:45 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+Adding DrawLine onto a picture (post#2) is not what I want : I was just reporting the trouble..<br>
+<br>
+So my main problem is #1 : how to get a stable draw, not erased by the first mouse passage ?<br>
+<br>
+A basic solution is to redraw on each MouseMove (sample below), it works, but I believe that's not a good solution ?<br>
+(defun c:draw_Form1_PictureBox1_OnMouseMove (Flags X Y /)<br>
+  (Draw)<br>
+)<br>
+<br>
+Did I miss something ?<br>
+<br>
+Thanks<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1574/draw.odcl">draw.odcl</a> <span class="muted">(791 bytes)</span></li><li><a href="../attachments/1575/draw.lsp">draw.lsp</a> <span class="muted">(434 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7844">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-15 10:01 UTC</span>
+  </div>
+  <div class="post-body">OK, I've found it : drawing has to be done in a OnPaint event<br>
+<br>
+Thanks everybody !  ;)<br>
+<br>
+<br>
+(defun c:go ()<br>
+  (command "OPENDCL")<br>
+  (dcl_Project_Load "draw" T)<br>
+  (dcl_Form_Show draw_Form1)<br>
+  (princ)<br>
+)<br>
+(defun c:draw_Form1_PictureBox1_OnPaint (HasFocus /)<br>
+  (Draw)<br>
+)<br>
+(defun Draw ()<br>
+  (dcl_PictureBox_DrawLine draw_Form1_PictureBox1 '((22 10 22 34 0) (10 22 34 22 0)))<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg7845">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-15 11:48 UTC</span>
+  </div>
+  <div class="post-body">I notice that the OnPaint event is fired :<br>
+<br>
+- 1 time when the form is initialized<br>
+- 1 time the first OnMouseEntered(PictureBox), only the first time<br>
+- 2 times OnClick(PictureBox)<br>
+- 1 time OnKillFocus(PictureBox) after 1 click, only after 1 click<br>
+- 0 time OnRightClick....<br>
+<br>
+ ::)</div>
+</article>
+<article class="post" id="msg7847">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-03-16 06:33 UTC</span>
+  </div>
+  <div class="post-body">Hi, OnPaint is fired whenever the form is moved or will be covered by other forms and so on. DrawLine creates temporary graphics. Have a look at StoreImage method.<br>
+OnPaint should only contains methods to reproduce graphics and must not contain refresh method. There are other samples in this forum:<br>
+<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=1336.msg7150#msg7150" rel="nofollow noopener">{2}</a><br>
+<a href="http://www.opendcl.com/forum/index.php?topic=994.0" rel="nofollow noopener">{2}</a><br>
+<a href="http://www.opendcl.com/forum/index.php?topic=995.0" rel="nofollow noopener">{2}</a><br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg7848">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-16 10:23 UTC</span>
+  </div>
+  <div class="post-body">Thanks a lot Fred<br>
+<br>
+So I just needed StoreImage to fasten the graphic, no OnPaint event<br>
+<br>
+The only thing I don't understand is why the initial DrawLine has to be called after(?) OnInitialize (remark below), but it works fine with StoreImage<br>
+Thanks<br>
+<br>
+(defun c:go ()<br>
+  (command "OPENDCL")<br>
+  (dcl_Project_Load "draw" T)<br>
+  (dcl_Form_Show draw_Form1)<br>
+  <br>
+  (Draw)        ; initial drawing<br>
+  <br>
+  (princ)<br>
+)<br>
+(defun c:draw_Form1_OnInitialize (/)<br>
+;;;  (Draw)     ; this one doesn't work ??<br>
+  (princ)<br>
+)<br>
+<br>
+(defun Draw ()<br>
+  (dcl_PictureBox_DrawLine draw_Form1_PictureBox1 '((22 10 22 34 0) (10 22 34 22 0)))<br>
+  (dcl_PictureBox_StoreImage draw_Form1_PictureBox1)<br>
+)</div>
+</article>
+<article class="post" id="msg7857">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-03-16 12:34 UTC</span>
+  </div>
+  <div class="post-body">The DrawXXX functions draw on the screen, but OnInitialize is called before the control is visible, so there is nowhere to draw.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

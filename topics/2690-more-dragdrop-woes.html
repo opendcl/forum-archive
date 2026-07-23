@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>More DragDrop woes · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2690</p>
+    <h1>More DragDrop woes</h1>
+    <p class="meta">Started by honkinberry ·
+      2019-08-30 00:31 UTC ·
+      1 replies · SMF topic #2690</p>
+<article class="post" id="msg13294">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2019-08-30 00:31 UTC</span>
+  </div>
+  <div class="post-body">I'm struggling with drag and drop again with a ListBox control.<br>
+For a Tree Control, it works great, as the Drop event tells me where the user dropped it!  So it's usable.<br>
+But on a ListBox, I have just X and Y!  So I can... try and use HitPointTest?  Well, let's see:<br>
+Problem 1: HitPointTest is firing from the *mouse position*, not the drop line displayed.  I can get a Y value exactly the same from dropping above or below my target item.  So it's essentially impossible to get a bulletproof answer for where the user dragged it.<br>
+Problem 2: The coordinates are different for HiDPI.  So if I am trying to use HitPointTest above and below the drop coordinates, I have to look as much as 12 pixels higher or lower to find the actual drop position (but Problem one means that I will already be off by an entire list item depending on where the mouse cursor is).<br>
+Problem 3: Drag modes certainly are not helping.  Link is the least troublesome, as the cursor display looks like I'm dragging, and nothing happens when it's done.  Copy displays a copy icon, which is confusing if a user wants to just reorder a list.  Move, meanwhile, makes the source item, just.... DISAPPEAR!  Like, where did he go?!  The list was not updated with him in his new location, so that I can simply access the ItemData and now effect the changes in the database.  No, the source item just *poof* disappeared!  Further, this happens even if the user does not drag to a new location!  So an errant double-click makes it disappear!  So one more thing I have to check for, and somehow restore.<br>
+Problem 4: That moving happens secretly, after the Drop event!  So really the only vaguely realistic way to use the Move action for a Drop with a ListBox, would be to somehow determine where the user meant to drop it, if at all, and then set a DelayedInvoke to clean up the listbox display and make any necessary database changes.<br>
+<br>
+What would be *super nice*, and basically make DragDrop actually usable with a ListBox or List View, is if it behaved the same as it does for a Tree Control -- DropPoint should just be the nth location in the list where the user dropped it.  Boom, done, I could move on with life!  Haha!<br>
+<br>
+Hopefully the gods in the sky will look kindly on this request.<br>
+<br>
+Oh, and if the gods in the sky are thinking this is impossible to implement, I would suggest just *adding* the nth value to the end of the existing drop point argument.  So instead of (112.0 57.0), the new return would be (112.0 57.0 2), indicating the user dragged the item in between the 3rd and 4th items in the list.  This should have minimal impact on any existing code.<br>
+Please hear me, gods in the sky!<br>
+<br>
+Thank you, and have a pleasant tomorrow.<br>
+<br>
+--J</div>
+</article>
+<article class="post" id="msg13296">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2019-08-30 23:34 UTC</span>
+  </div>
+  <div class="post-body">Well, after a frustrating day, I have an interim fix.<br>
+Still would love the sky gods to hear my plea.<br>
+But here is some code that addresses a few of the issues with DragDrop on a ListBox:<br>
+<br>
+<pre class="code"><code><br>
+(defun c:dclDragDrop (proj form control drop / n i C Y HIDPI new)<br>
+    (if (and (setq n (dcl-ListBox-GetCurSel List1)) ; after drag, current item should still be selected<br>
+            (&gt; n -1) ; something selected (although by definition it should be at end of a drop)<br>
+            SOURCELIST ; should also already exist in order to populate the listbox<br>
+            (&gt; (length SOURCELIST) 1) ; just save us from having to find out otherwise they accidentally dragged a 1-item list<br>
+            (setq C (nth n SOURCELIST)) ; current item dragged<br>
+             ; now let's see where they dragged it<br>
+            Y (cadr drop) ; it's a listbox, the X value is pointless to us<br>
+             ; but on HiDPI these values will be doubled! we need to find that out<br>
+            HIDPI <br>
+                (and (setq i (vl-registry-read "HKEY_CURRENT_USER\\Control Panel\\Desktop\\WindowMetrics" "AppliedDPI"))<br>
+                    (&gt; i 150)<br>
+                ) ; and<br>
+             ; so my actual Y drop point was:<br>
+            Y (LM:round (/ Y (if HIDPI 2.0 1.0)))<br>
+             ; let's translate pixel to nth list position<br>
+            new (LM:round (/ Y 12.5)) ; listbox items at default font/size/scaling are consistently 12.5 pixels apart<br>
+             ; but user can drag far past the last item in the list, we need this to at most be 1+ the last nth position<br>
+            new (min new (length SOURCELIST))<br>
+             ; ah, 1 last thing to validate.  if they dropped it either just before or after existing position.<br>
+             ; before will be the same as n, after will be 1+.  so to drag after the *next* item, it would need to be +2<br>
+            (not (member new (list n (1+ n)))) ; otherwise, we have a valid drop!<br>
+        ) ; and<br>
+<br>
+        (progn<br>
+             ; effect the drop!<br>
+             ; list item C, user would prefer it at nth position "new"<br>
+        ) ; progn<br>
+<br>
+    ) ; if<br>
+) ; DragDrop<br>
+</code></pre><br>
+<br>
+I hope that is pretty clear, that is just an unacceptable amount of code to wrangle for every ListBox DragDrop.<br>
+Especially compared to the simplicity of a Tree Control drag/drop.<br>
+Note also, that it is not accounting for a font, size, or font scaling, other than default, so this still isn't done.<br>
+<br>
+--J<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

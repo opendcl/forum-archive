@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Open a file from window · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1889</p>
+    <h1>Open a file from window</h1>
+    <p class="meta">Started by cadplayer ·
+      2012-09-05 11:54 UTC ·
+      10 replies · SMF topic #1889</p>
+<article class="post" id="msg9275">
+  <div class="post-head">
+    <span class="post-author">cadplayer</span>
+    <span class="post-date muted">2012-09-05 11:54 UTC</span>
+  </div>
+  <div class="post-body">Hello!<br>
+<br>
+I have discovered a little strange problem if I click on selfmade button from my OpenDCL menu. The lisp routin works perfect but if you look on animation you can see in first command I run with click button it opens a window where I can open a file. In second command I run with another click button I can´t scroll in window.<br>
+Both buttons have same properties. But in second routine works command not right. Have you an answer?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1814/worksfine.gif">worksfine.gif</a> <span class="muted">(2216739 bytes)</span></li><li><a href="../attachments/1815/workswrong.gif">workswrong.gif</a> <span class="muted">(2606676 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9278">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-09-05 16:34 UTC</span>
+  </div>
+  <div class="post-body">Are you referring to horizontal scrolling or vertical scrolling? In the second case, there are not enough entries to scroll vertically.</div>
+</article>
+<article class="post" id="msg9283">
+  <div class="post-head">
+    <span class="post-author">cadplayer</span>
+    <span class="post-date muted">2012-09-06 06:03 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen!<br>
+<br>
+In second case I can´t open folder with dubbelclick... I don´t understand logic why can I do that in first case and not in second case. The definition of both buttons are same.<br>
+<br>
+Regards Dirk<br>
+</div>
+</article>
+<article class="post" id="msg9285">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-09-06 12:23 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I don't understand the problem. It might help if you post the relevant code.</div>
+</article>
+<article class="post" id="msg9287">
+  <div class="post-head">
+    <span class="post-author">cadplayer</span>
+    <span class="post-date muted">2012-09-06 12:55 UTC</span>
+  </div>
+  <div class="post-body">Here a test function. Both buttons have same problem that I can´t open file ... and select a file<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1818/Untitled.odcl">Untitled.odcl</a> <span class="muted">(574 bytes)</span></li><li><a href="../attachments/1819/Untitled.LSP">Untitled.LSP</a> <span class="muted">(1548 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9288">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-09-06 17:17 UTC</span>
+  </div>
+  <div class="post-body">I see now. The file dialog displays, but input is disabled. I will need to investigate further to see what is going on.<br>
+<br>
+I didn't test this, but you may be able to work around the problem by setting the form's Keep Focus property to False.</div>
+</article>
+<article class="post" id="msg9289">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-09-06 19:23 UTC</span>
+  </div>
+  <div class="post-body">I can verify that setting Keep Focus to False prevents this problem. I have now made changes in the code for the next build of OpenDCL that should prevent this from happening regardless of the Keep Focus value.</div>
+</article>
+<article class="post" id="msg9290">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-09-07 03:52 UTC</span>
+  </div>
+  <div class="post-body">Hi, I had the same problem in the past and solved that by switching the control's EventInvoke property to AllowCommand.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9291">
+  <div class="post-head">
+    <span class="post-author">cadplayer</span>
+    <span class="post-date muted">2012-09-07 05:56 UTC</span>
+  </div>
+  <div class="post-body">So I wait for next update of ODCL or have it a trick to run it otherwise? /Dirk</div>
+</article>
+<article class="post" id="msg9608">
+  <div class="post-head">
+    <span class="post-author">Wolfgang S</span>
+    <span class="post-date muted">2013-03-18 10:20 UTC</span>
+  </div>
+  <div class="post-body">Hi everybody!<br>
+<br>
+I have the same issue and another information about this:<br>
+<br>
+- when I click the button and stay inside the dialog area the "select file" dialog works fine.<br>
+- when I click the button and move outside the dialog area before the "select file" dialog opens it is not working.<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg9609">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-03-19 14:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Wolfgang S link=topic=1889.msg9608#msg9608 date=1363602022 wrote:</cite>I have the same issue...</blockquote><br>
+<br>
+Are you using the current build of OpenDCL 7.0.0.10?</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

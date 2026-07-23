@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Colors combobox truecolor support · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2801</p>
+    <h1>Colors combobox truecolor support</h1>
+    <p class="meta">Started by honkinberry ·
+      2021-11-19 21:58 UTC ·
+      5 replies · SMF topic #2801</p>
+<article class="post" id="msg13632">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2021-11-19 21:58 UTC</span>
+  </div>
+  <div class="post-body">With a combobox set to style 4 for Colors, it has a less than desirable truecolor support.<br>
+One has to click on Windows, and go through that ancient Windows Custom Color dialog, which is just very foreign to a CAD user.<br>
+Over in a Grid control, the Truecolor cell style goes right to the CAD truecolor selection, which is great.<br>
+<br>
+For a Combobox set to Color, I'd prefer if the "Select Color..." option went to (acad_truecologdlg x) instead of (acad_colordlg x).<br>
+Hopefully that's easy and quick!<br>
+<br>
+Have a great weekend and Thanksgiving!<br>
+<br>
+--J</div>
+</article>
+<article class="post" id="msg13641">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2022-01-13 18:29 UTC</span>
+  </div>
+  <div class="post-body">We really need Truecolor support for the Combobox.<br>
+I'd really like to avoid what looks like the only alternative - engineering a replacement for a Combobox, with some sort of Grid that pops down, so that we can display the colors.<br>
+<br>
+Is there any chance the 'Select Color...' option from a Style 4 Combobox can display the standard Truecolor selection?  And further, then display and return truecolors?  Currently, if one does use the archaic Windows Custom Color interface to select a truecolor, the Combobox just displays the nearest indexed color.<br>
+<br>
+Is there anything I can do to assist with this?<br>
+<br>
+--J</div>
+</article>
+<article class="post" id="msg13642">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2022-01-13 21:12 UTC</span>
+  </div>
+  <div class="post-body">You can make a custom color combo with your own "Select color..." item that opens the true color dialog.</div>
+</article>
+<article class="post" id="msg13643">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2022-01-13 21:46 UTC</span>
+  </div>
+  <div class="post-body">That would totally work!  How would I go about doing that?<br>
+I'm guessing I would fire DeleteItem for the last two, and add my own Select Color at the end?<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg13644">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2022-01-14 00:33 UTC</span>
+  </div>
+  <div class="post-body">Yes, exactly. Then handle the Selected event. I'm not sure it will work with the color combo style, but it's worth a try. If it doesn't work with the color combo style, a plain combo style will work for sure.</div>
+</article>
+<article class="post" id="msg13645">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2022-01-14 16:58 UTC</span>
+  </div>
+  <div class="post-body">Well, unfortunately it doesn't work.<br>
+And a plain combobox completely defeats the purpose, as the colors are not visible.<br>
+I'll just use a Picturebox and a Label.<br>
+<br>
+Anyway, thanks for chiming in.<br>
+Have a super day!<br>
+<br>
+--J</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

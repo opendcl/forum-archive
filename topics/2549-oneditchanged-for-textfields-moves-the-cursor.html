@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OnEditChanged for textfields moves the cursor ... · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2549</p>
+    <h1>OnEditChanged for textfields moves the cursor ...</h1>
+    <p class="meta">Started by Peter2 ·
+      2018-01-03 11:29 UTC ·
+      4 replies · SMF topic #2549</p>
+<article class="post" id="msg12647">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-01-03 11:29 UTC</span>
+  </div>
+  <div class="post-body">I have a simple textfield where I enter values, e.g "123"<br>
+I have a second textfield where the result of "inputvalue x 2" should be displayed, e.g. 246 (the result of 123x2)<br>
+<br>
+On field A a have the event "OnEditChanged" which runs the calculation "input x 2". <br>
+<br>
+Sounds great, but the problem is in detail, e.g. for "123"<br>
+- I press "1"<br>
+-&gt; It calculates 1x2=2 and displays 2<br>
+-&gt; It returns to field "A" and sets the cursor on the <strong>beginning of the field</strong><br>
+- I press "2"<br>
+-&gt; Instead of expected value "12" in field "A" I have now "21", because 2 was entered at the beginning of the field.<br>
+<br>
+What to do to keep the normal order of the input - 123?<br>
+<br>
+Happy new year to all!</div>
+</article>
+<article class="post" id="msg12648">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2018-01-03 13:32 UTC</span>
+  </div>
+  <div class="post-body">What exactly does your OnEditChanged event handler do, and what does it return?</div>
+</article>
+<article class="post" id="msg12649">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-01-03 14:22 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+here is the code:<br>
+<br>
+<pre class="code"><code>(defun c:rbi_drawscale/bildskalierung/faktor#OnEditChanged (strNewValue /)<br>
+    (setq faktor (abs (atof strNewValue))<br>
+          soll (* faktor ist))<br>
+    (dcl-Control-SetText rbi_drawscale/bildskalierung/faktor (rtos faktor 2 3))<br>
+    (dcl-Control-SetText rbi_drawscale/bildskalierung/eff_distanz (rtos soll 2 3))<br>
+    ; Aushren-Button (de)aktivieren<br>
+    (if (and soll ist faktor)<br>
+        (dcl-Control-SetEnabled rbi_drawscale/bildskalierung/ausfuehren t)<br>
+        (dcl-Control-SetEnabled rbi_drawscale/bildskalierung/ausfuehren nil)<br>
+    )<br>
+)<br>
+</code></pre><br>
+https://www.screencast.com/t/ia7bZOaTJpEZ</div>
+</article>
+<article class="post" id="msg12650">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2018-01-03 15:43 UTC</span>
+  </div>
+  <div class="post-body">It seems risky to change the notifying control's text from the OnEditChanged notification. If you must change the text, then you also need to manage the caret position. I think you should remove this line altogether:<br>
+<pre class="code"><code>(dcl-Control-SetText rbi_drawscale/bildskalierung/faktor (rtos faktor 2 3))</code></pre></div>
+</article>
+<article class="post" id="msg12651">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-01-03 18:51 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen - fixed.<br>
+<br>
+(I don't know why I had the idea to use this line ...)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

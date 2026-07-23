@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid Control - Sorting Issues · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 147</p>
+    <h1>Grid Control - Sorting Issues</h1>
+    <p class="meta">Started by JMack ·
+      2008-02-01 00:33 UTC ·
+      9 replies · SMF topic #147</p>
+<article class="post" id="msg638">
+  <div class="post-head">
+    <span class="post-author">JMack</span>
+    <span class="post-date muted">2008-02-01 00:33 UTC</span>
+  </div>
+  <div class="post-body">[OpenDCL Studio 4.1.2.1]<br>
+<br>
+Hello everyone,<br>
+<br>
+I'm having a hell of a time trying to sort my Grid control. Here are are my issues;<br>
+1.  Grid control only sorts ascending. I'm using the column click event and to init the sort.  I've ried T/nil and 1/0.<br>
+2.  When the grid does sort (ascending only), it only sorts text cells.  It ignores Check Boxes and AcadColor cells.  I've used dcl_Grid_SortNumericItems and dcl_Grid_SortTextItems. The AcadColor cell gets all messed up, the colors change.<br>
+<br>
+I've debugged the hell out of my code and confirmed its passing the correct arguments.<br>
+<br>
+Let me know if you've used this control and got it sorting properly.  Also let me know if you have had problems with sorting Check Boxes and AcadColor cells.<br>
+Thats it.  Theres a pic of my grid at the bottom.<br>
+<br>
+Cheers,<br>
+JMack<br>
+<br>
+If your wondering about my code, here's a snippet (I don't expect anyone to understand any of it)<br>
+<pre class="code"><code><br>
+(defun HDF_ODCLGrid_Sort (strFunction strGrid eGrid iColumn / iSortColumn iSortOrder)<br>
+  (cond<br>
+    ((null iColumn)(HDF_ODCLGrid_InitSort strFunction strGrid eGrid))<br>
+    ((eq 1 (HDF_ODCLGrid_RegGetColumn strFunction strGrid iColumn "sortable"))<br>
+     (setq<br>
+       iSortColumn (HDF_ODCLGrid_RegGet strFunction strGrid "SortColumn")<br>
+       iSortOrder  (HDF_ODCLGrid_RegGet strFunction strGrid "SortOrder")<br>
+     )<br>
+     (if<br>
+       (eq iSortColumn iColumn)<br>
+       (if<br>
+         (eq iSortOrder 1)<br>
+         (setq iSortOrder 0)<br>
+         (setq iSortOrder 1)<br>
+       )<br>
+       (setq iSortColumn iColumn iSortOrder 1)<br>
+     )<br>
+     (HDF_ODCLGrid_RegPut strFunction strGrid "SortColumn" iSortColumn)<br>
+     (HDF_ODCLGrid_RegPut strFunction strGrid "SortOrder" iSortOrder)<br>
+     (HDF_ODCLGrid_InitSort strFunction strGrid eGrid)<br>
+   )<br>
+   (T nil);columns not sortable<br>
+  )<br>
+  nil<br>
+)<br>
+<br>
+(defun HDF_ODCLGrid_InitSort (strFunction strGrid eGrid / iSortColumn iSortOrder)<br>
+  (setq<br>
+    iSortColumn (HDF_ODCLGrid_RegGet strFunction strGrid "SortColumn")<br>
+    iSortOrder  (HDF_ODCLGrid_RegGet strFunction strGrid "SortOrder")<br>
+  )<br>
+  (HDC_Debug_Print (strcat "\niSortColumn: " (vl-princ-to-string iSortColumn) ", " "iSortOrder: " (vl-princ-to-string iSortOrder)))<br>
+  (if<br>
+    (member (HDF_ODCLGrid_RegGetColumn strFunction strGrid iSortColumn "style") (list 1 8 30 31));;is this a numeric column?<br>
+    (dcl_Grid_SortNumericItems eGrid iSortColumn (eq 1 iSortOrder))<br>
+    (dcl_Grid_SortTextItems eGrid iSortColumn (eq 1 iSortOrder))<br>
+  )<br>
+  nil<br>
+)<br>
+</code></pre><br>
+<br>
+<br>
+<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg643">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-01 02:23 UTC</span>
+  </div>
+  <div class="post-body">The grid cell sorting code was the one part of the original grid code that I didn't rewrite, and it's a mess. If you can, please send me a small sample project and lisp code to reproduce the problem. Also, I'd like to hear from anyone else that is familiar with sorting to explain whether this problem with toggle cells being ignored is a bug or by design.</div>
+</article>
+<article class="post" id="msg644">
+  <div class="post-head">
+    <span class="post-author">JMack</span>
+    <span class="post-date muted">2008-02-01 03:44 UTC</span>
+  </div>
+  <div class="post-body">Heres some code to test with.<br>
+<br>
+Columns definition is<br>
+<pre class="code"><code>(list<br>
+      (list 0 "idx" 1 24)<br>
+      (list 1 "6 - Strings (1)" 1 75)<br>
+      (list 2 "1 - Check Boxes" 1 75)<br>
+      (list 3 "30 - AcadColor" 1 75)<br>
+      (list 4 "6 - Strings (2)" 1 75)<br>
+      (list 5 "8 - Integers" 1 75)<br>
+      (list 6  "9 - Units" 1 75)<br>
+    )</code></pre><br>
+You'll notice how the check boxes do nothing and ACADColor goes all white.<br>
+<br>
+Good luck and Thanks.<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg646">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-02-01 16:11 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=147.msg643#msg643 date=1201832629 wrote:</cite><br>
+Also, I'd like to hear from anyone else that is familiar with sorting to explain whether this problem with toggle cells being ignored is a bug or by design.<br>
+</blockquote><br>
+<br>
+Sounds like a bug to me.</div>
+</article>
+<article class="post" id="msg648">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-01 22:54 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=JMack link=topic=147.msg644#msg644 date=1201837483 wrote:</cite><br>
+Heres some code to test with.</blockquote><br>
+<br>
+Thanks for the excellent sample! That makes my job much easier. I've rewritten the sorting functions for Alpha 3, and your sample is now working fine in my tests.<br>
+<br>
+The original sorting code did a lot of things that are no longer relevant or necessary. Rather than spend time trying to unravel how it was originally intended to work, I just wrote new functions that work the way I would expect them to work. Please test these after Alpha 3 is released this weekend and let me know whether you still notice any problems.</div>
+</article>
+<article class="post" id="msg649">
+  <div class="post-head">
+    <span class="post-author">JMack</span>
+    <span class="post-date muted">2008-02-01 23:22 UTC</span>
+  </div>
+  <div class="post-body">Your the best!  I have many ListView controls I want to convert over to Grid but was concerned about all the bugs. So far my only issue is sorting and it appears you got it under control.<br>
+<br>
+Below is the list of all the cell styles.  When you get a chance can you confirm that I've classified them correctly as strings and numeric items.  If its not that straight forward, no prob, I'll eventually get around to it. I'm a little confused about certain items.  For example AcadColor, will Color 75 be sorted before Color 175.  Thanks again!<br>
+<br>
+         0 - Decide at run time<br>
+	 1 - Check Boxes - numeric (sorts check state?)<br>
+	 2 - Option Buttons - numeric (sorts option state?)<br>
+	 3 - Switchable Icons - numeric (sorts icon index?)<br>
+	 4 - Ellipses Buttons - text<br>
+	 5 - Pick Buttons - text	<br>
+	 6 - Strings - text	<br>
+	 7 - AngleUnits	- numeric<br>
+	 8 - Integers - numeric	<br>
+	 9 - Units - numeric		<br>
+	10 - UpperCase	- text<br>
+	11 - LowerCase	- text<br>
+	12 - Password	- text<br>
+	13 - MultiLine	- text<br>
+	14 - Currency - numeric<br>
+	15 - Date - numeric (hopefully)	<br>
+	16 - Time - numeric (hopefully)		<br>
+	17 - Percentage	- numeric<br>
+	18 - DropDown - text<br>
+	19 - ArrowHeads - text<br>
+	20 - Acad Colors - numeric (color index?)<br>
+	21 - TextStyle List - text<br>
+	22 - PlotStyle Names - text<br>
+	23 - PlotStyle Tables - text<br>
+	24 - Plotter List - text<br>
+	25 - Fonts - text	<br>
+	26 - Drive List - text<br>
+	27 - Layer List	- text<br>
+	28 - DimStyle List - text<br>
+	29 - ImageDrop List - text (or numeric icon index?)<br>
+	30 - AcadColor Cell - numeric (color index?)<br>
+	31 - TrueColor Cell - numeric<br>
+	32 - LineWeight Cell - numeric (index?)<br>
+	33 - Linetype Cell - text	<br>
+	34 - Directories - text<br>
+	35 - Files - text<br>
+	36 - Strings Combo - text<br>
+	37 - AngleUnits Combo - numeric<br>
+	38 - Integers Combo - numeric<br>
+	39 - Units Combo - numeric	<br>
+	40 - UpperCase Combo - text<br>
+	41 - LowerCase Combo - text<br>
+<br>
+Cheers<br>
+</div>
+</article>
+<article class="post" id="msg651">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-01 23:51 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=JMack link=topic=147.msg649#msg649 date=1201908178 wrote:</cite><br>
+When you get a chance can you confirm that I've classified them correctly as strings and numeric items.  If its not that straight forward, no prob, I'll eventually get around to it. I'm a little confused about certain items.  For example AcadColor, will Color 75 be sorted before Color 175.</blockquote><br>
+<br>
+Sorting as text or numeric is independent of the cell style. That is, you can sort any style cell using either method. The difference is in the comparison used for the sort. A text sort always sorts using the text value of the cell (i.e. "Color 175" would be ordered before "Color 75"). A numeric sort is based on the following logic: if the cell states are different, it sorts on that; otherwise if the cell images are different it sorts on that; otherwise it converts the cell text to an integer and sorts on that (this means non-numeric values will always evaluate to zero and thus considered equal).<br>
+<br>
+To better understand the practical implications of the numeric sort you need to consider that the image index is used as more than just an image index. In color style cells that contain an ACI color, the image index is the ACI color index (however if the cell contains a true color value, the image index is -1; if it contains a color book color, the image index is -2 -- so color cells with a true color or color book value won't sort correctly using a numeric sort.) In dropdown combo style cells, the image index is the current selection index, so a numeric sort will order the cells in the same order the items appear in the dropdown list.<br>
+<br>
+The sort logic is pretty straightforward, but it probably won't work as desired in all cases. I think dates and times should work with a numeric sort, but I didn't test that. In cases where neither sort method sorts the way you want it to, you could probably create a hidden zero-width column of integers and use that column in concert with the numeric sort to reorder the rows in whatever way you want, using your own custom ordering logic.</div>
+</article>
+<article class="post" id="msg653">
+  <div class="post-head">
+    <span class="post-author">JMack</span>
+    <span class="post-date muted">2008-02-02 00:00 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the quick reply!  So let me get this straight, to get check boxes sorted by check state I would sort numerically because the cell images are different?</div>
+</article>
+<article class="post" id="msg656">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-02 00:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=JMack link=topic=147.msg653#msg653 date=1201910409 wrote:</cite><br>
+So let me get this straight, to get check boxes sorted by check state I would sort numerically because the cell images are different?</blockquote><br>
+<br>
+Actually you would sort numerically because the cell states are different (it sorts first on cell state, then on image index). This is necessary because for some styles (e.g. the Check Boxes style) there is no image index, and the only thing that changes is the cell state (cell state is a value maintained internally by the control).</div>
+</article>
+<article class="post" id="msg657">
+  <div class="post-head">
+    <span class="post-author">JMack</span>
+    <span class="post-date muted">2008-02-02 01:00 UTC</span>
+  </div>
+  <div class="post-body">Glad I asked because when you said <blockquote class="quote">A numeric sort is based on the following logic: if the cell states are different,...</blockquote><br>
+I thought you actually meant different cell styles. I didn't realize there was an internal cell state.  I think sorting is all sorted out for now.<br>
+<br>
+Cheers</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

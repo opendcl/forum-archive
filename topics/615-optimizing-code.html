@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Optimizing code · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 615</p>
+    <h1>Optimizing code</h1>
+    <p class="meta">Started by vladimirzm ·
+      2009-03-02 23:29 UTC ·
+      3 replies · SMF topic #615</p>
+<article class="post" id="msg2785">
+  <div class="post-head">
+    <span class="post-author">vladimirzm</span>
+    <span class="post-date muted">2009-03-02 23:29 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+i have some lines like:<br>
+<pre class="code"><code>  (dcl_Control_SetValue tmm-modeless_Form1_CheckBox1 (cdr (assoc 0 *mtmm-sslst*)))<br>
+  (dcl_Control_SetValue tmm-modeless_Form1_CheckBox2 (cdr (assoc 1 *mtmm-sslst*)))<br>
+  (dcl_Control_SetValue tmm-modeless_Form1_CheckBox3 (cdr (assoc 2 *mtmm-sslst*)))<br>
+  (dcl_Control_SetValue tmm-modeless_Form1_CheckBox4 (cdr (assoc 3 *mtmm-sslst*)))<br>
+  (dcl_Control_SetValue tmm-modeless_Form1_CheckBox5 (cdr (assoc 4 *mtmm-sslst*)))<br>
+  (dcl_Control_SetValue tmm-modeless_Form1_CheckBox6 (cdr (assoc 5 *mtmm-sslst*)))<br>
+  (dcl_Control_SetValue tmm-modeless_Form1_CheckBox7 (cdr (assoc 6 *mtmm-sslst*)))<br>
+  (dcl_Control_SetValue tmm-modeless_Form1_CheckBox8 (cdr (assoc 7 *mtmm-sslst*)))<br>
+  (dcl_Control_SetValue tmm-modeless_Form1_CheckBox9 (cdr (assoc 8 *mtmm-sslst*)))<br>
+  (dcl_Control_SetValue tmm-modeless_Form1_CheckBox10 (cdr (assoc 9 *mtmm-sslst*)))<br>
+  (dcl_Control_SetValue tmm-modeless_Form1_CheckBox11 (cdr (assoc 10 *mtmm-sslst*)))</code></pre><br>
+<br>
+this happens "OnInitialize" but then their values change so is a bit confussing type or even copy lines and change just two or three words and i made my own version:<br>
+<br>
+<pre class="code"><code>(defun setbox (box int)<br>
+  (eval<br>
+    (read (strcat<br>
+	    "(dcl_Control_SetValue tmm-modeless_Form1_Check"<br>
+	    box ; for example "Box1"<br>
+	    " (cdr (assoc "<br>
+	    (itoa int) ; for example 1<br>
+	    " *mtmm-sslst*)))"<br>
+	   )<br>
+    )<br>
+  )<br>
+)</code></pre><br>
+<br>
+then (setbox "Box1" 1) = (dcl_Control_SetValue tmm-modeless_Form1_CheckBox1 (cdr (assoc 0 *mtmm-sslst*)))<br>
+even i can use foreach or mapcar for several items<br>
+it works but it shows me an error to: <em>"NIL value not allowed"</em> but it works.<br>
+Where is the rigth way?<br>
+</div>
+</article>
+<article class="post" id="msg2786">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-03-02 23:40 UTC</span>
+  </div>
+  <div class="post-body">You should be able to call the control names as strings. Try something like this:<br>
+<pre class="code"><code><br>
+(defun setbox (box int)  <br>
+  (dcl_Control_SetValue "tmm-modeless" "Form1" box (cdr (assoc int *mtmm-sslst*)))<br>
+)<br>
+</code></pre><br>
+<br>
+(setbox "CheckBox1" 1)<br>
+Untested....</div>
+</article>
+<article class="post" id="msg2787">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-03-02 23:45 UTC</span>
+  </div>
+  <div class="post-body">Also, have a look at this code, to loop through all the controls on a form..<br>
+<a href="http://www.opendcl.com/HelpFiles/index.php?lang=ENU&amp;page=Advanced/Tips.htm" rel="nofollow noopener">{2}</a><br>
+Of course change the "FontSize" to something else &amp; don't SaveAs the project to anther files.</div>
+</article>
+<article class="post" id="msg2788">
+  <div class="post-head">
+    <span class="post-author">vladimirzm</span>
+    <span class="post-date muted">2009-03-02 23:52 UTC</span>
+  </div>
+  <div class="post-body">thnx i'll try</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Why does OnKillFocus, and OnRetunPressed fire twice for textbox · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1615</p>
+    <h1>Why does OnKillFocus, and OnRetunPressed fire twice for textbox</h1>
+    <p class="meta">Started by jmaeding ·
+      2011-04-18 20:08 UTC ·
+      7 replies · SMF topic #1615</p>
+<article class="post" id="msg7944">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2011-04-18 20:08 UTC</span>
+  </div>
+  <div class="post-body">I use those events to validate values, here is an example:<br>
+;ELEVATION PRECISION TEXTBOX<br>
+(defun c:frmEditVA_txtElevPrec_OnKillFocus ()<br>
+  (frmEditVA_txtElevPrec_Validate)<br>
+)<br>
+(defun c:frmEditVA_txtElevPrec_OnReturnPressed ()<br>
+  (frmEditVA_txtElevPrec_Validate)<br>
+)<br>
+(defun frmEditVA_txtElevPrec_Validate ( / Value)<br>
+  (Setq Value (CT-REMOVE-CHARS (DCL_Control_GetProperty (vl-doc-ref 'CT-Civil10-B_frmEditVA_txtElevPrec) "Text")))<br>
+  (IF (= (CHECK_FOR_NUM Value) 0)<br>
+    (PROGN<br>
+      (PUT-GVAR "ELEVPREC" (ATOI Value) "CT-EDITVA-GVAR")<br>
+      (FIX-GVARS "CT-EDITVA-GVAR" (CT-EDITVA-GVAR-LIST))<br>
+      (PUT-CT-EDITVA-GVAR-INFILE)<br>
+      (frmEditVA_DoGrid)<br>
+    )<br>
+    (PROGN<br>
+      (ALERT "Precision was not valid")<br>
+      (DCL_Control_SetProperty (vl-doc-ref 'CT-Civil10-B_frmEditVA_txtElevPrec) "Text"<br>
+        (ITOA (GET-GVAR "ELEVPREC" "CT-EDITVA-GVAR"))<br>
+      )<br>
+    )<br>
+  )<br>
+)<br>
+<br>
+Those two events fire twice every time.  Would not matter, but sometimes I give user feedback like the alert shown, and that shows twice.<br>
+I brought this up in the past, am not sure if its proper behavior though.<br>
+Note that OnReturnPressed should not fire at all IMO, if you click to another control, just OnKillFocus should fire.<br>
+</div>
+</article>
+<article class="post" id="msg7946">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2011-04-18 22:02 UTC</span>
+  </div>
+  <div class="post-body">after some testing, it seems my calls to update other text boxes are causing the firing.<br>
+I did not think changing another control's value was the same as lost focus though.<br>
+My other control has no events wired, so there is no interaction between them.<br>
+<br>
+Its not making sense.</div>
+</article>
+<article class="post" id="msg7947">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-04-18 23:08 UTC</span>
+  </div>
+  <div class="post-body">Can you attach a simple example?</div>
+</article>
+<article class="post" id="msg7948">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2011-04-19 00:31 UTC</span>
+  </div>
+  <div class="post-body">am working on the example.  Cannot replicate the behavior yet.<br>
+I forgot to mention the dialog is modeless, that may have something to do with it.<br>
+Seems one things is clear, the onkillfocus is caused by an "enter" to the textbox.<br>
+Looks like focus is lost to the modeless dialog on an enter.<br>
+<br>
+Still not sure why my real dialog is double dipping, I'll keep experimenting.</div>
+</article>
+<article class="post" id="msg7949">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2011-04-19 01:07 UTC</span>
+  </div>
+  <div class="post-body">Here is an example.<br>
+Important notes:<br>
+1) Its modeless, and I don't want escape to close it, so flag TEST:OKTOCLOSE is set to deal with that.<br>
+2) When textbox1 loses focus, or enter is pressed, I want textbox2's value to change<br>
+3) When enter is pressed for textbox1, and the validate ran successfully (from the lostfocus event), I want its value to be selected, so user can type another value.  Pattern is type, enter, type, enter....<br>
+<br>
+One thing I realised is it makes no sense to put the validate code in both events.  An enter always causes focus to be loast.  OnKillFocus is the place to put validate code.  So now I am saving the return of the validate function in a global var, and checking it in the retunpressed event to see if selection should be done.<br>
+<br>
+I get four lostfocus events with this though.  Can I avoid this with better structure?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1602/TestEvents.odcl">TestEvents.odcl</a> <span class="muted">(832 bytes)</span></li><li><a href="../attachments/1603/TestEventsProg.lsp">TestEventsProg.lsp</a> <span class="muted">(1211 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7950">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2011-04-19 01:14 UTC</span>
+  </div>
+  <div class="post-body">I think part of the problem, is OnKillFocus fires before OnReturnPressed.<br>
+If it was reverse, I could set a flag saying the cause of the lost focus was the return.<br>
+<br>
+I know my (dcl_TextBox_SetSel TestEvents_Form1_TextBox1 0 -1) is causing the lost focus event, but am not sure why.<br>
+If SetSel gives focus back, what is causing it to lose focus after, thus causing the event to fire.<br>
+I would say SetSel should not be firing any events at all, because if anything, it is GIVING focus to the texbox1, not losing it.</div>
+</article>
+<article class="post" id="msg7951">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2011-04-19 16:27 UTC</span>
+  </div>
+  <div class="post-body">ok, I fooled myself on two items.  An enter which fired OnReturnPressed, does not fire the OnKillFocus event.<br>
+It was my call to SetProperty "Text" on textbox2 that was doing it.<br>
+Also, my Alert code causes focus to be lost, what a mess I made of troubleshooting.<br>
+So I cannot take out the validate from OnReturnPressed, and my plight gets worse.<br>
+<br>
+In .net, you could handle this by unwiring the events from the controls before the property update, then rewire after.<br>
+This is really tricky in ODCL, as updating other controls after a text edit is very common, and that would fire the same event (OnKillFocus) that you should put the code that updates the other controls.<br>
+<br>
+The tricky part is telling what is the first time OnKillFocus is being called.  If I could do that, i could set a flag to just run the code once within the validate.  I don't mean to drag on about this, but text validation is a super common and important process, so a rock solid pattern approach is needed.</div>
+</article>
+<article class="post" id="msg7952">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-04-19 16:36 UTC</span>
+  </div>
+  <div class="post-body">I wonder if you couldn't wire and unwire the OnKillFocus event as you suggest. You could unwire it as soon as it fires, then wire it in OnEditChanged (or OnSetFocus maybe).</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

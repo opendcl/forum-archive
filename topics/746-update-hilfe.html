@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Update Hilfe · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/11-german.html">GERMAN</a> /
+      Topic 746</p>
+    <h1>Update Hilfe</h1>
+    <p class="meta">Started by SpEEDY ·
+      2009-05-07 09:04 UTC ·
+      3 replies · SMF topic #746</p>
+<article class="post" id="msg3642">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2009-05-07 09:04 UTC</span>
+  </div>
+  <div class="post-body">Hallo Forum.<br>
+<br>
+Bin neu hier und bin verdammt froh das ich ein Deutsches Forum gefunden hat das sich mit OpenDCL beschäftig. :)<br>
+Als erstes ein riesen Dank von mir an euch ist das bestes Programm was ich kenne. :)<br>
+<br>
+Kommen wir direkt zu meiner Frage. <br>
+Ich wollte wissen ob es geht ,dass man nach der Änderung eines Textfeldes ein Update durch geführt wird. Es gibt die Funktion EditChanged und OnUpdate beide führen Änderungen direkt durch. Das heißt wenn man eine Zahl einträgt. Wird der Befehl ausgeführt. Wollte wissen ob es so geht das erst nach dem verlassen des Textfeldes z.B in ein anders der Befehl sich ausführt. Vielleicht habe ich auch was falsches gemacht.<br>
+<br>
+Code:<br>
+<br>
+(defun c:Straßenbau_Tool_FB_Haupt_TX_HBL_OnUpdate (strNewValue /)<br>
+   (setq Halbmesser (atof (dcl_Control_GetText Straßenbau_Tool_FB_Haupt_TX_HBL)))<br>
+)<br>
+<br>
+Danke für die Hilfe noch mal. Und macht weiter so. <br>
+<br>
+Mit freundlichen Grüßen<br>
+<br>
+SpEEDY<br>
+ <br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3643">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-07 10:35 UTC</span>
+  </div>
+  <div class="post-body">Hallo SpEEDY,<br>
+<br>
+erst mal mein herzlichstes Willkommen. <br>
+<br>
+Damit wir auch alle Deine Sonderzeichen lesen können, stelle doch mal in Deinem Forum-Profil Deutsch ein.<br>
+Das machst Du so: <br>
+<br>
+- oben <strong>Profil </strong> klicken<br>
+- in der linken Navigation den Eintrag <strong>Benutzerkonto </strong> anklicken<br>
+- rechts unter <strong>Verwendete Sprachdatei </strong> gaaanz unten <strong>Deutsch </strong> auswählen (nicht das obere Deutsch).<br>
+- dann auf <strong>Profil ändern</strong><br>
+<br>
+Jetzt zu Deiner Frage:<br>
+<br>
+Ich selbst verwende je nach Anforderung unterschiedliche Arten der Reaktion auf Textänderungen:<br>
+<br>
+Beispiel 1: kontrollierte Namensgebung<br>
+Das mache ich mit OnEditChanged. Bei jedem Tastendruck prüfe ich, ob der Name gültig ist und villeicht nicht bereits anderweitig vergeben wurde. Man sollte parallele Grafikänderungen in der Zeichnung vermeiden, weil es ganz schön performanceeinschränkend sein kann.<br>
+<br>
+Beispiel 2: Zahlenwerte eingeben<br>
+In diesem Fall aktiviere ich <a href="http://www.opendcl.com/HelpFiles/DEU/Reference/Event/ReturnPressed.htm" rel="nofollow noopener">{2}</a> und OnKillFocus, denn in beiden Fällen soll natürlich die Änderung angewandt werden. Im Vergleich zu OnEditChanged wird hier allerdings nicht der aktuelle Textwert zurückgegeben, den musst Du Dir mit dcl_Control_GetText holen.<br>
+<br>
+Bitte beachte, dass beim Drücken der Eingabetaste innerhalb des Textfelds der Dialog automatisch geschlossen wird (bzw. werden kann). Das kannst Du mit dem Ereignis <a href="http://www.opendcl.com/HelpFiles/DEU/Reference/Event/CancelClose.htm" rel="nofollow noopener">{2}</a> abfangen.<br>
+<br>
+Viel Spaß!<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3645">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2009-05-07 12:03 UTC</span>
+  </div>
+  <div class="post-body">Danke Fred,<br>
+<br>
+mit dem Befehl OnKillFocus hat es geklappt.  ;D<br>
+<br>
+Zu dem befehl OnReturnPressed hätte ich mal einen Frage. <br>
+Der Code nach dem Kopieren lautet so:<br>
+<br>
+(defun c:Straßenbau_Tool_FB_Haupt_TX_ST1_OnReturnPressed /)<br>
+)<br>
+<br>
+Das kann aber nicht sein den einen Klammer fehlt da.<br>
+Ist das ein Bug oder hab ich was falsch verstanden.<br>
+<br>
+Mit freundlichen Grüßen<br>
+<br>
+Speedy<br>
+</div>
+</article>
+<article class="post" id="msg3647">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-07 14:38 UTC</span>
+  </div>
+  <div class="post-body">Ja, das war ein Bug. Füge einfach eine Klammer hinzu. Das Problem sollte mit der aktuellen Version 5.1.0.4 behoben sein.<br>
+<br>
+Wenn ich schonmal dabei bin, noch ein persönlicher Tipp:<br>
+<br>
+Da eigentlich innerhalb von OnKillFocus und OnReturnPressed das selbe passieren soll, verwende ich in beiden Fällen die gleiche Event-Funktion. Das geht natürlich genau dann nicht, wenn bei OnReturnPressed der Dialog durchaus geschlossen werden soll. Das kommt bei mir aber nur in 2 von 1000 Fällen vor.<br>
+<br>
+VG, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/715/onkillfocus.png">onkillfocus.png</a> <span class="muted">(3010 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

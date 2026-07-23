@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[Solved] Tree control: Child of a child - How to? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2194</p>
+    <h1>[Solved] Tree control: Child of a child - How to?</h1>
+    <p class="meta">Started by Peter2 ·
+      2014-11-12 16:04 UTC ·
+      10 replies · SMF topic #2194</p>
+<article class="post" id="msg10992">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-12 16:04 UTC</span>
+  </div>
+  <div class="post-body">Based on the examples of "Tree.lsp" I tried to create a tree "on_initialize"  -&gt; result:  :'( :'(<br>
+<br>
+I'm sure it is simple, but I can not figure it out. Here is the working fragment with "Parent - Child", but I'm not able to create "Parent - Child - Child":<br>
+<br>
+    (setq P10 (dcl_Tree_AddParent spdrs_Haupt_tree "Abbruch" 9 -1 9))<br>
+    (setq P20 (dcl_Tree_AddParent spdrs_Haupt_tree "Betriebsartenstecker" 10 -1 10))<br>
+    (dcl_Tree_AddChild spdrs_Haupt_tree<br>
+        (list<br>
+            (list P20 "a child" 4 5)<br>
+            (list P20 "should be a parent from three children" 4 5)<br>
+        )<br>
+    )<br>
+    (setq P30 (dcl_Tree_AddParent spdrs_Haupt_tree "Kondensator" 10 -1 10))<br>
+<br>
+<br>
+<br>
+Other question:<br>
+Trees can be created "with lists" and "without lists". It seem to me that there is also another behaviour of the "uParentItems" and "strKey" - right?<br>
+<br>
+<br>
+; mode with lists and setq<br>
+    (setq P20 (dcl_Tree_AddParent spdrs_Haupt_tree "Betriebsartenstecker" 10 -1 10))<br>
+    (dcl_Tree_AddChild spdrs_Haupt_tree<br>
+        (list<br>
+            (list P20 "von oben" 4 5)<br>
+            (list P20 "von unten" 4 5)<br>
+        )<br>
+    )<br>
+; -------------<br>
+; mode withOUT lists and setq<br>
+    (dcl_Tree_AddParent spdrs_Haupt_tree "Kontakt hoch" "xx" 10 -1 10)<br>
+    (dcl_Tree_AddChild spdrs_Haupt_tree<br>
+        '(<br>
+            ("xx" "Öffner" "x1" 4 5)<br>
+            ("xx" "Öffner angezogen" "x2" 4 5)<br>
+        )<br>
+    )<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg10994">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-11-12 18:14 UTC</span>
+  </div>
+  <div class="post-body">Hi, Peter2,<br>
+<br>
+try this:<br>
+<br>
+<br>
+(dcl_Tree_AddParent control "Parent" "ParentKey" 1 1 1)<br>
+(dcl-Tree-AddChild control (list (list "ParentKey" "Child1" "Child1Key" 1 1 1) (list "ParentKey" "Child2" "Child2Key" 1 1 1)<br>
+                                 (list "Child1Key" "Child1_1" "Child1_1Key" 1 1 1) (list "Child2Key" "Child2_1" "Child2_1Key" 1 1 1)))<br>
+<br>
+<br>
+uParentItem is only used in German help ("u" from Hungary notation for usual for not strongly typed arguments).<br>
+The parent item value can be a handle of the parent. I've never used that since I had some troubles in ancient ObjectDCL.<br>
+I only used strings (AutoCAD entity handle (GC 5)) or even combinations of letters and database key (letters to divide between nodetypes).<br>
+I hope the sample above will answer your question or help a little bit.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10995">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-11-12 18:17 UTC</span>
+  </div>
+  <div class="post-body">Hi, me again.<br>
+<br>
+Your sample<br>
+<br>
+    (dcl_Tree_AddChild spdrs_Haupt_tree<br>
+        '(<br>
+            ("xx" "Öffner" "x1" 4 5)<br>
+            ("xx" "Öffner angezogen" "x2" 4 5)<br>
+        )<br>
+    )<br>
+uses quotes. I remember that somewhere was written, that the argument values should be evaluated before.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10997">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-12 18:30 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred<br>
+<br>
+thanks.<br>
+<br>
+Your first post shows me that my first code, using the "setq-list-mode"<br>
+(setq P20 (dcl_Tree_AddParent spdrs_Haupt_tree "Betriebsartenstecker" 10 -1 10))<br>
+    (dcl_Tree_AddChild spdrs_Haupt_tree<br>
+        (list<br>
+            (list P20 "a child" 4 5)<br>
+is not able to use "Parent-IDs" and has another behaviour then the "quoted-mode".<br>
+<br>
+Right?<br>
+<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=2194.msg10995#msg10995 date=1415816275 wrote:</cite><br>
+...Your sample...uses quotes. I remember that somewhere was written, that the argument values should be evaluated before....</blockquote><br>
+?? Hmmm - what's the conclusion of this?</div>
+</article>
+<article class="post" id="msg11000">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-11-12 18:52 UTC</span>
+  </div>
+  <div class="post-body">@ Peter2:<br>
+The English Help for dcl_Tree_AddChild is quite clear and answers all of your questions.<br>
+<br>
+To add children to a child you have to either store the handle of the child (from the Help: The return value is the unique handle of the new item if only one child item is added) or supply the 'key' argument when you create the child (see Fred's example). This handle or key can then be used to create the child's children with a subsequent call to dcl_Tree_AddChild.<br>
+<br>
+Your second example uses a list as well. And the fact that you can use use key strings instead of handles is mentioned in the Help: ParentItem [as Handle or String].<br>
+<br>
+@ Fred:<br>
+I don't think there is anything to evaluate in the list of Peter2's second example. It can be used without any problem.</div>
+</article>
+<article class="post" id="msg11006">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-11-12 19:15 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2194.msg11000#msg11000 date=1415818346 wrote:</cite><br>
+@ Fred:<br>
+I don't think there is anything to evaluate in the list of Peter2's second example. It can be used without any problem.<br>
+</blockquote><br>
+<br>
+Hi, I've just written what was mentioned in the past: quoted lists <strong>may</strong> lead into errors. Quoted lists are not evaluated in my memory, but I may be wrong.<br>
+If it works for you, then ignore my hint.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg11022">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-17 11:27 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Peter2 link=topic=2194.msg10992#msg10992 date=1415808254 wrote:</cite><br>
+...I'm sure it is simple, but I can not figure it out. Here is the working fragment with "Parent - Child", but I'm not able to create "Parent - Child - Child": ...<br>
+</blockquote><br>
+Looking back to my first question I would say my basic problem was to understand the hierarchy - ;"Is every entry which has a child also a parent?"<br>
+<br>
+a) Parent - Parent -  Parent - Child<br>
+b) Parent - Child - Child - Child<br>
+<br>
+Now I know that b) is correct, and maybe this hint could be added to the help-file.<br>
+ </div>
+</article>
+<article class="post" id="msg11024">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-11-17 12:38 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">Is every entry which has a child also a parent?</blockquote>Yes.<br>
+<br>
+I would say that c) is correct:<br>
+<pre class="code"><code>c) Parent -&gt; Child/Parent -&gt; Child/Parent -&gt; Child</code></pre></div>
+</article>
+<article class="post" id="msg11027">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-17 14:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2194.msg11024#msg11024 date=1416227891 wrote:</cite><br>
+I would say that c) is correct:<br>
+<pre class="code"><code>c) Parent -&gt; Child/Parent -&gt; Child/Parent -&gt; Child</code></pre><br>
+</blockquote><br>
+Yes - in the sense of genealogy, but you have to select between "dcl_Tree_AddChild/dcl_Tree_AddParent"  ;)</div>
+</article>
+<article class="post" id="msg11028">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-17 15:56 UTC</span>
+  </div>
+  <div class="post-body">Maybe the dcl-Tree-AddParent method would be better named dcl-Tree-AddTopLevelParent.</div>
+</article>
+<article class="post" id="msg11034">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-17 17:07 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2194.msg11028#msg11028 date=1416239795 wrote:</cite><br>
+Maybe the dcl-Tree-AddParent method would be better named dcl-Tree-AddTopLevelParent.<br>
+</blockquote><br>
+Or only "dcl-tree-AddTopLevel" without "parent" ..</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

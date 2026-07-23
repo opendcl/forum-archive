@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Animation in OpenDCL · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1975</p>
+    <h1>Animation in OpenDCL</h1>
+    <p class="meta">Started by altver ·
+      2013-07-03 07:14 UTC ·
+      12 replies · SMF topic #1975</p>
+<article class="post" id="msg9751">
+  <div class="post-head">
+    <span class="post-author">altver</span>
+    <span class="post-date muted">2013-07-03 07:14 UTC</span>
+  </div>
+  <div class="post-body"><span style="color:navy">[font=comic sans ms]I want to add an animation into an ODCL. <br>
+I tried to insert an AVI file but without any success.<br>
+What is special in the "Clock.AVI" file that you gave in samples?<br>
+Why doesn't mine load? It came out 2.5.MG. Is it too big?<br>
+Is there a limit in a size of AVI file?<br>
+Does ODCL work with other animated files?<br>
+If yes, I would like to know what files can be used and what changes are needed to be done<br>
+in animation.lsp file?</span><br>
+Thank you for your help,<br>
+Alex</div>
+</article>
+<article class="post" id="msg9752">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-07-03 11:08 UTC</span>
+  </div>
+  <div class="post-body">Could this be a codec issue?</div>
+</article>
+<article class="post" id="msg9753">
+  <div class="post-head">
+    <span class="post-author">altver</span>
+    <span class="post-date muted">2013-07-03 19:01 UTC</span>
+  </div>
+  <div class="post-body">I can open the file on my computer without any problem.<br>
+Apparently there are the needed codecs in it.<br>
+I may not know something and these codecs should be added.<br>
+Is there a special place in OpenDCL where they can be downloaded / added?<br>
+Thanks, <br>
+Alex<br>
+</div>
+</article>
+<article class="post" id="msg9754">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-07-03 20:11 UTC</span>
+  </div>
+  <div class="post-body">The AVI file must satisfy the Windows animation control, which is pretty picky. I don't have time to research it now, but I'm pretty sure I've posted links before to the MSDN documentation describing the limitations. Here is the main link to the animation control if you want to look for it yourself:<br>
+http://msdn.microsoft.com/en-us/library/windows/desktop/bb761881(v=vs.85).aspx</div>
+</article>
+<article class="post" id="msg9757">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-07-04 21:16 UTC</span>
+  </div>
+  <div class="post-body">Here are two quotes from MSDN with the relevant information:<br>
+<br>
+<blockquote class="quote">An animation control can display an AVI clip originating from either an uncompressed AVI file or from an AVI file that was compressed using run-length (BI_RLE8) encoding.</blockquote><br>
+<br>
+<blockquote class="quote">The AVI file, or resource, must not have a sound channel.</blockquote></div>
+</article>
+<article class="post" id="msg9758">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-07-07 11:05 UTC</span>
+  </div>
+  <div class="post-body">Hi, altver, I recommend you to use animated gif file or to add an activex control which supports playing an animation (like flash or anything else).<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9759">
+  <div class="post-head">
+    <span class="post-author">altver</span>
+    <span class="post-date muted">2013-07-11 08:56 UTC</span>
+  </div>
+  <div class="post-body">And yet I don't understand....<br>
+I create an AVI file which I don't compress and it's much simpler than the Clock AVI.<br>
+It isn't colorful, doesn't have a sound track, its size is 300х300 pixels and has total 12 frames.<br>
+OpenDcl accepts it, i.e. I see it, but its size is 17.0 MB when the Clock AVI is only 83 KB.<br>
+What made such a small file? How can I achieve this?<br>
+Thank you,<br>
+</div>
+</article>
+<article class="post" id="msg9760">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-07-11 10:05 UTC</span>
+  </div>
+  <div class="post-body">I assume that CLOCK.AVI is compressed. Please try compressing with run-length (BI_RLE8) encoding as per MSDN.</div>
+</article>
+<article class="post" id="msg9761">
+  <div class="post-head">
+    <span class="post-author">altver</span>
+    <span class="post-date muted">2013-07-11 12:23 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Dear Owen,<br>
+Thank you for your reply, I understand it, could you please send me the link where I can download the tool which compressing and decoding in the way you talk about?<br>
+Kind regards,<br>
+Alex<br>
+</div>
+</article>
+<article class="post" id="msg9764">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-07-11 14:52 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I don't know anything about compressing AVI files.</div>
+</article>
+<article class="post" id="msg9766">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2013-07-11 21:54 UTC</span>
+  </div>
+  <div class="post-body">altver, how or what software did you create your animation in?<br>
+Can you attach it here?</div>
+</article>
+<article class="post" id="msg9767">
+  <div class="post-head">
+    <span class="post-author">altver</span>
+    <span class="post-date muted">2013-07-12 10:45 UTC</span>
+  </div>
+  <div class="post-body">Dear BazzaCAD!<br>
+I have tried many different programs, and only one of them gave me a file that can activate <br>
+ODCL, that program name is Atani.<br>
+This is the hyperlink to that software  <br>
+http://en.kioskea.net/download/download-9159-atani<br>
+In that program, when you save a project, an option called "codec" appears.<br>
+In that option (codec) I choose the -  24 bits per pixel position.<br>
+Later on a window named list of codecs opens, at that window <br>
+I choose an option called "full frame (uncompressed)" .<br>
+As a result I get a file that can activate ODCL , but its size is 17.0 MB that is too big.<br>
+That file contains 12 black and white frames without sound track.<br>
+</div>
+</article>
+<article class="post" id="msg9768">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2013-07-12 17:44 UTC</span>
+  </div>
+  <div class="post-body">Hi altver,<br>
+Yes "full frame (uncompressed)" is the option you need to use &amp; yes it will create a large file, well ummm because it's uncompressed. You could try as Fred suggested &amp; create an animated GIF file. I don't think the picture control will show the animation, so you'd have to use an HTML control &amp; make a small html file to display the gif.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

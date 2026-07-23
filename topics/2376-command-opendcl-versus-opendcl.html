@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>(command &quot;_opendcl&quot;) versus opendcl · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2376</p>
+    <h1>(command &quot;_opendcl&quot;) versus opendcl</h1>
+    <p class="meta">Started by Peter2 ·
+      2016-06-09 19:29 UTC ·
+      16 replies · SMF topic #2376</p>
+<article class="post" id="msg11902">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-06-09 19:29 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+I have some lisps which contain the line<br>
+(command "_opendcl")<br>
+and it worked for the last two years.<br>
+<br>
+Today, on a foreign PC (AutoCAD Mechanical 2015, German, x64, Opendcl 8.0.5 currently installed) I had problems to load Opendcl.<br>
+<br>
+(command "_opendcl")  -&gt; command was refused by AutoCAD<br>
+_opendcl   (entered in commandline) -&gt; unknown command<br>
+opendcl (in commandline) -&gt; worked fine<br>
+<br>
+I was in a hurry and could not nail the problem down - can it be explained based on this short information?<br>
+<br>
+Thanks<br>
+<br>
+Peter</div>
+</article>
+<article class="post" id="msg11903">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-06-09 19:59 UTC</span>
+  </div>
+  <div class="post-body">Hi, Peter, works fine for me in Map 2016 x64 DEU:<br>
+<br>
+<br>
+Befehl: (command "_opendcl")<br>
+_opendcl<br>
+OpenDCL Laufzeitumgebung [8.0.5.0] wurde geladen<br>
+Befehl: nil<br>
+<br>
+<br>
+Just try a repair installation of OpenDCL runtime.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11904">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-06-10 04:40 UTC</span>
+  </div>
+  <div class="post-body">I'd guess the demand load registry keys got messed up. If it's the HKCU keys that got messed up, I think those should be recreated on every load. If it's the HKLM keys, then a repair install should fix it. I suppose it's possible that the command was undefined or something, but that seems unlikely.</div>
+</article>
+<article class="post" id="msg11905">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-06-10 06:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2376.msg11903#msg11903 date=1465502399 wrote:</cite><br>
+Just try a repair installation of OpenDCL runtime.</blockquote><br>
+I made a new installation, but nothing changed.<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=2376.msg11904#msg11904 date=1465533619 wrote:</cite><br>
+...I think those should be recreated on every load. </blockquote><br>
+You mean it is recreated automatically by the software?</div>
+</article>
+<article class="post" id="msg11913">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-06-14 10:20 UTC</span>
+  </div>
+  <div class="post-body">Me again. I have the same problem on my own machine (same app). I start AutoCAD, it loads the apps, and I get the message:<br>
+<br>
+Regeneriert Modell.<br>
+; Fehler: AutoCAD-Befehl zurückgewiesen: "_opendcl"<br>
+; Fehler: AutoCAD-Befehl zurückgewiesen: "_opendcl"<br>
+; Fehler: AutoCAD-Befehl zurückgewiesen: "_opendcl"<br>
+; Fehler: AutoCAD-Befehl zurückgewiesen: "_opendcl"<br>
+<br>
+<br>
+AutoCAD Menü-Dienstprogramme geladen.*Abbruch*<br>
+<br>
+Befehl:<br>
+Befehl:<br>
+<br>
+--&gt;&gt; Then I enter the command manually: <br>
+<br>
+Befehl:<br>
+Befehl: _OPENDCL<br>
+<br>
+OpenDCL Runtime [8.0.5.0] loaded<br>
+Any quick ideas?<br>
+<br>
+Peter</div>
+</article>
+<article class="post" id="msg11914">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-06-14 11:08 UTC</span>
+  </div>
+  <div class="post-body">Yeaaah! I know this from an other case - it's not OpenDCL related.<br>
+Remove all the code inluding (command "_opendcl") and see what AutoCAD wants at this point.<br>
+Calling opendcl command is not allowed at this point when you call it from your code.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11915">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-06-14 11:51 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2376.msg11914#msg11914 date=1465902525 wrote:</cite><br>
+...Calling opendcl command is not allowed at this point when you call it from your code....</blockquote><br>
+Hmmmh - it is in a VLX which is loaded by Autoloader / bundle. So I supposed that Acad is ready for "_opendcl" at this moment ??</div>
+</article>
+<article class="post" id="msg11916">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-06-14 21:51 UTC</span>
+  </div>
+  <div class="post-body">Interim report:<br>
+<br>
+The problem is caused by the different loading times of different loading commands.<br>
+<br>
+Some of my tools were loaded in "classic style": <br>
+a) Cuix -&gt; loads MNL -&gt; contains (load "test.lsp") or<br>
+b) appload -&gt; "Startgruppe" (Start group in English?)<br>
+<br>
+These commands run after loading of Opendcl and Doslib, and this is why my commands worked fine.<br>
+<br>
+Now I try to define Bundles for Autoloader, and they load the Lisp/VLX much earlier, when OpenDCL is not yet ready ... &gt;:(<br>
+<br>
+Problem a)<br>
+I can not them once when loading the lisp, I have to call them later, when executing a command.<br>
+<br>
+Problem b)<br>
+I use also "Option Tabs" by OpenDCL, and here I will have a problem with solution a): If a user starts "_options" he will not see my "Option tabs", because they are not loaded via lisp-load and they are not loaded via command-execution.<br>
+<br>
+Solution a)<br>
+Can be solved (time consuming) with adding the load-commands to every user-command.<br>
+<br>
+Solution b)<br>
+?????<br>
+<br>
+Any hints for working with bundles and loading DosLib / OpenDCL?</div>
+</article>
+<article class="post" id="msg11917">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-06-16 14:00 UTC</span>
+  </div>
+  <div class="post-body">Hi, Peter,<br>
+<br>
+what do you mean with "when OpenDCL is not yet ready ..."<br>
+The command is available even when you start AutoCAD because it is only a command definition in the registry.<br>
+<br>
+I do know that is recommended to use the command. We use the arxload function to load the libraries instead.<br>
+Please try calling arxload function instead of calling opendcl command - just for testing!<br>
+<br>
+I have no experiences with bundles and doslib.<br>
+Please give me an introduction for bundles, that I can have some tests. So maybe we can also build a sample for that.<br>
+<br>
+Regards, Fred<br>
+</div>
+</article>
+<article class="post" id="msg11918">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-06-16 21:02 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred<br>
+<br>
+I will give you some infos, but it will take a few days ...</div>
+</article>
+<article class="post" id="msg11920">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-06-20 15:06 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2376.msg11917#msg11917 date=1466085645 wrote:</cite><br>
+...Please try calling arxload function instead of calling opendcl command - just for testing!...<br>
+</blockquote><br>
+Fine idea - it seems to work. <br>
+The disadvantage is, that I have to handle the version of Acad and OS to load the right Arx - it is an advantage of the Autoloader that this part is done by AutoCAD.<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=2376.msg11917#msg11917 date=1466085645 wrote:</cite><br>
+...Please give me an introduction for bundles, that I can have some tests. ...</blockquote><br>
+An introduction is not so easy - I have 60 A4-pages printed with the infos. But here are some links:<br>
+<br>
+- Search your AutoCAD-help file for "packageContents". You will find everything very detailed<br>
+- "AutoCAD DevBlog" http://adndevblog.typepad.com/autocad/ Search for "Autoloader" - you will find a lot a starting and detailed infos, beginning with "Autodesk Autoloader White paper" from 2013: http://adndevblog.typepad.com/autocad/2013/01/autodesk-autoloader-white-paper.html<br>
+<br>
+<br>
+I attach a simple bundle with a simple lisp (witout the arxload solution) to test and see the behaviour. I also sent it to ADN-Support, maybe they have a solution.<br>
+<br>
+Regards<br>
+<br>
+Peter<br>
+<br>
+<br>
+EDIT 1:<br>
+I played around to merge the loading of OpenDCL-Arx into the bundle. This seem to work too, but ....<br>
+... the Component "Modulename" requires that the ARX is inside the Bundle. So you have the files to every bundle you make, you can not use the Arx from their installed place (if they are installed). This is in opposition to Autodesks recommendation to define 3rd party tools as prerequisite and not to include them to the bundle ....<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2205/arx_call_test.bundle.zip">arx_call_test.bundle.zip</a> <span class="muted">(2336 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11923">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-06-22 15:04 UTC</span>
+  </div>
+  <div class="post-body">Answer from Autodesk:<br>
+<blockquote class="quote">Normally, developer’s workaround this issue with loading an ARX from bundle which intern loads all the required modules (which are not in the bundle).</blockquote><br>
+<br>
+So there are two ways to handle the loading of Arx while loading a bundle (with Lisp):<br>
+a) Use your code to "arxload" what you want and what you need.<br>
+b) Include all external Arx into your bundle and load them with bundle commands.<br>
+<br>
+Do NOT include a call of demand-loading (of registered commands) in your bundle IF the call is executed during loading the code.<br>
+There is no problem if you call the command AFTER the bundle was loaded.</div>
+</article>
+<article class="post" id="msg11924">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-06-23 18:20 UTC</span>
+  </div>
+  <div class="post-body">The demandload system looks up the module name to load in the Applications/OpenDCL/Loader registry key. Your startup lisp code can do the same, so that you don't lose the benefit of insulating your app installation from the OpenDCL installation.</div>
+</article>
+<article class="post" id="msg11925">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-06-23 19:30 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+can you run my bundle I posted above? I would be curious if it runs or not ...</div>
+</article>
+<article class="post" id="msg11926">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-06-29 19:55 UTC</span>
+  </div>
+  <div class="post-body">Hello, sorry Peter that I didn't phone you last week: time was running too fast. I'm at customer trainings this and next week so I just tested your package but I was not able to place it correctly that it would be loaded automatically. Drag'nDropping the lisp into the drawing was loading the list and some alerts came up. OpenDCL was not loaded.<br>
+<br>
+But I've found out that OpenDCL wasn't registered correctly in AutoCAD 2017: HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R21.0\ACAD-0001:407\Applications\OpenDCL ist missing. That's why opendcl command does not work:<br>
+<blockquote class="quote">Befehl: (command "_opendcl")<br>
+_opendcl Unbekannter Befehl "OPENDCL". Drücken Sie F1-Taste für Hilfe.<br>
+Befehl: nil</blockquote><br>
+<br>
+In AutoCAD 2016 it works well (HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R20.1\ACAD-F001:407\Applications\OpenDCL exists):<br>
+<blockquote class="quote">Befehl: (command "_opendcl")<br>
+_opendcl<br>
+OpenDCL Laufzeitumgebung [8.0.5.0] wurde geladen</blockquote><br>
+<br>
+I repaired Studio again and again and even reinstalled it: still the same: key is missing (Infrastructure Design Suite Ultimate).<br>
+Regards, <br>
+Fred</div>
+</article>
+<article class="post" id="msg11927">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-06-29 20:10 UTC</span>
+  </div>
+  <div class="post-body">The Test-Bundle should work if you copy it to %appdata%\Autodesk\ApplicationPlugins\arx_call_test.bundle.<br>
+<br>
+The registry value for AutoCAD 2017 are OK for me, e.g.<br>
+\\\Registry\HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R21.0\ACAD-0001407\Applications\OpenDCL\Description<br>
+</div>
+</article>
+<article class="post" id="msg11928">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-06-30 04:05 UTC</span>
+  </div>
+  <div class="post-body">Hello, quite interesting: opendcl command doesn't even work if I create the keys manually. But it appears in the "suggestionlist" of the commandline. <br>
+Only copying the bundle there has not effect: won't be loaded in my AutoCAD 2016.<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2207/opendcl.png">opendcl.png</a> <span class="muted">(9138 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

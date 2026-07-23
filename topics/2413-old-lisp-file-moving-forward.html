@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Old lisp file moving forward · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2413</p>
+    <h1>Old lisp file moving forward</h1>
+    <p class="meta">Started by jrampello ·
+      2016-08-24 20:02 UTC ·
+      8 replies · SMF topic #2413</p>
+<article class="post" id="msg12063">
+  <div class="post-head">
+    <span class="post-author">jrampello</span>
+    <span class="post-date muted">2016-08-24 20:02 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I have a pretty extensive lisp file that does many tasks, my biggest problem is modifying the files associated with it to move it forward in newer autocad versions.  I am trying to get it to work in acad 2017, this lisp file was originally created for acad 2012 and modified for use in 2015.  I have installed the newest opendcl studio ENU 8.0.5.0 on my machine, however I get errors finding\reading the opendcl project file and then get form show errors.  When I load the lsp file it says it is loaded, the command aliases work when typed, however, the graphical portion does not show.  command line says open dcl runtime for this version is loaded.  I have attached the lisp file and my opendcl project file.<br>
+<br>
+Any suggestions are appreciated.<br>
+<br>
+Thanks Jim<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2225/msTools.lsp">msTools.lsp</a> <span class="muted">(40297 bytes)</span></li><li><a href="../attachments/2226/msTools.odcl">msTools.odcl</a> <span class="muted">(8104 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12064">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-08-24 21:04 UTC</span>
+  </div>
+  <div class="post-body">Is there some error message?</div>
+</article>
+<article class="post" id="msg12065">
+  <div class="post-head">
+    <span class="post-author">jrampello</span>
+    <span class="post-date muted">2016-08-25 12:07 UTC</span>
+  </div>
+  <div class="post-body">Sorry forgot to post errors.<br>
+<br>
+I get two notifications, the first box pops up when I try to invoke a command that needs the opendcl portion to work.  It states:<br>
+<br>
+AutoCAD message:<br>
+<br>
+Project failed to load!<br>
+The file could not be found or an error occurred while reading the file.<br>
+[S:\std\acad\ComDev\Support\mstools\mstools.odcl]  -  correct file path where this file does exist.<br>
+<br>
+I click OK then get,<br>
+<br>
+OpenDCL Runtime Error<br>
+<br>
+An OpenDCL function argument processing exception has occurred.<br>
+<br>
+Error: NIL value not allowed<br>
+Function: dcl-Form-Show<br>
+Argument: 0<br>
+<br>
+As I stated before this lisp routine works for acad version 2014 &amp; 2015, we had to modify some of the code to get it to work for 2015.  The file was created around 2011-2012.  We had similar issues getting it to work in 14-15.</div>
+</article>
+<article class="post" id="msg12066">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-08-25 16:46 UTC</span>
+  </div>
+  <div class="post-body">The error message seems pretty clear.<br>
+If the .odcl file is indeed in the correct folder it may be a Windows permissions issue or a network problem.</div>
+</article>
+<article class="post" id="msg12067">
+  <div class="post-head">
+    <span class="post-author">jrampello</span>
+    <span class="post-date muted">2016-08-26 13:36 UTC</span>
+  </div>
+  <div class="post-body">There doesn't seem to be a permission problem that I can find.  Could it be that the odcl project was created with the old opendcl version, would this file need to be updated to 8.0.5.0?  If I do that does this adversely affect my existing usage of this file in 2015?  Would opendcl need to be upgraded on every computer that is using this lisp file?</div>
+</article>
+<article class="post" id="msg12068">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-08-26 14:04 UTC</span>
+  </div>
+  <div class="post-body">Your suggestions all seem unlikely.<br>
+To test this further:<br>
+Copy the .odcl file to a local folder and try to 'dcl-Project-Load' from there.</div>
+</article>
+<article class="post" id="msg12069">
+  <div class="post-head">
+    <span class="post-author">jrampello</span>
+    <span class="post-date muted">2016-08-29 14:04 UTC</span>
+  </div>
+  <div class="post-body">I have been able to remedy the problems with my lisp routine.  Thanks for the input.</div>
+</article>
+<article class="post" id="msg12070">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-08-29 16:11 UTC</span>
+  </div>
+  <div class="post-body">It would be nice if you provide some more details. That way others can benefit from this topic.</div>
+</article>
+<article class="post" id="msg12071">
+  <div class="post-head">
+    <span class="post-author">jrampello</span>
+    <span class="post-date muted">2016-08-29 16:16 UTC</span>
+  </div>
+  <div class="post-body">You were correct about the permissions.  I installed the acad software on a machine setup differently in our organization and loaded the new version of opendcl (8.0.5.0) onto it and the graphics that were not displaying properly and all tools work as expected, no error messages.  I really didn't do anything differently for the 2017 version than we currently do for our 2015 version.  Had I done this to begin with there would have been no issues!  You live and learn for your oversights and errors.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tree Control Bold · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2132</p>
+    <h1>Tree Control Bold</h1>
+    <p class="meta">Started by honkinberry ·
+      2014-04-17 18:05 UTC ·
+      15 replies · SMF topic #2132</p>
+<article class="post" id="msg10590">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2014-04-17 18:05 UTC</span>
+  </div>
+  <div class="post-body">I see I can set the FontBold for an entire Tree Control, but I'm hoping to set individual Nodes to Bold.<br>
+It seems it would be more elegant for what we want, rather than using Images to denote differentiation.<br>
+<br>
+Certainly should be possible with instead placing a TreeList ActiveX, but I'm a little wary going direction -- has anyone had any experience with that, with any tips or pointers?<br>
+<br>
+Thanks for any advice!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg10599">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-04-18 10:08 UTC</span>
+  </div>
+  <div class="post-body">Hi, quite interesting. Unfortunately, I have just not the time to get involved. But it seems to be very interesting. Some questions to be answered in this case:<br>
+<ul><br>
+How to get, set, modify single nodes? How to access them (in the control browser I see INodes and INode interfaces, you get them via Nodes property)?<br>
+How to set imagelist?<br>
+How to work with drag/drop within the tree and between controls?<br>
+How to destruct tree control and its referenced objects to cleanup after closing the form?<br>
+...<br>
+</ul><br>
+<br>
+Solvable, but it would need time to get into detail.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10603">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2014-04-21 17:33 UTC</span>
+  </div>
+  <div class="post-body">Exactly, it's a lot to re-engineer.<br>
+The hooks for the OpenDCL Tree control are just simply magical, it's a dream to work with (speaking as someone who started with the old Treeview 1.0 ActiveX control back in the day).<br>
+<br>
+But in using the OpenDCL Tree, I really only have two wishlist requests for it -- revised drag and drop behavior (http://www.opendcl.com/forum/index.php?topic=1806.msg8911#msg8911), and now, an ability to set more individual Node properties (although I can't think of any other than Bold).<br>
+<br>
+I think setting an Image from the ImageList is an entirely viable solution, and probably easier on visually impaired users than Bold, so I'll make do with what I have.<br>
+Thanks, guys!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg10604">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-21 23:04 UTC</span>
+  </div>
+  <div class="post-body">Now would be a good time to experiment with drop handling changes while 8.0 is in the alpha phase. I read through the linked thread, but I'm having trouble translating what I think you're after into an actionable design change that fits into the underlying drag/drop architecture. I think it would help me make that connection if you can convince me that you understand the architecture as designed so that I know we're speaking the same language, then explain how the current design fails to meet your requirements. If I can get a clear vision of how to solve the problem without fundamentally changing the architecture, I'll try it in 8.0 and see what happens.</div>
+</article>
+<article class="post" id="msg10606">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2014-04-22 16:09 UTC</span>
+  </div>
+  <div class="post-body">In terms of understanding the architecture, what I definitely don't understand is this:<br>
+onDragnDropFromControl -- Return Type: Ignored<br>
+That just makes no sense to me in terms of architecture.  If there is to be any "default" drag action within a control, and certainly one with as much going on as a Tree control, then I absolutely need the ability to abort the drop operation in certain cases.  The "convenience" of having a node automatically moved or copied for me is hardly such, as there are many more operations that need to occur -- file copying, renaming, database updates, etc.<br>
+<br>
+As I mentioned before, a Tree control represents something, whether it is Dimstyles within files, Block definitions, whatever the programmer is providing a tool for.  (as in, after doing the drag operation, code needs to fire to redefine blocks, move files, create text styles, etc.)  And as a user may drag an item from one location to another location, there may be some validation that needs to occur.  Maybe there already exists an item of the same name, and the user needs to confirm overwriting?  Maybe the destination is currently marked read-only?  Any number of things.  So after completing a drag and drop, there may be the need to display a modal dialog box to the user, and depending on what the user choose, that drop operation may need to continue or abort.<br>
+<br>
+Where this presents issues with OpenDCL, is that I would like to display correct mouse hover icons during the drag, indicating to the user if the event is to be a Move or Copy (and ideally allow the user to press Ctrl to decide on the fly whether it should be a Move or Copy).  But this is impossible with the given architecture, because I cannot abort a Move operation.  Nor, can I know (at least in the Drop handler) if the user pressed Ctrl to change the Move drag to a Copy drop.<br>
+<br>
+But regardless of the difference of opinion on whether or not the default drop event is helpful, or the philosophy of where or how code should fire, simply being able to abort a drop operation gives the programmer the flexibility to decide what works best for his situation, yes?<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg10607">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-22 16:36 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=honkinberry link=topic=2132.msg10606#msg10606 date=1398182953 wrote:</cite><br>
+But regardless of the difference of opinion on whether or not the default drop event is helpful, or the philosophy of where or how code should fire, simply being able to abort a drop operation gives the programmer the flexibility to decide what works best for his situation, yes?<br>
+</blockquote><br>
+<br>
+Just to be clear: I don't have an opinion, because I don't understand the problem. Please bear with me while I try to distill it.<br>
+</div>
+</article>
+<article class="post" id="msg10608">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-22 16:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=honkinberry link=topic=2132.msg10606#msg10606 date=1398182953 wrote:</cite><br>
+Where this presents issues with OpenDCL, is that I would like to display correct mouse hover icons during the drag, indicating to the user if the event is to be a Move or Copy (and ideally allow the user to press Ctrl to decide on the fly whether it should be a Move or Copy).  But this is impossible with the given architecture, because I cannot abort a Move operation.  Nor, can I know (at least in the Drop handler) if the user pressed Ctrl to change the Move drag to a Copy drop.<br>
+</blockquote><br>
+<br>
+I'd like to focus on this statement. You say here that you would like to display the correct mouse hover icons (the correct term is "cursor", but I understand what you meant). The implication is that you want your event handler to decide whether the drop will be a move or copy. Yet, you seem to contradict this elsewhere by saying that you want the <strong>user</strong> to be able to determine whether it's a move or copy (by pressing Ctrl or Shift). Perhaps you want the handler to specify the allowed operations, then allow the user to choose which of the allowed operations to perform. If you can, please clarify this before I proceed.</div>
+</article>
+<article class="post" id="msg10610">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-04-22 20:04 UTC</span>
+  </div>
+  <div class="post-body">Hi, I just want to add that I'm really afraid of any major changes in drag and drop functionality that will break existing code. As I've already mentioned in earlier threads I need completely control over the whole drag and drop process: First of all I must have the chance to suppress dragging a selected node (for instance it makes no sense to drag a drive in Windows Explorer). A node could be moved between nodes under the same root node but should be copied when dragging to an other root node. Only special nodes are allowed to be dragged to a target group node. OpenDCL cannot cover all these conditions. In the end there's also no need for this. Please make sure that individual control is also possible - I do never use the build-in automatic drag and drop functionality.<br>
+If you've never wanted to change that, forget my post; then I have misunderstood something...<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10616">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2014-04-23 15:26 UTC</span>
+  </div>
+  <div class="post-body">To clarify, I don't want any code I didn't write to fire, and that appears to also be what Fred is saying.<br>
+So I am offering, that the onDragnDropFromControl Return, instead of being ignored, could be used to abort or allow the default event handler.<br>
+As currently there is no way to prevent this, I would offer that the lowest impact change would be that returning nil would abort the default event, as we could assume that the majority of existing code would tend to have their last line of code return a non-nil value, hence it would minimize the impact of the change.<br>
+What I was saying in terms of mouse cursors, is that if the user presses Ctrl during a drag, the default behavior will change.  This presents a challenge to my event handler.  My event handler does need to decide if the drop was a move or copy, because it needs to replicate the drop!  Is it to Move or Copy the file that was represented by the Tree control?  So it very much needs to know what the user thought he was doing.<br>
+<br>
+My ideal, is essentially almost identical to what is currently there.  In DragBegin and DragOver, and with Ctrl keypress, I can offer an incredible amount of visual cues as to what the user can accomplish.  But most importantly, once the Drop has been completed, I need a modal confirmation box, that says, "Are you sure you wish to Move/Copy that entire folder of dwg files into the new location?"  And if the user goes, "Oh no!  I sneezed and accidentally flicked my mouse finger, accidentally dropping in the wrong folder!  Thank goodness the software asked me to confirm the operation.  I shall now click No, and trust that in doing so, nothing will change with the Tree control that I am looking at."<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg10629">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-24 17:44 UTC</span>
+  </div>
+  <div class="post-body">I have added some experimental changes for the next build of OpenDCL (limited to the tree control for now). The OnDragnDropFromControl event now looks for and uses an integer return value (0 = cancel, 1 = copy, 2 = move) as the drop effect that is returned to the drag source. If the last character of the event handler function name is a + character, OpenDCL will send an additional integer argument to the handler. The additional argument will be the default drop behavior (i.e. as chosen by the user, or whatever the default is if the user did not override it).<br>
+<br>
+I'll wait until you've had a chance to play with this before making any decision about how to move forward. I'm fairly comfortable with the return value; I think it's very unlikely that it will cause problems with any existing code. I wish there was some way to determine at runtime how many arguments an event handler expects so that older code could continue working while newer code could receive the additional drop effect argument. I don't think the + character tacked on the end of handler name is a good solution, but it will have to do for testing at least.</div>
+</article>
+<article class="post" id="msg10636">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2014-04-25 18:32 UTC</span>
+  </div>
+  <div class="post-body">Owen, you rock!<br>
+That will be be totally incredible capability, thank you!<br>
+So that will post with 8.0.0.7?  I will certainly update you with how it works out.<br>
+I owe you a Coke!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg10637">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-25 19:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=honkinberry link=topic=2132.msg10636#msg10636 date=1398450720 wrote:</cite><br>
+So that will post with 8.0.0.7?</blockquote><br>
+<br>
+Yes, but it may be a while yet. If you let me know which AutoCAD version and architecture you want to test with, I can email you an advance copy of the .arx module to test in the meantime.</div>
+</article>
+<article class="post" id="msg10652">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2014-04-30 22:50 UTC</span>
+  </div>
+  <div class="post-body">I can certainly wait until next week, but if it will be much longer than that,<br>
+I'm on 2014.64.<br>
+<br>
+Thank you sir!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg10694">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2014-05-06 01:06 UTC</span>
+  </div>
+  <div class="post-body">I got a chance to check this out.<br>
+<br>
+The return value of 1 does indeed cancel the default Move behavior, of the Node disappearing.  So that's exciting!<br>
+<br>
+When the method ends with a + sign, there is an additional parameter passed, which does indicate the mode of the drop.  However, I couldn't quite that behavior to work.  I may have been doing something wrong, or perhaps it's because my Drag is initiating from a separate Listbox?  But my listboxDragBegin was returning a 3, which should be Move or Copy; when the treelistDragOver returns nil, only the Move icon was displayed, and holding Ctrl would do nothing (tapping Ctrl would cause the Copy icon to appear for a nanosecond); treelistDragOver returning 1 or 2 will always result in a static icon of Copy or Move, pressing or holding Ctrl would do nothing.<br>
+<br>
+Long and short, is that I *love* the ability to nullify the default Move behavior.<br>
+I would super duper love that same capability with the Listbox DragDrop, as my only recourse there was to allow dragging only as a Link operation, as the Copy cursor felt too confusing for the user, and the Move was unpredictable.<br>
+<br>
+But absolutely love the progress, thank you!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg10695">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-06 14:43 UTC</span>
+  </div>
+  <div class="post-body">I limited the changes to the tree control, so you will not see any change in behavior with respect to the listbox control. However, when dropping onto the tree control, you should get the additional parameter no matter where the drag originated. Does a return value 3 from OnDragOver change your Ctrl behavior?</div>
+</article>
+<article class="post" id="msg10696">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2014-05-06 23:37 UTC</span>
+  </div>
+  <div class="post-body">Nope, returning 3 in the treelistDragOver still shows only the Move cursor.<br>
+If I tap the Ctrl key, like even rat-a-tat-tat it, you can see the Ctrl cursor.<br>
+But holding down Ctrl it does not stick.<br>
+Again though, the drag began from a Listbox on the same dialog, in case that is why.<br>
+<br>
+--J<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

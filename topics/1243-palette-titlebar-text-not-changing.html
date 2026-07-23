@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Palette titlebar text not changing · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1243</p>
+    <h1>Palette titlebar text not changing</h1>
+    <p class="meta">Started by TimSpangler ·
+      2010-03-29 16:31 UTC ·
+      10 replies · SMF topic #1243</p>
+<article class="post" id="msg6651">
+  <div class="post-head">
+    <span class="post-author">TimSpangler</span>
+    <span class="post-date muted">2010-03-29 16:31 UTC</span>
+  </div>
+  <div class="post-body">I have updated the titlebar text of my palette form, but it doesn't update at runtime.  It defaults to the old text.  I can change the icon and other thing but not the text.</div>
+</article>
+<article class="post" id="msg6656">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-29 20:23 UTC</span>
+  </div>
+  <div class="post-body">Hi Tim,<br>
+<br>
+change the titlebar text before you call dcl_form_show. You cannot change the titlebar text at runtime, when the palette is shown. There was already a topic about that: <a href="http://www.opendcl.com/forum/index.php?topic=883.0" rel="nofollow noopener">{2}</a><br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6657">
+  <div class="post-head">
+    <span class="post-author">TimSpangler</span>
+    <span class="post-date muted">2010-03-29 23:10 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the reply Fred,<br>
+<br>
+I saw that post already.  What I mean is I made it static on the form from the editor but when I run the project it does not change.  Plus I can not get it to change before the palette for is called.</div>
+</article>
+<article class="post" id="msg6658">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-03-30 00:21 UTC</span>
+  </div>
+  <div class="post-body">Do you have an other version of the ODCL project in a different support path it maybe loading by mistake?<br>
+</div>
+</article>
+<article class="post" id="msg6666">
+  <div class="post-head">
+    <span class="post-author">TimSpangler</span>
+    <span class="post-date muted">2010-03-30 11:21 UTC</span>
+  </div>
+  <div class="post-body">That was the first thing that I checked.  I also can change the icon with no problem., just not the text</div>
+</article>
+<article class="post" id="msg6684">
+  <div class="post-head">
+    <span class="post-author">TimSpangler</span>
+    <span class="post-date muted">2010-04-01 14:33 UTC</span>
+  </div>
+  <div class="post-body">I deleted my .aws file from my profile and now everything seems to be updated.  They were located here:<br>
+<br>
+C:\Documents and Settings\tspangle\Application Data\Autodesk\ACD-A 2009\enu\Support\Profiles\\<br>
+<br>
+<br>
+Not sure why this happened?</div>
+</article>
+<article class="post" id="msg6688">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-04-01 20:09 UTC</span>
+  </div>
+  <div class="post-body">Strange. I'll see if I can reproduce the problem.</div>
+</article>
+<article class="post" id="msg6692">
+  <div class="post-head">
+    <span class="post-author">TimSpangler</span>
+    <span class="post-date muted">2010-04-01 21:01 UTC</span>
+  </div>
+  <div class="post-body">I haven't been able to reproduce this since.  Everything seems to be fine so far.  I will keep you posted</div>
+</article>
+<article class="post" id="msg6709">
+  <div class="post-head">
+    <span class="post-author">TimSpangler</span>
+    <span class="post-date muted">2010-04-06 15:07 UTC</span>
+  </div>
+  <div class="post-body">It has happened again.  I found that it is being saved here:<br>
+<br>
+C:\Documents and Settings\tspangle\Application Data\Autodesk\ACD-A 2009\enu\Support\Profiles\FixedProfile.aws<br>
+<br>
+upon closing Autocad.  It also saves the position and auto-hide.  I assume that it is getting the palette name from here and not from the lisp.  If I delete this file all is fine and it returns upon closing Autocad.<br>
+<br>
+I am running XP SP3 / ACA09</div>
+</article>
+<article class="post" id="msg6710">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-04-06 17:03 UTC</span>
+  </div>
+  <div class="post-body">This problem should now be fixed in the next build.</div>
+</article>
+<article class="post" id="msg6711">
+  <div class="post-head">
+    <span class="post-author">TimSpangler</span>
+    <span class="post-date muted">2010-04-06 17:16 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen.   ;D</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

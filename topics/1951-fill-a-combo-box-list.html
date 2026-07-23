@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>fill a combo box list · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1951</p>
+    <h1>fill a combo box list</h1>
+    <p class="meta">Started by bowlingpin1 ·
+      2013-03-14 20:47 UTC ·
+      8 replies · SMF topic #1951</p>
+<article class="post" id="msg9599">
+  <div class="post-head">
+    <span class="post-author">bowlingpin1</span>
+    <span class="post-date muted">2013-03-14 20:47 UTC</span>
+  </div>
+  <div class="post-body">Good day,<br>
+<br>
+I am new to Lisp in general, let alone the Active X stuff.<br>
+<br>
+I am trying to build a palette that will take info from Autocad and convert it for another program.  The output will be a CIX file or a txt file, that isn't to important at this point.<br>
+<br>
+The combo box will be used to select a layer.<br>
+The list box will display all entities on that layer.<br>
+You would then select each item in the list box and select with the radio buttons if it is fixed or parametric.<br>
+I'll have to set one pair for the start point and another for the end point.<br>
+<br>
+So I'll start with my first problem and hopefully I'll be able to work along from there.  I can't get the combo box to list the layers. I found some code from another site ( <a href="http://www.jtbworld.com/lisp/layer-list.htm" rel="nofollow noopener">{2}</a> ) and edited it a lot.  The result is that if you just run the AX code, alone and not in the palette,you get a variable that is a list of all the layers.  I thought I could then use that list to populate the combo box.<br>
+<br>
+Attahced:<br>
+BWPC.odcl &lt;- the palette<br>
+BWPC &lt;- the lsp file<br>
+Layerfinderv2 &lt;- the code that searches and returns layers, alone, returns lstwhole which is a list of the layers<br>
+<br>
+I am hoping to tackle this one step at a time.  Understand please I am a cabinet maker that is pretty good with computers, not coding.<br>
+<br>
+Have a nice evening  :)<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1869/BWPC.odcl">BWPC.odcl</a> <span class="muted">(864 bytes)</span></li><li><a href="../attachments/1870/BWPC.LSP">BWPC.LSP</a> <span class="muted">(794 bytes)</span></li><li><a href="../attachments/1871/layerfinderv2.lsp">layerfinderv2.lsp</a> <span class="muted">(1499 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9600">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-03-14 21:05 UTC</span>
+  </div>
+  <div class="post-body">There is a _MasterDemo.lsp that comes with the OpenDCL program. Among many other things it contains a sample of a layers combobox. Seems like a good starting point.<br>
+Start _MasterDemo.lsp &gt; On the Basic tab click the Misc button &gt; Go to the Comboboxes1 tab.</div>
+</article>
+<article class="post" id="msg9601">
+  <div class="post-head">
+    <span class="post-author">bowlingpin1</span>
+    <span class="post-date muted">2013-03-14 23:23 UTC</span>
+  </div>
+  <div class="post-body">quite helpful thanks :) (no sarcasm) </div>
+</article>
+<article class="post" id="msg9602">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-03-15 01:15 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=bowlingpin1 link=topic=1951.msg9599#msg9599 date=1363294042 wrote:</cite><br>
+I thought I could then use that list to populate the combo box.</blockquote><br>
+<br>
+You would want to populate the combo in OnInitialize instead of OnDropdown (and remove the "NewItems" that doesn't belong), then your code should work the way you want. As roy said, you may as well use the built in layer combo.</div>
+</article>
+<article class="post" id="msg9603">
+  <div class="post-head">
+    <span class="post-author">bowlingpin1</span>
+    <span class="post-date muted">2013-03-17 15:24 UTC</span>
+  </div>
+  <div class="post-body">How do I read what is set in the combo box?  I need to set the layer name to a variable to ultimately populate a list box with all the entities on said layer.<br>
+<br>
+I seem to be going around in circles :P</div>
+</article>
+<article class="post" id="msg9604">
+  <div class="post-head">
+    <span class="post-author">bowlingpin1</span>
+    <span class="post-date muted">2013-03-17 15:29 UTC</span>
+  </div>
+  <div class="post-body">I am guessing use:<br>
+<br>
+(dcl_ListBox_AddList BWPC_BWpara_ListBox1 NewItems [as List of Strings])<br>
+<br>
+and I have to create a function that will find all the entities on the layer and turn them into a string?<br>
+<br>
+then after that I guess I have to figure out how to read the list box, create a bunch of variables based on each item and create a list from that?</div>
+</article>
+<article class="post" id="msg9605">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-03-17 15:43 UTC</span>
+  </div>
+  <div class="post-body">It makes most sense to use the SelChanged event for that. Alternatively you can use the dcl_ComboBox_GetCurSel function.<br>
+To use the SelChanged event just click on the Events tab of the control, check this event and paste the example function in your code. When the event is triggered the function will be called and the ItemIndexOrCount and Value arguments will be set to useful data.</div>
+</article>
+<article class="post" id="msg9606">
+  <div class="post-head">
+    <span class="post-author">bowlingpin1</span>
+    <span class="post-date muted">2013-03-18 03:19 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=1951.msg9605#msg9605 date=1363534983 wrote:</cite><br>
+It makes most sense to use the SelChanged event for that. Alternatively you can use the dcl_ComboBox_GetCurSel function.<br>
+To use the SelChanged event just click on the Events tab of the control, check this event and paste the example function in your code. When the event is triggered the function will be called and the ItemIndexOrCount and Value arguments will be set to useful data.<br>
+</blockquote><br>
+<br>
+Okay so now I can read the combo box :)  I use ssget and a filter to get a selection set of all entities on the layer chosen, but it returns  or some such thing, sometimes  .  how do I convert the selection to a list?  could I then use mapchar to convert that list to a list of strings?  As right now the return is just saying it is selected, I need what it got, not a result of what it said it got(if that makes sense).<br>
+<br>
+Here is an updated version of my efforts.  Am I being to needy on these forums?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1872/BWPC.odcl">BWPC.odcl</a> <span class="muted">(871 bytes)</span></li><li><a href="../attachments/1873/BWPC.LSP">BWPC.LSP</a> <span class="muted">(571 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9607">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-03-18 03:47 UTC</span>
+  </div>
+  <div class="post-body">Your questions are fine, but you'll get quicker (and more) general lisp help over at <a href="http://"http://www.theswamp.org/index.php?board=2.0"" rel="nofollow noopener">{2}</a>. I recommend to post your general lisp questions there, and OpenDCL specific questions here (or <a href="http://www.theswamp.org/index.php?board=63.0" rel="nofollow noopener">{2}</a>).</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

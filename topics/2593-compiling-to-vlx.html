@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compiling to VLX · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2593</p>
+    <h1>Compiling to VLX</h1>
+    <p class="meta">Started by ScottBolton ·
+      2018-04-23 13:23 UTC ·
+      5 replies · SMF topic #2593</p>
+<article class="post" id="msg12848">
+  <div class="post-head">
+    <span class="post-author">ScottBolton</span>
+    <span class="post-date muted">2018-04-23 13:23 UTC</span>
+  </div>
+  <div class="post-body">One thing I notice from the DistSample examples is that the VLX file has the same name as the odcl. Is it possible to have <strong>ALL.VLX</strong> that contains a compiled <strong>DistSample1.odcl</strong> <u>and</u> <strong>DistSample2.odcl</strong>?<br>
+<br>
+If so, how do I modify <strong>(_Load_ODCL_Embedded_Project (strcat LOAD_flag ".odcl") nil nil)</strong>?</div>
+</article>
+<article class="post" id="msg12849">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-04-23 17:23 UTC</span>
+  </div>
+  <div class="post-body">Hi, save both projects as different *.odcl.lsp-files to compile them as different resources and load them afterwards using dcl-project-import.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg12850">
+  <div class="post-head">
+    <span class="post-author">ScottBolton</span>
+    <span class="post-date muted">2018-04-24 08:12 UTC</span>
+  </div>
+  <div class="post-body">Hi, Fred.<br>
+<br>
+So just to clarify, "compile them as different resources" - I have to have a separate VLX for each odcl.lsp file. Is it not possible to compile several odcl.lsp files into one VLX, as we can do with "normal" lsp files?<br>
+<br>
+S</div>
+</article>
+<article class="post" id="msg12852">
+  <div class="post-head">
+    <span class="post-author">ScottBolton</span>
+    <span class="post-date muted">2018-04-25 09:08 UTC</span>
+  </div>
+  <div class="post-body">Anybody?</div>
+</article>
+<article class="post" id="msg12853">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-04-25 19:10 UTC</span>
+  </div>
+  <div class="post-body">Hello, I still believe, I haven't understand you.<br>
+Please have a look at the sample I attached.<br>
+This project contains two different projects, loaded at runtime.<br>
+Hope that comes closer to your needs.<br>
+<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2393/projects.zip">projects.zip</a> <span class="muted">(7532 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12857">
+  <div class="post-head">
+    <span class="post-author">ScottBolton</span>
+    <span class="post-date muted">2018-05-03 13:00 UTC</span>
+  </div>
+  <div class="post-body">Thanks, Fred. It was the (strcat ".odcl.lsp") that I was missing.<br>
+<br>
+S</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

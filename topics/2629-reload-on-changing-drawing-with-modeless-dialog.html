@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reload on changing drawing with modeless dialog · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2629</p>
+    <h1>Reload on changing drawing with modeless dialog</h1>
+    <p class="meta">Started by Lube ·
+      2018-09-05 14:52 UTC ·
+      4 replies · SMF topic #2629</p>
+<article class="post" id="msg12985">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2018-09-05 14:52 UTC</span>
+  </div>
+  <div class="post-body">Hi there, I've a simple question :)<br>
+<br>
+How do I accomplish that task? <br>
+"This event is triggered when the user switches to a different open AutoCAD drawing. Note that opening a new drawing will not trigger any event. An application that uses modeless dialogs must be installed so that its code is loaded into each newly created drawing document, and the application's initialization code must check for already active dialogs that it must manage."<br>
+<br>
+I've a modeless dialog with that inside the code<br>
+<pre class="code"><code>(defun c:cordoli/cordoli#OnInitialize (/) <br>
+....<br>
+)</code></pre><br>
+<br>
+When I switch to another drawing it will be very cool if i dind't have to reload the *.fas<br>
+<br>
+I've tried with that but of course it doens't work and I don't get how to check the already active dialogs :S<br>
+<pre class="code"><code>(defun c:cordoli/cordoli#OnDocActivated (/)<br>
+(c:cordoli/cordoli#OnInitialize)<br>
+)</code></pre><br>
+<br>
+Thank for your help !<br>
+<br>
+Dennis<br>
+</div>
+</article>
+<article class="post" id="msg12988">
+  <div class="post-head">
+    <span class="post-author">AbuSimbel</span>
+    <span class="post-date muted">2018-09-06 06:34 UTC</span>
+  </div>
+  <div class="post-body">Hello Lube.<br>
+You have to write the following code in the file ACAD.lsp, so that it is loaded in each drawing.<br>
+<br>
+(defun c:cordoli/cordoli#Onanclajeactivado (/)  (load "cordoli") (c:cordoli) (princ))<br>
+<br>
+(and (zerop (getvar "sdi"))<br>
+     (member "CORDOLI" (mapcar 'strcase (dcl_getprojects)))<br>
+     (dcl_form_isactive cordoli/cordoli)<br>
+     (c:cordoli/cordoli#Onanclajeactivado)<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg13003">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2018-09-11 08:08 UTC</span>
+  </div>
+  <div class="post-body">Thank you mate!<br>
+<br>
+Can I trigger the "OnInitialize" lisp part? Every drawing has a dictionary with items that need to be reloaded.<br>
+<br>
+Thanks for your help :)</div>
+</article>
+<article class="post" id="msg13008">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2018-09-21 09:43 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=AbuSimbel link=topic=2629.msg12988#msg12988 date=1536215656 wrote:</cite><br>
+Hello Lube.<br>
+You have to write the following code in the file ACAD.lsp, so that it is loaded in each drawing.<br>
+<br>
+(defun c:cordoli/cordoli#Onanclajeactivado (/)  (load "cordoli") (c:cordoli) (princ))<br>
+<br>
+(and (zerop (getvar "sdi"))<br>
+     (member "CORDOLI" (mapcar 'strcase (dcl_getprojects)))<br>
+     (dcl_form_isactive cordoli/cordoli)<br>
+     (c:cordoli/cordoli#Onanclajeactivado)<br>
+)<br>
+</blockquote><br>
+Anyway I get this error <br>
+; error: no function definition: DCL_GETPROJECTS<br>
+<br>
+I don't know how to fix that.. :S<br>
+</div>
+</article>
+<article class="post" id="msg13009">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-09-24 07:12 UTC</span>
+  </div>
+  <div class="post-body">a) Both ways should be working, but (dcl-getprojects) is the current typing; (dcl_getprojects) is the older one.<br>
+b) ; error: no function definition: DCL_GETPROJECTS shows that you have not loaded opendcl. Check your installation if it is installed correctly, and call "opendcl" to load the software before you use functions from it</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

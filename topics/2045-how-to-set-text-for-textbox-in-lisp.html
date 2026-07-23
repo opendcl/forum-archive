@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to set Text for TextBox in Lisp? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2045</p>
+    <h1>How to set Text for TextBox in Lisp?</h1>
+    <p class="meta">Started by MiD-AwE ·
+      2013-10-15 21:01 UTC ·
+      5 replies · SMF topic #2045</p>
+<article class="post" id="msg10089">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-10-15 21:01 UTC</span>
+  </div>
+  <div class="post-body">Hi all,<br>
+<br>
+I've been bummin' around here for a long time. I search for answers but I need very basic understanding now and cannot find how to do what I need. My ignorance is to blame.<br>
+<br>
+I have a TextBox that I need to always display the value of a Global variable. When the user edits the text in the TextBox, I want to change the Global variable to the value set by the user and the TextBox needs to continue displaying the value from the Global.<br>
+<br>
+I have tried to follow the tutorial but I do not know what I'm needing to do to set the Text in the TextBox OnInitialize.<br>
+<br>
+I got the code from the "Control Browser" but it looks like jargon and I have not been able to interpret what I must customize to make it work.<br>
+<br>
+(dcl_Control_SetProperty CNTRL-PNL_CPL-CAD_AccessTextBox PropertyApiName [as String] NewValue [as Varies])<br>
+<br>
+The tutorial leads me to believe I need to change "PropertyApiName [as String]" but what must go there? And, What do I do with "NewValue [as Varies]".<br>
+<br>
+My global is *ACCESS*.<br>
+<br>
+Also, how do I trigger a regen on my drawing if/when the TextBox is edited.<br>
+<br>
+Thank you for any suggestions/advice/help.</div>
+</article>
+<article class="post" id="msg10093">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-10-16 06:46 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=MiD-AwE link=topic=2045.msg10089#msg10089 date=1381870911 wrote:</cite><br>
+....(dcl_Control_SetProperty CNTRL-PNL_CPL-CAD_AccessTextBox PropertyApiName [as String] NewValue [as Varies])....</blockquote><br>
+"dcl_Control_SetProperty ...... PropertyApiName" is the base command where you can set "all properties". In your case you should try the function for modifying the caption<br>
+<br>
+a) with text:<br>
+(dcl_Control_SetCaption CNTRL-PNL_CPL-CAD_AccessTextBox "hello, this is a test")<br>
+b) with variable:<br>
+(dcl_Control_SetCaption CNTRL-PNL_CPL-CAD_AccessTextBox myVariable)<br>
+Try it - no guarantee.</div>
+</article>
+<article class="post" id="msg10096">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-10-16 15:28 UTC</span>
+  </div>
+  <div class="post-body">Thank you Peter2.<br>
+<br>
+So if I'm understanding this better, "PropertyApiName [as String]" is all one thing, not "PropertyApiName" with "[as String]" being separate, and; "NewValue [as Varies]" is also only one thing? Therefore, "PropertyApiName [as String]" is only asking for a string nothing more?<br>
+<br>
+Let me run with that and see if I'm jumping to conclusions.<br>
+<br>
+Thanks again.</div>
+</article>
+<article class="post" id="msg10097">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-10-16 15:36 UTC</span>
+  </div>
+  <div class="post-body">Ok, <br>
+<br>
+I now have:<br>
+<br>
+(defun c:CNTRL-PNL_CPL-CAD_OnInitialize (/)<br>
+  (dcl_Control_SetProperty CNTRL-PNL_CPL-CAD_AccessTextBox "Text" *ACCESS*)<br>
+)<br>
+<br>
+And, that appears to work as expected. Also, I have:<br>
+<br>
+(defun c:CNTRL-PNL_CPL-CAD_AccessTextBox_OnReturnPressed (/)<br>
+  (vlax-ldata-put "JOB" "ACCESS" (DCL_CONTROL_GETTEXT CNTRL-PNL_CPL-CAD_AccessTextBox))<br>
+  (SETQ *ACCESS* (DCL_CONTROL_GETTEXT CNTRL-PNL_CPL-CAD_AccessTextBox))<br>
+  (vlax-invoke-method (vla-get-ActiveDocument (vlax-get-Acad-Object)) 'SendCommand "regen")<br>
+)<br>
+<br>
+That appears to be working correctly as well. Should I be doing this differently? <br>
+<br>
+Thank you very much for the clarifying comment Peter2.</div>
+</article>
+<article class="post" id="msg10099">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-10-16 19:26 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=MiD-AwE link=topic=2045.msg10096#msg10096 date=1381937301 wrote:</cite><br>
+...Therefore, "PropertyApiName [as String]" is only asking for a string nothing more?...</blockquote><br>
+In your second post I see that you have understand, and yes <br>
+<br>
+- the text [inside the brackets] is a description (of the format) what should be used before the . You have to delete all things that are [inside the brackets]<br>
+<br>
+- the text 'before the brackets' [] is a placeholder for the function / command / feature which you have to define.<br>
+<br>
+Easy, isn't it?</div>
+</article>
+<article class="post" id="msg10100">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-10-16 21:32 UTC</span>
+  </div>
+  <div class="post-body">Thank you.<br>
+<br>
+Yeah it's pretty easy once the initial understanding is overcome. Since I work with A/VLISP in VLIDE I'm used to every jot and tittle, including spaces, representing the exact syntax.<br>
+<br>
+I'm on my way now!  :)<br>
+<br>
+Again Thank you, this is a big help.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

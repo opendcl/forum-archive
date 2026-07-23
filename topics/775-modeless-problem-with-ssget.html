@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>modeless problem (with ssget?) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 775</p>
+    <h1>modeless problem (with ssget?)</h1>
+    <p class="meta">Started by funkitect ·
+      2009-05-28 18:34 UTC ·
+      5 replies · SMF topic #775</p>
+<article class="post" id="msg3813">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2009-05-28 18:34 UTC</span>
+  </div>
+  <div class="post-body">I am having problem with a modeless dialog box.  The dialog collects some data about a block (blockname, tag, attribute string).  After the data is collected the user can can press a button and the selected string will be pasted into the selected block(s) with matching blockname &amp; tag.<br>
+<br>
+If I run the program via the dialog the target blocks are never modified.  However, even if I leave the dialog box open and run the line manually that runs the subroutine the blocks are modified.  It seems the SSGET command may be causing the problem...I've fiddled with asynchronous vs. synchronous and with dcl_SetCmdBarFocus but I feel like I'm groping in the dark.  Does anyone know what is really going on?<br>
+<br>
+<br>
+<br>
+<span style="color:red">This is the OnClicked event for the button (It just draws the data strings from the dialog and calls the subroutine:)</span><br>
+<br>
+	(defun c:MatchAttributes_OnClicked (/ tBnameStr tTnameStr sData)<br>
+		(if (= "" (dcl_Control_GetCaption Stname))<br>
+			(dcl_messagebox "You must specify a source block and tag")<br>
+			(progn<br>
+				(setq tBnameStr (dcl_Control_GetCaption Tbname))<br>
+				(setq tTnameStr (dcl_Control_GetCaption Ttname))<br>
+				(setq sData     (dcl_Control_GetCaption TagString))<br>
+				;(dcl_Form_close MatchAttributes)<br>
+				(dcl_SetCmdBarFocus)  ;;Just trying this for kicks...saw some article and thought it might work...<br>
+				(maUpdateBlocks tBnameStr tTnameStr sData)<br>
+			)<br>
+		)<br>
+		(princ)<br>
+	)<br>
+<br>
+<br>
+<span style="color:red">This is the subroutine...</span><br>
+<br>
+(defun maUpdateBlocks (sBlockName sTagName sNewValue / ss1 index ename e1)<br>
+	;(setq tBnameStr "EW-PowerWall" tTnameStr "#LINE1" sData "X")<br>
+	;(maUpdateBlocks "EW-PowerWall" "#LINE1" "X")<br>
+	;(ccalert (list tBnameStr tTnameStr sdata))<br>
+	(princ "\nSelect target block(s):  ")<br>
+	(setq ss1 (ssget (list '(0 . "INSERT")(cons 2 sBlockName))))<br>
+	(setq index 0)<br>
+	(repeat (sslength ss1)<br>
+		(setq ename (ssname ss1 index))<br>
+		(setq ename (entnext ename))<br>
+		(WHILE (/= sTagName (cdr (assoc 2 (entget ename))))<br>
+			(setq ename (entnext ename))<br>
+		)<br>
+		(setq e1 (entget ename))<br>
+		(setq e1 (subst <br>
+				(cons 1 sNewValue) 		;new value<br>
+				(assoc 1 (entget ename)) ;old value<br>
+				e1						;elist<br>
+		))<br>
+		(entmod e1)<br>
+		(entupd ename)<br>
+		(setq index (+ index 1))<br>
+	)<br>
+	(setq ss1 nil)<br>
+	(princ "\nDone...")<br>
+	(princ "\nCommand:")<br>
+) <br>
+<br>
+<span style="color:red">Note: </span> I had to add that last line (princ "\nCommand:") because the "problem" causes the resulting command line to be blank as though AutoCAD is waiting...but it isn't...I think.<br>
+<br>
+Any help would be appreciated<br>
+<br>
+<br>
+James LeVieux<br>
+</div>
+</article>
+<article class="post" id="msg3814">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-28 18:53 UTC</span>
+  </div>
+  <div class="post-body">Try changing your OnClicked event handler to call (dcl_SendString "UPDATEBLOCKS\n"), then defin (C:UPDATEBLOCKS) to gather the needed values from the dialog (but check first to ensure it's still open) and update the blocks.</div>
+</article>
+<article class="post" id="msg3902">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2009-06-05 22:40 UTC</span>
+  </div>
+  <div class="post-body">That did the trick Owen.  Thanks a million!<br>
+<br>
+At the risk of making my head hurt...why does that work?<br>
+<br>
+Sincerely,<br>
+<br>
+James LeVieux</div>
+</article>
+<article class="post" id="msg3903">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-06 05:19 UTC</span>
+  </div>
+  <div class="post-body">By using (dcl_SendString), you allow Windows to complete its internal event handling and settle back into a quiescent state before the main code executes. I don't know what exactly your code is doing that causes the hiccup when it is executed directly from within the event handler, but the symptoms are indicative of executing code that causes state changes while another state change is still in progress.</div>
+</article>
+<article class="post" id="msg3908">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2009-06-07 05:15 UTC</span>
+  </div>
+  <div class="post-body">ouch!</div>
+</article>
+<article class="post" id="msg3913">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-07 07:20 UTC</span>
+  </div>
+  <div class="post-body">There will be a quiz next week...</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

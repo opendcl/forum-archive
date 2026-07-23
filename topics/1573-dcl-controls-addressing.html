@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl controls addressing · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1573</p>
+    <h1>dcl controls addressing</h1>
+    <p class="meta">Started by Tokot ·
+      2011-01-19 07:30 UTC ·
+      5 replies · SMF topic #1573</p>
+<article class="post" id="msg7694">
+  <div class="post-head">
+    <span class="post-author">Tokot</span>
+    <span class="post-date muted">2011-01-19 07:30 UTC</span>
+  </div>
+  <div class="post-body">Sry, can't share the code, but its not vital. I got kinda complicated odcl form with tens of textboxes and hundreds of comboboxes. For now i handle them one-by-one, loading lists to every one of comboboxes on form initialize, and reading every one of them separately on clicked ok button. Of course its not usual practice, but i didn't find a way to address control names by concatenating string and cycle counter or something. Can you give me a hand with this issue? </div>
+</article>
+<article class="post" id="msg7695">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-01-19 10:14 UTC</span>
+  </div>
+  <div class="post-body">Hi, I'm not sure wether I understood you correctly, but try something like this:<br>
+<br>
+<br>
+<br>
+(setq lstLists (list (list "cbbCombo1" "Layer1" "Layer2" "Layer3" "Layer4" "Layer5" "Layer6")<br>
+                        (list "cbbCombo2" "Style2" "Style2" "Style3" "Style4")<br>
+                        ...))<br>
+<br>
+(foreach lstList lstLists<br>
+  (dcl_combobox_setlist "MyProj" "MyForm" (car lstList) (cdr lstList))<br>
+  (dcl_combobox_setcursel "MyProj" "MyForm" (car lstList) 0)<br>
+); foreach<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg7696">
+  <div class="post-head">
+    <span class="post-author">Tokot</span>
+    <span class="post-date muted">2011-01-19 11:10 UTC</span>
+  </div>
+  <div class="post-body">Yep, sorry for my english, its not my native language, as you see.<br>
+I can't imagine a way to use this sample. Let me try to explain further, maybe you'll find one.<br>
+(if (&gt; comb21 10)<br>
+	(progn<br>
+	  (setq switch (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox27) " ")<br>
+		iswitch (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox42) " ")<br>
+		cont (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox57) " ")<br>
+		icont (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox72) " ")<br>
+		relay (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox87) " ")<br>
+		irelay (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox102) " ")<br>
+		cable (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox117) " ")<br>
+		cablen (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox132) " ")<br>
+		cablel (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox192) " ")<br>
+		engine (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox147) " ")<br>
+		power (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox162) " ")<br>
+		current (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox177) " ")<br>
+		offset1 (- offset1 10))<br>
+	  (drawengine comb212 offset1 switch iswitch cont icont relay irelay cable cablen cablel engine power current)<br>
+	)<br>
+      )<br>
+this is one of 15 similiar pieces of code differing from each other by 1 and calling the same function. I was asking for a way to make a single while cycle like<br>
+;not a code, it sucks<br>
+(while (&gt; comb21 i)<br>
+	(progn<br>
+	  (setq switch (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox(15*i+1)) " ")<br>
+		iswitch (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox(15*i+2)) " ")<br>
+		cont (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox(15*i+3)) " ")<br>
+		icont (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox(15*i+4)) " ")<br>
+		relay (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox(15*i+5)) " ")<br>
+		irelay (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox(15*i+6)) " ")<br>
+		cable (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox(15*i+7)) " ")<br>
+		cablen (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox(15*i+8)) " ")<br>
+		cablel (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox(15*i+9)) " ")<br>
+		engine (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox(15*i+10)) " ")<br>
+		power (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox(15*i+11)) " ")<br>
+		current (strcat (dcl_ComboBox_GetEBText GenTP_Form2_ComboBox(15*i+12)) " ")<br>
+		offset1 (- offset1 10)<br>
+                i (1+ i))<br>
+	  (drawengine comb212 offset1 switch iswitch cont icont relay irelay cable cablen cablel engine power current)<br>
+	)<br>
+      )</div>
+</article>
+<article class="post" id="msg7697">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-01-19 16:10 UTC</span>
+  </div>
+  <div class="post-body">Hi, Tokot,<br>
+<br>
+as far as I understand your code you should have a closer look where strcat started. Please have a look at the samples of <a href="http://www.opendcl.com/forum/index.php?topic=1561.msg7637#msg7637" rel="nofollow noopener">{2}</a>.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg7700">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2011-01-19 19:40 UTC</span>
+  </div>
+  <div class="post-body">ya check out Fred example or try something like this:<br>
+<br>
+<br>
+(setq myList nil)<br>
+(setq i 1)<br>
+(while (&gt; comb21 i)  <br>
+  (setq myList (append myList (list (dcl_ComboBox_GetEBText "GenTP" "Form2" (strcat "ComboBox" (itoa i))))))<br>
+  (setq i (1+ i))<br>
+)<br>
+(drawengine comb212 offset1 (nth 1 myList) (nth 2 myList) (nth 3 myList) .....)<br>
+<br>
+<br>
+However, it doesn't look like you ComboBox are numbered in order so this wont work exactly as is.<br>
+Maybe your (15*i+1) will handle that.<br>
+But this should get you on the right track...<br>
+</div>
+</article>
+<article class="post" id="msg7703">
+  <div class="post-head">
+    <span class="post-author">Tokot</span>
+    <span class="post-date muted">2011-01-20 05:27 UTC</span>
+  </div>
+  <div class="post-body">Actually I did when was searching this forum before posting, but didn't see a way to use it. Anyway, looks like Bazza's sample is exactly what i've been looking for. I'll need two nested loops to cycle through the whole form, but i think thats it! Thank you both!<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

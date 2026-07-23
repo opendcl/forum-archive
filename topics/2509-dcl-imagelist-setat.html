@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl-ImageList-SetAt · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2509</p>
+    <h1>dcl-ImageList-SetAt</h1>
+    <p class="meta">Started by velasquez ·
+      2017-05-25 12:58 UTC ·
+      9 replies · SMF topic #2509</p>
+<article class="post" id="msg12489">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2017-05-25 12:58 UTC</span>
+  </div>
+  <div class="post-body">Can you please show an example to work with dcl-ImageList-SetAt?<br>
+<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg12491">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-05-26 20:27 UTC</span>
+  </div>
+  <div class="post-body">Try adding a new button to the Grid sample (C:\Program Files\OpenDCL Studio\ENU\Samples\):<br>
+(defun c:Grid/Dcl-1/YourButton#OnClicked ( / nme)<br>
+  (setq nme "D:\\YourPath\\YourImage.bmp")<br>
+  (dcl-ImageList-SetAt (dcl-Control-GetImageList Grid/Dcl-1/grid1) 0 nme)<br>
+  (dcl-ImageList-SetAt (dcl-Control-GetImageList Grid/Dcl-1/IC-ColImages) 0 nme)<br>
+  (dcl-ImageList-SetAt (dcl-Control-GetImageList Grid/Dcl-1/IC-Images) 0 nme)<br>
+)</div>
+</article>
+<article class="post" id="msg12494">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2017-05-27 11:30 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2509.msg12491#msg12491 date=1495830433 wrote:</cite><br>
+Try adding a new button to the Grid sample (C:\Program Files\OpenDCL Studio\ENU\Samples\):<br>
+(defun c:Grid/Dcl-1/YourButton#OnClicked ( / nme)<br>
+  (setq nme "D:\\YourPath\\YourImage.bmp")<br>
+  (dcl-ImageList-SetAt (dcl-Control-GetImageList Grid/Dcl-1/grid1) 0 nme)<br>
+  (dcl-ImageList-SetAt (dcl-Control-GetImageList Grid/Dcl-1/IC-ColImages) 0 nme)<br>
+  (dcl-ImageList-SetAt (dcl-Control-GetImageList Grid/Dcl-1/IC-Images) 0 nme)<br>
+)<br>
+</blockquote><br>
+<br>
+Thanks for your help Roy.</div>
+</article>
+<article class="post" id="msg13143">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2019-03-08 21:06 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2509.msg12491#msg12491 date=1495830433 wrote:</cite><br>
+Try adding a new button to the Grid sample (C:\Program Files\OpenDCL Studio\ENU\Samples\):<br>
+(defun c:Grid/Dcl-1/YourButton#OnClicked ( / nme)<br>
+  (setq nme "D:\\YourPath\\YourImage.bmp")<br>
+  (dcl-ImageList-SetAt (dcl-Control-GetImageList Grid/Dcl-1/grid1) 0 nme)<br>
+  (dcl-ImageList-SetAt (dcl-Control-GetImageList Grid/Dcl-1/IC-ColImages) 0 nme)<br>
+  (dcl-ImageList-SetAt (dcl-Control-GetImageList Grid/Dcl-1/IC-Images) 0 nme)<br>
+)<br>
+</blockquote><br>
+<br>
+Hello Roy,<br>
+I've done some testing with dcl-ImageList-SetAt following its example.<br>
+It turns out that the function does not work if the control's ImageList is empty.<br>
+For the tests I created a form with a GridControl.<br>
+Is there any reason for this or can it be a bug?<br>
+<br>
+I'm working with Opendcl Studio version "9.0.1.4"<br>
+<br>
+Thanks<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg13147">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2019-03-10 07:53 UTC</span>
+  </div>
+  <div class="post-body">I can confirm that issue: dcl-ImageList-SetAt does not work if the image list of a control is empty. Seems like a bug to me.</div>
+</article>
+<article class="post" id="msg13148">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2019-03-11 02:44 UTC</span>
+  </div>
+  <div class="post-body">The (dcl-ImageList-SetAt) function should return an error when you pass NIL for the imagelist argument. I've fixed that now for the next build. However, otherwise the function is working as intended. The reason: creating an image list requires size of individual images, and that information is not available to (dcl-Control-GetImageList).<br>
+<br>
+I could add a new (dcl-Control-CreateImageList) function, but I don't think it's much trouble to just add an arbitrary image to the control at design time so that the control will already have an imagelist at runtime.</div>
+</article>
+<article class="post" id="msg13149">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2019-03-11 12:39 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2509.msg13147#msg13147 date=1552204427 wrote:</cite><br>
+I can confirm that issue: dcl-ImageList-SetAt does not work if the image list of a control is empty. Seems like a bug to me.<br>
+</blockquote><br>
+<br>
+Thanks for confirming the problem I reported.</div>
+</article>
+<article class="post" id="msg13150">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2019-03-11 12:54 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2509.msg13148#msg13148 date=1552272261 wrote:</cite><br>
+The (dcl-ImageList-SetAt) function should return an error when you pass NIL for the imagelist argument. I've fixed that now for the next build. However, otherwise the function is working as intended. The reason: creating an image list requires size of individual images, and that information is not available to (dcl-Control-GetImageList).<br>
+<br>
+I could add a new (dcl-Control-CreateImageList) function, but I don't think it's much trouble to just add an arbitrary image to the control at design time so that the control will already have an imagelist at runtime.<br>
+</blockquote><br>
+<br>
+I tried to work around.<br>
+I inserted an image for control at drawing time. After I used the function (dcl-ImageList-SetAt) to replace the image of index 0 at runtime, it happens that the image size can no longer be changed at runtime.<br>
+This does not allow you to clear the control and create a new list with a different size.<br>
+</div>
+</article>
+<article class="post" id="msg13152">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2019-03-12 01:44 UTC</span>
+  </div>
+  <div class="post-body">That is correct, once an image list is added, the image size is fixed and cannot be changed. You must add the first image with correct size.</div>
+</article>
+<article class="post" id="msg13153">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2019-03-12 11:32 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2509.msg13152#msg13152 date=1552355064 wrote:</cite><br>
+That is correct, once an image list is added, the image size is fixed and cannot be changed. You must add the first image with correct size.<br>
+</blockquote><br>
+<br>
+Thanks for the reply Owen.<br>
+I think creating the function (dcl-Control-CreateImageList) is a good idea as it gives more freedom for the use of a single control.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

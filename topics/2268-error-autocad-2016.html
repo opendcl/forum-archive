@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Error AutoCAD 2016 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2268</p>
+    <h1>Error AutoCAD 2016</h1>
+    <p class="meta">Started by dgpuertas ·
+      2015-05-20 09:59 UTC ·
+      11 replies · SMF topic #2268</p>
+<article class="post" id="msg11408">
+  <div class="post-head">
+    <span class="post-author">dgpuertas</span>
+    <span class="post-date muted">2015-05-20 09:59 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+When i use opendcl file in Autocad 2016, the form show well. But when the form close, autocad crash (see attachment)<br>
+I use the last opendcl file (v 8.0.0.14) and the arx is OpenDCL.x64.20.arx (2044kb create jun-22-2014)<br>
+<br>
+I cant use the opendcl dialog.<br>
+<br>
+Can you help me?<br>
+<br>
+Thanks and sorry about my english.,.<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2126/error2016.bmp">error2016.bmp</a> <span class="muted">(289035 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11409">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-05-20 10:45 UTC</span>
+  </div>
+  <div class="post-body">Hi, it depends on the lisp code. We need to know what happens in the code.<br>
+Greetings, Fred</div>
+</article>
+<article class="post" id="msg11410">
+  <div class="post-head">
+    <span class="post-author">dgpuertas</span>
+    <span class="post-date muted">2015-05-20 11:06 UTC</span>
+  </div>
+  <div class="post-body"><br>
+oppps<br>
+<br>
+When i use <br>
+(dcl-Project-Load  "Media.odcl" nil) -&gt; "Media" and run ok but AutoCAD crash when dialog close.<br>
+<br>
+But if i use:<br>
+(dcl-Project-Load  "Media.odcl" T) -&gt; nil and AutoCAD show the following error:<br>
+<br>
+it's strange because (dcl-Project-Load  "Media.odcl" nil) run when autocad is clear, nothing load before.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2127/error2016-2.bmp">error2016-2.bmp</a> <span class="muted">(237394 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11413">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-05-20 12:48 UTC</span>
+  </div>
+  <div class="post-body">Hi, please upload the project for debugging.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11415">
+  <div class="post-head">
+    <span class="post-author">dgpuertas</span>
+    <span class="post-date muted">2015-05-20 16:13 UTC</span>
+  </div>
+  <div class="post-body">I have a lot of odcl, here I show simply one.<br>
+<br>
+I thing that the code is not the problem cause its too simply but......<br>
+<br>
+Thanks<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2130/odcl.lsp">odcl.lsp</a> <span class="muted">(942 bytes)</span></li><li><a href="../attachments/2131/Media.odcl">Media.odcl</a> <span class="muted">(76489 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11416">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-05-20 17:46 UTC</span>
+  </div>
+  <div class="post-body">Hi, call me silly, but (odcl-define_datum "ED-50" "45" nil) works fine, as well as (dcl-Project-Load  "d:\\temp\\Media.odcl" T). One, two three, four times.  What to do for crashing?<br>
+<br>
+<pre class="code"><code>Befehl: (dcl-getversionex)<br>
+"8.0.0.13"</code></pre><br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11425">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-05-22 16:54 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=dgpuertas link=topic=2268.msg11408#msg11408 date=1432115966 wrote:</cite>...I use the last opendcl file (v 8.0.0.14) and the arx is OpenDCL.x64.20.arx (2044kb create jun-22-2014)...</blockquote><br>
+June 2014? Here are my data:<br>
+OpenDCL.x64.20.arx	2.068 k	14.05.2015 21:59	-a--</div>
+</article>
+<article class="post" id="msg11453">
+  <div class="post-head">
+    <span class="post-author">dgpuertas</span>
+    <span class="post-date muted">2015-05-28 08:35 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Sorry for this days outside..<br>
+<br>
+its the versión,<br>
+(dcl-getversionex)<br>
+"8.0.0.7"<br>
+_$ <br>
+<br>
+Where can i download the arx file? Because i download the Opendcl Studio (v8.0.0.13) and i dont know where is the arx file<br>
+<br>
+Thanks and sorry about my english.<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg11454">
+  <div class="post-head">
+    <span class="post-author">dgpuertas</span>
+    <span class="post-date muted">2015-05-28 08:49 UTC</span>
+  </div>
+  <div class="post-body">Its fine, im sorry.<br>
+<br>
+i thougth that download the Opendcl Studio the arx its downloaded too. :-\<br>
+Now i download de Runtime (last versión) and works fine. :D<br>
+<br>
+Thanks and Sorry<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg11455">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-05-28 09:23 UTC</span>
+  </div>
+  <div class="post-body">OpenDCL Studio does also include the runtime. Unless you made some manual copies of the runtime files and loaded the copies, updating OpenDCL Studio should also update the runtime files.</div>
+</article>
+<article class="post" id="msg11511">
+  <div class="post-head">
+    <span class="post-author">CADwiesel</span>
+    <span class="post-date muted">2015-07-22 12:08 UTC</span>
+  </div>
+  <div class="post-body">Hi there,<br>
+<br>
+now i got the same Prob.<br>
+But im shure it's not on the Runtimes part.<br>
+I found out, that the error encoures, when leaving the opendcl box using the ok or cancel Button.<br>
+Debugging the code finding out, that the error encoures, while leaving the odcl box and swiching back to lisp function.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg11519">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-07-26 08:47 UTC</span>
+  </div>
+  <div class="post-body">Hi, CADwiesel, I cannot reproduce the problem.<br>
+Do you have an example to demonstrate?<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

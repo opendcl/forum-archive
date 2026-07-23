@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Newby - trying to create icon menu using slides · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 643</p>
+    <h1>Newby - trying to create icon menu using slides</h1>
+    <p class="meta">Started by The Dark Princess ·
+      2009-03-12 02:07 UTC ·
+      14 replies · SMF topic #643</p>
+<article class="post" id="msg3091">
+  <div class="post-head">
+    <span class="post-author">The Dark Princess</span>
+    <span class="post-date muted">2009-03-12 02:07 UTC</span>
+  </div>
+  <div class="post-body">Some quick queries.  Say i wish to have an icon menu that shows acad slides.  <br>
+<br>
+I've tried to get this bit workingg but I keep getting an ADS eror nil value for SlideImage1<br>
+<br>
+here's a snippet  <br>
+Now I've played with moving the dcl_form_show and restarting autocad etc and I still get the same ads error.  I've tried putting the sld in the same folder and having just the sld filename (with .sld extension) and still get the same error.<br>
+Thanks for any help you can suggest<br>
+<br>
+TDP<br>
+<br>
+<br>
+(dcl_project_load (strcat ARCTDRVESP "\\iconmenu.odcl"))<br>
+(defun c:iconmenu_OnInitialize (/)<br>
+(setq ctr 0)<br>
+(repeat 8<br>
+    (setq sld (arctgv (strcat "icon" (itoa ctr)) menulst)<br>
+              slb (substr sld 1 (vl-string-position (ascii "(") sld))<br>
+              sld (jdd-string-subst "" (list slb ")" "(") sld)<br>
+              slb (strcat ARCTDRVEPREF "Slides\\" slb ".slb")<br>
+     )<br>
+     (princ (strcat "\n" slb  "," sld))<br>
+     (cond<br>
+         ((= ctr 0)<br>
+           (dcl_SLIDEVIEW_LOAD iconmenu_SlideView1 slb sld)<br>
+         )<br>
+         ((= ctr 1)<br>
+           (dcl_SLIDEVIEW_LOAD iconmenu_SlideView2 slb sld)<br>
+         )<br>
+         ((= ctr 2)<br>
+           (dcl_SLIDEVIEW_LOAD iconmenu_SlideView3 slb sld)<br>
+         )<br>
+         ((= ctr 3)<br>
+           (dcl_SLIDEVIEW_LOAD iconmenu_SlideView4 slb sld)<br>
+         )<br>
+             ((= ctr 4)<br>
+           (dcl_SLIDEVIEW_LOAD iconmenu_SlideView5 slb sld)<br>
+         )<br>
+         ((= ctr 5)<br>
+           (dcl_SLIDEVIEW_LOAD iconmenu_SlideView6 slb sld)<br>
+         )<br>
+         ((= ctr 6)<br>
+           (dcl_SLIDEVIEW_LOAD iconmenu_SlideView7 slb sld)<br>
+         )<br>
+         ((= ctr 7)<br>
+           (dcl_SLIDEVIEW_LOAD iconmenu_SlideView8 slb sld)<br>
+         )<br>
+     )<br>
+    (setq ctr (1+ ctr))<br>
+ )<br>
+)<br>
+<br>
+(dcl_Form_Show iconmenu)<br>
+<br>
+(defun c:SlideView1_OnClicked (/)<br>
+  (get_iconmenu_cmds  0)<br>
+)<br>
+(defun c:SlideView2_OnClicked (/)<br>
+  (get_iconmenu_cmds  1)<br>
+)<br>
+(defun c:SlideView3_OnClicked (/)<br>
+  (get_iconmenu_cmds  2)<br>
+)<br>
+(defun c:SlideView4_OnClicked (/)<br>
+  (get_iconmenu_cmds  3)<br>
+)<br>
+(defun c:SlideView5_OnClicked (/)<br>
+  (get_iconmenu_cmds  4)<br>
+)<br>
+(defun c:SlideView6_OnClicked (/)<br>
+  (get_iconmenu_cmds  5)<br>
+)<br>
+(defun c:SlideView7_OnClicked (/)<br>
+  (get_iconmenu_cmds  6)<br>
+)<br>
+(defun c:SlideView8_OnClicked (/)<br>
+  (get_iconmenu_cmds  7)<br>
+)<br>
+<br>
+(defun c:SlideView1_OnDblClicked (/)<br>
+  (get_iconmenu_cmds  0) (dcl_Form_Close  iconmenu)<br>
+)<br>
+(defun c:SlideView2_OnDblClicked (/)<br>
+  (get_iconmenu_cmds  1) (dcl_Form_Close  iconmenu)<br>
+)<br>
+(defun c:SlideView3_OnDblClicked (/)<br>
+  (get_iconmenu_cmds  2) (dcl_Form_Close  iconmenu)<br>
+)<br>
+(defun c:SlideView4_OnDblClicked (/)<br>
+  (get_iconmenu_cmds  3) (dcl_Form_Close  iconmenu)<br>
+)<br>
+(defun c:SlideView5_OnDblClicked (/)<br>
+  (get_iconmenu_cmds  4) (dcl_Form_Close  iconmenu)<br>
+)<br>
+(defun c:SlideView6_OnDblClicked (/)<br>
+  (get_iconmenu_cmds  5) (dcl_Form_Close  iconmenu)<br>
+)<br>
+(defun c:SlideView7_OnDblClicked (/)<br>
+  (get_iconmenu_cmds  6) (dcl_Form_Close  iconmenu)<br>
+)<br>
+(defun c:SlideView8_OnDblClicked (/)<br>
+  (get_iconmenu_cmds  7) (dcl_Form_Close  iconmenu)<br>
+)<br>
+<br>
+(defun c:iconmenu_OnClose (UpperLeftX UpperLeftY /)<br>
+   (dcl_Form_Close iconmenu)<br>
+)<br>
+<br>
+I would prefer to write part of this as:<br>
+<br>
+(setq ctr 0)<br>
+(repeat 8<br>
+    (setq sld (arctgv (strcat "icon" (itoa ctr)) menulst)<br>
+              slb (substr sld 1 (vl-string-position (ascii "(") sld))<br>
+              sld (jdd-string-subst "" (list slb ")" "(") sld)<br>
+              slb (strcat ARCTDRVEPREF "Slides\\" slb ".slb")<br>
+     )<br>
+    (dcl_SLIDEVIEW_LOAD (read (strcat "iconmenu_SlideView" (itoa (setq ctr (1+ ctr))))) slb sld)<br>
+)<br>
+<br>
+can this be done?</div>
+</article>
+<article class="post" id="msg3092">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-12 03:07 UTC</span>
+  </div>
+  <div class="post-body">There is no "SlideImage1" in the code that you posted. If you meant "iconmenu_SlideView1" is NIL, then double check the control name to make sure you have it right (double-click on the slideview control in Studio, select the Load method, then click the "copy-to-clipboard" button to get it straight from the source). In addition, ake sure you're loading the correct .odcl file.<br>
+<br>
+Add an (eval) around your (read) and your proposed code should work fine. You can also specify the control handle via three strings (see <a href="http://www.opendcl.com/HelpFiles/index.php?lang=ENU&amp;page=Reference/DataType/Control.htm" rel="nofollow noopener">{2}</a>). If you use strings, then only the last string changes. Same effect, perhaps slightly simpler than what you have now.</div>
+</article>
+<article class="post" id="msg3110">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-03-12 16:42 UTC</span>
+  </div>
+  <div class="post-body">Here is a snippet I use to populate a bunch of DwgPreview controls with the 3 string approach.<br>
+Just change the (dcl_DwgPreview_LoadDwg) function to (dcl_SLIDEVIEW_LOAD)<br>
+It's much easier the (eval) (read) approach.<br>
+<br>
+<br>
+(setq CtrlCnt 1)<br>
+(repeat 16<br>
+  (dcl_DwgPreview_LoadDwg "BX" "frmBlkLibMain" (strcat "DwgPreview" (itoa CtrlCnt)) "PathTOFile")<br>
+  (setq CtrlCnt (1+ CtrlCnt))<br>
+);_ while<br>
+ <br>
+<br>
+Just an FYI, you can use the DwgPreview control instead of the SlideView if you wish.<br>
+IMO, it's much easier to deal with because you don't have to manage a bunch of intermediate slide files.<br>
+For example, if some of your blocks or DWG's change, you have to recreate your slides again. Also, when creating the slides, the aspect ratio of Acad's edit window effects the slides. So they'll appear to be zoomed differently.<br>
+On the other hand, if you use the DwgPreview, all you have to do is change your DWG file &amp; OpenDCL will display the thumbnail preview image for it.<br>
+<br>
+That's just my 2 cents, if you're converting some old DCL code &amp; have all your slides already made &amp; none of them are going to change, then yes the SlideView probably is the way to go.<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3119">
+  <div class="post-head">
+    <span class="post-author">The Dark Princess</span>
+    <span class="post-date muted">2009-03-13 01:12 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the suggestions.  I had the darned thing working and then played with some of the settinggs of the slide tiles. I'm using 5.22 and am wondering if I should go back to 4.<br>
+<br>
+The current odcl and lsip crashes acad 2009 and acad 2008 without a pause.  It freezes acad 2004 and shows the 10 slides on the 2nd row and only the last two on the top.  I have a feeling that my odcl is futzed.<br>
+<br>
+I have 3,000 slid files and am not really interested in pushing all that into another format if it can be avoided.<br>
+<br>
+The total code is pasted below, the snippets are first.  The 20 slides are arranged in order in the project dcl and I have played with thing adjusting the use bottom/use left from right numbers and can't get it to not crash acad.<br>
+<br>
+TDP<br>
+<br>
+<br>
+(defun resize_reposition_slides (/  wi  hi bd x1 y1 wp hp j ctr)<br>
+    (setq wp (dcl_Control_Getwidth iconmenu)<br>
+              bd 2<br>
+              wi (fix (/ (- wp (* (1+ ICONCOLS) bd)) ICONCOLS))<br>
+              hi (fix (* wi 0.75))<br>
+              hp (+  20 (*  (1+ ICONCOLS)  bd) (* ICONROWS hi))<br>
+              x1 0<br>
+              y1 0<br>
+              j 0<br>
+              ctr 0<br>
+     )<br>
+    (dcl_Control_SetHeight  iconmenu (fix hp))<br>
+      (repeat 1<br>
+          (setq x1 bd<br>
+                   y1 (+ bd (* j (+ bd hi)))<br>
+         )<br>
+          (repeat ICONCOLS<br>
+              (setq ctrl (eval (read (strcat "SlideView" (itoa ctr)))))<br>
+              (dcl_Control_SetUseRightFromRight  ctrl 2);  i've turned this on and off to no avail<br>
+              (dcl_Control_SetUseBottomFromBottom ctrl 0)  i've turned this on and off to no avail<br>
+              (dcl_Control_SetLeft ctrl (fix x1))<br>
+              (dcl_Control_SetTop ctrl (fix y1))<br>
+              (dcl_Control_SetWidth  ctrl (fix wi))<br>
+              (dcl_Control_SetHeight ctrl (fix hi))<br>
+             ; (dcl_Control_SetPos ctrl (fix x1) (fix y1) (fix wi) (fix hi))<br>
+<br>
+             (setq x1 (+ x1 bd wi)<br>
+                       ctr (1+ ctr)<br>
+              )<br>
+           )<br>
+          (setq j (1+ j))<br>
+     )<br>
+)<br>
+<br>
+(progn<br>
+<br>
+(defun get_iconmenu_cmds ( n /)<br>
+  (setq cmds (arctgv (strcat "cicon" (itoa (+ n (* ICONROWS ICONCOLS pageno)))) menulst))<br>
+)<br>
+(setdetailvars ARCTANNOVAR)<br>
+(setq iconmenuname "SYMBOLS-AIA")<br>
+  (setq pageno 0 <br>
+            iconno nil<br>
+    )<br>
+  (if (= (type iconmenuname) 'LIST)<br>
+      (setq mode1 (reducepathtoname (cadr iconmenuname))<br>
+               iconmenuname (car iconmenuname)<br>
+      );   this means that the icon is preselected beforehand<br>
+     (if (setq temp (cdf_list (arctgv iconmenuname DSAISOFTMENUPICK)))<br>
+         (setq pageno (atoi (car temp))<br>
+                  iconno (cadr temp)<br>
+                  mode1 ""<br>
+         )<br>
+       (setq mode1 nil)<br>
+    )<br>
+  )<br>
+  (if (setq ret (arctgv iconmenuname DSAISOFTMENU))<br>
+      (progn<br>
+          (setq ret (cdf_list (list ret "|"))<br>
+                lbl (strcat "DSAISoft   " (substr (car ret) 2 (- (strlen (car ret)) 2)))<br>
+                menulst nil<br>
+                ctr 0<br>
+                numpages (/ (float (length (cdr ret))) (* ICONROWS ICONCOLS))<br>
+                numpages (if (/= (fix numpages) numpages)(1+ (fix numpages)) (fix numpages))<br>
+          )<br>
+          (foreach x (cdr ret)<br>
+             (setq str1 (strcat "icon" (itoa ctr))<br>
+                   ctr (1+ ctr)<br>
+             )<br>
+             (if (wcmatch (strcase x) "*BLANK*")<br>
+                 (setq menulst (cons (cons str1 "") menulst))<br>
+                 (progn<br>
+                     (setq y (substr x 2)<br>
+                              y (cond<br>
+                                   ((vl-string-position (ascii ",") y)<br>
+                                     (strcat (substr y 1 (vl-string-position (ascii ",") y)) ")")<br>
+                                    )<br>
+                                   (T<br>
+                                      (strcat (substr y 1 (vl-string-position (ascii "]") y)) ")")<br>
+                                   )<br>
+                                )<br>
+                          menulst (cons (cons str1 y) menulst)<br>
+                          y (cond<br>
+                                ((and (setq x1 (vl-string-search "(setq ARCTBLKINFO \"" x))<br>
+                                         (vl-string-position (ascii "\"") x)<br>
+                                         (setq x1 (substr x (+ (vl-string-position (ascii "\"") x) 2)))<br>
+                                         (vl-string-position (ascii "\"") x1)<br>
+                                         (setq x1 (substr x1 1 (vl-string-position (ascii "\"") x1)))<br>
+                                         (setq x1 (nth 3 (cdf_list x1)))<br>
+                                  )<br>
+                                  x1<br>
+                                )<br>
+                                ((vl-string-position (ascii ",") x)<br>
+                                    (setq y (substr x (+ (vl-string-position (ascii ",") x) 2)))<br>
+                                    (substr y 1 (vl-string-position (ascii ")") y))<br>
+                                )<br>
+                                (T<br>
+                                  ""<br>
+                                )<br>
+                           )   <br>
+                          menulst (cons (cons (strcat "n" str1) y) menulst)<br>
+                          y (substr x (+ (vl-string-position (ascii "]") x) 2))<br>
+                          menulst (cons (cons (strcat "c" str1) y) menulst)<br>
+                  )<br>
+                  (if (and (zeros mode1)(not iconno))<br>
+                       (if (wcmatch (strcase y) (strcase (strcat "*" mode1 "*")))<br>
+                           (setq iconno str1)<br>
+                        )<br>
+                   )<br>
+             ); progn<br>
+	     )<br>
+          )<br>
+        );   progn<br>
+        (progn<br>
+           (princ (strcat "\nMenu Name " iconmenuname " not Found!"))<br>
+           (exit)<br>
+        )<br>
+      )<br>
+(defun get_slide_lib ( i /)<br>
+    (substr  (arctgv (strcat "icon" (itoa i)) menulst) 1 (vl-string-position (ascii "(") (arctgv (strcat "icon" (itoa i)) menulst)))<br>
+)<br>
+(defun get_slide ( i /)<br>
+        (jdd-string-subst "" (list (get_slide_lib i) ")" "(") (arctgv (strcat "icon" (itoa i)) menulst))<br>
+)<br>
+(defun resize_reposition_slides (/ ); wi  hi bd x1 y1 wp hp j ctr)<br>
+    (setq wp (dcl_Control_Getwidth iconmenu)<br>
+              bd 2<br>
+              wi (fix (/ (- wp (* (1+ ICONCOLS) bd)) ICONCOLS))<br>
+              hi (fix (* wi 0.75))<br>
+              hp (+  20 (*  (1+ ICONCOLS)  bd) (* ICONROWS hi))<br>
+              x1 0<br>
+              y1 0<br>
+              j 0<br>
+              ctr 0<br>
+     )<br>
+    (dcl_Control_SetHeight  iconmenu (fix hp))<br>
+      (repeat 1<br>
+          (setq x1 bd<br>
+                   y1 (+ bd (* j (+ bd hi)))<br>
+         )<br>
+          (repeat ICONCOLS<br>
+              (setq ctrl (eval (read (strcat "SlideView" (itoa ctr)))))<br>
+              (dcl_Control_SetUseRightFromRight  ctrl 2)<br>
+              (dcl_Control_SetUseBottomFromBottom ctrl 0)<br>
+              (dcl_Control_SetLeft ctrl (fix x1))<br>
+              (dcl_Control_SetTop ctrl (fix y1))<br>
+              (dcl_Control_SetWidth  ctrl (fix wi))<br>
+              (dcl_Control_SetHeight ctrl (fix hi))<br>
+             ; (dcl_Control_SetPos ctrl (fix x1) (fix y1) (fix wi) (fix hi))<br>
+<br>
+             (setq x1 (+ x1 bd wi)<br>
+                       ctr (1+ ctr)<br>
+              )<br>
+           )<br>
+          (setq j (1+ j))<br>
+     )<br>
+)<br>
+(dcl_project_load (strcat ARCTDRVESP "\\iconmenu.odcl"))<br>
+<br>
+(defun c:iconmenu_OnInitialize (/ sld slb ctr)<br>
+(resize_reposition_slides)<br>
+(setq ctr 0)<br>
+(repeat (* 2 ICONCOLS)<br>
+    (setq sld (get_slide ctr)<br>
+              slb (strcat ARCTDRVEPREF "Slides\\" (get_slide_lib ctr) ".slb")<br>
+     )<br>
+    (if (and (zeros sld) (zeros slb))<br>
+         (dcl_slideview_load (eval (read (strcat "SlideView" (itoa ctr)))) slb sld)<br>
+    )<br>
+   ;(eval (read (strcat "(defun c:SlideView" (itoa ctr)"_OnRightClick (/)(princ "  (itoa ctr) "))")))<br>
+   (setq ctr (1+ ctr))<br>
+)<br>
+<br>
+)<br>
+;(setq ctr 0);<br>
+;(repeat 20<br>
+;(eval (read (strcat "(defun c:SlideView" (itoa ctr)"_OnRightClick (/)(princ "  (itoa ctr) "))")))<br>
+;   (setq ctr (1+ ctr))<br>
+;)<br>
+(defun c:SlideView0_OnDblClicked (/)<br>
+  (get_iconmenu_cmds  0) (dcl_Form_Close  iconmenu)<br>
+)<br>
+(defun c:SlideView1_OnDblClicked (/)<br>
+  (get_iconmenu_cmds  1) (dcl_Form_Close  iconmenu)<br>
+)<br>
+(defun c:SlideView2_OnDblClicked (/)<br>
+  (get_iconmenu_cmds  2) (dcl_Form_Close  iconmenu)<br>
+)<br>
+(defun c:SlideView3_OnDblClicked (/)<br>
+  (get_iconmenu_cmds  3) (dcl_Form_Close  iconmenu)<br>
+)<br>
+(defun c:SlideView4_OnDblClicked (/)<br>
+  (get_iconmenu_cmds  4) (dcl_Form_Close  iconmenu)<br>
+)<br>
+(defun c:SlideView5_OnDblClicked (/)<br>
+  (get_iconmenu_cmds  5) (dcl_Form_Close  iconmenu)<br>
+)<br>
+(defun c:SlideView6_OnDblClicked (/)<br>
+  (get_iconmenu_cmds  6) (dcl_Form_Close  iconmenu)<br>
+)<br>
+(defun c:SlideView7_OnDblClicked (/)<br>
+  (get_iconmenu_cmds  7) (dcl_Form_Close  iconmenu)<br>
+)<br>
+(defun c:SlideView8_OnDblClicked (/)<br>
+  (get_iconmenu_cmds  8) (dcl_Form_Close  iconmenu)<br>
+)<br>
+(defun c:SlideView9_OnDblClicked (/)<br>
+  (get_iconmenu_cmds  9) (dcl_Form_Close  iconmenu)<br>
+)<br>
+<br>
+(defun c:SlideView0_OnClicked (/)<br>
+  (get_iconmenu_cmds  0)<br>
+)<br>
+(defun c:SlideView1_OnClicked (/)<br>
+  (get_iconmenu_cmds  1)<br>
+)<br>
+(defun c:SlideView2_OnClicked (/)<br>
+  (get_iconmenu_cmds  2)<br>
+)<br>
+(defun c:SlideView3_OnClicked (/)<br>
+  (get_iconmenu_cmds  3)<br>
+)<br>
+(defun c:SlideView4_OnClicked (/)<br>
+  (get_iconmenu_cmds  4)<br>
+)<br>
+(defun c:SlideView5_OnClicked (/)<br>
+  (get_iconmenu_cmds  5)<br>
+)<br>
+(defun c:SlideView6_OnClicked (/)<br>
+  (get_iconmenu_cmds  6)<br>
+)<br>
+(defun c:SlideView7_OnClicked (/)<br>
+  (get_iconmenu_cmds  7)<br>
+)<br>
+(defun c:SlideView8_OnClicked (/)<br>
+  (get_iconmenu_cmds  8)<br>
+)<br>
+(defun c:SlideView9_OnClicked (/)<br>
+  (get_iconmenu_cmds  9)<br>
+)<br>
+(defun c:iconmenu_OnClose (UpperLeftX UpperLeftY /)<br>
+   (dcl_Form_Close iconmenu)<br>
+)<br>
+<br>
+<br>
+(defun c:SlideView0_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+(defun c:SlideView1_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+(defun c:SlideView2_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+(defun c:SlideView3_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+(defun c:SlideView4_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+(defun c:SlideView5_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+(defun c:SlideView6_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+(defun c:SlideView7_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+(defun c:SlideView8_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+(defun c:SlideView9_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+<br>
+(defun c:SlideView10_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+(defun c:SlideView11_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+(defun c:SlideView12_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+(defun c:SlideView13_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+(defun c:SlideView14_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+(defun c:SlideView15_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+(defun c:SlideView16_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+(defun c:SlideView17_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+(defun c:SlideView18_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+(defun c:SlideView19_OnRightClick (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:SlideView9_OnRightClick" "To do")<br>
+)<br>
+(dcl_Form_Show iconmenu)<br>
+)<br>
+<br>
+<br>
+<em>I modified your post by placing the CODE tags around your code, to remove the random happy faces. - BazzaCAD, Barry</em></div>
+</article>
+<article class="post" id="msg3121">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-13 02:28 UTC</span>
+  </div>
+  <div class="post-body">Can you email a zip with all the files I need to reproduce the crash? I'd like to get it fixed before we officially release OpenDCL 5.<br>
+<a href="http://mailto:owenw@manusoft.com" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg3122">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-03-13 03:33 UTC</span>
+  </div>
+  <div class="post-body">Wow looks like some cool code. I'd love to see you ODCL project file too.<br>
+Are you converting an old ObjectDCL file, or starting from scratch?</div>
+</article>
+<article class="post" id="msg3134">
+  <div class="post-head">
+    <span class="post-author">The Dark Princess</span>
+    <span class="post-date muted">2009-03-13 15:06 UTC</span>
+  </div>
+  <div class="post-body">Hey, thanks for the quick replies. I'm at hoe today and have things to attend to so i won't be doing much coding.  When adesk introduced the cui I realised that I would have more sissues with our huge block library so i decided to write my own version of the slide menu system in lisp and dcl.  this way I wouldn;t have to rewrite the huge .mnu file with 2900+ blocks.  I ended up with basically what I wanted - a 4 row x 10 slide system with paging (infinite loop paging) a back button etc and all the functionality. I aded the ability to change the number of rows, columns and image size on the fly by simply rewriting the dcl code.  Now in an attempt to learn odcl I'm trying to reproduce this dialog in odcl. So much of the code is dealing with parsing the instructions within my version of the .mnu file.  I also have a dcl which allows me to add blocks, move them around, batch generate slides and update any of the slide menus.<br>
+<br>
+Pretty fun project and it all works flawlessly.  I'd like to have the resizing thing in a more classic way.</div>
+</article>
+<article class="post" id="msg3136">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-13 15:13 UTC</span>
+  </div>
+  <div class="post-body">I took a look at the files you emailed, but the lisp appears to be corrupted. I tried to clean it up, and finally got it loading without error, but it still crashes as soon as I run it. Can you have another look and see if you can send it again?</div>
+</article>
+<article class="post" id="msg3137">
+  <div class="post-head">
+    <span class="post-author">The Dark Princess</span>
+    <span class="post-date muted">2009-03-13 16:15 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+<br>
+<br>
+I need to rework it and get all the library funcs and variables set for you.  Would you email the stuff to my home address?<br>
+<br>
+jamieduncan@velcom.ca<br>
+<br>
+Thanks<br>
+<br>
+TDP</div>
+</article>
+<article class="post" id="msg3168">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-15 14:55 UTC</span>
+  </div>
+  <div class="post-body">I scrapped the code and just loaded each slide into a slideview manually. Sure enough, one of them caused AutoCAD to crash. I found and fixed a buffer overrun bug that was triggered by that slide, now they all display without any errors. Hopefully that was the only bug.</div>
+</article>
+<article class="post" id="msg3183">
+  <div class="post-head">
+    <span class="post-author">The Dark Princess</span>
+    <span class="post-date muted">2009-03-16 17:57 UTC</span>
+  </div>
+  <div class="post-body">owen<br>
+<br>
+that's great.  I suppose I have to wait for that bug to be fixed?<br>
+<br>
+<br>
+Jamie</div>
+</article>
+<article class="post" id="msg3184">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-16 18:09 UTC</span>
+  </div>
+  <div class="post-body">Yes, but not long. I'll upload RC3 later today.</div>
+</article>
+<article class="post" id="msg3203">
+  <div class="post-head">
+    <span class="post-author">The Dark Princess</span>
+    <span class="post-date muted">2009-03-17 16:14 UTC</span>
+  </div>
+  <div class="post-body">Thnx Owen<br>
+<br>
+I have a couple of much lkarger slides - do you want to test the buffer overrun with them?<br>
+<br>
+TDP</div>
+</article>
+<article class="post" id="msg3205">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-17 16:41 UTC</span>
+  </div>
+  <div class="post-body">The buffer overrun I found is fixed, but of course there could be more bugs elsewhere in the code. Please test your slides on RC4 and let me know if you encounter any problems. If you do, I'll have a look.</div>
+</article>
+<article class="post" id="msg3254">
+  <div class="post-head">
+    <span class="post-author">The Dark Princess</span>
+    <span class="post-date muted">2009-03-19 10:46 UTC</span>
+  </div>
+  <div class="post-body">I'll check every darn slide I have!<br>
+<br>
+:-)<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

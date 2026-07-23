@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Font dropdown not reading an SHX font · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2066</p>
+    <h1>Font dropdown not reading an SHX font</h1>
+    <p class="meta">Started by honkinberry ·
+      2013-11-29 20:49 UTC ·
+      4 replies · SMF topic #2066</p>
+<article class="post" id="msg10191">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2013-11-29 20:49 UTC</span>
+  </div>
+  <div class="post-body">I use a hidden Font dropdown box to read a list of available SHX fonts installed.<br>
+Works pretty sweet, except for this attached bugger!  It will show up in the AutoCAD Text Styles dialog, but not in the OpenDCL Font dropdown.  Any idea why?<br>
+<br>
+As always, thanks for such an incredible product.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg10350">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2014-01-13 21:54 UTC</span>
+  </div>
+  <div class="post-body">And here's another one.<br>
+Very odd in that just like the other one, it shows up for use in the AutoCAD Text Styles dialog, but the OpenDCL Font dropdown doesn't include it.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg10351">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-15 02:33 UTC</span>
+  </div>
+  <div class="post-body">The reason is that the files are shape files, not font files. It looks like AutoCAD lists shape files if the shapes can be interpreted as characters like a regular font file. Not all shape files can work as character fonts (for example, genltshp.shx is *not* listed in the STYLE dropdown even though it is also a shape file.) Unfortunately I don't see any easy way to distinguish without at least decompiling the .shx file. You can always open the .shx file in Notepad and change <code>AutoCAD-86 shapes 1.0</code> to <code>AutoCAD-86 unifont 1.0</code>, then it will work the same everywhere.</div>
+</article>
+<article class="post" id="msg10352">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2014-01-15 18:06 UTC</span>
+  </div>
+  <div class="post-body">Ah I see, there you go, thank you for that!<br>
+I have not had any luck in just replacing the header.  In reading up on it, and trying to manually decompile and recompile there, it seems there is a bit of unicode conversion necessary (adjusting the byte count whenever a 7 code is used, whatever that means!).<br>
+And then I'm finding that a good number of these legacy SHX files sitting around are all these old shape files -- it's far more widespread than just these two isolated incidents.  Like these oft-used Architect style fonts (http://cadtrainerguy.com/how-i-work/downloads-for-autocad/), and on and on, it seems it's just far too likely that people have some crazy old SHX file that's been around since the firm's inception.<br>
+So... easier solution -- I'm just using vl-directory-files to manually grab the SHX files in the support folders, and manually add them.<br>
+<br>
+Thanks again!<br>
+<br>
+--J</div>
+</article>
+<article class="post" id="msg10353">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-15 19:07 UTC</span>
+  </div>
+  <div class="post-body">I'm glad that you've found a suitable workaround. Now that we've solved the mystery, please delete the attachments on your first two posts in this thread, as both appear to be posted without permission of the copyright holder.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

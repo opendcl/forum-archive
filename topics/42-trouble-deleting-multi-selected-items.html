@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trouble deleting multi-selected items · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 42</p>
+    <h1>Trouble deleting multi-selected items</h1>
+    <p class="meta">Started by tlindell ·
+      2007-08-15 00:50 UTC ·
+      6 replies · SMF topic #42</p>
+<article class="post" id="msg160">
+  <div class="post-head">
+    <span class="post-author">tlindell</span>
+    <span class="post-date muted">2007-08-15 00:50 UTC</span>
+  </div>
+  <div class="post-body">I can't figure out why this won't work.  I've set up a simple example of what I'm trying to do in the attached.  Basically, I want to select a bunch of items, click the arrow button and have them "moved" to the other listbox.<br>
+<br>
+Adding the items to the second box is working great, the problem is removing all the selecting ones from the first box.  Only half of the selected items are being removed.  I've even tried doing them individually through a loop with the same results.  Works great if all I'm selecting is one item.  (4.0SP1)<br>
+<br>
+???<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg162">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-08-15 03:03 UTC</span>
+  </div>
+  <div class="post-body">Perhaps try something like this ..<br>
+I imagine there is a problem when incrementing the item index and deleting items at the same time<br>
+ .. reversing the index list and incrementing from the bottom up seems to work ..<br>
+<br>
+// kwb<br>
+<pre class="code"><code><br>
+  (DEFUN c:ListTest_ListTest_Add_OnClicked (/ rValue)<br>
+      (SETQ rValue (DCL_LISTVIEW_GETSELECTEDNTHS ListTest_ListTest_ListView1))<br>
+      (DCL_LISTVIEW_SETCURSEL ListTest_ListTest_ListView1 -1)<br>
+      (FOREACH rv rValue<br>
+          (DCL_LISTVIEW_ADDITEM ListTest_ListTest_ListView2<br>
+                                (DCL_LISTVIEW_GETITEMTEXT ListTest_ListTest_ListView1 rv)<br>
+          )<br>
+      )<br>
+      (IF rValue<br>
+          (DCL_LISTVIEW_DELETEITEMS ListTest_ListTest_ListView1 (reverse rValue))<br>
+          ;;(DCL_LISTVIEW_DELETEITEMS ListTest_ListTest_ListView1  rValue)<br>
+      )<br>
+  )</code></pre></div>
+</article>
+<article class="post" id="msg163">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-08-15 03:11 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+... also. I'm getting errors when loading and unloading the odcl.<br>
+<br>
+I haven't played with using ,lsp files as .odcl's and am not familiar with the traps in doing so. <br>
+are you seeing those ??<br>
+<br>
+if so, perhaps Owen needs to see the code and run it through the debugger ..</div>
+</article>
+<article class="post" id="msg164">
+  <div class="post-head">
+    <span class="post-author">tlindell</span>
+    <span class="post-date muted">2007-08-15 03:29 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=42.msg162#msg162 date=1187146983 wrote:</cite><br>
+Perhaps try something like this ..<br>
+I imagine there is a problem when incrementing the item index and deleting items at the same time<br>
+ .. reversing the index list and incrementing from the bottom up seems to work ..<br>
+<br>
+</blockquote><br>
+<br>
+That sounds like a winning strategy.  I'll give it a try tomorrow when back in the office.<br>
+<br>
+I just put this example together really fast today, but it is handled the same as my applicaiton is this is going for.  The only errors I sometimes get are two .arx unhandled excemption dialogs when I close AutoCAD while the Editor had concurrently been open and some changes were saved to the odcl/lsp file.  I don't know of any traps beyond what I have in the example code, any pointers would be greatly appreciated.</div>
+</article>
+<article class="post" id="msg167">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2007-08-15 11:54 UTC</span>
+  </div>
+  <div class="post-body">Kerry, this is what Owen instructed me to do - in a thread over at sourceforge I think:<br>
+<br>
+(if (not (vl-bb-ref 'jbVmanager))<br>
+  (vl-bb-set<br>
+    'jbVmanager<br>
+    (dcl_project_import<br>
+      (strcat<br>
+	"YWt6Aw . . .")))) &lt;&lt; this odcl "strings" go here.<br>
+<br>
+I havn't had any problems importing the Forms this way - it simply rocks!  A true AutoLISP application: one .fas / .vlx file for the Lisp code and the form code!  Hope this helps.</div>
+</article>
+<article class="post" id="msg169">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-08-15 16:14 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=42.msg163#msg163 date=1187147474 wrote:</cite><br>
+... also. I'm getting errors when loading and unloading the odcl.<br>
+</blockquote><br>
+<br>
+There are several problems here. The default project key name stored in the project is "ListTest", so calling (dcl_Project_Load "ListTest_ODCL.lsp") a second time causes an error because of a design flaw. When no project key is specified in the call to (dcl_Project_Load), it should open the project file and get the default key, *then* check whether that project is already loaded with the default key, and return no error if it is. Instead, the code is looking for a project with a key equal to the filename base ("ListTest_ODCL" in this case), and upon not finding one with that key, *then* trying to load the project file and failing because of a name collision.<br>
+<br>
+The other problem is that the code passes the filename instead of the project key name to (dcl_project_unload), which results in failure to unload the project.  The argument should be the project key as specified when the project was loaded (or as defined in the project file if none was speified). In this case, changing the code to (dcl_Project_Unload "ListTest") will resolve that problem.<br>
+<br>
+In addition, there is a superfluous call to (dcl_unload_dialog) that should not be there.</div>
+</article>
+<article class="post" id="msg201">
+  <div class="post-head">
+    <span class="post-author">tlindell</span>
+    <span class="post-date muted">2007-08-18 00:38 UTC</span>
+  </div>
+  <div class="post-body">Thank you for the correction, Owen.  I think I have caught these now in my current project.  Thanks again for everyone's help on this one.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

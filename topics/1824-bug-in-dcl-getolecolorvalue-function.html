@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bug in dcl_getolecolorvalue function! · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1824</p>
+    <h1>Bug in dcl_getolecolorvalue function!</h1>
+    <p class="meta">Started by kenkrupa ·
+      2012-06-29 23:29 UTC ·
+      2 replies · SMF topic #1824</p>
+<article class="post" id="msg8955">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2012-06-29 23:29 UTC</span>
+  </div>
+  <div class="post-body">The dcl_getolecolorvalue function is defective! It seems that if the first of the three integers is from 220 thru 239, the function bombs!<br>
+<br>
+<span style="color:green">Command: (dcl_getolecolorvalue (list <strong>219</strong> 184 120))<br>
+7911643</span><br>
+<br>
+<span style="color:red">Command: (dcl_getolecolorvalue (list <strong>220</strong> 184 120))<br>
+Application ERROR: Bad argument type<br>
+; error: ADS request error<br>
+<br>
+Command: (dcl_getolecolorvalue (list <strong>239</strong> 184 120))<br>
+Application ERROR: Bad argument type<br>
+; error: ADS request error</span><br>
+<br>
+<span style="color:green">Command: (dcl_getolecolorvalue (list <strong>240</strong> 184 120))<br>
+7911664</span><br>
+<br>
+(v 7.0.0.4)</div>
+</article>
+<article class="post" id="msg8956">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-06-30 02:32 UTC</span>
+  </div>
+  <div class="post-body">Convert the first argument to a float to work around the problem: (dcl_getolecolorvalue '(220.0 184 120)) or (dcl_getolecolorvalue (list (float 220) 184 120)).</div>
+</article>
+<article class="post" id="msg8957">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2012-06-30 14:21 UTC</span>
+  </div>
+  <div class="post-body">OK - that works - thank you Owen.<br>
+<br>
+Since I have the color as a list of three strings, it seems I can simply use (mapcar 'atof clr) instead of (mapcar 'atoi clr). <br>
+No problem having them all reals, as far as I can tell.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

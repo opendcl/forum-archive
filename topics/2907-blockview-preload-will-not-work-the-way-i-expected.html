@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BlockView-PreLoad will not work the way I expected · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2907</p>
+    <h1>BlockView-PreLoad will not work the way I expected</h1>
+    <p class="meta">Started by glfiedler ·
+      2024-01-29 22:34 UTC ·
+      1 replies · SMF topic #2907</p>
+<article class="post" id="msg13962">
+  <div class="post-head">
+    <span class="post-author">glfiedler</span>
+    <span class="post-date muted">2024-01-29 22:34 UTC</span>
+  </div>
+  <div class="post-body">Greetings, <br>
+I run AutoCAD 2022 and the latest version of OpenDCL.<br>
+<br>
+I have created a Modal form with listbox and blockview controls.  What I want to do is select from a list of blocks and show the block in the blockview control.  That seems really straight forward.<br>
+<br>
+I have blocks in what I call a library drawing. (setq libdwg "C:\\Users\\jerry\\Drawings\\MISC_BLOCKS\\ROUTER.dwg").  The OpenDCL help (which is very good and usually helps a lot) leads me to believe that (dcl-BlockView-PreLoadDwg RouterBitsDB/Form1/BlockView1 libdwg) will allow me to show the blocks in the blockview control.<br>
+<br>
+It does not work like that and I really need some ideas. The following two cases will show you what happens:<br>
+<br>
+1) With libdwg OPEN and as the ACTIVE drawing and the DCL routine does NOT contain the PreLoad command the form does EXACTLY what I want.  That is, I click on an item in the list and the block is shown.<br>
+<br>
+2) With libdwg CLOSED and another drawing active and the DCL routine DOES contain the PreLoad command the form opens and the listbox works fine but nothing is displayed in the blockview control.<br>
+<br>
+I am obviously doing something wrong and my knowledge of OpenDCL is limited.  Although I have been programming for decades I have only just started to learn OpenDCL.<br>
+Reviewing the two tests, above, it would appear that I am calling out the library drawing incorrectly and it is simply defaulting to the active drawing.<br>
+<br>
+Thank you for taking the time to read this post.<br>
+Regards,<br>
+Jerry<br>
+</div>
+</article>
+<article class="post" id="msg13964">
+  <div class="post-head">
+    <span class="post-author">glfiedler</span>
+    <span class="post-date muted">2024-01-29 23:39 UTC</span>
+  </div>
+  <div class="post-body">Okay I got it working.  I was using (dcl-BlockView-Clear RouterBitsDB/Form1/BlockView1) to clear the view.  I thought that might be a good idea.  The OpenDCL help states "This method resets the control and clears the display."  I had no idea what "resets" was implying but it apparently resets i.e. deletes the PreLoad file reference.  I do not really need to clear the view so by eliminating the "clear" command all is well.<br>
+Learn something new every day!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

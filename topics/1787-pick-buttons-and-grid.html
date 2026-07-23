@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pick Buttons and Grid · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1787</p>
+    <h1>Pick Buttons and Grid</h1>
+    <p class="meta">Started by Emiliano ·
+      2012-04-18 11:25 UTC ·
+      7 replies · SMF topic #1787</p>
+<article class="post" id="msg8780">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-04-18 11:25 UTC</span>
+  </div>
+  <div class="post-body">Hello everyone,<br>
+is the first time I use the GRID object and I have some questions:<br>
+<br>
+1. I enter into a cell, a distance. I'd like to enter the value directly or click on Pick Buttons launch a function that allows you to select two points on the AutoCAD screen. Unfortunately, if active style Pick Buttons, on the cell, the user can not enter the value directly, but is obligated to press the button: You can enable the same cell, the double type of input?<br>
+<br>
+2. Alternatively I thought about putting two columns, one for the manual insertion of value and the other with a Pick Buttons allows you to override the value of the first column selecting two points on the AutoCAD screen. This system works but I do not like it because, the Pick Buttons are hidden and appear only when you click on the cell. you can make the Pick Buttons always visible even for cells that are not current?<br>
+<br>
+3. You can add a colored background to some cells or some rows or some columns?<br>
+<br>
+Thanks in advance</div>
+</article>
+<article class="post" id="msg8781">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-04-18 13:06 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+I solved that by using an pick-icon instead of a button in the second column. Picking the icon will force the user to select a distance in the drawing.<br>
+<br>
+No, you can't set a background color to several cells.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8783">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-04-18 14:10 UTC</span>
+  </div>
+  <div class="post-body">Hello Fred,<br>
+thanks for the answer.<br>
+<br>
+You mean I have to set the image of the Pick Button in the "Cell Icon"? See attached picture.<br>
+That cell style, I set? I tried with "6-String" and "8-Integer" but when the user clicks the image it is ruined by an indication of the current cell ...<br>
+<br>
+Then I wrote this function<br>
+<br>
+(defun c:App_FormName_Grid1_OnBeginLabelEdit (Row Column /)<br>
+  (if (= Column 10)<br>
+    (progn<br>
+      (setq dist (getdist "\nInsert lenght: "))(princ "\n")<br>
+      (if (/= dist nil)<br>
+        (progn<br>
+          (setq dist (rtos dist 2 2))<br>
+          (dcl_Grid_SetCellText App_FormName_Grid1 Row 9 dist)<br>
+          (dcl_Grid_SetCurCell App_FormName_Grid1 Row 9)<br>
+        )<br>
+      )<br>
+    )<br>
+  )<br>
+)<br>
+<br>
+<br>
+<br>
+Let me know if I understand correctly...<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1720/Cattura.PNG">Cattura.PNG</a> <span class="muted">(29065 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8784">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-04-18 15:11 UTC</span>
+  </div>
+  <div class="post-body">I managed to solve my problem by setting the style of the cell to "3-Switchable Image" and setting the correct icons.<br>
+<br>
+Now I have another problem, corny, but I could not solve:<br>
+- You can set a cell to entering real numbers, with the comma?  ???<br>
+<br>
+Thanks in advance</div>
+</article>
+<article class="post" id="msg8785">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-04-18 18:50 UTC</span>
+  </div>
+  <div class="post-body">Hi, no, OpenDCL only supports the style like AutoCAD is using: point as decimal delimiter.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8786">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-04-19 06:40 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the reply.<br>
+<br>
+I expressed myself badly ....<br>
+I meant real number: point or comma is indifferent.<br>
+<br>
+I tried with:<br>
+- 8-Integer: but properly does not accept decimal<br>
+- 6-String: I put the decimals, but I do not like because it allows the inclusion of letters<br>
+- 7-Angle Unit: works well, but if the user inserts the letters appears the error message "Invalid value of the angle": the measure is a distance and then this error is not good.<br>
+<br>
+There is a style that allows the inclusion of real numbers?<br>
+or do I have to use 6-String and verify the correctness of the input through code?  :'(</div>
+</article>
+<article class="post" id="msg8788">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-04-19 10:33 UTC</span>
+  </div>
+  <div class="post-body">Hi, try style 9 for Units. I've translated it in the DEU release to decimals.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8789">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-04-19 11:02 UTC</span>
+  </div>
+  <div class="post-body">Perfect!<br>
+thanks<br>
+<br>
+I'm sorry but I had not seen :-(</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

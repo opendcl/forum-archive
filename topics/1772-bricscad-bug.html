@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bricscad bug · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1772</p>
+    <h1>Bricscad bug</h1>
+    <p class="meta">Started by honkinberry ·
+      2012-03-12 18:09 UTC ·
+      4 replies · SMF topic #1772</p>
+<article class="post" id="msg8696">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2012-03-12 18:09 UTC</span>
+  </div>
+  <div class="post-body">I have something that is erroring only on Bricscad, of course not sure if this is on your end or theirs, maybe you can point me in the right direction.<br>
+<br>
+Basically very simply, I am spawning another Modal dialog box from the first one, yet when I come back to close the first one, I am getting an error.  It seems it could be because I am using the same names for my local callback functions, but that should be acceptable I would think, yes?<br>
+<br>
+Anyway, test code attached.<br>
+<br>
+From Test function, click the button to Spawn the other dialog.  Click Ok to close, then click Ok to close the first dialog.  You should get the following error:<br>
+<br>
+; ----- LISP : Call Stack -----<br>
+; ...C:TEST<br>
+; .....DCL_FORM_SHOW &lt;&lt;--<br>
+;<br>
+; ----- Error around expression -----<br>
+(AL_LEAVEDEFUN *RES*)<br>
+;<br>
+; error : bad argument type &lt;#&lt; #x3b @48e6be5e&gt;&gt; ; expected  at <br>
+;<br>
+; error : during LISP function [c:dclButtonClicked] invoke from BRX/SDS interface,<br>
+          please check Lisp function definition and call arguments.<br>
+<br>
+--J<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1711/test.zip">test.zip</a> <span class="muted">(1292 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8697">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-03-13 09:42 UTC</span>
+  </div>
+  <div class="post-body">It is a strange problem but it is definitely caused by the c:dclButtonClicked functions having the same name. If you rename the function in c:spawn (and change the dcl accordingly) the problem goes away.<br>
+<br>
+I have added some (princ) and (print) statements to your code because I suspected that it might be a scope issue. Below is the modified code and the resulting command line history. The strange thing is that the scopes for the c:dclButtonClicked functions appear to be correct, but BC seems to call an entirely different function when closing the first dialog after the spawn action.<br>
+<br>
+If I retry the modified code in the same BC session the function IDs (I don't know if 'ID' is the right word here) that the code prints to the screen are new but the function ID in the error report stays the same.<br>
+<br>
+<br>
+(defun c:spawn (/ DCLFORM c:dclButtonClicked c:dclInitialize)<br>
+  (defun c:dclButtonClicked ()<br>
+    (dcl_Form_Close (eval (read dclform)) 1)<br>
+  ) ; ButtonClicked<br>
+  (setq DCLFORM "test_form2")<br>
+<br>
+  (princ "\nc:dclButtonClicked in c:spawn: ")<br>
+  (print c:dclButtonClicked)<br>
+<br>
+  (dcl_form_show (eval (read dclform)))<br>
+  (princ "\nc:spawn is done! ")<br>
+) ; spawn<br>
+<br>
+(defun c:test (/ DCLFORM c:dclButtonClicked c:SpawnDialog c:dclInitialize)<br>
+  (defun c:dclSpawnDialog ()<br>
+    (c:Spawn)<br>
+    (princ "\nBack... ")<br>
+    (princ "\nc:dclButtonClicked in c:test: ")<br>
+    (print c:dclButtonClicked)<br>
+  ) ; SpawnDialog<br>
+<br>
+  (defun c:dclButtonClicked ()<br>
+    (dcl_Form_Close (eval (read dclform)) 1)<br>
+  ) ; ButtonClicked<br>
+<br>
+  (defun c:dclInitialize ()<br>
+    (princ)<br>
+  ) ; Initialize<br>
+<br>
+  (princ "\nc:dclButtonClicked in c:test: ")<br>
+  (print c:dclButtonClicked)<br>
+<br>
+  (command "_.OPENDCL")<br>
+  (dcl_project_load "test" t)<br>
+  (setq DCLFORM "test_form1")<br>
+  (dcl_form_show (eval (read dclform)))<br>
+) ; test<br>
+<br>
+<br>
+<pre class="code"><code><br>
+: test<br>
+<br>
+c:dclButtonClicked in c:test: <br>
+#&lt; #x33 @6c290fbe&gt; <br>
+: _.OPENDCL<br>
+c:dclButtonClicked in c:spawn: <br>
+#&lt; #x33 @6c2910a6&gt; <br>
+c:spawn is done! <br>
+Back... <br>
+c:dclButtonClicked in c:test: <br>
+#&lt; #x33 @6c290fbe&gt; <br>
+; ----- LISP Error : Call Stack -----<br>
+; ...C:TEST<br>
+; .....DCL_FORM_SHOW &lt;&lt;--<br>
+;<br>
+; ----- Error around expression -----<br>
+(PRINT C:DCLBUTTONCLICKED)<br>
+;<br>
+; error : bad argument type &lt;#&lt; #x3b @6c57f75e&gt;&gt; ; expected  at <br>
+;<br>
+; error : during LISP function [C:DCLBUTTONCLICKED] invoke from BRX/SDS interface,<br>
+          please check Lisp function definition and call arguments.<br>
+</code></pre></div>
+</article>
+<article class="post" id="msg8699">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2012-03-13 17:08 UTC</span>
+  </div>
+  <div class="post-body">Yet the functions are local, so that shouldn't be an issue.<br>
+So is it a bug with Bricscad, or with the OpenDCL build for Bricscad?<br>
+<br>
+As it is not an issue on the AutoCAD side, I have to consider this a bug rather than gentle encouragement to stop making my code so portable and instead have every control and every callback function named uniquely for the form they relate to.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg8703">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-03-13 20:40 UTC</span>
+  </div>
+  <div class="post-body">It certainly appears to be a Bricscad bug, and I recommend to report it to them directly.</div>
+</article>
+<article class="post" id="msg8706">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2012-03-13 21:54 UTC</span>
+  </div>
+  <div class="post-body">Thanks, Owen, will do.<br>
+<br>
+Cheers!<br>
+<br>
+--J<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

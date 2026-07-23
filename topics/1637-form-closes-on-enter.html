@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Form closes on Enter · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1637</p>
+    <h1>Form closes on Enter</h1>
+    <p class="meta">Started by kenkrupa ·
+      2011-06-17 00:34 UTC ·
+      3 replies · SMF topic #1637</p>
+<article class="post" id="msg8080">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2011-06-17 00:34 UTC</span>
+  </div>
+  <div class="post-body">My form has a few text boxes set up to advance like a tab on Enter. That works fine. But after the last it advances to the first of four text buttons, and visibly shows it having focus. But pressing Enter does not fire it - it just exits the form. Same goes for any of these buttons. The onOK event for the form does not help, as I can't find any way to know which button had focus at the time. Am I missing some way to deal with this? (v 6.0.2.3, R2012, Win7-64)</div>
+</article>
+<article class="post" id="msg8081">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-06-17 03:34 UTC</span>
+  </div>
+  <div class="post-body">Have you tried (dcl_GetFocus)? That should work during OnOK.</div>
+</article>
+<article class="post" id="msg8082">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-17 06:46 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+<blockquote class="quote"><cite> author=kenkrupa link=topic=1637.msg8080#msg8080 date=1308270841 wrote:</cite><br>
+My form has a few text boxes set up to advance like a tab on Enter. That works fine. But after the last it advances to the first of four text buttons, and visibly shows it having focus. But pressing Enter does not fire it - it just exits the form. Same goes for any of these buttons. The onOK event for the form does not help, as I can't find any way to know which button had focus at the time. Am I missing some way to deal with this? (v 6.0.2.3, R2012, Win7-64)<br>
+</blockquote><br>
+<br>
+I'm not sure, if you've already tried this but I always activate OnCancelClose whenever a textbox is on the form.<br>
+OnCancelClose will be executed when you press enter.<br>
+If you need a sample, have a look <a href="http://www.opendcl.com/forum/index.php?topic=1061.0" rel="nofollow noopener">{2}</a>.<br>
+<br>
+Regards,<br>
+Fred<br>
+</div>
+</article>
+<article class="post" id="msg8083">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2011-06-17 14:33 UTC</span>
+  </div>
+  <div class="post-body">Thank you both - enormously helpful! I used a combination of both to get exactly what I wanted. With the OnOk I can know which button was focused on Enter. That left me still with an undesirable exit on Enter from a list box. The OnCancelClose, with some help from Fred's textinput.LSP, provided the answer. Thank you much!<br>
+<br>
+(defun c:Dialog_OnOk (/ control)<br>
+  (setq control (caddr (dcl_GetFocus)))<br>
+  (alert (strcat "Dialog_OnOk: " control))<br>
+)<br>
+(defun c:Dialog_OnCancelClose (Reason)<br>
+  (and (/= reason 1) (= (caddr (dcl_GetFocus)) "lstShapes"))<br>
+)<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_form_getcontrols · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 214</p>
+    <h1>dcl_form_getcontrols</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2008-02-23 05:02 UTC ·
+      2 replies · SMF topic #214</p>
+<article class="post" id="msg914">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-02-23 05:02 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+The Help File has a Section Topic named <strong><em>Modify Projects Programmatically </em> </strong> which has a routine named <em>SetOdclFontSizeUnscaled() ...</em><br>
+The routine seems to crash at<strong> <em>dcl_form_getcontrols</em></strong><br>
+<br>
+.. with an <em>invalid argument type</em>  error :- Argument: 0<br>
+<br>
+I know this routine has worked in the past because I modified it to change the TextFont for all controls ..<br>
+<br>
+.. any ideas ?<br>
+<br>
+regards<br>
+kerry<br>
+<br>
+<pre class="code"><code><br>
+(defun setodclfont-msshelldlg (odclfile    password<br>
+                               newodclpath /<br>
+                               project     props<br>
+                               fontsize<br>
+                              )<br>
+  (setq project (dcl_project_load odclfile))<br>
+  (if (not project)<br>
+    (exit)<br>
+  )<br>
+  (foreach form (dcl_project_getforms project)<br>
+    (foreach control (dcl_form_getcontrols form)<br>
+      (progn<br>
+        (setq props (dcl_control_getproperties control))<br>
+        (if (member "FontSize" props)<br>
+          (progn (setq<br>
+                   fontsize (dcl_control_getproperty control<br>
+                                                     "FontSize"<br>
+                            )<br>
+                 )<br>
+                 (if (&gt; fontsize 0)<br>
+                   (dcl_control_setproperty control<br>
+                                            "FontSize"<br>
+                                            (- 0 fontsize)<br>
+                   )<br>
+                 )<br>
+          )<br>
+        )<br>
+        (if (member "Font" props)<br>
+          (dcl_control_setproperty control<br>
+                                   "Font"<br>
+                                   "MS Shell Dlg"<br>
+          )<br>
+        )<br>
+        (if (member "FontSize" props)<br>
+          (dcl_control_setproperty control "FontSize" -10)<br>
+        )<br>
+      )<br>
+    )<br>
+  )<br>
+  (dcl_project_saveas project newodclpath password)<br>
+)<br>
+<br>
+<br>
+(setq odclfile    "F:\\xxxx_rev.odc"<br>
+      password    nil<br>
+      newodclpath "F:\\xxxx_rev.Modified.odcl"<br>
+)<br>
+<br>
+(setodclfont-msshelldlg odclfile nil newodclpath)</code></pre><br>
+<br>
+</div>
+</article>
+<article class="post" id="msg915">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-02-23 06:13 UTC</span>
+  </div>
+  <div class="post-body">I think something got changed...<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=192.0" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg916">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-02-23 07:09 UTC</span>
+  </div>
+  <div class="post-body">Thanks Barry .. I'll keep an eye out for <s>Beta</s> Alpha 6. :-)<br>
+<br>
+<br>
+I have a collection of old OpenDCL forms and code to revise, so this will be handy.<br>
+<br>
+( the code calls odcl_xxxx and the ..2007.ARX is dated 20061018 ... that will give you an idea of the vintage )<br>
+<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

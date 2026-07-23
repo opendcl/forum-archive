@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A short list of problems.. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1558</p>
+    <h1>A short list of problems..</h1>
+    <p class="meta">Started by krunch ·
+      2010-12-16 14:27 UTC ·
+      24 replies · SMF topic #1558</p>
+<article class="post" id="msg7611">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2010-12-16 14:27 UTC</span>
+  </div>
+  <div class="post-body">I made a list of all kinds of defects, bugs, remarks... that I met<br>
+<br>
+My version is 6.0.1.3 - Windows Vista + ACad2008<br>
+<br>
+<br>
+<br>
+<strong>Controls and Forms<br>
+</strong><br>
+<u>Palette / ControlBar are croped ?</u><br>
+When AllowResizing=false the palette is croped at about height = 160 ? (AllowResizing=true OK)<br>
+See images<br>
+<br>
+<u>Tab sequence</u><br>
+Problem with Tab-key sequence between txtbox (didn't try others) in Modeless / ControlBar / Palette (KeepFocus=true)<br>
+Please lunch and read TabSequence.odcl<br>
+<br>
+<u>Label with Transparent background color</u><br>
+Transparent background is not... (this problem appeared with v6)<br>
+See image<br>
+<br>
+<u>TextBox with Filter property = 3 (numeric units)</u><br>
+The filter allows following entries : " ' / + - . e  ( but not * )<br>
+<br>
+<u>ComboBox : SelChanged event</u><br>
+SelChanged event is triggered even if the selection hasn't changed (after clicking on the same item)<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1512/Palette.jpg">Palette.jpg</a> <span class="muted">(168043 bytes)</span></li><li><a href="../attachments/1513/Palette lunched.jpg">Palette lunched.jpg</a> <span class="muted">(47051 bytes)</span></li><li><a href="../attachments/1514/TabSequence.odcl">TabSequence.odcl</a> <span class="muted">(951 bytes)</span></li><li><a href="../attachments/1515/LabelTransparent.jpg">LabelTransparent.jpg</a> <span class="muted">(38560 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7612">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2010-12-16 14:29 UTC</span>
+  </div>
+  <div class="post-body">And here my remarks about interface..<br>
+<br>
+<strong>OpenDCL interface</strong><br>
+<br>
+<u>Form's background color Display</u><br>
+Display of Form's background is not updated<br>
+On the screenshot I have turned (Form1) background color to 1, added a textbox and moved it...<br>
+<u><br>
+Moving multiple controls selection</u><br>
+When we move multiple controls selection, each control is 'snaped' to grid's closest point...<br>
+But it's common to position controls with arrows-key, or that control dimensions are out of grid...In this case controls corners "exit" from the grid.<br>
+When you move such controls in a multiple selection, the relative position between controls is changing.<br>
+The problem is that we can't disabled the grid before moving.<br>
+<br>
+<u>Editing multiple controls selection by right-clic menu</u><br>
+When we right-click on a multiple controls selection (for example to copy it), the selection is lost, only 1 control under the mose is selected...<br>
+May be you could keep the selection and display the menu with grayed options (Properties and Control Browser) in case of multiple ?<br>
+<br>
+<u>Background color editing</u><br>
+True color RED (first of the 2nd line) is #255, so it's white...<br>
+<br>
+<u>Closing if not saved</u><br>
+Many properties modifications and editions don't trigger the "Save change ?" alert<br>
+<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1516/BckColor display.jpg">BckColor display.jpg</a> <span class="muted">(115727 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7616">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-12-16 18:09 UTC</span>
+  </div>
+  <div class="post-body">Good stuff, thanks!  Going through it now...</div>
+</article>
+<article class="post" id="msg7625">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-12-18 21:29 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=krunch link=topic=1558.msg7611#msg7611 date=1292509639 wrote:</cite><br>
+Palette / ControlBar are croped ?</blockquote><br>
+<br>
+Palettes with Allow Resizing set to False are notoriously problematic in this release. I believe I have now fixed the problem of diplaying incorrectly when initially loading as docked, but there are additioonal problems that become apparent when moving or changing the dock state of non-resizable palettes.<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=krunch link=topic=1558.msg7611#msg7611 date=1292509639 wrote:</cite><br>
+Tab sequence</blockquote><br>
+<br>
+Good catch. This problem is now fixed.<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=krunch link=topic=1558.msg7611#msg7611 date=1292509639 wrote:</cite><br>
+TextBox with Filter property = 3 (numeric units)</blockquote><br>
+<br>
+This is working as designed. The accepted characters are all valid characters for numeric input in AutoCAD, but "*" is not.<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=krunch link=topic=1558.msg7611#msg7611 date=1292509639 wrote:</cite><br>
+ComboBox : SelChanged event</blockquote><br>
+<br>
+This is working as designed. Since the selection event is a discrete event, it should be triggered even when reselecting a previously-selected item. This behavior gives maximum control to the event handler which can ignore cases where no action is required.</div>
+</article>
+<article class="post" id="msg7626">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-12-18 22:11 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=krunch link=topic=1558.msg7612#msg7612 date=1292509766 wrote:</cite><br>
+Form's background color Display</blockquote><br>
+<br>
+This is now fixed.<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=krunch link=topic=1558.msg7612#msg7612 date=1292509766 wrote:</cite><br>
+Moving multiple controls selection</blockquote><br>
+<br>
+This design is not ideal, but it is working as designed. I recommend to add a feature request to make sure this problem does not get forgotten and gets addressed in the future.<br>
+<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=krunch link=topic=1558.msg7612#msg7612 date=1292509766 wrote:</cite><br>
+Editing multiple controls selection by right-clic menu</blockquote><br>
+<br>
+This is now fixed. It should select the control only when right-clicking on an unselected control, otherwise it should display a menu appropriate for the current selection.<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=krunch link=topic=1558.msg7612#msg7612 date=1292509766 wrote:</cite><br>
+Background color editing</blockquote><br>
+<br>
+I had to use some trickery (setting a high bit that is not normally used), but this should now be fixed.<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=krunch link=topic=1558.msg7612#msg7612 date=1292509766 wrote:</cite><br>
+Closing if not saved</blockquote><br>
+<br>
+Please provide a sample and/or specific steps to reproduce this problem.</div>
+</article>
+<article class="post" id="msg7629">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2010-12-20 10:08 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">Palette / ControlBar <br>
+Palettes with Allow Resizing set to False are notoriously problematic in this release. I believe I have now fixed the problem of diplaying incorrectly when initially loading as docked, but there are additioonal problems that become apparent when moving or changing the dock state of non-resizable palettes.</blockquote><br>
+I make a tool that uses a Control bar (or Palette) so I could make a more accurate report later if you want.<br>
+<br>
+<blockquote class="quote">TextBox with Filter property = 3 (numeric units)<br>
+This is working as designed. The accepted characters are all valid characters for numeric input in AutoCAD, but "*" is not.</blockquote><br>
+This is not a big problem. Anyway to get a reliable input, TextBox needs a (rtos(atof ..)) function before reading the numeric value (in KillFocus for example)<br>
+But one wonders what " ' / are for.<br>
+<br>
+<blockquote class="quote">Moving multiple controls selection<br>
+This design is not ideal, but it is working as designed. I recommend to add a feature request to make sure this problem does not get forgotten and gets addressed in the future.<br>
+</blockquote><br>
+Feature request on sourceforge.net ? Yes I could do that. I think all we need is a checkbox to disable the grid (or to set a 'virtual' step to 1 pixel)<br>
+<br>
+<blockquote class="quote">Closing if not saved<br>
+Please provide a sample and/or specific steps to reproduce this problem.</blockquote><br>
+Well.. right now I can not find what operation/context is concerned (I don't think I was dreaming), but I'll report if I find<br>
+<br>
+<br>
+There was also Label's Transparent backgroundcolor when Label is placed on a colored PictureBox...<br>
+Thanks!</div>
+</article>
+<article class="post" id="msg7631">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-12-20 22:26 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=krunch link=topic=1558.msg7629#msg7629 date=1292839712 wrote:</cite><br>
+I make a tool that uses a Control bar (or Palette) so I could make a more accurate report later if you want.</blockquote><br>
+<br>
+If there are discrete bugs that can be fixed, I am interested in those bug reports, otherwise it would be best to wait until the next major version after I have redesigned the infrastructure for palettes and control bars.<br>
+<br>
+<blockquote class="quote"><cite> author=krunch link=topic=1558.msg7629#msg7629 date=1292839712 wrote:</cite><br>
+But one wonders what " ' / are for.</blockquote><br>
+<br>
+Those are valid characters when entering numbers in imperial architectural units.<br>
+<br>
+<blockquote class="quote"><cite> author=krunch link=topic=1558.msg7629#msg7629 date=1292839712 wrote:</cite><br>
+Feature request on sourceforge.net ? Yes I could do that. I think all we need is a checkbox to disable the grid (or to set a 'virtual' step to 1 pixel)</blockquote><br>
+<br>
+I think it would be acceptable to simply use the topmost/leftmost corner of all selected controls as the snap point, and leave relative control positions unchanged while dragging.<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=krunch link=topic=1558.msg7629#msg7629 date=1292839712 wrote:</cite><br>
+There was also Label's Transparent backgroundcolor when Label is placed on a colored PictureBox...</blockquote><br>
+<br>
+That is working as designed. Windows does not make any guarantees about painting order when controls overlap, so you should think of transparent as meaning "same background color as the host dialog background".<br>
+</div>
+</article>
+<article class="post" id="msg7639">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2010-12-22 23:35 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">Quote from: krunch on December 20, 2010, 03:08:32 AM<br>
+There was also Label's Transparent backgroundcolor when Label is placed on a colored PictureBox...<br>
+<br>
+That is working as designed. Windows does not make any guarantees about painting order when controls overlap, so you should think of transparent as meaning "same background color as the host dialog background".</blockquote><br>
+<br>
+Ok.. but I'd just like to know if I have to leave this overlapping (made with previous version, label background was effectively transparent)<br>
+<br>
+<br>
+<blockquote class="quote">If there are discrete bugs that can be fixed, I am interested ...</blockquote><br>
+<br>
+One little problem of reactor..<br>
+Palette/ControlBar (keepfocus=true) : OnMouseMovedOff event is not triggered if focus is 'catched' by a TextBox or a ComboBox (if there's a text vertical cursor or if an item is selected in combobox)</div>
+</article>
+<article class="post" id="msg7641">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-12-23 21:09 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=krunch link=topic=1558.msg7639#msg7639 date=1293060906 wrote:</cite><br>
+Ok.. but I'd just like to know if I have to leave this overlapping (made with previous version, label background was effectively transparent)</blockquote><br>
+<br>
+It's perfectly OK to have overlapping controls, but either they should both have transparent backgrounds, or they should both have non-transparent backgrounds and you should be aware that there is no guarantee which will be painted last (on top).<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=krunch link=topic=1558.msg7639#msg7639 date=1293060906 wrote:</cite><br>
+Palette/ControlBar (keepfocus=true) : OnMouseMovedOff event is not triggered if focus is 'catched' by a TextBox or a ComboBox (if there's a text vertical cursor or if an item is selected in combobox)</blockquote><br>
+<br>
+This is a side effect of capturing the mouse while a Keep-Focus control has the focus. Technically, the mouse has not "moved off" because it is captured. I would be interested in use cases where the current behavior causes a problem.</div>
+</article>
+<article class="post" id="msg7645">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2010-12-27 13:04 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+<blockquote class="quote">I would be interested in use cases where the current behavior causes a problem.</blockquote><br>
+<br>
+I finish a tool that could works in a static palette or controlbar (screenshot)..<br>
+If you consider a palette as a settings area for a parametric operation (here a sequence of transformations) then it could also make a preview of the operation with the current selection.<br>
+If something changes in the palette a new matrix is computed and the preview is updated (there are many triggers in this palette).<br>
+<br>
+So it uses MouseEntered/MovedOff as following :<br>
+- (if nothing is selected the palette is disabled)<br>
+- when the pointer goes in the palette the program 'ungrip' the selection, copy the objects, and apply the transformation matrix<br>
+- when the pointer goes out it restores a gripped selection and deletes the copy.<br>
+<br>
+So to apply you just have to select, to set a transformation and click on the 'Apply' button ; and to cancel you just have to forget and do something else ! In both cases parameters could stay to be applied on another selection.<br>
+<br>
+It works fine, except when moved off after a textbox setting (it just needs a click more)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1523/trans.jpg">trans.jpg</a> <span class="muted">(155528 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7648">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2010-12-28 17:55 UTC</span>
+  </div>
+  <div class="post-body">I just found another strange thing about OnMouseEntered/OnMouseMovedOff events with Palettes or ControlBar (KeepFocus=true)<br>
+These events make unexpected triggers after 1 click on a PictureBox (Drag/DropAllowBegin=true)<br>
+<br>
+Please open and try "in-out.odcl"<br>
+<br>
+(command "OPENDCL")<br>
+(defun c:go ()<br>
+  (dcl_Project_Load "in-out" T)<br>
+  (dcl_Form_Show in-out_Form1)<br>
+)<br>
+(defun c:in-out_Form1_OnMouseEntered (/)<br>
+  (princ "\nin")<br>
+)<br>
+(defun c:in-out_Form1_OnMouseMovedOff (/)<br>
+  (princ "\nout")<br>
+)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1526/in-out.odcl">in-out.odcl</a> <span class="muted">(1358 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7652">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-12-29 03:49 UTC</span>
+  </div>
+  <div class="post-body">For the next build, I have changed the code to trigger MouseMovedOff even while the input is captured, and I think I've fixed the picturebox problem as well. Hopefully this addresses all your issues.</div>
+</article>
+<article class="post" id="msg7655">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-12-29 14:20 UTC</span>
+  </div>
+  <div class="post-body">krunch,<br>
+<br>
+from the look of those piccys you've been having some fun with marrix translations.<br>
+good concept if I understand what you're doing :)<br>
+<br>
+Regards,<br>
+</div>
+</article>
+<article class="post" id="msg7668">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-01-05 14:02 UTC</span>
+  </div>
+  <div class="post-body">Tanks... it was fun although many neurons died in this affair.. I'll try to distribute it quickly<br>
+Good year everybody</div>
+</article>
+<article class="post" id="msg7672">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-01-11 15:33 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+I plan an alternative to the previous project (images above) that works with a Modeless, and am having similar problems of focus transfer..<br>
+<br>
+You said :<br>
+<blockquote class="quote">For the next build, I have changed the code to trigger MouseMovedOff even while the input is captured</blockquote><br>
+So I just have 2 questions :<br>
+<br>
+In fact I would need a MouseMovedOff trigger AND that AutoCad recover the focus when I leave the Form (even if  the input is captured in a textbox). Currently it needs 1 click in the graphic screen to recover focus in AutoCad, but it makes trouble because this click makes a new selection...<br>
+So my question is that it will be the case ? (may be it could be possible if KeepFocus=nil ?).. Or is there a way to give back the focus to ACad from this (new) MouseMovedOff trigger ?<br>
+<br>
+Can I expect the same behavior with Modeless ?</div>
+</article>
+<article class="post" id="msg7673">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-01-11 16:59 UTC</span>
+  </div>
+  <div class="post-body">I think you would need Keep Focus set to false.  I am planning to upload the next build this week (most likely tomorrow).</div>
+</article>
+<article class="post" id="msg7674">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-01-11 19:20 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I realise that I didn't understood the KeepFocus property : with false it works fine ! <br>
+Actually my question goes against the logic of this property, moreover with false MouseMovedOff always triggers..  ::)<br>
+<br>
+Thanks!</div>
+</article>
+<article class="post" id="msg7708">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-01-23 00:10 UTC</span>
+  </div>
+  <div class="post-body">Tried with latest version 6.0.2.1 :<br>
+The first problem I reported in this post (Palette/ControlBar are croped if AllowResizing=false) is always there with ControlBar..</div>
+</article>
+<article class="post" id="msg7709">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2011-01-23 13:13 UTC</span>
+  </div>
+  <div class="post-body">Hello  krunch,<br>
+Did you see the post already below?  <br>
+<a href="http://www.opendcl.com/forum/index.php?topic=1570.0" rel="nofollow noopener">{2}</a>  <br>
+This problem could be included in your list.<br>
+<br>
+Regards,</div>
+</article>
+<article class="post" id="msg7711">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-01-24 09:37 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+Yes, there were a few problem with anchored Palette/ControlBar.<br>
+I have not tried all since Owen said :<br>
+<blockquote class="quote">otherwise it would be best to wait until the next major version after I have redesigned the infrastructure for palettes and control bars</blockquote><br>
+<br>
+Regards<br>
+<br>
+<br>
+By the way.. what software do you use to make animated .gif screenshoot ??</div>
+</article>
+<article class="post" id="msg7713">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2011-01-24 22:50 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=krunch link=topic=1558.msg7711#msg7711 date=1295861856 wrote:</cite><br>
+Hello<br>
+Yes, there were a few problem with anchored Palette/ControlBar.<br>
+I have not tried all since Owen said :<br>
+<blockquote class="quote">otherwise it would be best to wait until the next major version after I have redesigned the infrastructure for palettes and control bars</blockquote><br>
+<br>
+Regards<br>
+<br>
+<br>
+By the way.. what software do you use to make animated .gif screenshoot ??<br>
+</blockquote><br>
+<br>
+I use Cantasia Studio.<br>
+</div>
+</article>
+<article class="post" id="msg7714">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-01-25 09:38 UTC</span>
+  </div>
+  <div class="post-body">Thanks<br>
+<br>
+I get the same problem (ACad2008) with minimized Palette : the left bar blinks when I roll on it, and open-close the palette if it's anchored (and freeze it if closed)</div>
+</article>
+<article class="post" id="msg7731">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2011-01-28 13:48 UTC</span>
+  </div>
+  <div class="post-body">^^^^<br>
+This is my biggest problem with palettes and would like to see it moved up the "list of things to do".<br>
+<br>
+jb<br>
+<br>
+BTW, great job Owen.  You are securing a special place in programmers heaven . . ..</div>
+</article>
+<article class="post" id="msg7733">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-01-28 16:06 UTC</span>
+  </div>
+  <div class="post-body">When I first implemented palettes I had never used them before, and consequently, some of original architecture should be redesigned. I don't want to do that so late in the release cycle, but I plan to revisit palettes once OpenDCL 6 is released.</div>
+</article>
+<article class="post" id="msg7736">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-01-31 20:21 UTC</span>
+  </div>
+  <div class="post-body">Meanwhile a ControlBar* can replace a Palette...<br>
+<br>
+<br>
+<blockquote class="quote">but I plan to revisit palettes once OpenDCL 6 is released</blockquote><br>
+But just to know : when do you think it will be ok ?<br>
+<br>
+* with AllowResizing=T (cropped if nil)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

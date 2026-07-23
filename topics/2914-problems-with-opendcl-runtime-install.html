@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problems with OpenDCL Runtime Install · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/19-deployment.html">Deployment</a> /
+      Topic 2914</p>
+    <h1>Problems with OpenDCL Runtime Install</h1>
+    <p class="meta">Started by mlmichel ·
+      2024-02-16 17:30 UTC ·
+      6 replies · SMF topic #2914</p>
+<article class="post" id="msg13978">
+  <div class="post-head">
+    <span class="post-author">mlmichel</span>
+    <span class="post-date muted">2024-02-16 17:30 UTC</span>
+  </div>
+  <div class="post-body">*SOLVED*<br>
+<br>
+I will start at the beginning:<br>
+<br>
+I was having the issue: _OPENDCL Unknown command "OPENDCL". So I read the forums and came to the conclusion I needed to install the OpenDCL Runtime because I did not see any .arx or .brx files in my OpenDCL Studio. directory<br>
+<br>
+I installed OpenDCL Runtime and it still gives me: _OPENDCL Unknown command "OPENDCL".<br>
+<br>
+I did some investigating into the OpenDCL Studio folder in my C: Directory and noticed that there aren't .arx files or .brx files. I have the original files from the OpenDCL installer. <br>
+<br>
+Here is what I have tried:<br>
+1) add and remove programs &gt; uninstall everything regarding OpenDCL &gt; reinstall<br>
+2) restarting my computer after the uninstall &gt; reinstall<br>
+<br>
+Note: The OpenDCL Runtime installer seems to "crash" or not load fully when trying to install. It doesn't let me specify and install location. It doesn't bring up the window. I am suspecting that there are temporary files installed somewhere that can't be overwritten.<br>
+<br>
+Also, the original folder specified for Open DCL in my C: drive cannot be written to, so I need to specify a different folder (desktop for example). Something to do with my IT department (one man show). Installing Runtime still does not seem to function correctly.<br>
+<br>
+I am completely new to OpenDCL and lisp coding but am trying to harness the tools you have created to make my company more productive.</div>
+</article>
+<article class="post" id="msg13979">
+  <div class="post-head">
+    <span class="post-author">mlmichel</span>
+    <span class="post-date muted">2024-02-16 17:38 UTC</span>
+  </div>
+  <div class="post-body">For reference, in my remove programs in windows settings, the size of the installation of OpenDCL Runtime is 144 KB. If that differs significantly from what files size you are viewing, let me know!</div>
+</article>
+<article class="post" id="msg13980">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2024-02-17 16:52 UTC</span>
+  </div>
+  <div class="post-body">The runtime modules are installed in %ProgramFiles(x86)%\Common Files\OpenDCL, and the OPENDCL command is registered by the installer for demand loading in all supported CAD applications that are detected. You didn't mention which CAD application and version you're using, but it must enable demand loading (DEMANDLOAD=3).</div>
+</article>
+<article class="post" id="msg13981">
+  <div class="post-head">
+    <span class="post-author">mlmichel</span>
+    <span class="post-date muted">2024-02-19 22:24 UTC</span>
+  </div>
+  <div class="post-body">Hello, thank you for your response. I just got around to tinkering with this.<br>
+<br>
+I've done as you instructed, I see the files in my Common files directory. I have DEMANDLOAD set to 3.<br>
+<br>
+1)I have my Support File Search Paths set to the both OpenDCL folders.<br>
+<br>
+2)I am NOT seeing any OpenDCL files in my registry as mentioned in this forum: <br>
+     [url="https://opendcl.com/forum/index.php?topic=279.msg2211#msg2211"]https://opendcl.com/forum/index.php?topic=279.msg2211#msg2211<br>
+<br>
+  I can do a ctrl+f on the registry and search "opendcl" and it finds only one file:<br>
+     (default)     REG_SZ     OpenDCL.Project<br>
+<br>
+I am using Civil 3D 2024 and by extension AutoCAD 2024.<br>
+<br>
+I've read through a variety of forums and cannot fix this, it always seems that they solve the problem before my problem is solved. <br>
+<br>
+Thank you for you help!<br>
+<br>
+ - Maxwell</div>
+</article>
+<article class="post" id="msg13982">
+  <div class="post-head">
+    <span class="post-author">mlmichel</span>
+    <span class="post-date muted">2024-02-19 22:35 UTC</span>
+  </div>
+  <div class="post-body">I have also tried dragging and dropping the .arx files into Civil 3D, it is displays: <br>
+<br>
+Command: (ARXLOAD "C:/Program Files (x86)/Common Files/OpenDCL/OpenDCL.16.arx") ; error: ARXLOAD failed<br>
+<br>
+Product Version: 13.6.1781.0 Civil 3D 2024.3 Update<br>
+Built on: U.152.0.0 AutoCAD 2024.1.2<br>
+27.0.37.14 Autodesk AutoCAD Map 3D 2024.0.1<br>
+8.6.52.0 AutoCAD Architecture 2024</div>
+</article>
+<article class="post" id="msg13983">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2024-02-20 00:03 UTC</span>
+  </div>
+  <div class="post-body">Make sure you're installing OpenDCL 9.2.1.5 (the current development version, not the stable version). That installer should create demand load registry keys as long as Acad 2024 is installed. You should not change any settings or search paths.</div>
+</article>
+<article class="post" id="msg13984">
+  <div class="post-head">
+    <span class="post-author">mlmichel</span>
+    <span class="post-date muted">2024-02-20 19:00 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+<br>
+Thank you for your quick responses. I greatly appreciate them!<br>
+<br>
+I am having new issues finally! <br>
+<br>
+I am trying to load my OpenDCL file named "01_Dialog.odcl" with a modal dialog named "Description"<br>
+<br>
+My lisp is saved in C:\Users\mmichel\Desktop\lisps that work\<br>
+<br>
+My .odcl file is saved in C:\Users\mmichel\Desktop\lisps that work\<br>
+<br>
+I have the current support file search paths set:<br>
+     C:\Users\mmichel\Desktop\Lisps that work\<br>
+     C:\Program Files (x86)\Common Files\OpenDCL<br>
+     C:\Program Files (x86)\OpenDCL Studio<br>
+<br>
+I browsed through a couple forms and watched the "01_hello_world" videos and I have this problem:<br>
+<br>
+<u>autocad command:</u><br>
+<br>
+<br>
+DIA4<br>
+_OPENDCL<br>
+Command: ; error: ADS request error<br>
+<br>
+<br>
+    AutoCAD Message<br>
+<br>
+    Project failed to load!<br>
+    The file could not be found or an error occurred while reading the file.<br>
+<br>
+    [01_Dialog.odcl]<br>
+<br>
+<u>AND</u><br>
+<br>
+    OpenDCL Runtime Error<br>
+<br>
+    An OpenDCL function argument processing exception has occurred!<br>
+<br>
+    Error: NIL value not allowed<br>
+    Function: dcl_Form_Show<br>
+    Argument: 0<br>
+<br>
+<br>
+<u>Here is my lisp code:</u><br>
+<br>
+(defun c:dia1 ()<br>
+  (load "C:\\Users\\mmichel\\Desktop\\lisps that work\\0.1.lsp")<br>
+)<br>
+;======================================================================<br>
+(defun c:dia2 ()<br>
+  (command "_OPENDCL")<br>
+  (setq form (dcl-project-load "01_Dialog.odcl")) ; -&gt; "Form1"<br>
+  (setq returnResult (odcl_form_IsActive Form1/Dialog_Option)) ; -&gt; 1<br>
+  (princ)  <br>
+)<br>
+;======================================================================<br>
+(defun C:dia3()<br>
+  (EnsureProjectLoaded "01_Dialog.odcl") ;if this returns, all is well<br>
+  (if (not (opdcl_Form_IsActive Description))<br>
+    (odcl_Form_Show Description)<br>
+  )<br>
+)<br>
+;======================================================================<br>
+(defun c:dia4 ()<br>
+  (command "_OPENDCL")<br>
+  (dcl_project_load "01_Dialaog.odcl" T)<br>
+  (dcl_form_show 01_Dialog_Description)<br>
+  (princ)<br>
+)<br>
+<br>
+If you don't mind, if you edit the code, can you paste the entire code? Otherwise my noobiness might be on full display. <br>
+<br>
+note:<br>
+<br>
+dia2 and dia3 are what other forums recommended, these do not work either. <br>
+<br>
+I am trying to be as descriptive as I can just in case others have similar issues in the future, but if you need any more information, let me know!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

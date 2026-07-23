@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl-ListBox-GetCurSel returns nil with items in list. 8.0.1.0 ACAD2004 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2320</p>
+    <h1>dcl-ListBox-GetCurSel returns nil with items in list. 8.0.1.0 ACAD2004</h1>
+    <p class="meta">Started by Jim ·
+      2015-10-12 20:45 UTC ·
+      4 replies · SMF topic #2320</p>
+<article class="post" id="msg11673">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2015-10-12 20:45 UTC</span>
+  </div>
+  <div class="post-body">First item highlighted:<br>
+_1_$ (dcl-ListBox-GetCurSel Std/ToolSelect/lstType)<br>
+0<br>
+Deselect first item:<br>
+_1_$ (dcl-ListBox-setCurSel Std/ToolSelect/lstType -1)<br>
+T<br>
+Query for item selected:<br>
+_1_$ (dcl-ListBox-GetCurSel Std/ToolSelect/lstType)<br>
+nil<br>
+<br>
+ListBox has 19 items so this should return -1 saying no current selection.<br>
+Isn't nil representative of a ListBox with no items?</div>
+</article>
+<article class="post" id="msg11674">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-10-13 08:48 UTC</span>
+  </div>
+  <div class="post-body">Good catch, Jim. This is now fixed for the next build.</div>
+</article>
+<article class="post" id="msg11719">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2015-11-19 13:22 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+Was this fixed in 8.0.2.0?<br>
+I still get nil when no items selected.</div>
+</article>
+<article class="post" id="msg11720">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-11-19 16:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Jim Short link=topic=2320.msg11719#msg11719 date=1447939364 wrote:</cite><br>
+Was this fixed in 8.0.2.0?<br>
+</blockquote><br>
+<br>
+No, 8.02 was released before this was fixed. There will be another update released either this weekend or early next week, and that one will include the fix.</div>
+</article>
+<article class="post" id="msg11725">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2015-11-23 14:26 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen, works great!<br>
+Jim</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

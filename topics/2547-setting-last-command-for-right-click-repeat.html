@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Setting last command for right click repeat · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2547</p>
+    <h1>Setting last command for right click repeat</h1>
+    <p class="meta">Started by hmspe ·
+      2017-12-11 15:28 UTC ·
+      4 replies · SMF topic #2547</p>
+<article class="post" id="msg12638">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2017-12-11 15:28 UTC</span>
+  </div>
+  <div class="post-body">I have a modeless form that I want to use as a replacement for a toolbar flyout.  The form is called from a Bricscad toolbar button.  OnClick each graphic button on the form closes the form then calls a lisp function to insert a specific part.  <br>
+<br>
+What I'd like is after using the form to insert a part is for right click to re-call the part insertion function directly so I can do multiple insertions of the part.  What happens is that right click calls the form again.<br>
+<br>
+Is there a way configure the code so that "Repeat Last Command" repeats the selected insertion function rather than calling the form again?<br>
+<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg12640">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2017-12-11 17:52 UTC</span>
+  </div>
+  <div class="post-body">Do you mean that a right-click executes the toolbar button menu macro? If so, then you need to change your OnClick event to send a command instead of calling a lisp function.</div>
+</article>
+<article class="post" id="msg12641">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2017-12-12 13:51 UTC</span>
+  </div>
+  <div class="post-body">Thanks, Owen.  <br>
+<br>
+It looks like changing every insertion c:defun to a command may be a bit of a challenge since vlax-add-cmd does not like 'command' calls.  Writing code to replace " (command "_insert" "E_2STRIP" "PS" 96 pause 96 96 pause)" that keeps all the functionality but avoids 'command' and 'vl-cmdf' does not appear to be trivial.<br>
+<br>
+Or maybe I'm missing an easier solution....<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg12642">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-12-12 15:19 UTC</span>
+  </div>
+  <div class="post-body">I think Owen is referring to dcl-SendString or vla-sendcommand.</div>
+</article>
+<article class="post" id="msg12643">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2017-12-12 15:58 UTC</span>
+  </div>
+  <div class="post-body">Thanks.  </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

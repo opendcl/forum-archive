@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Re-open a modal dialog · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1738</p>
+    <h1>Re-open a modal dialog</h1>
+    <p class="meta">Started by borsa ·
+      2011-12-22 10:12 UTC ·
+      2 replies · SMF topic #1738</p>
+<article class="post" id="msg8536">
+  <div class="post-head">
+    <span class="post-author">borsa</span>
+    <span class="post-date muted">2011-12-22 10:12 UTC</span>
+  </div>
+  <div class="post-body">Hello Again, I am trying to open, close, and open again a Modal dialogs <br>
+<br>
+I have two dialogs : <br>
+Form1 with a button to close itself and open Form2 <br>
+Form2 with a button to close itself and open Form1<br>
+<br>
+From form1 to form2 the program is ok but from form2 to form1 the program close form2 as cancell (return 2) and don`t open form1.<br>
+<br>
+I've atached the lisp and odcl files to test them if you want.<br>
+<br>
+Whas is wrong? <br>
+<br>
+thanks for your help.<br>
+ <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1694/test.lsp">test.lsp</a> <span class="muted">(529 bytes)</span></li><li><a href="../attachments/1695/test.odcl">test.odcl</a> <span class="muted">(836 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8537">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-12-22 11:14 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+make it as written in the <a href="http://www.opendcl.com/forum/index.php?topic=1080.0" rel="nofollow noopener">{2}</a>: there I've shown how to get access to AutoCAD after closing a form. It is similar to your question: make an outer while-loop and an inner while-loop for your forms. Make sure that you've complete left the event functions which closes the form before showing the next (don't leave the car before stopping it).<br>
+<br>
+A simple sample:<br>
+<br>
+(defun c:mycommand ()<br>
+  (defun c:form1ok ()<br>
+    (dcl_form_close form1 1)<br>
+  ); c:form1ok <br>
+<br>
+  (defun c:form2ok ()<br>
+    (dcl_form_close form2 1)<br>
+  ); c:form2ok <br>
+<br>
+  (while (and (= (dcl_form_show form1) 1)  (= (dcl_form_show form2) 1))<br>
+); c:mycommand<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8547">
+  <div class="post-head">
+    <span class="post-author">borsa</span>
+    <span class="post-date muted">2012-01-10 10:32 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+<br>
+To fix the question i did it a while-loop as in the file attached and works prefectly.<br>
+<br>
+thanks for your help<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1696/test.lsp">test.lsp</a> <span class="muted">(921 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

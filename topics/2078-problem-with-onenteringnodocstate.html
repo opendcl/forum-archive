@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with OnEnteringNoDocState · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2078</p>
+    <h1>Problem with OnEnteringNoDocState</h1>
+    <p class="meta">Started by potencjalek ·
+      2013-12-18 21:14 UTC ·
+      7 replies · SMF topic #2078</p>
+<article class="post" id="msg10250">
+  <div class="post-head">
+    <span class="post-author">potencjalek</span>
+    <span class="post-date muted">2013-12-18 21:14 UTC</span>
+  </div>
+  <div class="post-body">Hi guys<br>
+i have problem with my application<br>
+it is one simple control bar<br>
+problem appears when i try to close bricscad while control bar is active<br>
+then bricscad blows or if i click yes when it asks for saving changes in drawings it returns error<br>
+" A fatal error has been detected, the application will be terminated.<br>
+OK, to try save to latest changes to (file path)"<br>
+i made many control bars using opendcl and i've never seen such an error before<br>
+ I close control bars OnEnteringNoDocState and OnDocActivated, but those one works fine i think because before error I can see that control bar is closed<br>
+any clue?<br>
+i think that block view element causes the problem but i'm not sure... i cant prove it but its my first control bar with block view so i'm guessing its block view<br>
+</div>
+</article>
+<article class="post" id="msg10252">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-18 21:44 UTC</span>
+  </div>
+  <div class="post-body">I'd like to help, but you haven't provided enough information for me to reproduce the problem in order to see if it can be fixed, and it's not clear whether the problem is only the control bar or also involves lisp code. What OS version/architecture and CAD platform? Is the control bar floating or docked? Is there a block displayed in the blockview control when Bricscad is closed?</div>
+</article>
+<article class="post" id="msg10253">
+  <div class="post-head">
+    <span class="post-author">potencjalek</span>
+    <span class="post-date muted">2013-12-18 21:54 UTC</span>
+  </div>
+  <div class="post-body">problem appears with docked control and undocked, also it doesn't matter if there is something displayed on blockview or not<br>
+i removed blockview from control to check it and problem disappeared<br>
+i use Bricscad V13 but problem exist also on V14<br>
+</div>
+</article>
+<article class="post" id="msg10254">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-18 21:57 UTC</span>
+  </div>
+  <div class="post-body">Ok, I will test with an empty control bar with only a blockview control. Are you using 32-bit or 64-bit Bricscad V14?</div>
+</article>
+<article class="post" id="msg10255">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-18 22:26 UTC</span>
+  </div>
+  <div class="post-body">I could not reproduce the problem in Bricscad V14 64-bit. Please try to create a simple sample project that I can use to reproduce it.</div>
+</article>
+<article class="post" id="msg10260">
+  <div class="post-head">
+    <span class="post-author">potencjalek</span>
+    <span class="post-date muted">2013-12-19 08:37 UTC</span>
+  </div>
+  <div class="post-body">i have only possible to check it on 32bit V14</div>
+</article>
+<article class="post" id="msg10263">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-19 15:54 UTC</span>
+  </div>
+  <div class="post-body">I tried the same test in 32-bit Bricscad V14 and also have no error. You'll need to provide more information.</div>
+</article>
+<article class="post" id="msg10267">
+  <div class="post-head">
+    <span class="post-author">potencjalek</span>
+    <span class="post-date muted">2013-12-20 13:27 UTC</span>
+  </div>
+  <div class="post-body">at the moment i gave up on block view ( in V13 doesnt work so i cant use it) but i will try to do some sample which also crash V14 while closing<br>
+anyway thanks</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

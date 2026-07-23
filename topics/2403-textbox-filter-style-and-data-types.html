@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Textbox filter style and data types · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2403</p>
+    <h1>Textbox filter style and data types</h1>
+    <p class="meta">Started by Jim ·
+      2016-08-09 13:31 UTC ·
+      2 replies · SMF topic #2403</p>
+<article class="post" id="msg11996">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2016-08-09 13:31 UTC</span>
+  </div>
+  <div class="post-body">text box with 3 filter style (numerical units) <br>
+From description, I assume numerical looking string characters allowed<br>
+ 	;;dcl error invalid argument type<br>
+	(dcl-control-setText uMill/Outline/DatumRapidPlaneElev 1.2)<br>
+	;;allowed<br>
+	(dcl-control-setText uMill/Outline/DatumRapidPlaneElev "1.2")<br>
+	;;allowed<br>
+	(dcl-control-setText uMill/Outline/DatumRapidPlaneElev "12")<br>
+	;;blocked by filter<br>
+	(dcl-control-setText uMill/Outline/DatumRapidPlaneElev "ab")<br>
+	;;allowed<br>
+	(dcl-control-setText uMill/Outline/DatumRapidPlaneElev 11)<br>
+<br>
+Why accept integer but not real number?<br>
+</div>
+</article>
+<article class="post" id="msg12011">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-08-10 02:00 UTC</span>
+  </div>
+  <div class="post-body">This might be a legacy thing, where original ObjectDCL code accepted integers for string arguments. I know there are numerous such oddities throughout the code that were left in case old code relied on the behavior.</div>
+</article>
+<article class="post" id="msg12037">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-08-16 12:36 UTC</span>
+  </div>
+  <div class="post-body">Hm, interesting. I was using ObjectDCL from 2002 until 2007 and I've never known that integers were possible to use.<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

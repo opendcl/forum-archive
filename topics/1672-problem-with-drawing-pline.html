@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with drawing pline · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1672</p>
+    <h1>Problem with drawing pline</h1>
+    <p class="meta">Started by nelsonN ·
+      2011-08-14 11:15 UTC ·
+      6 replies · SMF topic #1672</p>
+<article class="post" id="msg8280">
+  <div class="post-head">
+    <span class="post-author">nelsonN</span>
+    <span class="post-date muted">2011-08-14 11:15 UTC</span>
+  </div>
+  <div class="post-body">I write a little program which draw square with polyline command. For it I create dialog with opendcl when may write a four side of square. My problem in that if i write a integer digit in my dialog - all ok, but if I write real digit (especially for side "b") - begin a problem. Side b SOMETIMES equal "0"  For example after dialog load with current side value 10 10 10 10 - ok, but after it  if I write side b value 0.15 - side b = 0(on drawing). If after it I encrease my drawing (zoom realtime ) and again click "BANZAI" - side b = 0.15. In all case before clicking, on command "!b" atocad show "0.15". I want that it worked just using Polar command. Thanks.   <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1656/pdwaw.lsp">pdwaw.lsp</a> <span class="muted">(156 bytes)</span></li><li><a href="../attachments/1657/pdraw.odcl">pdraw.odcl</a> <span class="muted">(1056 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8283">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-08-14 15:19 UTC</span>
+  </div>
+  <div class="post-body">Hi, nelsonN, welcome to the board. It seems that the LSP-file is not finished yet: it includes only one event function.<br>
+<br>
+BTW, I recommend you to set the textbox filterstyle to units filterstyle.<br>
+<br>
+Regards,<br>
+Fred</div>
+</article>
+<article class="post" id="msg8285">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-08-14 18:07 UTC</span>
+  </div>
+  <div class="post-body">It sounds like you forgot to turn off object snap.</div>
+</article>
+<article class="post" id="msg8286">
+  <div class="post-head">
+    <span class="post-author">nelsonN</span>
+    <span class="post-date muted">2011-08-14 18:53 UTC</span>
+  </div>
+  <div class="post-body">Thanks for you answer, Fred<br>
+<br>
+It's intresting that I write this program in usual lsp file (without use opendcl) and problem repeated again. If I use (on var "b" for example) integer digit - it work, but just I use real digit 0.15 - this problem have place again. With increase drawing using zoom realtime - all good, but second start the  line1 command finished with same  mistake. Anybody may help me on this banal situation?     <br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1658/line1.lsp">line1.lsp</a> <span class="muted">(330 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8287">
+  <div class="post-head">
+    <span class="post-author">nelsonN</span>
+    <span class="post-date muted">2011-08-14 19:06 UTC</span>
+  </div>
+  <div class="post-body">Thank's owenwengerd<br>
+<br>
+Turning off object snap helped. Now as I understand me need turn of "object snap"  in lisp-code before start  pline command? Or have other path for solving this problem?</div>
+</article>
+<article class="post" id="msg8294">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-08-15 23:54 UTC</span>
+  </div>
+  <div class="post-body">It should work fine as long as you turn off object snap, but better would be to not use commands at all and just create the polylines directly.</div>
+</article>
+<article class="post" id="msg8299">
+  <div class="post-head">
+    <span class="post-author">nelsonN</span>
+    <span class="post-date muted">2011-08-18 09:48 UTC</span>
+  </div>
+  <div class="post-body">Ok, Thanks.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Active cursor instead of focus ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 870</p>
+    <h1>Active cursor instead of focus ?</h1>
+    <p class="meta">Started by krunch ·
+      2009-08-11 12:30 UTC ·
+      10 replies · SMF topic #870</p>
+<article class="post" id="msg4313">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2009-08-11 12:30 UTC</span>
+  </div>
+  <div class="post-body">Hello everybody<br>
+<br>
+When my dialog box opens I'd want to get the cursor actived in a TextBox, just after the default value (instead of focus wich highlight it)..<br>
+<br>
+Do you think it's possible ??</div>
+</article>
+<article class="post" id="msg4315">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-08-11 18:29 UTC</span>
+  </div>
+  <div class="post-body">If your question is about plain DCL, you should ask it here:<br>
+<a href="http://www.theswamp.org/index.php?board=38.0" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg4317">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2009-08-11 19:54 UTC</span>
+  </div>
+  <div class="post-body">sorry it was for a standart .dcl..<br>
+<br>
+But can you do that with a TextBox, when a Modal Dialog opens ?</div>
+</article>
+<article class="post" id="msg4318">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-08-11 23:52 UTC</span>
+  </div>
+  <div class="post-body">Yes, I believe you can do that with an OpenDCL TextBox by using (dcl_TextBox_SetSel) and a zero-length selection range.</div>
+</article>
+<article class="post" id="msg4319">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2009-08-12 11:00 UTC</span>
+  </div>
+  <div class="post-body">Thanks, I tried but I didn't find..<br>
+<br>
+<br>
+(defun c:TRY_MBox_OnInitialize (/)<br>
+;;;  (dcl_Control_ZOrder TRY_MBox_TextButton1 1)<br>
+  (dcl_Control_SetProperty TRY_MBox_TextBox1 "Text" "default")<br>
+  (dcl_TextBox_SetSel TRY_MBox_TextBox1 7 7)<br>
+)<br>
+<br>
+<br>
+The content of the TextBox is still highlighted, even with other start/end values for dcl_TextBox_SetSel (like -1), in fact the cursor stays in the end of the TextBox even without dcl_TextBox_SetSel.<br>
+<br>
+And if another control is MovedToTop the TextBox loose the cursor..</div>
+</article>
+<article class="post" id="msg4322">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-08-12 14:49 UTC</span>
+  </div>
+  <div class="post-body">You'll need to do that later in the startup sequence. After OnInitialize returns and the dialog is displayed, input focus is moved to the first control in the tab order, causing any of your attempts in OnInitialize to be ignored.  You might try it from the OnSetFocus event of the text box, or simply change your tab order so the text box is not at the top.</div>
+</article>
+<article class="post" id="msg4326">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2009-08-12 17:26 UTC</span>
+  </div>
+  <div class="post-body">Ok, it works when dcl_TextBox_SetSel is called by the OnSetFocus event of another control (the first in the tab order). It don't works when called by himself (by the TextBox OnSetFocus).<br>
+<br>
+In fact I added a control because I don't know how to change the tab order... <br>
+How do you do ? dcl_Control_SetFocus ?</div>
+</article>
+<article class="post" id="msg4327">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-08-12 19:40 UTC</span>
+  </div>
+  <div class="post-body">You should change the tab order at design time in OpenDCL Studio (see the Tab/Z Order pane):<br>
+<a href="http://www.opendcl.com/HelpFiles/index.php?page=Usage/Studio.htm" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg4331">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2009-08-12 22:00 UTC</span>
+  </div>
+  <div class="post-body">Yes.. sorry I read too fast and what I was looking for was right under my nose.<br>
+<br>
+Finally, to do what I want, I need a control (must be visible) that support a SetFocus event and that call dcl_TextBox_SetSel ?<br>
+<br>
+May be there is not simpler solution ?<br>
+<br>
+otherwise thank a lot.. nice tool anyway</div>
+</article>
+<article class="post" id="msg4332">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-08-13 02:08 UTC</span>
+  </div>
+  <div class="post-body">I don't see any good solution. Perhaps you could put a PictureBox on the form, then call the SetSel from its OnPaint event handler. You would need to set a flag to make sure that SetSel is only called once.</div>
+</article>
+<article class="post" id="msg4337">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2009-08-13 10:06 UTC</span>
+  </div>
+  <div class="post-body">Yes it works too ! And picture can be not visible with the same background color<br>
+<br>
+Thank you very much</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

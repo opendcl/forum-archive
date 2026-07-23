@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HTML · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2738</p>
+    <h1>HTML</h1>
+    <p class="meta">Started by Basher ·
+      2020-08-12 06:41 UTC ·
+      4 replies · SMF topic #2738</p>
+<article class="post" id="msg13422">
+  <div class="post-head">
+    <span class="post-author">Basher</span>
+    <span class="post-date muted">2020-08-12 06:41 UTC</span>
+  </div>
+  <div class="post-body">hello friends<br>
+<br>
+I have been wrote a HTML code including scripts codes<br>
+its run fine at chrome and there is no errors and have an excellent output .  <br>
+when i open the html inside HTML opendcl  i have an errors about my script code .<br>
+do i miss something , any help .<br>
+<br>
+thanx<br>
+basher<br>
+ </div>
+</article>
+<article class="post" id="msg13429">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2020-09-01 15:28 UTC</span>
+  </div>
+  <div class="post-body">Basher,<br>
+<br>
+You will want to check your code in Internet Explorer, not Chrome.  The webview control utilizes IE.<br>
+We find the script errors are most commonly due to IE needing to updated, or just needing to be initialized.<br>
+<br>
+--J</div>
+</article>
+<article class="post" id="msg13763">
+  <div class="post-head">
+    <span class="post-author">DW</span>
+    <span class="post-date muted">2023-02-01 00:25 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Basher link=topic=2738.msg13422#msg13422 date=1597214484 wrote:</cite><br>
+its run fine at chrome and there is no errors and have an excellent output .  <br>
+when i open the html inside HTML opendcl  i have an errors about my script code .<br>
+</blockquote><br>
+<br>
+For any future search on this topic... <br>
+I'd been struggling to find the reason for HTML script errors and couldn't figure out why they were not seen in BricsCAD but were prolific in AutoCAD.<br>
+<br>
+It turns out that during a BricsCAD installation, an Internet Explorer registry entry is set which specifies the MSIE User-Agent BricsCAD will use.  By default, there is no corresponding entry for AutoCAD.  <br>
+<br>
+The key can be checked and set with the following code:<br>
+<pre class="code"><code> (if (not (vl-registry-read "HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BROWSER_EMULATION" (strcat (getvar "program") ".exe")))<br>
+      (vl-registry-write "HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BROWSER_EMULATION" (strcat (getvar "program") ".exe") 11001)<br>
+  )</code></pre> <br>
+<br>
+Where the 11001 DWord value will force IE11 emulation instead of an older IE emulation.<br>
+<br>
+More info can be found in this article: https://www.devhut.net/webbrowser-activex-control-google-maps-invalid-character-scripting-error/ </div>
+</article>
+<article class="post" id="msg13764">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2023-02-02 14:23 UTC</span>
+  </div>
+  <div class="post-body">Hi DW,<br>
+I'm not the OP, but have encountered this issue aswell.  That is tremendous information.<br>
+Many thanks indeed for posting the solution..<br>
+Cheers</div>
+</article>
+<article class="post" id="msg13771">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2023-03-01 20:16 UTC</span>
+  </div>
+  <div class="post-body">Hi, DW, many thanks for forwarding!<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

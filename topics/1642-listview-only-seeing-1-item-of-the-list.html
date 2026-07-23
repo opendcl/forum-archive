@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>listview only seeing 1 item of the list · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1642</p>
+    <h1>listview only seeing 1 item of the list</h1>
+    <p class="meta">Started by andrew ·
+      2011-06-27 14:15 UTC ·
+      2 replies · SMF topic #1642</p>
+<article class="post" id="msg8137">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2011-06-27 14:15 UTC</span>
+  </div>
+  <div class="post-body">i know im missing something, and im sure if it was a hand it would slap me but my listview is only showing 1 item of the list<br>
+<br>
+what am i missing?<br>
+<br>
+here is the code<br>
+<pre class="code"><code><br>
+<br>
+(defun c:dwghist_dwghist_display_ComboBox1_OnSelChanged (ItemCount histfile / file_list datfile ofil curline)<br>
+  (setq datfile (strcat "C:\\" histfile))<br>
+  (setq ofil (open datfile "r"))  <br>
+   (while (setq curline (read-line ofil))  <br>
+      (setq file_list (cons curline file_list))  <br>
+  )  <br>
+  (close ofil)  <br>
+<br>
+  (setq file_list (reverse file_list))<br>
+  (dcl_ListView_Clear dwghist_dwghist_display_ListView1)<br>
+  (dcl_ListView_FillList dwghist_dwghist_display_ListView1 (list file_list))<br>
+ ; (dcl_ListView_AddString dwghist_dwghist_display_ListView1 file_list)<br>
+ <br>
+(princ)<br>
+)<br>
+</code></pre></div>
+</article>
+<article class="post" id="msg8138">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-06-27 14:28 UTC</span>
+  </div>
+  <div class="post-body">You need to feed a list of lists to FillList:<br>
+<br>
+(dcl_ListView_FillList dwghist_dwghist_display_ListView1 (mapcar 'list file_list))</div>
+</article>
+<article class="post" id="msg8140">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2011-06-27 16:01 UTC</span>
+  </div>
+  <div class="post-body">gah! <br>
+<br>
+thanks Owen</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

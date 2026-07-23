@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Image transparency · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1549</p>
+    <h1>Image transparency</h1>
+    <p class="meta">Started by krunch ·
+      2010-12-05 22:21 UTC ·
+      12 replies · SMF topic #1549</p>
+<article class="post" id="msg7574">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2010-12-05 22:21 UTC</span>
+  </div>
+  <div class="post-body">Hi, like other posts on this forum my problem is about image transparency.. I need transparent background in my image, showing the backcolor of the picturebox.<br>
+<br>
+I read this post <a href="http://www.opendcl.com/forum/index.php?topic=932.0" rel="nofollow noopener">{2}</a> but (192 192 192) doesn't work with me, it makes a sort of milky half-transparent mask (white with 50% transparency)..<br>
+<br>
+Did I miss something ?</div>
+</article>
+<article class="post" id="msg7577">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-12-06 06:50 UTC</span>
+  </div>
+  <div class="post-body">Hi, please have a try with ICO or PNG files with transparent background. Works fine for me in all cases.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7578">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-12-06 10:43 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1549.msg7577#msg7577 date=1291618201 wrote:</cite><br>
+Hi, please have a try with ICO or PNG files with transparent background. Works fine for me in all cases.<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+Hello Fred,  <br>
+Can you post a test that works with a file PNG with transparent background?  <br>
+Thanks  <br>
+Velasquez</div>
+</article>
+<article class="post" id="msg7579">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2010-12-06 10:56 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred, thanks for your answer..<br>
+<br>
+- I tried with .ico (saved-as by MS-Paint, because Photoshop doesn't save this format) but I get the same result..<br>
+- As to .png format it's not supported by OpenDCL ?<br>
+<br>
+May be some one could post an example ?<br>
+My system is Vista.. does it causes problems ? (...don't know why I would not be surprised...)</div>
+</article>
+<article class="post" id="msg7580">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-12-06 12:50 UTC</span>
+  </div>
+  <div class="post-body">Hi, krunch, make sure that you're using OpenDCL 6. In this release you can add PNG files to the image folder.<br>
+When I tried to create a sample I've found out what krunch meant in his initial post: there seems to be a milky cover over the transparent area.<br>
+I didn't notice it before because I usually use backcolor -16 for that (image on top in the sample).<br>
+<br>
+For the case it is a bug I recommend you to add a bug report.<br>
+<br>
+Regards,<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1500/turnaround.odcl">turnaround.odcl</a> <span class="muted">(1286 bytes)</span></li><li><a href="../attachments/1501/14.png">14.png</a> <span class="muted">(3758 bytes)</span></li><li><a href="../attachments/1502/turnaround.png">turnaround.png</a> <span class="muted">(3129 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7581">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-12-06 14:56 UTC</span>
+  </div>
+  <div class="post-body">I think that the picture folder image is stored as a standard bitmap with no transparency information, then the painting code uses color RGB(192,192,192) as a mask to display the bitmap transparently. The fact that the background color is affecting the "transparent" portion of the image surprises me, and indicates that the function is using the alpha channel byte. This must be a Windows thing, because the OpenDCL code doesn't do anything with the alpha channel.<br>
+<br>
+The bottom line is that there are some strange results here that might indicate a bug, but using a bitmap with RGB(192,192,192) and no alpha channel as the "transparent" part of the image should work.</div>
+</article>
+<article class="post" id="msg7582">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2010-12-06 15:05 UTC</span>
+  </div>
+  <div class="post-body">Yes, apparently image transparency only works with a few BackgroundColor (-1, -16..)<br>
+<br>
+With others the result can be unexpected, not only 'milky cover' : here (below) I just changed BackgroundColors in your previous sample, upper bckcolor -4 makes a pink !<br>
+<br>
+My problem is that I manage PictureBox's background color because it makes sense, and I need to add images with transparent background..<br>
+<br>
+@owenwengerd : when I save-as with Photoshop (.png or .bmp) the alpha channel is disabled<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1503/turnaround+.png">turnaround+.png</a> <span class="muted">(5531 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7588">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-12-06 19:45 UTC</span>
+  </div>
+  <div class="post-body">Hi, please don't use SaveAs method in Photoshop. There are different places in different Photoshop releases where a special command is placed: in older releases you can find something similar like "Save transparent image" in the Help menu (yes you read correct). In CS5 there is a command "Save for Web" in the file menu.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7589">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-12-06 21:14 UTC</span>
+  </div>
+  <div class="post-body">Please attach a copy of the .png so I can investigate.</div>
+</article>
+<article class="post" id="msg7590">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2010-12-06 21:49 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">Hi, please don't use SaveAs method in Photoshop. There are different places in different Photoshop releases where a special command is placed: in older releases you can find something similar like "Save transparent image" in the Help menu (yes you read correct). In CS5 there is a command "Save for Web" in the file menu.</blockquote><br>
+&gt; Thanks, I didn't know 'Save for web' in the Help menu (original!).. I'll think about it. I meant that the image doesn't stock alpha channel<br>
+<br>
+<blockquote class="quote">Please attach a copy of the .png so I can investigate.</blockquote><br>
+&gt; I put back Fred's files ; in the .odcl file I just changed colors as in my last screenshot above. <br>
+<br>
+I could make more samples, just tell..<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1505/turnaround.odcl">turnaround.odcl</a> <span class="muted">(1206 bytes)</span></li><li><a href="../attachments/1506/14.png">14.png</a> <span class="muted">(3758 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7592">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-12-08 05:14 UTC</span>
+  </div>
+  <div class="post-body">I think I have this problem fixed now for the next build.</div>
+</article>
+<article class="post" id="msg7594">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2010-12-08 16:02 UTC</span>
+  </div>
+  <div class="post-body">Hi, congratulation for your work, and for your reactivity.<br>
+<br>
+I think I found another (minor) display problem with labels.. Does I post here or does I make a bug report for this kind of problem ?</div>
+</article>
+<article class="post" id="msg7596">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-12-08 19:41 UTC</span>
+  </div>
+  <div class="post-body">If you're certain it's a bug, then a bug report is appropriate, otherwise start a new thread here.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>a little assistance please · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1048</p>
+    <h1>a little assistance please</h1>
+    <p class="meta">Started by andrew ·
+      2009-12-02 17:45 UTC ·
+      21 replies · SMF topic #1048</p>
+<article class="post" id="msg5440">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-02 17:45 UTC</span>
+  </div>
+  <div class="post-body">i get the error message<br>
+Error: NIL value not allowed<br>
+Function: dcl_control_setlist<br>
+Argument: 0<br>
+<br>
+here is my code<br>
+<br>
+<pre class="code"><code><br>
+(command "OPENDCL")<br>
+<br>
+(defun c:Hello ()<br>
+<br>
+; call the method to load the HelloWorld.odcl file.<br>
+(dcl_Project_Load "od-test1" T)<br>
+<br>
+; call the method to show the Hello World dialog box example<br>
+(dcl_Form_Show od-test1_Form1)<br>
+(princ)<br>
+)<br>
+<br>
+(defun c:od-test1_Form1_TextButton1_OnClicked (/)<br>
+(dcl_Form_Close od-test1_Form1)<br>
+)<br>
+<br>
+(defun c:od-test1_Form1_OnInitialize (/)<br>
+ (setq datafile "c:\test.txt")<br>
+        (setq ofile (open datafile "r"))<br>
+        (while (setq curline (read-line ofile))<br>
+          (setq file_content_list (cons curline file_content_list))<br>
+        )<br>
+        (close ofile)<br>
+<br>
+        (setq file_content_list (reverse file_content_list))<br>
+  (dcl_Control_SetList od-test1_Form1_ListBox1 file_content_list)<br>
+)<br>
+<br>
+<br>
+(defun c:od-test1_Form1_TextButton2_OnClicked (/)<br>
+  (dcl_Control_GetCaption od-test1_Form1_TextButton2)<br>
+)<br>
+</code></pre><br>
+<br>
+the file test.txt does exist in the local C<br>
+what am i doing wrong?<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5442">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-02 17:51 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Just a guess ... I'd need the odcl  to test..<br>
+try<br>
+(setq datafile "c:\\test.txt")<br>
+or<br>
+(setq datafile "c:/test.txt")<br>
+</div>
+</article>
+<article class="post" id="msg5444">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-02 18:18 UTC</span>
+  </div>
+  <div class="post-body">here is the odcl file<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1095/od-test1.odcl">od-test1.odcl</a> <span class="muted">(861 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5445">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-02 18:46 UTC</span>
+  </div>
+  <div class="post-body">i got it working, i just deleted the files and re-created them </div>
+</article>
+<article class="post" id="msg5449">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-02 20:04 UTC</span>
+  </div>
+  <div class="post-body">i created a new file and its not displaying the list again<br>
+<br>
+good greif</div>
+</article>
+<article class="post" id="msg5462">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-03 06:51 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Andrew,<br>
+did you try changing <br>
+(setq datafile "c:\test.txt")<br>
+to<br>
+(setq datafile "c:\\test.txt")<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5463">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-03 07:01 UTC</span>
+  </div>
+  <div class="post-body"><br>
+and I think that <br>
+(dcl_Control_SetList od-test1_Form1_ListBox1 file_content_list)<br>
+should be<br>
+(dcl_ListBox_AddList od-test1_Form1_ListBox1 file_content_list)<br>
+<br>
+but I'd need to see the contents of the Test.txt file.<br>
+You are trying to populate the list, yes ?<br>
+Is the <em>file_content_list</em> a list of lists ?<br>
+</div>
+</article>
+<article class="post" id="msg5467">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-03 13:58 UTC</span>
+  </div>
+  <div class="post-body">Kerry,<br>
+I did try the other method and it still didnt work.<br>
+<br>
+the txt file is just lines of directory paths of drawing<br>
+<br>
+ex. <br>
+C:\Users\andrew\Documents\Drawing1.dwg<br>
+C:\Users\andrew\Documents\Drawing2.dwg<br>
+etc.<br>
+<br>
+i didnt use the (dcl_ListBox_AddList od-test1_Form1_ListBox1 file_content_list)<br>
+because im not looking to append new items to the list, just to read a txt file and display what is in the txt file.<br>
+<br>
+it works on 1 test file i made but not on another. i cant imagine why.<br>
+<br>
+thanks for your help</div>
+</article>
+<article class="post" id="msg5470">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-03 15:34 UTC</span>
+  </div>
+  <div class="post-body"><br>
+OK,<br>
+Here is your problem.<br>
+<br>
+The ODCL file is named od-test1.ODCL<br>
+The Events in the editor are named od-test_Form1.xxxxx<br>
+The Events in the lisp file are named od-test1_Form1.xxxxx<br>
+<br>
+So, the events in the ODCL are named differntly to the eventFunctions in the Lisp File<br>
+<br>
+To fix this :<br>
+I unchecked and rechecked each event so that they were renamed to  od-test1_Form1.xxxxx <br>
+<br>
+Changed the <br>
+(setq datafile "c:\test.txt")<br>
+to<br>
+(setq datafile "c:\\test.txt")<br>
+<br>
+<br>
+I changed the <br>
+(dcl_Control_SetList od-test1_Form1_ListBox1 file_content_list)<br>
+To<br>
+(dcl_ListBox_AddList od-test1_Form1_ListBox1 file_content_list)<br>
+<br>
+<br>
+Seems to work on the .TXT file I made ( a list of qualified DWG path/file names.)<br>
+<br>
+Regards<br>
+</div>
+</article>
+<article class="post" id="msg5475">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-03 16:08 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=1048.msg5470#msg5470 date=1259854471 wrote:</cite><br>
+<br>
+OK,<br>
+Here is your problem.<br>
+<br>
+The ODCL file is named od-test1.ODCL<br>
+The Events in the editor are named od-test_Form1.xxxxx<br>
+The Events in the lisp file are named od-test1_Form1.xxxxx<br>
+<br>
+So, the events in the ODCL are named differntly to the eventFunctions in the Lisp File<br>
+<br>
+To fix this :<br>
+I unchecked and rechecked each event so that they were renamed to  od-test1_Form1.xxxxx <br>
+<br>
+Changed the <br>
+(setq datafile "c:\test.txt")<br>
+to<br>
+(setq datafile "c:\\test.txt")<br>
+<br>
+<br>
+I changed the <br>
+(dcl_Control_SetList od-test1_Form1_ListBox1 file_content_list)<br>
+To<br>
+(dcl_ListBox_AddList od-test1_Form1_ListBox1 file_content_list)<br>
+<br>
+<br>
+Seems to work on the .TXT file I made ( a list of qualified DWG path/file names.)<br>
+<br>
+Regards<br>
+<br>
+</blockquote><br>
+<br>
+i appreciate your help<br>
+the fixing of the form1 helped but these other changes changes didnt help.<br>
+<br>
+changed this line didnt make a difference<br>
+(setq datafile "c:\test.txt")<br>
+to<br>
+(setq datafile "c:\\test.txt")<br>
+<br>
+<br>
+in fact i get errors on my working model when i changed the <br>
+<br>
+(dcl_Control_SetList od-test1_Form1_ListBox1 file_content_list)<br>
+To<br>
+(dcl_ListBox_AddList od-test1_Form1_ListBox1 file_content_list)<br>
+<br>
+<br>
+whats even more strange, and im certain its something im missing as it usually is, is that i re-created this same form in a modelss form and its not displaying the list again.<br>
+<br>
+back to the drawing board... thanks again<br>
+</div>
+</article>
+<article class="post" id="msg5476">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-03 16:24 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">in fact i get errors on my working model when i changed the ..... </blockquote><br>
+<br>
+What error Message ??<br>
+<br>
+Just for Info<br>
+<br>
+(command "OPENDCL")<br>
+<br>
+(defun c:Hello ( / file_content_list)                                                <br>
+  (dcl_Project_Load "od-test1" T)                                <br>
+  (dcl_Form_Show od-test1_Form1)<br>
+  (princ)<br>
+)<br>
+<br>
+(defun c:od-test1_Form1_TextButton1_OnClicked (/)<br>
+  (dcl_Form_Close od-test1_Form1)<br>
+)<br>
+<br>
+(defun c:od-test1_Form1_OnInitialize (/ datafile ofile curline)<br>
+  (setq datafile "c:\\test.txt")<br>
+  (setq ofile (open datafile "r"))<br>
+  (while (setq curline (read-line ofile))<br>
+    (setq file_content_list (cons curline file_content_list))<br>
+  )<br>
+  (close ofile)<br>
+  (setq file_content_list (reverse file_content_list))<br>
+  (dcl_ListBox_AddList od-test1_Form1_ListBox1 file_content_list)<br>
+)<br>
+<br>
+<br>
+(defun c:od-test1_Form1_TextButton2_OnClicked (/)<br>
+  (dcl_Control_GetCaption od-test1_Form1_TextButton2)<br>
+)  <br>
+<br>
+The dialog piccy attached :<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1101/Test_Hello_Andrew.png">Test_Hello_Andrew.png</a> <span class="muted">(14597 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5478">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-03 16:37 UTC</span>
+  </div>
+  <div class="post-body">i didnt think this would be so difficult but good lord...<br>
+i must have re-written this code at least 10 times<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1102/odcl-error.JPG">odcl-error.JPG</a> <span class="muted">(19519 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5479">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-03 16:45 UTC</span>
+  </div>
+  <div class="post-body">Looks to me as if the control names are wrong or file_content_list is nil ... <br>
+<br>
+post(attach)  the LSP and ODCL that is a problem.</div>
+</article>
+<article class="post" id="msg5480">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-03 16:54 UTC</span>
+  </div>
+  <div class="post-body">i had a misspelling in the test lisp which caused that...<br>
+forgive my ignorance.<br>
+<br>
+it does seem that my file_content_list is coming up nil<br>
+which is why its not displaying.<br>
+<br>
+i cant understand why if it work on one file and not the other.<br>
+even if i rename the working test file to something else and change the proper lines to reflect the name change, the list box returns empty, if i rename it back to the original lines, it works.<br>
+is this something that you can not do with odcl?<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5481">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-03 16:54 UTC</span>
+  </div>
+  <div class="post-body">Argument 0 is the control name.</div>
+</article>
+<article class="post" id="msg5482">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-03 16:56 UTC</span>
+  </div>
+  <div class="post-body">Andrew, I recommend to spend some learning how to debug your code with the VLIDE.  You can step through the code with the VLIDE to see where it is failing rather than changing things randomly in hopes that it will suddenly work.</div>
+</article>
+<article class="post" id="msg5485">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-03 17:07 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1048.msg5482#msg5482 date=1259859413 wrote:</cite><br>
+Andrew, I recommend to spend some learning how to debug your code with the VLIDE.  You can step through the code with the VLIDE to see where it is failing rather than changing things randomly in hopes that it will suddenly work.<br>
+</blockquote><br>
+<br>
+Owen, thanks for the help.<br>
+<br>
+I ran the code alone thru vlide, and it works as it should.<br>
+but when i incorporate it into the odcl code it doesnt work<br>
+<br>
+even when i use the following code in place of reading an external file it still dont list<br>
+<br>
+<pre class="code"><code><br>
+(defun c:od-toolbox_Form1_OnInitialize (/ datafile ofile curline)  <br>
+  (setq datafile "c:\\test.txt")  <br>
+  (setq ofile (open datafile "r"))  <br>
+  (while (setq curline (read-line ofile))  <br>
+    (setq file_content_list (cons curline file_content_list))  <br>
+  )  <br>
+  (close ofile)  <br>
+  (setq file_content_list (reverse file_content_list))  <br>
+ ; (dcl_ListBox_AddList od-toolbox_Form1_ListBox1 file_content_list)  <br>
+  (dcl_ListBox_AddList od-toolbox_Form1_ListBox1 "hello" "world")<br>
+)</code></pre></div>
+</article>
+<article class="post" id="msg5486">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-03 17:13 UTC</span>
+  </div>
+  <div class="post-body"><br>
+The function expects a list<br>
+<br>
+so, try<br>
+(dcl_ListBox_AddList od-toolbox_Form1_ListBox1 (list "hello" "world")  )<br>
+</div>
+</article>
+<article class="post" id="msg5487">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-03 17:30 UTC</span>
+  </div>
+  <div class="post-body">Try something like this for debugging..<br>
+<br>
+Note I've added the findfile<br>
+(setq datafile (findfile "c:\\test.txt"))<br>
+<br>
+Recording set to run once.  F5 refresh to replay.<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1103/Test-Hello.gif">Test-Hello.gif</a> <span class="muted">(233464 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5489">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-03 18:08 UTC</span>
+  </div>
+  <div class="post-body">yep mine works the same way<br>
+ ???<br>
+<br>
+here are my files can you run them and tell me if they work for you?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1104/od-toolbox.lsp">od-toolbox.lsp</a> <span class="muted">(1733 bytes)</span></li><li><a href="../attachments/1105/od-toolbox.odcl">od-toolbox.odcl</a> <span class="muted">(1101 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5494">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-12-03 19:23 UTC</span>
+  </div>
+  <div class="post-body">You don't have the "Initialize" event checked on your form.<br>
+Remember to save your project after you do..<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1107/temp.png">temp.png</a> <span class="muted">(18125 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5498">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-03 20:30 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=1048.msg5494#msg5494 date=1259868218 wrote:</cite><br>
+You don't have the "Initialize" event checked on your form.<br>
+Remember to save your project after you do..<br>
+<br>
+</blockquote><br>
+<br>
+wow that was simple heh<br>
+<br>
+thanks everyone for the help</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

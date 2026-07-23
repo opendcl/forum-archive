@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Block View Control - Attributes - Don't display · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 760</p>
+    <h1>Block View Control - Attributes - Don't display</h1>
+    <p class="meta">Started by zeeboy ·
+      2009-05-15 16:38 UTC ·
+      1 replies · SMF topic #760</p>
+<article class="post" id="msg3720">
+  <div class="post-head">
+    <span class="post-author">zeeboy</span>
+    <span class="post-date muted">2009-05-15 16:38 UTC</span>
+  </div>
+  <div class="post-body">I've added a block view control and it works really good, Thanks!<br>
+<br>
+But I think it could be improved if there was a way to manage what is shown for the block (i.e. a layer management and/or a property to display attributes).<br>
+<br>
+The blocks I'm viewing have attributes and most of the attributes are invisible attributes.  The novice users seeing this dialog will get confused as to what they are see.<br>
+<br>
+Here is an example of what the user sees:  <a href="http://www.screencast.com/t/zNH0GChrc" rel="nofollow noopener">{2}</a><br>
+Here is an example of what I'd like the user to see: <a href="http://screencast.com/t/6u6HO0729" rel="nofollow noopener">{2}</a><br>
+<br>
+Thanks!<br>
+Doug</div>
+</article>
+<article class="post" id="msg3721">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-15 20:28 UTC</span>
+  </div>
+  <div class="post-body">Hi, zeeboy, it does already work!<br>
+<br>
+Case 1: It is a blockdefinition of the active drawing. In this case you have access to all attributes properties. I use this for previews of the properties the user can select. You can see an example I attached (creating a diagram for the time plants are flowering).<br>
+<br>
+Case 2: It is a external blockdefinition. You can have access to dwg's using ObjectDBX. I use this for defining symbollines in seperate dwg's (like blocks). All I read out is the lwpolyline and its properties. At the same way you can change drawing settings (object properties (visible) layers (color) and systemvars (ATTMODE)). After saving the external DWG (which was opened by ObjectDBX) you can reload the blockview control to update the content.<br>
+<br>
+The problem is, using ObjectDBX for external blocks (DWG's) and VisualLisp for internally defined Blocks is much more powerful than to add only a few additional functions for the blockview control. The next problem is that these functions must work on every supported AutoCAD release. And that might result in a huge source code which has to be maintained.<br>
+<br>
+Maybe the cases I mentioned can give you some ideas a bit closer to come your solution.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/727/flowerdiagram.gif">flowerdiagram.gif</a> <span class="muted">(632078 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

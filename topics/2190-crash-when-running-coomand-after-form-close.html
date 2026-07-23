@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crash when running coomand after form close · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2190</p>
+    <h1>Crash when running coomand after form close</h1>
+    <p class="meta">Started by jmaeding ·
+      2014-11-11 02:16 UTC ·
+      5 replies · SMF topic #2190</p>
+<article class="post" id="msg10977">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2014-11-11 02:16 UTC</span>
+  </div>
+  <div class="post-body">I show a modal dilaog, then a button on it closes the form, and does a redraw command, like:<br>
+(DCL_Form_Close "CT-Civil10" "frm3DAlgPropsT")<br>
+(COMMAND "REDRAW")<br>
+<br>
+instant fatal error in 2014 and 2015, but not 2009.<br>
+I tried several things like adding (dcl_SetCmdBarFocus) before the command, and sending the coomand via vba sendcommand. Nothing helps, crashes both ways.<br>
+<br>
+Is this a known thing and is there something I must do to avoid the crash?<br>
+It does not matter what command I run, I got this error in many places in my programs, so the pattern seems to be the acad version.<br>
+Its build 8.0.0.5 for 2015 (64 bit one)... thanks<br>
+</div>
+</article>
+<article class="post" id="msg10978">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-11 02:24 UTC</span>
+  </div>
+  <div class="post-body">This has been discussed frequently here in other threads (e.g. <a href="http://www.opendcl.com/forum/index.php?topic=2166.0" rel="nofollow noopener">{2}</a>). You cannot safely call (command) from an event handler of a modal dialog. Just move that code to your main function so that it executes after (dcl-Form-Show) returns, then it will work fine.</div>
+</article>
+<article class="post" id="msg10979">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2014-11-11 02:37 UTC</span>
+  </div>
+  <div class="post-body">That is really odd I never noticed it. Likely because 2009 is ok with it.<br>
+I had seen some posts about using command-s, and tried it and it worked.<br>
+<br>
+so now I am wondering how important it is to do what you mention, as its not very convenient.<br>
+I would have to set a flag for what button was picked, then have a big conditional after the form show code.<br>
+<br>
+very tempted to stick with command-s, but at least now I know recommended handling.<br>
+thanks for your incredibly fast support Owen!!</div>
+</article>
+<article class="post" id="msg10980">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2014-11-11 02:41 UTC</span>
+  </div>
+  <div class="post-body">also, note that I have closed the modal dialog before calling a command.<br>
+<br>
+The example you mentioned was calling command while modal was open.<br>
+So its not just closing the dialog, but waiting for return to the open function.<br>
+That is unexpected as you would thing you could do anything once the dialog is closed.</div>
+</article>
+<article class="post" id="msg10981">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-11 03:32 UTC</span>
+  </div>
+  <div class="post-body">The dialog is not necessarily closed by the time (dcl-Form-Close) returns; it depends on how fast the system processes the Windows messages in the background.</div>
+</article>
+<article class="post" id="msg10982">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2014-11-11 17:05 UTC</span>
+  </div>
+  <div class="post-body">I see. I am still wondering how I just noticed this. I have a major prog that runs in 2009 up to 2015, and use it all the time in 2015. My prog is a composite of lisp and .net, and uses odcl for most dialogs.<br>
+I almost cannot think of another issue like this, that would need me to restructure code so much.<br>
+I read why 2015 is doing this, and 2009 not, but it seems like just a couple weeks ago it was not doing this in 2014 or 2015. I'll keep reading posts but am so glad this came up now when I have a chance to fix before implementing certain things.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>(dcl_Control_SetSingleExpanded unclear · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 506</p>
+    <h1>(dcl_Control_SetSingleExpanded unclear</h1>
+    <p class="meta">Started by Jim ·
+      2008-12-11 01:40 UTC ·
+      7 replies · SMF topic #506</p>
+<article class="post" id="msg2280">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-12-11 01:40 UTC</span>
+  </div>
+  <div class="post-body">(dcl_Control_SetSingleExpanded  NewValue [as Boolean])<br>
+<br>
+Is:<br>
+If this property is set, the control allows only one item at a time to be expanded.<br>
+<br>
+Better:<br>
+If newValue = T the control allows only one item at a time to be expanded.<br>
+If newValue = NIL the control allows multiple items at a time to be expanded.<br>
+<br>
+NewValue is case sensitive<br>
+<br>
+Bug:<br>
+When new value = T, selecting next node may skip a node and select 2nd node below.<br>
+<br>
+Jim</div>
+</article>
+<article class="post" id="msg2284">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-12-11 19:23 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Jim Short link=topic=506.msg2280#msg2280 date=1228959637 wrote:</cite><br>
+Bug:<br>
+When new value = T, selecting next node may skip a node and select 2nd node below.</blockquote><br>
+<br>
+Can you provide more detail?</div>
+</article>
+<article class="post" id="msg2286">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-12-12 01:43 UTC</span>
+  </div>
+  <div class="post-body">T or NIL Case sensitive<br>
+Went True, right-arrow will expand multiple nodes.<br>
+When True, supposed to expand only one node at a time on single click.<br>
+If multiple nodes expanded, clicking on plus mark of another collapsed node will expand it and close the previously expanded node, leaving the rest of the expanded nodes alone.<br>
+If unselected, a single click on plus mark selects node.<br>
+If unselected, a single click on image, or label, expands node and closes previously expanded node.<br>
+If already selected, single click on plus mark, image, or label, toggles expanded state.<br>
+If one selects labels from bottom up the clicked label expands and keeps focus.<br>
+If one selects from top down, the first node expands and keeps focus.<br>
+Clicking the label on the second node, expands the third and it keeps focus. <br>
+Clicking the 4th node expands it and focus moves to its second child. <br>
+Clicking on the fifth node expands it and focus moves to its third Child.</div>
+</article>
+<article class="post" id="msg2289">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-12-15 06:37 UTC</span>
+  </div>
+  <div class="post-body">I've done a bit of work on this for Beta 5. The Single Expanded property was renamed to Single Click Expand, and its description updated to correctly document its function. FWIW, I rewrote the TreeView sample so I had a testbed to use while I was working on this issue.</div>
+</article>
+<article class="post" id="msg2290">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-12-15 14:43 UTC</span>
+  </div>
+  <div class="post-body">Owen, Looks good, but I did not test yet.<br>
+<br>
+Please note that selecting Single Click Expand in the control browser methods tree does not link to help page.<br>
+<br>
+Thanks for fixing tab control so it displays controls on correct pages.<br>
+<br>
+Jim</div>
+</article>
+<article class="post" id="msg2387">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-01-27 06:38 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=506.msg2289#msg2289 date=1229323067 wrote:</cite><br>
+I've done a bit of work on this for Beta 5. The Single Expanded property was renamed to Single Click Expand, and its description updated to correctly document its function. FWIW, I rewrote the TreeView sample so I had a testbed to use while I was working on this issue.<br>
+</blockquote><br>
+<br>
+What happened to the new Tree sample ?</div>
+</article>
+<article class="post" id="msg2389">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-01-27 06:52 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=506.msg2387#msg2387 date=1233038314 wrote:</cite><br>
+What happened to the new Tree sample ?<br>
+</blockquote><br>
+<br>
+It's in the Samples folder of the last few beta builds.</div>
+</article>
+<article class="post" id="msg14308">
+  <div class="post-head">
+    <span class="post-author">JBerns</span>
+    <span class="post-date muted">2026-01-15 20:56 UTC</span>
+  </div>
+  <div class="post-body">Are there code examples that demonstrate this function?<br>
+<br>
+I hope I understand its purpose.<br>
+<br>
+My goal is to create a form that can expand or collapse a portion of the form similar to the PLOT command.<br>
+<br>
+[url="https://autode.sk/49ogR9F"]https://autode.sk/49ogR9F<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

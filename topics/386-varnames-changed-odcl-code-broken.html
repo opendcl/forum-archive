@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Varnames changed odcl code broken · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 386</p>
+    <h1>Varnames changed odcl code broken</h1>
+    <p class="meta">Started by Jim ·
+      2008-07-29 14:36 UTC ·
+      4 replies · SMF topic #386</p>
+<article class="post" id="msg1712">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-07-29 14:36 UTC</span>
+  </div>
+  <div class="post-body">Please can someone help me understand what is required to make this work now that control name are some kind of autocad entity. It use  to work in odcl.<br>
+Thanks, Jim <br>
+<br>
+(defun tcam:SnapCtrlNames ()<br>
+  (list<br>
+    TahlCAD_TahlSnapsH_cbEnd<br>
+    TahlCAD_TahlSnapsH_cbMid<br>
+  )<br>
+)<br>
+<br>
+(mapcar<br>
+  (function<br>
+    (lambda (a )<br>
+      (Dcl_Control_SetValue<br>
+	a<br>
+	1<br>
+      )<br>
+      (tcam:SnapCtrlNames)<br>
+    )<br>
+  )<br>
+)</div>
+</article>
+<article class="post" id="msg1713">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-07-29 14:53 UTC</span>
+  </div>
+  <div class="post-body">How does your code fail?  Do you get an error message?</div>
+</article>
+<article class="post" id="msg1714">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-07-29 15:36 UTC</span>
+  </div>
+  <div class="post-body">if I <br>
+(list<br>
+    (quote TahlCAD_TahlSnapsH_cbEnd)<br>
+    (quote TahlCAD_TahlSnapsH_cbMid)<br>
+)<br>
+ instead of<br>
+(list<br>
+    TahlCAD_TahlSnapsH_cbEnd)<br>
+    TahlCAD_TahlSnapsH_cbMid)<br>
+)<br>
+I get the error: ; error: invalid data type or data overflow: TAHLCAD_TAHLSNAPSH_CBEND<br>
+<br>
+otherwise:<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/450/Runtime error.jpg">Runtime error.jpg</a> <span class="muted">(44797 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1715">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-07-29 20:37 UTC</span>
+  </div>
+  <div class="post-body">I'm not sure if you're referring to the (dcl_Control_SetValue) in your code example or the (dcl_Control_SetEnabled) shown in the screen shot, but yes there where a number of changes from 4.1 to 5.0 that breaks existing code.<br>
+<br>
+"SetEnabled" is expecting a Bool. T\nil &amp; "SetValue" is expecting an integer 0,1,2<br>
+<br>
+Per the Intelligent Help:<br>
+(dcl_Control_SetEnabled Untitled_Form1_TextButton1 <br>
+newValue [as Boolean])  <br>
+<br>
+(dcl_Control_SetValue Untitled_Form1_Option1 <br>
+newValue [as Integer])  </div>
+</article>
+<article class="post" id="msg1721">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2008-07-30 01:14 UTC</span>
+  </div>
+  <div class="post-body">Thanks Barry,<br>
+That cleared everything up.<br>
+Cheers,<br>
+Jim :)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

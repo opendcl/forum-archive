@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Asynchronous Code Running? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2428</p>
+    <h1>Asynchronous Code Running?</h1>
+    <p class="meta">Started by Martin ·
+      2016-09-25 02:54 UTC ·
+      1 replies · SMF topic #2428</p>
+<article class="post" id="msg12104">
+  <div class="post-head">
+    <span class="post-author">Martin</span>
+    <span class="post-date muted">2016-09-25 02:54 UTC</span>
+  </div>
+  <div class="post-body">I have been asked to check for code for problems for a company that is migrating to AutoCAD Mechanical 2016.<br>
+They have been using ODCL successfully for sometime in AutoCAD Mechanical 2014.<br>
+It appears to me that after clicking a button and the _OnClicked event is run the dialog is returned before the code execution is completed.<br>
+<br>
+Is this a problem that can be overcome with settings in AutoCAD or within the ODCL?<br>
+<br>
+I have spent a lot of time trying to research this problem and also confirm what the problem is<br>
+Any help will be gratefully received.<br>
+</div>
+</article>
+<article class="post" id="msg12106">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-09-25 16:58 UTC</span>
+  </div>
+  <div class="post-body">This usually indicates improper code running in a handler that is unsafe to execute while a modal form is still active. You need to move that code out of the event handler and into the main function (the one that calls (dcl-Form-Show) so that it executes after the dialog has closed. There are other posts here in the forum about the same problem, along with sample code showing the correct way to structure the code.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

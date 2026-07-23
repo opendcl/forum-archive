@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My first OpenDCL · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 2258</p>
+    <h1>My first OpenDCL</h1>
+    <p class="meta">Started by tinomartinez ·
+      2015-04-20 03:07 UTC ·
+      9 replies · SMF topic #2258</p>
+<article class="post" id="msg11339">
+  <div class="post-head">
+    <span class="post-author">tinomartinez</span>
+    <span class="post-date muted">2015-04-20 03:07 UTC</span>
+  </div>
+  <div class="post-body">I discovered your wonderful program. I was looking for a way to create a box insertion of frequently used blocks, with a preview .<br>
+<br>
+I was pleasantly surprised at the ease , speed and the potential of your OpenDCL software.<br>
+<br>
+My first draft with Briscad instead of Autocad !<br>
+<br>
+ps: forgive me, my English is not very good, I am using Google translation.<br>
+<br>
+<img src="http://www.mathieumartineau.ca/temporaire/insert-block.png" alt="" loading="lazy"><br>
+<br>
+To start the program use '(LS:OPENDCL:INSERTBLOCK)'.<br>
+<br>
+BricsCAD 14.1.13<br>
+OpenDCL 8.0.0.13<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2122/LS-BlockPreview.odcl">LS-BlockPreview.odcl</a> <span class="muted">(1707 bytes)</span></li><li><a href="../attachments/2121/LS-BlockPreview.lsp">LS-BlockPreview.lsp</a> <span class="muted">(2190 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11340">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2015-04-20 03:11 UTC</span>
+  </div>
+  <div class="post-body">LIKE!</div>
+</article>
+<article class="post" id="msg11342">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-04-20 15:19 UTC</span>
+  </div>
+  <div class="post-body">Very nice! Thanks for sharing.</div>
+</article>
+<article class="post" id="msg11347">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-04-21 07:44 UTC</span>
+  </div>
+  <div class="post-body">Nice work tinomartinez!<br>
+<br>
+While testing the code I noticed a problem that is reminiscent of <a href="http://www.opendcl.com/forum/index.php?topic=2049.0" rel="nofollow noopener">{2}</a>.<br>
+1. Run the program, browse to a folder with dwgs and click on a file to display it.<br>
+2. Cancel the program.<br>
+3. Run the program again. The current model space is now displayed in the BlockView.<br>
+<br>
+To start the program use '(LS:OPENDCL:INSERTBLOCK)'.<br>
+<br>
+BricsCAD 14.2.17<br>
+OpenDCL 8.0.0.13</div>
+</article>
+<article class="post" id="msg11349">
+  <div class="post-head">
+    <span class="post-author">tinomartinez</span>
+    <span class="post-date muted">2015-04-21 12:15 UTC</span>
+  </div>
+  <div class="post-body">thank for your comment roy<br>
+<br>
+I add this code in the initialize to clear the viewblock loaddwg.<br>
+<br>
+(defun c:LS-BlockPreview/BlockPreview#OnInitialize (/)<br>
+;; addshortcut<br>
+  (dcl-Control-SetList LS-BlockPreview/BlockPreview/shortcut (mapcar '(lambda (x) (car x)) oShortcut))<br>
+  (dcl-Control-ZOrder LS-BlockPreview/BlockPreview/Insert 1)<br>
+  (dcl-BlockView-LoadDwg LS-BlockPreview/BlockPreview/BlockView "") ;; new line to clear viewblock<br>
+)</div>
+</article>
+<article class="post" id="msg11376">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2015-04-28 20:56 UTC</span>
+  </div>
+  <div class="post-body">Very nice - thanks for sharing<br>
+<br>
+jb</div>
+</article>
+<article class="post" id="msg11400">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-05-18 14:03 UTC</span>
+  </div>
+  <div class="post-body">Actually the problem mentioned in my previous post is a bug IMO.<br>
+<br>
+@ tinomartinez: That will work. You can probably also use the Clear method.</div>
+</article>
+<article class="post" id="msg11430">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-05-22 20:48 UTC</span>
+  </div>
+  <div class="post-body">Roy, I agree, this is not correct or expected behavior. I've made a small change for the next build so that the Block Name property remains empty when displaying model space of a selected drawing file. This way nothing will display when the form is subsequently shown.</div>
+</article>
+<article class="post" id="msg11431">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-05-23 09:11 UTC</span>
+  </div>
+  <div class="post-body">Aha, now I understand the cause of the problem. Thanks for fixing it Owen.</div>
+</article>
+<article class="post" id="msg14041">
+  <div class="post-head">
+    <span class="post-author">dsm_dude</span>
+    <span class="post-date muted">2024-06-10 13:20 UTC</span>
+  </div>
+  <div class="post-body">I've reviving this old thread. I really like the layout of this block manager, but it's no longer working and throwing an error when the insert command is invoked. I've invested several hours trying to resolve the issue with no luck. Can someone more skilled than myself take a crack at it?</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

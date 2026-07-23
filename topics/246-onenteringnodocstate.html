@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OnEnteringNoDocState · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 246</p>
+    <h1>OnEnteringNoDocState</h1>
+    <p class="meta">Started by jb ·
+      2008-03-13 14:47 UTC ·
+      7 replies · SMF topic #246</p>
+<article class="post" id="msg1083">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-03-13 14:47 UTC</span>
+  </div>
+  <div class="post-body">Once I have the following sub loaded the palette pops back up as expected, but the onInitialize event won't fire - I have to hit my "refresh" button to populate the form.<br>
+<br>
+This is the OnEnteringNoDocState sub:<br>
+<br>
+<pre class="code"><code>(defun c:jb002_00_OnEnteringNoDocState ( /)<br>
+     (if (dcl_Form_IsActive jb002_00)<br>
+    (progn (vl-bb-set 'jbKeynotesFloating "true")<br>
+	   (dcl_form_close jb002_00)))<br>
+)</code></pre><br>
+<br>
+This is the OnDocActivated sub:<br>
+<br>
+<pre class="code"><code>(defun c:jb002_00_OnDocActivated (/) (c:jb002_00_OnInitialize))</code></pre><br>
+<br>
+This is the OnInitialize sub:<br>
+<br>
+<pre class="code"><code>(defun c:jb002_00_OnInitialize  (/ file data)<br>
+  (if (not(dcl_Control_GetValue jb002_00_note))<br>
+    (dcl_Control_SetEnabled jb002_00_LEADER 0)<br>
+    (dcl_Control_SetEnabled jb002_00_LEADER 1))<br>
+  <br>
+  (dcl_Control_Setcaption jb002_00_PREVIEW "")<br>
+  ;;; Drawing specific keynote file<br>
+  ;(setq file (jb:ReturnKeynoteFilename))<br>
+  ;;; Project specific keynote file<br>
+  (setq file(jb:ReturnKeynoteFilename))<br>
+  (if file<br>
+    (setq data (jb:getKeynoteFileData file)))<br>
+  (if data<br>
+    (progn (dcl_ListBox_Clear jb002_00_DIV)<br>
+           (dcl_ListBox_AddList jb002_00_DIV (car data))<br>
+           (dcl_ListBox_Clear jb002_00_ListBox)<br>
+           (dcl_ListBox_AddList jb002_00_ListBox (cadr data)))<br>
+    (progn (dcl_ListBox_Clear jb002_00_ListBox)<br>
+           (dcl_ListBox_Clear jb002_00_DIV))))</code></pre><br>
+<br>
+This is the command entry point sub:<br>
+<br>
+<pre class="code"><code>(defun c:jbkeynotesdialog  (/ )<br>
+  (if(not(member "jb002" (dcl_GetProjects)))<br>
+	 (dcl_Project_load "jb002")) <br>
+  (if (not (dcl_Form_IsActive jb002_00))<br>
+    (dcl_Form_Show jb002_00))<br>
+  (princ))</code></pre><br>
+<br>
+This line of code is at the end of the .fas file - loaded at document start-up (from a menu .mnl file):<br>
+<br>
+<pre class="code"><code>(if<br>
+  (= (vl-bb-ref 'jbKeynotesFloating) "true")<br>
+  (c:jbkeynotesdialog))</code></pre><br>
+<br>
+So the form pops up, but the OnInitialize event doesn't fire. It's not the OnInitialize sub becaues the "refresh" button just calls the OnInitialize sub.  I have documented this in two seperate paletttes.  Any thoughts? bug??</div>
+</article>
+<article class="post" id="msg1084">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-03-13 16:43 UTC</span>
+  </div>
+  <div class="post-body">OK - I've cobbled together a little test palette - All my stuff relies on common subs spread out and it's hard to post any of that stuff.  So here's a little example that includes the issues I've been having with palettes (and maybe you'll learn a little about the exotic end of motorcycles  ;) )<br>
+<br>
+The issues are:<br>
+<br>
+Painting: notice that when the splitter moves there are painting issues with affected controls.<br>
+Splitter Control: Doesn't respect the Closest property restrictions.<br>
+Label Control: Can't be cleared with (dcl_Control_SetCaption 000_00_DESC "")<br>
+Tree Control: OnSelChanged doesn't fire.<br>
+Palette Form in general:  <br>
+     note OnEnteringNoDocState as referenced above.<br>
+     Palette hides and shows, but won't re-hide.<br>
+     No transparency yet.<br>
+     Allow Docking property not honored.<br>
+<br>
+To be able to test the OnEnteringNoDocState and isFloating events this routine needs to be loaded at startup - act acccordingly.<br>
+<br>
+"000.lsp" is the DCL file<br>
+"jb020.lsp is the AutoLisp file<br>
+<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/345/000.lsp">000.lsp</a> <span class="muted">(7215 bytes)</span></li><li><a href="../attachments/346/jb020.LSP">jb020.LSP</a> <span class="muted">(10260 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1093">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-03-14 22:01 UTC</span>
+  </div>
+  <div class="post-body">I could not reproduce the painting, splitter, or label problems. I suspect that you're using an older version of the runtime. Please check the version displayed at the AutoCAD command line when it loads to verify the version you're using.<br>
+<br>
+The OnSelChanged problem was due to some missing resources. That is now fixed for Alpha 9. The OnInitialized event problem should also be fixed in Alpha 9. Please test it and let me know whether it works as expected in Alpha 9.</div>
+</article>
+<article class="post" id="msg1103">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-03-15 11:38 UTC</span>
+  </div>
+  <div class="post-body">You are indeeed correct sir - I was using an old run time: painting problems solved.  I eagerly look forward to alpha 9 . . . thanks.</div>
+</article>
+<article class="post" id="msg1127">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-03-18 14:50 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+<br>
+OnSelChanged still not firing on my test palette.  OnClicked is the only way to work it.<br>
+<br>
+OnInitialized event now works great - thanks.<br>
+<br>
+Personally, I'm not sure at this time how important the OnSelChanged event is since the work around is the onClicked event - with a little more code.  I'd like to see palettes reacting properly in the collapsed - expanded bit.  Just an observation  ;)</div>
+</article>
+<article class="post" id="msg1128">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-03-18 16:01 UTC</span>
+  </div>
+  <div class="post-body">Hold on - now this is wierd:  I popped over to architecture 2008 to see if a property data bug I found in ADT 2006 had been fixed.  Low and behold it had.  Long story short: the onSelChanged event for the tree control works in 2008 - but NOT in 2006.   ???</div>
+</article>
+<article class="post" id="msg1134">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-03-18 18:58 UTC</span>
+  </div>
+  <div class="post-body">I can reproduce the problem in AutoCAD 2006. That's a strange one. It seems that different versions of the tree control behave differently. I'll investigate.</div>
+</article>
+<article class="post" id="msg1135">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-03-18 19:40 UTC</span>
+  </div>
+  <div class="post-body">Well, I learned something new. It seems there are different notifications depending on whether or not the control is in Unicode format. In any case, the problem should be fixed in Alpha 10.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

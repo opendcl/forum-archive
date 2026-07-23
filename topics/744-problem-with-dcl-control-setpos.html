@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with dcl_Control_SetPos · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 744</p>
+    <h1>Problem with dcl_Control_SetPos</h1>
+    <p class="meta">Started by velasquez ·
+      2009-05-04 19:25 UTC ·
+      19 replies · SMF topic #744</p>
+<article class="post" id="msg3633">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-05-04 19:25 UTC</span>
+  </div>
+  <div class="post-body">Hi  <br>
+<strong>dcl_Control_SetPos</strong> in Opendcl 4.1.2.2 doesn't work when it is called below in the format.<br>
+(dcl_Control_SetPos "DuctilCAD" "DuctilCAD_MainForm" "PictureBox1" 246 83 244 180)<br>
+I tested with PictureBox and SlideView.  <br>
+Did anybody already test with a newer version?  <br>
+Unhappily I could not still make this work.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/713/SetPos.png">SetPos.png</a> <span class="muted">(40508 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3635">
+  <div class="post-head">
+    <span class="post-author">scottcd</span>
+    <span class="post-date muted">2009-05-05 04:24 UTC</span>
+  </div>
+  <div class="post-body">It looks as if it is expecting a list ?</div>
+</article>
+<article class="post" id="msg3636">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-05-05 08:37 UTC</span>
+  </div>
+  <div class="post-body">I think you may be applying the Position to the incorrect control.<br>
+<br>
+Is the PictureBox in question the one on the rab Pane ??<br>
+<br>
+If so  the X &amp; Y should be relative to the Contailner, not the Parent ...  <br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/714/PictureBox y-x.png">PictureBox y-x.png</a> <span class="muted">(52074 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3650">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-05-07 17:07 UTC</span>
+  </div>
+  <div class="post-body">Hi Kerry,    <br>
+    <br>
+I didn't understand.    <br>
+Do you want to say that <strong>dcl_Control_SetPos</strong> works when it is called with strings?    <br>
+Thanks.</div>
+</article>
+<article class="post" id="msg3651">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-07 18:10 UTC</span>
+  </div>
+  <div class="post-body">Hi, <br>
+<br>
+give the following a try, I have a assumption in mind.<br>
+<br>
+(dcl_Control_SetPos "DuctilCAD" "MainForm" "PictureBox1" 246 83 244 180)  <br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3652">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-05-07 20:52 UTC</span>
+  </div>
+  <div class="post-body">Hello Fred,  <br>
+Thank you for the help but dcl_Control_SetPos forms he/she doesn't also work.  <br>
+I need to use inside of Foreach.</div>
+</article>
+<article class="post" id="msg3653">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-05-07 21:51 UTC</span>
+  </div>
+  <div class="post-body"><br>
+How about posting your odcl and some testing code. ?<br>
+<br>
+I'm using 5.1.0.4 so can't remember anything special different about 4.1.2.2 <br>
+<br>
+Is the Picturebox on the Tab Control. ?<br>
+For interest, why are you setting the position of the PictureBox ?<br>
+<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3655">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-05-07 22:52 UTC</span>
+  </div>
+  <div class="post-body">I am not fastening PictureBox.    <br>
+The problem with dcl_Control_SetPos is that he doesn't work in any place when it is called with strings.    <br>
+I need to move and to change the size of many PictureBox in RunTime</div>
+</article>
+<article class="post" id="msg3656">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-08 06:57 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=744.msg3652#msg3652 date=1241729522 wrote:</cite><br>
+Hello Fred,  <br>
+Thank you for the help but dcl_Control_SetPos forms he/she doesn't also work.  <br>
+I need to use inside of Foreach.<br>
+</blockquote><br>
+<br>
+The thing I had in mind was that your example was <br>
+<br>
+(dcl_Control_SetPos  _  246 83 244 180)<br>
+<br>
+I thought that the syntax could have been a mistype because it must be<br>
+<br>
+(dcl_Control_SetPos    246 83 244 180)<br>
+<br>
+instead. If you want I invite you to a remote desktop connection using the free <a href="http://www.teamviewer.com/index.aspx" rel="nofollow noopener">{2}</a>. Then we can work on your desktop to find the problem.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3657">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-05-08 11:55 UTC</span>
+  </div>
+  <div class="post-body">Hello Fred,  <br>
+  <br>
+I don't know TeamViewer but the code that I posted display that the problem this in the property dcl_Control_SetPos why the another work well.<br>
+<br>
+<br>
+(defun JoyCleanMenu ()<br>
+    (foreach JoyItem '("PictureBox1"	   "PictureBox2"<br>
+		       "PictureBox3"	   "PictureBox4"<br>
+		       "PictureBox5"	   "PictureBox6"<br>
+		       "PictureBox7"	   "PictureBox8"<br>
+		       "PictureBox9"	   "PictureBox10"<br>
+		       "PictureBox11"	   "PictureBox12"<br>
+		      ) ;_ fim de list<br>
+;;;Limpa o PictureBox<br>
+      (dcl_PictureBox_Clear<br>
+	"DuctilCAD"<br>
+	"DuctilCAD_MainForm"<br>
+	JoyItem<br>
+	NIL<br>
+      ) ;_ fim de dcl_Control_SetVisible<br>
+;;;Oculta o PictureBox<br>
+      (dcl_Control_SetVisible<br>
+	"DuctilCAD"<br>
+	"DuctilCAD_MainForm"<br>
+	JoyItem<br>
+	NIL<br>
+      ) ;_ fim de dcl_Control_SetVisible<br>
+    ) ;_ fim de foreach<br>
+  )<br>
+<br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg3658">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-05-08 13:21 UTC</span>
+  </div>
+  <div class="post-body">Hello Fred,  <br>
+dcl_Control_SetPos worked below in the code in OpenDCL 4.1.2.2  <br>
+  <br>
+If this problem is happening in the current version I think is a bug.<br>
+<br>
+(dcl_Control_SetPos<br>
+       (eval<br>
+	 (read<br>
+	   (strcat "DuctilCAD_DuctilCAD_MainForm_" (nth 0 Joyitem))<br>
+	 ) ;_ fim de read<br>
+       ) ;_ fim de eval<br>
+       (nth 0 (cadr joyitem))<br>
+       (nth 1 (cadr joyitem))<br>
+       (nth 2 (cadr joyitem))<br>
+       (nth 3 (cadr joyitem))<br>
+     ) ;_ fim de dcl_Control_SetPos</div>
+</article>
+<article class="post" id="msg3659">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-08 19:23 UTC</span>
+  </div>
+  <div class="post-body">Hm, this works in my code with 5.1.0.4:<br>
+<br>
+(dcl_Control_SetPos signothek_sc_signothek_dwg_1 intStartX intStartY nBreitePrevSing nHöhePrevSing)<br>
+<br>
+Fred<br>
+<br>
+P.S. The video is very bad. But it shows that the dwg previews are resizing as desired.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/717/resize_signothek.gif">resize_signothek.gif</a> <span class="muted">(371646 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3660">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-08 19:27 UTC</span>
+  </div>
+  <div class="post-body">velasquez, please upload the odcl and tell me which control to resize.<br>
+<br>
+Fred<br>
+<br>
+P.S. TeamViewer is a very good tool for internet based online support. We use it with our customers.</div>
+</article>
+<article class="post" id="msg3661">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-05-08 21:22 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred,    <br>
+I will separate my file odcl to send for you.    <br>
+Did you work with SetPos in each control or in all at once?    <br>
+Or:<br>
+<br>
+(dcl_Control_SetPos signothek_sc_signothek_dwg_1 intStartX intStartY nBreitePrevSing nHöhePrevSing)<br>
+(dcl_Control_SetPos signothek_sc_signothek_dwg_2 intStartX intStartY nBreitePrevSing nHöhePrevSing)<br>
+(dcl_Control_SetPos signothek_sc_signothek_dwg_3 intStartX intStartY nBreitePrevSing nHöhePrevSing)<br>
+(dcl_Control_SetPos signothek_sc_signothek_dwg_4 intStartX intStartY nBreitePrevSing nHöhePrevSing)<br>
+....<br>
+ </div>
+</article>
+<article class="post" id="msg3662">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-09 19:47 UTC</span>
+  </div>
+  <div class="post-body">Hi, velasquez, don't do to much work with your odcl-file. I will only work with one control to demonstrate.<br>
+<br>
+<blockquote class="quote">Did you work with SetPos in each control</blockquote><br>
+<br>
+Yes, I invoke SetPos to every preview. I upload the project file and the event OnSize for testing.<br>
+<br>
+<br>
+<br>
+(defun c:signothek_sc_signothek_OnSize (nWidth nHeight / lstRec nWidthPrevAll nWidthPrevSing<br>
+			  nWidthPrevDistAll nWidthPrevDistSing<br>
+			  nHeightPrevAll nHeightPrevSing nHeightPrevDistAll<br>
+			  nHeightPrevDistSing intLS2 intLS3 intTR2 intTR3<br>
+			  intStartX intStartY)<br>
+  (setq lstRec (dcl_Control_GetCurPos signothek_sc_signothek_frm_preview))<br>
+;;;  (princ (strcat "\nWidth: " (itoa (caddr lstRec)) " Height: " (itoa (last lstRec)) " Left: " (itoa (car lstRec)) " Top: " (itoa (cadr lstRec)) "\r"))<br>
+<br>
+  (setq nWidthPrevAll (- (caddr lstRec) 40))<br>
+  (setq nWidthPrevSing (fix (/ (- nWidthPrevAll 8) 3.0)))<br>
+  (setq nWidthPrevDistAll (- nWidthPrevAll (* 3 nWidthPrevSing)))<br>
+  (setq nWidthPrevDistSing (fix (/ nWidthPrevDistAll 2.0)))<br>
+;;;  (princ (strcat "\nWidth: " (itoa nWidthPrevAll) " Each: " (itoa nWidthPrevSing)<br>
+;;;		 " DistAll: " (itoa nWidthPrevDistAll) " DistEach: " (itoa nWidthPrevDistSing) "\r"))<br>
+<br>
+  (setq nHeightPrevAll (- (last lstRec) 20))<br>
+  (setq nHeightPrevSing (fix (/ (- nHeightPrevAll 8) 3.0)))<br>
+  (setq nHeightPrevDistAll (- nHeightPrevAll (* 3 nHeightPrevSing)))<br>
+  (setq nHeightPrevDistSing (fix (/ nHeightPrevDistAll 2.0)))<br>
+;;;  (princ (strcat "\nHeight: " (itoa nHeightPrevAll) " Each: " (itoa nHeightPrevSing)<br>
+;;;		 " DistAll: " (itoa nHeightPrevDistAll) " DistEach: " (itoa nHeightPrevDistSing) "\r"))<br>
+<br>
+  (setq intStartX (+ (car lstRec) 8))<br>
+  (setq intStartY 20)<br>
+  (setq intLS2 (+ intStartX nWidthPrevSing nWidthPrevDistSing))<br>
+  (setq intLS3 (+ intStartX (* 2 nWidthPrevSing) (* 2 nWidthPrevDistSing)))<br>
+  (setq intTR2 (+ intStartY nHeightPrevSing nHeightPrevDistSing))<br>
+  (setq intTR3 (+ intStartY (* 2 nHeightPrevSing) (* 2 nHeightPrevDistSing)))<br>
+<br>
+  (dcl_Control_SetPos signothek_sc_signothek_dwg_1 intStartX intStartY nWidthPrevSing nHeightPrevSing)<br>
+  (dcl_Control_SetPos signothek_sc_signothek_dwg_2 intLS2 intStartY nWidthPrevSing nHeightPrevSing)<br>
+  (dcl_Control_SetPos signothek_sc_signothek_dwg_3 intLS3 intStartY nWidthPrevSing nHeightPrevSing)<br>
+  (dcl_Control_SetPos signothek_sc_signothek_dwg_4 intStartX intTR2 nWidthPrevSing nHeightPrevSing)<br>
+  (dcl_Control_SetPos signothek_sc_signothek_dwg_5 intLS2 intTR2 nWidthPrevSing nHeightPrevSing)<br>
+  (dcl_Control_SetPos signothek_sc_signothek_dwg_6 intLS3 intTR2 nWidthPrevSing nHeightPrevSing)<br>
+  (dcl_Control_SetPos signothek_sc_signothek_dwg_7 intStartX intTR3 nWidthPrevSing nHeightPrevSing)<br>
+  (dcl_Control_SetPos signothek_sc_signothek_dwg_8 intLS2 intTR3 nWidthPrevSing nHeightPrevSing)<br>
+  (dcl_Control_SetPos signothek_sc_signothek_dwg_9 intLS3 intTR3 nWidthPrevSing nHeightPrevSing)<br>
+); c:signothek_sc_signothek_OnSize<br>
+<br>
+(dcl_Form_Show signothek_sc_signothek)<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/718/signothek.odcl">signothek.odcl</a> <span class="muted">(111561 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3668">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-05-11 12:28 UTC</span>
+  </div>
+  <div class="post-body">Hello Fred,  <br>
+  <br>
+Thank you for the files.  <br>
+I could test the chada below and he worked well with OpenDCL 5.0.2.4  <br>
+  <br>
+The problem that I found this in the version 4.1.2.2<br>
+<br>
+Thank you for your help.</div>
+</article>
+<article class="post" id="msg3674">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-11 15:28 UTC</span>
+  </div>
+  <div class="post-body">Hello velasquez, I must say that I'ver never worked with OpenDCL 4. I started with OpenDCL 5 alpha again.<br>
+I'm not sure - even quite a bit confused: is your problem solved now?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3677">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-05-11 17:56 UTC</span>
+  </div>
+  <div class="post-body">Hello Chad, my problem was solved my doubt it was cleared.  <br>
+Thanks</div>
+</article>
+<article class="post" id="msg3678">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-05-11 18:56 UTC</span>
+  </div>
+  <div class="post-body">Excuse me Fred, the answer was for you.  <br>
+Thanks</div>
+</article>
+<article class="post" id="msg3686">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-11 22:31 UTC</span>
+  </div>
+  <div class="post-body">Doesn't matter. I believe that Chad won't read these topics anymore  ;)<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

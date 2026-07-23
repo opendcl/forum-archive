@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tab Strip - SlideView-Load ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1334</p>
+    <h1>Tab Strip - SlideView-Load ?</h1>
+    <p class="meta">Started by Oak3s ·
+      2010-08-31 21:03 UTC ·
+      5 replies · SMF topic #1334</p>
+<article class="post" id="msg7137">
+  <div class="post-head">
+    <span class="post-author">Oak3s</span>
+    <span class="post-date muted">2010-08-31 21:03 UTC</span>
+  </div>
+  <div class="post-body">Currently I load some 150 slides oninitialize for form1. It takes about 4 seconds. I have 5 tabs and would like to only load the slides on the specific tab I am on rather than all of them. How do I do that? :) Thanks for any help.</div>
+</article>
+<article class="post" id="msg7138">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-08-31 21:08 UTC</span>
+  </div>
+  <div class="post-body">Add the "SelChanging" event to your Tab control &amp; load the slides when it fires...</div>
+</article>
+<article class="post" id="msg7139">
+  <div class="post-head">
+    <span class="post-author">Oak3s</span>
+    <span class="post-date muted">2010-08-31 23:18 UTC</span>
+  </div>
+  <div class="post-body">Thank you.<br>
+<br>
+So what is the itemindex?<br>
+"ItemIndex is the index of the currently selected tab."<br>
+<br>
+I guess a better question is, how do I know what the "index" is? Is this the tab caption?</div>
+</article>
+<article class="post" id="msg7140">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-09-01 00:05 UTC</span>
+  </div>
+  <div class="post-body">Look in the syntax row: "ItemIndex [as <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/DataType/Long.htm" rel="nofollow noopener">{2}</a>]"<br>
+<br>
+The ItemIndex is the current Tab page starting at 0.<br>
+<br>
+<br>
+(defun c:Untitled_Form1_TabStrip1_OnSelChanging (ItemIndex /)<br>
+  (cond<br>
+    ((= ItemIndex 0)<br>
+       ;;load some slides here...<br>
+    )<br>
+    ((= ItemIndex 1)<br>
+       ;;load some other slides here...<br>
+    )<br>
+    ((= ItemIndex 2)<br>
+       ;;load some more slides here...<br>
+    )<br>
+  )<br>
+)</div>
+</article>
+<article class="post" id="msg7141">
+  <div class="post-head">
+    <span class="post-author">Oak3s</span>
+    <span class="post-date muted">2010-09-01 01:16 UTC</span>
+  </div>
+  <div class="post-body">Thanks Barry. I got it to work but its to slow to load the slides. The tab is blank with a bunch of outlines for about half a second and thing *pop* they are there. But thanks again. Good learning.</div>
+</article>
+<article class="post" id="msg7145">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-09-01 17:21 UTC</span>
+  </div>
+  <div class="post-body">Ya sorry, that's just how long it takes to load the slides.<br>
+Are you using individual side files or did you combine them into a slide library? The l library maybe faster, but I haven't tested on a large set of files to compare.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

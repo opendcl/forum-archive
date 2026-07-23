@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modal form freezes once shown - 2015 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2166</p>
+    <h1>Modal form freezes once shown - 2015</h1>
+    <p class="meta">Started by jbuzbee ·
+      2014-09-03 17:15 UTC ·
+      5 replies · SMF topic #2166</p>
+<article class="post" id="msg10849">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-09-03 17:15 UTC</span>
+  </div>
+  <div class="post-body">AutoCAD 2015 The modal form won't respond to any input.  This worked in 2009<br>
+<br>
+;;;							;<br>
+;;;	Form 01 - Save Window View			;<br>
+;;;							;<br>
+;;;pgp: kbSaveViewWindow,		*kbSaveViewWindow<br>
+(defun c:Drafting_SaveView_OnInitialize (/)<br>
+    (dcl_Control_SetTitleBarIcon Drafting_SaveView 100)<br>
+    (dcl_Control_SetPicture Drafting_SaveView_SaveButton 100)<br>
+    (dcl_Control_SetMouseOverPicture Drafting_SaveView_SaveButton 100)<br>
+    )<br>
+<br>
+(defun c:Drafting_SaveView_SaveButton_OnClicked (/ Value)<br>
+    (Setq Value (dcl_Control_GetText Drafting_SaveView_TextBox))<br>
+    (if	Value<br>
+      (progn (dcl_form_close Drafting_SaveView)<br>
+	     (command "-view" "_w" Value)<br>
+	     (while (= (logand (getvar "CMDACTIVE") 1) 1) (vl-cmdf pause))<br>
+	<br>
+	     )<br>
+      (dcl_messagebox "Enter a View Name to save" "Save View" 2 3)<br>
+      )<br>
+    )<br>
+(defun c:Drafting_SaveView_CloseButton_OnClicked (/)<br>
+  (dcl_form_close Drafting_SaveView)<br>
+)<br>
+<br>
+(defun c:kbSaveViewWindow (/)<br>
+  (if (not (member "Drafting" (dcl_GetProjects)))<br>
+    (dcl_Project_load "Drafting")<br>
+    )<br>
+  (if dcl_HideErrorMsgBox<br>
+    (dcl_Form_Show Drafting_SaveView)<br>
+    (alert "The OpenDCL arx module did not load!")<br>
+    )<br>
+  (princ)<br>
+  (princ)<br>
+  )<br>
+<br>
+Thank you for any help.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2037/SaveViewWindowTEMP.lsp">SaveViewWindowTEMP.lsp</a> <span class="muted">(4298 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10850">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-09-03 17:41 UTC</span>
+  </div>
+  <div class="post-body">All the command calls need to be moved out of the event handler and into the main function so that they don't get called until after the (dcl-Form-Show) returns.</div>
+</article>
+<article class="post" id="msg10851">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-09-03 17:43 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen - you the man!  8)</div>
+</article>
+<article class="post" id="msg10852">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-09-03 17:54 UTC</span>
+  </div>
+  <div class="post-body">OK - I don't understand where to put the command call???<br>
+<br>
+(defun c:kbSaveViewWindow (/)<br>
+  (if (not (member "Drafting" (dcl_GetProjects)))<br>
+    (dcl_Project_load "Drafting")<br>
+    )<br>
+  (if dcl_HideErrorMsgBox<br>
+    (dcl_Form_Show Drafting_SaveView)<br>
+      <br>
+    (alert "The OpenDCL arx module did not load!")<br>
+    )<br>
+  (progn(command "-view" "_w" Value)<br>
+	     (while (= (logand (getvar "CMDACTIVE") 1) 1) (vl-cmdf pause))<br>
+	)<br>
+  (princ)<br>
+  (princ)<br>
+  )</div>
+</article>
+<article class="post" id="msg10853">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-09-03 18:15 UTC</span>
+  </div>
+  <div class="post-body">Like this:<br>
+<br>
+(defun c:kbSaveViewWindow (/)<br>
+  (dcl_Project_load "Drafting")<br>
+  (if (= 123 (dcl_Form_Show Drafting_SaveView))<br>
+    (progn<br>
+      (command "-view" "_w" Value)<br>
+      (while (= (logand (getvar "CMDACTIVE") 1) 1) (vl-cmdf pause))<br>
+    )<br>
+  )<br>
+  ;(c:kbSaveViewWindow)<br>
+  (princ)<br>
+  )<br>
+<br>
+Then of course you have to call (dcl-Form-Close 123) to return the value you're using to trigger the command call.</div>
+</article>
+<article class="post" id="msg10854">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-09-03 18:26 UTC</span>
+  </div>
+  <div class="post-body">Got it Owen - thanks.  Boy in some ways modeless forms are easier to work with.  Of course I have more experience with modeless forms . . ..</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

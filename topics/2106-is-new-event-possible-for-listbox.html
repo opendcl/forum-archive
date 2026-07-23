@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Is new event possible for listbox? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2106</p>
+    <h1>Is new event possible for listbox?</h1>
+    <p class="meta">Started by funkitect ·
+      2014-03-12 16:58 UTC ·
+      4 replies · SMF topic #2106</p>
+<article class="post" id="msg10450">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2014-03-12 16:58 UTC</span>
+  </div>
+  <div class="post-body">Hi all,<br>
+<br>
+The OnSelChanged event for listbox is not adequate for my needs and I was wondering if there is a way around it of if a new event is possible?<br>
+<br>
+For a listbox control the OnSelChanged event fires each time the mouse selects an item.  If you set the list style to "multiple" it still fires each time the mouse selects an item...not just once after the selection process is completed by letting go of "shift" or "ctrl".  Would it be possible to add some kind of "OnSelectionCompleted" event?  <br>
+<br>
+As a workaround I was thinking maybe during the OnSelChanged event I could try to detect of the CTRL or SHIFT key is held down...but I think that would always be detected as true and never false so there would still never be a way to know if the selection was completed.  Maybe there is some other workaround that I haven't thought of...<br>
+<br>
+The reason I want this is because I have to give the user some feedback after some selections are made but I don't want to interrupt the selection process with a (possibly false!) warning message until the selections are final.<br>
+<br>
+My solution now is to provide the feedback when the user presses OK and the message has to explain the problem and where to go to fix it.  It would be much better if the feedback were more immediate and self-explanatory.<br>
+<br>
+Thanks,<br>
+<br>
+James LeVieux<br>
+</div>
+</article>
+<article class="post" id="msg10452">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-03-12 20:12 UTC</span>
+  </div>
+  <div class="post-body">I think this is asking for trouble, but I'm curious to know more about the nature of your listbox and the feedback you want to provide.</div>
+</article>
+<article class="post" id="msg10454">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-03-13 07:37 UTC</span>
+  </div>
+  <div class="post-body">If a user selects multiple items with single picks detecting when the selection is final would be very hard if not impossible without explicit confirmation from the user (OK button).</div>
+</article>
+<article class="post" id="msg10458">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2014-03-13 22:33 UTC</span>
+  </div>
+  <div class="post-body">Now that I think about it releasing the CTRL or SHIFT key does not necessarily mean the user has finished selecting. A user could release one of those keys and the press it again and continue selecting.  I'll just have to figure out some other non-intrusive way to alert the user.<br>
+<br>
+Thanks,<br>
+<br>
+James</div>
+</article>
+<article class="post" id="msg10467">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-03-17 09:44 UTC</span>
+  </div>
+  <div class="post-body">Hi, funkitect, you are right, you can add selection by pressing shift, and modifiing the selection by pressing ctrl. Thats why OpenDCL cannot know, when the user is ready selecting items. Either you continue validating the selection by OK button (or any other button beside the list box to validate before pressing OK) or you just extent your dialog with a readonly editbox as status bar to alert the user why the current selection is not applicable (or anything else).<br>
+<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1972/msgbox.PNG">msgbox.PNG</a> <span class="muted">(13012 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

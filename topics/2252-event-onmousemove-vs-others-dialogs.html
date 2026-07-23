@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Event OnMouseMove vs. others dialogs... · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2252</p>
+    <h1>Event OnMouseMove vs. others dialogs...</h1>
+    <p class="meta">Started by kudlac ·
+      2015-04-06 06:27 UTC ·
+      3 replies · SMF topic #2252</p>
+<article class="post" id="msg11319">
+  <div class="post-head">
+    <span class="post-author">kudlac</span>
+    <span class="post-date muted">2015-04-06 06:27 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I use the event OnMouseMove in the ListView control in a MODELESS dialog and have a problem when another Windows dialog (e.g. Windows Explorer, mail client,.. etc.) overlaps my ListView control. <br>
+<br>
+Example:<br>
+1. The event OnMouseMove in the ListView control in a Modeless dialog works perfectly.<br>
+2. I shift the focus to Windows Explorer by using the Alt-Tab keys (the mouse cursor stays on the ListView area but is overlapped by Windows Explorer window).<br>
+3. If I now move the mouse, the focus is unwanted changes back to my ListView control in AutoCAD...<br>
+<br>
+How can I solve this problem ?<br>
+<br>
+Thanks for your answer in advance,<br>
+Vlado</div>
+</article>
+<article class="post" id="msg11321">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-04-10 17:48 UTC</span>
+  </div>
+  <div class="post-body">Is it possible to provide steps to reproduce this consistently? While trying to reproduce it I did see the problem one time, but I have not been able to reproduce it again.</div>
+</article>
+<article class="post" id="msg11322">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-04-10 18:28 UTC</span>
+  </div>
+  <div class="post-body">I was finally able to reproduce this reliably. The trick is to activate another window while the modeless dialog is open, then place the mouse within the area of the modeless dialog while the other window is active, then Alt-Tab to AutoCAD without moving the mouse, then Alt-Tab back to the other window, then move the mouse off the modeless dialog. This should now be fixed in the next build.</div>
+</article>
+<article class="post" id="msg11328">
+  <div class="post-head">
+    <span class="post-author">kudlac</span>
+    <span class="post-date muted">2015-04-14 06:18 UTC</span>
+  </div>
+  <div class="post-body">Thank you for your feedback and your goodwill to fix this problem in the next build.<br>
+I'm impatiently waiting on the next build...<br>
+<br>
+Thanks<br>
+Vlado</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

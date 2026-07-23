@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>what is IsESCWasPressed ? where is it? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1365</p>
+    <h1>what is IsESCWasPressed ? where is it?</h1>
+    <p class="meta">Started by khann ·
+      2010-10-31 06:50 UTC ·
+      3 replies · SMF topic #1365</p>
+<article class="post" id="msg7261">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-10-31 06:50 UTC</span>
+  </div>
+  <div class="post-body">Hi all.<br>
+<br>
+For a long time ago Fred said to me <br>
+check the IsESCWasPressed is zero within the "OnCancelClose" Event.<br>
+<br>
+Now I'm testing 6.0.0.27 ODCL but there is no IsESCWasPressed Variable.<br>
+<br>
+Can anybody tell me where is it?<br>
+<br>
+I need to trap the user pressed the Esc key.<br>
+<br>
+Or is there any good idea to prevent from Closing Modeless Form by pressing Esc key?<br>
+<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg7262">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-11-01 06:22 UTC</span>
+  </div>
+  <div class="post-body">Hi, maybe it was shortened by the development, but it's still there:<br>
+<br>
+(defun c:Unbenannt_Dialog1_OnCancelClose (intIsESC /)<br>
+...<br>
+(/= intIsESC 1)<br>
+); c:Unbenannt_Dialog1_OnCancelClose <br>
+<br>
+<br>
+Since the name of the variable is local, the existing code will work as well.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7263">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-11-01 08:26 UTC</span>
+  </div>
+  <div class="post-body">(defun c:test_form_OnCancelClose (Reason / )<br>
+<br>
+  .....<br>
+<br>
+)<br>
+<br>
+And the "Reason" Var of the Event is it.<br>
+<br>
+Thanks, Fred.<br>
+<br>
+BTW, do you have any idea to prevent the Form Closing by EscKey pressed?<br>
+Looking for other posts, there seems no way to prevent Form Closing by EscKey.<br>
+<br>
+I made it like this.<br>
+Disable the title bar and put a picture control at the top <br>
+and a small closing button of graph button control at the right upper corner.<br>
+<br>
+The user didnot know whether it's real title bar or picture control  ;D<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1464/Untitled-3.jpg">Untitled-3.jpg</a> <span class="muted">(67833 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7264">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-11-01 13:27 UTC</span>
+  </div>
+  <div class="post-body">Hi, did already try this?<br>
+<br>
+(defun c:Unbenannt_Dialog1_OnCancelClose (intIsESC /)  <br>
+  (if (check_existing_data) T nil)<br>
+); c:Unbenannt_Dialog1_OnCancelClose    <br>
+<br>
+I'd make the form closing depending on the case all needed inputs were given correctly by the user<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

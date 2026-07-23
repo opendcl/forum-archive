@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>help: select mulitple items from listbox · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1939</p>
+    <h1>help: select mulitple items from listbox</h1>
+    <p class="meta">Started by andrew ·
+      2013-01-15 21:12 UTC ·
+      2 replies · SMF topic #1939</p>
+<article class="post" id="msg9511">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2013-01-15 21:12 UTC</span>
+  </div>
+  <div class="post-body">hello all. happy new year.<br>
+<br>
+im a bit rusty, so i need a bit of help if you can provide it.<br>
+<br>
+in my project i have a listbox, that displays contents of a text file.<br>
+i click a button and it takes the selected lines (one at a time) and adds them to a list view, separating certain lines into certain columns. i would like to make it where i can select all in the list box or select multiple lines to add to the list view.<br>
+<br>
+i have the properties for the listbox set to muliple for selection style. how can i get these items into the list view as ALL or MULTIPLE lines.<br>
+<br>
+here is code snippet im currently using that i have working for 1 line at a time<br>
+<br>
+i appreciate any and all help<br>
+<br>
+<pre class="code"><code><br>
+(setq items (dcl_ListBox_GetSelectedItems dwgbrowser_Form3_ListBox1))<br>
+<br>
+;;get title<br>
+(setq title (substr (nth 0 items) 1 42)) ;41<br>
+<br>
+;;gets rev<br>
+(setq rev (substr (nth 0 items) 54)) ;53<br>
+    (while (&lt; (strlen rev) 6)<br>
+      (setq rev (strcat rev " "))<br>
+    ); end while<br>
+<br>
+;;gets dwg number<br>
+(setq dwgnum (substr (nth 0 items) 43 11)) ;11<br>
+(SETQ amrev1 dwgnum)<br>
+<br>
+(defun make_list (strItem) <br>
+ (list strItem)<br>
+)<br>
+<br>
+(if sho_lst<br>
+ (progn <br>
+  (setq make_lst (mapcar 'list (make_list title) (make_list dwgnum) (make_list rev)))<br>
+  (setq sho_lst (append sho_lst make_lst))<br>
+ )<br>
+(progn<br>
+  (setq make_lst (mapcar 'list (make_list title) (make_list dwgnum) (make_list rev)))<br>
+  (setq sho_lst (append sho_lst make_lst))<br>
+ )<br>
+)<br>
+<br>
+(dcl_ListView_FillList dwgbrowser_Form3_ListView1 sho_lst)<br>
+</code></pre></div>
+</article>
+<article class="post" id="msg9512">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-01-17 15:56 UTC</span>
+  </div>
+  <div class="post-body">Maybe this helps:<br>
+<br>
+<br>
+; (setq items (dcl_ListBox_GetSelectedItems dwgbrowser_Form3_ListBox1)) ; List of Strings<br>
+(setq items<br>
+  '(<br>
+    "DwgTitle1                                 DwgNum1    A"<br>
+    "DwgTitle2                                 DwgNum2    B"<br>
+  )<br>
+)<br>
+<br>
+(defun Item-&gt;RowList (item)<br>
+  (list<br>
+    (vl-string-trim " " (substr item 1 42))  ; Title.<br>
+    (vl-string-trim " " (substr item 43 11)) ; Dwg number<br>
+    (vl-string-trim " " (substr item 54))    ; Revision<br>
+  )<br>
+)<br>
+<br>
+(defun c:ListViewTest ()<br>
+  (setvar 'cmdecho 0)<br>
+  (command "_OPENDCL")<br>
+  (setvar 'cmdecho 1)<br>
+  (dcl_Project_Load "ListViewTest.odcl" T)<br>
+  (dcl_Form_Show ListViewTest_Form1)<br>
+  (princ)<br>
+)<br>
+<br>
+(defun c:ListViewTest_Form1_OnInitialize (/)<br>
+  (dcl_ListView_AddColumns<br>
+    ListViewTest_Form1_ListView1<br>
+    (list<br>
+      (list "Title"      0 (dcl_ListView_CalcColWidth ListViewTest_Form1_ListView1 "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))<br>
+      (list "Dwg number" 0 (dcl_ListView_CalcColWidth ListViewTest_Form1_ListView1 "AAAAAAAAAAAAA"))<br>
+      (list "Revision"   0 (dcl_ListView_CalcColWidth ListViewTest_Form1_ListView1 "AAAAAAAA"))<br>
+    )<br>
+  )<br>
+)<br>
+<br>
+(defun c:ListViewTest_Form1_ButtonAppend_OnClicked (/)<br>
+  (dcl_ListView_Clear ListViewTest_Form1_ListView1)<br>
+  (dcl_ListView_FillList<br>
+    ListViewTest_Form1_ListView1<br>
+    (setq *sho_lst*<br>
+      (append *sho_lst* (mapcar 'Item-&gt;RowList items))<br>
+    )<br>
+  )<br>
+)<br>
+<br>
+(defun c:ListViewTest_Form1_ButtonReplace_OnClicked (/)<br>
+  (dcl_ListView_Clear ListViewTest_Form1_ListView1)<br>
+  (dcl_ListView_FillList<br>
+    ListViewTest_Form1_ListView1<br>
+    (setq *sho_lst* (mapcar 'Item-&gt;RowList items))<br>
+  )<br>
+)<br>
+<br>
+(princ "\nc:ListViewTest")<br>
+(princ)<br>
+</div>
+</article>
+<article class="post" id="msg9513">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2013-01-17 21:35 UTC</span>
+  </div>
+  <div class="post-body">works perfect<br>
+<br>
+thanks </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

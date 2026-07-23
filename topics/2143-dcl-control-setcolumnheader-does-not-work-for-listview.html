@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl-Control-SetColumnHeader does not work for ListView? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2143</p>
+    <h1>dcl-Control-SetColumnHeader does not work for ListView?</h1>
+    <p class="meta">Started by roy_043 ·
+      2014-05-27 21:21 UTC ·
+      7 replies · SMF topic #2143</p>
+<article class="post" id="msg10726">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-05-27 21:21 UTC</span>
+  </div>
+  <div class="post-body">I can't get dcl-Control-SetColumnHeader to work for a ListView control.<br>
+See attached .lsp and .odcl files. Am I missing something or is this a bug?<br>
+<br>
+The image was created with the SetColumnHeader property set to true in the .odcl file. It is there to demonstrate a different issue: The ellipses (...) and the rightmost pixels of characters appear to be in a different column when a column is resized.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2018/SQLite_Viewer.lsp">SQLite_Viewer.lsp</a> <span class="muted">(960 bytes)</span></li><li><a href="../attachments/2019/SQLite_Viewer.odcl">SQLite_Viewer.odcl</a> <span class="muted">(1231 bytes)</span></li><li><a href="../attachments/2020/SQLite_Viewer.png">SQLite_Viewer.png</a> <span class="muted">(1211 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10727">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-28 02:17 UTC</span>
+  </div>
+  <div class="post-body">Are you trying to change it at runtime? I'm pretty sure this is a design-time only property. How can I reproduce the column spillover problem?</div>
+</article>
+<article class="post" id="msg10728">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-05-28 07:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2143.msg10727#msg10727 date=1401243454 wrote:</cite><br>
+Are you trying to change it at runtime? I'm pretty sure this is a design-time only property.<br>
+</blockquote>Right. But according to the docs dcl-Control-SetColumnHeader applies to Grid and List View which is probably why the function is named dcl-Control-...<br>
+<br>
+On that theme:<br>
+With so many similarities between Grid and List View why aren't more function named dcl-Control-...?<br>
+Examples:<br>
+dcl-Grid-GetColumnCount<br>
+dcl-ListView-GetColumnCount<br>
+dcl-Grid-DeleteColumn<br>
+dcl-ListView-DeleteColumn<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=2143.msg10727#msg10727 date=1401243454 wrote:</cite>How can I reproduce the column spillover problem?<br>
+</blockquote>Open the .odcl file and set the ColumnHeader property to true for the List View.<br>
+Call the _.Opendcl command (I accidentally stripped that from the .lsp file).<br>
+Load the .lsp file.<br>
+Start the c:SQLite_Viewer function and resize the 4th column.</div>
+</article>
+<article class="post" id="msg10731">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-28 14:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2143.msg10728#msg10728 date=1401261002 wrote:</cite><br>
+But according to the docs dcl-Control-SetColumnHeader applies to Grid and List View which is probably why the function is named dcl-Control-...<br>
+</blockquote><br>
+<br>
+The prefix is due to the fact it's a property. Methods are specific to the control type; properties are "owned" by the control base class.<br>
+<br>
+The column spillover issue may be a graphics driver related problem. I am not able to reproduce it on Windows 7 64-bit with a NVIDIA GeForce GT 430.</div>
+</article>
+<article class="post" id="msg10734">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-05-28 15:38 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2143.msg10731#msg10731 date=1401287503 wrote:</cite><br>
+The prefix is due to the fact it's a property. Methods are specific to the control type; properties are "owned" by the control base class.</blockquote>I didn't know that. Thanks for the clarification.<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=2143.msg10731#msg10731 date=1401287503 wrote:</cite><br>
+The column spillover issue may be a graphics driver related problem. I am not able to reproduce it on Windows 7 64-bit with a NVIDIA GeForce GT 430.<br>
+</blockquote>I understand. It's not a big issue anyway, I just happened to bump into it.</div>
+</article>
+<article class="post" id="msg10738">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-05-29 08:40 UTC</span>
+  </div>
+  <div class="post-body">Regarding the 'column spillover': I forgot to mention that I use BricsCAD. I don't know if that plays a role.</div>
+</article>
+<article class="post" id="msg10744">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-29 10:41 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2143.msg10738#msg10738 date=1401352854 wrote:</cite><br>
+Regarding the 'column spillover': I forgot to mention that I use BricsCAD. I don't know if that plays a role.<br>
+</blockquote><br>
+<br>
+There is no difference on my system whether testing in AutoCAD or Bricscad.</div>
+</article>
+<article class="post" id="msg10748">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-05-29 16:41 UTC</span>
+  </div>
+  <div class="post-body">OK, thanks for checking.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid : EndLabelEdit event : trigger lag · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1774</p>
+    <h1>Grid : EndLabelEdit event : trigger lag</h1>
+    <p class="meta">Started by krunch ·
+      2012-03-13 20:34 UTC ·
+      10 replies · SMF topic #1774</p>
+<article class="post" id="msg8701">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-03-13 20:34 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+I have a grid with following column styles : 3 31 33 32 22<br>
+<br>
+Is it normal that OnEndLabelEdit triggers </div>
+</article>
+<article class="post" id="msg8707">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-03-13 21:56 UTC</span>
+  </div>
+  <div class="post-body">Hi, krunch, yes, of course. Maybe a better name would be OnEndCellEdit: it is fired if you have finished or cancelled the editing state of the cell - does not depend on the style.<br>
+I've just explained it by myself this way: the start of the cell editing state (OnBeginLabelEdit) means that an other control is shown instead of the cell. It is generated at runtime. You change a value and after leaving the focus off the internal control it disappears and the result is written into the cell (OnEndLabelEdit). Colors, images and so on are drawn within an OnPaint-event and overrides the pure text cellstyles. That's the way I explain it to myself - not knowing if the grid does work this way. Somewhere in this forum I've posted a sample working with Enter and ESC in grids.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8709">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-03-14 11:09 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+Sorry I had not seen that this message has been posted : it's not finished !<br>
+It was about the event lag, and I wanted to join a sample ..<br>
+<br>
+As you said EndLabelEdit is triggered only when you leave the column (not after it's changed), moreover it seems to miss 1 click with the image swap (style 3) ..<br>
+I will make a sample later.<br>
+<br>
+Regards</div>
+</article>
+<article class="post" id="msg8710">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-03-14 12:20 UTC</span>
+  </div>
+  <div class="post-body">H, have a look <a href="http://www.opendcl.com/forum/index.php?topic=384.msg1724#msg1724" rel="nofollow noopener">{2}</a>. There you can see how to manage OnEndLabelEdit after pressing Enter in a grid.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8719">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-03-15 19:17 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+Ok I've read, but I don't have this problem with Enter (no text input).<br>
+<br>
+<br>
+<blockquote class="quote">You change a value and after leaving the focus off the internal control</blockquote><br>
+So there's no way to get a triggering just after the user has changed a value (for example with style 33 32 22), I have to click in another column to validate ?<br>
+<br>
+<blockquote class="quote">Colors, images and so on are drawn within an OnPaint-event and overrides the pure text cellstyles.</blockquote><br>
+I don't understand this (there's no OnPaint event).<br>
+My problem (style 3) is that the event OnEndLabelEdit doesn't triggers on 1st click while the image is switched, so I get an inversion of the state (on/off images)<br>
+<br>
+Regards</div>
+</article>
+<article class="post" id="msg8720">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-03-15 21:37 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+after you've changed a value and the grid's drop down has been collapsed, the OnMouseMove event will be fired (if you have activated it).<br>
+So my guess is to activate the OnMouseMove event within OnStartLabelEdit event and remove it at the first call of the OnMouseMove event function and call CancelLabelEdit. I've done this, too because I don't like it when the user has changed the grid's cell with checkbox style but the next time OnEndLabelEdit will be fired will be when the user clicks on an other cell.<br>
+<br>
+<br>
+(defun c:proj_form_grid_OnStartLabelEdit  (nRow nCol)<br>
+  (setq lstLabelEdit (list nRow nCol (dcl_Grid_GetCellText proj_form_grid nRow nCol)))<br>
+  (dcl_Control_SetProperty proj_form_grid "MouseMove" "c:proj_form_grid_OnMouseMove")<br>
+); c:proj_form_grid_OnStartLabelEdit<br>
+<br>
+(defun c:proj_form_grid_OnMouseMove (intFlags  intX intY)<br>
+  (dcl_Control_SetProperty proj_form_grid "MouseMove" "")<br>
+  (if lstLabelEdit (dcl_Grid_CancelCellEdit proj_form_grid))<br>
+); c:proj_form_grid_OnMouseMove<br>
+<br>
+(defun c:proj_form_grid_OnEndLabelEdit  (nRow nCol)<br>
+  (if lstLabelEdit  <br>
+    (progn<br>
+      ;; do something      <br>
+      (if (/= (dcl_Control_GetProperty proj_form_grid "MouseMove") "")<br>
+        (dcl_Control_SetProperty proj_form_grid "MouseMove" "")<br>
+      ); if<br>
+      (setq lstLabelEdit nil)<br>
+    ); progn<br>
+  ); if<br>
+); c:proj_form_grid_OnEndLabelEdit<br>
+<br>
+<br>
+Hope that helps.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8726">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-03-19 21:02 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+Thanks for this solution, it improves the behavior (with the following changes)<br>
+<br>
+(defun c:proj_form_grid_OnBeginLabelEdit  (nRow nCol)  <br>
+  (setq lstLabelEdit T)<br>
+  (dcl_Control_SetProperty proj_form_grid "MouseMove" "c:proj_form_grid_OnMouseMove")  <br>
+); c:proj_form_grid_OnStartLabelEdit  <br>
+<br>
+For me it removes my problem with style=3, and the comboboxes need 1 click less to pass from one to other (example bellow), so it's lighter. If the Form had a onMouseMove event it would be perfect...<br>
+<br>
+-----------------<br>
+I post a sample with the problem I had with OnEndLabelEdit .. In this example when you change a property in the first grid (line) the 2nd grid is updated with same.<br>
+OnEndLabelEdit doesn't detects the 1st click onto the on/off image (while the images are switched) so the state is inverted...<br>
+<br>
+Other thing : comboboxes (linetype stylename) need 3 clicks to unfold when I pass from one to the other, so it's a little bit heavy<br>
+<br>
+Thanks<br>
+<br>
+Regards<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1714/Overrides.odcl">Overrides.odcl</a> <span class="muted">(2099 bytes)</span></li><li><a href="../attachments/1715/Overrides.lsp">Overrides.lsp</a> <span class="muted">(1695 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8729">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-03-22 18:17 UTC</span>
+  </div>
+  <div class="post-body">Hi, I didn't had the time to have a look. I will need some days to find free time to have a look at it.<br>
+Sorry.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8824">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-04-24 19:54 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+Here is a little code that improves reactivity of grids, especially with controls like combo boxes.<br>
+It selects directly the cell under the pointer, so you can see it, and it avoids 1 click to pass from one to another<br>
+<br>
+Note that SetCurCell triggers OnEndLabelEdit, so it can replace your code below<br>
+Regards<br>
+<br>
+(defun c:proj_form_grid_OnMouseMove (Flags X Y / cell)  <br>
+    (setq cell (dcl_Grid_HitPointTest proj_form_grid X Y))<br>
+    (dcl_Grid_SetCurCell proj_form_grid (car cell) (cadr cell)) <br>
+)</div>
+</article>
+<article class="post" id="msg8825">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-04-25 05:27 UTC</span>
+  </div>
+  <div class="post-body">Hi, nice idea. I would recommend to test if the cell isn't currently already active before using SetCurCell method. Please note that OnMouseMove will be catched every little pixel you move the mouse.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8827">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-04-25 18:09 UTC</span>
+  </div>
+  <div class="post-body">Good, the test eliminates the blinking effect<br>
+<br>
+(defun c:proj_form_grid_OnMouseMove (Flags X Y / cell)<br>
+    (setq cell (dcl_Grid_HitPointTest proj_form_grid X Y)<br>
+             X (car cell)<br>
+             Y (cadr cell))<br>
+    (or (equal cell (dcl_Grid_GetCurCell proj_form_grid))<br>
+         (dcl_Grid_SetCurCell proj_form_grid X Y)<br>
+    )<br>
+)<br>
+<br>
+<br>
+And here to filter columns you don't want to select (columnstyle = 0)<br>
+<br>
+(defun c:proj_form_grid_OnMouseMove (Flags X Y / cell)<br>
+    (setq cell (dcl_Grid_HitPointTest proj_form_grid X Y)<br>
+    (or (equal cell (dcl_Grid_GetCurCell proj_form_grid))<br>
+         (member (setq X (car cell) Y (cadr cell)) '(1)) ; column #1 is read only<br>
+         (dcl_Grid_SetCurCell proj_form_grid X Y)<br>
+    )<br>
+)<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

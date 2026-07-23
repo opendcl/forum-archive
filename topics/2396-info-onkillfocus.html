@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Info OnKillFocus · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2396</p>
+    <h1>Info OnKillFocus</h1>
+    <p class="meta">Started by mclisp ·
+      2016-07-27 16:04 UTC ·
+      4 replies · SMF topic #2396</p>
+<article class="post" id="msg11982">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2016-07-27 16:04 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+I ask a question for you, probably trivial, but I have little experience.<br>
+I have a form Modeless Dialogs with many textbox where switches on the numbers, I manage as follows:<br>
+(Defun c: ... / Form1 / TextBox3 # OnKillFocus (/)<br>
+OnKillFocus is the best event to use?<br>
+I ask this because when I go in texbox continues to maintain focus and repeats continuously when I move the mouse function.<br>
+I also tried<br>
+(Defun c: ...... / Form1 / TextBox3 # OnEditChanged (NewValue /)<br>
+but even this does not seem good, if I insert 512 is run 3 times.<br>
+Someone could give examples or explain what is the standard to be used TexBox?<br>
+thank you</div>
+</article>
+<article class="post" id="msg11983">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-07-28 04:00 UTC</span>
+  </div>
+  <div class="post-body">Those two events are commonly used. If you don't want to be notified on every change, then KillFocus is appropriate. From your description, I don't understand what the problem is with KillFocus and mouse moves. The event should only fire when the text box loses input focus, but you need to be careful that your handler doesn't interfere with the focus change.</div>
+</article>
+<article class="post" id="msg11984">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2016-07-28 05:54 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the reply.<br>
+As you can see from the video https://youtu.be/QN1PVexanVE<br>
+I open a drawing<br>
+Create the first 5 items (1st cycle)<br>
+I replace the No. 50 with 55 (2nd cycle)<br>
+replace 55 with 30 (3rd cycle)<br>
+Total 3 cycles<br>
+Actually if use the command cancels<br>
+the cycles are 10.<br>
+<br>
+Maybe ended the cycle I have to put the focus elsewhere?<br>
+it's possible? If it is possible ask how.<br>
+I apologize for my bad english<br>
+Thank you<br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg11988">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-07-28 23:35 UTC</span>
+  </div>
+  <div class="post-body">I think your question is about UNDO grouping. Hopefully someone else can help.</div>
+</article>
+<article class="post" id="msg12036">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-08-16 12:12 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+Owen is right: group the undo markers. Because OnKillFocus is also called when you switch between form and drawing without changing anything! <br>
+You can set a global variable in the OnEditChanged event to allow "redrawing" within OnKillFocus and reset the variable in the OnKillFocus event. So the entities will only be updated after modifying values.<br>
+<br>
+<br>
+(defun c:proj/form/edtSize#OnEditChanged (strNewValue) (setq ***ValuesModified*** T))<br>
+<br>
+(defun c:proj/form/edtSize#OnKillFocus ()<br>
+  (if ***ValuesModified*** (update_model))<br>
+  (setq ***ValuesModified*** nil)<br>
+); c:proj/form/edtSize#OnKillFocus<br>
+<br>
+<br>
+HTH, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

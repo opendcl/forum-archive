@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenDCL 5.0.0.17 - Custom &quot;Tray&quot; form template · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 357</p>
+    <h1>OpenDCL 5.0.0.17 - Custom &quot;Tray&quot; form template</h1>
+    <p class="meta">Started by jb ·
+      2008-06-06 18:02 UTC ·
+      4 replies · SMF topic #357</p>
+<article class="post" id="msg1553">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-06-06 18:02 UTC</span>
+  </div>
+  <div class="post-body">Please take Note:<br>
+The following will only work on Alpha 17 and later!!!<br>
+<br>
+The latest Alpha build of OpenDCL includes two new form events: MouseEntered and MouseMovedOff.  Well I've taken these two events and created "expandable" forms - kinda like palettes but more toolbar like - horizontal.  I actually like them better than palettes: mine sit "rolled-up" just under my toolbars and expand when needed, take a look:<br>
+<br>
+Rolled-up<br>
+<br>
+<img src="http://i283.photobucket.com/albums/kk302/bothetraveler/RolledUp.jpg?t=1208199789" alt="" loading="lazy"><br>
+<br>
+when the mouse moves over; Rolled-down<br>
+<br>
+<img src="http://i283.photobucket.com/albums/kk302/bothetraveler/RolledDown.jpg?t=1208199341" alt="" loading="lazy"><br>
+<br>
+when the mouse moves off; Rolled-up<br>
+<br>
+<img src="http://i283.photobucket.com/albums/kk302/bothetraveler/RolledUp.jpg?t=1208199789" alt="" loading="lazy"><br>
+<br>
+Ok, so what I have for you guys today is a container template.  It already has all the code necessary to control the resizing, doc events, and command line entry stuff needed to control the form.  All you have to do is add whatever other controls to the form, and manage their events, as you would with a normal modeless form.  Don't change the names or pictures of the 3 "tray" controls - if you do you'll need to coordinate the lisp to match.<br>
+<br>
+jb000.lsp is machine code that the OpenDCL editor creates to be wrapped in a fas or vlx file.  The method I employ here is best for a fas file (which is what use).<br>
+<br>
+jb000.odcl is the OpenDCL form definition file that gets edited in the OpenDCL editor.<br>
+<br>
+jb000-odclControl.LSP is a standard AutoLISP file where all the support and form control subs are found.  This is where you'll add all the additional controls code that are added to the form in jb000.odcl.<br>
+<br>
+So, basically jb000-odclControl.LSP is already to go.  Drag and drop into AutoCAD and type "test" at the command line.  The form shows initially rolled up.  Move the mouse over and off the form to see it roll up and down.  Use the "Tray" button - the one with the little arrow on it - to "pin" the form down, and then to restore it to mouse event mode.  The little button with the x is to close the form.  Note that a registry entry will be made to save the expanded state of the form so the form will expand the same in all opened documents.<br>
+<br>
+Well, let me know what you think.  I think all the support subs are there - but ya know I might have missed a couple.  :lol:<br>
+<br>
+Code assumes OpenDCL is already loaded - and it doesn't check version info (prolly should)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/413/jb000.zip">jb000.zip</a> <span class="muted">(5541 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1554">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-06-06 18:10 UTC</span>
+  </div>
+  <div class="post-body">Wow, looks great JB. Thx for the template. Maybe we should add it to the samples folder.<br>
+Can you add an animated GIF in this post to show the roll-up &amp; roll-down working?<br>
+</div>
+</article>
+<article class="post" id="msg1559">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-06-06 20:06 UTC</span>
+  </div>
+  <div class="post-body">Download it and make sure everything works and then heck yeah - throw it in the samples folder!!<br>
+<br>
+I've never made an animated GIF before  :-[  maybe someone with that nifty movie software can make a short for us???</div>
+</article>
+<article class="post" id="msg1561">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-06 20:40 UTC</span>
+  </div>
+  <div class="post-body">Hello, I tried it. A bit fast, maybe.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/416/rolloverform.gif">rolloverform.gif</a> <span class="muted">(337508 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1562">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-06-06 22:32 UTC</span>
+  </div>
+  <div class="post-body">Cool, looks good. thx Fred.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Constrain movement of controls? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1627</p>
+    <h1>Constrain movement of controls?</h1>
+    <p class="meta">Started by roy_043 ·
+      2011-05-20 12:04 UTC ·
+      6 replies · SMF topic #1627</p>
+<article class="post" id="msg8006">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-05-20 12:04 UTC</span>
+  </div>
+  <div class="post-body">Grid spacing 6<br>
+control1 top = 5<br>
+control2 top = 7<br>
+<br>
+If you select both controls and move them horizontally both will have a new top of 6. Is there a way to constrain the movement to the X direction so that the top values do not change?</div>
+</article>
+<article class="post" id="msg8008">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-05-20 12:22 UTC</span>
+  </div>
+  <div class="post-body">I think there is a feature request for something like this. I think the best solution is to always keep the controls' relative spacing the same when dragging multiple controls, and snap the entire set to the upper-left corner of the selection bounding box.</div>
+</article>
+<article class="post" id="msg8015">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-05-25 07:29 UTC</span>
+  </div>
+  <div class="post-body">Thank you Owen for your reply. I am not sure I correctly understand the terms you use:<br>
+<br>
+<em>keep the controls' relative spacing the same</em><br>
+Upper-left point of each control matches a grid point?<br>
+<br>
+<em>snap the entire set to the upper-left corner of the selection bounding box</em><br>
+Each control is a aligned top from top edge of parent and left from left edge of parent?<br>
+<br>
+A simple way to constrain the movement of controls is to use the arrow keys instead of dragging them. It is not a very convenient method though: a 50 pixel shift requires 50 arrow key clicks.</div>
+</article>
+<article class="post" id="msg8017">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-05-25 11:46 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=1627.msg8015#msg8015 date=1306308582 wrote:</cite><br>
+A simple way to constrain the movement of controls is to use the arrow keys instead of dragging them. It is not a very convenient method though: a 50 pixel shift requires 50 arrow key clicks.<br>
+</blockquote><br>
+<br>
+Have you tried just setting the grid spacing to ?</div>
+</article>
+<article class="post" id="msg8019">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-05-26 07:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1627.msg8017#msg8017 date=1306324002 wrote:</cite><br>
+Have you tried just setting the grid spacing to ?<br>
+</blockquote>Yes I have. But constraining your hand movement to the X or Y direction is not that easy.</div>
+</article>
+<article class="post" id="msg8020">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-05-26 07:31 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+<blockquote class="quote"><cite> author=roy_043 link=topic=1627.msg8015#msg8015 date=1306308582 wrote:</cite><br>
+[...] a 50 pixel shift requires 50 arrow key clicks.<br>
+</blockquote><br>
+<br>
+A techno song with 120 bpm will help you :)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg8023">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-05-31 11:26 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1627.msg8020#msg8020 date=1306395086 wrote:</cite><br>
+A techno song with 120 bpm will help you :)<br>
+</blockquote><br>
+This <a href="http://www.autohotkey.com/" rel="nofollow noopener">{2}</a> script is a little easier on the eardrums (and blood pressure):<br>
+<br>
+<pre class="code"><code><br>
+#Persistent<br>
+#SingleInstance, Force<br>
+Menu, Tray, Icon, C:\Program Files\OpenDCL Studio\ENU\Studio.Res.dll<br>
+Menu, Tray, NoStandard<br>
+Menu, Tray, Add, Exit, Exit<br>
+Menu, Tray, Add, ODCL AHK Move, ODCL_AHK_Move<br>
+Menu, Tray, Default, ODCL AHK Move<br>
+Menu, Tray, Click, 1<br>
+Return<br>
+<br>
+ODCL_AHK_Move:<br>
+InputBox, UserInput, ODCL AHK Move, Please enter e.g.: X-30 or Y+10, , 220, 115<br>
+action := SubStr(UserInput, 1, 2)<br>
+repeat := SubStr(UserInput, 3)<br>
+if (action = "x+") <br>
+  key = {RIGHT}<br>
+else if (action = "x-")<br>
+  key = {LEFT}<br>
+else if (action = "y+")<br>
+  key = {DOWN}<br>
+else if (action = "y-")<br>
+  key = {UP}<br>
+IfWinNotActive, OpenDCL Studio, , WinActivate, OpenDCL Studio,<br>
+WinWaitActive, OpenDCL Studio,<br>
+Loop, %repeat%<br>
+  Send, %key%<br>
+Return<br>
+<br>
+Exit:<br>
+ExitApp<br>
+</code></pre><br>
+<br>
+EDIT: Improved code</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

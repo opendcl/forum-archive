@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>New pc installation and copy .odcl file · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2616</p>
+    <h1>New pc installation and copy .odcl file</h1>
+    <p class="meta">Started by mclisp ·
+      2018-07-29 06:33 UTC ·
+      12 replies · SMF topic #2616</p>
+<article class="post" id="msg12917">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2018-07-29 06:33 UTC</span>
+  </div>
+  <div class="post-body">Hello to all<br>
+<br>
+I am installing a new computer with Autocad, I have copied all the files lisp and .odcl with the same configuration of the old pc.<br>
+I have a problem, on the new pc:<br>
+the forms do not work because they change the strings function, example:<br>
+Old   pc (defun <strong>c: MCTrave1/Form1#Onnitialize</strong>   <br>
+New pc (defun <strong>c: MCTrave1_Form1_Onnitialize</strong><br>
+Is there a way to not have to change all the lisp files?<br>
+<br>
+I had already asked this question in 2016<br>
+<a href="http://opendcl.com/forum/index.php?topic=2455.msg12239#msg12239" rel="nofollow noopener">{2}</a><br>
+and this was recommended<br>
+<a href="http://opendcl.com/forum/index.php?topic=2084.msg10309#msg10309" rel="nofollow noopener">{2}</a><br>
+I ask if there have been any news<br>
+Thank you</div>
+</article>
+<article class="post" id="msg12922">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-07-30 07:41 UTC</span>
+  </div>
+  <div class="post-body">Do you have the same version of OpenDCL Studio on old and new PC?</div>
+</article>
+<article class="post" id="msg12924">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2018-07-30 09:06 UTC</span>
+  </div>
+  <div class="post-body">thanks for the question Peter2<br>
+Yes, same operating system Window 7, same Autocad 2015, same OpenDCL Studio 8.0.2.0.</div>
+</article>
+<article class="post" id="msg12925">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-07-30 15:01 UTC</span>
+  </div>
+  <div class="post-body">So maybe you don't have the same Lisp?<br>
+<br>
+If you have same OS, same ODCL, same AutoCAD and same Lisp - where does the other "defuns" are coming from? The Lsp-files does not change by itself ???</div>
+</article>
+<article class="post" id="msg12926">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2018-07-30 15:11 UTC</span>
+  </div>
+  <div class="post-body">hi, read here this is a known problem<br>
+<br>
+<a href="http://opendcl.com/forum/index.php?topic=2455.msg12239#msg12239" rel="nofollow noopener">{2}</a><br>
+<br>
+<a href="http://opendcl.com/forum/index.php?topic=2084.msg10309#msg10309" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg12934">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2018-08-01 04:41 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+I wonder why copying files .lip and .odcl from pc to pc. the symbols  "/ #" change?<br>
+<br>
+Old PC  (defun c: MCTrave1 / Form1 # Onnitialize<br>
+New PC (defun c: MCTrave1_Form1_Onnitialize<br>
+Thank you</div>
+</article>
+<article class="post" id="msg12935">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-08-01 11:36 UTC</span>
+  </div>
+  <div class="post-body">So the pure "copy to PC job" changes the files from new version (with / and #) to the old version (with _)??<br>
+<br>
+When files are changed without user-commands then it is<br>
+<br>
+- a virus<br>
+- an automated, but forgotten job<br>
+- an user-error (confusion of the files)<br>
+<br>
+But I suppose that it is none of the three possibilities ..<br>
+<br>
+Can you create a video which shows all the stuff: the file content before - the copy-action - the file content after</div>
+</article>
+<article class="post" id="msg12937">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2018-08-01 11:42 UTC</span>
+  </div>
+  <div class="post-body">The only possible explanation that I see is that the new PC is running an older ODCL runtime.<br>
+Maybe the OP should check with:<br>
+<pre class="code"><code>(dcl_GetVersion)</code></pre><br>
+This should work on both computers as the current ODCL runtime still supports function names with '_' AFAIK.</div>
+</article>
+<article class="post" id="msg12938">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2018-08-01 17:06 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+if I type (dcl_GetVersion)<br>
+The answer is 8.0 on all two PCs.....<br>
+<br>
+I had already had this inconvenience<br>
+2 years ago, I changed all the functions manually.<br>
+Now they are some more and it is a big job.<br>
+<br>
+But it does not happen to you?<br>
+Thank<br>
+</div>
+</article>
+<article class="post" id="msg12939">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2018-08-01 18:11 UTC</span>
+  </div>
+  <div class="post-body">My experience is that old code works with recent version of the ODCL runtime without any modifications.<br>
+<br>
+I believe the beginners tutorial has not been updated, so you might test this with those files.<br>
+<br>
+Or you can use this code that I have posted in 2013:<br>
+http://opendcl.com/forum/index.php?topic=1946.0</div>
+</article>
+<article class="post" id="msg12943">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2018-08-02 02:46 UTC</span>
+  </div>
+  <div class="post-body">Yes, like roy_043<br>
+I also use old type codes with new types without any modifications.<br>
+ :)<br>
+</div>
+</article>
+<article class="post" id="msg13034">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2018-10-10 10:29 UTC</span>
+  </div>
+  <div class="post-body">Ciao<br>
+sorry if I resume the discussion after a long time<br>
+but I was very busy.<br>
+<br>
+@Roy_03 I explained myself badly I apologize.<br>
+Files do not replace symbols / and # etc.<br>
+<br>
+Opendcl wants different symbols on the two PCs.<br>
+<br>
+An example of the same function:<br>
+<br>
+On the old PC this works (defun c: MCTrave1_Form1_ComboBox3_OnSelChanged)<br>
+<br>
+On the new PC works this (defun c: MCTrave1/Form1/ComboBox3#OnSelChanged)<br>
+<br>
+I have to replace the symbols _ / #<br>
+<br>
+What can I do to prevent this from happening?<br>
+thanks</div>
+</article>
+<article class="post" id="msg13035">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2018-10-10 12:27 UTC</span>
+  </div>
+  <div class="post-body">@mclisp:<br>
+The symptoms in your last post are different from those in your first post. This makes diagnosing the problem difficult. Please post the relevant files (ODCL + LSP).<br>
+<br>
+EDIT: Have you preformed tests with the projects mentioned in reply #9?</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

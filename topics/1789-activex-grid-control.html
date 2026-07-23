@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ActiveX grid control ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1789</p>
+    <h1>ActiveX grid control ?</h1>
+    <p class="meta">Started by krunch ·
+      2012-04-19 20:17 UTC ·
+      5 replies · SMF topic #1789</p>
+<article class="post" id="msg8792">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-04-19 20:17 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+I have the same wish than several topics : how to color individual cells, how to allow multiple rows selection .. so I wonder about ActiveX grid controls.<br>
+<br>
+My problem is :<br>
+- do they enable to get comboboxes with AutoCAd properties Color Linetype etc .. (column styles 3 31 33 32 22) like the default grid ?<br>
+- where can I find it ? There's no grid in the ActiveX control list (Win7-ACad2010)<br>
+- can we find documentation .. do you recomand to search in that direction ??<br>
+<br>
+Thanks for your opinion ..<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8794">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-04-20 11:12 UTC</span>
+  </div>
+  <div class="post-body">Hi, all such properties you see in the grid are cell overridings. Whenever you click into a cell, a subcontrol will get visible (dropdown, editbox). It is developed so in other languages, even if you simply use an ActiveX control. In the end, every language does the same. The function you call for an ActiveX control to change the backcolor or anything else, sets properties to override the standard display at the time  OnPaint will be fired.<br>
+<br>
+Unfortunately, I cannot estimate the amount of code to implement backcolor to the build-in grid control because it is written in C++.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8798">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-04-20 17:07 UTC</span>
+  </div>
+  <div class="post-body">Ok but are you saying that those overridings (column styles 3 31 33 32 22 in the odcl grid) are not implemented in the ActiveX ?<br>
+<br>
+Several topics send to 'ActiveX grid control' but I can't find it in the ActiveX list, so I can't try it...<br>
+</div>
+</article>
+<article class="post" id="msg8799">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-04-20 19:01 UTC</span>
+  </div>
+  <div class="post-body">Hi, I'm not sure what you mean with<br>
+<blockquote class="quote">Several topics send to 'ActiveX grid control' but I can't find it in the ActiveX list, so I can't try it...</blockquote><br>
+I do not know any activex control that supports autocad typical dropdowns like layerlist, plotstyles and linetypes.<br>
+<br>
+Maybe, I wasn't clear enough:<br>
+What I meant with cell overridings is that such a grid was build using cell overridings. If you want to build your own activeX control (for instance in .NET) to use it with OpenDCL, you will have to program it, too.<br>
+<br>
+The build-in activex control of OpenDCL is a generic container to provide different ActiveX controls even you own. All the properties you want to access have to be defined by you or the programmer before - in the development environment where the ActiveX control was created in (.NET for instance).<br>
+<br>
+The easiest way to solve this would be to add methods to change the backcolor in the build-in grid control of OpenDCL. But I still have no idea where and how to start because I'm still not familiar with C++ and the OpenDCL project structure.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8800">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-04-20 19:54 UTC</span>
+  </div>
+  <div class="post-body">Ok understood<br>
+<br>
+<blockquote class="quote">Hi, I'm not sure what you mean</blockquote><br>
+Yes for example here : <a href="http://www.opendcl.com/forum/index.php?topic=1582.0" rel="nofollow noopener">{2}</a><br>
+<br>
+<blockquote class="quote">I do not know any activex control that supports autocad typical dropdowns like layerlist, plotstyles and linetypes.</blockquote><br>
+That's what I didn't undestood.<br>
+<br>
+I'm not able to write C++ either ..<br>
+I was wondering how to improve feature in a project, and found these 2 things (which are the subject of other topics in the forum) : to color individual lines or cells, and to select multiple lines in the grid (like a list box) ..<br>
+<br>
+Thanks for your answer <br>
+Regards</div>
+</article>
+<article class="post" id="msg8801">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-04-21 07:57 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+yes, even if I ask Owen to introduce me the project to extend the grid control, I'm not familiar with c++ and how to access to grid cells and rows. In the C# it would not be a problem for me - I had some experiences in some .NET projects with cell overridings in listviews.<br>
+<br>
+I have no experiences with flexgrid control. It is a generic ActiveX control - generic means in this case that it doesn't have any AutoCAD related styles like plotstyles, layers and so on. You would have to fill dropdown lists with pure textitems of layers (for instance) - if flexgrid supports dropdown, I even don't know if this control supports dropdowns in cells.<br>
+<br>
+In such activex controls you have to get access to the subitems to control them. That's different to the build-in OpenDCL control from the view of AutoLISP.<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

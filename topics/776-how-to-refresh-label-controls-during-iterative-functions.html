@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to &quot;refresh&quot; label controls during iterative functions ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/21-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 776</p>
+    <h1>How to &quot;refresh&quot; label controls during iterative functions ?</h1>
+    <p class="meta">Started by copter ·
+      2009-05-28 19:39 UTC ·
+      2 replies · SMF topic #776</p>
+<article class="post" id="msg3816">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-05-28 19:39 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+When I use an iterative function when a form is displayed I not able to "refresh" a label control  between 2 SetCaption.<br>
+<br>
+For example:<br>
+(repeat 10 (myfunc) (dcl_Control_SetCaption Label1 (itoa (setq nb (1+ nb)))))<br>
+I attached one screen copy of the label during the iteration.<br>
+<br>
+I tried (dcl_Control_Redraw Label1) before (dcl_Control_SetCaption) but the result is the same.<br>
+<br>
+Thanks for your help.<br>
+<br>
+Copter<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/745/Image1.png">Image1.png</a> <span class="muted">(1556 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3818">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-28 20:58 UTC</span>
+  </div>
+  <div class="post-body">Your call to (dcl_Control_Redraw) should fix the problem, but it doesn't because that function was not designed to redraw the background of transparent controls. I've fixed it now for Beta 3 so that Redraw also repaints the background of transparent controls.<br>
+<br>
+A workaround in the meantime is to call (dcl_Control_Redraw) on the *form* after the caption is changed (but this could cause flashing, as it redraws the entire form instead of only the area behind your label control).</div>
+</article>
+<article class="post" id="msg3824">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-05-29 06:33 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen.<br>
+<br>
+I'll wait for beta 3.<br>
+<br>
+Copter</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

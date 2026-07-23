@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Check Internet Access Server and retrieve date online · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1678</p>
+    <h1>Check Internet Access Server and retrieve date online</h1>
+    <p class="meta">Started by hvcrou ·
+      2011-09-16 12:05 UTC ·
+      1 replies · SMF topic #1678</p>
+<article class="post" id="msg8320">
+  <div class="post-head">
+    <span class="post-author">hvcrou</span>
+    <span class="post-date muted">2011-09-16 12:05 UTC</span>
+  </div>
+  <div class="post-body"> Hello<br>
+ <br>
+ I want a routine that cirar do the following:<br>
+ 1) Check with internet connection<br>
+     a) If no connection exists then return nil<br>
+     b) If there look for the data server type (times.windows.com, time.nist.gov, etc.) and returns the current date.<br>
+<br>
+ I tried to validate the wininet.dll with internet connection but can not import this dll with (vlax-import-type-library) to work beyond that found no information in order to get the value as a return date of a server dates online.<br>
+<br>
+ The purpose of this demand and validate date not on the date set in the machine which can be changed by User, but the actual date<br>
+<br>
+ Does anyone can help me<br>
+<br>
+ thanks</div>
+</article>
+<article class="post" id="msg8330">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2011-09-19 20:24 UTC</span>
+  </div>
+  <div class="post-body">Maybe this will help:<br>
+<br>
+<br>
+<br>
+(defun GetFromWeb (strUrl / webObj stat res errobj)<br>
+  ;; Set up variables<br>
+  (setq webObj nil stat nil res nil)<br>
+  ;; Create a new reference to the WinHttp object<br>
+  (setq webObj (vlax-invoke-method (vlax-get-acad-object) 'GetInterfaceObject "WinHttp.WinHttpRequest.5.1"))<br>
+  ;; Fetch web page<br>
+  (vlax-invoke-method webObj 'Open "GET" strUrl :vlax-false)<br>
+  (setq errobj (vl-catch-all-apply 'vlax-invoke-method (list webObj 'Send)))<br>
+  (if (null (vl-catch-all-error-p errobj))<br>
+    (progn<br>
+      (setq stat (vlax-get-property webObj 'Status))<br>
+      (if (= stat 200)<br>
+        (progn<br>
+          (setq res (vlax-get-property webObj 'ResponseText));_ Return the response value<br>
+        )<br>
+        (princ (strcat "\n!!!Server error: " (vlax-get-property webObj 'StatusText) "!!!"))<br>
+      )<br>
+    );_ progn<br>
+    (princ (strcat "\n!!!Server error:\n" (vl-catch-all-error-message errobj)))<br>
+  )<br>
+  res  <br>
+)<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

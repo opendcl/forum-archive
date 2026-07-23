@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Background and Transparency in Version 5.0 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 511</p>
+    <h1>Background and Transparency in Version 5.0</h1>
+    <p class="meta">Started by velasquez ·
+      2008-12-16 10:43 UTC ·
+      22 replies · SMF topic #511</p>
+<article class="post" id="msg2296">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-12-16 10:43 UTC</span>
+  </div>
+  <div class="post-body">The inclusion of the property of background color in a form and of transparency in the controls are excellent for OpenDCL.  <br>
+But some controls don't work well with transparency they make the bad work.  <br>
+Can this be modified?  <br>
+Thanks<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/545/Transparency.png">Transparency.png</a> <span class="muted">(11441 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2299">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-12-16 16:38 UTC</span>
+  </div>
+  <div class="post-body">The only solution I'm aware of is to set your controls to not use visual styles. When you use a visual style, the style overrides the background colors in some controls.</div>
+</article>
+<article class="post" id="msg2300">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-12-16 20:33 UTC</span>
+  </div>
+  <div class="post-body">Only to know, if which won't the transparency property work well the reason for her to exist?</div>
+</article>
+<article class="post" id="msg2301">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-12-16 20:59 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=511.msg2300#msg2300 date=1229459621 wrote:</cite><br>
+Only to know, if which won't the transparency property work well the reason for her to exist?<br>
+</blockquote><br>
+<br>
+Because it does work well. These are just a small few example where it doesn't.<br>
+Sometimes these types of issues are outside of Owen's control. Microsoft creates the controls and down always expose everything for manipulation.<br>
+</div>
+</article>
+<article class="post" id="msg2852">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-03-05 07:04 UTC</span>
+  </div>
+  <div class="post-body">I have just run into this issue myself when trying to set the color of one of my dialogs. Would I be correct in thinking that it is currently impossible to get a frame and a tabstrip to correctly display a transparent or colored background? Most other items can be resolved by turning off the themes but these two don't seem to work for me  :'(</div>
+</article>
+<article class="post" id="msg2855">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-05 07:12 UTC</span>
+  </div>
+  <div class="post-body">Hello, mr_nick, can you upload a project file where we can see this form?<br>
+<br>
+Please note: if the user changes the windows system colors that may have negative influence to your forms. so handle with care!<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2856">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-03-05 07:36 UTC</span>
+  </div>
+  <div class="post-body">Do I need to upload anything? The issues I'm seeing are the same as those in the image in the first post - i.e the text on the frame won't display on a transparent background and the area at the side of all the tabs will also only display in grey.</div>
+</article>
+<article class="post" id="msg2857">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-05 08:39 UTC</span>
+  </div>
+  <div class="post-body">Frame: If you don't override the form's back color you won't have any problems with the background of the caption. On the other hand you can set the frame's caption to an empty string and draw a label control onto the frame. Then it will be transparent, too.<br>
+<br>
+Tab: It may be a display setting in Windows that the tabs with VisualStyle are white in the background. I cannot say anything about this.<br>
+<br>
+I also tried the original Microsoft Frame control as ActiveX control but this doesn't support transpareny in OpenDCL so far as I could see.<br>
+<br>
+Fred<br>
+</div>
+</article>
+<article class="post" id="msg2859">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-03-05 10:09 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=511.msg2857#msg2857 date=1236242381 wrote:</cite><br>
+Frame: .... you can set the frame's caption to an empty string and draw a label control onto the frame. Then it will be transparent, too.</blockquote><br>
+<br>
+OK, this has given me a workable solution - not ideal but better than nothing.<br>
+<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=511.msg2857#msg2857 date=1236242381 wrote:</cite><br>
+Tab: ..... I also tried the original Microsoft Frame control as ActiveX control but this doesn't support transpareny in OpenDCL so far as I could see.</blockquote><br>
+<br>
+I just tried this in VBA and it's not possible there either so I'm guessing this one's a no-go.<br>
+<br>
+Thanks for the tip on the first one Fred  :)</div>
+</article>
+<article class="post" id="msg2860">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-03-05 11:40 UTC</span>
+  </div>
+  <div class="post-body">Hi  <br>
+I got to solve the problem in TabControl using a PictureBox.  <br>
+It seems that worked well.<br>
+<br>
+Velasquez<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/612/TabControl.jpg">TabControl.jpg</a> <span class="muted">(36962 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2861">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-05 12:52 UTC</span>
+  </div>
+  <div class="post-body">Hi, velasquez, that looks fine. Am I right that you put an image in the background of each tab with the gradient blue to white?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2870">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-03-05 17:15 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred, you this certain?  <br>
+See the image.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/613/background-ferramentas.jpg">background-ferramentas.jpg</a> <span class="muted">(7797 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2871">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-05 17:27 UTC</span>
+  </div>
+  <div class="post-body">Ah, thanks. I'm deeply impressed!<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2915">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-06 14:02 UTC</span>
+  </div>
+  <div class="post-body">velasquez:<br>
+<br>
+When I use your image file I only see a grey rectangle and not a gradient. Do you really use this file? But maybe you don't load this file into the image list of the *.odcl project file?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2927">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-03-06 15:01 UTC</span>
+  </div>
+  <div class="post-body">did you set the tabs background to -24</div>
+</article>
+<article class="post" id="msg2929">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-06 15:10 UTC</span>
+  </div>
+  <div class="post-body">Barry: if you meant me, no, in that case I used a modless form without tabs. Finally, I draw a new picturebox and then the image worked great. I deleted the old one.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2936">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-03-06 17:47 UTC</span>
+  </div>
+  <div class="post-body">Fred:  <br>
+I use this image inside of the list of my ODCL.  <br>
+TabControl -&gt; Heigth = 432 - Width = 244  <br>
+PictureBox -&gt; Heigth = 413 - Width = 244   <br>
+  <br>
+I created this with OpenDCL 4.1.2.2  <br>
+  <br>
+Velasquez</div>
+</article>
+<article class="post" id="msg2943">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-06 18:08 UTC</span>
+  </div>
+  <div class="post-body">I see you're using JPG. I had not so nice experiences in using JPG. In some cases good looking images are changing after importing into OpenDCL Studio. That's why I asked.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2945">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-06 18:09 UTC</span>
+  </div>
+  <div class="post-body">That reminds me... as far as I know you never did attach the requested samples of failing images to your old bug report about this.</div>
+</article>
+<article class="post" id="msg2947">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-06 18:13 UTC</span>
+  </div>
+  <div class="post-body">Ooops ... I'm getting older and older.</div>
+</article>
+<article class="post" id="msg2949">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-06 18:34 UTC</span>
+  </div>
+  <div class="post-body">Owen, was it a bug report on sourceforge? I cannot find it...<br>
+Nevertheless I send an example for imagine:<br>
+<br>
+Image 1 shows the icons during design time.<br>
+Image 2 shows the same form after saving, closing and reopen.<br>
+Image 3 shows the result in AutoCAD.<br>
+<br>
+I also attached the original files.<br>
+I tested it with bmp, too with the same result.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/618/dgm1.png">dgm1.png</a> <span class="muted">(43055 bytes)</span></li><li><a href="../attachments/619/dgm2.png">dgm2.png</a> <span class="muted">(33214 bytes)</span></li><li><a href="../attachments/620/dgm3.png">dgm3.png</a> <span class="muted">(8392 bytes)</span></li><li><a href="../attachments/621/090305.zip">090305.zip</a> <span class="muted">(19055 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2978">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-07 12:43 UTC</span>
+  </div>
+  <div class="post-body">Good news! This problem should now be fixed (but you'll have to re-import the images). The problem was that they were being placed into a temporary image list set to the "default" color depth. I changed it to always use 32-bit color depth, and this appears to have resolved it.</div>
+</article>
+<article class="post" id="msg2979">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-07 13:56 UTC</span>
+  </div>
+  <div class="post-body">That sound great; Owen!<br>
+Thank you!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

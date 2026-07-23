@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[Solved] Button-Event &quot;onclicked&quot; and &quot;command insert ...&quot; · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2196</p>
+    <h1>[Solved] Button-Event &quot;onclicked&quot; and &quot;command insert ...&quot;</h1>
+    <p class="meta">Started by Peter2 ·
+      2014-11-13 21:19 UTC ·
+      3 replies · SMF topic #2196</p>
+<article class="post" id="msg11014">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-13 21:19 UTC</span>
+  </div>
+  <div class="post-body">I have a button which should insert a DWG to my current  drawing, using the <br>
+<blockquote class="quote">command _insert Blockname=externalFileName</blockquote><br>
+<br>
+Here is the code<br>
+<br>
+(setq test_zieldatei "c:\\test\\test.dwg")<br>
+<br>
+(defun c:test_haupt_btnDateiimport_OnClicked ( / )<br>
+    (defun subroutine ()<br>
+        (setq cmdecho_old (getvar "cmdecho"))<br>
+        (command "_-insert" (strcat (vl-filename-base test_zieldatei) "=" test_zieldatei) nil)<br>
+        (setvar "cmdecho" cmdecho_old)<br>
+        (princ (strcat "\nVorlagedatei " test_zieldatei " wurde eingefügt."))<br>
+    )<br>
+    (subroutine)<br>
+)<br>
+<br>
+<br>
+The result is:<br>
+Command: ; Error: invalid AutoCAD command: nil<br>
+<br>
+I tried every single line in AutoCAD, without OpenDCL:<br>
+<ul><br>
+pure line (command "_-insert" ... works fine in AutoCAD<br>
+pure "c:test_haupt_btnDateiimport_OnClicked" works fine in AutoCAD, but error within OpenDCL<br>
+So I added the crazy "subroutine" and hoped that OpenDCL has no problems: now subroutine works fine in AutoCAD, but error within OpenDCL<br>
+</ul><br>
+So the basic question is:<br>
+How to insert a DWG with OpenDCL?<br>
+<br>
+I found the function "dcl_InsertBlock", but it is listed as "outdated"...<br>
+Or to I have to close the dialog and open it again?<br>
+<br>
+Thanks for your help<br>
+<br>
+Peter</div>
+</article>
+<article class="post" id="msg11015">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-13 21:31 UTC</span>
+  </div>
+  <div class="post-body">What kind of dialog, and is the event firing synchronously or asynchronously (i.e. what is the button's Event Invoke property value)?</div>
+</article>
+<article class="post" id="msg11016">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-13 22:08 UTC</span>
+  </div>
+  <div class="post-body">It is a modeless dialog, and "Event Invoke" is "0".<br>
+<br>
+(At the moment I have the same problem with a button_on_clicked with "(command"_line") - <br>
+AutoCAD command : nil</div>
+</article>
+<article class="post" id="msg11017">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-13 22:22 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Peter2 link=topic=2196.msg11016#msg11016 date=1415916488 wrote:</cite><br>
+...and "Event Invoke" is "0"...</blockquote><br>
+I see, I see ... :-[ :-[ :-[ :-[<br>
+<br>
+EventInvoke should set to "1"   :-[<br>
+<br>
+Have a nice day, Owen.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

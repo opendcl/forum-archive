@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Web browser activex control · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2072</p>
+    <h1>Web browser activex control</h1>
+    <p class="meta">Started by vladgothe ·
+      2013-12-10 14:33 UTC ·
+      2 replies · SMF topic #2072</p>
+<article class="post" id="msg10216">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2013-12-10 14:33 UTC</span>
+  </div>
+  <div class="post-body">Hello everybody! I want to know, for a web browser activex control, which is the function equivalent with GetHtmlDocument? In my form, in that ActiveX control, I navigate to a url which gives a json response and i want to store that json text in a variable in lisp so I can process it further.<br>
+I already have a version of the program which uses a standard OpenDCL html control, but on one of my client's computer, the variable set with GetHtmlDocument is always nil and I don't know why. Instead, on that computer, a file named identify.txt is opened in notepad and it contains the contents of GetHtmlDocument. So, I wanted to try with an Activex control instead.<br>
+On every other computer, the program is working fine, but on that one it's not working at all. </div>
+</article>
+<article class="post" id="msg10217">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-12-10 15:03 UTC</span>
+  </div>
+  <div class="post-body">Hi, quite interesting. I'm afraid that is may be a IE setting rule that suppresses the response.<br>
+At the first view I don't see any method or property given back the current document's content.<br>
+But there is a document property (setq oHtmlDoc (dcl_AxControl_Get Unbenannt_Dialog1_Explorer1 "Document")).<br>
+That returns a activex object. Please have a try with that trying to query the properties.<br>
+In the end you have to call (AxObject_Release oHtmlDoc).<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10220">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2013-12-10 19:00 UTC</span>
+  </div>
+  <div class="post-body">I think I found the problem. Internet Explorer was turned off from Windows features and I guess this is the problem of program malfunction.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>grid behavior · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2375</p>
+    <h1>grid behavior</h1>
+    <p class="meta">Started by diogenes ·
+      2016-05-27 19:04 UTC ·
+      6 replies · SMF topic #2375</p>
+<article class="post" id="msg11897">
+  <div class="post-head">
+    <span class="post-author">diogenes</span>
+    <span class="post-date muted">2016-05-27 19:04 UTC</span>
+  </div>
+  <div class="post-body">Hi.<br>
+I have a grid (table). I need the behavior is like an excel sheet. When pressing return to finish entering data in a cell, the focus goes to the next cell. It's that possible?<br>
+thanks</div>
+</article>
+<article class="post" id="msg11898">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-06-01 05:06 UTC</span>
+  </div>
+  <div class="post-body">Hi, yes it is. Have a search for CancelCellEdit, SetCurCell and StartCellEdit, maybe also AddRow in the forum and in the help. That's all you need.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg12550">
+  <div class="post-head">
+    <span class="post-author">diogenes</span>
+    <span class="post-date muted">2017-08-18 18:17 UTC</span>
+  </div>
+  <div class="post-body">Yes i know. But how i can capture the event when i press enter after change the content of the cell?</div>
+</article>
+<article class="post" id="msg12554">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-08-20 14:12 UTC</span>
+  </div>
+  <div class="post-body">Here is an example that may help.<br>
+<br>
+I was unable to solve two issues:<br>
+[list type=decimal]<br>
+The SetFocus event of the grid never seems to fire. As a workaround the SelChanged and BeginLabelEdit events are used to determine if the grid has the focus.<br>
+The dcl-Grid-StartCellEdit function seems to not work properly inside the OnInitialize event handler of the form. The user can't start typing right away but has to press the Space Bar first.<br>
+</ul><br>
+<br>
+Test data:<br>
+BricsCAD 16.2.15<br>
+OpenDCL 8.1.3.1<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2343/GrdTest.odcl">GrdTest.odcl</a> <span class="muted">(928 bytes)</span></li><li><a href="../attachments/2344/GrdTest.lsp">GrdTest.lsp</a> <span class="muted">(3025 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12555">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-08-21 19:24 UTC</span>
+  </div>
+  <div class="post-body">Moving the initial call to dcl-Grid-StartCellEdit from the OnInitialize event handler to the OnTimer event handler of the form solves issue #2. See attached files.<br>
+<br>
+Does issue #1 perhaps only occur in BricsCAD?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2345/GrdTest.odcl">GrdTest.odcl</a> <span class="muted">(907 bytes)</span></li><li><a href="../attachments/2346/GrdTest.lsp">GrdTest.lsp</a> <span class="muted">(3099 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12556">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-08-22 08:37 UTC</span>
+  </div>
+  <div class="post-body">Here is a new version using the dcl-GetFocus function. This version relies on fewer event handlers.<br>
+<br>
+Again there seems to be an issue establishing the focus of the grid:<br>
+[list type=decimal]<br>
+After the focus has been moved to the grid using the Tab key, the Enter key can now be used to 'activate' the cell. In this case dcl-GetFocus returns a correct list: ("GrdTest" "Form" "Grd").<br>
+If the Enter key is then used to jump to the next cell dcl-GetFocus returns nil. This seems strange, but the code does make use of this 'feature'.<br>
+</ul><div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2347/GrdTest.odcl">GrdTest.odcl</a> <span class="muted">(836 bytes)</span></li><li><a href="../attachments/2348/GrdTest.lsp">GrdTest.lsp</a> <span class="muted">(2664 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12562">
+  <div class="post-head">
+    <span class="post-author">diogenes</span>
+    <span class="post-date muted">2017-09-12 06:59 UTC</span>
+  </div>
+  <div class="post-body">nice solution.<br>
+thanks</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

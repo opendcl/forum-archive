@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ReturnAsTab · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 614</p>
+    <h1>ReturnAsTab</h1>
+    <p class="meta">Started by aslani ·
+      2009-03-02 18:07 UTC ·
+      11 replies · SMF topic #614</p>
+<article class="post" id="msg2781">
+  <div class="post-head">
+    <span class="post-author">aslani</span>
+    <span class="post-date muted">2009-03-02 18:07 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+I have searched for this in this forum and took the advice but it seems that I'm missing something because the following line gives me the error.<br>
+<br>
+(dcl_Control_SetReturnAsTab varDwgNo T)<br>
+<br>
+=======================================================<br>
+OpenDCL Runtime Error<br>
+An OpenDCL function argument processing exception has occured!<br>
+<br>
+Error: NIL value not allowed<br>
+Function: dcl_Control_SetReturnAsTab<br>
+Argument: 0<br>
+=======================================================<br>
+<br>
+Anybody know what seems to be the problem?<br>
+<br>
+Without the command, my dialog box works great but I'm trying to prevent the Enter Key from closing the dialog box. <br>
+<br>
+I'm using OpenDCL Studio 5.0.1.6<br>
+<br>
+Thanks in advance.</div>
+</article>
+<article class="post" id="msg2783">
+  <div class="post-head">
+    <span class="post-author">aslani</span>
+    <span class="post-date muted">2009-03-02 18:31 UTC</span>
+  </div>
+  <div class="post-body">I'm sorry I have found my fault. ReturnAsTab is in properties, and not a method.<br>
+<br>
+The helpfile gives that impression that I can set it in Lisp, but only to get the errors I've shown.</div>
+</article>
+<article class="post" id="msg2784">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-02 19:00 UTC</span>
+  </div>
+  <div class="post-body">That error means varDwgNo is NIL when you make the call. You're probably calling that function either before the dialog is created, or after is has closed.</div>
+</article>
+<article class="post" id="msg2792">
+  <div class="post-head">
+    <span class="post-author">aslani</span>
+    <span class="post-date muted">2009-03-03 17:00 UTC</span>
+  </div>
+  <div class="post-body">I did noticed that the position of code is important, which makes sense because you can't really manipulate something that doesn't exist yet. But I have placed that line of code after loading the .odcl and showing the form as follows;<br>
+<br>
+  ; Load oDCL Project<br>
+  (dcl_Project_Load "AAEoDCL.odcl" T)<br>
+  ; Display oDCL Form<br>
+  (dcl_Form_Show oDCL_frmAAE)<br>
+  ; force tab<br>
+  (dcl_Control_SetReturnAsTab varDwgNo T)<br>
+<br>
+But you're right, I do get the error after I close the form and yes, it didn't force Return to Tab.<br>
+<br>
+Any advice on what I did wrong?<br>
+<br>
+Thanks.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg2795">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-03 18:22 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+<br>
+that will only work in modeless forms. In modal forms your code stops at (dcl_form_show ...) (until the form closes).<br>
+If you want to setup a control during runtime do it while OnInitializing<br>
+<br>
+<pre class="code"><code><br>
+<br>
+(defun c:myprogram ()<br>
+<br>
+(defun c:proj_form_OnInitialize ()<br>
+  (dcl_Control_SetReturnAsTab varDwgNo T)<br>
+);  c:proj_form_OnInitialize<br>
+<br>
+(dcl_form_show proj_form)<br>
+<br>
+); myprogram<br>
+<br>
+</code></pre><br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2798">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-03 18:37 UTC</span>
+  </div>
+  <div class="post-body">As Fred says, you should put your code in an OnInitialize event handler. (dcl_Form_Show) does not return until you close your modal dialog; therefore the code that follows does not execute until the dialog is closed.</div>
+</article>
+<article class="post" id="msg2799">
+  <div class="post-head">
+    <span class="post-author">aslani</span>
+    <span class="post-date muted">2009-03-03 19:48 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=614.msg2795#msg2795 date=1236104542 wrote:</cite><br>
+Hello<br>
+<br>
+that will only work in modeless forms. In modal forms your code stops at (dcl_form_show ...) (until the form closes).<br>
+If you want to setup a control during runtime do it while OnInitializing<br>
+<br>
+<pre class="code"><code><br>
+<br>
+(defun c:myprogram ()<br>
+<br>
+(defun c:proj_form_OnInitialize ()<br>
+  (dcl_Control_SetReturnAsTab varDwgNo T)<br>
+);  c:proj_form_OnInitialize<br>
+<br>
+(dcl_form_show proj_form)<br>
+<br>
+); myprogram<br>
+<br>
+</code></pre><br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+I did that, same error.  :-[<br>
+<br>
+Not sure why, but it only works when I enabled ReturnAsTab using the OpenDCL Studio.</div>
+</article>
+<article class="post" id="msg2800">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-03 20:05 UTC</span>
+  </div>
+  <div class="post-body">Please tell us what AutoCAD is given to you in the alert when you use this code<br>
+<br>
+<pre class="code"><code>(defun c:myprogram ()<br>
+  (vl-load-com)<br>
+<br>
+  (defun c:proj_form_OnInitialize ()<br>
+    (dcl_Control_SetReturnAsTab varDwgNo T)<br>
+    (dcl_message_box (strcat "Value of varDwgNo: " (vl-prin1-to-string varDwgNo)) "Control" 2 4)<br>
+  );  c:proj_form_OnInitialize<br>
+<br>
+  (dcl_form_show proj_form)<br>
+<br>
+); myprogram</code></pre><br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2803">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-03 20:36 UTC</span>
+  </div>
+  <div class="post-body">Can you attach your .odcl file so we can have a look?</div>
+</article>
+<article class="post" id="msg2850">
+  <div class="post-head">
+    <span class="post-author">aslani</span>
+    <span class="post-date muted">2009-03-05 02:04 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=614.msg2800#msg2800 date=1236110723 wrote:</cite><br>
+Please tell us what AutoCAD is given to you in the alert when you use this code<br>
+<br>
+<pre class="code"><code>(defun c:myprogram ()<br>
+  (vl-load-com)<br>
+<br>
+  (defun c:proj_form_OnInitialize ()<br>
+    (dcl_Control_SetReturnAsTab varDwgNo T)<br>
+    (dcl_message_box (strcat "Value of varDwgNo: " (vl-prin1-to-string varDwgNo)) "Control" 2 4)<br>
+  );  c:proj_form_OnInitialize<br>
+<br>
+  (dcl_form_show proj_form)<br>
+<br>
+); myprogram</code></pre><br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+dcl_message_box gives me an error, so I changed that to dcl_MessageBox to see the value of varDwgNo, which is NIL.<br>
+<br>
+<blockquote class="quote">Can you attach your .odcl file so we can have a look?</blockquote><br>
+<br>
+Sure. <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/611/AAEoDCL.odcl">AAEoDCL.odcl</a> <span class="muted">(17169 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2851">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-05 02:47 UTC</span>
+  </div>
+  <div class="post-body">In your .odcl file there is no control using the VarName varDwgNo. Did you mean diaDwgNo instead? Also, the event handler for the dialog's OnInitialize event is named c:oDCL_frmAAE_OnInitialize. The following code works for me witht he .odcl file that you attached:<br>
+<pre class="code"><code>(defun c:test ()<br>
+  (defun c:oDCL_frmAAE_OnInitialize ()<br>
+    (dcl_Control_SetReturnAsTab diaDwgNo T)<br>
+  )<br>
+  (dcl_form_show oDCL_frmAAE)<br>
+)</code></pre></div>
+</article>
+<article class="post" id="msg2873">
+  <div class="post-head">
+    <span class="post-author">aslani</span>
+    <span class="post-date muted">2009-03-05 17:54 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=614.msg2851#msg2851 date=1236221277 wrote:</cite><br>
+In your .odcl file there is no control using the VarName varDwgNo. Did you mean diaDwgNo instead? Also, the event handler for the dialog's OnInitialize event is named c:oDCL_frmAAE_OnInitialize. The following code works for me witht he .odcl file that you attached:<br>
+<pre class="code"><code>(defun c:test ()<br>
+  (defun c:oDCL_frmAAE_OnInitialize ()<br>
+    (dcl_Control_SetReturnAsTab diaDwgNo T)<br>
+  )<br>
+  (dcl_form_show oDCL_frmAAE)<br>
+)</code></pre><br>
+</blockquote><br>
+<br>
+Ah! that's it!<br>
+<br>
+I was calling the variable name I use in my Lisp to store the value instead of the control's variable name. &gt;.&lt;'<br>
+<br>
+Thank you, that works. :)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

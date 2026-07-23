@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pallette initial location defaults to left side of screen, can I force right? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1042</p>
+    <h1>Pallette initial location defaults to left side of screen, can I force right?</h1>
+    <p class="meta">Started by Hypersonic ·
+      2009-11-30 18:33 UTC ·
+      18 replies · SMF topic #1042</p>
+<article class="post" id="msg5386">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2009-11-30 18:33 UTC</span>
+  </div>
+  <div class="post-body">I.e. is it possible to make them open and dock on the right side instead?<br>
+Thanks!</div>
+</article>
+<article class="post" id="msg5392">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-30 19:47 UTC</span>
+  </div>
+  <div class="post-body">It's possible, but you would need to write the desired settings into the current user's profile manually before loading the palette.</div>
+</article>
+<article class="post" id="msg5394">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2009-11-30 20:08 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Is it possible to use this to get the screen size ,then position from there?<br>
+(getvar "screensize")</div>
+</article>
+<article class="post" id="msg5395">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-30 21:30 UTC</span>
+  </div>
+  <div class="post-body">Sure, you should recalculate it then.<br>
+By default, the palette will be docked at left side (it's my experience).<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5399">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2009-11-30 22:06 UTC</span>
+  </div>
+  <div class="post-body">I tried, could not get the pallet to reposition or go to a position on showing it....<br>
+<br>
+If you can get it undocked, then you can get the position to change... but I can't figure out how to make that happen.....<br>
+<br>
+So I just changed it to a modeless form, it will have to do......</div>
+</article>
+<article class="post" id="msg5402">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-01 00:28 UTC</span>
+  </div>
+  <div class="post-body">You do know that the palette position is saved and restored between AutoCAD sessions, right? You only have to set it once, then it will stay where you put it after you close AutoCAD and restart.</div>
+</article>
+<article class="post" id="msg5409">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2009-12-01 13:05 UTC</span>
+  </div>
+  <div class="post-body">I did not.....hmm let me try it again. I thought it kept jumping to the left even after moving it....</div>
+</article>
+<article class="post" id="msg5410">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-01 18:20 UTC</span>
+  </div>
+  <div class="post-body">Hello, I have figured out that the following code was added to the following file when I've opened my palette the first time.<br>
+<br>
+C:\Users\MyLoginName\AppData\Roaming\Autodesk\AutoCAD Map 3D 2010\R18.0\deu\Support\Profiles\MyProfile\Profile.aws<br>
+<br>
+<pre class="code"><code><br>
+<br>
+    <br>
+      <br>
+      <br>
+    <br>
+    <br>
+<br>
+</code></pre><br>
+<br>
+If I make the palette floating this section is changig to <br>
+<br>
+<pre class="code"><code><br>
+<br>
+  <br>
+    <br>
+    <br>
+  <br>
+  <br>
+</code></pre><br>
+<br>
+Where can I get the CLSID from? Is it saved into to odcl-file? I cannot find it in the registry. Or is it generated randomly when calling the palette the first time?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5411">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-01 18:31 UTC</span>
+  </div>
+  <div class="post-body">Hi, I've found out that all the OpenDCL palettes have no attributes in the <code>CAdUiPaletteSet</code> child. Do we have any chance to change? Then it would be possible to adress the key in the aws-file.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1083/aws.png">aws.png</a> <span class="muted">(21447 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5412">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-01 18:53 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1042.msg5411#msg5411 date=1259692278 wrote:</cite><br>
+[...]I've found out that all the OpenDCL palettes have no attributes in the <code>CAdUiPaletteSet</code> child.[...]</blockquote><br>
+<br>
+The transparency settings are usually saved there. When I change the transparency settings in AutoCAD, the settings are not saved into the aws-file. But I can change it by hand by adding code manually to the aws-file:<br>
+<pre class="code"><code></code></pre><br>
+In that case these settings are used after next start of AutoCAD. But if I change the setting then to other values they're still not saved into the aws-file.<br>
+I'm afraid there is not solution to find out the current palette settings, is it?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5413">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-01 21:11 UTC</span>
+  </div>
+  <div class="post-body">Hi, since my hotel suite has no TV I used the time before sleeping to play around with the initial settings of palette and I've found out that you can exchange the settings of your palette - if you know the GUID of it.<br>
+<br>
+<pre class="code"><code><br>
+  <br>
+     <br>
+     <br>
+  <br>
+   <br>
+</code></pre><br>
+<br>
+<strong>CLSID</strong> = Object-ID GUIID (unique for palette)<br>
+<br>
+<strong>CAdUiDockControlBar</strong>: current palette state<br>
+  Orientation 	= current docking state; values: -1 for floating and values from value list of enumDockingStyle<br>
+  AllowDocking 	= state, if docking is allowed<br>
+<br>
+<strong>FloatInfo</strong>: position and size of floating palette<br>
+  Left		= position from left edge of screen<br>
+  Top		= position from top edge of screen<br>
+  Width		= palette width<br>
+  Height	= palette height<br>
+<br>
+<strong>DockInfo</strong>: position and size of docked palette<br>
+  Left		= position from left edge of screen<br>
+  Top		= position from top edge of screen<br>
+  Width		= palette width<br>
+  Height	= palette height<br>
+  MRUDockID	= docking style of docked palette (this is the place the currently floating palette will be docked at when doubleclicking the titlebar); must be identical to the value of Orientation, if palette is docked<br>
+<br>
+<strong>CAdUiPaletteSet</strong>: advanced display properties<br>
+  ActivePaletteIndex	= is palette active at start of AutoCAD: 0=no; 1=yes<br>
+  TitleBarLocation	= side of titlebar of the floating palette: 0=left; 1=right<br>
+  AutoRollup		= automatic collapse: 0=no; 1=yes<br>
+  Name			= TitelBarText<br>
+  Style			= no idea<br>
+  Opacity		= transparency at OnMouseOff; values between 0 and 100; 100=completely visible<br>
+  RolloverOpacity	= transparency at OnMouseEntered; values between 0 and 100; 100=completely visible<br>
+  Visible		= is palette expanded: 0=no; 1=yes<br>
+<br>
+<br>
+<strong>Values for enumDockingStyle</strong><br>
+<br>
+59417 left, collapsed<br>
+59418 right, collapsed<br>
+59419 top<br>
+59420 left<br>
+59421 right<br>
+59422 bottom<br>
+<br>
+I'm going to develop an function to change the settings in the aws file. Stay tuned!  ;)<br>
+<br>
+Fred<br>
+</div>
+</article>
+<article class="post" id="msg5414">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-01 21:26 UTC</span>
+  </div>
+  <div class="post-body">Good work, Fred. The GUID for control bars is generated when the new form is created in Studio, and saved in the .odcl file, but it is not exposed. I look forward to seeing what you come up with here. It may be necessary to expose that GUID somehow.</div>
+</article>
+<article class="post" id="msg5422">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-02 01:25 UTC</span>
+  </div>
+  <div class="post-body">And here it is:<br>
+with the function I attached you can create or edit the aws-file for the current profile. If the form already exist in the aws-file the code will update it with the values you give. If the form does not exist, it will appended to the list.<br>
+<br>
+It requires MSXML. But since AutoCAD installs MSXML at its own installation progress it should be available. It was the first time that I tried working with MSXML. Until now I only worked with ChilkatXML. I like ChilkatXML much more.<br>
+<br>
+And now I pour water in your glass of wine: You can set the parameters to the aws-file with this code. But after closing AutoCAD this updated file will be overwritten by AutoCAD with its last settings - but not with mine  :'(.<br>
+<br>
+Have a try with it. I'll be back on thursday.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1084/palette_settings.LSP">palette_settings.LSP</a> <span class="muted">(8884 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6348">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-23 19:06 UTC</span>
+  </div>
+  <div class="post-body">I discovered that adding a temporary palette tab to the palette when it saves its state causes the  node to be written correctly. For Alpha 23 I've added code to add a temporary palette for his purpose. Unfortunately I haven't yet figured out how to force the palette state to be written during (dcl_form_close). So far it only gets written when AuoCAD is closed while the palette is visible.</div>
+</article>
+<article class="post" id="msg6351">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-02-24 11:22 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1042.msg5411#msg5411 date=1259692278 wrote:</cite><br>
+Hi, I've found out that all the OpenDCL palettes have no attributes in the <code>CAdUiPaletteSet</code> child. Do we have any chance to change? Then it would be possible to adress the key in the aws-file.<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+Hello Fred,  <br>
+  <br>
+What program you this using to edit the file .aws shown in your image?</div>
+</article>
+<article class="post" id="msg6352">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-24 19:14 UTC</span>
+  </div>
+  <div class="post-body">Hi, velasquez, since an aws file is a xml file, you can open it with every xml editor you want.<br>
+<br>
+I use different editors:<br>
+<ul><br>
+<a href="http://www.philo.de/xmledit/oxedit-1.6.bin.zip" rel="nofollow noopener">{2}</a><br>
+<a href="http://www.iol.ie/~pxe/" rel="nofollow noopener">{2}</a><br>
+<a href="http://www.microsoft.com/downloads/details.aspx?familyid=72d6aa49-787d-4118-ba5f-4f30fe913628&amp;displaylang=en" rel="nofollow noopener">{2}</a><br>
+</ul><br>
+<br>
+Regards,<br>
+Fred</div>
+</article>
+<article class="post" id="msg6367">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-02-25 18:59 UTC</span>
+  </div>
+  <div class="post-body">Fred you can me to show the steps to see the effect of the file palette_settings.LSP on a palette form?  <br>
+I didn't get to see this working.</div>
+</article>
+<article class="post" id="msg7682">
+  <div class="post-head">
+    <span class="post-author">AlanMozilla</span>
+    <span class="post-date muted">2011-01-13 19:30 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+I would like to ask whether there is now a way to solve the problem.<br>
+Thank you and best regards.</div>
+</article>
+<article class="post" id="msg7683">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-01-13 20:47 UTC</span>
+  </div>
+  <div class="post-body">Hi, Alan, this only way to control the palette position and size is to call <br>
+(dcl_form_show MyProj_MyPalette 50 50)to make the palette floating. I recommend the users to set up the palette manually for their own and save the current drawing and leave AutoCAD while the palette is still open. Then the information will be stored in the aws-file.<br>
+<br>
+Greetings, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

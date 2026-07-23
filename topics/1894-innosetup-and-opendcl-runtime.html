@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>InnoSetup and OpenDCL Runtime · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/19-deployment.html">Deployment</a> /
+      Topic 1894</p>
+    <h1>InnoSetup and OpenDCL Runtime</h1>
+    <p class="meta">Started by garcigj ·
+      2012-09-17 22:26 UTC ·
+      3 replies · SMF topic #1894</p>
+<article class="post" id="msg9308">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2012-09-17 22:26 UTC</span>
+  </div>
+  <div class="post-body">Hi all,<br>
+First, my apologies for the translation (Spanish to English)<br>
+I've been doing a project installing a palette interface OpenDCL and I made a setup project in InnoSetup for distribution. The project set up the silent installation of OpenDCL Runtime:<br>
+<pre class="code"><code><br>
+#define OpenDCLRuntime "OpenDCL.Runtime"<br>
+#define OpenDCLRuntimeVer "6.0.2.5"<br>
+#define OpenDCLRuntimeAndVersion OpenDCLRuntime + "." + OpenDCLRuntimeVer + ".msi" <br>
+....<br>
+<br>
+Name: "opendcl"; Description: {cm:CompOpendcl};Types: full; Flags: dontinheritcheck<br>
+<br>
+<br>
+;;-------------------------- OpenDCL ------------------------------------------------<br>
+Source: "INSTALACION\{#OpenDCLRuntimeAndVersion}"; DestDir: {tmp}; Flags: deleteafterinstall;  Components: opendcl;<br>
+<br>
+Filename: msiexec.exe; Parameters: "/q /i  ""{tmp}\{#OpenDCLRuntimeAndVersion}""" ; WorkingDir: {tmp};StatusMsg: Instalando {#OpenDCLRuntimeAndVersion}; Flags: waituntilterminated runminimized; Check: CheckOpenDCLRuntimeInstalled; Components: opendcl; AfterInstall: DCLRuntimeInstalledOK<br>
+</code></pre><br>
+<br>
+In this part of the call to a function; <strong>Check: CheckOpenDCLRuntimeInstalled</strong>, to see if OpenDCL Runtime is installed and if so know which version is installed also to give a notice to the user. If the installed version is greater or equal, not installing OpenDCLRuntime run.<br>
+<br>
+<strong>Function:</strong><br>
+<pre class="code"><code><br>
+//----------------------- CheckOpenDCLRuntimeInstalled ----------------------------<br>
+// Chequea si puede instalarse OpenDCL Runtime en el equipo<br>
+function CheckOpenDCLRuntimeInstalled: Boolean;<br>
+var <br>
+sVerI, strVerInstalled, Path: string;<br>
+<br>
+begin<br>
+    Result := true;<br>
+    if DirExists(ExpandConstant('{cf}\Opendcl')) then<br>
+    begin<br>
+      Path:= ExpandConstant('{cf}\Opendcl');<br>
+    end else if DirExists(ExpandConstant('{cf32}\Opendcl')) then<br>
+    begin<br>
+      Path:= ExpandConstant('{cf32}\Opendcl');<br>
+    end;<br>
+    if Path &lt;&gt; '' then<br>
+    begin<br>
+      Path:= Path + '\OpenDCL.18.arx';<br>
+      if FileExists(Path) then<br>
+      begin<br>
+      if GetVersionNumbersString(Path, strVerInstalled) then<br>
+      begin<br>
+        sVerI := ExpandConstant('{#OpenDCLRuntimeVer}');<br>
+        if strVerInstalled &gt;= sVerI then <br>
+         MsgBox('Can not install OpenDCLRuntimeAndVersion}  + # 13 +<br>
+                      'because there is already a version equal or higher {#OpenDCLRuntime}.' + strVerInstalled + #13 + <br>
+                      'installed on this computer.'<br>
+                , mbInformation, mb_Ok)<br>
+         Result := false;<br>
+      end;<br>
+    end<br>
+  end;<br>
+end;<br>
+</code></pre><br>
+<br>
+I wonder if I can find out if Windos Registry OpenDCL Runtime is installed and the installed version. I think it would be a more reliable way of obtaining this information.<br>
+<br>
+You can see the project at:<br>
+<a href="http://www.hispacad.com/foro/viewtopic.php?f=12&amp;t=39544" rel="nofollow noopener">{2}</a><br>
+<br>
+<br>
+greetings and thanks.</div>
+</article>
+<article class="post" id="msg9309">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-09-18 05:50 UTC</span>
+  </div>
+  <div class="post-body">There is no reliable way to simply check for a registry key. You would need to duplicate the very complicated work that msiexec does searching through the Windows Installer database. I recommend to leave that job to msiexec.</div>
+</article>
+<article class="post" id="msg9310">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2012-09-18 18:02 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen,<br>
+We'll leave the code like this.<br>
+<br>
+I noticed that when installing OpenDCL Runtime, the installer detects if there is a later version and the advice, but I wanted to check it with the code to tell the user versions.<br>
+<br>
+<strong>One more question:</strong><br>
+Is there a way to download the latest stable version for the installer always install the latest version.<br>
+<br>
+I know this is complicated because the installer should download it from the internet and the user may not have internet connection but can search for alternatives.<br>
+<br>
+It's always the same download link? : (http://opendcl.com/go?runtime) or may change in the future.<br>
+<br>
+again my apologies for the translation.</div>
+</article>
+<article class="post" id="msg9311">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-09-18 18:17 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=garcigj link=topic=1894.msg9310#msg9310 date=1347991343 wrote:</cite><br>
+It's always the same download link? : (http://opendcl.com/go?runtime) or may change in the future.<br>
+</blockquote><br>
+<br>
+Yes, it will always be the same.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

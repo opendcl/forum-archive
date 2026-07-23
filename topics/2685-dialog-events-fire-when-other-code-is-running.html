@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dialog events fire when other code is running · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2685</p>
+    <h1>Dialog events fire when other code is running</h1>
+    <p class="meta">Started by honkinberry ·
+      2019-06-24 21:28 UTC ·
+      3 replies · SMF topic #2685</p>
+<article class="post" id="msg13265">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2019-06-24 21:28 UTC</span>
+  </div>
+  <div class="post-body">Every day we get a number of errors from users, that appears to be due to a dialog event firing when other code is running.<br>
+The best example, is one dialog queries for additional cloud content, and so internet issues can cause it to take several seconds to complete.  So a hasty user clicks on buttons, which then fire additional events, yet variables are in between states, and errors result.<br>
+<br>
+Here's an example from today:<br>
+<pre class="code"><code><br>
+[0.226] (VL-BT)<br>
+[1.222] (AXIS_ERR "bad argument type: fixnump: nil")<br>
+[2.217] (_call-err-hook # "bad argument type: fixnump: nil")<br>
+[3.211] (sys-error "bad argument type: fixnump: nil")<br>
+:ERROR-BREAK.206 nil<br>
+[4.203] (ITOA nil)<br>
+[5.198] (SAVEPREFS)<br>
+[6.194] (C:DCLACCEPTCLICKED)<br>
+[7.190] (#)<br>
+:CALLBACK-ENTRY.187 (:CALLBACK-ENTRY)<br>
+[8.184] (#)<br>
+[9.181] (_lisplet-apply # # nil :CALLBACK-ENTRY)<br>
+[10.173] (_lisplet-callback-apply # "C:DCLACCEPTCLICKED" nil)<br>
+[11.166] (#)<br>
+[12.163] (ARQ-SUBR! 3022)<br>
+:ARQ-SUBR-CALLBACK.158 (nil 3022)<br>
+[13.155] (STRCASE "21` OaCv")<br>
+[14.150] (FX:PLANTSIZESORTVAL "21` OaCv")<br>
+[15.145] (# "21` OaCv" "18` ht x 10` spd")<br>
+[16.140] (VL-SORT ("16` Ht., CT" "-" "2-3` ht." "2-4` ct." "3` Height, matching" "4`-5` overall ht." "5-6` ht. x 3-4` spd." "5` ht. x 4` spr." "5` ht. x 5` spr." "5` o.a.h." "5`-6` Ht, x 2`-3` spd." "5`-6` ht. x 3` spd." "6-15` x 4` spd" "6-8` height, 4` Spread" "6` CT - Central leader, full &amp; matched" "6` Clear Trunk" "6` c.t." "6` ht x 6` spd" "6` ht. x 2` spd." "6` ht. x 6` spd." "6`-10` CT. Stagger Hts." "6`-8` ht. x 3`-4` spd."<br>
+</code></pre><br>
+<br>
+In that example, the dialog box initialization is firing, which involves loading a good amount of data and preparing it.<br>
+You can see it is right in the middle of sorting a very long list, when suddenly a dialog AcceptClicked fires, and global variables it relies on have not been set yet upon completion of the Initialization.<br>
+<br>
+So how, can a dialog event, interrupt already executing code?!  Doesn't it have to go to the back of the stack and wait?<br>
+<br>
+I hope that's clear, happy to help explain more.  If anyone has any tips it'd be much appreciated!<br>
+<br>
+--J</div>
+</article>
+<article class="post" id="msg13266">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2019-06-25 07:43 UTC</span>
+  </div>
+  <div class="post-body">IMO you should perform these lengthy operations before initialization and thereby avoid the problem altogether.</div>
+</article>
+<article class="post" id="msg13269">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2019-06-27 20:54 UTC</span>
+  </div>
+  <div class="post-body">Dialog events are just windows messages, and those continue to get processed (at certain points) even while lisp is running. In a case like you describe, I would disable the dialog until the operation completes.</div>
+</article>
+<article class="post" id="msg13270">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2019-07-02 15:37 UTC</span>
+  </div>
+  <div class="post-body">Some further information, it appears some of the cases are from users mistakenly double-clicking, or hastily re-clicking, buttons.<br>
+So in which case, it seems the simplest solution, is for any of these instances, to add something like this:<br>
+<br>
+<pre class="code"><code><br>
+; global<br>
+(setq _ODCLEVENT nil)<br>
+<br>
+; button handler<br>
+(defun c:dclButtonClicked ()<br>
+    (if (not _ODCLEVENT)<br>
+        (if (and (setq _ODCLEVENT t)<br>
+                (GoEventHandler)<br>
+            ) ; and<br>
+            (setq _ODCLEVENT nil)<br>
+        ) ; if<br>
+    ) ; if<br>
+) ; ButtonClicked<br>
+</code></pre><br>
+<br>
+Simple and effective, yes?<br>
+<br>
+--J</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

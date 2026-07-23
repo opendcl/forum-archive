@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Picture Control · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1336</p>
+    <h1>Picture Control</h1>
+    <p class="meta">Started by AutoKAD ·
+      2010-09-02 01:10 UTC ·
+      5 replies · SMF topic #1336</p>
+<article class="post" id="msg7146">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2010-09-02 01:10 UTC</span>
+  </div>
+  <div class="post-body">I am not sure if I am doing something incorrect here, but I am getting some strange behavior from the latest build with a picture control.  I've attached a sample file below.<br>
+<br>
+Running:<br>
+ACAD 2004<br>
+Windows 7 Pro 64-bit<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1439/PicTag.zip">PicTag.zip</a> <span class="muted">(85930 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7147">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-09-02 05:59 UTC</span>
+  </div>
+  <div class="post-body">Hi, as far as I can see, there is no strange behavior (wrong image?).<br>
+But it's a nice planting surface  ;)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7148">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2010-09-02 14:09 UTC</span>
+  </div>
+  <div class="post-body">Thanks for your reply Fred.<br>
+<br>
+I uninstalled the current build [6.0.0.29] and installed the stable build [5.1.2.3], to which corrected the behavior I am experiencing.  With the current build, the form becomes intensely slow after a short time of its instance.  Then, it begins to blink as if it was stuck in a loop.  Also, if you add any click event to the form's picture box control, after clicking on the picture box control during runtime, no matter where you click on the form the action for the click event for the picture box control occurs.<br>
+<br>
+I'm installing the current build on my computer at work to see if I have the same issue.</div>
+</article>
+<article class="post" id="msg7149">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2010-09-02 14:26 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=AutoKAD link=topic=1336.msg7148#msg7148 date=1283436573 wrote:</cite><br>
+I'm installing the current build on my computer at work to see if I have the same issue.<br>
+</blockquote><br>
+<br>
+My computer at work:<br>
+OpenDCL Current Build [6.0.0.29]<br>
+AutoCAD 2004<br>
+Windows XP - Home Edition - Version 2002 - Service Pack 3<br>
+<br>
+Still having the same issue.  My computer at work is slower than my system at home, so I can tell you that the picture box control appears to be in a constant state of refresh.  Upon closing or pressing escape, I get the following error message:<br>
+<br>
+An OpenDCL function argument processing exception has occurred!<br>
+<br>
+Error: No object instance<br>
+Function: dcl_PictureBox_LoadPictureFile<br>
+Argument: 0<br>
+<br>
+Hope this helps.  Thanks!</div>
+</article>
+<article class="post" id="msg7150">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-09-03 06:27 UTC</span>
+  </div>
+  <div class="post-body">Hi, sorry, I haven't seen before, that there are more than one file in the archive. I can reproduce, what you've seen. But the way you do that is wrong.<br>
+<br>
+OnPaint is an event that fires each time whenever something happens on the screen: the mouse flies over the form, the form will be moved, another window covers the form. And each time you force OpenDCL to load and interpret the compressed image. BTW you won't have more success if you choose another picture format.<br>
+<br>
+All you have to do is to change the way of loading. It is enough to load the picture once.<br>
+<br>
+I've added a modified version of your code and project.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1440/100903.zip">100903.zip</a> <span class="muted">(86050 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7151">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2010-09-03 21:06 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred.  I completely forgot how OnPaint works.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

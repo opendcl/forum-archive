@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to run/call commands in Modal Form · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2946</p>
+    <h1>How to run/call commands in Modal Form</h1>
+    <p class="meta">Started by Eddiefromdc ·
+      2025-01-17 03:17 UTC ·
+      0 replies · SMF topic #2946</p>
+<article class="post" id="msg14140">
+  <div class="post-head">
+    <span class="post-author">Eddiefromdc</span>
+    <span class="post-date muted">2025-01-17 03:17 UTC</span>
+  </div>
+  <div class="post-body">I'm trying to achieve a simple "layer walk" like routine but with a list of selected/desired layers.<br>
+It works good for me on Modeless form with a grid control, SelChanged event. Here is a partial code.<br>
+<br>
+(defun c:ChkDwg_ChkDwg_Grid1#OnSelChanged (Row Column / sSelText)<br>
+(setq LayName (Dcl_Grid_GetCurSel ChkDwg_ChkDwg_Grid1))<br>
+(setq rowinfo (Dcl_Grid_GetRowItems ChkDwg_ChkDwg_Grid1 (car LayName)))<br>
+(setq sSelText (nth 0 rowinfo))<br>
+(command "layer" "off" "*" "" "")<br>
+(command "layer" "on" sSeltext "")<br>
+(command "layer" "s" sSelText "")<br>
+(command "layer" "off" "*" "" "")<br>
+)<br>
+<br>
+But I'm afraid with a Modeless form I might forget to close it before I open another drawing<br>
+or if I switch to an open drawing.<br>
+<br>
+So, I think a Modal form works better for me. But I can't make it work. Please look at this code.<br>
+<br>
+(defun c:ChkDwg_ChkDwg_Grid1#OnSelChanged (Row Column / sSelText)<br>
+(setq LayName (Dcl_Grid_GetCurSel ChkDwg_ChkDwg_Grid1))<br>
+(setq rowinfo (Dcl_Grid_GetRowItems ChkDwg_ChkDwg_Grid1 (car LayName)))<br>
+(setq sSelText (nth 0 rowinfo))<br>
+(dcl-SendString "-layer off *  ")<br>
+(dcl-SendString "-layer on sSeltext *  ")<br>
+(dcl-SendString "-layer s sSeltext *  ")<br>
+(dcl-SendString "-layer off *  ")<br>
+)<br>
+<br>
+Any help would be appreciated.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

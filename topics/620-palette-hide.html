@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Palette hide · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 620</p>
+    <h1>Palette hide</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-03-04 13:35 UTC ·
+      1 replies · SMF topic #620</p>
+<article class="post" id="msg2830">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-04 13:35 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I have a palette form. When I click right on its background, a context menu opens and I can choose the second menuitem. I believe it is called "Hide" in the English releases, in German it is called "Ausblenden". In this case the form disappears. After that I call different methods:<br>
+<br>
+<strong>Analysis:</strong><br>
+(dcl_Form_IsVisible MyPalette) returns nil: that's obviously right, I cannot see the form anymore.<br>
+(dcl_Form_IsActive MyPalette) returns T: that must be correct, too, because using (dcl_form_show MyPalette) has no effect.<br>
+<br>
+<strong>But how can I make it visible again?</strong><br>
+(dcl_form_show MyPalette) has no effect, as I already noticed<br>
+(dcl_form_hide MyPalette nil) has obviously no effect, at least I don't see the result<br>
+<br>
+I have to close the invisible form at first and then I have to show it again, then I see the form. But the OnInitialize is called again. (dcl_form_close MyPalette) and then (dcl_form_show MyPalette) I hoped to avoid that.<br>
+<br>
+<strong>How to get noticed, when the user hides the palette using the context menuitem?</strong><br>
+The OnClose event will be triggered on (dcl_form_close MyPalette), but not when making the form invisible.<br>
+There's no event OnHide.<br>
+<br>
+To close the form using the context menu is not the problem. But unforunately, it isn't closed it is hidden. But in a way (dcl_form_hide ... nil) has no effect. Will closing the form programmatically and showing again the only solution?<br>
+<br>
+I hope it was understandable.  :)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2835">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-04 15:51 UTC</span>
+  </div>
+  <div class="post-body">This should now be fixed for the next build so that selecting 'Hide' on the menu closes the form and triggers OnClose.  I designed OpenDCL's palette and control bars such that there is no "hidden" state. It is either shown or closed, and "hiding" the form just closes it. Note however that the form's properties maintain state between invocations, so it's not necessary to reinitialize the form every time, except for things that are not stored in properties.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

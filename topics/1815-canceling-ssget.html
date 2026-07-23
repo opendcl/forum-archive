@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>canceling (SSGET) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1815</p>
+    <h1>canceling (SSGET)</h1>
+    <p class="meta">Started by masoud_123 ·
+      2012-06-18 07:47 UTC ·
+      2 replies · SMF topic #1815</p>
+<article class="post" id="msg8927">
+  <div class="post-head">
+    <span class="post-author">masoud_123</span>
+    <span class="post-date muted">2012-06-18 07:47 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+Could you please help me, How can I cancel "Select Object" prompted by (SSGET) by pressing a button? Like Cancelling it by pressing <br>
+"ESCAPE" key from keyboard?<br>
+<br>
+I write this code but it doesn't work.<br>
+<br>
+(defun c:CancelButton_OnClicked (/)<br>
+  (command)<br>
+)</div>
+</article>
+<article class="post" id="msg8928">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-06-18 11:54 UTC</span>
+  </div>
+  <div class="post-body">The simplest way is to change your button's OnClicked event to ^C^C instead of a function name.</div>
+</article>
+<article class="post" id="msg9007">
+  <div class="post-head">
+    <span class="post-author">XDCAD</span>
+    <span class="post-date muted">2012-07-15 17:49 UTC</span>
+  </div>
+  <div class="post-body">Try<br>
+<br>
+<br>
+(defun c:CancelButton_OnClicked (/)<br>
+  (dcl_SendString "(chr 27)(chr 27)\n")<br>
+)<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

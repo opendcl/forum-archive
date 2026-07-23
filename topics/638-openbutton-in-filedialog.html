@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenButton in FileDialog · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 638</p>
+    <h1>OpenButton in FileDialog</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-03-09 14:24 UTC ·
+      10 replies · SMF topic #638</p>
+<article class="post" id="msg3013">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-09 14:24 UTC</span>
+  </div>
+  <div class="post-body">Hello, I've attached a sample.<br>
+<br>
+<ul><br>
+copy all the files into a folder which is included in the AutoCAD supportpath<br>
+save the current drawing into the same folder<br>
+load the lisp<br>
+call the command <strong>opensample</strong><br>
+the resizable file dialog appears<br>
+select one of the .81 files, properties are displayed in the listview below and the first 20 lines of the textfile are shown in the textbox (maybe you have to change the codepage to see all the chars correctly.<br>
+once one of the .d81 files is selected, press Open. Nothing is happen at my workstation.<br>
+DoubleClick the .81 file instead, the form will be closed and the filename ist given back, but why not when clicking on the open button?<br>
+</ul><br>
+<br>
+I have a similar filedialog in the same project, but for writing. In that dialog the form closes when I click on save, but why not in the form to open a d81 file? Does anybody have any idea, what am I doing wrong?<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/625/090309.zip">090309.zip</a> <span class="muted">(31594 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3015">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-09 15:17 UTC</span>
+  </div>
+  <div class="post-body">The function c:lvman_sc_gaeb_import_OnCancelClose must return NIL if you want the dialog to close.</div>
+</article>
+<article class="post" id="msg3016">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-09 16:17 UTC</span>
+  </div>
+  <div class="post-body">Thank you, Owen. Normally, I should have known this. <br>
+<br>
+On the other hand it discovers an other problem:<br>
+<br>
+When I press ENTER when the text box with the number of lines has the focus, OnCancelClose will be fired and this argument ESCWasPressed = 0. In this case I want to prevent the form from closing. When I select a file and I press the open button, OnCancelClose will be fired and ESCWasPressed = 0. But in this case I want the form to get closed. How can I make a difference? Ok, you'll say: Trigger OnReturnPressed of the textbox. I've done it and it works: ESC closes the form, Open button closes the form, Enter in textboxe does not close the form. But do I hit Enter when the ListView currently has the focus, the form will be closed. Although I have activated the OnReturnPressed event for ListView, this event won't be fired (see new attachment). Which conditions have to be true that the ListView fires the activated OnReturnPressed event?<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/626/090309.zip">090309.zip</a> <span class="muted">(31478 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3018">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-09 17:50 UTC</span>
+  </div>
+  <div class="post-body">I think there are still a lot of issues with the List View control. In this case, I found that the control was set to send all keyboard messages to the dialog manager instead of processing them itself. I've uploaded changed the code so that the keyboard input goes to the list view control; please test this and check for any unexpected side effects.</div>
+</article>
+<article class="post" id="msg3019">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-09 17:56 UTC</span>
+  </div>
+  <div class="post-body">Hi, Owen, thank you, I will do as soon as the kids are in bed.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3021">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-09 19:57 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen, I had a quick test, luckily pressing ENTER in the ListView does not cause any longer closing the form (and OnCancelClose is not being fired) any longer. Very nice. I had short tests with selctions and drag&amp;drop and it still seems to work. My short test cannot replace long time tests, but I'm full of hope that it might be resolved  :) Great thanks!<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3023">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-09 20:39 UTC</span>
+  </div>
+  <div class="post-body">Good to hear. I've since enhanced it slightly so that the new behavior is activated only when there are events defined for either KeyUp, KeyDown, or ReturnPressed.</div>
+</article>
+<article class="post" id="msg3025">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-09 21:22 UTC</span>
+  </div>
+  <div class="post-body">Ah, good to know - I was just going to deactivate the OnReturnPressed event at the listview. It should be documented? I don't know whether there will be some additional changes in future.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3029">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-09 22:49 UTC</span>
+  </div>
+  <div class="post-body">It is now documented here. ;)</div>
+</article>
+<article class="post" id="msg3037">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-10 07:49 UTC</span>
+  </div>
+  <div class="post-body">Should this behavior be transmitted to the textbox to make it uniformly?</div>
+</article>
+<article class="post" id="msg3040">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-10 07:59 UTC</span>
+  </div>
+  <div class="post-body">Yes, good idea, I will do that.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

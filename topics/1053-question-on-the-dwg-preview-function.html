@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>question on the dwg preview function · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1053</p>
+    <h1>question on the dwg preview function</h1>
+    <p class="meta">Started by andrew ·
+      2009-12-04 15:46 UTC ·
+      7 replies · SMF topic #1053</p>
+<article class="post" id="msg5501">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-04 15:46 UTC</span>
+  </div>
+  <div class="post-body">ive been using the viewdwg files that come with the studio for reference and wanted to know if its possible to use the dwg preview function without using a button to browse for the file?<br>
+i tried to set the dwg using a set path but was getting errors<br>
+<br>
+if it is possible, is there a tutorial that explains how to do it?<br>
+<br>
+thanks</div>
+</article>
+<article class="post" id="msg5502">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-04 16:52 UTC</span>
+  </div>
+  <div class="post-body">Hi, andrew,<br>
+<br>
+there are two ways of doing this:<br>
+<br>
+1. You create many DwgPreview controls on a form and manage the files to preview by yourself. Have a look at a sample <a href="http://opendcl.com/wordpress/wp-content/gallery/samples/signothek_1.gif" rel="nofollow noopener">{2}</a>. In that sample there are symbols from a database which are displayed in the preview controls.<br>
+2. Have a look at the dwglist control of OpenDCL. In that case all the dwg files of a given folder are displayed automatically.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5503">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-04 18:46 UTC</span>
+  </div>
+  <div class="post-body">hi Fred, <br>
+<br>
+that image is sorta what im trying to create<br>
+<br>
+ill take a look at the dwglist function<br>
+<br>
+thanks for the tip</div>
+</article>
+<article class="post" id="msg5504">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-04 20:08 UTC</span>
+  </div>
+  <div class="post-body">anyone know of any tutorials for this<br>
+im getting all kinds of errors..<br>
+<br>
+<br>
+ok i got the errors fixed however i still have a question.<br>
+<br>
+in the sample file "dwglist" when i click on the combobox and then select a directory, in the dwglist box, it displays the sub directory right away, in my model, it doesnt. i have to press the button i made to use as "previous" or "up" to get it to display the directory i selected.<br>
+what should i be looking for to get the directory i choose to display right away?<br>
+<br>
+comparing it to the sample odcl file it looks as if i have the same settings.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5505">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-04 21:36 UTC</span>
+  </div>
+  <div class="post-body">That's a pity. I just finished a sample for you! Have a try, you'll like it! It's very easy with less of code.<br>
+<br>
+You may have to enable events to catch if you change a value in the directory picker or in the dwglist. Just have a look into my sample.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1109/symbolbrowser.LSP">symbolbrowser.LSP</a> <span class="muted">(3480 bytes)</span></li><li><a href="../attachments/1110/dwglist.odcl">dwglist.odcl</a> <span class="muted">(1678 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5536">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-07 15:14 UTC</span>
+  </div>
+  <div class="post-body">thanks Fred for your sample. I was overlooking it and i think i got it working now, somewhat.<br>
+in your coding, i dont understand why you used the following lines<br>
+<pre class="code"><code><br>
+  (if (setq lstChars (reverse (cdr (member 92 (reverse (vl-<br>
+<br>
+string-&gt;list strFolder))))))...</code></pre><br>
+i tried to change it a bit, but it didnt work so i "stole" your code, hope ya dont mind.<br>
+<br>
+also how many dwgs does this dwglist hold if you know?<br>
+i tried my code and went to a directory with 2400 blocks and my autocad just shut down.<br>
+i tried your files and it did the same thing, just shut down no error or anything.<br>
+<br>
+is this a limitation thing or a bug in the code?<br>
+<br>
+hope someone can answer that<br>
+<br>
+any help is appreciated<br>
+</div>
+</article>
+<article class="post" id="msg5541">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-07 22:58 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+(setq lstChars (reverse (cdr (member 92 (reverse (vl-string-&gt;list strFolder))))))<br>
+It returns a list of ascii codes as integers before the last backslashs. In combination wth <br>
+(setq strFolder (apply 'strcat (mapcar 'chr lstChars)))<br>
+it returns the parent folder of the given folder.<br>
+<br>
+<blockquote class="quote">i tried to change it a bit, but it didnt work so i "stole" your code, hope ya dont mind.</blockquote><br>
+no, that's why I published it.<br>
+<br>
+<blockquote class="quote">also how many dwgs does this dwglist hold if you know?</blockquote><br>
+No, I don't know. I'm not using DWGLIST control in practice. But I afraid that so much files will cause a long delay to read and list all files. I'd prefer to organize the dwg files into separate subfolders or to use a couple of dwgpreview controls and a scrollbar to navigate the files (see the sample of my first answer).<br>
+<br>
+<blockquote class="quote">i tried your files and it did the same thing, just shut down no error or anything.</blockquote><br>
+Did you meant that my code was crashing?<br>
+is this a limitation thing or a bug in the code?<br>
+<br>
+fred</div>
+</article>
+<article class="post" id="msg5548">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-08 14:14 UTC</span>
+  </div>
+  <div class="post-body">thanks for the reply Fred.<br>
+<br>
+yes your code was crashing but only when trying to read a directory with around 2400 dwgs in it otherwise it works perfectly<br>
+<br>
+ill play around with the dwg preview functions i guess to see if i get figure any of that out<br>
+<br>
+thanks for the help</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modal form resize · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1915</p>
+    <h1>Modal form resize</h1>
+    <p class="meta">Started by Jim ·
+      2012-11-08 19:10 UTC ·
+      6 replies · SMF topic #1915</p>
+<article class="post" id="msg9398">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2012-11-08 19:10 UTC</span>
+  </div>
+  <div class="post-body">I have a modal form with a list and grid. I allowed resizing and made height larger.  Form loaded in AutoCAD remembers setting from before, (registry?), appearing smaller than new minimum height set in design.  Touching the corner causes form to jump to new size. How can this be made more seamless?<br>
+<br>
+Jim</div>
+</article>
+<article class="post" id="msg9399">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-11-08 22:27 UTC</span>
+  </div>
+  <div class="post-body">What exactly do you mean by "more seamless", and to what are you referring?</div>
+</article>
+<article class="post" id="msg9400">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2012-11-09 00:52 UTC</span>
+  </div>
+  <div class="post-body">It was hard to say the first time so don't get your hopes up. :)<br>
+<br>
+The form had previously been used with allow re-sizing false.<br>
+After I had allowed re-sizing and made it taller and set the minimum height the same as the form height,<br>
+the form initialized at the old height rather than the new height set in design. <br>
+<br>
+Touching the corner of the form as if one were going to re-size it, caused<br>
+the form to suddenly take on the new minimum height set in the design.  <br>
+Is it true that the forms current size at runtime is saved in the registry?<br>
+<br>
+Why didn't the form obey the minimum height?<br>
+Jim<br>
+XP Acad2K4 ODCL 7.0.0.6</div>
+</article>
+<article class="post" id="msg9401">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-11-09 02:27 UTC</span>
+  </div>
+  <div class="post-body">Ok, I think I understand the question. The reason I asked you to clarify is because I wasn't sure if your complaint was about your experience or an end user's experience.<br>
+<br>
+Setting a minimum height does not mean the form cannot be smaller; it means the user cannot drag resize it smaller. You can still resize it smaller via code, or in this case, because the saved size is smaller. By design, a resizable form's initial size is set to whatever was saved in the user's profile from the previous time the form was displayed.<br>
+<br>
+In other words, what you describe sounds to me like it's working as designed. You experienced an unexpected behavior when you went to resize it the first time, but you're the developer and you routinely make changes that have unexpected side effects. As long as your end user doesn't experience such behavior (and they won't unless you increase the minimum size between invocations of the form), I don't see any actionable problem.</div>
+</article>
+<article class="post" id="msg9403">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2012-11-09 13:09 UTC</span>
+  </div>
+  <div class="post-body">Thanks,<br>
+Its clear to me now.<br>
+Jim</div>
+</article>
+<article class="post" id="msg9404">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2012-11-09 13:30 UTC</span>
+  </div>
+  <div class="post-body">Since the form size is being remembered, I can not get it to initialize to the size I want. Where is the user profile containing the old size stored at in XP? How can one change the size in design and get that size to be the size displayed at runtime. When the form is being resized by the user (me), it does not redisplay at that new size. </div>
+</article>
+<article class="post" id="msg9405">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2012-11-09 13:53 UTC</span>
+  </div>
+  <div class="post-body">Sorry for wasting our time,<br>
+OnIinitialize is handling size and I forgot to look there.<br>
+Jim</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

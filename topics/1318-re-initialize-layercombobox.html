@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Re-Initialize Layercombobox · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1318</p>
+    <h1>Re-Initialize Layercombobox</h1>
+    <p class="meta">Started by fred_tomke ·
+      2010-07-23 13:16 UTC ·
+      7 replies · SMF topic #1318</p>
+<article class="post" id="msg7075">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-07-23 13:16 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I'm using a combobox using the layer style in a palette. Since the palette is modeless, the user can add another layer or purge existing layers. But unfortunately the combobox does not recognize this at runtime of the form, the palette must be closed and re-opened to get the current list and the current layerstates. Is there a way to update the list at runtime?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7076">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-07-23 13:43 UTC</span>
+  </div>
+  <div class="post-body">The Clear method should reset the content. In the pre-populated combos, that means it will clear and repopulate them.</div>
+</article>
+<article class="post" id="msg7077">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2010-07-23 14:40 UTC</span>
+  </div>
+  <div class="post-body">So I guess a VLisp reactor is neaded?<br>
+<br>
+We spoke breifly about this a while back: OpenDCL's inabilitity to detect changes in the drawing database.  Would be nice if there was a way to have an indicator in changes where modeless forms could "react" to changes in the drawing database.<br>
+<br>
+Like: dcl_OnDocActivated<br>
+<br>
+Maybe: dcl_OnDatabaseChanged<br>
+data passed would only need to be table or dictionary name that had been changed - then our code could react accordingly.<br>
+<br>
+jb</div>
+</article>
+<article class="post" id="msg7078">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-07-23 15:51 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+&gt;&gt; dcl_OnDatabaseChanged<br>
+<br>
+Is it really a good idea? Because even zooming changes the database. Whenever new elements are created this event would fire, too. <br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7079">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-07-23 15:59 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1318.msg7076#msg7076 date=1279892607 wrote:</cite><br>
+The Clear method should reset the content. In the pre-populated combos, that means it will clear and repopulate them.<br>
+</blockquote><br>
+<br>
+Thanks, Owen, that did the trick. Even the current selection will be kept. I'm overwhelmed.<br>
+<br>
+I solved this using DropDown event. For the textstyle combobox style I solved that by assigning a new list:<br>
+<br>
+<br>
+(defun c:survey_sc_height_plan_cbb_layer_OnDropDown (/) (dcl_combobox_clear survey_sc_height_plan_cbb_layer))<br>
+<br>
+(defun c:survey_sc_height_plan_cbb_style_OnDropDown (/)<br>
+  (dcl_control_setlist survey_sc_height_plan_cbb_style (GET_TEXTSTYLES_EX))<br>
+  (dcl_Combobox_selectstring survey_sc_height_plan_cbb_style (if (tblsearch "STYLE" (cdr (assoc "STYLE" lstData))) (cdr (assoc "STYLE" lstData)) (getvar "TEXTSTYLE")))<br>
+); c:survey_sc_height_plan_cbb_style_OnDropDown<br>
+<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7080">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-07-23 16:05 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1318.msg7076#msg7076 date=1279892607 wrote:</cite><br>
+The Clear method should reset the content. In the pre-populated combos, that means it will clear and repopulate them.<br>
+</blockquote><br>
+<br>
+Owen, it doesn't belong at least to my initial post but why there is a gray selection in layer style combobo when focus is off from this control?<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1429/cbb_layer.png">cbb_layer.png</a> <span class="muted">(1541 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7081">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-07-23 17:28 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=1318.msg7077#msg7077 date=1279896052 wrote:</cite><br>
+We spoke breifly about this a while back: OpenDCL's inabilitity to detect changes in the drawing database.  Would be nice if there was a way to have an indicator in changes where modeless forms could "react" to changes in the drawing database.</blockquote><br>
+<br>
+I'm concerned about a performance penalty with this approach.</div>
+</article>
+<article class="post" id="msg7082">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-07-23 17:30 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1318.msg7080#msg7080 date=1279901107 wrote:</cite><br>
+</blockquote><br>
+Owen, it doesn't belong at least to my initial post but why there is a gray selection in layer style combobo when focus is off from this control?<br>
+<br>
+I don't know. Is it consistent between Windows versions? If you think it's a bug, I'll have a closer look.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

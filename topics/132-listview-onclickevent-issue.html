@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Listview OnClickEvent issue · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 132</p>
+    <h1>Listview OnClickEvent issue</h1>
+    <p class="meta">Started by DanW ·
+      2008-01-10 12:35 UTC ·
+      4 replies · SMF topic #132</p>
+<article class="post" id="msg523">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2008-01-10 12:35 UTC</span>
+  </div>
+  <div class="post-body">Hi <br>
+<br>
+When I use an OnClick event with the ListView (on a docked/modeless form), to activate a lisp routine which involves selecting an entity in the drawing eg ((setq SSet (ssget)) - <br>
+<br>
+All works fine except it is necessary to click the drawing space to activate the curser to allow the items to be selected in the space.  Although minor, rather annoying.  This doesnot occur if the same function is activated by a button.<br>
+<br>
+I was wondering if this is a glitch or if there is a workaround or indeed I've missed something obvious (I am fairly new to this)?<br>
+<br>
+Thanks in anticipation and thanks for this brilliant tool.<br>
+<br>
+Dan</div>
+</article>
+<article class="post" id="msg524">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2008-01-10 14:01 UTC</span>
+  </div>
+  <div class="post-body">I've worked around this by setting the listview visibility to false then true prior to implementing my lisp routine within the onclick event.<br>
+<br>
+More elegant solutions gratefully received.<br>
+<br>
+Dan </div>
+</article>
+<article class="post" id="msg525">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-01-10 18:28 UTC</span>
+  </div>
+  <div class="post-body">Hi Dan,<br>
+Welcome to the team.<br>
+<br>
+Put (dcl_SetCmdBarFocus) in your OnClick event before your (SSGET)</div>
+</article>
+<article class="post" id="msg527">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2008-01-11 08:40 UTC</span>
+  </div>
+  <div class="post-body">Thats done it! <br>
+Many thanks Barry.</div>
+</article>
+<article class="post" id="msg564">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-01-17 05:34 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=DanW link=topic=132.msg523#msg523 date=1199968518 wrote:</cite><br>
+I was wondering if this is a glitch or if there is a workaround or indeed I've missed something obvious (I am fairly new to this)?<br>
+</blockquote><br>
+<br>
+Dan, just to tie up the loose end, it's like this by design.  Any controls on your dockable form that can accept keyboard input will capture the mouse and keyboard so that AutoCAD doesn't steal input focus when the cursor moves off the form. There are some undesirable side effects as you've found, but there are workarounds, and in any case the alternative is worse. :)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

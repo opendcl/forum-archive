@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>argumenttype INT &lt;&gt; FLOAT · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1209</p>
+    <h1>argumenttype INT &lt;&gt; FLOAT</h1>
+    <p class="meta">Started by fred_tomke ·
+      2010-03-17 12:26 UTC ·
+      3 replies · SMF topic #1209</p>
+<article class="post" id="msg6494">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-17 12:26 UTC</span>
+  </div>
+  <div class="post-body">Hello, I tried several ways to get OLEColor values:<br>
+<br>
+This is the way it worked in ObjectDCL:<br>
+<pre class="code"><code>Befehl: (odcl_getcolorvalue 118 37 147)<br>
+9643382</code></pre><br>
+<br>
+When calling this expression OpenDCL produces an ARX exception<br>
+<pre class="code"><code>Befehl: (dcl_getolecolorvalue 118 37 147)<br>
+nil</code></pre><br>
+<br>
+When I put this into a list, I get an error because of wrong argument type<br>
+<pre class="code"><code>Befehl: (dcl_getolecolorvalue (list 118 37 147))<br>
+; Fehler: Fehler bei ADS-Anforderung</code></pre><br>
+<br>
+Knowing that AutoCAD tries to interpret the first integer of a list as a groupcode I tried to give it as a float<br>
+<pre class="code"><code>Befehl: (dcl_getolecolorvalue (list 118.0 37 147))<br>
+9643382</code></pre><br>
+<br>
+1. Is it really not possible to force AutoCAD not to try interpreting the first list item as a group code? Because may are many cases when lists of integers can be passed as an argument.<br>
+2. I may be wrong but: Shouldn't this also work? <br>
+(dcl_getolecolorvalue 118 37 147)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6495">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-17 12:56 UTC</span>
+  </div>
+  <div class="post-body">I've fixed the exception, and I also added code to correctly interpret colors that have 110 - 118 red values. In my tests, all three of your approaches now work without error.</div>
+</article>
+<article class="post" id="msg6496">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-17 13:40 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen, where do you know from that only the red values between 110 and 118 produces errors? I remember an error of Calendar control when passing 2010 instead of 2010.0 as year value. Of course 2010 is not a valid red value for GetOLEColorValue but my question is more general. I mean, maybe there are other functions that will accept lists of integers (I do just not know by now) and may fail, too.</div>
+</article>
+<article class="post" id="msg6497">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-17 14:04 UTC</span>
+  </div>
+  <div class="post-body">The only way to know for sure which values fail is to try them. One could guess based on the DXF code documentation, but the only way to be sure is to see if AutoCAD interprets the 3-integer list as a DXF value.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

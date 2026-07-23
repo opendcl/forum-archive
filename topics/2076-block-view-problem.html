@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>block view problem · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2076</p>
+    <h1>block view problem</h1>
+    <p class="meta">Started by potencjalek ·
+      2013-12-17 22:22 UTC ·
+      4 replies · SMF topic #2076</p>
+<article class="post" id="msg10244">
+  <div class="post-head">
+    <span class="post-author">potencjalek</span>
+    <span class="post-date muted">2013-12-17 22:22 UTC</span>
+  </div>
+  <div class="post-body">HI<br>
+i have problem with block view<br>
+i was thinking that i can't show it in block view window at all<br>
+but i found out that i can see it only after i insert it in model space<br>
+why is that?<br>
+if I don't insert blocks in model space block view doesnt works<br>
+i use<br>
+(dcl_BlockView_DisplayBlock SKZElementy_Elementy_BlockView1 "dj_sygnalizator_S1_E" 0 0)<br>
+which returns T<br>
+but on blockview i cant see anything<br>
+<br>
+maybe I do something wrong when i load blocks<br>
+i use function<br>
+<br>
+(defun pobierz_bloki (path / ss_bloki space newblk i)<br>
+(defun activespace (doc)<br>
+    (if (or (= acmodelspace (vla-get-activespace doc))<br>
+            (= :vlax-true (vla-get-mspace doc)))<br>
+        (vla-get-modelspace doc)<br>
+        (vla-get-paperspace doc)<br>
+    )<br>
+)<br>
+(setq ss_bloki (ssadd))<br>
+(setq space (activespace (vla-get-activeDocument (vlax-get-acad-object))))<br>
+(foreach bname (vl-directory-files Path "*.dwg" 1)<br>
+	(progn<br>
+		(if (tblsearch "block"(vl-filename-base bname))<br>
+			nil<br>
+			(progn<br>
+				(setq newblk (vla-insertBlock space '(0 0 0) (strcat path bname) 1.0 1.0 1.0 0.0))<br>
+				(ssadd  (entlast) ss_bloki)<br>
+			)<br>
+		)<br>
+	)<br>
+)<br>
+(setq i 0)<br>
+(while (ssname ss_bloki i)<br>
+	(entdel (ssname ss_bloki i))<br>
+	(setq i (+ i 1))<br>
+)<br>
+i<br>
+)<br>
+<br>
+where path is directory to folder with blocks</div>
+</article>
+<article class="post" id="msg10245">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-17 23:29 UTC</span>
+  </div>
+  <div class="post-body">After running your code, do you see the blocks OK in the MISC sample blockview tab? As long as they are defined, you should be able to view them, but you may need to set a correct zoom scale factor and view direction.</div>
+</article>
+<article class="post" id="msg10246">
+  <div class="post-head">
+    <span class="post-author">potencjalek</span>
+    <span class="post-date muted">2013-12-18 10:07 UTC</span>
+  </div>
+  <div class="post-body">i can see it in preview in drawing explorer<br>
+<br>
+i run my code and I load all blocks from specified folder<br>
+<br>
+but i don't put them into model space<br>
+until I insert them in model space i can't see it in block view (but i can see it in preview in drawing explorer)<br>
+<br>
+i dont think its problem with zoom scale and view direction because after inserting block in model space block view works good<br>
+<br>
+and i work in bicscad v13</div>
+</article>
+<article class="post" id="msg10247">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-12-18 11:15 UTC</span>
+  </div>
+  <div class="post-body">I think this may be this old problem:<br>
+http://www.opendcl.com/forum/index.php?topic=1676.0<br>
+I don't know when this has been solved but I don't experience it with:<br>
+BC 13.2.10<br>
+ODCL 7.0.1.1</div>
+</article>
+<article class="post" id="msg10248">
+  <div class="post-head">
+    <span class="post-author">potencjalek</span>
+    <span class="post-date muted">2013-12-18 13:05 UTC</span>
+  </div>
+  <div class="post-body">i checked it in Bricscad V14 and I looks like they fixed the bug<br>
+works good in new version</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

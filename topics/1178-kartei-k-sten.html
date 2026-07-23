@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kartei-Kästen · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/11-german.html">GERMAN</a> /
+      Topic 1178</p>
+    <h1>Kartei-Kästen</h1>
+    <p class="meta">Started by Arcuso ·
+      2010-02-15 14:37 UTC ·
+      3 replies · SMF topic #1178</p>
+<article class="post" id="msg6270">
+  <div class="post-head">
+    <span class="post-author">Arcuso</span>
+    <span class="post-date muted">2010-02-15 14:37 UTC</span>
+  </div>
+  <div class="post-body">Späten Dank für die Infos, Fred !<br>
+<br>
+Da es schließlich auf's Befinden des Anwenders ankommt, hat sich für unseren Bedarf der Einsatz von Paletten als weniger praktisch herauskristallisiert. Durch die Möglichkeit nicht-modale Dialoge zu minimieren, erscheinen die Kartei-Kästen flexibler. Mir fallen in diesem Zusammenhang ein paar Fragen/Anregungen ein:<br>
+<br>
+1.)<br>
+Als 3.Zustand von andockbaren Dialogen, sollte es zum schwebenden Modus eben auch den minimierten geben, bei dem er sich automatisch in die Statusleiste von AutoCAD an einer freien Stelle eingliedert. Ohne Klick sollte dabei das Skalieren und Positionieren beim Umschalten der Zustände auch mit Lisp möglich sein.<br>
+<br>
+2.)<br>
+Wenn man einen Dialog mit den benötigten Steuerelementen samt zugehörigen Funktionen erstellt hat, wäre es praktisch, ihn so wie er ist (quasi als neutral lauffähiges Mudul mit zugehörigen Lisp-Funktionen, nur einmal vorhanden und daher leicht zu warten), jeweils in einen anderen modalen, nicht-modalen Dialog oder in eine Karteikarte mit einem einfachen Verweis einblenden zu können. Wegen der Objekt-Instanzen und deren Namens-Kaskaden würde das aber wahrscheinlich das ganze Konzept von OpenDLC über den Haufen schmeißen.<br>
+<br>
+3.)<br>
+Manchmal möchte man in einem Dialog mit mehreren Eingabe-Feldern, Listen, etc. durch einen Vor-/Zurück-Mechanismus ganze Daten-Sätze und Dialog-Zustände restaurieren. Das kann man zwar jetzt durch Auswerten der Eigenschaften aller Elemente und Speichern in einer Assoziatons-Liste.<br>
+Ein Hindernis ist aber dabei z.B. so eine Funktion wie dcl_Control_GetPos, die eine Daten-Liste retourniert, das Pendant dcl_Control_SetPos jedoch 4 Einzel-Argumente erwartet.<br>
+Praktisch wäre es, wenn man quasi in einer Moment-Aufnahme des aktuellen Dialoges den ganzen Dump in einer Liste speichern und ihn genauso mit einer Funktion wieder restaurieren könnte.<br>
+</div>
+</article>
+<article class="post" id="msg6277">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-16 08:01 UTC</span>
+  </div>
+  <div class="post-body">Hallo, vielen Dank für die Rückmeldung.<br>
+<br>
+<blockquote class="quote"><cite> author=Arcuso link=topic=1178.msg6270#msg6270 date=1266244670 wrote:</cite><br>
+Da es schließlich auf's Befinden des Anwenders ankommt, hat sich für unseren Bedarf der Einsatz von Paletten als weniger praktisch herauskristallisiert.<br>
+</blockquote><br>
+<br>
+Kann ich so nicht unbedingt unterstreichen. Ich bin gerade dabei, eine ganze Reihe andockbarer Dialoge und nicht-modaler Dialoge in Paletten zu wandeln. Für das derzeit noch bestehende Manko der nicht steuerbaren Positionierung und Dockingzustände und des Automatisch-Ausblenden-Zustandes will ich kurzfristig Abhilfe schaffen lassen, da Lösungsvorschläge bereits extistieren.<br>
+<br>
+<blockquote class="quote"><cite> author=Arcuso link=topic=1178.msg6270#msg6270 date=1266244670 wrote:</cite><br>
+Als 3.Zustand von andockbaren Dialogen, sollte es zum schwebenden Modus eben auch den minimierten geben, bei dem er sich automatisch in die Statusleiste von AutoCAD an einer freien Stelle eingliedert. Ohne Klick sollte dabei das Skalieren und Positionieren beim Umschalten der Zustände auch mit Lisp möglich sein.<br>
+</blockquote><br>
+<br>
+Hast Du dafür mal ein Beispiel eines AutoCAD/Map/Civil-Befehls, bei dem ich mir das anschauen kann? Ich kann mir das grad nicht vorstellen. Insbesondere der letzte Satz ist mir fremd  :-\<br>
+<br>
+<blockquote class="quote"><cite> author=Arcuso link=topic=1178.msg6270#msg6270 date=1266244670 wrote:</cite><br>
+jeweils in einen anderen modalen, nicht-modalen Dialog oder in eine Karteikarte mit einem einfachen Verweis einblenden zu können.<br>
+</blockquote><br>
+<br>
+That's right. Dialog-Vererbungen und -instanzen sind derzeit nicht möglich. Da diese Frage aber bereits mehrfach aufgetaucht ist, bitte ich Dich dies im <a href="http://sourceforge.net/tracker/?group_id=187950&amp;atid=923366" rel="nofollow noopener">{2}</a> einzutragen.<br>
+<br>
+<blockquote class="quote"><cite> author=Arcuso link=topic=1178.msg6270#msg6270 date=1266244670 wrote:</cite><br>
+Ein Hindernis ist aber dabei z.B. so eine Funktion wie dcl_Control_GetPos, die eine Daten-Liste retourniert, das Pendant dcl_Control_SetPos jedoch 4 Einzel-Argumente erwartet.<br>
+</blockquote><br>
+<br>
+Versuchs doch mal mit Lisp  ;) <br>
+<br>
+(setq lstPos (dcl_control_getpos MyProj_MyForm_MyControl))<br>
+(apply 'dcl_control_setpos (cons MyProj_MyForm_MyControl lstPos))<br>
+<br>
+<blockquote class="quote"><cite> author=Arcuso link=topic=1178.msg6270#msg6270 date=1266244670 wrote:</cite><br>
+Praktisch wäre es, wenn man quasi in einer Moment-Aufnahme des aktuellen Dialoges den ganzen Dump in einer Liste speichern und ihn genauso mit einer Funktion wieder restaurieren könnte.<br>
+</blockquote><br>
+<br>
+Ich weiß nicht, ob es das trifft, aber versuch mal folgendes:<br>
+<br>
+<br>
+(dcl_Form_Hide signothek_sc_signothek T)<br>
+;; jetzt passiert was<br>
+(dcl_Form_Hide signothek_sc_signothek nil)<br>
+<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg6324">
+  <div class="post-head">
+    <span class="post-author">Arcuso</span>
+    <span class="post-date muted">2010-02-19 09:12 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1178.msg6277#msg6277 date=1266307285 wrote:</cite><br>
+<br>
+Hast Du dafür mal ein Beispiel eines AutoCAD/Map/Civil-Befehls, bei dem ich mir das anschauen kann? Ich kann mir das grad nicht vorstellen. Insbesondere der letzte Satz ist mir fremd  :-\<br>
+<br>
+</blockquote><br>
+<br>
+Beispiel hab ich keines, gemeint habe ich folgendes:<br>
+Wenn nun der minimierte Dialog passiv in der Statusleiste ruht, würde ich ihn gern aus irgendeiner Lisp-Anwendung heraus in den geöffneten Zustand (schwebend oder gedockt) schalten, ohne mit der Maus auf den dafür vorgesehenen Button klicken zu müssen. Nach Gebrauch soll die Anwendung den Dialog wieder minimiert in die Status-Leiste zurück schicken können. Im Prinzip wäre das eine 3.Option zu 'dcl_Form_Hide', soll lediglich den Bedarf von Funktionen zum Skalieren/Positionieren erübrigen und vorallem die korrekte Eingliederung in AutoCAD's Statusleiste übernehmen (es könnten dann dort ja auch mehrere minimierte Dialoge abgelegt werden).<br>
+<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=1178.msg6277#msg6277 date=1266307285 wrote:</cite><br>
+<br>
+Versuch's doch mal mit Lisp:<br>
+(setq lstPos (dcl_control_getpos MyProj_MyForm_MyControl))<br>
+(apply 'dcl_control_setpos (cons MyProj_MyForm_MyControl lstPos))<br>
+<br>
+</blockquote><br>
+<br>
+Das hab ich ohnehin auch so gelöst. Um aber alle aktuellen Eigenschaften von allen aktuellen Steuer-Elementen abzuspeichern, müsste man die Werte explizit einzeln abfragen und sie in einer Assoziazions-Liste zusammenfassen, die wiederum Bestandteil einer übergeordneten Liste ist. Jetzt könnte man mit einem Vor- und Zurück-Button von einem zum nächsten Datensatz blättern und den gespeicherten Zustand wieder restaurieren. Weil ja nicht nur Inhalte von Daten-Feldern, sondern auch Eigenschaften der Steuer-Elemente (Farbe, Textstil, etc.) relevant sein können, entsteht das Bedürfnis, alle Dialog-Daten als Paket von einer implementierten Funktion sammeln bzw. wieder herstellen zu lassen.<br>
+<br>
+Vorläufig vielen Dank für deine Hilfe!<br>
+<br>
+arcuso<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6325">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-19 11:44 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Arcuso link=topic=1178.msg6324#msg6324 date=1266570726 wrote:</cite><br>
+Nach Gebrauch soll die Anwendung den Dialog wieder minimiert in die Status-Leiste zurück schicken können. Im Prinzip wäre das eine 3.Option zu 'dcl_Form_Hide', soll lediglich den Bedarf von Funktionen zum Skalieren/Positionieren erübrigen und vorallem die korrekte Eingliederung in AutoCAD's Statusleiste übernehmen (es könnten dann dort ja auch mehrere minimierte Dialoge abgelegt werden).<br>
+</blockquote><br>
+<br>
+Da kann ich Dir nur raten, bei den OpenDCL-Samples nach dem FormMover-Beispiel zu fahnden.<br>
+Damit kann man genau das erreichen. Prinzipiell wirst Du das wohl per Hand nachbauen müssen.<br>
+Aber grundsätzlich machbar wäre es mit den verfügbaren OpenDCL-Boardmitteln.<br>
+<br>
+<blockquote class="quote"><cite> author=Arcuso link=topic=1178.msg6324#msg6324 date=1266570726 wrote:</cite><br>
+Um aber alle aktuellen Eigenschaften von allen aktuellen Steuer-Elementen abzuspeichern, müsste man die Werte explizit einzeln abfragen und sie in einer Assoziazions-Liste zusammenfassen, die wiederum Bestandteil einer übergeordneten Liste ist.<br>
+</blockquote><br>
+<br>
+Ich bin mir noch nicht sicher, ob ich verstanden habe, WANN es konkret erforderlich wird, alle Steuerelementeigenschaften wiederherzustellen:<br>
+1. Willst Du nicht-modale Dialoge zwischenzeitlich ausblenden, würde ich die dcl_form_hide methode verwenden und so bleiben alle Einstellungen für die aktuelle AutoCAD-Sitzung beibehalten, solange Du sie nicht änderst.<br>
+2. Willst Du Dialoge generell schließen und sie sollen beim erneuten Öffnen immer noch genauso gefüllt sein, wie im Augeblick des Schließens, sollte es eigentlich nur nötig sein, Inhalte komplexer Steuerelemente (Baum, ListView, Grid) zu speichern und beim Öffnen wieder zuzuweisen. Alle geometrischen Eigenschaften (z.B. mit SetPos geändert) bleiben für die komplette AutoCAD-Sitzung erhalten auch über das Schließen und wieder Öffnen hinaus, solange Du sie nicht änderst.<br>
+3. Ich lese aber was vom Springen zwischen den Datensätzen und vermute daher, dass GetPos nur ein Beispiel für einen Rückgabewert war. Ich persönlich baue Inhalte von Steuerelementen beim Springen zwischen Datensätzen immer explizit auf und speichere sie nicht. Denn wer sagt mir, ob in einer MultiUser-Umgebung nich bereits jemand einen Datensatz geändert hat...<br>
+4. Aber es gibt vielleicht eine andere Variante, die man in Betracht ziehen sollte: Alle Eigenschaften speichern und danach wieder zuweisen.<br>
+Ich habe das mal ausprobiert. Vielleicht hilft das zumindest vom Ansatz her. Bitte beachte, dass GetPos die Summe der Eigenschaften Width, Height, Top und Left sind, die neben der Methode GetPos/SetPos über die Eigenschaften aus einzeln abfragbar und zuweisbar sind.<br>
+<br>
+<br>
+(defun get_dump (oForm)<br>
+  (mapcar '(lambda (oControl) (cons oControl (mapcar '(lambda (strProp) (cons strProp (dcl_Control_GetProperty oControl strProp)))<br>
+						     (vl-remove-if '(lambda (x) (= (substr x 1 1) "(")) (dcl_control_getproperties oControl)))))<br>
+	  (cons oForm (dcl_Form_GetControls oForm)))<br>
+); get_dump<br>
+<br>
+(defun set_dump (lstProps)<br>
+  (mapcar '(lambda (lstControl / oControl)<br>
+	     (setq oControl (car lstControl))<br>
+	     (mapcar '(lambda (lstProp)<br>
+			(dcl_control_setproperty oControl (car lstProp) (cdr lstProp))<br>
+		      ); lambda<br>
+		     (cdr lstControl))<br>
+	   ); lambda<br>
+	  lstProps)<br>
+); set_dump<br>
+<br>
+(setq lstDump (get_dump MyProj_MyForm))<br>
+(set_dump lstDump)<br>
+<br>
+<br>
+VG, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

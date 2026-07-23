@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>(command-s) in Fehlerroutine · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2240</p>
+    <h1>(command-s) in Fehlerroutine</h1>
+    <p class="meta">Started by OPLisp ·
+      2015-03-06 10:55 UTC ·
+      5 replies · SMF topic #2240</p>
+<article class="post" id="msg11262">
+  <div class="post-head">
+    <span class="post-author">OPLisp</span>
+    <span class="post-date muted">2015-03-06 10:55 UTC</span>
+  </div>
+  <div class="post-body">  Hallo<br>
+ <br>
+  Für AutoCAD 2015/16 stelle ich gerade  meine Fehlerroutinen um.<br>
+  Dabei ersetze ich alle command Funktionen mit command-s.<br>
+  Die beiden (command-s) sollten eigentlich jeden möglichen offenen<br>
+  AutoCAD  Befehl sicher abbrechen. Mit (command) ging das einwandfrei mit <br>
+  (command-s) nicht.   <br>
+<br>
+  .<br>
+  .<br>
+  (command-s)<br>
+  (command-s)<br>
+  (if (= (logand (getvar "UNDOCTL") 8) 8)<br>
+    (progn<br>
+      (command-s "_.UNDO" "_E")<br>
+      (command-s "_.U")<br>
+    )<br>
+  )<br>
+  .<br>
+  .<br>
+  Ich könnte natürlich auch mit  (*push-error-using-command*) und (command ...)<br>
+  weiter arbeiten. Das funktioniert auch , leider halt nicht<br>
+  under OpenDCL. Ich nutze OpenDCL Laufzeitumgebung [8.0.0.10]<br>
+<br>
+  Grüße <br>
+</div>
+</article>
+<article class="post" id="msg11263">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-03-06 11:57 UTC</span>
+  </div>
+  <div class="post-body">Hmm, kannst Du versuchen, das Undo mit ActiveX zu lösen?<br>
+Ich setze immer am Anfang eine UndoBegin und am Ende eine UndoEnd-Marke.<br>
+Dann könnte man einen Schritt zurückgehen. Achte darauf, dass es außerhalb der OpenDCL-Ereignisse läuft.<br>
+Das Problem ist nicht OpenDCL-related: es betrifft auch die C#-Entwickler.<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg11264">
+  <div class="post-head">
+    <span class="post-author">OPLisp</span>
+    <span class="post-date muted">2015-03-06 13:30 UTC</span>
+  </div>
+  <div class="post-body">Danke Fred<br>
+<br>
+ich habe auch am Beginn eines Programms ein<br>
+(command "_.UNDO" "_BE")<br>
+und am Ende ein<br>
+(command "_.UNDO" "_E")<br>
+<br>
+im Programm selber sind weitere command Aufrufe (auserhalb der Events)<br>
+bei Aufruf der Error routine soll diese dann die Gruppe beenden und zum <br>
+Gruppenanfang springen.<br>
+<br>
+(command "_.UNDO" "_E") kann ich mit  (vla-EndUndoMark doc) ersetzen<br>
+aber wie ersetze ich  (command "_.U")<br>
+</div>
+</article>
+<article class="post" id="msg11265">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-03-07 00:31 UTC</span>
+  </div>
+  <div class="post-body">Hi, meine Frage mag dumm erscheinen, aber: Was spricht gegen (command-s "_undo" "1")?<br>
+Ich habe grad kein entspr. OpenDCL-Beispiel zum Testen.<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg11266">
+  <div class="post-head">
+    <span class="post-author">OPLisp</span>
+    <span class="post-date muted">2015-03-09 07:59 UTC</span>
+  </div>
+  <div class="post-body">Ja das geht natuerlich, aber ein weiteres command-s... auf einen offenen AutoCAD Befehl der die error routine aufruft, <br>
+fuehrt ja wieder zu einer Fehlermeldung.<br>
+Möglicherweise haette man dies durch AktiveX Anweisungen umgehen können.<br>
+Hat sich aber schon bei (vla-EndUndoMark doc) nicht bestaetigt.<br>
+(command) (command) wirkte halt wie ^C^C ob ein Befehl laueft oder nicht.<br>
+Dann kann man geordnet weiter programmieren.<br>
+<br>
+Gruß</div>
+</article>
+<article class="post" id="msg11267">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-03-09 12:09 UTC</span>
+  </div>
+  <div class="post-body">Hello, I've created a simple example to show how to work with undo in a model form and within exception handler.<br>
+Hope that helps anybody.<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2102/myundo.zip">myundo.zip</a> <span class="muted">(2942 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

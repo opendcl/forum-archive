@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Question about Grid + dwg-preview images · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1733</p>
+    <h1>Question about Grid + dwg-preview images</h1>
+    <p class="meta">Started by zdjapjas ·
+      2011-12-16 17:22 UTC ·
+      2 replies · SMF topic #1733</p>
+<article class="post" id="msg8518">
+  <div class="post-head">
+    <span class="post-author">zdjapjas</span>
+    <span class="post-date muted">2011-12-16 17:22 UTC</span>
+  </div>
+  <div class="post-body">Hello everyone,<br>
+<br>
+I recentry found openDCL and I am very impressed with it! I like it very much.<br>
+<br>
+Currently I am planning to rebuild a tool I had developed for the firm I work for and which was programmed by a small company which now ceased to develop the tool further. So I am not able to add or change functionality to it. The tool I am talking about is an advanced blockmanager which presents multiple librarys to the user and after he/she clicked on a certain library folder a list of blocks is presented with additional info about the block (that info is stored in separate .ini files). Please see the picture I added to this post for reference. <br>
+<br>
+To recreate this certain funktionality I need a tree view which shows the directorys. That is no problem. Secondly, I would need a grid control which would be capable of showing the dgw-preview images of the blocks it would show. I know of the dwg-list control but this would only show the image and the filename but not additional data. (Add to that some odd behaviour like sometimes the dwg-filename is above the image, sometimes in front of it (seems to depend on length of filename) and the image background is black instead of the background-color if the grid.)<br>
+<br>
+So my questions are:<br>
+Is it somehow possible to use the grid-control to behave like I need it?<br>
+Or would it be possible to change the dwg-list control to allow more columns, set the row height, set where it should show the filename and show additional data?<br>
+<br>
+I guess the easiest solution would be to allow to change the associated image-list at runtime. I know there's a feature request about that already since 2009 ( <a href="http://sourceforge.net/tracker/?func=detail&amp;aid=2854664&amp;group_id=187950&amp;atid=923366" rel="nofollow noopener">{2}</a> ) but so far it seems to me nothing has happend with that. Also this would not be enough. It would be necessary to add a function which could read the dwg-thumbnail of a file stored on the network and add that image to the imagelist.<br>
+<br>
+A lot of features that I would like to have :)<br>
+<br>
+regards<br>
+Zoltan<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1690/blockmanager.PNG">blockmanager.PNG</a> <span class="muted">(94805 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8520">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-12-18 08:40 UTC</span>
+  </div>
+  <div class="post-body">Hi, Zoltan,<br>
+<br>
+there was a similar tool in the past. I converted it for them from AutoCAD DCL to OpenDCL and I added database functionality for it.<br>
+<br>
+The thing is: what you see is a kind of overriding the display of a grid cell. The OpenDCL built-in grid control doesn't support block preview or dwg preview: it can only display icons from the grid-internal image list. <br>
+So, which alternative ways are there? To built the same form you can program it in C# or you just define a customcontrol in C# that inherits a grid and you override the cell display by OwnerDraw. If you define it in an ActiveX control you can also add it to an OpenDCL form like a palette. If you want to solve it in pure OpenDCL I'd create a picture box and show all components (like images texts and so on) by using the draw-methods. These are the only ways I see right know. <br>
+<br>
+The screenshot you've shown tells me that you and your existing tool are German :) ?<br>
+Don't hesitate to contact me by mail for further communications.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8523">
+  <div class="post-head">
+    <span class="post-author">zdjapjas</span>
+    <span class="post-date muted">2011-12-19 12:24 UTC</span>
+  </div>
+  <div class="post-body">Hello Fred,<br>
+<br>
+Thank you for the answer. <br>
+I see this and some other things I am currently thinking about both lead to this one conclusion: learn C#<br>
+<br>
+:)<br>
+<br>
+Zoltan</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

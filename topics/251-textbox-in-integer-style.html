@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Textbox in integer style · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 251</p>
+    <h1>Textbox in integer style</h1>
+    <p class="meta">Started by fred_tomke ·
+      2008-03-16 10:20 UTC ·
+      20 replies · SMF topic #251</p>
+<article class="post" id="msg1105">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-03-16 10:20 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I used the textbox with integer style for years to let the user input only numbers for a code, 01103 for instance.<br>
+In the latest release suddenly I got the problem that the first zero has been trimmed automatically when leaving the textbox :-[. Because this is not done by my code the question is if it is a wanted feature in OpenDCL. This would break my code, so please let me know, if this is wanted.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1107">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-03-17 03:16 UTC</span>
+  </div>
+  <div class="post-body">I can't reproduce this problem. Can you post a sample?</div>
+</article>
+<article class="post" id="msg1111">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-03-17 07:31 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I go crazy!   ???<br>
+<br>
+When using the form without lisp source code, the zero in front won't disappear. So everybody would think it's a problem of my code. But I cannot see a position of my code where the zero in front will be trimmed  :'( .<br>
+<br>
+Does anybody have an idea?<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/349/addkat.zip">addkat.zip</a> <span class="muted">(68152 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1112">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-03-17 13:25 UTC</span>
+  </div>
+  <div class="post-body">Fred, I loaded your project, but I don't know what I need to do to see the problem.</div>
+</article>
+<article class="post" id="msg1114">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-03-17 16:21 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+I'm using 5.0.0.9 DEU<br>
+If you try this like in the video - can you reproduce this?<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/350/OnZeroDisappeared.gif">OnZeroDisappeared.gif</a> <span class="muted">(314316 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1115">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-03-17 16:47 UTC</span>
+  </div>
+  <div class="post-body">Fred, I cannot reproduce this using either the ENU or DEU runtimes.</div>
+</article>
+<article class="post" id="msg1116">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-03-17 17:17 UTC</span>
+  </div>
+  <div class="post-body">Hello, Owen, did you use the lisp code or did you only loaded the project file?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1117">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-03-17 17:37 UTC</span>
+  </div>
+  <div class="post-body">I loaded the lisp and eecuted the SYMB_ADD_CATEGORY command.</div>
+</article>
+<article class="post" id="msg1118">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-03-17 18:14 UTC</span>
+  </div>
+  <div class="post-body">I can reproduce this on two different computers on xp and vista.  :-\<br>
+Fred</div>
+</article>
+<article class="post" id="msg1119">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-03-17 18:22 UTC</span>
+  </div>
+  <div class="post-body">Is it possible that you have a symbol name conflict, or loading the wrong project file?</div>
+</article>
+<article class="post" id="msg1120">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-03-17 19:03 UTC</span>
+  </div>
+  <div class="post-body">Unfortunately not, I opened pure AutoCAD without any application and added one supportpath in a new directory to avoid such problems on both workstations.<br>
+I can reproduce that the problem won't occur when using the form <strong>without </strong> the code from top of this thread. I'm absolutely confused.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1121">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-03-17 19:32 UTC</span>
+  </div>
+  <div class="post-body">I'm out of ideas. Hopefully someone else will test your code.</div>
+</article>
+<article class="post" id="msg1122">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-03-17 20:19 UTC</span>
+  </div>
+  <div class="post-body">I'll rewrite the code anew.   :(<br>
+Fred</div>
+</article>
+<article class="post" id="msg1188">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-04-02 11:07 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+<br>
+Is there anyone who can reproduce that the leading 0 in the example will be removed from the inputted code 012345 after changing to another control?<br>
+I want to stop beating my head on the table because of it.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1190">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-04-02 13:15 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+I added a new source code. Here you can see that OnEditChanged will be fired before OnKillFocus will be fired although the content was not changed. Steps to reproduce:<br>
+<br>
+1. call the command<br>
+2. note the string 01 in the field Schlüsselnummer<br>
+3. click into the text box Schlüsselnummer behind the last character and do <strong>not</strong> write anything<br>
+4. note what is written last in the command line<br>
+5. click into the textbox Beschreibung.<br>
+6. note in the command line that OnEditChanged was called although nothing was changed by me  ??? ???<br>
+7. note that after OnEditChanged OnKillFocus was called<br>
+8. note that the leading zero disappeared. :'( :'( :'( :'( :'( :'(<br>
+<br>
+Question: why will OnEditChanged be called although I didn't change anything?<br>
+<br>
+Hope anyone can help <strong>help help</strong> <br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/358/textbox_integer.gif">textbox_integer.gif</a> <span class="muted">(52286 bytes)</span></li><li><a href="../attachments/359/addkat_080402.zip">addkat_080402.zip</a> <span class="muted">(68576 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1192">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2008-04-02 16:57 UTC</span>
+  </div>
+  <div class="post-body">Fred, <br>
+<br>
+Using AutoCAD 2008 and the lastest OpenDCL, I downloaded your sample and could not reproduce the problem.</div>
+</article>
+<article class="post" id="msg1197">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-04-02 19:03 UTC</span>
+  </div>
+  <div class="post-body">Hi Kelie,<br>
+<br>
+thank you for the time you've spent. Unfortunately, you can't reproduce it, too. I can reproduce this on different computers on different operation systems (all German) with different AutoCAD releases (all German) although in Berlin and in Munich. I have changed now to single line text and built my own text filter.<br>
+<br>
+Thanks for watching.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1209">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-04-03 02:10 UTC</span>
+  </div>
+  <div class="post-body">I still cannot reproduce the problem. It sounds like perhaps it's only happening in the German version of Windows. I can't imagine why, but stranger things have happened.<br>
+<br>
+Do you have access to an English language version of Windows to test? Is it possible that you have some virus or add-on that is interfering with edit controls on the systems you tested?</div>
+</article>
+<article class="post" id="msg1210">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-04-03 06:17 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+it's actually frustrating, of course but unfortunately I have no English Windows release.<br>
+But I believe that Kelie used a Chinese release and it  did work there, too.<br>
+<br>
+Owen: could you reproduce if OnEditChanged was called before OnKillFocus although you didn't change anything?<br>
+<br>
+A colleague of our company did a joke in meaning that it might be a special property of our company that it don't work with on our computers. The computers (workstations and notebooks) I tested have neither a software firewall (but the windows one) nor an antivirus product.<br>
+<br>
+The same colleague rammed a knife in my back in saying that the way it works on our computers (meaning deleting the leading zero) is more correct cause an integer has no leading zero.  &gt;:(<br>
+<br>
+I have done some workaround so it works now with string filter (and I filter only the numbers). But I'll keep it in mind. I'll have some interviews on TechCamp in Paris in a few weeks - maybe there are some international partners for testing.<br>
+<br>
+Thanks for watching.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1214">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-04-03 07:06 UTC</span>
+  </div>
+  <div class="post-body">Fred, when I tested there was never an OnEditChanged event, only OnKillFocus.</div>
+</article>
+<article class="post" id="msg2034">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-15 14:23 UTC</span>
+  </div>
+  <div class="post-body">Hello everybody,<br>
+<br>
+Leading zero, I should have known that because it's an old known problem. Maybe someone else will have the problem, too that's why I send you the solution. Thanks to Wolfgang who has the same problem, too. When he asked me about that some days ago I remembered that there was a similiar problem in ObjectDCL: After opening a form all textboxes in NumericUnits style show ".5" or "-.06" instead of "0.5" or "-0.06". I have found out that it depends on the setting of the systemvariable DIMZIN. In the German release of Autodesk Architecture there are some dimstyles which uses DIMZIN /= 0. But this setting is neccessary to show the numbers in the right way. Wolfgang has tested successfully: when DIMZIN is set to 0, then the leading zero won't be removed.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

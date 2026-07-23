@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>pause autolisp? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 500</p>
+    <h1>pause autolisp?</h1>
+    <p class="meta">Started by Hypersonic ·
+      2008-12-06 18:55 UTC ·
+      6 replies · SMF topic #500</p>
+<article class="post" id="msg2222">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2008-12-06 18:55 UTC</span>
+  </div>
+  <div class="post-body">is it possible to pause autolisp while a dialog is open?<br>
+<br>
+Thanks, Bob. :)</div>
+</article>
+<article class="post" id="msg2224">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-12-06 19:08 UTC</span>
+  </div>
+  <div class="post-body">What exactly do you mean by "pause AutoLISP"? You can use (dcl_DelayedInvoke) to execute a lisp function after a specified period of time has elapsed, but this doesn't pause AutoCAD in any way.</div>
+</article>
+<article class="post" id="msg2225">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2008-12-06 19:24 UTC</span>
+  </div>
+  <div class="post-body">I have a routine that is checking for a certain condition on a selection set...<br>
+<br>
+When the proper condition is not met, it calls a dialog box that requests an answer.....<br>
+<br>
+The problem is the autolisp routine does not stop when the dialog pops up, it continues to cycle through the<br>
+rest of the selection set.....<br>
+ Ugh<br>
+</div>
+</article>
+<article class="post" id="msg2227">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-12-06 22:40 UTC</span>
+  </div>
+  <div class="post-body">Can you post(attach) a sample dialog and code to show your problem ? <br>
+<br>
+</div>
+</article>
+<article class="post" id="msg2228">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2008-12-06 23:00 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+(foreach ent entlist<br>
+(setq entdat (entget ent))<br>
+<br>
+(if (and (not done) (OR (eq "POLYLINE" (cdr (assoc 0 entdat)))  (eq "LWPOLYLINE" (cdr (assoc 0 entdat))) ) )<br>
+    (progn<br>
+     (plineinfo ent);sets start1 and a bunch of other info......<br>
+     ;(command "change" ent "" "p" "c" "1" "")<br>
+     (arrowit start1 "ztemp")<br>
+<br>
+     (select_profile_type);This is the routine that calls the dialog.... but it keeps going...<br>
+<br>
+    (notify "in mr and it kept going")<br>
+     (addx ent tlist)<br>
+     (ssadd (entlast) ssret)<br>
+    );end progn<br>
+  )<br>
+<br>
+<br>
+(defun select_profile_type ()<br>
+<br>
+;if open already, close the old and reopen.....<br>
+(if (Odcl_Form_IsActive Parametrics_PM_select_profile_type)<br>
+  (Odcl_Form_Close Parametrics_PM_select_profile_type)<br>
+)<br>
+<br>
+ (Odcl_Form_Show Parametrics_PM_select_profile_type)<br>
+ (set_initial_values_profile_type)<br>
+)<br>
+<br>
+<br>
+);end foreach</div>
+</article>
+<article class="post" id="msg2229">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-12-06 23:03 UTC</span>
+  </div>
+  <div class="post-body">It looks like you are not using OpenDCL, but to do what you want will require a modal dialog, not a modeless one.</div>
+</article>
+<article class="post" id="msg2230">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2008-12-07 00:44 UTC</span>
+  </div>
+  <div class="post-body">Awesome, I can try that.<br>
+<br>
+Thanks Owen!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

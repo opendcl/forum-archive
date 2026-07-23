@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with dcl_PictureBox_DrawRect · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1790</p>
+    <h1>Problem with dcl_PictureBox_DrawRect</h1>
+    <p class="meta">Started by Emiliano ·
+      2012-04-21 14:42 UTC ·
+      16 replies · SMF topic #1790</p>
+<article class="post" id="msg8802">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-04-21 14:42 UTC</span>
+  </div>
+  <div class="post-body">I can not understand ...<br>
+<br>
+The following code works fine:<br>
+<br>
+<br>
+  (dcl_PictureBox_DrawRect NomeApp_NomeForm_PictureBox1 (list (list 10 10 300 20.0 1)))<br>
+<br>
+  <br>
+<br>
+but if I use the following returns the error "invalid argument":<br>
+<br>
+  (setq LunghSettore 300)<br>
+  (setq CoordX 10)<br>
+  (setq CoordY 10)<br>
+<br>
+  (dcl_PictureBox_DrawRect NomeApp_NomeForm_PictureBox1 (list (list CoordX CoordY LunghSettore 20.0 1)))<br>
+<br>
+<br>
+Can you help?<br>
+  </div>
+</article>
+<article class="post" id="msg8804">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-04-21 16:32 UTC</span>
+  </div>
+  <div class="post-body">Check if NomeApp_NomeForm_PictureBox1 is the correct symbol name for the control.<br>
+<br>
+Edit: changed control-name as per OP's request.</div>
+</article>
+<article class="post" id="msg8805">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-04-22 09:34 UTC</span>
+  </div>
+  <div class="post-body">It has the correct name.<br>
+I forgot to change the code before returning in the forum.  :'(<br>
+I do not like to be mentioned the name of the application.<br>
+At this regard you wonder if you can, please change it in your answer.  :-[<br>
+I've corrected my post.<br>
+<br>
+You have any idea why it does not work?</div>
+</article>
+<article class="post" id="msg8806">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-04-22 20:41 UTC</span>
+  </div>
+  <div class="post-body">Maybe you have not set up the OnPaint event for the picture box? Temp graphics disappear whenever Windows repaints the control. The picture box is repainted by Windows after the OnInitialize event of the form. Any temp graphics created in the OnInitialize function will be lost.<br>
+<br>
+<br>
+(defun c:NomeApp ( / c:NomeApp_NomeForm_OnInitialize c:NomeApp_NomeForm_PictureBox1_OnPaint CoordX CoordY LunghSettore pictureIsDoneP)<br>
+<br>
+  (defun c:NomeApp_NomeForm_OnInitialize ()<br>
+    (print "c:NomeApp_NomeForm_OnInitialize")<br>
+  )<br>
+<br>
+  (defun c:NomeApp_NomeForm_PictureBox1_OnPaint (HasFocus /)<br>
+    (print "c:NomeApp_NomeForm_PictureBox1_OnPaint")<br>
+    (if pictureIsDoneP<br>
+      (print "Using stored picture")<br>
+      (progn<br>
+        (dcl_PictureBox_DrawRect NomeApp_NomeForm_PictureBox1 (list (list CoordX CoordY LunghSettore 20.0 1)))<br>
+        (dcl_PictureBox_StoreImage NomeApp_NomeForm_PictureBox1) ; Storing the image is a good idea for large images.<br>
+        (setq pictureIsDoneP T)<br>
+        (print "Picture painted and stored")<br>
+      )<br>
+    )<br>
+  )<br>
+<br>
+  (setq LunghSettore 300)<br>
+  (setq CoordX 10)<br>
+  (setq CoordY 10)<br>
+  (command "_opendcl")<br>
+  (dcl_Project_Load "NomeApp" T)<br>
+  (dcl_Form_Show NomeApp_NomeForm)<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg8807">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-04-23 07:43 UTC</span>
+  </div>
+  <div class="post-body">My test files:<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1721/NomeApp.lsp">NomeApp.lsp</a> <span class="muted">(900 bytes)</span></li><li><a href="../attachments/1722/NomeApp.odcl">NomeApp.odcl</a> <span class="muted">(586 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8808">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-04-23 08:33 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the reply.<br>
+The problem was that the values ​​were real numbers: dcl_PictureBox_DrawRect accepts only integers :-(<br>
+<br>
+Thanks for the advice very useful: (dcl_PictureBox_StoreImage NomeApp_NomeForm_PictureBox1) <br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8809">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-04-23 09:18 UTC</span>
+  </div>
+  <div class="post-body">I have another problem.<br>
+I use the function (dcl_PictureBox_Clear NomeApp_NomeForm_PictureBox1).<br>
+<br>
+Before using this function I want to check if the form and then the PictureBox is already open, because otherwise it gives me error.<br>
+How can I do?<br>
+<br>
+I tried with the event OnInitialize but this is started before the Modeless Form is open</div>
+</article>
+<article class="post" id="msg8810">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-04-23 10:36 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+you can use (if NomeApp_NomeForm_PictureBox1 T) to test whether the control is already available or not.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8811">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-04-23 11:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Emiliano link=topic=1790.msg8808#msg8808 date=1335170020 wrote:</cite><br>
+The problem was that the values ​​were real numbers: dcl_PictureBox_DrawRect accepts only integers :-(<br>
+</blockquote><br>
+<br>
+I don't think that was the problem. My test shows that integers are accepted. And in your first post you have said:<br>
+<br>
+<blockquote class="quote"><cite> author=Emiliano link=topic=1790.msg8802#msg8802 date=1335019339 wrote:</cite><br>
+The following code works fine:<br>
+<br>
+  (dcl_PictureBox_DrawRect NomeApp_NomeForm_PictureBox1 (list (list 10 10 300 20.0 1)))<br>
+<br>
+</blockquote><br>
+<br>
+This may however be version-dependent. I have use ODCL version 7.0.0.1.</div>
+</article>
+<article class="post" id="msg8812">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-04-23 12:06 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1790.msg8810#msg8810 date=1335177365 wrote:</cite><br>
+Hi,<br>
+<br>
+you can use (if NomeApp_NomeForm_PictureBox1 T) to test whether the control is already available or not.<br>
+<br>
+Regards, Fred<br>
+</blockquote><br>
+<br>
+I tried your code but it does not work.<br>
+I also tried using:<br>
+<br>
+(if (= (NomeApp_NomeForm_PictureBox1) T)<br>
+<br>
+both return<br>
+<br>
+; Error: wrong function: <br>
+<br>
+Do you have any idea?</div>
+</article>
+<article class="post" id="msg8813">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-04-23 12:09 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=1790.msg8811#msg8811 date=1335179939 wrote:</cite><br>
+[quote author=Emiliano link=topic=1790.msg8808#msg8808 date=1335170020]<br>
+The problem was that the values ​​were real numbers: dcl_PictureBox_DrawRect accepts only integers :-(<br>
+</blockquote><br>
+<br>
+I don't think that was the problem. My test shows that integers are accepted. And in your first post you have said:<br>
+<br>
+<blockquote class="quote"><cite> author=Emiliano link=topic=1790.msg8802#msg8802 date=1335019339 wrote:</cite><br>
+The following code works fine:<br>
+<br>
+  (dcl_PictureBox_DrawRect NomeApp_NomeForm_PictureBox1 (list (list 10 10 300 20.0 1)))<br>
+<br>
+</blockquote><br>
+<br>
+This may however be version-dependent. I have use ODCL version 7.0.0.1.<br>
+<br>
+<br>
+It is true but when I insert the values ​​stored as variables setq will not work if they are real values​​.<br>
+I use ODCL version 7.0.0.2.<br>
+However, somehow it works now.</div>
+</article>
+<article class="post" id="msg8818">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-04-23 13:45 UTC</span>
+  </div>
+  <div class="post-body">@ Emiliano:<br>
+I did not read your reply #5 properly, hence my strange reply #8.<br>
+You are right: dcl_PictureBox_DrawRect only accepts integers or "integers as reals" (e.g. 20.0).</div>
+</article>
+<article class="post" id="msg8819">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-04-23 13:55 UTC</span>
+  </div>
+  <div class="post-body">Ok!<br>
+have any solution for my reply #9?</div>
+</article>
+<article class="post" id="msg8820">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-04-23 14:12 UTC</span>
+  </div>
+  <div class="post-body">The principle of Fred's suggestion:<br>
+<br>
+(if NomeApp_NomeForm_PictureBox1 ; ename or nil depending on visibility of dialog<br>
+  (progn<br>
+    ; Do something with NomeApp_NomeForm_PictureBox1<br>
+  )<br>
+)<br>
+<br>
+See attached files.<br>
+<br>
+BTW: I don't understand the function dcl_PictureBox_StoreImage anymore. It does not seem to be necessary?<br>
+<br>
+Edit: Name has been corrected.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1725/NomeApp.lsp">NomeApp.lsp</a> <span class="muted">(1001 bytes)</span></li><li><a href="../attachments/1726/NomeApp.odcl">NomeApp.odcl</a> <span class="muted">(596 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8821">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-04-24 08:19 UTC</span>
+  </div>
+  <div class="post-body">Ok thanks,<br>
+now it works! ; D<br>
+<br>
+dcl_PictureBox_StoreImage is necessary because, otherwise, if I reduce to AutoCAD icon, the PictureBox is canceled.</div>
+</article>
+<article class="post" id="msg8823">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-04-24 12:12 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Emiliano link=topic=1790.msg8821#msg8821 date=1335255555 wrote:</cite><br>
+dcl_PictureBox_StoreImage is necessary because, otherwise, if I reduce to AutoCAD icon, the PictureBox is canceled.<br>
+</blockquote><br>
+If you try the code attached to my post #13 you will see that even without dcl_PictureBox_StoreImage the image does not disappear if the cad program is resized or minimized.</div>
+</article>
+<article class="post" id="msg8904">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-05-25 07:47 UTC</span>
+  </div>
+  <div class="post-body">I must have been sleeping when I wrote posts #13 and #15. Because the function (dcl_PictureBox_StoreImage) is definitely required to preserve the image. In fact the code attached to my post #13 still uses it. ::)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

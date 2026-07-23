@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BackColor with Truecolor Reds · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2290</p>
+    <h1>BackColor with Truecolor Reds</h1>
+    <p class="meta">Started by honkinberry ·
+      2015-07-23 22:44 UTC ·
+      9 replies · SMF topic #2290</p>
+<article class="post" id="msg11513">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2015-07-23 22:44 UTC</span>
+  </div>
+  <div class="post-body">I am having a doozie of a time with some Truecolor Reds, I must be missing something simple.<br>
+<br>
+When I fire SetBackColor with (dcl-getOLEColorValue (list 119 0 0)), it is definitely not Red, as the OLE Color Value of that hue is 119, so OpenDCL displays that Indexed color instead.<br>
+So I see in the documentation that I should be able to do a SetBackColor with just (list 119 0 0), but that keeps giving me an Invalid Argument Type.<br>
+What am I missing?<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg11514">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2015-07-23 23:09 UTC</span>
+  </div>
+  <div class="post-body">In the meantime I've found this workaround:<br>
+<br>
+<br>
+(if (and (&gt; r 0) (zerop g) (zerop b))<br>
+	(dcl-Control-SetBackColor image1 (+ (lsh 1 24) r))<br>
+	 ; otherwise, situation normal<br>
+	(dcl-Control-SetBackColor image1 (dcl-getOLEColorValue (list r g b)))<br>
+) ; if<br>
+<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg11516">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-07-24 16:48 UTC</span>
+  </div>
+  <div class="post-body">The (dcl-GetOLECOlorValue) returns color in a format used with OLE controls, so you cannot use the return value of the function when an AutoCAD color is expected.<br>
+<br>
+EDIT: Actually, I think an OLE color should be acceptable for background color. See if it works when you specify the first argument as a float instead of integer:<br>
+(dcl-getOLEColorValue (list (float r) g b))</div>
+</article>
+<article class="post" id="msg11517">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2015-07-24 18:55 UTC</span>
+  </div>
+  <div class="post-body">(dcl-getolecolorvalue (list 119.0 0 0)) -- returns 119<br>
+<br>
+So I've been using variation of the Lee Mac conversion colors:<br>
+http://www.lee-mac.com/colourconversion.html<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg11518">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-07-25 00:27 UTC</span>
+  </div>
+  <div class="post-body">You might try this:<br>
+(dcl-Control-SetBackColor image1 (list 119.0 0 0))</div>
+</article>
+<article class="post" id="msg11520">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2015-07-27 22:47 UTC</span>
+  </div>
+  <div class="post-body">That gives an invalid argument type error.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg11523">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-07-28 19:49 UTC</span>
+  </div>
+  <div class="post-body">I finally had some time to investigate this more closely. It is possible to do what you originally tried, but there is a trick needed. As mentioned in the documentation, passing an OLEColor is allowed when a Color argument is expected, but only when the OLEColor value is greater than 256 (see the last row in the color value table <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/DataType/Color.htm" rel="nofollow noopener">{2}</a>).<br>
+<br>
+The RGB color red with zero values for blue and green will always be less than 256, so it cannot be passed as a Color argument. But there is a trick. OLECOlor values are 4-byte values (ranging from -2147483648 to 2147483647). However, only the lower three bytes are used for representing an RGB color. The trick is to set a bit in the high byte. The high byte will be ignored, but it makes the OLEColor value greater than 256.<br>
+<br>
+Therefore, something like this works fine (16777216 is 0x01000000 in hexadecimal):<br>
+(dcl-Control-SetBackColor image1 (logior 16777216 (dcl-GetOLEColorValue (list r g b))))<br>
+</div>
+</article>
+<article class="post" id="msg11524">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2015-07-28 20:56 UTC</span>
+  </div>
+  <div class="post-body">Nice!<br>
+<br>
+Thanks for your time on this.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg11525">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2015-07-28 20:59 UTC</span>
+  </div>
+  <div class="post-body">Oh, one tiny addendum:<br>
+<br>
+(dcl-Control-SetBackColor image1 (logior 16777216 (dcl-GetOLEColorValue (list (float r) g b))))<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg11526">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2015-07-28 21:04 UTC</span>
+  </div>
+  <div class="post-body">Okay, and yet one more, sorry.  :)<br>
+I like this to make it more clear where that number comes from:<br>
+<br>
+(dcl-Control-SetBackColor image1 (logior (expt 2 24) (dcl-GetOLEColorValue (list (float r) g b))))<br>
+<br>
+--J<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

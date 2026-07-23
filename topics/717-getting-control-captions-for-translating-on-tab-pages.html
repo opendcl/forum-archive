@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Getting control captions (for translating) on tab pages · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 717</p>
+    <h1>Getting control captions (for translating) on tab pages</h1>
+    <p class="meta">Started by copter ·
+      2009-04-14 11:50 UTC ·
+      6 replies · SMF topic #717</p>
+<article class="post" id="msg3477">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-04-14 11:50 UTC</span>
+  </div>
+  <div class="post-body">Hello everybody !<br>
+I need to translate the captions of all the controls of a form when initialize.<br>
+It works well, except on tab script control:<br>
+(foreach control (dcl_Form_GetControls Test_Form1)<br>
+  (setq props (dcl_control_getProperties control ))<br>
+  (if (member "Caption" props) (dcl_Control_SetCaption control (Translate (dcl_Control_GetCaption control )))<br>
+)<br>
+But dcl_Form_GetControls does not return the controls inside the pages of a tab control.<br>
+How can I get these controls ?<br>
+<br>
+Thanks for your help !</div>
+</article>
+<article class="post" id="msg3480">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-14 14:02 UTC</span>
+  </div>
+  <div class="post-body">Hi, have you already tried to invoke the GetControls method not only to the form object but also to the controls object? I know this method is only applicable to forms - however I would try it.<br>
+(dcl_Form_GetControls myProj_myForm_myTab)<br>
+Does this work? Should this work?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3481">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-14 14:03 UTC</span>
+  </div>
+  <div class="post-body">Note: don't forget to translate the tab captions itself using the SetTabCaption method :)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3482">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2009-04-14 14:27 UTC</span>
+  </div>
+  <div class="post-body">Hi.<br>
+Hmm, very interesting.<br>
+<br>
+I'm not 100% sure, but I'm afraid that you can not get that controls<br>
+in same meaner like U did with outside-tab controls. <br>
+<br>
+<blockquote class="quote"><br>
+Fred:<br>
+(dcl_Form_GetControls myProj_myForm_myTab)<br>
+Does this work? Should this work?<br>
+</blockquote><br>
+Fred, this don't work in my tests.<br>
+<br>
+<br>
+U probably must put some "manual" work in that.<br>
+<br>
+Here is what I will do in that case:<br>
+- create single list with names of all controls in all tabs<br>
+- add another foreach for that list, with use of vl-symbol-value<br>
+<br>
+here is my test.<br>
+<br>
+<br>
+(DEFUN c:trtest ()<br>
+ (DEFUN Translate (@oldc) (PRINC) (STRCAT @oldc "_translated"))<br>
+ ;;	init<br>
+ (DEFUN c:Test_proj1_Test_Form1_OnInitialize (/)<br>
+  ;; 1. foreach all outside tab (dcl_form_getcontrols)<br>
+  (FOREACH control (DCL_FORM_GETCONTROLS Test_proj1_Test_Form1)<br>
+   (SETQ props (DCL_CONTROL_GETPROPERTIES control))<br>
+   (IF (MEMBER "Caption" props)<br>
+    (DCL_CONTROL_SETCAPTION control (Translate (DCL_CONTROL_GETCAPTION control)))<br>
+   )<br>
+  )<br>
+  ;; 2. foreach all inside tab (manualy list)<br>
+  (SETQ list_of_controls_in_tabs (LIST "tabc1" "tabc2" "tabc3" "tabc4" "tabc5" "tabc6" "tabc7" "tabc8" "tabc9"))<br>
+  (FOREACH @cont list_of_controls_in_tabs<br>
+   (SETQ @cont (VL-SYMBOL-VALUE (READ (STRCAT "Test_proj1_Test_Form1_" @cont))))<br>
+   (DCL_CONTROL_SETCAPTION @cont (Translate (DCL_CONTROL_GETCAPTION @cont)))<br>
+  )<br>
+ )<br>
+ ;;	end init<br>
+ ;; load<br>
+ (DCL_PROJECT_LOAD "Test_proj1" T)<br>
+ (DCL_FORM_SHOW Test_proj1_Test_Form1)<br>
+)<br>
+<br>
+<br>
+<br>
+<br>
+u can download .odcl file.<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/674/Test_proj1.odcl">Test_proj1.odcl</a> <span class="muted">(1348 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3484">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-14 15:23 UTC</span>
+  </div>
+  <div class="post-body">The (dcl_Project_GetForms) function will return tab pages in the list of returned forms. There is no good way of knowing which ones belong to which tab control.  You could determine it empirically by looking at the controls contained by each form, and, assuming they use their default VarName, looking at the value of the VarName property of the first control. There really should be a (dcl_Control_GetChildForms) function, and I suggest that you add this as a feature request.</div>
+</article>
+<article class="post" id="msg3485">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-04-14 15:45 UTC</span>
+  </div>
+  <div class="post-body">Thanks Slavko for your help. I will made a list to do this. <br>
+And I'll made a new feature request, as Owen suggested, because this list will be quiet huge !<br>
+Copter<br>
+  <br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3497">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-15 06:05 UTC</span>
+  </div>
+  <div class="post-body">@Owen: maybe it will help in this case (for translating) if GetControls will return also all the controls which are placed on the tabs.<br>
+<br>
+An example: I have a palette. There is only a tab on the form. All the other controls are placed on tabs. GetControls only return the tab control on the form.<br>
+<br>
+Befehl: (dcl_Form_GetControls signothek_sc_signothek_fav)<br>
+()<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

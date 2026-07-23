@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenDCL 6 Display Issues · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1062</p>
+    <h1>OpenDCL 6 Display Issues</h1>
+    <p class="meta">Started by owenwengerd ·
+      2009-12-07 06:42 UTC ·
+      61 replies · SMF topic #1062</p>
+<article class="post" id="msg5531">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-07 06:42 UTC</span>
+  </div>
+  <div class="post-body">There are still numerous display issues being reported in OpenDCL 6 since my attempt to refactor the control painting code by removing redundant and inefficient operations.  Since I cannot reproduce many of the display problems on my system, I'm having trouble fixing them.  Worst of all, fixing a problem by trial and error often leads to new problems that I can't see on my development system.<br>
+<br>
+I need a different plan of attack.  Ideally, I'd like to be able to reproduce the problems under the debugger.  If I could create or configure a virtual machine identical to one of your problem computers, I might be able to reproduce the display problems in the virtual machine.  To help me do that, I'd like to gather some information from those of you experiencing display problems in the Alpha 15 build.<br>
+<br>
+If you are experiencing display problems such as controls not getting painted properly until you pass the mouse over them, or controls on tab pages not displaying, etc., please reply here with exact system details, including graphics card.  My development system is running Windows 7 x64, so if you are able to reproduce the display problems on a Windows 7 system, I'd certainly like to compare notes.<br>
+<br>
+At this point I'm not sure what else to try.  I will skip an Alpha 16 release this week to see if I can get a better handle on these problems.</div>
+</article>
+<article class="post" id="msg5532">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-07 07:24 UTC</span>
+  </div>
+  <div class="post-body">My System Information file,<br>
+<br>
+MSINFO32 at DOS command<br>
+OR <br>
+Start-&gt;AllPrograms-&gt;Accessories-&gt;SystemTools-&gt;System Information ... save and Zip.<br>
+<br>
+<br>
+added; <br>
+@home<br>
+Dual monitors - SAMSUNG SyncMaster 2494HS. <br>
+Win XP Theme.<br>
+<br>
+@work<br>
+Dual monitors - DELL 24.  <br>
+Win XP Theme.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1116/KDUB_SystemInfo-02.zip">KDUB_SystemInfo-02.zip</a> <span class="muted">(146524 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5535">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2009-12-07 09:10 UTC</span>
+  </div>
+  <div class="post-body">My problematic computer is Vista, not Windows 7.  Here's the system info anyway.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1119/Danner_SystemInfo.zip">Danner_SystemInfo.zip</a> <span class="muted">(63204 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5563">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-09 10:14 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Anyone else having display problems with 6.0.0.10 -&gt; 6.0.0.15 ??<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5573">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-09 20:07 UTC</span>
+  </div>
+  <div class="post-body">here is my system info however im not having any display issues<br>
+with odcl, im using build 6.0.0.15<br>
+<br>
+<br>
+OS Microsoft Windows 7 Professional x64<br>
+Intel(R) Xeon(R) Quad Core CPU W3520 @ 2.67GHz, 2661 Mhz<br>
+6.00 GB of Ram<br>
+Video Card ATI FirePro V3700</div>
+</article>
+<article class="post" id="msg5576">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-09 20:18 UTC</span>
+  </div>
+  <div class="post-body">So far the only thing in common is that all problematic systems are 32-bit, but that may just be coincidence. What about multiple monitors or specialized themes?  Neither here.</div>
+</article>
+<article class="post" id="msg5580">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-12-09 20:58 UTC</span>
+  </div>
+  <div class="post-body">Sorry I've been out of the loop a little on this one. Which sample should I use to test these display issues?</div>
+</article>
+<article class="post" id="msg5582">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-09 21:02 UTC</span>
+  </div>
+  <div class="post-body">Barry, that's another thing, some issues have already been fixed, so I'm also not completely certain which ones remain (and which are new). The most recent problem is that controls inside frames on tab pages don't display.</div>
+</article>
+<article class="post" id="msg5585">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-12-09 22:22 UTC</span>
+  </div>
+  <div class="post-body">I'm having the same "controls inside frames on tab pages don't display" issue here at work. Actually controls outside of frames on tab pages don't display either (until you mouse over them)<br>
+I'm on Win. XP Sp3 32-bit, dual LCD's, default Win. XP Theme.<br>
+<br>
+I'll check at home on my Vista x64 bit when I get there..<br>
+<br>
+Here's my NFO, says it has an error when you open it, but all the info seems to be there...<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1125/barry.zip">barry.zip</a> <span class="muted">(59413 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5586">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-09 22:32 UTC</span>
+  </div>
+  <div class="post-body"><br>
+added ti info post; <br>
+@home<br>
+Dual monitors - SAMSUNG SyncMaster 2494HS. <br>
+Win XP Theme.<br>
+<br>
+@work<br>
+Dual monitors - DELL 24.  <br>
+Win XP Theme.<br>
+<br>
+My major issue is with these controls onto tab pages<br>
+TextButton<br>
+TextBox<br>
+SlideView<br>
+</div>
+</article>
+<article class="post" id="msg5588">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-09 22:37 UTC</span>
+  </div>
+  <div class="post-body">Let's see if we can norrow things down.  Is anybody still (as of Alpha 15) having problems with controls that are <strong>not</strong> on a tab page?</div>
+</article>
+<article class="post" id="msg5591">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-09 22:45 UTC</span>
+  </div>
+  <div class="post-body"><br>
+All my known current issues are with controls on a Tab page.<br>
+Visual style does not affect the issue.<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5595">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-10 00:03 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Just for info.<br>
+<br>
+I did have an issue with the CheckBox NOT displaying on a Rectangle Control untill MouseOver.<br>
+This was resolved by changing the Background Color of the CheckBox to -16(buttonFace) <br>
+and leaving the rectangle  Background Color as -24(transparent) <br>
+and leaving the Form Background Color as -24(transparent)  <br>
+<br>
+Regards,<br>
+</div>
+</article>
+<article class="post" id="msg5597">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-12-10 06:26 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1062.msg5588#msg5588 date=1260398271 wrote:</cite><br>
+Let's see if we can norrow things down.  Is anybody still (as of Alpha 15) having problems with controls that are <strong>not</strong> on a tab page?<br>
+</blockquote><br>
+<br>
+@ Home on Vista x64 (dual screen) Acad2010, I still have the issues on the tab page.<br>
+Controls that aren't on the tab page, but on the same form, show fine....<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1126/issue.png">issue.png</a> <span class="muted">(7005 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5605">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2009-12-10 09:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=1062.msg5591#msg5591 date=1260398705 wrote:</cite><br>
+All my known current issues are with controls on a Tab page.<br>
+Visual style does not affect the issue.<br>
+</blockquote><br>
+Same for me</div>
+</article>
+<article class="post" id="msg5606">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-10 09:06 UTC</span>
+  </div>
+  <div class="post-body">Kerry: can you sent me the last sample to test? I've tried your sample files from your initial posting and I've no problem on my notebook with 6.0.0.15. But I do have graphical issues with one of mine with 6.0.0.15 but not with 5.1.2.3. But I cannot publish it - then I have to upload the whole product...<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5610">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-12-10 09:27 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+Just an idea: Because display issues occurred since alpha 10, is it not possible to compare what was changed between alpha 9 and 10. ?<br>
+copter<br>
+</div>
+</article>
+<article class="post" id="msg5611">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-10 09:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1062.msg5606#msg5606 date=1260435975 wrote:</cite><br>
+Kerry: can you sent me the last sample to test? I've tried your sample files from your initial posting and I've no problem on my notebook with 6.0.0.15. But I do have graphical issues with one of mine with 6.0.0.15 but not with 5.1.2.3. But I cannot publish it - then I have to upload the whole product...<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+Here is my last test, for all to try.<br>
+There are controls on Tabs 2 and 3 also that cause issues.<br>
+Kerry.<br>
+<br>
+<br>
+Attached Code and piccys for members.:<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1127/kdub60015C.odcl">kdub60015C.odcl</a> <span class="muted">(2951 bytes)</span></li><li><a href="../attachments/1128/kdub60015-C.lsp">kdub60015-C.lsp</a> <span class="muted">(1466 bytes)</span></li><li><a href="../attachments/1129/kdub20091205C 60015.png">kdub20091205C 60015.png</a> <span class="muted">(21579 bytes)</span></li><li><a href="../attachments/1130/kdub20091205C 6009.png">kdub20091205C 6009.png</a> <span class="muted">(24008 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5612">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-10 10:17 UTC</span>
+  </div>
+  <div class="post-body">Hi, I cannot see anything wrong, do you?<br>
+<br>
+I tried on two machines (see attachments).<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1131/kerry_a15_32.png">kerry_a15_32.png</a> <span class="muted">(11235 bytes)</span></li><li><a href="../attachments/1132/wsft_32.txt">wsft_32.txt</a> <span class="muted">(1742 bytes)</span></li><li><a href="../attachments/1133/kerry_a15_64.png">kerry_a15_64.png</a> <span class="muted">(13361 bytes)</span></li><li><a href="../attachments/1134/nbft_64.txt">nbft_64.txt</a> <span class="muted">(1864 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5613">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-10 10:28 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Looks fine to me Fred.<br>
+Single Monitor or Dual ?<br>
+<br>
+Interesting that the slideView and DwgPreview have a gray background .. is that your modelspace color ?<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5614">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-10 11:04 UTC</span>
+  </div>
+  <div class="post-body">Hi, Kerry,<br>
+<blockquote class="quote"><cite> author=Kerry Brown link=topic=1062.msg5613#msg5613 date=1260440894 wrote:</cite><br>
+Single Monitor or Dual ?<br>
+</blockquote><br>
+<br>
+The 32 Bit workstation has two Samsung 2343BW in dual mode (extend the main screen to the second screen).  The 64 Bit machine is a single notebook - but wait: I will try to apply a monitor to the notebook ... Now I connected one of the Samsung 2343BW with the 64 Bit notebook. The form works on the second screen in duplication mode as well as in the mode extending the main screen to the second screen.<br>
+<br>
+I hope that helps.<br>
+<br>
+<blockquote class="quote"><cite> author=Kerry Brown link=topic=1062.msg5613#msg5613 date=1260440894 wrote:</cite><br>
+Interesting that the slideView and DwgPreview have a gray background .. is that your modelspace color ?<br>
+</blockquote><br>
+<br>
+No, it's the modelspace backcolor Autodesk like to have in AutoCAD Map :( . They change the modelspace back color with every new AutoCAD release like I change my underwear (as the German as the proverb has it: to change something as often as someone's underwear).<br>
+<br>
+Map 2006: blue (qoute from Autodesk: The backcolor of CAD is black and the backcolor of GIS is blue).<br>
+In Civil 3D 2009 the back color is a very light mixture of yellow and orange. And now Map 2010 is grey in the back. Believe it or not: it was mentioned as one of the benefits of the new release of R 18.1:  the back color was turned to dark grey. I love it! (Am I too sarcastic?)<br>
+<br>
+I had to reinstall AutoCAD Map between two cutomer trainings and I forgot to change to WHITE: the color most landscape architects usually use to persuade themselves of a piece of paper.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5616">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-10 14:12 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1062.msg5576#msg5576 date=1260389926 wrote:</cite><br>
+So far the only thing in common is that all problematic systems are 32-bit, but that may just be coincidence. What about multiple monitors or specialized themes?  Neither here.<br>
+</blockquote><br>
+<br>
+if by graphical display errors you mean something like this<br>
+then i get them but only when i used the combo box.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1135/graph-err.JPG">graph-err.JPG</a> <span class="muted">(20120 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5619">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-10 16:17 UTC</span>
+  </div>
+  <div class="post-body">Andrew, the other reported problems are all inside AutoCAD at runtime, but it's interesting that the combo box displays wrong for you in Studio.</div>
+</article>
+<article class="post" id="msg5620">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-10 16:20 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=copter link=topic=1062.msg5610#msg5610 date=1260437226 wrote:</cite><br>
+Just an idea: Because display issues occurred since alpha 10, is it not possible to compare what was changed between alpha 9 and 10. ?</blockquote><br>
+<br>
+In Alpha 10 I completely removed all the hacks, workarounds, and kludges added previously to fix display problems. So yes, I could go back, but then I'd be right back where I started: with an unmanageable mess!</div>
+</article>
+<article class="post" id="msg5625">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-12-10 18:50 UTC</span>
+  </div>
+  <div class="post-body">It looks like the main display issues that are still outstanding for a15 are TextButtons, CboBoxes, &amp; textBox (background color), grids, ListBox on Tab Pages...<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1136/1.png">1.png</a> <span class="muted">(18389 bytes)</span></li><li><a href="../attachments/1137/2.png">2.png</a> <span class="muted">(16555 bytes)</span></li><li><a href="../attachments/1138/3.png">3.png</a> <span class="muted">(17062 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5626">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-10 18:57 UTC</span>
+  </div>
+  <div class="post-body">Barry, your screenshots look completely different to mine (see above). Curious!<br>
+Fred</div>
+</article>
+<article class="post" id="msg5627">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-10 19:25 UTC</span>
+  </div>
+  <div class="post-body">Fred,<br>
+<br>
+Barry's look exactly like mine (not as expected)  .. on 2 machines on winXP<br>
+<br>
+... yet I have several machines on winXP that look like yours. ( ie as expected)<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5632">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-12-10 21:33 UTC</span>
+  </div>
+  <div class="post-body">Same issue for me with Acad2009, 2010, Bricscad 10 under VISTA.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1139/Test.png">Test.png</a> <span class="muted">(24977 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5663">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-13 18:19 UTC</span>
+  </div>
+  <div class="post-body">I've been unable to reproduce the tab page issues, no matter what I've tried. So, we're back to trial and error. Thanks to all the input, I think I've at least narrowed things down a bit, so I'm more opimistic that trial and error will be successful. In Alpha 16, I've made another slight change to the way tab pages are painted, so please test it and report back your results.</div>
+</article>
+<article class="post" id="msg5666">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-14 08:01 UTC</span>
+  </div>
+  <div class="post-body">WHEEEEEEEEEEEEEEEEEEEEEEEEEE !!!!!!<br>
+<br>
+Thanks Owen.<br>
+<br>
+result 6.0.0.16 as attached :<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1146/kdub20091205C 60016.png">kdub20091205C 60016.png</a> <span class="muted">(34752 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5668">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-14 09:04 UTC</span>
+  </div>
+  <div class="post-body">Kewl!! Let's see whether any new problems crop up...</div>
+</article>
+<article class="post" id="msg5671">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2009-12-14 09:30 UTC</span>
+  </div>
+  <div class="post-body">..and it works for me too. Fabulous!!</div>
+</article>
+<article class="post" id="msg5690">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-12-14 20:18 UTC</span>
+  </div>
+  <div class="post-body">Looking good on my end also... :)<br>
+Nice work Owen.</div>
+</article>
+<article class="post" id="msg5693">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-14 21:55 UTC</span>
+  </div>
+  <div class="post-body">Great! Have any of you noticed any problems with overlapping controls in Alpha 17? Problems with transparent controls?</div>
+</article>
+<article class="post" id="msg5694">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-12-14 22:20 UTC</span>
+  </div>
+  <div class="post-body">I noticed a very small issue with the "Tree" sample.<br>
+Some labels with transparent backgrounds where slightly overlapping the tops of the ComboBoxes.<br>
+It could be fixed by make them not overlap, but I'm sure you're more interested in how they look when they do overlay...<br>
+<br>
+ </div>
+</article>
+<article class="post" id="msg5696">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-14 22:57 UTC</span>
+  </div>
+  <div class="post-body">Can you post a screen cap?</div>
+</article>
+<article class="post" id="msg5701">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-12-14 23:45 UTC</span>
+  </div>
+  <div class="post-body">Here ya go...<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1153/tree.png">tree.png</a> <span class="muted">(25742 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5705">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-15 00:24 UTC</span>
+  </div>
+  <div class="post-body">Ah, I see.  This display behavior of transparent controls is by design now, so that dialog will need to be fixed to ensure there is no overlap.</div>
+</article>
+<article class="post" id="msg5709">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-15 06:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1062.msg5693#msg5693 date=1260827717 wrote:</cite><br>
+Great! Have any of you noticed any problems with overlapping controls in Alpha 17? Problems with transparent controls?<br>
+</blockquote><br>
+<br>
+Boooah! Where can I find Alpha 17?  ;)<br>
+<br>
+Actually I have found a very small detail with splitters. You can see it in the video or test in the Splitter sample (German only).<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1155/A16_Splitter.gif">A16_Splitter.gif</a> <span class="muted">(150221 bytes)</span></li><li><a href="../attachments/1156/Splitter.lsp">Splitter.lsp</a> <span class="muted">(9229 bytes)</span></li><li><a href="../attachments/1157/Splitter.odcl">Splitter.odcl</a> <span class="muted">(1744 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5720">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-15 15:58 UTC</span>
+  </div>
+  <div class="post-body">Hello, I have another one:<br>
+<br>
+have a look at <a href="http://www.opendcl.com/forum/index.php?topic=1082.msg5719#msg5719" rel="nofollow noopener">{2}</a>. The loaded dwgpreview are only getting visible after moving the form outside the windows first.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1161/refresh.gif">refresh.gif</a> <span class="muted">(706367 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5722">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-12-15 18:22 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1062.msg5720#msg5720 date=1260892693 wrote:</cite><br>
+Hello, I have another one:<br>
+<br>
+have a look at <a href="http://www.opendcl.com/forum/index.php?topic=1082.msg5719#msg5719" rel="nofollow noopener">{2}</a>. The loaded dwgpreview are only getting visible after moving the form outside the windows first.<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+That looks fine, just tell your users to always drag the form off screen before they start using it.<br>
+<br>
+<br>
+<br>
+Haha, I'm joking.. ;D  </div>
+</article>
+<article class="post" id="msg5726">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-15 23:34 UTC</span>
+  </div>
+  <div class="post-body">Hi, now I got completely confused. I ask you to compare the congrats form from the eventhandling sample of the OpenDCL samples folder at designtime and at runtime.<br>
+I got two completely different result. Does it match to yours?<br>
+<br>
+Fred<br>
+<br>
+: I don't mean the language :)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1162/designtime.png">designtime.png</a> <span class="muted">(8353 bytes)</span></li><li><a href="../attachments/1163/runtime.png">runtime.png</a> <span class="muted">(10242 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5728">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-15 23:45 UTC</span>
+  </div>
+  <div class="post-body">Same here, Fred. I'll investigate.</div>
+</article>
+<article class="post" id="msg5778">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-12-17 13:18 UTC</span>
+  </div>
+  <div class="post-body">A new display issue since alpha 16:<br>
+<br>
+Controls inside a rectangle are sometimes not displayed but I am not understanding why.<br>
+And the tab order is not the only soluce in this case.<br>
+(See sample attached)<br>
+<br>
+Copter <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1177/Test16-1.odcl">Test16-1.odcl</a> <span class="muted">(1813 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5779">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-17 13:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=copter link=topic=1062.msg5778#msg5778 date=1261055896 wrote:</cite><br>
+And the tab order is not the only soluce in this case.<br>
+</blockquote><br>
+<br>
+Hi, copter, I've tested it. Move it out of the window for a short while. Then the captions are visible.  ;)<br>
+<br>
+No, have a try with the project file I've attached. It works for me.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1178/Test16-1.odcl">Test16-1.odcl</a> <span class="muted">(1821 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5782">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-12-17 15:20 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred<br>
+I moved it . Funny.<br>
+But I tried your project. Doesnt not work for me (Vista+R2009)<br>
+What did you changed exactly ?<br>
+<br>
+Copter<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1180/Fred1.png">Fred1.png</a> <span class="muted">(25984 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5783">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-17 15:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">Doesnt not work for me (Vista+R2009)</blockquote><br>
+<br>
+Did not? Hm, have you (re)loaded the right project?<br>
+<br>
+<blockquote class="quote">What did you changed exactly ?</blockquote><br>
+<br>
+First thing I do whenever I get display errors is to set the background of all rectangles, optionbuttons, checkboxes and captions to -16. So I did this time and it worked perfectly for me.<br>
+(XP 32 Bit C3DR2009)<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1181/a16_xp_2009.png">a16_xp_2009.png</a> <span class="muted">(6313 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5785">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-12-17 18:48 UTC</span>
+  </div>
+  <div class="post-body">I confirm. I downloaded the right one with background = -16.<br>
+Same issue.<br>
+And, If I move the form outside the screen, the X and Y labels are black , not red.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5788">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-17 20:59 UTC</span>
+  </div>
+  <div class="post-body"><br>
+on my XP 32bit<br>
+<br>
+Fred's Test16-1.odcl from #PostReply 44 displays as I'd expect <br>
+<br>
+Copter's Test16-1.odcl from #PostReply 43 displays initially without the Label Caption and without the top row of  CheckBox controls.<br>
+<br>
+The checkbox controls display after a mouseOver<br>
+or both LabelCaptions and CheckBoxs show after dragging offscreen and returning .... but with the LabelCaption Color as Black.<br>
+<br>
+<br>
+I recall demonstration (on Owen's advice) in one of my posts that changing the BackGroundColor to ButtonFace(-16) for the Rectangle and the OptionBox controls fixed the display issue.<br>
+</div>
+</article>
+<article class="post" id="msg5807">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-18 23:56 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Owen, thanks for your endevours particularly with this 6.xx change issue. <br>
+Can you see any advantages in performance ( we know about the changes to old code)<br>
+<br>
+Kerry.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5808">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-19 00:38 UTC</span>
+  </div>
+  <div class="post-body">I can't say that I've noticed much change in performance, but the code is a heck of a lot simpler and easier to maintain now.</div>
+</article>
+<article class="post" id="msg5842">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-28 07:43 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1062.msg5720#msg5720 date=1260892693 wrote:</cite><br>
+Hello, I have another one:<br>
+<br>
+have a look at <a href="http://www.opendcl.com/forum/index.php?topic=1082.msg5719#msg5719" rel="nofollow noopener">{2}</a>. The loaded dwgpreview are only getting visible after moving the form outside the windows first.<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+For Build [6.0.0.17]<br>
+I assume this has not yet been addressed.<br>
+I have a similar situation.<br>
+<br>
+Modal dialog, Simple layout (no frames, Rectangles, tabs .... <br>
+This code loads the DwgPreview control with a drawing selected from a listbox.<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:KDUB_BlockInserter_Main_ListBox_OnSelChanged (ItemIndex Value /)<br>
+  (dcl_dwgpreview_loaddwg KDUB_BlockInserter_Main_DwgPreview1<br>
+                          (strcat G1003-SelectedFolder "\\" Value)<br>
+  )<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+<br>
+The DwgPreview control does not display untill either<br>
+a) the control is selected.<br>
+or b) the form is dragged offscreen and back on.<br>
+<br>
+I'll put together a tester if you want.<br>
+<br>
+This is with WinXP x32<br>
+I don't have the new win7 x64 box loaded yet<br>
+<br>
+Regards<br>
+Kerry<br>
+</div>
+</article>
+<article class="post" id="msg5843">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-28 07:55 UTC</span>
+  </div>
+  <div class="post-body">As a work-around, I'm forcing a redraw of the control<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:KDUB_BlockInserter_Main_ListBox_OnSelChanged (ItemIndex Value /)<br>
+  (dcl_dwgpreview_loaddwg KDUB_BlockInserter_Main_DwgPreview1<br>
+                          (strcat G1003-SelectedFolder "\\" Value)<br>
+  )<br>
+  (dcl_Control_Redraw KDUB_BlockInserter_Main_DwgPreview1) ;; &lt;-- redraw added for workaround : kdub 20091228<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;---------------------------------------------------------------------------<br>
+;;;</div>
+</article>
+<article class="post" id="msg5845">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-28 14:51 UTC</span>
+  </div>
+  <div class="post-body">I would like to see a sample modeless form with only one dwgpreview control that exhibits the problem. I still have some cases where the control painting fails, but I haven't been able to pin down the cause. I'm suspicious that something triggers an infinite painting loop that Windows detects and cancels, but in my tests the problem seems to disappear when the form is simplified.</div>
+</article>
+<article class="post" id="msg5846">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-29 03:04 UTC</span>
+  </div>
+  <div class="post-body">Demo/Sample<br>
+<br>
+<br>
+;;K60017h.lsp<br>
+;;K60017h.odcl<br>
+;|<br>
+KWBrown 20091229<br>
+for OpenDCL 6.0.0.17 testing<br>
+to demonstrate painting of DwgPreview control<br>
+|;<br>
+;; Initial folder for DirectoryPicker<br>
+<br>
+(setq g:K60017h_RootFolder "J:\\Blocks")<br>
+<br>
+<br>
+(defun c:DOIT (/) (c:K60017h))<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:K60017h (/)<br>
+  ;; Codehimbelonga kdub@opendcl.com<br>
+  (vl-load-com)<br>
+  (command "._OPENDCL")<br>
+  (dcl_project_load "K60017h.odcl" t)<br>
+  (if (not (dcl_form_isactive K60017h_F))<br>
+    (dcl_form_show K60017h_F)<br>
+  )<br>
+  (princ)<br>
+)<br>
+(princ "\n K60017h to run.")<br>
+(princ)<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:K60017h_F_OnInitialize (/ ParentID Folders)<br>
+  (dcl_control_settext K60017h_F_RootFolder g:K60017h_RootFolder)<br>
+  ;;<br>
+  (setq ParentID (dcl_tree_addparent K60017h_F_Tree g:K60017h_RootFolder 0 -1 1))<br>
+  (if (= ".." (cadr (setq Folders (vl-directory-files g:K60017h_RootFolder NIL -1))))<br>
+    (setq Folders (cddr Folders))<br>
+  )<br>
+  ;;<br>
+  (foreach folder Folders<br>
+    (dcl_tree_addchild<br>
+      K60017h_F_Tree<br>
+      (list (list ParentID folder (strcat g:K60017h_RootFolder "\\" folder) 2 3))<br>
+    )<br>
+  )<br>
+  (dcl_tree_expanditem K60017h_F_Tree ParentID 1)<br>
+  ;;<br>
+  (dcl_tree_selectitem K60017h_F_Tree<br>
+                       (dcl_tree_getfirstchilditem K60017h_F_Tree ParentID)<br>
+  )<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:K60017h_F_Tree_OnSelChanged (Label Key / SubFiles SubFolders subList)<br>
+  ;;<br>
+  ;| Description:<br>
+ <br>
+<br>
+<br>
+  |;<br>
+  (dcl_listbox_clear K60017h_F_ListBox)<br>
+  ;;<br>
+  ;;(or (= (type Key) 'str) (setq Key g:K60017h_RootFolder))<br>
+  (if (= (type Key) 'str)<br>
+    (progn<br>
+      (setq g:SelectedFolder key<br>
+            SubFiles         (vl-directory-files g:SelectedFolder "*.DWG" 1)<br>
+      )<br>
+      (if (= ".." (cadr (setq SubFolders (vl-directory-files g:SelectedFolder NIL -1))))<br>
+        (setq SubFolders (cddr SubFolders))<br>
+      )<br>
+    )<br>
+  )<br>
+  ;;<br>
+  (if SubFolders<br>
+    (progn (setq subList '())<br>
+           (foreach folder SubFolders<br>
+             (setq subList (cons (list g:SelectedFolder<br>
+                                       folder<br>
+                                       (strcat g:SelectedFolder "\\" folder)<br>
+                                       2<br>
+                                       3<br>
+                                 )<br>
+                                 subList<br>
+                           )<br>
+             )<br>
+           )<br>
+           (dcl_tree_addchild K60017h_F_Tree (reverse subList))<br>
+    )<br>
+  )<br>
+  ;;<br>
+  (if subFiles<br>
+    (progn (setq subList '())<br>
+           (foreach file subFiles (setq subList (cons file subList)))<br>
+           (dcl_listbox_clear K60017h_F_ListBox)<br>
+           (dcl_listbox_addlist K60017h_F_ListBox (reverse subList))<br>
+           ;;<br>
+           (dcl_listbox_setcursel K60017h_F_ListBox 0)<br>
+           (dcl_dwgpreview_loaddwg<br>
+             K60017h_F_DwgPreview<br>
+             (strcat g:SelectedFolder "\\" (dcl_listbox_getitemtext K60017h_F_ListBox 0))<br>
+           )<br>
+           ;; (dcl_Control_Redraw K60017h_F_DwgPreview) ;; &lt;-- redraw added for workaround : kdub 20091228  <br>
+      )<br>
+  )<br>
+)<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:K60017h_F_ListBox_OnSelChanged (ItemIndexOrCount Value /)<br>
+  (dcl_dwgpreview_loaddwg K60017h_F_DwgPreview (strcat g:SelectedFolder "\\" Value))<br>
+  ;;<br>
+  ;; (dcl_Control_Redraw K60017h_F_DwgPreview) ;; &lt;-- redraw added for workaround : kdub 20091228  <br>
+)<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:K60017h_F_RootSelect_OnClicked (/ root)<br>
+  (if (setq Root (dcl_selectfolder "Select Root Folder" g:K60017h_RootFolder nil))<br>
+    (progn (setq g:K60017h_RootFolder root<br>
+                 g:InsertData nil<br>
+           )<br>
+           (dcl_tree_clear K60017h_F_Tree)<br>
+           (dcl_listbox_clear K60017h_F_ListBox)<br>
+           (dcl_dwgpreview_clear K60017h_F_DwgPreview)<br>
+           (c:K60017h_F_OnInitialize)<br>
+    )<br>
+  )<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:K60017h_DoAllTheWildStuff (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:K60017h_DoAllTheWildStuff" "K60017h : To do")<br>
+)<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+<br>
+(princ)<br>
+<br>
+<br>
+Some attachments<br>
+LSP and ODCL Code and 29 seconds of piccys.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1193/K60017h.LSP">K60017h.LSP</a> <span class="muted">(4419 bytes)</span></li><li><a href="../attachments/1194/K60017h.odcl">K60017h.odcl</a> <span class="muted">(1202 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5847">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-29 03:11 UTC</span>
+  </div>
+  <div class="post-body">The video attachment.<br>
+As you may see, sometimes the DwgPreview displays, sometimes not.<br>
+(refresh  to replay) <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1196/capture dwgPreview.gif">capture dwgPreview.gif</a> <span class="muted">(284208 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5848">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-29 17:04 UTC</span>
+  </div>
+  <div class="post-body">The DwgPreview problem is now fixed for Alpha 18. This was a simple case of not invalidating the control after changing the drawing filename.</div>
+</article>
+<article class="post" id="msg5849">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-29 22:14 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Thanks Owen,<br>
+great to hear it' rectified,<br>
+better to hear it was relatively simple<br>
+<br>
+Be well<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5901">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-07 01:02 UTC</span>
+  </div>
+  <div class="post-body"><br>
+6.0.0.18 fixed the DwgPreview display issue for me ... thanks Owen<br>
+<br>
+Regards<br>
+Kerry<br>
+</div>
+</article>
+<article class="post" id="msg7572">
+  <div class="post-head">
+    <span class="post-author">superkot007</span>
+    <span class="post-date muted">2010-12-05 21:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=1062.msg5846#msg5846 date=1262055881 wrote:</cite><br>
+Demo/Sample<br>
+<br>
+<br>
+;;K60017h.lsp<br>
+;;K60017h.odcl<br>
+;|<br>
+KWBrown 20091229<br>
+for OpenDCL 6.0.0.17 testing<br>
+to demonstrate painting of DwgPreview control<br>
+|;<br>
+;; Initial folder for DirectoryPicker<br>
+<br>
+(setq g:K60017h_RootFolder "J:\\Blocks")<br>
+<br>
+<br>
+(defun c:DOIT (/) (c:K60017h))<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:K60017h (/)<br>
+  ;; Codehimbelonga kdub@opendcl.com<br>
+  (vl-load-com)<br>
+  (command "._OPENDCL")<br>
+  (dcl_project_load "K60017h.odcl" t)<br>
+  (if (not (dcl_form_isactive K60017h_F))<br>
+    (dcl_form_show K60017h_F)<br>
+  )<br>
+  (princ)<br>
+)<br>
+(princ "\n K60017h to run.")<br>
+(princ)<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:K60017h_F_OnInitialize (/ ParentID Folders)<br>
+  (dcl_control_settext K60017h_F_RootFolder g:K60017h_RootFolder)<br>
+  ;;<br>
+  (setq ParentID (dcl_tree_addparent K60017h_F_Tree g:K60017h_RootFolder 0 -1 1))<br>
+  (if (= ".." (cadr (setq Folders (vl-directory-files g:K60017h_RootFolder NIL -1))))<br>
+    (setq Folders (cddr Folders))<br>
+  )<br>
+  ;;<br>
+  (foreach folder Folders<br>
+    (dcl_tree_addchild<br>
+      K60017h_F_Tree<br>
+      (list (list ParentID folder (strcat g:K60017h_RootFolder "\\" folder) 2 3))<br>
+    )<br>
+  )<br>
+  (dcl_tree_expanditem K60017h_F_Tree ParentID 1)<br>
+  ;;<br>
+  (dcl_tree_selectitem K60017h_F_Tree<br>
+                       (dcl_tree_getfirstchilditem K60017h_F_Tree ParentID)<br>
+  )<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:K60017h_F_Tree_OnSelChanged (Label Key / SubFiles SubFolders subList)<br>
+  ;;<br>
+  ;| Description:<br>
+ <br>
+<br>
+<br>
+  |;<br>
+  (dcl_listbox_clear K60017h_F_ListBox)<br>
+  ;;<br>
+  ;;(or (= (type Key) 'str) (setq Key g:K60017h_RootFolder))<br>
+  (if (= (type Key) 'str)<br>
+    (progn<br>
+      (setq g:SelectedFolder key<br>
+            SubFiles         (vl-directory-files g:SelectedFolder "*.DWG" 1)<br>
+      )<br>
+      (if (= ".." (cadr (setq SubFolders (vl-directory-files g:SelectedFolder NIL -1))))<br>
+        (setq SubFolders (cddr SubFolders))<br>
+      )<br>
+    )<br>
+  )<br>
+  ;;<br>
+  (if SubFolders<br>
+    (progn (setq subList '())<br>
+           (foreach folder SubFolders<br>
+             (setq subList (cons (list g:SelectedFolder<br>
+                                       folder<br>
+                                       (strcat g:SelectedFolder "\\" folder)<br>
+                                       2<br>
+                                       3<br>
+                                 )<br>
+                                 subList<br>
+                           )<br>
+             )<br>
+           )<br>
+           (dcl_tree_addchild K60017h_F_Tree (reverse subList))<br>
+    )<br>
+  )<br>
+  ;;<br>
+  (if subFiles<br>
+    (progn (setq subList '())<br>
+           (foreach file subFiles (setq subList (cons file subList)))<br>
+           (dcl_listbox_clear K60017h_F_ListBox)<br>
+           (dcl_listbox_addlist K60017h_F_ListBox (reverse subList))<br>
+           ;;<br>
+           (dcl_listbox_setcursel K60017h_F_ListBox 0)<br>
+           (dcl_dwgpreview_loaddwg<br>
+             K60017h_F_DwgPreview<br>
+             (strcat g:SelectedFolder "\\" (dcl_listbox_getitemtext K60017h_F_ListBox 0))<br>
+           )<br>
+           ;; (dcl_Control_Redraw K60017h_F_DwgPreview) ;; &lt;-- redraw added for workaround : kdub 20091228  <br>
+      )<br>
+  )<br>
+)<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:K60017h_F_ListBox_OnSelChanged (ItemIndexOrCount Value /)<br>
+  (dcl_dwgpreview_loaddwg K60017h_F_DwgPreview (strcat g:SelectedFolder "\\" Value))<br>
+  ;;<br>
+  ;; (dcl_Control_Redraw K60017h_F_DwgPreview) ;; &lt;-- redraw added for workaround : kdub 20091228  <br>
+)<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:K60017h_F_RootSelect_OnClicked (/ root)<br>
+  (if (setq Root (dcl_selectfolder "Select Root Folder" g:K60017h_RootFolder nil))<br>
+    (progn (setq g:K60017h_RootFolder root<br>
+                 g:InsertData nil<br>
+           )<br>
+           (dcl_tree_clear K60017h_F_Tree)<br>
+           (dcl_listbox_clear K60017h_F_ListBox)<br>
+           (dcl_dwgpreview_clear K60017h_F_DwgPreview)<br>
+           (c:K60017h_F_OnInitialize)<br>
+    )<br>
+  )<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:K60017h_DoAllTheWildStuff (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:K60017h_DoAllTheWildStuff" "K60017h : To do")<br>
+)<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+<br>
+(princ)<br>
+<br>
+<br>
+Some attachments<br>
+LSP and ODCL Code and 29 seconds of piccys.<br>
+</blockquote><br>
+Thank you so much!!!<br>
+This is exactly what I needed!!!</div>
+</article>
+<article class="post" id="msg7575">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-12-06 02:17 UTC</span>
+  </div>
+  <div class="post-body"><br>
+You're most welcome.<br>
+That code was concept code and still needed a little work to be bomb-proof ... but IS a reasonable place to start.</div>
+</article>
+<article class="post" id="msg7585">
+  <div class="post-head">
+    <span class="post-author">superkot007</span>
+    <span class="post-date muted">2010-12-06 17:35 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=1062.msg7575#msg7575 date=1291601849 wrote:</cite><br>
+<br>
+You're most welcome.<br>
+That code was concept code and still needed a little work to be bomb-proof ... but IS a reasonable place to start.<br>
+</blockquote><br>
+Of course, I understand this ... :)<br>
+<br>
+I am a novice user, so please help ...<br>
+How to immediately specify the folder with the blocks without the left of the tree?<br>
+<br>
+P.S.: Sorry if bad writing - it's machine translation</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

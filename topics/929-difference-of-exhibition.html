@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Difference of Exhibition · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 929</p>
+    <h1>Difference of Exhibition</h1>
+    <p class="meta">Started by velasquez ·
+      2009-09-20 14:36 UTC ·
+      23 replies · SMF topic #929</p>
+<article class="post" id="msg4640">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-09-20 14:36 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen,  <br>
+In this Project I work with dcl_Control_SetPos and  <br>
+dcl_Control_SetPicture to control the exhibition of images.  <br>
+See the difference among this work in OpenDCL 4.1.2.2 and OpenDCL 5.1.2.3 / 6.0.0.4  <br>
+That is expected?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/908/Difference.gif">Difference.gif</a> <span class="muted">(1136144 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4641">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-20 15:33 UTC</span>
+  </div>
+  <div class="post-body">Try removing your calls to (dcl_PictureBox_Clear) to see if that resolves the problem.</div>
+</article>
+<article class="post" id="msg4650">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-09-21 12:25 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+  <br>
+Following your suggestion I removed dcl_PictureBox_Clear of my code.  <br>
+There was not any visible improvement in the change of the images.<br>
+Can the problem be in the speed of OpenDCL 6.0.0.5 or in ZOrder?</div>
+</article>
+<article class="post" id="msg4654">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-21 15:34 UTC</span>
+  </div>
+  <div class="post-body">If you use ZOrder, that could be the reason. Please send me an updated .lsp file without the calls to PictureBox_Clear, so I can have another look.</div>
+</article>
+<article class="post" id="msg4659">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-09-21 18:52 UTC</span>
+  </div>
+  <div class="post-body">OK Owen<br>
+  <br>
+I don't use ZOrder.  <br>
+I sent for you one updated .lsp without the calls of PictureBox_Clear.  <br>
+Please see the functions JoyMenuValvulas and JoyMenuAducaoAgua.</div>
+</article>
+<article class="post" id="msg4660">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-09-21 19:37 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen  <br>
+I believe that the problem can be with the <strong>dcl_Control_SetPos</strong> speed for PictureBox.</div>
+</article>
+<article class="post" id="msg4662">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-21 20:32 UTC</span>
+  </div>
+  <div class="post-body">I didn't receive any new file from you. I looked at your code, and I think the main problem is that your calls to Control_SetVisible cause the controls to be hidden, then redisplayed. This would force the background to repaint, thus causing the flashing.</div>
+</article>
+<article class="post" id="msg4680">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-09-22 17:18 UTC</span>
+  </div>
+  <div class="post-body">I created a new project with OpenDCL 6.0.0.5.  <br>
+I am just exhibiting the form that contains the images.  <br>
+I verified that the exhibition speed is really larger in OpnDCL 4.1.2.2</div>
+</article>
+<article class="post" id="msg4681">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-09-22 17:21 UTC</span>
+  </div>
+  <div class="post-body">I am posting the files now.  <br>
+Excuse me.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/913/TestFlashing.odcl">TestFlashing.odcl</a> <span class="muted">(716438 bytes)</span></li><li><a href="../attachments/914/TestFlashing.LSP">TestFlashing.LSP</a> <span class="muted">(260 bytes)</span></li><li><a href="../attachments/915/Flashing.gif">Flashing.gif</a> <span class="muted">(792580 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4687">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-23 01:19 UTC</span>
+  </div>
+  <div class="post-body">On my computer the form opens virtually instantaneously in Alpha 5 on AutoCAD 2010. I ran it under a profiler, and I don't see anything in the output that indicates a problem. I added a slight optimization so that it doesn't waste any time trying to paint the picture before the dialog is visible, but I don't think that is significant enough to notice.  I don't know why it is slow on yours.  Perhaps someone else can test your sample to see if they notice any problem.</div>
+</article>
+<article class="post" id="msg4689">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-09-23 11:27 UTC</span>
+  </div>
+  <div class="post-body">I don't also understand the problem.  <br>
+The one that I can affirm that in OpenDCL 4.1.2.2 the form opened with a very larger speed in AutoCAD 2006 2007 and 2009 for this it is enough to see the image that shows this comparison.  <br>
+I hope other users see the files that I posted.  <br>
+Thanks.</div>
+</article>
+<article class="post" id="msg4690">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-09-23 11:42 UTC</span>
+  </div>
+  <div class="post-body"><br>
+It follows the transcription of my customer's report below on OpenDCL with AutoCAD 2010. (5.1.2.3)<br>
+<br>
+Thank you Sebastião…  <br>
+  <br>
+All works now.. I changed T for the 1 et NIL for the 0 only in the command “DCL_CONTROL_SETVALUE”  <br>
+  <br>
+But with Autocad10 the speed is horrible... .Este another problem...  <br>
+  <br>
+Att.  <br>
+Christophe<br>
+<br>
+For display to the picture with the 12 pictures,:  5 seconds.   <br>
+Before, it was smaller of 1 second  <br>
+  <br>
+I have a RAM of 1,25 GB  <br>
+  <br>
+Att.  <br>
+Christophe</div>
+</article>
+<article class="post" id="msg4693">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-23 14:43 UTC</span>
+  </div>
+  <div class="post-body">What is the speed of opening the sample file in 6.0.0.5 on your system with AutoCAD 2009?  Is there a noticeable difference if all picture boxes are removed from the form?  Is the customer's report based on the sample, or on the real application?</div>
+</article>
+<article class="post" id="msg4696">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-09-23 16:29 UTC</span>
+  </div>
+  <div class="post-body">The speed of opening of the sample file in my system is very slow in AutoCAD 2006-2007-2009-2010.  <br>
+Yes there is a notable difference when PictureBox are removed from the form.  <br>
+The customer's report this based on the real application.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/916/Sistem.bmp">Sistem.bmp</a> <span class="muted">(641386 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4697">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-09-23 17:42 UTC</span>
+  </div>
+  <div class="post-body">I tested your sample files on Win XP Pro SP3 w/ 4gb. ram.<br>
+On Acad 2008 &amp; 2010<br>
+ODCL Builds: 6.0.0.5 &amp; 5.1.2.3<br>
+In all cases the form loaded very fast, less then 1 sec.<br>
+I could see each pic. box loading one at a time, but it wasn't a noticeable delay.<br>
+</div>
+</article>
+<article class="post" id="msg4699">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-09-23 19:15 UTC</span>
+  </div>
+  <div class="post-body">Imagine this with 1 or 2 GB of ram.  <br>
+With the construction in ODCL 4.1.2.2 there was not any delay.</div>
+</article>
+<article class="post" id="msg4700">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-23 19:16 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=929.msg4696#msg4696 date=1253723370 wrote:</cite><br>
+The speed of opening of the sample file in my system is very slow in AutoCAD 2006-2007-2009-2010. </blockquote><br>
+<br>
+Can you be more precise than "very slow"?  10 seconds? 2 seconds?</div>
+</article>
+<article class="post" id="msg4702">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-09-23 20:06 UTC</span>
+  </div>
+  <div class="post-body">For not prolonging more the discussion is enough to look the first image of this post and to verify the difference.  <br>
+They are not all the users that can have equipments with 4 ram gb or more.  <br>
+OK if the new version cannot work as the previous.</div>
+</article>
+<article class="post" id="msg4703">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-23 21:07 UTC</span>
+  </div>
+  <div class="post-body">Your response sounds rude, like you can't be bothered to spend any more time on helping to get this problem resolved. I hope it's just my incorrect interpretation.</div>
+</article>
+<article class="post" id="msg4704">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-09-23 21:46 UTC</span>
+  </div>
+  <div class="post-body">Excuse me if my answer sounded rude.  <br>
+I tried to demonstrate of all the ways a problem that I found.  <br>
+I am willing to spend the time that goes I need to solve.  <br>
+But first it is necessary that the problem is recognized.  <br>
+I apologize again.</div>
+</article>
+<article class="post" id="msg4705">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-23 23:00 UTC</span>
+  </div>
+  <div class="post-body">No problem. I'm glad you are willing to help. As you say, first the problem must be identified. That is why I asked for a more precise description of what you mean by "very slow". Without that information, I can't be sure that you are seeing different results than me.<br>
+<br>
+You mentioned that your client reports that the application is slow, but I already found that calls to SetVisible account for a lot of redrawing, and would slow it down. Are you sure that isn't the only problem?</div>
+</article>
+<article class="post" id="msg4706">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-09-23 23:38 UTC</span>
+  </div>
+  <div class="post-body">I stopped using SetVisible and dcl_PictureBox_Clear in runtime.   <br>
+I also tested below the code but nothing changed.<br>
+<br>
+(defun c:TestFlashing_A-TesteForm_OnInitialize (/)<br>
+   (foreach item '("PictureBox1"	"PictureBox2"<br>
+		    "PictureBox3"	"PictureBox4"<br>
+		    "PictureBox5"	"PictureBox6"<br>
+		    "PictureBox7"	"PictureBox8"<br>
+		    "PictureBox9"	"PictureBox10"<br>
+		    "PictureBox11"	"PictureBox12"<br>
+		   )<br>
+      (dcl_PictureBox_LoadPictureFile<br>
+	"TestFlashing"<br>
+	"A-TesteForm"<br>
+	item<br>
+	(strcat "D:\\DuctilCAD-2010\\Imagens\\" item ".jpg")<br>
+      ) ;_ fim de dcl_PictureBox_LoadPictureFile<br>
+    ) ;_ fim de foreach<br>
+)<br>
+<br>
+The load of PictureBox can be seen per time.    <br>
+In all the tests you can see the load of each PictureBox.  <br>
+In OpenDCL 4.1.2.2 this difference could not be seen even with only 1gb of ram.<br>
+I make the tests in a computer with little RAM memory.  <br>
+</div>
+</article>
+<article class="post" id="msg4708">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-24 01:28 UTC</span>
+  </div>
+  <div class="post-body">So, how slow is "very slow"? Is the problem with overall speed of displaying the form, or is it with the visual effect of being able to see the images painting in sequence? In other words, would it appear to be faster if no painting occurred until the very end of the process, then all images painted quickly after everything else has loaded? Once I know exactly what the problem is, I can look at what may have changed in the code, but at this point I still don't know exactly what the problem is.</div>
+</article>
+<article class="post" id="msg4713">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-09-24 11:53 UTC</span>
+  </div>
+  <div class="post-body">The speed is "very slow".  <br>
+<strong>The problem is not in the speed of exhibiting the form.  </strong><br>
+It i with the visual effect of being able to see the images painting in sequence.<br>
+Yes, would it appear to be faster if no painting occurred until the very end of the process, then all images painted quickly after everything else has loaded.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Custom File Dialog Box · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 484</p>
+    <h1>Custom File Dialog Box</h1>
+    <p class="meta">Started by LemanK ·
+      2008-11-24 23:57 UTC ·
+      5 replies · SMF topic #484</p>
+<article class="post" id="msg2164">
+  <div class="post-head">
+    <span class="post-author">LemanK</span>
+    <span class="post-date muted">2008-11-24 23:57 UTC</span>
+  </div>
+  <div class="post-body">Hi All -<br>
+<br>
+I am trying to work with OpenDCL and am having problems with the File Dialog Box. I have a project with (1) Modal dialog (Form2), (1) modeless dialog(Form1), and (1) file dialog(Form3). Initially, I was not able to get the File Dialog to display using (Setq rValue (dcl_Form_Show LispFiles_Form3)) but was able to get it to load using (Setq rValue (dcl_Form_Show "LispFiles" "Form3")). When I try to use one of the functions such as (Setq rValue (dcl_FileDlg_GetFileNameList LispFiles_Form3_CustFileDlg)) I get an error message saying "The control argument passed to FileDlg_GetFileNameList was NIL.". I did not find much on File Dialogs in the Help File and was hoping that someone might point me in the right direction. I am using A2006 and 4.1.2.2 of OpenDCL.<br>
+<br>
+Thanks<br>
+Leman <br>
+</div>
+</article>
+<article class="post" id="msg2165">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-11-25 00:06 UTC</span>
+  </div>
+  <div class="post-body">Hi Leman,<br>
+Welcome to the team.<br>
+I haven't played with the File Dialog lately, so I'm not sure if there's a bug or not. I'll try to test it out late if I get time.<br>
+You might also wont to try it out in the latest Beta build, 5.0.1.3, if there was a bug, maybe it's been fixed in the newer version.<br>
+</div>
+</article>
+<article class="post" id="msg2166">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-11-25 00:25 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=LemanK link=topic=484.msg2164#msg2164 date=1227571046 wrote:</cite><br>
+...I get an error message saying "The control argument passed to FileDlg_GetFileNameList was NIL.".</blockquote><br>
+<br>
+This error indicates that the lisp symbol you are using is incorrect. Check the value of the (VarName) property of your file dialog to get the correct symbol name, or use the ControlBrowser to see the correct name in the function syntax.</div>
+</article>
+<article class="post" id="msg2169">
+  <div class="post-head">
+    <span class="post-author">LemanK</span>
+    <span class="post-date muted">2008-11-25 02:17 UTC</span>
+  </div>
+  <div class="post-body">Mr. Wengerd - <br>
+<br>
+As far as I can tell, the variable names are correct but my knowledge is so limited that it is just a guess. I have attached the ODCL and lisp files hoping that you could look at them. I had very limited exposure to the old ObjectDCL from several years ago and you have done a marvelous job in preserving this great tool.<br>
+<br>
+Thanks<br>
+Leman <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/519/LispFiles.zip">LispFiles.zip</a> <span class="muted">(3663 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2170">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-11-25 02:57 UTC</span>
+  </div>
+  <div class="post-body">Your call to (dcl_FileDlg_GetFileName LispFiles_Form3_MyOpen) occurs after the file dialog is closed.  Once the dialog is closed, LispFiles_Form3_MyOpen is NIL, which triggers the exception you mentioned.<br>
+<br>
+If you want to strip the path and use only the filename, you'll need to do that with AutoLISP by processing the return value from (dcl_Form_Show LispFiles_Form3).<br>
+<br>
+Also, you should modify your *error* function so that it only closes the form if it is open:<br>
+(if LispFiles_Form1 (dcl_Form_Close LispFiles_Form1))</div>
+</article>
+<article class="post" id="msg2171">
+  <div class="post-head">
+    <span class="post-author">LemanK</span>
+    <span class="post-date muted">2008-11-25 03:45 UTC</span>
+  </div>
+  <div class="post-body">Mr. Wengerd -<br>
+<br>
+Thank you so much for your help. I deeply appreciate it!!!<br>
+<br>
+Leman</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

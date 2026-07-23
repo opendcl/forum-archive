@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FlexCell · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2923</p>
+    <h1>FlexCell</h1>
+    <p class="meta">Started by Blade ·
+      2024-04-15 09:05 UTC ·
+      0 replies · SMF topic #2923</p>
+<article class="post" id="msg14006">
+  <div class="post-head">
+    <span class="post-author">Blade</span>
+    <span class="post-date muted">2024-04-15 09:05 UTC</span>
+  </div>
+  <div class="post-body">Hi there.<br>
+Does anyone worked with FlexCell activex? https://www.grid2000.com/index.html<br>
+It has x64 support and it can be used with opendcl, but I don't know how to manipulate a specific cell, like change value, background color, fore color, etc...<br>
+<br>
+<pre class="code"><code>(defun c:flexcelltest/Form1#OnInitialize (/)<br>
+        ;These codes are working<br>
+	(dcl-AxControl-Put flexcelltest/Form1/Grid1 "Rows" 1)<br>
+  	(dcl-AxControl-Put flexcelltest/Form1/Grid1 "Cols" 5)<br>
+  	(dcl-AxControl-Put flexcelltest/Form1/Grid1 "DisplayRowNumber" T)<br>
+  	(dcl-AxControl-Invoke flexcelltest/Form1/Grid1 "AddItem" (strcat "A" "\t" "B" "\t" "C" "\t" "D") T)<br>
+  	(dcl-AxControl-Invoke flexcelltest/Form1/Grid1 "AddItem" (strcat "A" "\t" "B" "\t" "C" "\t" "D") T)<br>
+  	(dcl-AxControl-Invoke flexcelltest/Form1/Grid1 "AddItem" (strcat "A" "\t" "B" "\t" "C" "\t" "D") T)<br>
+<br>
+  	;Returns a Cell object as an entity.<br>
+  	(setq cell (car (dcl-AxControl-Invoke flexcelltest/Form1/Grid1 "Cell" 1 2))<br>
+	      )<br>
+<br>
+  	;"Text" is a cell object property based on FlexCell documentaion. "Text" returns or sets the content of a given cell.<br>
+  	;This gives an error: Invalid argument type dcl-Control-SetProperty, argument 0<br>
+  	(dcl-Control-SetProperty cell "Text" "XYZ")<br>
+)</code></pre><br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

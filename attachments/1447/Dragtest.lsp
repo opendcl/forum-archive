@@ -1,0 +1,27 @@
+(command "OPENDCL")
+
+(defun c:Go ()
+  (dcl_Project_Load "Dragtest" T)
+  (dcl_Form_Show Dragtest_Form)
+  (princ)
+)  
+; Dummy function  
+(defun c:Dragtest_Form_PictureBox1_OnDragnDropBegin (/)
+  (princ)
+)
+; DragnDropFrom events  
+(defun c:Dragtest_Form_PictureBox1_OnDragnDropFromControl (ProjectName FormName ControlName DropPoint /)
+  (Flip ControlName "PictureBox1")
+)
+(defun c:Dragtest_Form_PictureBox2_OnDragnDropFromControl (ProjectName FormName ControlName DropPoint /)
+  (Flip ControlName "PictureBox2")
+)
+(defun c:Dragtest_Form_PictureBox3_OnDragnDropFromControl (ProjectName FormName ControlName DropPoint /)
+  (Flip ControlName "PictureBox3")
+)
+; Flip colors  
+(defun Flip (from dest / tmp)
+  (setq tmp (dcl_Control_GetBackColor "Dragtest" "Form" from))
+  (dcl_Control_SetBackColor "Dragtest" "Form" from (dcl_Control_GetBackColor "Dragtest" "Form" dest))
+  (dcl_Control_SetBackColor "Dragtest" "Form" dest tmp)
+)

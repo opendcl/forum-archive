@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Easy Form Validation · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 867</p>
+    <h1>Easy Form Validation</h1>
+    <p class="meta">Started by docsaintly ·
+      2009-08-08 04:01 UTC ·
+      3 replies · SMF topic #867</p>
+<article class="post" id="msg4280">
+  <div class="post-head">
+    <span class="post-author">docsaintly</span>
+    <span class="post-date muted">2009-08-08 04:01 UTC</span>
+  </div>
+  <div class="post-body">I have a form with about 15 text boxes, 5 check boxes, 2 radio buttons. Validating the text boxes is obviously the largest task. I found a great way to define all of the text boxes. I only wanted float numbers, so I wrote a function that returns a float number from a fraction string or float string. To apply this same function to all my text boxes i used a foreach + eval + read. See below:<br>
+<br>
+<br>
+(defun txtValidateFuncs (/ functionstrings functions varFunc StringFilter)<br>
+(dcl_messagebox "validate has been run" "")<br>
+(setq StringFilter "0123456789./")<br>
+;"txtOrigin"<br>
+;"txtRows"<br>
+;"txtColumns"<br>
+(setq functionstrings<br>
+	(list <br>
+	"txtCellX"<br>
+	"txtCellY"<br>
+	"txtTextX"<br>
+	"txtTextY"<br>
+	"txtTextULX"<br>
+	"txtTextULY"<br>
+	"txtRowOffset"<br>
+	"txtColumnOffset"<br>
+	"txtGridXOffset"<br>
+	"txtGridYOffset"<br>
+	"txtBlockX"<br>
+	"txtBlockY"<br>
+	"txtBlockULX"<br>
+	"txtBlockULY"<br>
+	"txtXSize"<br>
+	)<br>
+)<br>
+<br>
+<br>
+(foreach varFunc functionstrings<br>
+	(eval<br>
+		(read<br>
+			(strcat "(dcl_TextBox_SetFilter " varFunc " \"" StringFilter "\")"<br>
+			"(defun c:" varFunc "_OnKillFocus (/)<br>
+				(if (not(validateFloatInput (dcl_Control_GetText " varFunc ")))<br>
+					(progn<br>
+						(dcl_messagebox \"Please enter a decimal or a fraction.\" \"Invalid Value!\")<br>
+						(dcl_Control_SetFocus " varFunc ")<br>
+					)<br>
+				)<br>
+			)<br>
+			")<br>
+		)<br>
+	)<br>
+)<br>
+)</div>
+</article>
+<article class="post" id="msg4286">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-08-09 04:21 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Have a look at the <em>FilterStyle</em> property of the Textbox ...<br>
+<br>
+Style Description <br>
+0 Non-control characters (or custom filter) <br>
+1 AutoCAD angle units only <br>
+2 Signed integers only <br>
+3 AutoCAD distance units only (affected by DIMZIN system variable) <br>
+4 AutoCAD symbol table names only <br>
+5 Upper case only <br>
+6 Lower case only <br>
+7 Password (hides input text) <br>
+8 All characters allowed (including ) <br>
+<br>
+<br>
+/// kdub<br>
+</div>
+</article>
+<article class="post" id="msg4288">
+  <div class="post-head">
+    <span class="post-author">docsaintly</span>
+    <span class="post-date muted">2009-08-09 07:36 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the advice, but this was used to overcome a limitation of the textbox FilterStyle. Also, this could be useful for things other than textboxes. The main objective of this isn't that it validates data, it's that it creates numerous functions with different names but the same content. This way if you want to change how a typical object type reacts, you change it one place instead of 20, 30, or however many types of that object you have.</div>
+</article>
+<article class="post" id="msg5102">
+  <div class="post-head">
+    <span class="post-author">mkweaver</span>
+    <span class="post-date muted">2009-11-05 13:36 UTC</span>
+  </div>
+  <div class="post-body">I love to see lisp routines that create lisp routines :)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A way of adding a menu to ODCL · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2606</p>
+    <h1>A way of adding a menu to ODCL</h1>
+    <p class="meta">Started by navsun ·
+      2018-06-29 14:00 UTC ·
+      1 replies · SMF topic #2606</p>
+<article class="post" id="msg12897">
+  <div class="post-head">
+    <span class="post-author">navsun</span>
+    <span class="post-date muted">2018-06-29 14:00 UTC</span>
+  </div>
+  <div class="post-body">dwx and Code see Appendix，<br>
+<strong>How to respond to menu clicks with a callback function？</strong><br>
+<pre class="code"><code><br>
+;;Call windows api to add a menu.   by. yxp_xa   2018/06/28<br>
+;; dwx -&gt; dynwrapx.dll Register <br>
+<br>
+(defun c:test()<br>
+(setq DWX (vlax-create-object "DynamicWrapperX"))<br>
+(dcl-Project-Import (creator_odcl) nil nil)<br>
+;(dcl-Project-Load "test.odcl" t nil)<br>
+(dcl-Form-Show test/Form1)<br>
+)<br>
+<br>
+<br>
+(defun c:test/Form1#OnInitialize (/)<br>
+(vlax-invoke DWX 'Register "user32" "IsWindowUnicode" "i=h" "r=l")<br>
+(setq dcl (dcl-Control-GetHWND test/Form1)<br>
+    Wincode (vlax-invoke DWX 'IsWindowUnicode dcl)<br>
+    APIstr (if (= Wincode 0) "AppendMenuA" "AppendMenuW"))<br>
+(vlax-invoke DWX 'Register "user32" "SetMenu" "i=hh" "r=l")<br>
+(vlax-invoke DWX 'Register "user32" "CreateMenu" "r=l")<br>
+(vlax-invoke DWX 'Register "user32" "CreatePopupMenu" "r=l")<br>
+(vlax-invoke DWX 'Register "user32" APIstr "i=plpw" "r=l")<br>
+;;(vlax-invoke DWX 'Register "user32" "SetWindowLongW" "i=hlp" "r=p")<br>
+;;(vlax-invoke DWX 'Register "user32" "CallWindowProcW" "i=phlll" "r=p")<br>
+;;(vlax-invoke DWX 'Register "user32" "GetMenuItemID" "i=hl" "r=l")<br>
+;;(vlax-invoke DWX 'Register "user32" "GetMenu" "i=h" "r=h")<br>
+;;(vlax-invoke DWX 'Register "user32" "GetSubMenu" "i=hl" "r=h")<br>
+(setq hMenu (vlax-invoke DWX 'CreateMenu)<br>
+    menu (mapcar '(lambda(x)(list (vlax-invoke DWX 'CreatePopupMenu) x))<br>
+        '("File (&amp;F)" "Edit (&amp;E)" "Help (&amp;H)"))<br>
+    pop (list<br>
+        '((1001 "Open (&amp;O)...")(1002 "Save (&amp;S)")(1003 "Close (&amp;C)"))<br>
+        '((2001 "Copy (&amp;C)")(2002 "Paste (&amp;P)")(2003 "Cut (&amp;X)"))<br>
+        '((3001 "Help (&amp;H)")(3002 "Register (&amp;R)")(3003 "about (&amp;A)...")))<br>
+)<br>
+(mapcar '(lambda(x y)(vlax-invoke DWX APIstr hMenu 16 (car x)(cadr x))<br>
+    (foreach z y(vlax-invoke DWX APIstr (car x) 0 (car z)(cadr z)))<br>
+    ) menu pop)<br>
+(vlax-invoke DWX 'SetMenu dcl hMenu)<br>
+;;(setq old (vlax-invoke DWX 'SetWindowLongW dcl -4 (need fun Pointer)))<br>
+)<br>
+<br>
+<br>
+(defun c:test/Form1/TextButton1#OnClicked (/)<br>
+(dcl-Form-Close test/Form1)<br>
+)<br>
+<br>
+<br>
+(defun creator_odcl()<br>
+'("YWt6A6AMAADYptBMBuKTKDMxLT9qQzskWC73PzMOqX64WCTeLj6nX7qGfyjWWFBKz8g77jz3KlcS"<br>
+"IsauemnQqnt1Af5h5oZr6dAKuXEeX09YWvRQSz/XGdhhkcN1rPZaEBKtBw2g48dNDZFHCcRdxeR7"<br>
+"AQtDlrpHCt11Q/Zd+FoveJN2j0f7SliGcq2o8yCi5YBuJ2cDTs4OnTLaDRRYoravbWapALStNs7h"<br>
+"+HW+Ansut9lISgqukztEEJ1N8F58knEM/wiIPJL7FneebiSuskj+cMhfYjpVpXqlVhlJDfCnDigF"<br>
+"8uTv/QJp20MfQsiag/qGcwzjfkNKrSm2imwCqbhIuBFVBQQKYpuOlKMol+PcaLT7TJpBIrgDelci"<br>
+"v1bZ1OGOmnNQw3NLVY5L/6G+I77EL3W8QJe+BRyyP18AM86o0xmauQ7ywR8k+AeiWqUX8Cpg6a2d"<br>
+"9CZfXc5snaHc2A6ogt+rfn0chdaVx7OVsZyc3DWrJqax4AQXH02Ax75RegBYjnEVQxMuSS8vvrIN"<br>
+"KKtFrM/dtY65ub5aZu7Vkls2qlaPRr287sIN8vmMJZWjHLHV06t4SLQiBQRzs2wKqnyba88N9aZD"<br>
+"b4g5fEFohh93CFr1/7afb/859XkPFyvX6s4haAY40skiQhVw0SSdM57B9ofh9fe2n3hPgdXLYR0h"<br>
+"+TUbLvspCGBTl8LoafHhzflThdK4YDkUCADlJzSgkIlPiS2yhVrbbxu4TTIc4pc07HlhsTGI1Ue/"<br>
+"oNn8I+t88Ucoj4hfPDFvcmdsFtFDElE/w8gIydIJES2/UJMZwUazELVA0I9XdakUq4olBjalQXeo"<br>
+"kMuSZxNBF59H8zF2a4t0olmOD//bNIj3xobjlWerEkkOXat6yex70c74e6sfOC2VQAlvhx7B+Kh2"<br>
+"KnTGakna3tv+277b3km1U1ciVxJXAidmGp/uIuv7uLijJBL8xczONlDpVFLMbjeQtbws1G6nygxo"<br>
+"MNOynWEWG+UQckJeyywLpCIpF2KYq+uYSTtMeVsrlQCJMd53lbGxgz2WSIF1HGaf5oaBhZRRkVUl"<br>
+"W4wdM1sMlR7Z5t66+Au7nrOoe+UwAwSgI5+52K1FDpSKReIJsgMSArnC+S1JOc97xP+1x6FBrq/7"<br>
+"go1p48frkw==")<br>
+)<br>
+<br>
+(princ)<br>
+</code></pre><div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2400/dynwrapx.zip">dynwrapx.zip</a> <span class="muted">(11887 bytes)</span></li><li><a href="../attachments/2404/ODCL add menu.zip">ODCL add menu.zip</a> <span class="muted">(1893 bytes)</span></li><li><a href="../attachments/2402/cc.gif">cc.gif</a> <span class="muted">(235647 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12899">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2018-06-29 17:52 UTC</span>
+  </div>
+  <div class="post-body">Perhaps try this approach?:<br>
+http://opendcl.com/forum/index.php?topic=2347.0</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

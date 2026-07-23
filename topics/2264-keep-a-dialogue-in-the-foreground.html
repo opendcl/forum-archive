@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Keep a dialogue in the foreground? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2264</p>
+    <h1>Keep a dialogue in the foreground?</h1>
+    <p class="meta">Started by Peter2 ·
+      2015-05-13 09:53 UTC ·
+      6 replies · SMF topic #2264</p>
+<article class="post" id="msg11385">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-05-13 09:53 UTC</span>
+  </div>
+  <div class="post-body">I have a modeless dialogue with calls a modal sub-dialogue. Normally it works fine, but - ..<br>
+<br>
+I don't know how I managed it, but one time I had the "older" (and bigger) modeless dialogue which covered the younger (and smaller) modal dialogue. Now I had a (Mexican) standoff - the modeless covered the modal which waited for my input which I could not give it because it was covered by the locked modeless.<br>
+<br>
+Is there a way to keep a dialogue in the foreground of the screen?</div>
+</article>
+<article class="post" id="msg11386">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-05-13 15:55 UTC</span>
+  </div>
+  <div class="post-body">Yeah! I know this, too. Try Alt-Tab to switch between programs. Turn back to AutoCAD, the modal form should be top most now.<br>
+I believe it depends on some settings on the modeless form that focus turns back to the modeless form. Have a game with KeepFocus of the form an EventInvoke of the button which opens the modal form.<br>
+<br>
+Sorry, I know, it is a fight against the symptoms but not the causes.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11387">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-05-15 13:19 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2264.msg11386#msg11386 date=1431532548 wrote:</cite><br>
+...Have a game with KeepFocus of the form an EventInvoke of the button which opens the modal form...</blockquote><br>
+Sorry - I don't understand. can you explain it in another way?<br>
+<br>
+PS:<br>
+At the moment I can reproduce it.<br>
+<br>
+- Modeless form with a button<br>
+- Button-onclicked displays a "dos_msgboxex"<br>
+- the second button of the dos_msgboxex calls<br>
+(setq wahlpfad_d (dcl-SELECTFOLDER "Verzeichnis wählen" wahlpfad_d nil 593))<br>
+<br>
+- If I click immediately on the new selectfolder-dialogue, it is Ok.<br>
+- If I wait half a second, the modeless form jumps to the foreground.<br>
+<br>
+???</div>
+</article>
+<article class="post" id="msg11390">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-05-16 02:57 UTC</span>
+  </div>
+  <div class="post-body">Is it possible to reproduce the problem without the dos_msgboxex?</div>
+</article>
+<article class="post" id="msg11391">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-05-16 09:18 UTC</span>
+  </div>
+  <div class="post-body">Hello, Peter2,<br>
+<br>
+it's difficult. I meant something like <a href="http://www.opendcl.com/forum/index.php?topic=1091.msg5742#msg5742" rel="nofollow noopener">{2}</a> and <a href="http://www.opendcl.com/forum/index.php?topic=29.msg127#msg127" rel="nofollow noopener">{2}</a> (last paragraph).<br>
+Actually, I'd prefer to give dcl-messagebox a chance.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11392">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-05-16 16:08 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+I think I found the problem:<br>
+If the "dos_msgboxex" (DosLib) is displayed in the foreground of the modeless-dialogue, then I have the described problems (today the dialogue to select folders is OK, but select-files is a problem ..).<br>
+<br>
+But if I move the dos_msgboxex to the side so that it buttons are not covering the dialogue behind, then it is OK.</div>
+</article>
+<article class="post" id="msg11393">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-05-16 17:21 UTC</span>
+  </div>
+  <div class="post-body">It would be helpful if you can create a simple self contained modeless form and associated code that I can use to reproduce the problem. I will also need to know the p;latgform, and to make sure you are testing with the latest version of OpenDCL.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

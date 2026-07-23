@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl-control-setlist and sorted comboboxes · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2513</p>
+    <h1>dcl-control-setlist and sorted comboboxes</h1>
+    <p class="meta">Started by Peter2 ·
+      2017-06-06 14:01 UTC ·
+      2 replies · SMF topic #2513</p>
+<article class="post" id="msg12503">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2017-06-06 14:01 UTC</span>
+  </div>
+  <div class="post-body">Just to inform the other users which want to avoid the mistake I made.<br>
+<br>
+a) I have a combo-box with property "Sorted".<br>
+<br>
+b) I have a list which is not (exactly) sorted: (setq namelist (list "Adam" "John" "Jim" "Susan"))<br>
+<br>
+c) I have a variable called "Name" which can continue Adam, John, ....<br>
+<br>
+d) In "OnInitialize", I want to set the current value of the combobox to the current value of "name"<br>
+<br>
+    (dcl-combobox-clear mydialogue/mycombo); only to clear<br>
+    (dcl-Control-SetList mydialogue/mycombo namelist) ; names from above<br>
+    (dcl-ComboBox-SetCurSel mydialogue/mycombo (vl-position name namelist))<br>
+<br>
+You see the problem? "Adam" and "Susan" will have no problem, but e.g. "Jim": vl-position gives me value 2 (third position), but the sorted-combobox puts "Jim" before "John". So "Jim" (3rd in namelist) will return "John" (3rd in sorted list).<br>
+<br>
+If nobody needs this, then it is just for me if I forget after some time  ;)</div>
+</article>
+<article class="post" id="msg12504">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2017-06-07 13:10 UTC</span>
+  </div>
+  <div class="post-body">hello peter2,<br>
+use dcl-ComboBox-SelectString instead of dcl-ComboBox-SetCurSel<br>
+<br>
+best regards<br>
+marco</div>
+</article>
+<article class="post" id="msg12505">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2017-06-14 19:07 UTC</span>
+  </div>
+  <div class="post-body">Thanks Marco<br>
+<br>
+helpful as always  :)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

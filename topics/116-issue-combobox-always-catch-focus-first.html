@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[issue] ComboBox always catch focus first. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 116</p>
+    <h1>[issue] ComboBox always catch focus first.</h1>
+    <p class="meta">Started by colder ·
+      2007-12-14 01:04 UTC ·
+      3 replies · SMF topic #116</p>
+<article class="post" id="msg468">
+  <div class="post-head">
+    <span class="post-author">colder</span>
+    <span class="post-date muted">2007-12-14 01:04 UTC</span>
+  </div>
+  <div class="post-body">Add a dockable form. Set "DockableSides" = "1 - Top Only".<br>
+Put the Combo Box in form.<br>
+<br>
+The form show under toolbar. At this time, many command in toolbar can not exec. Because if you click button in toolbar, and then the mouse moveover dockable form. Combo Box will catch focus and command will abort!<br>
+<br>
+Here is a picture show that. There is a simple project in attachments.<br>
+<br>
+By the way, if Combo Box can support mouse wheel, that is perfect.<br>
+<br>
+<img src="http://photo15.yupoo.com/20071214/091620_539713061_gugirbuz.jpg" alt="" loading="lazy"><br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg472">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2007-12-14 07:34 UTC</span>
+  </div>
+  <div class="post-body">What if you add <strong>(dcl_SetCmdBarFocus)</strong> at the end of CboBox OnSelChanged event?</div>
+</article>
+<article class="post" id="msg473">
+  <div class="post-head">
+    <span class="post-author">colder</span>
+    <span class="post-date muted">2007-12-15 00:35 UTC</span>
+  </div>
+  <div class="post-body">Thanks for your answer!<br>
+A good function.<br>
+<br>
+If I click the combo box. But do not change it. Only dropdown and close. "OnSelChanged" event is not firing.</div>
+</article>
+<article class="post" id="msg474">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-12-15 04:00 UTC</span>
+  </div>
+  <div class="post-body">The only real solution to this problem is to add a new 'KeepFocus' property to dockable (and modeless) forms to control this behavior.<br>
+<br>
+The purpose of the behavior is to capture the input focus for controls that accept keyboard input so that typed input continues to go to the control even if the mose leaves the form.  This happens for any control that can accept keyboard input (combo controls accept the arrow keys, space bar, and enter key).  Normally this is desirable, but obviously in this case it is not.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

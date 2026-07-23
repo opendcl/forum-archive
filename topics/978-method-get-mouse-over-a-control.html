@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Method Get Mouse Over a control · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 978</p>
+    <h1>Method Get Mouse Over a control</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-10-19 09:22 UTC ·
+      15 replies · SMF topic #978</p>
+<article class="post" id="msg4980">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-10-19 09:22 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+Still blocked with getting the mouse position over a control.<br>
+<br>
+Why ?<br>
+<br>
+I would like to build a RightClick menu over a treecontrol, that need to know where is the mouse over it to know where appear the new menu.<br>
+<br>
+Yes, I know there is the OnMouseMove Event, but always add lines in AutoCad Command Lines, then need to put to synchronous invoke, that makes drag and drop to autocad failed !!!<br>
+<br>
+So, i need to get the mouse position with a function which will be call when it need to .<br>
+<br>
+Thanks for help.<br>
+<br>
+Best regards.<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/981/Sans titre.jpg">Sans titre.jpg</a> <span class="muted">(24728 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4983">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-19 16:06 UTC</span>
+  </div>
+  <div class="post-body">Have you tried to use (dcl_GetMouseCoords) to achieve this?</div>
+</article>
+<article class="post" id="msg4988">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-20 05:57 UTC</span>
+  </div>
+  <div class="post-body">Hi, but this strikes in the right direction.<br>
+I can remember that somewhere in the early times there was an example of a board member showing how to call a context menu using "menucmd" after right click in a tree or listview. I tried to find it but I couldn't yet. Is there someone out there who is familiar with menucmd?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4989">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-10-20 10:36 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=978.msg4983#msg4983 date=1255968379 wrote:</cite><br>
+Have you tried to use (dcl_GetMouseCoords) to achieve this?<br>
+</blockquote><br>
+<br>
+Thanks a lot owen !<br>
+<br>
+This is the best soluce of my problem !<br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg4990">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-10-20 10:41 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=978.msg4988#msg4988 date=1256018258 wrote:</cite><br>
+Hi, but this strikes in the right direction.<br>
+I can remember that somewhere in the early times there was an example of a board member showing how to call a context menu using "menucmd" after right click in a tree or listview. I tried to find it but I couldn't yet. Is there someone out there who is familiar with menucmd?<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+Thanks fred for reply.<br>
+<br>
+Using menucmd could be another way , but seem to be hard to cutomise the context menu, depending of selected item.<br>
+<br>
+Keep this in my mind  ;)<br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg4991">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-20 12:22 UTC</span>
+  </div>
+  <div class="post-body">Fred, I also remember a post about this, but I could not find it. As I recall, I thought it was very clever, but I never used it myself.</div>
+</article>
+<article class="post" id="msg4992">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-20 16:45 UTC</span>
+  </div>
+  <div class="post-body">Are you referring to my 'clever' code?<br>
+Looks like I posted it over at SF before we stated the forums.<br>
+<a href="https://sourceforge.net/projects/opendcl/forums/forum/658811/topic/1868759" rel="nofollow noopener">{2}</a><br>
+It works ok, but will only work on Modeless forms &amp; is a pain to deal with since you have to edit the CUI(x)<br>
+<br>
+I'd still prefer having a Right-Click menu control built into OpenDCL.<br>
+<a href="https://sourceforge.net/tracker/?func=detail&amp;aid=1682530&amp;group_id=187950&amp;atid=923366" rel="nofollow noopener">{2}</a><br>
+<br>
+I'll play around with (dcl_GetMouseCoords) a little more to see if I can get better results.<br>
+</div>
+</article>
+<article class="post" id="msg4993">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-20 17:22 UTC</span>
+  </div>
+  <div class="post-body">OK I did a quick test and this is working ok...<br>
+I just added this code:<br>
+<br>
+  (setq MouseCoords (dcl_GetMouseCoords))<br>
+  (dcl_Form_Show TMaCAD_RCM (car MouseCoords) (cadr MouseCoords))<br>
+<br>
+(defun c:TMaCAD_RCM_GraphicButton1_OnClicked (/)<br>
+ (dcl_Form_close TMaCAD_RCM)<br>
+)<br>
+<br>
+(defun c:TMaCAD_RCM_GraphicButton2_OnClicked (/)<br>
+ (dcl_Form_close TMaCAD_RCM)<br>
+)<br>
+<br>
+<br>
+It's not perfect, for example if you don't click on the RCM, it stays up, so a built-in solution would still be preferred.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/982/RCM.png">RCM.png</a> <span class="muted">(5610 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4994">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-10-20 18:50 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=978.msg4993#msg4993 date=1256059375 wrote:</cite><br>
+It's not perfect, for example if you don't click on the RCM, it stays up, so a built-in solution would still be preferred.<br>
+</blockquote><br>
+<br>
+I did it as like you, i just add an OnMouseMovedOff Event<br>
+<br>
+<br>
+(defun c:BOX_RightClick_OnMouseMovedOff (/)<br>
+  (dcl_Form_Close BOX_RightClick)<br>
+)<br>
+<br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg4996">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-10-20 20:10 UTC</span>
+  </div>
+  <div class="post-body">James posted some here <br>
+<a href="http://www.theswamp.org/index.php?topic=25357.0" rel="nofollow noopener">{2}</a><br>
+<a href="http://www.theswamp.org/index.php?topic=25896.msg311909#msg311909" rel="nofollow noopener">{2}</a><br>
+I haven't had a good look at it though.</div>
+</article>
+<article class="post" id="msg6026">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-15 10:36 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=978.msg4991#msg4991 date=1256041356 wrote:</cite><br>
+Fred, I also remember a post about this, but I could not find it. As I recall, I thought it was very clever, but I never used it myself.<br>
+</blockquote><br>
+<br>
+Hi Owen,<br>
+<br>
+the great Barry has posted it <a href="http://sourceforge.net/projects/opendcl/forums/forum/658811/topic/1868759?message=4621323" rel="nofollow noopener">{2}</a>.<br>
+You are right - he is very clever!  :)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6038">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-15 21:10 UTC</span>
+  </div>
+  <div class="post-body">I've collected all the knowledge and built an <a href="http://www.opendcl.com/forum/index.php?topic=1135.0" rel="nofollow noopener">{2}</a>.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6046">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-01-18 21:32 UTC</span>
+  </div>
+  <div class="post-body">this seems like a pretty neat thing<br>
+i think ill mess around with this  :o</div>
+</article>
+<article class="post" id="msg9471">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2012-12-19 00:32 UTC</span>
+  </div>
+  <div class="post-body">I finally got around to trying and work in a context menu into some of our dialogs.<br>
+In attempting to implement this, I'm having some difficulty.  It seems it requires the dialog to be Modeless, correct?  Can it work with a Modal form?<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg9472">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-12-19 05:20 UTC</span>
+  </div>
+  <div class="post-body">Hi, honestly, I must say that I haven't tried it yet in modal forms. I cannot say whether menucmd needs full access to AutoCAD.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9473">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2012-12-19 17:12 UTC</span>
+  </div>
+  <div class="post-body">It most certainly does require the form to be Modeless.<br>
+I'd just recommend declaring that in the sample code.<br>
+<br>
+As an alternative for Modal forms, I have a modal form without a title bar, and mousemove events that toggle the visibility of Frames around the text items.  It doesn't have the nice transparent blue highlight of a menu, but looks fairly sharp.  It should hold until I can get my primary dialogs converted to Modeless.<br>
+<br>
+--J<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

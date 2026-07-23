@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>trouble with tree control OnEndLabelEdit Event · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 648</p>
+    <h1>trouble with tree control OnEndLabelEdit Event</h1>
+    <p class="meta">Started by maweilian ·
+      2009-03-12 16:08 UTC ·
+      1 replies · SMF topic #648</p>
+<article class="post" id="msg3108">
+  <div class="post-head">
+    <span class="post-author">maweilian</span>
+    <span class="post-date muted">2009-03-12 16:08 UTC</span>
+  </div>
+  <div class="post-body">I have a tree control in my form with which I want my users to ba able to edit the labels.  However, I am having trouble figuring out how to do this.  So far I have this code in my LISP file:<br>
+<br>
+<pre class="code"><code><br>
+;;;define action when the label has begun to be edited <br>
+(defun c:partlibmain_PartLibMain_Tree2_OnBeginLabelEdit (Key /)<br>
+  (setq LabelEditBeginValue (dcl_Tree_GetItemLabel partlibmain_PartLibMain_Tree2 Key))<br>
+);end defun<br>
+<br>
+;;;define action when the label has finished editing [not working properly]<br>
+(defun c:partlibmain_PartLibMain_Tree2_OnEndLabelEdit (NewValue Key /)<br>
+  (if (= NewValue "")<br>
+    (dcl_Tree_SetItemLabel partlibmain_PartLibMain_Tree2 Key LabelEditBeginValue)<br>
+    (progn<br>
+     <br>
+     ... code here to perform operations with the new label value ...<br>
+<br>
+    );end progn<br>
+  );end if<br>
+);end defun<br>
+<br>
+;;define action when return is pressed while operating in the treeview control<br>
+(defun c:partlibmain_PartLibMain_Tree2_OnReturnPressed (/)<br>
+  (dcl_Tree_CancelLabelEdit partlibmain_PartLibMain_Tree2)<br>
+);end defun<br>
+</code></pre><br>
+<br>
+When I run the application, I can edit the labels but once I press return or click somewhere else on the form, my edits disappear and are not passed to the OnEndLabelEdit event handler.<br>
+<br>
+What am I missing or doing wrong?<br>
+<br>
+Thanks,<br>
+Will</div>
+</article>
+<article class="post" id="msg3109">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-12 16:41 UTC</span>
+  </div>
+  <div class="post-body">It was a bug. I've fixed it now for the next build so that it passes back the new label and updates the control.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

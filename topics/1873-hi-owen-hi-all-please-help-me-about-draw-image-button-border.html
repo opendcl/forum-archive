@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hi,Owen,Hi All, Please Help me, About Draw Image Button Border... · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1873</p>
+    <h1>Hi,Owen,Hi All, Please Help me, About Draw Image Button Border...</h1>
+    <p class="meta">Started by XDCAD ·
+      2012-08-23 15:45 UTC ·
+      7 replies · SMF topic #1873</p>
+<article class="post" id="msg9195">
+  <div class="post-head">
+    <span class="post-author">XDCAD</span>
+    <span class="post-date muted">2012-08-23 15:45 UTC</span>
+  </div>
+  <div class="post-body">I design a image button, I want to click, draw a button border, could you tell me how to do?<br>
+<br>
+Thanks...<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1803/jpg.jpg">???.jpg</a> <span class="muted">(16154 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9196">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-08-23 19:33 UTC</span>
+  </div>
+  <div class="post-body">Hi, either you change the button border at the time of onclick event or you draw a picturebox behind the button which is a pixel greater than the button and you change the backcolor at onmouseover or on click event. Or you built a generic button using picture box. Then you can draw every thing.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9203">
+  <div class="post-head">
+    <span class="post-author">XDCAD</span>
+    <span class="post-date muted">2012-08-24 09:12 UTC</span>
+  </div>
+  <div class="post-body">HI,Fred<br>
+<br>
+  Thank patient answer.<br>
+<br>
+I meet another problem, I want to be a transparent background images, but use PHOTOSHOP make PNG format documents, loading to OPENDCL elevation background is black, not transparent, to ask, how to call the background transparent PNG to OPENDCL?<br>
+</div>
+</article>
+<article class="post" id="msg9216">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2012-08-24 13:12 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1873.msg9196#msg9196 date=1345750397 wrote:</cite><br>
+Hi, either you change the button border at the time of onclick event or you draw a picturebox behind the button which is a pixel greater than the button and you change the backcolor at onmouseover or on click event. Or you built a generic button using picture box. Then you can draw every thing.<br>
+<br>
+Regards, Fred<br>
+</blockquote><br>
+<br>
+Hi Fred,<br>
+<br>
+I work with dcl_Control_SetBackColor.<br>
+To return to the original state I worked with <strong>dcl_PictureBox_Clear</strong>.<br>
+But <strong>dcl_PictureBox_Clear</strong> no longer works in <strong>OpenDCL 7.0.0.6</strong>.<br>
+Can you tell me if there was any change to this method?<br>
+<br>
+Thanks<br>
+velasquez<br>
+</div>
+</article>
+<article class="post" id="msg9218">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-08-24 14:11 UTC</span>
+  </div>
+  <div class="post-body">Hi, vela, BackColor should be still the same after Clear. Clear only removes the image.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9226">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2012-08-24 19:14 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1873.msg9218#msg9218 date=1345817493 wrote:</cite><br>
+Hi, vela, BackColor should be still the same after Clear. Clear only removes the image.<br>
+Regards, Fred<br>
+</blockquote><br>
+<br>
+Hi Fred,<br>
+I posted a function that works with dcl_Control_SetBackColor and dcl_PictureBox_Clear OpenDCL in 6.0.2.5 and 7.0.0.6 OpenDCL.<br>
+<br>
+<br>
+ (defun JoyBorderCap (JoyItemRemove / JoyLista)<br>
+;;;Lista com o nome de Todos os pictureBox de fundo<br>
+    (setq JoyLista (list "BG-JGS"<br>
+			 "BG-JTI-JTE"<br>
+			 "BG-FLANGE"<br>
+		   ) ;_ fim de list<br>
+    ) ;_ fim de setq<br>
+;;;Muda a cor do BackGround da imagem selecionada = JoyItemRemove<br>
+    (dcl_Control_SetBackColor<br>
+      "DuctilCAD"<br>
+      "Caps"<br>
+      JoyItemRemove<br>
+      11239775<br>
+    ) ;_ fim de dcl_Control_SetBackColor<br>
+;;;Limpa as imagens BackGround das conexoes e traca as molduras<br>
+    (foreach JoyItem (vl-remove JoyItemRemove JoyLista)<br>
+;;;Limpa a imagem<br>
+      (dcl_PictureBox_Clear<br>
+	"DuctilCAD"<br>
+	"Caps"<br>
+	JoyItem<br>
+      ) ;_ fim de dcl_PictureBox_Clear<br>
+;;;Traca a moldura<br>
+      (dcl_PictureBox_DrawRect<br>
+	"DuctilCAD"<br>
+	"Caps"<br>
+	JoyItem<br>
+	(list (list 0 0 80 57 11239775))<br>
+      ) ;_ fim de dcl_PictureBox_DrawRect<br>
+    ) ;_ fim de foreach<br>
+;;;Fixa a s margens desenhadas<br>
+    (foreach JoyItem JoyLista<br>
+      (dcl_PictureBox_StoreImage "DuctilCAD" "Caps" JoyItem)<br>
+    ) ;_ fim de foreach<br>
+  ) ;_ fim de defun<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1808/dcl_PictureBox_Clear_6.0.2.5.gif">dcl_PictureBox_Clear_6.0.2.5.gif</a> <span class="muted">(387580 bytes)</span></li><li><a href="../attachments/1809/dcl_PictureBox_Clear_7.0.0.6.gif">dcl_PictureBox_Clear_7.0.0.6.gif</a> <span class="muted">(525781 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9231">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-08-25 14:55 UTC</span>
+  </div>
+  <div class="post-body">Hi, luckily I haven't found any similiar problems in my earlier sources although I also change the BackColor.<br>
+I recommend you to create a small sample project and code and report it as a bug.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9233">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2012-08-26 12:47 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1873.msg9231#msg9231 date=1345906505 wrote:</cite><br>
+Hi, luckily I haven't found any similiar problems in my earlier sources although I also change the BackColor.<br>
+I recommend you to create a small sample project and code and report it as a bug.<br>
+<br>
+Regards, Fred<br>
+</blockquote><br>
+<br>
+Hi Fred,<br>
+I'll do it as soon as possible.<br>
+Have changed all my code in function AutoCAD 2013.<br>
+<br>
+Regards, velasquez</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

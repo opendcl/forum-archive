@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blockview leaving Lock files behind (dwl, dwl2) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1321</p>
+    <h1>Blockview leaving Lock files behind (dwl, dwl2)</h1>
+    <p class="meta">Started by commodore ·
+      2010-08-03 15:58 UTC ·
+      3 replies · SMF topic #1321</p>
+<article class="post" id="msg7090">
+  <div class="post-head">
+    <span class="post-author">commodore</span>
+    <span class="post-date muted">2010-08-03 15:58 UTC</span>
+  </div>
+  <div class="post-body">I've tried both BlockView_displayDwg and BlockView_LoadDwg with the same result, a dwl and dwl2 lock file of the same name as the displayed file appear that can not be deleted. The lock files can not be removed by any means except by shutting down AutoCAD, at which time they go away on thier own.<br>
+Is there some method or something else that I am missing when I am closing the form that is leaving the drawings locked?<br>
+<br>
+heres my partial code:<br>
+<br>
+(defun c:wall_genshopdwg_PanelView_OnInitialize ( /)<br>
+    (dcl_FORM_Center wall_genshopdwg_PanelView)<br>
+    (dcl_BlockView_displayDwg wall_genshopdwg_PanelView_BlockView1 (strcat savepath "\\" Pnllabel ".dwg") 0 1.0)<br>
+); end defun<br>
+;<br>
+;=================================================================================================================<br>
+(defun c:wall_genshopdwg_PanelView_TextButton1_OnClicked ( /) ;this is a keep the existing file button<br>
+    (dcl_Form_Close wall_genshopdwg_PanelView)<br>
+    (command "erase" "w" LowLft UppRgt "")<br>
+    (setq okblock 0)<br>
+); end defun<br>
+;<br>
+;=================================================================================================================<br>
+(defun c:wall_genshopdwg_PanelView_TextButton2_OnClicked ( /) ;this is a overwrite the existing file button<br>
+    (dcl_Form_Close wall_genshopdwg_PanelView)<br>
+    (vl-file-delete (strcat savepath "\\" Pnllabel ".dwg"))<br>
+    (setq okblock 1)<br>
+); end defun</div>
+</article>
+<article class="post" id="msg7095">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-08-03 18:15 UTC</span>
+  </div>
+  <div class="post-body">That sounds like a problem in an earlier build that has since been fixed. I recommend to use the latest beta build, as it is quite stable in AutoCAD.</div>
+</article>
+<article class="post" id="msg7099">
+  <div class="post-head">
+    <span class="post-author">commodore</span>
+    <span class="post-date muted">2010-08-03 20:28 UTC</span>
+  </div>
+  <div class="post-body">Thanks, just for reference I'm using 6.0.0.13.<br>
+</div>
+</article>
+<article class="post" id="msg7100">
+  <div class="post-head">
+    <span class="post-author">TimSpangler</span>
+    <span class="post-date muted">2010-08-04 11:20 UTC</span>
+  </div>
+  <div class="post-body">This was an issue in the earlier release.<br>
+<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=1195.0" rel="nofollow noopener">{2}</a><br>
+<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

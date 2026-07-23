@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Have you ever used lisp Drag/Drop event handler code? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1823</p>
+    <h1>Have you ever used lisp Drag/Drop event handler code?</h1>
+    <p class="meta">Started by owenwengerd ·
+      2012-06-22 21:17 UTC ·
+      2 replies · SMF topic #1823</p>
+<article class="post" id="msg8949">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-06-22 21:17 UTC</span>
+  </div>
+  <div class="post-body">We are discussing changes to drag/drop handling in <a href="http://www.opendcl.com/forum/index.php?topic=1806.0" rel="nofollow noopener">{2}</a>. If you use drag and drop event handlers in your code, some of the proposed changes could break your code. Please reply here so I can get some idea how many of you are affected. Note that the changes would only affect custom (AutoLISP based) handlers, not the built-in default OpenDCL handlers.</div>
+</article>
+<article class="post" id="msg8950">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-06-23 01:19 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I've used Drag'nDrop between listviews and trees many times in the past. I've never used the OpenDCL built-in functionality: I defined own event handler function for DragBegin, DragOver and Dropped every time. I've checked my part of the code from my prevoius employer and found over 50 places where any change could cause side-effects. Many Dropped events are very long.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8953">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2012-06-27 17:46 UTC</span>
+  </div>
+  <div class="post-body">Perhaps another thought, is to add another Method?  DragnDropFromSelf.<br>
+<br>
+In my case, I just have a TreeList control, and I want users to be able to reorganize things.<br>
+They may want to move "Joe Smith Residence" under a new group of "Residential Projects".  Or they may wish to copy one of the files from under "Joe Smith Residence" to a new project.<br>
+There's several file copy and database updates that need to occur, so it has to have a custom event, and it has to have a confirmation, "Are you sure you wish to {move/copy} the selected files?".<br>
+<br>
+As such, for passed arguments, it wouldn't need ProjectName, FormName, ControlName.  It would just need SourceKey, TargetKey, DragType.  If the default drag behavior of the node disappearing after a Move operation is still going to fire after, it would be nice if the return value could control this.<br>
+<br>
+I would offer that the overriding theme of a DragDropComplete event, is along the lines of, "A user has completed a drag and drop operation.  Here is what they dragged, where they dropped it, and in what matter.  Now it is up to you to effect that drop operation as necessary, or abort entirely."<br>
+<br>
+--J<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

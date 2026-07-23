@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Get from Tree: seleceted node and descendants · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 657</p>
+    <h1>Get from Tree: seleceted node and descendants</h1>
+    <p class="meta">Started by Jim ·
+      2009-03-15 20:21 UTC ·
+      2 replies · SMF topic #657</p>
+<article class="post" id="msg3173">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2009-03-15 20:21 UTC</span>
+  </div>
+  <div class="post-body">I am using a Tree control for an operational program. The key of each node is also used to create a dictionary xrecord. If one desires to delete a node from the Tree, the control manages removing the descendants automatically. But wait! There are xrecords that need to be deleted as well. Since the keys of the tree nodes were designed to be the same as the keys of the xrecords, all we need is a list of keys belonging to the selected node. <br>
+<br>
+Here is the first working version I came up with:<br>
+<br>
+<br>
+;;returns selected node and descendants<br>
+(defun tcam:getTreeBranch (cntrlName / rslt)<br>
+  (tcam:BranchBug (dcl_Tree_GetSelectedItem cntrlName))<br>
+  (reverse rslt)<br>
+)<br>
+(defun tcam:BranchBug (nodekey / childkey sibkey tmpkey)<br>
+  (setq tmpkey nodekey<br>
+	rslt (cons nodekey rslt))<br>
+  (if (dcl_Tree_ItemHasChildren cntrlName nodekey)<br>
+    (cond<br>
+      ((setq childkey (dcl_tree_getfirstchilditem cntrlName nodekey))<br>
+       (tcam:BranchBug childkey)<br>
+       (setq tmpkey childkey)<br>
+       (while<br>
+	 (setq sibkey (dcl_tree_getnextsiblingitem cntrlName tmpkey))<br>
+	  (tcam:BranchBug sibkey)<br>
+	  (setq tmpkey sibkey))))))<br>
+<br>
+;***proof***<br>
+;Select Setup node<br>
+<br>
+(tcam:getTreeBranch Onset_Outline_Tree)<br>
+<br>
+("Setup{" "Setup{Info"<br>
+	  "Setup{Datum"<br>
+	  "Setup{Material"<br>
+	  "Setup{Machine"<br>
+	  "Setup{Tools"<br>
+)<br>
+<br>
+;Select Pgm node<br>
+<br>
+(tcam:getTreeBranch Onset_Outline_Tree)<br>
+<br>
+("Pgm {"<br>
+  "Pgm {BoreHole {"<br>
+  "Pgm {BoreHole {SpotDrill "<br>
+  "Pgm {BoreHole {Drill "<br>
+  "Pgm {BoreHole {Bore "<br>
+  "Pgm {Pocket {"<br>
+  "Pgm {Pocket {Rough "<br>
+  "Pgm {Pocket {Finish "<br>
+  "Pgm {Pocket {EdgeBreak "<br>
+)<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/638/getTreeBranch.jpg">getTreeBranch.jpg</a> <span class="muted">(15558 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3283">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-21 00:24 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Jim Short link=topic=671.msg3281#msg3281 date=1237591878 wrote:</cite><br>
+Hey Fred , did you look at the get descendants routine?<br>
+Jim <br>
+</blockquote><br>
+<br>
+Yes, Jim, I had a short view. It is useful if you don't keep the treeview data in a separate list. But that's the thing I do: when building up the tree view I need lists of parents and childs. Because I know that I will need the information during the runtime I keep and maintain the lists until the form will be closed and the function will return. In most cases I use a tree view to visualize hierarchical database structures (using ADO DB). Every tree item gets the key as string (unique id as long combined with a prefix of item type) for later identifying. In some other cases I do also visualize dictionary data in trees and I use the object handle as key (just imagine a book as top level item as AcDbDictionary, a chapter as its child item as AcDbDictionary and its grand childs as AcDbXrecord.<br>
+<br>
+But as I said if anybody has no chance to keep the list it is very useful.<br>
+<br>
+Have a good night!<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/652/tree.png">tree.png</a> <span class="muted">(2611 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3286">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2009-03-21 12:52 UTC</span>
+  </div>
+  <div class="post-body">Fred, Thanks for your explanation. It's nice to see how others solve problems.<br>
+Jim</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

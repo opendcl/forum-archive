@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid_SetCellStyle 30 and 31 buggy on AutoCAD 2013? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1897</p>
+    <h1>Grid_SetCellStyle 30 and 31 buggy on AutoCAD 2013?</h1>
+    <p class="meta">Started by HIPPODAMOS ·
+      2012-09-26 15:42 UTC ·
+      23 replies · SMF topic #1897</p>
+<article class="post" id="msg9319">
+  <div class="post-head">
+    <span class="post-author">HIPPODAMOS</span>
+    <span class="post-date muted">2012-09-26 15:42 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+I think Grid_SetCellStyle in combination with 30 and 31 (ACI- colours and RBG- colours) does not work correctly on AutoCAD 2013: There is no dialog (acad_truecolordlg)  to choose a colour if clicked on the cell. If the same LISP-code is used on the base of AutoCAD 2012, it works correctly.<br>
+<br>
+I use the Current Build [7.0.0.8]<br>
+<br>
+Sincerely,<br>
+<br>
+HIPPODAMOS</div>
+</article>
+<article class="post" id="msg9320">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-09-26 18:58 UTC</span>
+  </div>
+  <div class="post-body">I could not reproduce the problem in AutoCAD 2013 x64 using the GRID sample.</div>
+</article>
+<article class="post" id="msg9321">
+  <div class="post-head">
+    <span class="post-author">HIPPODAMOS</span>
+    <span class="post-date muted">2012-09-27 11:12 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen,<br>
+<br>
+thank You for Your response!<br>
+<br>
+On the base of AutoCAD 2013 I use OpenDCL.x64.19.arx in the version 7.0.0.8.<br>
+<br>
+In our source-code is a line like this: (dcl_Grid_SetCellStyle manage_sc_hatch_select_grd_prop intRow 1 (if (&lt; reaAcad 16.0) 30 31)), which configures the style of a cell using dcl_Grid_SetCellStyl with the value 30 if an earlier AutoCAD- base is used and configures the style of the cell with the value 31, if AutoCAD in the version 16.0 or later is used.<br>
+<br>
+On the base of AutoCAD 2012 and OpenDCL.x64.18.arx the user gets this dialog, if he clicks on the cell:<br>
+<br>
+<a href="http://imageshack.us/photo/my-images/32/choosecolour.jpg/" rel="nofollow noopener">{2}</a><br>
+<br>
+<br>
+On the base of AutoCAD 2013 and OpenDCL.x64.19.arx the user gets no dialog, if he clicks on the cell.<br>
+<br>
+Sincerely,<br>
+<br>
+HIPPODAMOS<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg9322">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-09-27 14:49 UTC</span>
+  </div>
+  <div class="post-body">Unfortunately I cannot fix the problem if I can't reproduce it. Have you tested with the GRID sample by adding a row of style 30 or 31? Are you not seeing the [...] button at all? Does anything at all happen when you click on it?</div>
+</article>
+<article class="post" id="msg9323">
+  <div class="post-head">
+    <span class="post-author">HIPPODAMOS</span>
+    <span class="post-date muted">2012-09-27 16:01 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">Have you tested with the GRID sample by adding a row of style 30 or 31?</blockquote><br>
+<br>
+<a href="http://imageshack.us/photo/my-images/442/gridsample.jpg/" rel="nofollow noopener">{2}</a><br>
+<br>
+<br>
+I´m sorry. Which grid sample do You mean? <br>
+<br>
+<br>
+Edit: I´ve found a grid sample in the "Studio-folder"</div>
+</article>
+<article class="post" id="msg9324">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-09-27 16:09 UTC</span>
+  </div>
+  <div class="post-body">The file is GRID.lsp in your OpenDCL Studio samples folder (Program Files\OpenDCL Studio\\Samples). Just drag and drop it onto your AutoCAD window to run it.</div>
+</article>
+<article class="post" id="msg9325">
+  <div class="post-head">
+    <span class="post-author">HIPPODAMOS</span>
+    <span class="post-date muted">2012-09-27 16:13 UTC</span>
+  </div>
+  <div class="post-body">Thank You. I´ve just found it in the same moment as You posted your last message.</div>
+</article>
+<article class="post" id="msg9326">
+  <div class="post-head">
+    <span class="post-author">HIPPODAMOS</span>
+    <span class="post-date muted">2012-09-27 16:23 UTC</span>
+  </div>
+  <div class="post-body">This sample was written by Fred Tomke. Isn´t it?<br>
+<br>
+I know this style.</div>
+</article>
+<article class="post" id="msg9327">
+  <div class="post-head">
+    <span class="post-author">HIPPODAMOS</span>
+    <span class="post-date muted">2012-09-27 16:42 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen,<br>
+<br>
+this sample is different. It uses dcl_Grid_SetItemStyle instead of dcl_Grid_SetCellStyle.<br>
+<br>
+I think, there is a problem with dcl_Grid_SetCellStyle.<br>
+<br>
+<br>
+Sincerely,<br>
+<br>
+HIPPODAMOS</div>
+</article>
+<article class="post" id="msg9328">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-09-27 18:25 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=HIPPODAMOS link=topic=1897.msg9326#msg9326 date=1348763000 wrote:</cite><br>
+This sample was written by Fred Tomke. Isn´t it?<br>
+</blockquote><br>
+<br>
+Yes, Fred wrote the German language translations of the sample files.</div>
+</article>
+<article class="post" id="msg9329">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-09-27 18:32 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=HIPPODAMOS link=topic=1897.msg9327#msg9327 date=1348764150 wrote:</cite><br>
+I think, there is a problem with dcl_Grid_SetCellStyle.<br>
+</blockquote><br>
+<br>
+The functions are identical -- dcl_Grid_SetItemStyle is the deprecated name. Please answer my questions.</div>
+</article>
+<article class="post" id="msg9330">
+  <div class="post-head">
+    <span class="post-author">HIPPODAMOS</span>
+    <span class="post-date muted">2012-09-27 22:19 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">Have you tested with the GRID sample by adding a row of style 30 or 31? Are you not seeing the [...] button at all? Does anything at all happen when you click on it?</blockquote><br>
+<br>
+The sample works.<br>
+<br>
+But there are differences between dcl_Grid_SetItemStyle and dcl_Grid_SetCellStyle<br>
+<br>
+In the sample, where dcl_Grid_SetItemStyle is used, there is a  [...] button and the dialog appears if clicked on the button..<br>
+<br>
+If  dcl_Grid_SetCellStyle is used, there is no  [...] button on the base of AutoCAD 2012, but the the dialog appears at once.<br>
+<br>
+If  dcl_Grid_SetCellStyle is used, there is no  [...] button on the base of AutoCAD 2013  and nothing happens.</div>
+</article>
+<article class="post" id="msg9331">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-09-27 23:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=HIPPODAMOS link=topic=1897.msg9330#msg9330 date=1348784354 wrote:</cite><br>
+But there are differences between dcl_Grid_SetItemStyle and dcl_Grid_SetCellStyle</blockquote><br>
+<br>
+You are mistaken. If the sample works and your application does not, then there is another reason. Please construct a simple .odcl and .lsp sample that demonstrates the problem so I can try to reproduce it here.</div>
+</article>
+<article class="post" id="msg9332">
+  <div class="post-head">
+    <span class="post-author">HIPPODAMOS</span>
+    <span class="post-date muted">2012-09-28 08:47 UTC</span>
+  </div>
+  <div class="post-body">You are right.<br>
+<br>
+I´ve replaced dcl_Grid_SetItemStyle with dcl_Grid_SetCellStyle in Your sample grid.lsp. Both versions work correct on the base of AutoCAD 2013: (see red mark)<br>
+<br>
+<a href="http://imageshack.us/photo/my-images/268/dclgridsetcellstyle.jpg/" rel="nofollow noopener">{2}</a><br>
+<br>
+The problem in our source code must have a different cause.</div>
+</article>
+<article class="post" id="msg9333">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-09-28 20:16 UTC</span>
+  </div>
+  <div class="post-body">Hi, I can blow out the dust: There was a workaround in the past to solve a certain behaviour. <strong>It is new to me that the color cell style will show an ellipse button.</strong> If I remember right, in earlier releases the color dialog came up immediately, once the user has clicked the cell. Now he has to click twice: one to "activate" the cell and one on the ellipse button to open the color dialog. I'm sure this change has its reasons.<br>
+<br>
+But in this special case this change has also consequences for the code HIPPODAMOS has mentioned. I can describe it best using the toggle cell style which worked similar in the function HIPPODAMOS noted (it growed up on my dunghill in the past: I didn't debug it yet with OpenDCL 7 but I hope it is still working this way  :-\ ): When a user has switched a toggle styled cell, the OnBeginCellEdit is fired, but not OnEndCellEdit. OnEndCellEdit will only be fired once the cell looses the focus (for instance the user selects another cell). But that's too late for me: I need a callback immediately. That's why I called (dcl_Grid_CancelCellEdit myGrid), so OnEndCellEdit will be fired. In this dialog it was very important that any cell value change was recognized by the program because it should cause a redraw of block previews just in time.<br>
+<br>
+With OpneDCL 7 this workaround suppresses the ellipses button of the color styled cell. And that makes it imagine that the color cell wouldn't work properly. But indeed it does, if I remove the workaround. So I will do.<br>
+<br>
+Hope that helps,<br>
+Regards, Fred<br>
+</div>
+</article>
+<article class="post" id="msg9335">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-09-28 21:39 UTC</span>
+  </div>
+  <div class="post-body">Hmm, I'm not sure if the behavior is by design or not. I did change the code to end editing when the dialog is closed (or when a simple combo selection is made), so that is definitely by design.<br>
+<br>
+However, if in previous versions only one click on a color cell immediately opened the color dialog, there may be a new bug that now requires the second click on the button. This makes me wonder how past versions behaved if a color cell became current via some method other than a left click.</div>
+</article>
+<article class="post" id="msg9336">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-09-28 21:53 UTC</span>
+  </div>
+  <div class="post-body">Okay - but we should decide one way that I don't need to change my code each time   ;D .<br>
+I've found out that now the user has urgently to select another cell or control to make sure color cell editing will be finished to update the preview. For comboboxes I always define an OnMouseMove event within OnBeginLabelEdit at runtime to call OnEndLabelEdit after collapsing the dropdown. There I remove the OnMouseMove event at runtime. But I'm not sure if I should apply this design to the color cell, too.<br>
+<br>
+I go to bed now.<br>
+Bye, Fred</div>
+</article>
+<article class="post" id="msg9339">
+  <div class="post-head">
+    <span class="post-author">HIPPODAMOS</span>
+    <span class="post-date muted">2012-09-29 09:09 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">... the color dialog came up immediately, once the user has clicked the cell. Now he has to click twice: one to "activate" the cell and one on the ellipse button to open the color dialog. ...<br>
+<br>
+But in this special case this change has also consequences for the code ... ... When a user has switched a toggle styled cell, the OnBeginCellEdit is fired, but not OnEndCellEdit. OnEndCellEdit will only be fired once the cell looses the focus (for instance the user selects another cell). But that's too late for me: I need a callback immediately. That's why I called (dcl_Grid_CancelCellEdit myGrid), so OnEndCellEdit will be fired. In this dialog it was very important that any cell value change was recognized by the program because it should cause a redraw of block previews just in time.</blockquote><br>
+<br>
+Hi Fred,<br>
+<br>
+that's it!  You have solved the problem! Thank You very much for Your help!<br>
+<br>
+Best regards,<br>
+<br>
+HIPPODAMOS</div>
+</article>
+<article class="post" id="msg9341">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-09-29 21:53 UTC</span>
+  </div>
+  <div class="post-body">Hi, Owen, will you change the workflow of color cells that the ellipse button will not be shown and the color dialog will be opened immediately when clicking on this cell? It would be interesting how to finish my code.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9342">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-09-29 22:57 UTC</span>
+  </div>
+  <div class="post-body">Fred, I'm planning to fix anything that was unintentionally changed, but I need to know what is the correct behavior. What should happen when a color cell becomes active not by a left click, but by some other means? Do you know which build this changed?</div>
+</article>
+<article class="post" id="msg9345">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-09-30 20:24 UTC</span>
+  </div>
+  <div class="post-body">Hi, Owen, I only have a 6.2.0.5. In this release there it was so that the color dialog came up immediately after clicking on this cell. When activating without clicking this cell nothing will happen. But when hitting space bar, color dialog comes up. In my experiences  it is Windows-conform.<br>
+<br>
+The earliest release we have noticed the changed behaviour was 7.0.0.7.<br>
+Can I find the runtime releases in between anywhere?<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9346">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-10-01 02:21 UTC</span>
+  </div>
+  <div class="post-body">Fred, I looked at the SVN log and found that it was changed in Alpha 6. You are correct, there was no button at all in earlier builds. According to my comments, the change was part of a redesign to address several bug reports related to grid editing. Unfortunately there is no easy way to query bug reports closed within a specified date range, so I can't find the actual bugs in question. I don't know whether the color cell types were changed because of the bugs, or because while fixing the bugs I noticed that color cells work differently than other cell types, and decided to change them to be consistent with other cell types.<br>
+<br>
+Do I understand you correctly that you already changed your code to handle the new behavior? If so, how did you manage to trigger the color dialog immediately?<br>
+<br>
+I think it is best to leave the current design in place if possible, because it makes the cell editing code much cleaner and easier to maintain. Even with the new design, I want to make sure there is some way to prevent the requirement to click the button separately whenever possible. That may need to be addressed somehow in the OpenDCL code.<br>
+<br>
+In any case, I would like to hear more about the problem with the check box style cell. With the updated grid cell editing design, cell edit controls that are "immediate acting" should now fire EndLabelEdit immediately; if not, that is a bug. The overriding goal is to make cell editing consistent and predictable, so that behaviors are well defined and easy to identify when they do not work as intended.</div>
+</article>
+<article class="post" id="msg9348">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-10-01 08:33 UTC</span>
+  </div>
+  <div class="post-body">Hi, Owen,<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1897.msg9346#msg9346 date=1349058112 wrote:</cite><br>
+Do I understand you correctly that you already changed your code to handle the new behavior? If so, how did you manage to trigger the color dialog immediately?<br>
+</blockquote><br>
+Yes, I did. When the user clicks on the cell with color style, OnBeginLabelEdit will be fired. I query the cell style and if it is 1 (toggle) or 31 (rgb) then I call CancelCellEdit, so EndLabelEdit will be fired. In that case I call acad_truecolordlg and handle its result.<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1897.msg9346#msg9346 date=1349058112 wrote:</cite><br>
+In any case, I would like to hear more about the problem with the check box style cell.<br>
+</blockquote><br>
+As mentioned above I cancel edit mode in the BeginLabelEdit event, so EndLabelEdit will be called. I debugged it in OpenDCL 7 yet to test whether I could remove it or not.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9349">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-10-01 10:24 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">As mentioned above I cancel edit mode in the BeginLabelEdit event, so EndLabelEdit will be called. I debugged it in OpenDCL 7 yet to test whether I could remove it or not.</blockquote><br>
+I've used the wrong time: I did not debug it yet.<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

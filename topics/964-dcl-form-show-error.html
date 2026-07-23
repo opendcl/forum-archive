@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_Form_Show Error · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 964</p>
+    <h1>dcl_Form_Show Error</h1>
+    <p class="meta">Started by jp4ul ·
+      2009-10-09 18:34 UTC ·
+      6 replies · SMF topic #964</p>
+<article class="post" id="msg4838">
+  <div class="post-head">
+    <span class="post-author">jp4ul</span>
+    <span class="post-date muted">2009-10-09 18:34 UTC</span>
+  </div>
+  <div class="post-body">Short time reader, first time poster.<br>
+<br>
+Downloaded studio, V 6.0.0.7 and installed.<br>
+<br>
+Playing around with some forms and I get an error stating "NIL value not allowed" from function "dcl_Form_show," with argument "0."<br>
+<br>
+I've looked through the control browser and it says dcl_Form_Show can use one parameter.<br>
+<br>
+So obviously, my question is, what am I missing?<br>
+<br>
+I do have AutoCAD 2008 and 2010 installed.  That might be causing a problem.  I know it's caused a problem with my dictionary, which I haven't looked into yet.<br>
+<br>
+Suggestions?<br>
+<br>
+Thanks.<br>
+<br>
+Jim</div>
+</article>
+<article class="post" id="msg4840">
+  <div class="post-head">
+    <span class="post-author">eptownie1988</span>
+    <span class="post-date muted">2009-10-09 19:18 UTC</span>
+  </div>
+  <div class="post-body">You might be missing the line of code highlighted in yellow:<br>
+<br>
+(defun C:<em>Program Name </em> ()<br>
+  <span style="color:yellow">(dcl_Project_Load "<em>DCL File Name</em>" T)</span><br>
+  (dcl_Form_Show <em>Name of the form</em>)<br>
+)</div>
+</article>
+<article class="post" id="msg4841">
+  <div class="post-head">
+    <span class="post-author">jp4ul</span>
+    <span class="post-date muted">2009-10-09 20:35 UTC</span>
+  </div>
+  <div class="post-body">I do have that.  Below is the code.  I stole it from the tutorial but the only difference is the form name and the program name.<br>
+<br>
+(command "OPENDCL")<br>
+<br>
+(defun c:pd ()<br>
+<br>
+  (dcl_Project_Load "makepanel" T)<br>
+<br>
+  (dcl_Form_Show IntroForm)<br>
+<br>
+  (princ)<br>
+)<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4842">
+  <div class="post-head">
+    <span class="post-author">eptownie1988</span>
+    <span class="post-date muted">2009-10-09 20:54 UTC</span>
+  </div>
+  <div class="post-body">Try making your line of code this:<br>
+<br>
+(dcl_Form_Show makepanel_IntroForm)</div>
+</article>
+<article class="post" id="msg4843">
+  <div class="post-head">
+    <span class="post-author">jp4ul</span>
+    <span class="post-date muted">2009-10-09 21:12 UTC</span>
+  </div>
+  <div class="post-body">That was it.<br>
+<br>
+Thanks.<br>
+<br>
+It never occurred to me to add the project name in front of the form name.  Looking at the tutorial, I thought that's what they just called it.<br>
+<br>
+<br>
+Thanks again.<br>
+<br>
+Jim</div>
+</article>
+<article class="post" id="msg4846">
+  <div class="post-head">
+    <span class="post-author">eptownie1988</span>
+    <span class="post-date muted">2009-10-10 00:03 UTC</span>
+  </div>
+  <div class="post-body">Jim:<br>
+<br>
+I am glad I could help.  Good luck and just be warned that it is addicting.  I find myself in front of the computer for hours at a time when I get into a program.  OpenDCL is a great tool and I see alot of possibilities and uses for it.<br>
+<br>
+Lester</div>
+</article>
+<article class="post" id="msg4848">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-10 14:59 UTC</span>
+  </div>
+  <div class="post-body">For what it's worth, if you open the control browser (double click on a control -- or in this case the form) and select the function (in this case "Show"), it will show you the correct syntax, including the correct lisp symbol to use based on the current values in the project.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

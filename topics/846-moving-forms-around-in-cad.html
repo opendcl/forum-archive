@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Moving forms around in CAD · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 846</p>
+    <h1>Moving forms around in CAD</h1>
+    <p class="meta">Started by AutoKAD ·
+      2009-07-12 22:50 UTC ·
+      5 replies · SMF topic #846</p>
+<article class="post" id="msg4198">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2009-07-12 22:50 UTC</span>
+  </div>
+  <div class="post-body">Does anyone know of a way (or if it is even possible) to make one modeless form a child to a parent modeless form, so as the result of moving the parent around on the screen will move the child at the same time?<br>
+<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg4199">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-07-12 22:58 UTC</span>
+  </div>
+  <div class="post-body">Hi AutoKAD, I see no solution yet. It would work of course if you resize the parent. Then you could resize the child modeless form programmatically within the OnSize-event of the parent modeless form. But since the form object has no Move-method (like in FoxPro, I'm just working with FoxPro), I see no solution yet. But maybe you could add a feature request for adding a OnMove event.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4200">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2009-07-12 23:47 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the information Fred.  I figured out a roundabout way of doing this, but I need the screen position of the parent control.  I tried to retrieve the screen position using getcontrols, but all i get is a list of entity names.<br>
+<br>
+Anyway, It's basically using the mousemovedoff event and closing the child form and then calling to show it again with the X Y position set.<br>
+<br>
+Any idea how to get the screen position of controls?<br>
+<br>
+Thanks.<br>
+<br>
+Edit: Nevermind.  Found it.  (dcl_Control_GetPos )  Some of the functions for forms and controls don't show up in the help file included with studio editor.  Guess I should just start using the online help instead.  Anyways, got this working using this roundabout way.  Not perfect, but it'll do for now.  Time to put in a feature request.</div>
+</article>
+<article class="post" id="msg4201">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-07-12 23:55 UTC</span>
+  </div>
+  <div class="post-body">Hi, try GetRectangle for the form position. To get the screen position add the results of GetControlArea from the form with the values of Top and Left of each control you want.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4202">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-07-13 02:46 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=AutoKAD link=topic=846.msg4200#msg4200 date=1247442442 wrote:</cite><br>
+Any idea how to get the screen position of controls?<br>
+</blockquote><br>
+<br>
+(dcl_Control_GetPos) works on forms and controls. Likewise, (dcl_Control_SetPos) can move them. Which functions were not listed in the Control Browser? All except the deprecated ones should be listed, and there should be no need to use deprecated functions as those all have suitable replacements.</div>
+</article>
+<article class="post" id="msg4203">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2009-07-13 03:23 UTC</span>
+  </div>
+  <div class="post-body">Opps.  Sorry Owen, I must be blind as a bat.  Nothing wrong with the help menu.  When you right click on a form in the studio editor and select Control Browser all the functions are shown in the right panel.  I should have looked there before looking at the left panel.  I'm sure there is a reason for the different listings.  Anyway, yea, my bad.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

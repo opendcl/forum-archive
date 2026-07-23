@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_Project_Dump ; dcl_Form_GetControls · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 389</p>
+    <h1>dcl_Project_Dump ; dcl_Form_GetControls</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2008-07-31 23:34 UTC ·
+      1 replies · SMF topic #389</p>
+<article class="post" id="msg1742">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-07-31 23:34 UTC</span>
+  </div>
+  <div class="post-body">Does anyone have a sample using dcl_Project_Dump  :<br>
+or extracting the data from the return value from dcl_Form_GetControls<br>
+<br>
+I tried this with no sucess<br>
+<pre class="code"><code><br>
+    (Setq rValue (dcl_Form_GetControls KDUB_PIPEFLANGES_Main))<br>
+    (foreach var rValue<br>
+      (print var)<br>
+      (foreach n (entget var) (print n))<br>
+   )</code></pre><br>
+<br>
+I'm trying to get a list of ALL controls in a project.<br>
+The Project includes a TabControl with several pages<br>
+<br>
+<br>
+Would it be difficult to have an Editor Method that could write a tree listing to file of Names of Forms ; Children ; Controls<br>
+<br>
+Regards<br>
+Kerry<br>
+</div>
+</article>
+<article class="post" id="msg1744">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-08-01 02:51 UTC</span>
+  </div>
+  <div class="post-body">This seems to work ..<br>
+<br>
+(kdub:GetControlNames "C:\\KDUB_PIPEFLANGES.odcl" )<br>
+<br>
+<pre class="code"><code><br>
+(defun kdub:GetControlNames (odclfile / project  CONTROLNAME FN)<br>
+  (setq project (dcl_project_load odclfile))<br>
+  (if (not project)<br>
+    (exit)<br>
+  )<br>
+  (setq fn (open (strcat "c:\\" project "-Controls.txt") "w"))<br>
+  (foreach form (dcl_project_getforms project)<br>
+    (foreach control (dcl_form_getcontrols form)<br>
+      (progn (setq props (dcl_control_getproperties control))<br>
+             (if (member "(Name)" props)<br>
+               (progn (setq ControlName (dcl_control_getproperty control "(Name)"))<br>
+                      (write-line ControlName fn)<br>
+               )<br>
+             )<br>
+      )<br>
+    )<br>
+  )<br>
+  (close fn)<br>
+  <br>
+)</code></pre><br>
+<blockquote class="quote"><br>
+Frame-M2<br>
+Frame-M0<br>
+Label1<br>
+TabControl1<br>
+MATERIALCombo<br>
+SIZELIST<br>
+SIZETEXT<br>
+SIZEOPTION<br>
+Frame6<br>
+Frame5<br>
+Frame4<br>
+Frame3<br>
+Frame2<br>
+Frame1<br>
+FLANGEMATCH<br>
+FLANGEINFO<br>
+FLANGEPICCY<br>
+FLANGEDRAW<br>
+FLANGEWORKPOINT<br>
+FLANGEVIEW<br>
+FLANGEFACE<br>
+FLANGETABLECLASS<br>
+FLANGESPECIFICATION<br>
+FLANGETYPE<br>
+Frame1<br>
+Frame1<br>
+PairGapTextBox<br>
+GapLabel<br>
+FaceOffsetTextBox<br>
+WeldGapTextBox<br>
+FaceOffsetCheck<br>
+DrawPairCheck<br>
+WeldGapCheck<br>
+ComboOutlineLayer<br>
+ComboOutlineColor<br>
+ComboHoleBlockColor<br>
+&lt; SNIP&gt; </blockquote> </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

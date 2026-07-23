@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_ListBox_SelItemRange Not calling OnSelChanged · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 861</p>
+    <h1>dcl_ListBox_SelItemRange Not calling OnSelChanged</h1>
+    <p class="meta">Started by docsaintly ·
+      2009-08-06 23:58 UTC ·
+      1 replies · SMF topic #861</p>
+<article class="post" id="msg4266">
+  <div class="post-head">
+    <span class="post-author">docsaintly</span>
+    <span class="post-date muted">2009-08-06 23:58 UTC</span>
+  </div>
+  <div class="post-body">In the following code, I make a click event on buttons change the selection of a list box, however they do not appear to call the OnSelChanged event for the list box. The selection get's changed, but the events I want to happen when the selection is changed don't. The events are called when I change the selection manually though. Is this a known bug? Is there a workaround?<br>
+<br>
+(defun RangeDisable (/)<br>
+(dcl_Control_SetValue chkRange 0)<br>
+(dcl_Control_SetEnabled txtRangeStart nil)<br>
+(dcl_Control_SetEnabled lblTo nil)<br>
+(dcl_Control_SetEnabled txtRangeEnd nil)<br>
+)<br>
+(defun c:lstBlocks_OnSelChanged (ItemIndex Value / NValue)<br>
+	(RangeDisable)<br>
+	(if (setq NValue (last (dcl_ListBox_GetSelectedItems lstBlocks)))<br>
+		(dcl_DWGPreview_LoadDwg dwgPreview (strcat selectedfolder "\\" NValue))<br>
+	)<br>
+	(if (/= (dcl_ListBox_GetSelCount lstBlocks) 0)<br>
+		(dcl_Control_SetCaption lblFiles (strcat (itoa (dcl_ListBox_GetSelCount lstBlocks)) " selected"))<br>
+		(dcl_Control_SetCaption lblFiles "No Files Selected")<br>
+	)<br>
+)<br>
+(defun c:btnSelectAll_OnClicked (/)<br>
+	(dcl_ListBox_SelItemRange lstBlocks 0 (dcl_ListBox_GetCount lstBlocks) T)<br>
+	(dcl_Control_SetCaption lblFiles (strcat (itoa (dcl_ListBox_GetCount lstBlocks)) " selected"))<br>
+)<br>
+(defun c:btnClearSelect_OnClicked (/)<br>
+	(dcl_ListBox_SelItemRange lstBlocks 0 (dcl_ListBox_GetCount lstBlocks) F)<br>
+	(dcl_Control_SetCaption lblFiles "No Files Selected")<br>
+)<br>
+<br>
+<img src="http://imagebin.ca/img/0vcNtE.png" alt="" loading="lazy"></div>
+</article>
+<article class="post" id="msg4267">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-08-07 02:13 UTC</span>
+  </div>
+  <div class="post-body">OnSelChanged is not called when the selection is changed programmatically. You can call it directly from within your OnClicked handler as (c:lstBlocks_OnSelChanged 0 ""), then your code will work as you expected.<br>
+<br>
+I also noticed that OnSelChanged documentation does not mention the fact that for a multiple selection listbox, ItemIndex is the number of selected items, and Value is always an empty string. I will fix the documentation.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>&quot;Send command&quot; to not-current drawing? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2114</p>
+    <h1>&quot;Send command&quot; to not-current drawing?</h1>
+    <p class="meta">Started by Peter2 ·
+      2014-03-25 14:33 UTC ·
+      14 replies · SMF topic #2114</p>
+<article class="post" id="msg10487">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-03-25 14:33 UTC</span>
+  </div>
+  <div class="post-body">(This is a short-spin-off from my question at "theswamp" - link see below)<br>
+<br>
+Regarding this issue I found many questions, only a few answers (.net, VBA, ...), but nothing inside the (V)Lisp-world ...<br>
+<br>
+I have <br>
+- an opened, empty drawing: "basic.dwg"<br>
+- running Lisp+OpenDCL+Doslib<br>
+<br>
+I want<br>
+a) start a lisp in "basic.dwg"<br>
+b) calculate some filename, e.g. "test1.dwg"<br>
+c) open "test1.dwg"<br>
+d) run any lisp I want in "test1.dwg"<br>
+e) close "test1.dwg"<br>
+<br>
+<strong>Short question for a short answer:</strong><br>
+- Are there any features in OpenDCL (some "send command" or "invoke" or "execute..") which can handle Step d) ?<br>
+<br>
+<strong>Long question for long answers:</strong><br>
+- main discussion here: http://www.theswamp.org/index.php?topic=46615.0<br>
+<br>
+Regards<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg10488">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-03-25 15:17 UTC</span>
+  </div>
+  <div class="post-body">I don't think OpenDCL will help. In my opinion, the only viable general purpose solution is manage this from the application context, which requires .NET or ObjectARX.</div>
+</article>
+<article class="post" id="msg10489">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-03-25 15:24 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2114.msg10488#msg10488 date=1395760639 wrote:</cite><br>
+I don't think OpenDCL will help. In my opinion, the only viable general purpose solution is manage this from the application context, which requires .NET or ObjectARX.<br>
+</blockquote><br>
+This is the answer I was afraid of ...  :'(<br>
+OK, thanks Owen. Now I have to see if I can find a workaround based on the lowest level (script) or have to look for someone who makes the solution.</div>
+</article>
+<article class="post" id="msg10490">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-03-25 19:14 UTC</span>
+  </div>
+  <div class="post-body">Hi, give me a second until I've entered the hotel. Have an idea using modeless Form and OnDocActivated.<br>
+Fred</div>
+</article>
+<article class="post" id="msg10491">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-03-25 19:49 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2114.msg10490#msg10490 date=1395774849 wrote:</cite><br>
+Hi, give me a second until I've entered the hotel. ...</blockquote><br>
+Also 5 sec or more ...<br>
+Yes, a modeless form already exists and can be used.</div>
+</article>
+<article class="post" id="msg10493">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-03-25 23:34 UTC</span>
+  </div>
+  <div class="post-body">Hi Peter, it depends on what you're going to do: if you want to query the other drawing (execute analysis of geometry or attribute data) you really should prefer using ObjectDBX. You can even change the drawing (add or modify entities) and save your changes.<br>
+<br>
+(defun GetFileLayers (strDwg / oDbx oLayer lstLayers)<br>
+  (if (and (setq oDbx (vl-catch-all-apply 'vla-GetInterfaceObject (list (vlax-get-acad-object) (strcat "ObjectDBX.AxDbDocument." (substr (getvar "ACADVER") 1 2)))))<br>
+	   (not (vl-catch-all-error-p oDbx)))<br>
+    (if (vl-catch-all-error-p (vl-catch-all-apply 'vla-open (list oDbx strDwg)))<br>
+      (vlax-release-object oDbx)<br>
+      (progn<br>
+	(vlax-for oLayer (vla-get-layers oDbx) (setq lstLayers (cons (vla-get-name oLayer) lstLayers)))<br>
+	(vlax-release-object oDbx)<br>
+      ); progn<br>
+    ); if<br>
+  ); if<br>
+); GetFileLayers<br>
+<br>
+In the case you want to open a drawing to do something, Lisp requires an active document context: you cannot execute Lisp in an inactive drawing.<br>
+That's why I tried a modeless form which calls OnDocActivated event after switching between drawings. You should also be able to do this using  Document-Reactors, but I had no try yet.<br>
+If you want to use OnDocActivated in a newly opened drawing you have to make sure that your lisp file is loaded by (vl-load-all ...).<br>
+The only problem I had was that the calling drawing has still a pointer/focus to the opened drawing so AutoCAD freezes while closing the drawing.<br>
+<br>
+Have a test. Maybe you can catch the rest.<br>
+I recommend you to go the DBX-path.<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1980/GetFileLayers.LSP">GetFileLayers.LSP</a> <span class="muted">(4171 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10495">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-03-26 09:14 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred<br>
+<br>
+thank you. In your code you have a "dcl_project_load", but there are no OpenDCL data ?</div>
+</article>
+<article class="post" id="msg10496">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-03-26 11:39 UTC</span>
+  </div>
+  <div class="post-body">Yes, I've uploaded the lisp but not the zip which also contained the odcl. It was simply too late.<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1981/wait.odcl">wait.odcl</a> <span class="muted">(560 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10497">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-03-26 12:07 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred<br>
+<br>
+thanks, it works fine in the version you attached. But now I tried to use the commented "(command close)" and to comment out the messages - and get an AutoCAD crash. How to run it incl. "close" and with no messages?</div>
+</article>
+<article class="post" id="msg10498">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-03-26 12:50 UTC</span>
+  </div>
+  <div class="post-body">Hi, and thats the thing it took me hours to figure out. At least I surrendered and now it's your task to investigate it - it's not OpenDCL related.<br>
+That's why I mentioned that you should consider ObjectDBX as a solution.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10500">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-03-26 13:07 UTC</span>
+  </div>
+  <div class="post-body">Did you try (dcl-SendString "_CLOSE\n")?</div>
+</article>
+<article class="post" id="msg10501">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-03-26 14:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2114.msg10500#msg10500 date=1395839276 wrote:</cite><br>
+Did you try (dcl-SendString "_CLOSE\n")?<br>
+</blockquote><br>
+One step ahead  :)<br>
+<br>
+I will report (e.g. how to send "_close _yes"...)</div>
+</article>
+<article class="post" id="msg10502">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-03-26 14:34 UTC</span>
+  </div>
+  <div class="post-body">Here is the slightly modified code from Fred.<br>
+<br>
+Changes:<br>
+- dcl_sendstring instead of "command"<br>
+- changed "alert" to "princ"<br>
+- added "draw a line" to modify the drawing<br>
+- added (acad-push-dbmod)/(acad-pop-dbmod) to "close without asking for saving"<br>
+<br>
+-&gt; Now it seems to do what is needed:<br>
+The current drawing opens another, runs a lisp, closes the drawing and comes back to current drawing.<br>
+<br>
+I will try more and will report.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1982/GetFileLayers.LSP">GetFileLayers.LSP</a> <span class="muted">(4417 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10503">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-03-26 18:18 UTC</span>
+  </div>
+  <div class="post-body">Hi, thanks. But I keep my position: Have a look at my ObjectDBX sample and there you will see that it is much easier to create a new line in the silently opened drawing. You cannot fight the battle with all the possible 3rd party apps and maybe AutoCAD itself which are catching opening and closing events of drawings to show messageboxes to notify the user about anything. I've already had my troubles with that in the past.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10504">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-03-26 21:35 UTC</span>
+  </div>
+  <div class="post-body">The discussion at theswamp (see link in first post) brought a way with "S::startup", document reactors, registry and (vl-cmdf "close"). Tomorrow I will continue with testing and will see which way to go.<br>
+<br>
+Thanks.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

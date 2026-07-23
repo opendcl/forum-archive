@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid Control Droplist · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 773</p>
+    <h1>Grid Control Droplist</h1>
+    <p class="meta">Started by AutoKAD ·
+      2009-05-27 23:12 UTC ·
+      10 replies · SMF topic #773</p>
+<article class="post" id="msg3796">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2009-05-27 23:12 UTC</span>
+  </div>
+  <div class="post-body">I'm fairly new to OpenDCL.  This is my first post and just want to say to the developers of OpenDCL that it is an awesome tool!<br>
+<br>
+I am having the exact same trouble as the person in the thread below:<br>
+<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=139.0" rel="nofollow noopener">{2}</a><br>
+<br>
+Here is the procedure I have set up:<br>
+<br>
+<br>
+(defun c:project1_Form1_Grid1_OnEndLabelEdit (Row Column /)<br>
+  (dcl_Grid_CancelCellEdit project1_Form1_Grid1)<br>
+  (setq a (dcl_Grid_GetCellText project1_Form1_Grid1 Row Column))<br>
+)<br>
+<br>
+<br>
+What am I doing wrong?  I get the same result as the person in the thread above: The value of the item selected in the droplist does not get applied until I select another cell or I click on a scroll bar of the control.  I need it to update right after changing the value from the droplist.<br>
+<br>
+Thanks~AutoKAD</div>
+</article>
+<article class="post" id="msg3797">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-28 02:22 UTC</span>
+  </div>
+  <div class="post-body">Try removing the call to (dcl_Grid_CancelCellEdit).</div>
+</article>
+<article class="post" id="msg3798">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2009-05-28 02:56 UTC</span>
+  </div>
+  <div class="post-body">Nope, didn't work.  'a' is set to "".  What occurs when I select from a cell droplist is that the cell remains looking like a droplist and the value doesn't apply to the cell.  If I select another cell, then the selected value is set to 'a' and the cell changes back to looking like a normal cell.<br>
+<br>
+I'm working under Windows Vista...if that helps any. :-\<br>
+<br>
+Thanks~AutoKAD</div>
+</article>
+<article class="post" id="msg3799">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-28 04:04 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I thought you were just trying to get the new value in your OnEndLabelEdit handler.<br>
+<br>
+The cell value does not update until the cell editor control is destroyed, and that is by design. Also, there is no event fired when a different value is chosen in the combo. Just selecting a new value does not end cell editing. The OnEndLabelEdit event is not fired until after the cell editor control is destroyed and the cell is updated, but it is always guaranteed to be fired if the user makes a change to the cell value.<br>
+<br>
+Hopefully this helps explain how it is designed to work. If you could describe the problem you're trying to solve, someone may be able to suggest alternative approaches.</div>
+</article>
+<article class="post" id="msg3800">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2009-05-28 05:17 UTC</span>
+  </div>
+  <div class="post-body">Ok, I see.  Thanks for the explanation.  What are the different ways of destroying the cell editor control?<br>
+<br>
+For now, I decided I'll just use a right click on the control to end editing and call the operations I need.<br>
+<br>
+(defun c:project1_Form1_Grid1_OnMouseDown (Button Flags X Y / Row Column)<br>
+  (if (= Button 2)<br>
+    (progn<br>
+      (setq Row (nth 0 (dcl_Grid_GetCurCell project1_Form1_Grid1))<br>
+	    Column (nth 1 (dcl_Grid_GetCurCell project1_Form1_Grid1)))<br>
+      (setq a (dcl_Grid_GetCellText project1_Form1_Grid1 Row Column))<br>
+      )<br>
+    )<br>
+)<br>
+<br>
+Thanks!~AutoKAD</div>
+</article>
+<article class="post" id="msg3803">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-28 05:56 UTC</span>
+  </div>
+  <div class="post-body">Hm, have you already tested if pressing ENTER after selecting a new value from the drop list may end the cell edit state?<br>
+I didn't test yet but it could work.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3804">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2009-05-28 06:29 UTC</span>
+  </div>
+  <div class="post-body">Yup.  Tried pressing ENTER, but this closes the form.  Not sure why this occurs.  Focus isn't even set on the ok or cancel button on the form and there is no (dcl_Form_Close) associated with the grid control.<br>
+<br>
+Thanks!~AutoKAD</div>
+</article>
+<article class="post" id="msg3811">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-28 14:25 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=AutoKAD link=topic=773.msg3800#msg3800 date=1243487869 wrote:</cite><br>
+What are the different ways of destroying the cell editor control?</blockquote><br>
+<br>
+It gets destroyed as soon as it loses input focus (by clicking the mouse somewhere else, for example). I think Fred's idea of using the  key to force an update should work as long as you handle the form's OnCancelClose event and prevent the form from closing in that case.</div>
+</article>
+<article class="post" id="msg3822">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2009-05-29 03:11 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=773.msg3811#msg3811 date=1243520729 wrote:</cite><br>
+[quote author=AutoKAD link=topic=773.msg3800#msg3800 date=1243487869]<br>
+What are the different ways of destroying the cell editor control?</blockquote><br>
+<br>
+It gets destroyed as soon as it loses input focus (by clicking the mouse somewhere else, for example). I think Fred's idea of using the  key to force an update should work as long as you handle the form's OnCancelClose event and prevent the form from closing in that case.<br>
+<br>
+<br>
+Ahhh.  Ok, I'll have to try that out when I get a chance.<br>
+<br>
+Thanks!~AutoKAD</div>
+</article>
+<article class="post" id="msg3826">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-29 06:52 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=773.msg3811#msg3811 date=1243520729 wrote:</cite><br>
+I think Fred's idea of using the  key to force an update should work as long as you handle the form's OnCancelClose event and prevent the form from closing in that case.<br>
+</blockquote><br>
+<br>
+additionally, I add a link with an example: <a href="http://www.opendcl.com/forum/index.php?topic=384.msg1724#msg1724" rel="nofollow noopener">{2}</a>.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3827">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2009-05-29 12:42 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the link Fred!<br>
+<br>
+AutoKAD</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

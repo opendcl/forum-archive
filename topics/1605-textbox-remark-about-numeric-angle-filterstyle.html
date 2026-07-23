@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TextBox : remark about Numeric + Angle FilterStyle · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1605</p>
+    <h1>TextBox : remark about Numeric + Angle FilterStyle</h1>
+    <p class="meta">Started by krunch ·
+      2011-03-22 21:04 UTC ·
+      3 replies · SMF topic #1605</p>
+<article class="post" id="msg7893">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-22 21:04 UTC</span>
+  </div>
+  <div class="post-body">When the FilerStyle of a TextBox is set to Numeric or Angle Units Filter, the TextBox does 2 things :<br>
+- filtering invalid caracters<br>
+- converting values onto the default numeric format (set by _UNITS) when leaving it (OnKillFocus)<br>
+<br>
+So FilterStyle automatically converts the value OnKillFocus, with something like :<br>
+(distof .. (getvar "LUNITS")) and (angtof .. (getvar "AUNITS"))<br>
+<br>
+I don't know if there are reason to this 2nd behavior, but I'm not sure it's relevant.<br>
+In ACad you can write "1/8" even if your units system is set to Decimal (or you can write "0.12r" even if .. Degree), and I think that if you write "1/8" you don't want to recover "0.125"..<br>
+Personnaly I don't use it for this reason. I replace it by a OnKillFocus function that simply erase the string of the TextBox if the value is incorrect according to the general format, indeed if (distof .. (getvar "LUNITS")) = 0 (so on the other hand there is no more "0"...)<br>
+<br>
+So, I was wondering if this remark should be a feature request or not ?</div>
+</article>
+<article class="post" id="msg7894">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-03-23 04:35 UTC</span>
+  </div>
+  <div class="post-body">Those filter styles are actually implemented by Autodesk, so it wouldn't be possible to change them without recreating them in OpenDCL.</div>
+</article>
+<article class="post" id="msg7898">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-03-23 19:44 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1605.msg7894#msg7894 date=1300854951 wrote:</cite><br>
+Those filter styles are actually implemented by Autodesk</blockquote><br>
+<br>
+Quite interesting. Are these own classes of textboxes? Where are these defined?<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg7900">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-03-23 22:50 UTC</span>
+  </div>
+  <div class="post-body">The ObjectARX API exposes derived versions of the MFC edit control and combo controls that implement these filters via predefined filter styles. Here is a brief description of the four filter styles:<br>
+<a href="http://docs.autodesk.com/ACDMAC/2011/ENU/ObjectARX%20Reference/index.html?frmname=topic&amp;frmfile=CAcUiEdit.html" rel="nofollow noopener">{2}</a></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

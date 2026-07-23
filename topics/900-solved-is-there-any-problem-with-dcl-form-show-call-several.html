@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[SOLVED] Is there any problem with dcl_Form_Show call several times [6.0.0.2] · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/21-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 900</p>
+    <h1>[SOLVED] Is there any problem with dcl_Form_Show call several times [6.0.0.2]</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-09-02 19:41 UTC ·
+      4 replies · SMF topic #900</p>
+<article class="post" id="msg4482">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-02 19:41 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+With OnRightClick event i show a modeless dialog box.<br>
+<br>
+(dcl_Form_Show mybox)<br>
+<br>
+<br>
+But i do not control if it's already show, then launch again and again at every right click.<br>
+<br>
+And sometimes an alert box tell me that there is an error at parameter 0 in dcl_Form_Show , then modeless disepear, then it's impossible to show it again.<br>
+<br>
+Should i have to test if my modeless is already show ?<br>
+<br>
+or is there something else ?<br>
+<br>
+Very hard to reproduce, maybe every 1 hour of testing ....<br>
+<br>
+Thanks for help.<br>
+</div>
+</article>
+<article class="post" id="msg4502">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-03 20:06 UTC</span>
+  </div>
+  <div class="post-body">I assume this is due to this bug:<br>
+https://sourceforge.net/tracker/index.php?func=detail&amp;aid=2849525&amp;group_id=187950&amp;atid=923363<br>
+<br>
+If so, the bug is now fixed for Alpha 3.</div>
+</article>
+<article class="post" id="msg4505">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-09-04 04:39 UTC</span>
+  </div>
+  <div class="post-body"><br>
+yep, just came/went to report it.  ;D<br>
+<br>
+<br>
+not a problem if the 'Force Reload' flag is passed to (dcl_project_load ...<br>
+<br>
+otherwise,<br>
+the <br>
+(dcl_form_show ... works the initial time ..<br>
+then didn't work subsequent calls.<br>
+<br>
+<br>
+... at least I think this is the same problem.<br>
+<br>
+Uninstalled 6.0.0.2 and installed 6.0.0.1 resolved the issue.<br>
+<br>
+Regards<br>
+Kerry<br>
+<br>
+<br>
+<br>
+BTW<br>
+Thanks Owen for your tenacity.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4506">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-04 04:53 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=900.msg4505#msg4505 date=1252039140 wrote:</cite><br>
+Thanks Owen for your tenacity.</blockquote><br>
+<br>
+Tenacity is my middle name. If I was a lot more smart, I'd be a lot less stubborn.</div>
+</article>
+<article class="post" id="msg4520">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-07 12:42 UTC</span>
+  </div>
+  <div class="post-body">Solved with [6.0.0.3]<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

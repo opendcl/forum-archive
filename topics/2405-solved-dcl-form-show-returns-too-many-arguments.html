@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[Solved] &quot;dcl-Form-Show&quot; returns &quot;too many arguments&quot; · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2405</p>
+    <h1>[Solved] &quot;dcl-Form-Show&quot; returns &quot;too many arguments&quot;</h1>
+    <p class="meta">Started by Peter2 ·
+      2016-08-09 15:51 UTC ·
+      6 replies · SMF topic #2405</p>
+<article class="post" id="msg11999">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-08-09 15:51 UTC</span>
+  </div>
+  <div class="post-body">EDIT: Solved - see below.<br>
+------------------<br>
+<br>
+I have a modal dialogue to insert blocks, displayed in "images". There is a loop to<br>
+<br>
+- open the dialogue initially<br>
+- close and open it when double-clicking the images <br>
+- close it when the button "close" (or Esc ..) are pressed.<br>
+<br>
+As reported in the "Subject" of this posting. "dcl-Form-Show" returns "too many arguments" ...??<br>
+<br>
+This is my structure:<br>
+<br>
+<br>
+; start of main-function<br>
+(defun c:MyApp (/ cmdecho form-type first-run value)<br>
+<br>
+--&gt; do some readings and preparartions and settings ...<br>
+<br>
+    ;; Load the project<br>
+    (dcl-Project-Load "MyApp.odcl")<br>
+<br>
+    ;; Show the main form<br>
+    (setq dialogstatus 20) ; the doubleclick on the images set this value on 20 to keep the loop alive until "Close"<br>
+<br>
+    (while (= dialogstatus 20)<br>
+<br>
+        (setq dialogstatus (dcl-Form-Show MyApp/MyApp))      ; here the modal dialogue will be shown. dialogstatus will be set via the close-commands<br>
+<br>
+; a) here "oninitialize" will work<br>
+; b) then the doubleclick-events will work<br>
+<br>
+        (if (= dialogstatus 20) ; if I click an image, 20 will be used and the loop continues<br>
+            (progn<br>
+                --&gt; do something<br>
+            )<br>
+        )<br>
+    ) ; ende while<br>
+    (princ)<br>
+)<br>
+; end of main-function<br>
+<br>
+<br>
+; oninitialize<br>
+(defun c:MyApp/MyApp#OnInitialize (/)<br>
+--&gt; do some communication between existing values and the display of controls, start the display of the images (load picture)<br>
+    (princ "\nInitialize fertig.")<br>
+)<br>
+<br>
+; one doubleclick-event on "image"<br>
+(defun c:MyApp/MyApp/SigTaf_WMF1#OnDblClicked ()<br>
+--&gt; do something, then close the dialogue with the value 20 to keep the loop alive<br>
+    (dcl-Form-Close MyApp/MyApp 20)<br>
+)<br>
+<br>
+--&gt; The CLOSE here returns 20 to the previous SHOW from above; then it does something and the loop keeps on.<br>
+<br>
+; the standard close button<br>
+(defun c:MyApp/MyApp/Exit#OnClicked (/)<br>
+	(dcl-Form-Close MyApp/MyApp 10)<br>
+)<br>
+--&gt; this returns 10 to the SHOW from above, the loop will end.<br>
+<br>
+The message "too many arguments" appears both when the dialogue starts the first time or when it is re-started from the loop.<br>
+<br>
+What's wrong? The basic structure of the routine?<br>
+<br>
+Thanks and regards</div>
+</article>
+<article class="post" id="msg12002">
+  <div class="post-head">
+    <span class="post-author">cadplayer</span>
+    <span class="post-date muted">2016-08-09 17:21 UTC</span>
+  </div>
+  <div class="post-body">Hello Peter!<br>
+I not realy understand why should use variable dialogstatus.<br>
+Do you have problems to start form-dialog ?<br>
+If I run your code it works for me, but do you have some misstakes in named of dialog ?<br>
+<br>
+here is my example with recall values after -&gt;..., may it helps <br>
+(progn<br>
+  (command "_OPENDCL")<br>
+  (setq form (dcl-project-load "Form1.odcl")) ; -&gt; "Form1"<br>
+  (setq returnResult (dcl-Form-Show Form1/Dialog_Option)) ; -&gt; 1<br>
+  )</div>
+</article>
+<article class="post" id="msg12005">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-08-09 18:51 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=cadplayer link=topic=2405.msg12002#msg12002 date=1470763273 wrote:</cite><br>
+...I not realy understand why should use variable dialogstatus....</blockquote><br>
+Because there are different situations when closing the dialogue, and a different status can start different reactions.</div>
+</article>
+<article class="post" id="msg12007">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-08-09 20:27 UTC</span>
+  </div>
+  <div class="post-body">Why do you think the problem is with dcl_Form-Show and not with c:MyApp/MyApp#OnInitialize?</div>
+</article>
+<article class="post" id="msg12012">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-08-10 06:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2405.msg12007#msg12007 date=1470774428 wrote:</cite><br>
+Why do you think the problem is with dcl_Form-Show and not with c:MyApp/MyApp#OnInitialize?<br>
+</blockquote><br>
+I wrote messages with "princ" to the code, and the appearance of the "too many arguments - message" showed me where it comes from.<br>
+<br>
+But just now I also deactivated the "oninitialize-event" and the "oninitialize-code", and the message still appears.<br>
+<br>
+To be clear: The message appears in the command-line, not in a dialogue.</div>
+</article>
+<article class="post" id="msg12014">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-08-10 08:49 UTC</span>
+  </div>
+  <div class="post-body">Your problem is not caused by the dcl_Form-Show function. If that were the case the dialog would not display. IMO one of the ODCL event handlers must therefore be to blame. Try disabling all events and then switching them back on one by one.</div>
+</article>
+<article class="post" id="msg12015">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-08-10 09:15 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2405.msg12014#msg12014 date=1470818943 wrote:</cite><br>
+Your problem is not caused by the dcl_Form-Show function. If that were the case the dialog would not display. IMO one of the ODCL event handlers must therefore be to blame. ...</blockquote><br>
+Yes - you are right.<br>
+<br>
+Thanks to the detailed error reports in Bricscad I found the problem. BricsCAD told me:<br>
+<br>
+Initialize fertig.<br>
+; ----- LISP : Call Stack -----<br>
+; ...C:MyApp<br>
+; .....DCL-FORM-SHOW &lt;&lt;--<br>
+;<br>
+; ----- Error around expression -----<br>
+(AL_EXECUTEADSDEFUN "DCL-FORM-CLOSE" REST)<br>
+;<br>
+; error : too few / too many arguments at <br>
+;<br>
+; error : during LISP function [c:MyApp/MyApp#OnClose] invoke from BRX/SDS interface,<br>
+          please check Lisp function definition and call arguments.<br>
+<br>
+The reason behind was that I used the wrong code in "OnClose"<br>
+(defun c:MyApp/MyApp#OnClose ( /)<br>
+the right code is<br>
+(defun c:MyApp/MyApp#OnClose (intUpperLeftX intUpperLeftY /)<br>
+Thanks for help.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

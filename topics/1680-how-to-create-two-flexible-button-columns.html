@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to create two flexible button columns? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1680</p>
+    <h1>How to create two flexible button columns?</h1>
+    <p class="meta">Started by roy_043 ·
+      2011-09-19 10:36 UTC ·
+      6 replies · SMF topic #1680</p>
+<article class="post" id="msg8327">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-09-19 10:36 UTC</span>
+  </div>
+  <div class="post-body">I am trying to create a flexible dialog with two flexible button columns. I have managed to 'flex' the right column, but can't find a way to do the same for the left column. Can this be done in OpenDCL?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1663/FolderTreeTest.png">FolderTreeTest.png</a> <span class="muted">(1086 bytes)</span></li><li><a href="../attachments/1664/FolderTreeTest.zip">FolderTreeTest.zip</a> <span class="muted">(1477 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8328">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-09-19 13:22 UTC</span>
+  </div>
+  <div class="post-body">Hi, roy_043, I haven't just the time to test your project but it seems you want to let resize your buttons when the form will be resized. The I recommend you to activate the OnSize event of the form. Then deactivate all the control's dependencies to the form-border (like UseRightFromRight and UseTopFromBottom) and place alle the controls by yourself using SetPos.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8329">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-09-19 15:31 UTC</span>
+  </div>
+  <div class="post-body">A useful trick is to embed an invisible splitter in your form, then position your controls relative to the splitter, and the splitter relative to the form (or however you want with custom code in OnSize).</div>
+</article>
+<article class="post" id="msg8331">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-09-20 10:34 UTC</span>
+  </div>
+  <div class="post-body">Owen and Fred, many thanks to you both for your answers. For now I am going with the splitter approach. I am trying to find a solution that does not require any lisp code...<br>
+<br>
+Two flexible button columns Step 2:<br>
+<br>
+Problem A:<br>
+I have managed to add a splitter that stays in the middle of the dialog and sticks to the bottom as I stretch the dialog. This is exactly what is needed... But if I restart the dialog the splitter has either become invisible or shows up in the wrong position. It seems its position is not stored correctly in the registry.<br>
+<br>
+Problem B:<br>
+To position the buttons in the left column I need the ID of the splitter. How to you determine a splitter's ID?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1665/FolderTreeTest_2.zip">FolderTreeTest_2.zip</a> <span class="muted">(1754 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8334">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-09-21 13:11 UTC</span>
+  </div>
+  <div class="post-body">Try using the control properties dialog (an easy way to open this dialog is to double-click on the control in the Tab/ZOrder pane). By using the properties dialog, your splitter(s) will be listed by name in the dropdown for easy identification. I didn't test your files, but I think if you fix the alignment properties it will work correctly.</div>
+</article>
+<article class="post" id="msg8335">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-09-22 08:33 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen. I tried using every index from 11 to 30 for the UseRightFromRight property of the buttons in the left column (the documentation mentions '&gt;10'). But using the control properties dialog, which is of course much easier, it turns out that the index is 10 in this case.<br>
+<br>
+I still have a problem with the position of the splitter (problem A in my previous post). See attached image. This is not a big issue: in the final dialog the splitter will be invisible.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1666/FolderTreeTest_SplitterLocation.png">FolderTreeTest_SplitterLocation.png</a> <span class="muted">(9035 bytes)</span></li><li><a href="../attachments/1667/FolderTreeTest_3.zip">FolderTreeTest_3.zip</a> <span class="muted">(1772 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8336">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-09-22 19:40 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the excellent feedback! I believe the position problem is now corrected for the next build, and I also fixed the documentation (changed &gt;10 to 10+).</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

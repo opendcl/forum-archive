@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Better web browser control · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2663</p>
+    <h1>Better web browser control</h1>
+    <p class="meta">Started by honkinberry ·
+      2019-03-26 23:24 UTC ·
+      4 replies · SMF topic #2663</p>
+<article class="post" id="msg13160">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2019-03-26 23:24 UTC</span>
+  </div>
+  <div class="post-body">We're really tiring of the Microsoft Web Browser ActiveX Control, and would love to use something based on Chromium.<br>
+I found this: https://www.webkitx.com/<br>
+But couldn't get OpenDCL to see the OCX control as an embeddable control.<br>
+Is there something I can relay on to them, or more information I can provide, or anything at all to help get this to happen?<br>
+<br>
+--J</div>
+</article>
+<article class="post" id="msg13161">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2019-03-27 21:58 UTC</span>
+  </div>
+  <div class="post-body">Did you test on x86 or x64? Their web site mentions x86 controls, but I don't see any mention of x64.</div>
+</article>
+<article class="post" id="msg13162">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2019-03-28 00:07 UTC</span>
+  </div>
+  <div class="post-body">In the downloads you can see they have 32 bit and 64 bit.<br>
+I only downloaded the 64 bit one, could that be the issue?<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg13163">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2019-03-28 15:57 UTC</span>
+  </div>
+  <div class="post-body">Yeah, downloaded the 32 and 64 bit one, and OpenDCL sees it!<br>
+So I'll play with that, and update here with what I find.<br>
+<br>
+--J</div>
+</article>
+<article class="post" id="msg13173">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2019-04-08 17:04 UTC</span>
+  </div>
+  <div class="post-body">I played with it some more, here are my findings.<br>
+<br>
+Issue #1, is that even if everything was to work perfectly, their web site is horrendous, support lacking, and most importantly the distribution documentation is utterly unacceptable, without so much as a user forum to assist.  Even going the route of their distribution "directions", it entails copying about 160MB of files (and ostensibly registering them) -- i.e. creating a distribution runtime manually.<br>
+<br>
+Issue #2, their control is managed via the Load event, which is where a developer is to add their UUID and eventual registration key to unlock the control.  But OpenDCL doesn't expose this Load event, or to my knowledge have a UUID even if it did.  I contacted them to see if there is a solution to this, but haven't heard back.  So in the meantime, it is impossible to even test the control from an OpenDCL form, as the control does not instantiate.<br>
+<br>
+So back to the drawing board!<br>
+<br>
+--J</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

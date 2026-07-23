@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>5.0.0.17 - ListView - onDblClick - sending a command · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 356</p>
+    <h1>5.0.0.17 - ListView - onDblClick - sending a command</h1>
+    <p class="meta">Started by jb ·
+      2008-06-05 14:51 UTC ·
+      22 replies · SMF topic #356</p>
+<article class="post" id="msg1541">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-06-05 14:51 UTC</span>
+  </div>
+  <div class="post-body">won't happen.<br>
+<br>
+ListView OnDoubleClick event wont fire a command no matter how it's defined:<br>
+<br>
+(command "jbPlaceTextNote")<br>
+<br>
+(dcl_sendstring "jbPlaceTextNote ")<br>
+	 <br>
+(c:jbPlaceTextNote)<br>
+<br>
+(vla-sendcommand (vla-get-activedocument(vlax-get-acad-object)) "jbPlaceTextNote ")<br>
+<br>
+Event Invoke is 1 for both Form and Control.  I have a TreeView on another form that fires commands just fine.  I'll try to come up with a simple example to post . . ..<br>
+	</div>
+</article>
+<article class="post" id="msg1542">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-06-05 15:02 UTC</span>
+  </div>
+  <div class="post-body">D*mn, never mind.  My code is busted not yours Owen.<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Good work btw.</div>
+</article>
+<article class="post" id="msg1544">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-06-05 15:44 UTC</span>
+  </div>
+  <div class="post-body">OK, it is the OpenDCL code:<br>
+<br>
+A simple command like (dcl_sendString ".line ") works, however something more complex like (dcl_sendString "jbPlaceNote ") bomnbs at the 3rd prompt:<br>
+<br>
+<pre class="code"><code>(defun c:jbPlaceNote  (/ *Error* text p1 p2 key note qleader qleaderObj)<br>
+  (defun *Error*  (Msg)<br>
+    (cond ((or (not Msg)<br>
+               (member Msg '("console break" "Function cancelled" "quit / exit abort"))))<br>
+          ((princ (strcat "\nError: " Msg))))<br>
+    (princ))<br>
+  (setq text (dcl_ListBox_GetText<br>
+               jb002_00_KEYLIST<br>
+               (dcl_ListBox_GetCurSel jb002_00_KEYLIST)))<br>
+  (if (and text (/= text ""))<br>
+    (progn<br>
+      (setq key  (substr text 1 (vl-string-position (ascii "\t") text))<br>
+            note (substr text (+ 2 (vl-string-position (ascii "\t") text))))<br>
+      (if (and key note)<br>
+        (progn (setq doc (vla-get-ActiveDocument (vlax-get-acad-object)))<br>
+               (vla-StartUndoMark doc)<br>
+               (jb:SetAcadDim<br>
+                 '((3 . "")(40 . 0.0)(60 . 0)(61 . 0)<br>
+                   (62 . 1)(63 . 1)(64 . 0)(65 . 0)<br>
+                   (67 . 2)(68 . 1)(69 . 0)(70 . 0)<br>
+                   (72 . 0)))<br>
+               (prompt "\nSpecify first leader point: ")<br>
+               (vl-cmdf "_.qleader" pause)<br>
+               (prompt "\nSpecify next point: ")<br>
+               (vl-cmdf pause)<br>
+	  ;;Bombs out here - "Invalid Input"<br>
+               (prompt "\nSpecify text width: ")<br>
+               (vl-cmdf pause "." "")<br>
+        (setq qleader (entlast))<br>
+        (if (= (vla-get-objectname (setq qleaderObj (vlax-ename-&gt;vla-object qleader)))<br>
+               "AcDbMText")<br>
+          (progn (vlax-put-property qleaderObj 'TextString note)<br>
+                 (jb:putKeyNotexdata (entlast) key note "NOTELEADER")))))))<br>
+  <br>
+  (vla-EndUndoMark doc)<br>
+    (princ))</code></pre><br>
+<br>
+This code worked in 4.1.2.2</div>
+</article>
+<article class="post" id="msg1547">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-05 19:41 UTC</span>
+  </div>
+  <div class="post-body">You you have a project file for me to test?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1550">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-06-06 14:22 UTC</span>
+  </div>
+  <div class="post-body">Wow, this is weird.  I created a simplified version of this routine, the original is very complex.  It works in the simple routine!  WTH?  There is also an interesting painting issue with the original routine - when the project is initially loaded the form isn't painted correctly, re-loading the project corrects this.  <br>
+<br>
+Ok, I'm attaching both.  Have fun . . ..<br>
+<br>
+jb002.zip is the full original Keynoting routine.  Make sure that KB.key is in AutoCAD's search path.  Drag the jb002.fas into AutoCAD and type "jbKeyNotes" at the command line.  This is one of my "Tray" forms: it rolls up and down automatically when the mouse moves over the form.  Use the little button at the top with the small arrow to pin the form up or down (when pinned down, mouse events are obviously ignored.)  If you've put the KB.key file in the search path you should see the List View filled with notes.  Double Click to add a Key note.  If you have any questions let me know.<br>
+<br>
+See here for more info <a href="http://www.theswamp.org/index.php?topic=22520.0" rel="nofollow noopener">{2}</a><br>
+<br>
+Thanks Fred!<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/411/jb002.zip">jb002.zip</a> <span class="muted">(55723 bytes)</span></li><li><a href="../attachments/412/012.zip">012.zip</a> <span class="muted">(4129 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1551">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-06 14:53 UTC</span>
+  </div>
+  <div class="post-body">Hi, I will have a look at this late at night. My kids want to go swimming now.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1552">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-06-06 15:09 UTC</span>
+  </div>
+  <div class="post-body">Can I come?   :D</div>
+</article>
+<article class="post" id="msg1555">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-06 19:13 UTC</span>
+  </div>
+  <div class="post-body">Sure.  :D<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1556">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-06 19:24 UTC</span>
+  </div>
+  <div class="post-body">OK, I'm da man: first click, first bug.  :D<br>
+When starting <strong>jbKeyNotes</strong>-command the form is shown. When clicking the upper left button to minimize the form I get lots of errors:<br>
+<br>
+Please, don't kill me!<br>
+<br>
+Edit: (maybe it depends on the light version for me...)<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/414/beschr002.jpg">beschr002.jpg</a> <span class="muted">(62935 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1557">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-06 19:39 UTC</span>
+  </div>
+  <div class="post-body">Hi, jb, at first: nice form handling, really nice, hard competition for palettes!<br>
+<br>
+Now to you question:<br>
+<br>
+<blockquote class="quote"><cite> author=jb link=topic=356.msg1544#msg1544 date=1212680696 wrote:</cite><br>
+OK, it is the OpenDCL code:<br>
+<br>
+A simple command like (dcl_sendString ".line ") works, however something more complex like (dcl_sendString "jbPlaceNote ") bomnbs at the 3rd prompt:<br>
+...<br>
+This code worked in 4.1.2.2<br>
+</blockquote><br>
+<br>
+Hm, this works for me in A17, too.<br>
+<br>
+<pre class="code"><code><br>
+Befehl: jbPlaceNote<br>
+<br>
+AcadDim updated!<br>
+Specify first leader point: _.qleader<br>
+Ersten Führungspunkt angeben oder :<br>
+Nächsten Punkt angeben:<br>
+Specify next point:<br>
+Textbreite angeben &lt;0&gt;:<br>
+Specify text width:<br>
+Erste Zeile des Beschriftungs-Texts eingeben : . Nächste Zeile des <br>
+Beschriftungs-Texts eingeben:<br>
+Befehl:<br>
+</code></pre><br>
+<br>
+What do I have to do to reproduce your problem? Can you note some steps?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1558">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-06-06 20:03 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">Hi, jb, at first: nice form handling, really nice, hard competition for palettes!<br>
+</blockquote><br>
+<br>
+Thanks Fred, check out the show and tell forum - I've posted a template with all the form control stuff done for you - just add your controls and go!<br>
+<br>
+I think this issue <em>may</em> lie in my code somewhere.  I don't understand why this would be treated any different than a simple command.  I think it's somewhere lurking in my code?  I'm going to have another look at it this weekend.<br>
+<br>
+Have fun with those kids and thanks!!!</div>
+</article>
+<article class="post" id="msg1560">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-06 20:11 UTC</span>
+  </div>
+  <div class="post-body">Aaaaah, I see, the problem does not occur when I use the command <strong>jbPlaceNote</strong> directly. It only occurs when moving the mouse out off the form. The problem is that it happens because the event <strong>c:jb002_00_OnMouseMovedOff</strong> is called as a command. The current command (_qleader ) tries to interpret the command as an input. But its a wrong input (in the eyes of qleader-command).<br>
+<br>
+I tried such a thing, too. I used a modeless form as a toolbar with buttons the user can pick while (getpoint) with keywords is running. In the image below you can see the function name I use. Actually there is no function name "OB": AutoCAD interprets it as an user input.<br>
+(form: EventInvoke=0, KeepFocus=yes; buttons: EventInvoke=1)<br>
+<br>
+I wanted to have such a toolbar while _insert command is running, too. But I got nearly the same problem as yours: it doesn't work. In your case it works at least but there is only a little ugly message when moving the mouse out off the form. Since ObjectDCL/OpenDCL is designed to call commands, I'm afraid you will have to live with it.<br>
+<br>
+I will start to debug it but I don't believe to find a solution - until I reverse my opinion or somebody corrects me.<br>
+Maybe we'll find a workaround.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/415/beschr003.jpg">beschr003.jpg</a> <span class="muted">(25157 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1563">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-06-07 18:33 UTC</span>
+  </div>
+  <div class="post-body">I haven't looked closely at the code, but would it help to precede the command with ^C^C?</div>
+</article>
+<article class="post" id="msg1564">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-07 22:03 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+if I understood jb right - please correct me - then his problem is this:<br>
+<br>
+<pre class="code"><code><br>
+(vl-cmdf "_.qleader" pause)<br>
+               (prompt "\nSpecify next point: ")<br>
+               (vl-cmdf pause)<br>
+	  ;;Bombs out here - "Invalid Input"<br>
+               (prompt "\nSpecify text width: ")<br>
+               (vl-cmdf pause "." "")<br>
+</code></pre><br>
+<br>
+That means: when moving the mouse off the form then an event is called as a command and thats why the leader command (which allows additional options at this point) returns invalid input message. I don't belive it is a problem calling the listview dblclick event. I hope I described it understandable.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1565">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-06-08 00:43 UTC</span>
+  </div>
+  <div class="post-body">I see.  It sounds like the form should be disabled while a command is active.</div>
+</article>
+<article class="post" id="msg1566">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-08 07:05 UTC</span>
+  </div>
+  <div class="post-body">That sounds interesting. I remember a method I translated  :) . It may also work at a palette of mine. Until now I call a (foreach oCtrl (dcl_form_getcontrols oForm) (dcl_control_setenabled oCtrl nil) .<br>
+<br>
+I will have a try at jb's form.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1567">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-06-08 15:32 UTC</span>
+  </div>
+  <div class="post-body">Guys, I posted an example, a simple modeless form, where this scenario works: the 012.zip I attached earlier in the thread has a modeless form with ONLY a listview control - no other controls - and the doubleclick/qleader command functions as expected.<br>
+<br>
+So I think there might be another issue with the jb002.zip form: the listview is on a tab control, which in the editor comes up as another form?  Is the container for tabs another form?  Will it fire it's own mouse events which aren't managed or trappable at this time??<br>
+<br>
+It seems to me that some other control on jb002.zip's form is causing the problem because the simple 012.zip form works as expected.  I'm also suspect about this particular form because it's the only one out of seven other complex forms that has a re-painting issue.<br>
+<br>
+Thanks for the help guys - other than this - alpha 17 is working pretty well.</div>
+</article>
+<article class="post" id="msg1568">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-09 05:55 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen, I'd like to disable the form - but it seems that there is a type mismatch (or something else). The form doesn't seem to support an enable-method.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/417/beschr004.jpg">beschr004.jpg</a> <span class="muted">(50635 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1571">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-06-09 18:03 UTC</span>
+  </div>
+  <div class="post-body">That is a bug. I've fixed this for Alpha 19.</div>
+</article>
+<article class="post" id="msg1572">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-06-09 18:17 UTC</span>
+  </div>
+  <div class="post-body">Hey, Hijackers - what about my problem??  ;)</div>
+</article>
+<article class="post" id="msg1574">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-06-10 03:23 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=356.msg1572#msg1572 date=1213035475 wrote:</cite><br>
+Hey, Hijackers - what about my problem??  ;)<br>
+</blockquote><br>
+<br>
+In the meantime, try doing what Fred suggested in http://www.opendcl.com/forum/index.php?topic=356.msg1566#msg1566 to see if that addresses the problem.</div>
+</article>
+<article class="post" id="msg1575">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-10 06:11 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+is <pre class="code"><code>(dcl_form_enable oForm nil)</code></pre> internally the same as <pre class="code"><code>(foreach oCtrl (dcl_form_getcontrols oForm) (dcl_control_setenabled oCtrl nil)</code></pre>? My hope was that <pre class="code"><code>(dcl_form_enable oForm nil)</code></pre> would also suppress calling the OnMouseMovedOff event. Because that is in my opinion the original reason.<br>
+<br>
+I added an animated GIF. @jb: is it the problem I'm showing?<br>
+What you see is a modified lisp with disabling the form meanwhile (using the way I suggested). But you cannot get any notice of it because you work with sendcommand. I will have a last try with (c:jbPlaceTextNote), (c:jbPlaceNote) and (c:jbPlaceKeyNote) instead.<br>
+<br>
+... I had a try. With really interesting results: Completely unusable.  :-\ (see second screenshot)<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/418/OnMouseMoveOff.gif">OnMouseMoveOff.gif</a> <span class="muted">(236985 bytes)</span></li><li><a href="../attachments/419/OnMouseEventsAsText.gif">OnMouseEventsAsText.gif</a> <span class="muted">(137661 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1576">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-06-10 13:20 UTC</span>
+  </div>
+  <div class="post-body">Fred, disabling all the controls is not the same as disabling the form, because as you found, an enabled form still processes mouse messages.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

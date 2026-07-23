@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ControlBar Size · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1349</p>
+    <h1>ControlBar Size</h1>
+    <p class="meta">Started by velasquez ·
+      2010-10-08 21:39 UTC ·
+      5 replies · SMF topic #1349</p>
+<article class="post" id="msg7200">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-10-08 21:39 UTC</span>
+  </div>
+  <div class="post-body"> I am working with a ControlBar form with DockableSides = 4.  <br>
+What do I need to do to update the window of AutoCAD when the width of ControlBar is modified?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1448/ControlBar.png">ControlBar.png</a> <span class="muted">(57793 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7201">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-10-08 21:41 UTC</span>
+  </div>
+  <div class="post-body">The layout should be recalculated automatically. How are you changing the width?</div>
+</article>
+<article class="post" id="msg7202">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-10-08 22:33 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1349.msg7201#msg7201 date=1286574086 wrote:</cite><br>
+The layout should be recalculated automatically. How are you changing the width?<br>
+</blockquote><br>
+<br>
+I am changing the width with dcl_Control_SetWidth.<br>
+<br>
+(defun c:Project-2-Dockable_Form2_Label1_OnClicked (/)<br>
+      (dcl_Control_SetWidth Project-2-Dockable_Form2 20)<br>
+      (setq JoyLargura (dcl_Control_GetWidth Project-2-Dockable_Form2))<br>
+) ;_ fim de defun</div>
+</article>
+<article class="post" id="msg7203">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-10-12 12:44 UTC</span>
+  </div>
+  <div class="post-body">I posted the files to show the problem with Control Bar Form.  <br>
+If this is not a bug anybody does it can me to help to adjust the width of the layout of AutoCAD?<br>
+Thanks<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1449/ControlBar-6.0.1.1.odcl">ControlBar-6.0.1.1.odcl</a> <span class="muted">(876 bytes)</span></li><li><a href="../attachments/1450/ControlBar-6.0.1.1.LSP">ControlBar-6.0.1.1.LSP</a> <span class="muted">(1949 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7204">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-10-14 02:54 UTC</span>
+  </div>
+  <div class="post-body">The control bar is not designed to be resizable by code unless it is floating. The fact that OpenDCL is actually resizing the hosted form is a bug; it should not attempt to resize when the control bar is docked.<br>
+<br>
+I investigated again to see if there is any way to add the ability to resize a docked control bar, but unfortunately I could not find any way to do it. Depending on your needs, a palette might work better as it can snap to an edge while remaining floating (and thus resizable).</div>
+</article>
+<article class="post" id="msg7205">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-10-14 10:59 UTC</span>
+  </div>
+  <div class="post-body">Ok Owen,<br>
+Thank you for the help.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>is it possible for a function inside an odcl function? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1118</p>
+    <h1>is it possible for a function inside an odcl function?</h1>
+    <p class="meta">Started by andrew ·
+      2010-01-07 21:41 UTC ·
+      19 replies · SMF topic #1118</p>
+<article class="post" id="msg5922">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-01-07 21:41 UTC</span>
+  </div>
+  <div class="post-body">i was looking to put a repeat inside of a listview function to keep the fill list dynamic based on the list length<br>
+<br>
+for example<br>
+<br>
+<pre class="code"><code><br>
+(setq final_lst (dcl_Control_GetList test_Form3_ListBox2))<br>
+(setq f_lst_cnt (length final_lst))<br>
+(setq lst_cnt 0)<br>
+(dcl_ListView_FillList test_Form3_ListView1 <br>
+  (list <br>
+    (repeat f_lst_cnt<br>
+      (list (nth lst_cnt final_lst))<br>
+      (setq lst_cnt (1+ lst_cnt))<br>
+     )<br>
+  )<br>
+)<br>
+</code></pre><br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5924">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-07 22:04 UTC</span>
+  </div>
+  <div class="post-body">I recommend you to build the list outside before calling dcl_listview_filllist because this method throws an error when the list is nil<br>
+<br>
+Make it this way.<br>
+<br>
+<br>
+(if (setq lstList (createlist))<br>
+  (dcl_listview_filllist MyProject_MyForm_MyListview lstList)<br>
+  (dcl_listview_clear MyProject_MyForm_MyListview)<br>
+); if<br>
+<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5925">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-01-07 22:04 UTC</span>
+  </div>
+  <div class="post-body">Yes it's possible to have a function inside a odcl function.<br>
+For example you have (list) &amp; (setq) inside of it.<br>
+But the (repeat) function isn't the problem.<br>
+The problem is that it's not building the list...<br>
+If you run:<br>
+<br>
+<br>
+(list<br>
+  (repeat f_lst_cnt<br>
+      (list (nth lst_cnt final_lst))<br>
+      (setq lst_cnt (1+ lst_cnt))<br>
+  )<br>
+)<br>
+<br>
+<br>
+You get a single number in a list, (3) for example, since (setq lst_cnt (1+ lst_cnt)) was the last code passed to the first (list).<br>
+<br>
+You need to build a temp lisp before you call the FillList<br>
+<br>
+(setq xlst nil)<br>
+(repeat f_lst_cnt<br>
+    (setq xlst (append xlst (list (nth lst_cnt final_lst))))<br>
+    (setq lst_cnt (1+ lst_cnt))<br>
+)<br>
+<br>
+(dcl_ListView_FillList test_Form3_ListView1 xlst)<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5927">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-07 22:19 UTC</span>
+  </div>
+  <div class="post-body">Barry, andrew, I just saw the sample from Barry and I decided to build a little test for you - just for your knowledge.<br>
+<br>
+Please test both of the functions below and tell me if you feel a difference in performance.<br>
+Both the the commands return the same result.<br>
+<br>
+<br>
+(defun c:buildlist_using_append (/ lst cnt)<br>
+  (setq lst '() cnt -1)<br>
+  (repeat 10000<br>
+    (setq lst (append lst (list (setq cnt (1+ cnt)))))<br>
+  ); repeat<br>
+  (list (car lst) (last lst)) ;; the list is too long to return<br>
+); c:buildlist_using_append<br>
+<br>
+(defun c:buildlist_using_cons (/ lst cnt)<br>
+  (setq lst '() cnt -1)<br>
+  (repeat 10000<br>
+    (setq lst (cons (setq cnt (1+ cnt)) lst))<br>
+  ); repeat<br>
+  (setq lst (reverse lst)) ;; it's the only difference to the append method<br>
+  (list (car lst) (last lst)) ;; the list is too long to return<br>
+); c:buildlist_using_cons<br>
+<br>
+<br>
+But maybe you've already known that. In that case I apologize and I ask you to ignore this.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5928">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-01-07 23:19 UTC</span>
+  </div>
+  <div class="post-body">WOW Fred thanks.<br>
+CONS is defiantly much faster.<br>
+Thanks for teaching me something new.<br>
+As always, you da man. :)<br>
+</div>
+</article>
+<article class="post" id="msg5929">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-08 00:26 UTC</span>
+  </div>
+  <div class="post-body">Speeaking of skinning cats ...<br>
+Say the <em>(dcl_Control_GetList test_Form3_ListBox2)</em> returns something like this ;<br>
+<br>
+(setq ListBoxDataLst (list "Alpha"     "Bravo"     "Charlie"   "Delta"     "Echo"<br>
+                           "Foxtrot"   "Golf"      "Hotel"     "India"     "Juliet"<br>
+                          )<br>
+)<br>
+<br>
+<br>
+You could try something like this ;<br>
+<br>
+<br>
+(setq ItemImageIndex 0<br>
+      ListViewDataLst<br>
+       (mapcar '(lambda (x) (list x (setq ItemImageIndex (1+ ItemImageIndex))))<br>
+               ListBoxDataLst<br>
+       )<br>
+)<br>
+<br>
+<br>
+<br>
+<br>
+which returns :<br>
+<br>
+<blockquote class="quote"><br>
+ ;| returns <br>
+(("Alpha" 1) ("Bravo" 2)<br>
+             ("Charlie" 3)<br>
+             ("Delta" 4)<br>
+             ("Echo" 5)<br>
+             ("Foxtrot" 6)<br>
+             ("Golf" 7)<br>
+             ("Hotel" 8 )<br>
+             ("India" 9)<br>
+             ("Juliet" 10)<br>
+)<br>
+|;<br>
+<br>
+</blockquote><br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5930">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-01-08 17:26 UTC</span>
+  </div>
+  <div class="post-body">Fred,<br>
+the lists i built outside the function i couldnt get to work<br>
+so i was trying different things<br>
+<br>
+your repeat function with the cons or append was a great little learner for me, cons was much faster<br>
+thanks<br>
+<br>
+Barry &amp; Kerry <br>
+thanks for your input<br>
+although Kerry, i dont understand the lamda thing so i dont really use it.<br>
+</div>
+</article>
+<article class="post" id="msg5931">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-08 18:37 UTC</span>
+  </div>
+  <div class="post-body">andrew,<br>
+<br>
+using mapcar and lambda is very easy<br>
+<br>
+<strong>mapcar </strong> applies a function to each list item of the lists given as arguments<br>
+<br>
+(setq lstA '(1 2 3 4))<br>
+(setq lstB '("a" "b" "c" "d"))<br>
+(mapcar 'cons lstA lstB)<br>
+<br>
+returns ((1 . "a") (2 . "b") (3 . "c") (4 . "d"))<br>
+The number of lists must match to the number of arguments which are needed by the function which mapcar is applying (cons needs two).<br>
+<br>
+<br>
+<strong>lambda </strong> is for being lazy and to avoid defining a named function  ;)<br>
+<br>
+means<br>
+<br>
+you can either do<br>
+<br>
+<br>
+;; define function, make the function name local in the current lisp command<br>
+(defun make_list (strItem) (list strItem (setq ItemImageIndex (1+ ItemImageIndex))))<br>
+<br>
+(setq ItemImageIndex 0<br>
+      lstData (mapcar 'make_list (list "Alpha" "Bravo" "Charlie" "Delta")))<br>
+<br>
+<br>
+or you do<br>
+<br>
+<br>
+(setq ItemImageIndex 0<br>
+      lstData (mapcar '(lambda (strItem) (list strItem (setq ItemImageIndex (1+ ItemImageIndex))))<br>
+                       (list "Alpha" "Bravo" "Charlie" "Delta")))<br>
+<br>
+<br>
+The arguments von the anonym function must match to the number of lists which are given to mapcar.<br>
+<br>
+<strong>An example:</strong> you want to get the midpoint between two given points.<br>
+<br>
+(setq p1 (getpoint "\nPoint 1:"))<br>
+(setq p2 (getpoint "\nPoint 2:"))<br>
+(setq pMid (mapcar '* (mapcar '+ p1 p2) '(0.5 0.5 0.5)))<br>
+<br>
+<br>
+Everything's clear?  ;)<br>
+Fred</div>
+</article>
+<article class="post" id="msg5972">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-01-11 18:46 UTC</span>
+  </div>
+  <div class="post-body">i think i need a little more guidance<br>
+here is the code im using, it reads a txt file, adds the contents to a list box and then i get to select of that list box to a list view and eventually at the same time it will copy the exact same contents the list view has to another text file, i already have that code.<br>
+<br>
+now the problem:<br>
+this code works for any one line i select and displays in the list view. if i select another line, it changes to that line and does not add to the list view.<br>
+as you can see in the code, im using append but it doesnt seem to work. how can i get the line i select to add to the list to be displayed<br>
+and keep adding to it as long as i keep selecting.<br>
+<br>
+<br>
+<pre class="code"><code><br>
+(defun c:dwgbrowser_Form3_OnInitialize (/ ofile curline file_content_list)<br>
+<br>
+  (setq datafile (findfile "test.txt"))<br>
+  (setq ofile (open datafile "r"))  <br>
+  (while (setq curline (read-line ofile))  <br>
+    (setq file_content_list (cons curline file_content_list))  <br>
+  )  <br>
+  (close ofile)  <br>
+  (setq file_content_list (reverse file_content_list))<br>
+(dcl_Control_SetList dwgbrowser_Form3_ListBox1 file_content_list)<br>
+;(dcl_Control_SetList dwgbrowser_Form3_ListBox2 (nth 1 file_content_list))<br>
+(dcl_ListView_AddColumns dwgbrowser_Form3_ListView1 <br>
+  (list <br>
+    (list "Title" 0 100) <br>
+    (list "Drawing" 0 100) <br>
+    (list "Revision" 0 100)<br>
+  )<br>
+)<br>
+<br>
+)<br>
+<br>
+(defun c:dwgbrowser_Form3_TextButton1_OnClicked (/ items title rev dwgnum make_lst show_list)<br>
+<br>
+(setq items (dcl_ListBox_GetSelectedItems dwgbrowser_Form3_ListBox1))<br>
+(setq new_item items)<br>
+<br>
+;;get title<br>
+(setq title (substr (nth 0 items) 1 34))<br>
+<br>
+;;gets rev<br>
+(setq rev (substr (nth 0 items) (- (strlen (nth 0 items)) 4)))<br>
+<br>
+;;gets dwg<br>
+(setq dwgnum (substr (nth 0 items) 43 7))<br>
+<br>
+(defun make_list (strItem) <br>
+ (list strItem)<br>
+)<br>
+<br>
+(setq make_lst (mapcar 'list (make_list title) (make_list dwgnum) (make_list rev)))<br>
+<br>
+(setq show_list (reverse (append show_list make_lst)))<br>
+(dcl_ListView_FillList dwgbrowser_Form3_ListView1 show_list)<br>
+<br>
+) ;end defun<br>
+</code></pre></div>
+</article>
+<article class="post" id="msg5973">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-01-11 19:09 UTC</span>
+  </div>
+  <div class="post-body">Have a look at the "ListBoxCopyPaste" project in the Samples folder.<br>
+I think it's doing exactly what you're trying to do...</div>
+</article>
+<article class="post" id="msg5974">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-01-11 19:21 UTC</span>
+  </div>
+  <div class="post-body">Hi Barry,<br>
+thanks for the reply.<br>
+<br>
+I did look at that, but thats going from list box to list box,<br>
+im trying to go from list box to list view<br>
+</div>
+</article>
+<article class="post" id="msg5975">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-11 20:43 UTC</span>
+  </div>
+  <div class="post-body">andrew,<br>
+<br>
+Please be so kind and send me the odcl, the lsp and the txt you want to read in.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5976">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-01-11 21:03 UTC</span>
+  </div>
+  <div class="post-body">Fred,<br>
+Thanks for the reply<br>
+<br>
+I got it to work... so far<br>
+<br>
+here is the code im currently using to achieve what im after<br>
+it might not be the best way to get the info but so far its working<br>
+<br>
+<br>
+<pre class="code"><code><br>
+(defun c:dwgbrowser_Form3_OnInitialize (/ ofile curline file_content_list)<br>
+<br>
+  (setq datafile (findfile "test.txt"))<br>
+  (setq ofile (open datafile "r"))  <br>
+  (while (setq curline (read-line ofile))  <br>
+    (setq file_content_list (cons curline file_content_list))  <br>
+  )  <br>
+  (close ofile)  <br>
+  (setq file_content_list (reverse file_content_list))<br>
+(dcl_Control_SetList dwgbrowser_Form3_ListBox1 file_content_list)<br>
+;(dcl_Control_SetList dwgbrowser_Form3_ListBox2 (nth 1 file_content_list))<br>
+(dcl_ListView_AddColumns dwgbrowser_Form3_ListView1 <br>
+  (list <br>
+    (list "Name" 0 100) <br>
+    (list "Size" 0 100) <br>
+    (list "Date" 0 100)<br>
+  )<br>
+)<br>
+<br>
+)<br>
+<br>
+<br>
+(defun c:dwgbrowser_Form3_TextButton1_OnClicked (/ items title rev dwgnum make_lst show_lst)<br>
+<br>
+(setq items (dcl_ListBox_GetSelectedItems dwgbrowser_Form3_ListBox1))<br>
+(setq new_item items)<br>
+<br>
+;;get title<br>
+(setq title (substr (nth 0 items) 1 34)) <br>
+<br>
+;;gets rev<br>
+(setq rev (substr (nth 0 items) 53))<br>
+<br>
+;;gets dwg number<br>
+(setq dwgnum (substr (nth 0 items) 43 7))<br>
+<br>
+(setq make_lst (dcl_ListView_AddItem dwgbrowser_Form3_ListView1 title dwgnum rev))<br>
+<br>
+(setq show_lst (mapcar 'list make_lst))<br>
+<br>
+(dcl_ListView_FillList dwgbrowser_Form3_ListView1 show_lst)<br>
+<br>
+) ;end defun<br>
+</code></pre><br>
+<br>
+edit: this line <span style="color:red">(setq show_lst (mapcar 'list make_lst))</span> causes errors. it still does what i want it to do but returns  errors<br>
+<br>
+Command: (dcl_Form_Show dwgbrowser_Form3)<br>
+; error: bad argument type: listp 0<br>
+; error: bad argument type: listp 1<br>
+; error: bad argument type: listp 2<br>
+; error: bad argument type: listp 3<br>
+<br>
+attached are the files, the code in question is at the end of the file<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1224/dwgbrowser.LSP">dwgbrowser.LSP</a> <span class="muted">(20036 bytes)</span></li><li><a href="../attachments/1225/dwgbrowser.odcl">dwgbrowser.odcl</a> <span class="muted">(14390 bytes)</span></li><li><a href="../attachments/1226/test.txt">test.txt</a> <span class="muted">(226 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5977">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-12 12:45 UTC</span>
+  </div>
+  <div class="post-body">andrew, <br>
+<br>
+that cannot work<br>
+<br>
+(setq make_lst (dcl_ListView_AddItem dwgbrowser_Form3_ListView1 title dwgnum rev))<br>
+<br>
+The AddItem method returns an integer of the newly added row.<br>
+But in<br>
+<br>
+(setq show_lst (mapcar 'list make_lst))<br>
+<br>
+make_list must be a list and must not be an integer.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5980">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-01-12 16:20 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred.<br>
+I got it working with no errors :)<br>
+here is the code i used<br>
+<pre class="code"><code><br>
+(defun c:dwgbrowser_Form3_TextButton1_OnClicked (/ items title rev dwgnum make_lst stritem)<br>
+(setq items (dcl_ListBox_GetSelectedItems dwgbrowser_Form3_ListBox1))<br>
+<br>
+;;get title<br>
+(setq title (substr (nth 0 items) 1 34)) <br>
+<br>
+;;gets rev<br>
+(setq rev (substr (nth 0 items) 53))<br>
+<br>
+;;gets dwg number<br>
+(setq dwgnum (substr (nth 0 items) 43 7))<br>
+<br>
+(defun make_list (strItem) <br>
+ (list strItem)<br>
+)<br>
+<br>
+(setq make_lst (mapcar 'list (make_list title) (make_list dwgnum) (make_list rev)))<br>
+(setq show_lst (append show_lst make_lst))<br>
+(dcl_ListView_FillList dwgbrowser_Form3_ListView1 show_lst)<br>
+</code></pre><br>
+<br>
+now here is another question <br>
+<br>
+in the list view, if there is an row that i decide to delete<br>
+what would be the best way to approach it?<br>
+<br>
+is there an easy way to delete a row?<br>
+there should be a function to delete a row like there is for deleting a column</div>
+</article>
+<article class="post" id="msg5981">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-12 17:45 UTC</span>
+  </div>
+  <div class="post-body">Hi, andrew, all the things you can do with a listview you'll find <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Control/ListView.htm" rel="nofollow noopener">{2}</a>. To delete a row, you can use the <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/ListView/DeleteItem.htm" rel="nofollow noopener">{2}</a> method or the <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/ListView/DeleteItems.htm" rel="nofollow noopener">{2}</a> method.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5982">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-01-12 19:10 UTC</span>
+  </div>
+  <div class="post-body">Fred,<br>
+I discovered how that works right after i made that post<br>
+<br>
+thanks for your reply.<br>
+<br>
+i have yet another Q  :o  :-\<br>
+<br>
+i have my list view set to mulitple selection<br>
+how can i get a list of the items i selected?<br>
+everything i have tried only gets the last item and not all the items?</div>
+</article>
+<article class="post" id="msg5983">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-12 19:22 UTC</span>
+  </div>
+  <div class="post-body">Hi, andrew, as I already have written...<br>
+<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=1118.msg5981#msg5981 date=1263318300 wrote:</cite><br>
+all the things you can do with a listview you'll find <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Control/ListView.htm" rel="nofollow noopener">{2}</a>.</blockquote><br>
+<br>
+To get items of a listview in multiple selection style, you can use <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/ListView/GetSelectedItems.htm" rel="nofollow noopener">{2}</a> method or <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/ListView/GetSelectedNths.htm" rel="nofollow noopener">{2}</a> method.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5997">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-01-13 13:47 UTC</span>
+  </div>
+  <div class="post-body">thanks Fred<br>
+<br>
+ill play around with these functions<br>
+<br>
+cheers</div>
+</article>
+<article class="post" id="msg5998">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-13 13:56 UTC</span>
+  </div>
+  <div class="post-body">Good luck!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

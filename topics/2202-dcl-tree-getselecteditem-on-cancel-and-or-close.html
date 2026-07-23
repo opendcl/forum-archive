@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl-Tree-GetSelectedItem on Cancel and/or Close · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2202</p>
+    <h1>dcl-Tree-GetSelectedItem on Cancel and/or Close</h1>
+    <p class="meta">Started by Peter2 ·
+      2014-11-19 21:55 UTC ·
+      10 replies · SMF topic #2202</p>
+<article class="post" id="msg11045">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-19 21:55 UTC</span>
+  </div>
+  <div class="post-body">I use a tree and want to save the SelectedItem when I close the dialog with the "Windows close X" in the right upper corner of the dialogue.<br>
+<br>
+I tried this code:<br>
+<br>
+; I tried also with defun c:sp_haupt#OnClose<br>
+(defun c:sp_haupt#OnCancel ()<br>
+    (setq baumstatus (dcl-Tree-GetSelectedItem sp_Haupt_tree))<br>
+)<br>
+<br>
+(defun c:sp_haupt#OnInitialize ()<br>
+    (if baumstatus<br>
+        (dcl-Tree-selectitem sp_Haupt_tree baumstatus)<br>
+    )<br>
+<br>
+Result: nothing - "baumstatus" stays on nil ..<br>
+<br>
+Where do I have to search my error-of-the-day?<br>
+<br>
+Many thanks</div>
+</article>
+<article class="post" id="msg11050">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-19 23:06 UTC</span>
+  </div>
+  <div class="post-body">I would start by verifying that the (dcl-Tree-GetSelectedItem sp_Haupt_tree) gets called. Once that is verified, I would check that the return value is indeed NIL, (to ensure that baumstatus is not being changed afterward). If all checks out, I would then try the same diagnostics from a button's OnClick event handler to see if the problem is due to timing or some other reason. If it's due to timing, I recommend to upload a simple sample and detailed instructions that I can use to reproduce it.</div>
+</article>
+<article class="post" id="msg11055">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-20 10:25 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+I made some researches - it seems that the command "dcl_form_close ..." causes the problems.<br>
+<br>
+If I use the command "(dcl_form_close mydialog)" in the commandline, then I get an error messsage:<br>
+Command: (dcl_Form_Close spdrs_Haupt)<br>
+; Error: Too many arguments<br>
+(303.0 206.0)<br>
+If the command is included in the lisp-code, then I get an error in the lisp. If the command is included in an "event", then I have a crash of AutoCAD with "Access violation".<br>
+<br>
+I made a screencast to demonstrate the problem:<br>
+<a href="https://screencast.autodesk.com/Main/Details/fd884eb9-571c-477f-84e7-28b7e6c5c71a" rel="nofollow noopener">{2}</a> <br>
+<br>
+The test-code of LSP and ODCL are attached.<br>
+<br>
+Anyone else who has problem with "dcl_form_close"?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2065/test.lsp">test.lsp</a> <span class="muted">(5125 bytes)</span></li><li><a href="../attachments/2066/test.odcl">test.odcl</a> <span class="muted">(39415 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11060">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-20 14:23 UTC</span>
+  </div>
+  <div class="post-body">I have not yet tested your code, but I suspect the "too many arguments" error comes from an incorrect event handler that is fired during (dcl-Form-Close). Probably one of your event handlers is getting arguments that it does not expect.</div>
+</article>
+<article class="post" id="msg11062">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-20 14:37 UTC</span>
+  </div>
+  <div class="post-body">Some comments after looking at your code:<br>
+<br>
+1) Your OnClose event handler is incorrect. It will receive two arguments, but your code expects no arguments. This is undoubtedly the reason for the "too many arguments" error.<br>
+2) It's a good idea to not use the (alert) function for diagnostic purposes, as it can have inadvertent effects on the thing being diagnosed.<br>
+3) When adding diagnostic code, be careful to not change the return value of events where the return value matters (like OnCancelClose).<br>
+4) There is no need to call (dcl-Form-Close) in the OnClose, OnCancel, and OnCancelClose event handlers. In fact, it could lead to an infinite loop in OnCancelClose if the handler returns NIL to prevent closing.<br>
+<br>
+Hopefully this will get you back on track with the original issue.</div>
+</article>
+<article class="post" id="msg11064">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-11-20 14:59 UTC</span>
+  </div>
+  <div class="post-body">2 additional remarks:<br>
+5) Your using both the old and the new naming convention. You have 'c:Haupt#OnCancel' but also 'c:Haupt_OnInitialize'. This can only lead to confusion.<br>
+6) You are not localizing your variables.</div>
+</article>
+<article class="post" id="msg11067">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-20 16:00 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2202.msg11062#msg11062 date=1416494270 wrote:</cite><br>
+Some comments after looking at your code:<br>
+<br>
+1) Your OnClose event handler is incorrect.....<br>
+</blockquote><br>
+That's it - there was a really mess in the code. I cleaned it up - and learned about the sequence of OnCancel, OnClose, form_Close. Now the first and the second problem is solved.<br>
+<br>
+Probably a "greenly" question, but is there a kind of flow-diagram which displays the base of "load / show / hide / show / close / cancel / close" ...?<br>
+<br>
+<blockquote class="quote"><cite> author=roy_043 link=topic=2202.msg11064#msg11064 date=1416495589 wrote:</cite><br>
+2 additional remarks:...<br>
+</blockquote><br>
+Yes, I started with version 8 yesterday, using elder code snippets. But the confusion is caused by me and not be the naming convention. I have to clean it up and to localize my variables too.<br>
+<br>
+Thanks for your help, Owen and roy_043.</div>
+</article>
+<article class="post" id="msg11068">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-20 16:11 UTC</span>
+  </div>
+  <div class="post-body">There is no flow diagram, but the typical usage pattern for modal and modeless forms is discussed in the documentation and demonstrated in the samples.</div>
+</article>
+<article class="post" id="msg11080">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-11-22 13:28 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<blockquote class="quote"><cite> author=Peter2 link=topic=2202.msg11067#msg11067 date=1416499217 wrote:</cite><br>
+[...]<br>
+Probably a "greenly" question, but is there a kind of flow-diagram which displays the base of "load / show / hide / show / close / cancel / close" ...?<br>
+[...]<br>
+</blockquote><br>
+<br>
+not sure, if you meant something like this, but may be this makes it more clear:<br>
+<br>
+<br>
+<br>
+<strong>OnInitialize</strong><br>
+It is called after form dcl-form-show method was called and all controls are available.<br>
+<strong>Please note:</strong> Between dcl-form-show and OnInitialize already some events are fired (TabSelChanged for instance).<br>
+<strong>Please note:</strong> It is not called after (dcl-form-hide oForm nil). <br>
+<br>
+<br>
+<br>
+<strong>OnCancelClose</strong><br>
+It is called after form dcl-form-close method was called or Enter or ESC are pressed in a control which doesn't handle these keys. Then this keypress will be lead to the form and handled there. In OnCancelClose you have the chance to "think about do I really want it" closing the form. For instance, if some information are missing you can show a messagebox or whatever. If you press ESC in a grid in editable state you can cancel grid editing and leave the form open. To suppress form closing you have to return true. To avoid closing the form after hitting Enter in a textbox or grid, I check the first argument intIsEsc and return (/= intIsEsc 1).<br>
+<br>
+<br>
+<br>
+<strong>OnOk</strong><br>
+It is called after OnCancelClose and before OnCancel and OnClose.<br>
+<br>
+<br>
+<br>
+<strong>OnCancel</strong><br>
+It is called after OnCancelClose, after OnOk (after hitting Enter in Textbox) and right before OnClose. Unfortunalety it seems to be called <strong>twice after pressing ESC</strong>, but only once when clicking the cross in upper right corner or clicking the or clicking the Close form button. And unfortunately, it is also called after hitting Enter in textbox (just between OnOk and OnClose).<br>
+<br>
+<br>
+<br>
+<strong>OnClose</strong><br>
+It is called when the form is finally going to be closed - just right before none of the controls are available. It is just the last second to get the current values from the controls before they're getting destroyed.<br>
+<br>
+<br>
+<br>
+<br>
+<strong>Show</strong><br>
+Method to create a new form instance. Note that you're responsible to check with dcl-form-isactive, if there's already an existing instance.<br>
+<br>
+<br>
+<br>
+<br>
+<strong>Close</strong><br>
+Method to close and destroy an existing form instance.<br>
+<br>
+<br>
+<br>
+<br>
+<strong>Hide</strong><br>
+Changes the visibility of a none-modal form. It is not available for modal forms, because the control cannot send back to AutoCAD.<br>
+<br>
+<br>
+<br>
+Have a short look at the sample FormEventTester I've attached. And please note the return values of dcl-form-show!<br>
+Hope that helps a very little bit.<br>
+<br>
+With regards,<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2073/FormEventTester.lsp">FormEventTester.lsp</a> <span class="muted">(1760 bytes)</span></li><li><a href="../attachments/2074/FormEventTester.odcl">FormEventTester.odcl</a> <span class="muted">(965 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11091">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2014-11-23 03:29 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+I'm just watching this post.<br>
+But found something odds.<br>
+Some code of Peter2's written " (<span style="color:blue">dcl_Form_Close </span>... ")<br>
+and Fred's sample codes shown as <br>
+<br>
+(<span style="color:blue">dcl-form-close</span> FormEventTester/MyForm 2)<br>
+<br>
+And My ACAD does not read Fred's sample.<br>
+<br>
+May wish someone tell me what is this difference of "-" and "_" ?<br>
+<br>
+(On using OpenDCL.Studio.ENU.7.0.1.4)<br>
+<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg11092">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-23 04:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=khann link=topic=2202.msg11091#msg11091 date=1416713370 wrote:</cite><br>
+May wish someone tell me what is this difference of "-" and "_" ?</blockquote><br>
+<br>
+This is new in OpenDCL 8.0. See <a href="http://www.opendcl.com/forum/index.php?topic=2084.0" rel="nofollow noopener">{2}</a>.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

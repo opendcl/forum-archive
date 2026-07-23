@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lock up on successive forms · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1796</p>
+    <h1>Lock up on successive forms</h1>
+    <p class="meta">Started by kenkrupa ·
+      2012-05-02 21:07 UTC ·
+      9 replies · SMF topic #1796</p>
+<article class="post" id="msg8844">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2012-05-02 21:07 UTC</span>
+  </div>
+  <div class="post-body">I believe I have found a nasty bug in 7.0.0.4:<br>
+<br>
+A button on one form closes that form and launches another one (defined in another .odcl file). The second form seems fine, but when I click OK, AutoCAD freezes. The cursor displays as an arrow instead of the normal cross hair. Only thing to do is go to Task Manager to kill it. This has started since downloading 7.0.0.4 - before that it worked fine.<br>
+<br>
+I'm attaching a zip with my files. The two .odcl are the actual files; the two .lsp files are highly lobotomized versions to demonstrate the problem. To test, extract them to a folder on the search path, load FormTest1.lsp, and run FORMTEST command (it will load FormTest2.lsp). Do nothing in the first form except click on the Add Hip/Valley button. At the second form, just click OK. It will be prompting for a point, but it is frozen.<br>
+<br>
+Running ACA 2012, Win7-64.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1729/FormTest.zip">FormTest.zip</a> <span class="muted">(82733 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8845">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-05-03 07:46 UTC</span>
+  </div>
+  <div class="post-body">Hi, I cannot believe that it will work: you call kcs_WoodHipValley within running c:hipval_OnClicked event. That means the control isn't given completely back to AutoCAD after closing WB_Dialog when you call the next form. If you press OK on the second form there are still 2 events active in the back when you call (kcs_WoodHipValleyCalc pitch1 pitch2 run1 brg1 brg2 ext1 which beam) and you try to get access to AutoCAD drawing window.<br>
+<br>
+I recommend you to build up your Lisp-File <a href="http://www.opendcl.com/forum/index.php?topic=1080.0" rel="nofollow noopener">{2}</a>. Please have a forum search for interacts with two modal forms. i remember there was a similar case in the past.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8846">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-05-03 14:22 UTC</span>
+  </div>
+  <div class="post-body">Fred is right, you can't safely open a second form while the first is in the process of closing.</div>
+</article>
+<article class="post" id="msg8847">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2012-05-03 14:52 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1796.msg8846#msg8846 date=1336054940 wrote:</cite><br>
+Fred is right, you can't safely open a second form while the first is in the process of closing.<br>
+</blockquote><br>
+<br>
+Geez, it did work fine with 6.0.2.3 - but it looks like I'll need to revise my code.</div>
+</article>
+<article class="post" id="msg8848">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-05-03 19:55 UTC</span>
+  </div>
+  <div class="post-body">Hi, I got it: you will find it <a href="http://www.opendcl.com/forum/index.php?topic=947.0" rel="nofollow noopener">{2}</a>.<br>
+Have a good night (I just have to work  :'( ).<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg8849">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2012-05-03 20:08 UTC</span>
+  </div>
+  <div class="post-body">I'm still wondering why there was not problem with this using 6.0.2.3, and an associate tells me he has no problem with 7.0.0.2. I don't suppose you guys could find what's different with .4 and put it back the way it was?<br>
+<br>
+Otherwise, I'll delve into that sample code as soon as I can. Thank you.</div>
+</article>
+<article class="post" id="msg8850">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-05-03 22:53 UTC</span>
+  </div>
+  <div class="post-body">Showing a second modal form while the first is still closing has never been safe, and can't be made safe, although it could possibly appear to work in certain scenarios where you have something causing the window messages to be processed in just the right sequence in the background. If it was working in your case, it may have failed in other cases.</div>
+</article>
+<article class="post" id="msg8855">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2012-05-04 20:36 UTC</span>
+  </div>
+  <div class="post-body">Still don't completely understand why dcl_Form_Close doesn't do it, but I don't need to understand as long as I can make it work &lt;|:-0  <em>{that's me with my dunce hat on}</em><br>
+<br>
+So, I looked at the code in in the link in Reply #4 (thanks Fred) and got the idea. To sum it up, close the main form with a return value, as in (dcl_Form_Close WB_Dialog 4), and look for that return value in the while loop to launch the child form. Got it. Works now. Thank you.</div>
+</article>
+<article class="post" id="msg8857">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-05-05 15:45 UTC</span>
+  </div>
+  <div class="post-body">It may help to think of (dcl_Form_Close) as simply setting a "close me" flag, but not actually closing anything. When the dialog message loop then gets around to processing window messages again, it encounters the flag and signals the dialog to start it's close process. That's not precisely correct, but it's close. The bottom line is that the dialog is not yet finished closing when (dcl_Form_Close) returns, and it can't possibly finish completely while the event handler is still executing.</div>
+</article>
+<article class="post" id="msg8858">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2012-05-05 15:52 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the explanation Owen. Now I have it working, and understand better also. So I think I can take off my dunce cap now  ;D </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

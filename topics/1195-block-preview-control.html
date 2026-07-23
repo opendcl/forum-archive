@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Block Preview Control · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1195</p>
+    <h1>Block Preview Control</h1>
+    <p class="meta">Started by jb ·
+      2010-03-04 14:57 UTC ·
+      16 replies · SMF topic #1195</p>
+<article class="post" id="msg6400">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2010-03-04 14:57 UTC</span>
+  </div>
+  <div class="post-body">When using the Block Preview control to display a drawing it creates two lock files that don't get removed until the current session of AutoCAD is closed.  If multiple drawings are selected multiple lock files are created.  Is this by design and can it be changed?<br>
+<br>
+I'll upload my Block Manager stuff to test.  Load all the lisps that start with BM_*.lsp<br>
+<br>
+command is "BlockManager"<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1323/BlockManagerv0.2.zip">BlockManagerv0.2.zip</a> <span class="muted">(12501 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6401">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-04 16:26 UTC</span>
+  </div>
+  <div class="post-body">I loaded the files, but when I click on a filename all I get is a nil echoed at the command line and no block is displayed.</div>
+</article>
+<article class="post" id="msg6405">
+  <div class="post-head">
+    <span class="post-author">TimSpangler</span>
+    <span class="post-date muted">2010-03-04 17:34 UTC</span>
+  </div>
+  <div class="post-body">Not sure if this helps.  This discussion came up over at theswamp.  I noticed that when the blockview creates the preview it locks the drawings and does not release it.  Maybe you can load this one.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1324/BlockManager.lsp">BlockManager.lsp</a> <span class="muted">(58026 bytes)</span></li><li><a href="../attachments/1325/BlockManager.odcl">BlockManager.odcl</a> <span class="muted">(21331 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6406">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2010-03-04 17:43 UTC</span>
+  </div>
+  <div class="post-body">Owen,  it takes a looooooong time to dispaly a drawing in the BlockPreview control.  Don't know why.  For testing I made really simple drawings with circles, squares, etc. and there was still a lag .. . . . .</div>
+</article>
+<article class="post" id="msg6407">
+  <div class="post-head">
+    <span class="post-author">TimSpangler</span>
+    <span class="post-date muted">2010-03-04 18:03 UTC</span>
+  </div>
+  <div class="post-body">Another thing that I notice is that if a block was created using a vertical when you select a block from the list you get "Checking for object enablers on the Autodesk website"<br>
+<br>
+Is there anyway of preventing this echo?</div>
+</article>
+<article class="post" id="msg6408">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-04 18:04 UTC</span>
+  </div>
+  <div class="post-body">Tim, I am able to load your version, but I couldn't figure out how to get it to display my blocks. I will build a small sample project to test with and have another look.</div>
+</article>
+<article class="post" id="msg6409">
+  <div class="post-head">
+    <span class="post-author">TimSpangler</span>
+    <span class="post-date muted">2010-03-04 18:09 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen,<br>
+<br>
+It takes a little set up, sorry!  If you need some vertical blocks let me know.</div>
+</article>
+<article class="post" id="msg6410">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-04 18:10 UTC</span>
+  </div>
+  <div class="post-body">jb, I think them's the breaks when rendering a .dwg file. You might be able to control object enabler behavior via AutoCAD system variables, but parsing .dwg files is never going to be fast. Autodesk added the bitmap preview for dwg files and block icon for block definitions to eliminate the need to parse the .dwg file, so if speed is an issue, using the preview bitmap is one alternative.</div>
+</article>
+<article class="post" id="msg6411">
+  <div class="post-head">
+    <span class="post-author">TimSpangler</span>
+    <span class="post-date muted">2010-03-04 18:23 UTC</span>
+  </div>
+  <div class="post-body">I tried using the demandload variable but I cant seem to get it to set and reset when needed.  I tried ausing the mouseon / mouseoff events but then it prints and empty line <br>
+<br>
+6 = 1/2 dozen<br>
+<br>
+thanks</div>
+</article>
+<article class="post" id="msg6412">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-04 18:57 UTC</span>
+  </div>
+  <div class="post-body">I've now fixed the problem with lock files sticking around longer than needed. I didn't test it, but the PROXYWEBSEARCH system variable may prevent automatic object enabler checking.</div>
+</article>
+<article class="post" id="msg6414">
+  <div class="post-head">
+    <span class="post-author">TimSpangler</span>
+    <span class="post-date muted">2010-03-04 19:47 UTC</span>
+  </div>
+  <div class="post-body">Is this going to be updated in the next release?<br>
+<br>
+Thanks for the heads up on the variable,  the only thing that I could find was the demand load.  With that not enable my system didn't load the arx files it needed.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6416">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-04 20:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=TimSpangler link=topic=1195.msg6414#msg6414 date=1267732043 wrote:</cite><br>
+Is this going to be updated in the next release?</blockquote><br>
+<br>
+Yes, it will be in Alpha 24.</div>
+</article>
+<article class="post" id="msg6418">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2010-03-04 21:03 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen.</div>
+</article>
+<article class="post" id="msg6419">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-03-04 21:49 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"> &lt; .. &gt; so if speed is an issue, using the <strong>preview bitmap</strong> is one alternative.<br>
+</blockquote><br>
+<br>
+That's what I did in the version I posted.<br>
+It's a little jaggy, but very fast even over a network, and quite adequate to get a feel for the drawing content.<br>
+</div>
+</article>
+<article class="post" id="msg6421">
+  <div class="post-head">
+    <span class="post-author">TimSpangler</span>
+    <span class="post-date muted">2010-03-08 13:24 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1195.msg6416#msg6416 date=1267732926 wrote:</cite><br>
+[quote author=TimSpangler link=topic=1195.msg6414#msg6414 date=1267732043]<br>
+Is this going to be updated in the next release?</blockquote><br>
+<br>
+Yes, it will be in Alpha 24.<br>
+<br>
+<br>
+Thanks Owen!</div>
+</article>
+<article class="post" id="msg6426">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-09 08:54 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1195.msg6410#msg6410 date=1267726241 wrote:</cite><br>
+Autodesk added the bitmap preview for dwg files and block icon for block definitions to eliminate the need to parse the .dwg file.<br>
+</blockquote><br>
+Aha, can it be read out? I ever thought, DWG files are binary coded or compressed. How can such a bitmap be read?<br>
+<br>
+Fred<br>
+</div>
+</article>
+<article class="post" id="msg6430">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-09 17:27 UTC</span>
+  </div>
+  <div class="post-body">The preview bitmap is based on Microsoft's file preview format, and is stored in the same way that other file metadata is stored.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

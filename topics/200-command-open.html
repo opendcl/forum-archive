@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>(command &quot;.open&quot;) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 200</p>
+    <h1>(command &quot;.open&quot;)</h1>
+    <p class="meta">Started by bazzacad ·
+      2008-02-20 20:23 UTC ·
+      5 replies · SMF topic #200</p>
+<article class="post" id="msg875">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-02-20 20:23 UTC</span>
+  </div>
+  <div class="post-body">So I have this custom Open dialog that I've written in OpenDCL, all is working great.<br>
+<br>
+<a href="http://img98.imageshack.us/my.php?image=tmaopencp3.png" rel="nofollow noopener">{2}</a><br>
+<br>
+The dialog gets all our active projects from our Office database &amp; displayed them in my custom open.<br>
+Last night we ran into the problem where our web sever went down &amp; of course the custom open wouldn't work because it couldn't find the database.<br>
+So I want to update my code to fall back to the standard AutoCAD Open dialog box &amp; exit my code when this happens in the future.<br>
+As you know (command ".open") doesn't work with SDI=0, &amp; I don't want to use (getfiled ...)<br>
+So does anyone else know of a way to call the standard AutoCAD Open dialog from inside Lsp or maybe VBA?<br>
+I guess my last resort would be to write a new OpenDCL "File Dialog Box" if I had to, but I'm hopping I don't have to...<br>
+</div>
+</article>
+<article class="post" id="msg880">
+  <div class="post-head">
+    <span class="post-author">dkh007</span>
+    <span class="post-date muted">2008-02-21 00:23 UTC</span>
+  </div>
+  <div class="post-body">One trick I do is use VL to send a command to the command line...<br>
+<br>
+<pre class="code"><code><br>
+(vlax-invoke-method (vla-get-ActiveDocument (vlax-get-Acad-Object)) 'SendCommand ".open\n")<br>
+</code></pre><br>
+</div>
+</article>
+<article class="post" id="msg881">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-02-21 01:32 UTC</span>
+  </div>
+  <div class="post-body">YES, you're the man, works perfectly.<br>
+That's exactly what I needed. :)</div>
+</article>
+<article class="post" id="msg882">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-02-21 13:30 UTC</span>
+  </div>
+  <div class="post-body">Barry, here's mine - it uses VBA so there's no flipping back to the calling document.<br>
+Also if the document is already opened it is set active.<br>
+<br>
+<pre class="code"><code><br>
+;;; Sub to return the active documnet list<br>
+(defun jb:doclist (/ doc docs1)<br>
+  (vlax-for doc	(vla-get-documents (vlax-get-acad-object))<br>
+    (if (=(vla-get-fullname doc) "")<br>
+      (setq docs1 (cons (strcase (vla-get-name doc)) docs1)<br>
+	  docs1	(cons doc docs1)<br>
+    )<br>
+    (setq docs1	(cons (strcase (vla-get-fullname doc)) docs1)<br>
+	  docs1	(cons doc docs1)<br>
+    ))<br>
+  )<br>
+  (reverse docs1)<br>
+)</code></pre><br>
+<br>
+<br>
+<br>
+<pre class="code"><code>;;; Open a drawing<br>
+;;; Requires a full path - checks if file exists<br>
+(defun jb:OpenDrawing(name / docs)<br>
+  (if(not(member "acvba.arx" (arx)))<br>
+         (arxload (findfile "AcVBA.arx")))<br>
+  (if (findfile name)<br>
+    (if (not (setq docs (member (strcase name) (jb:doclist))))<br>
+      (progn<br>
+        (command "vbastmt"<br>
+           (strcat "AcadApplication.Documents.Open "<br>
+                        (chr 34)<br>
+                        name<br>
+                        (chr 34)))<br>
+        (vla-activate (cadr docs)))<br>
+      (vla-activate (cadr docs))<br>
+      )))<br>
+</code></pre></div>
+</article>
+<article class="post" id="msg887">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-02-21 19:11 UTC</span>
+  </div>
+  <div class="post-body">Thx JB,<br>
+But that only opens a given file: (jb:OpenDrawing "C:\\path\\name.dwg")<br>
+I'm trying to display the standard Acad Open Dialog box, so I don't have to open it programiclly.<br>
+<br>
+P.S. on a side note. VBA stopped working on my Vista x64 PC.<br>
+I.E. If I try to open the VBA editor or run (arxload (findfile "AcVBA.arx")) it freezes Acad.<br>
+Any ideas?<br>
+I guess I can re-install Acad.</div>
+</article>
+<article class="post" id="msg888">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-02-21 19:52 UTC</span>
+  </div>
+  <div class="post-body">Ouch!  that's right - there is no 64 bit VBA is there.  I guess that's where Lisp &amp; OpenDCL has everyone else beat!  8)<br>
+<br>
+Well, I guess that means I'm going to have to find a solution for that one. (I'm still on 2006 BTW). <br>
+<br>
+Ok, re-reading the original post -sorry.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

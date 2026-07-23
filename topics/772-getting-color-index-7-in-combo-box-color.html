@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Getting Color index &gt;7 in Combo box - Color · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 772</p>
+    <h1>Getting Color index &gt;7 in Combo box - Color</h1>
+    <p class="meta">Started by copter ·
+      2009-05-27 20:35 UTC ·
+      3 replies · SMF topic #772</p>
+<article class="post" id="msg3792">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-05-27 20:35 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+<br>
+I can set a color to a Combo box:<br>
+(defun set_color (ctrl coul)<br>
+  (if (not (dcl_ComboBox_FindColor mycbox color))<br>
+    (dcl_ComboBox_AddColor mycbox color)<br>
+  )  <br>
+  (dcl_ComboBox_SetCurSel mycbox (dcl_ComboBox_FindColor mycbox color))<br>
+) <br>
+Now I want to write a get_color function.<br>
+But how can I get the acad color index, when the color index is &gt; 7 ?<br>
+I tried with (dcl_ComboBox_GetEBText mycbox) but how can I manage the results since ODCL is localized ?<br>
+I mean "Color 130" can be "Couleur 130" and 'Green" can be "Vert" or "Grün" and so on ... <br>
+Thanks for your help !<br>
+Copter<br>
+ </div>
+</article>
+<article class="post" id="msg3793">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-27 21:35 UTC</span>
+  </div>
+  <div class="post-body">Try the (dcl_ComboBox_GetItemData) function. This should return the AutoCAD color number.</div>
+</article>
+<article class="post" id="msg3794">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-05-27 21:55 UTC</span>
+  </div>
+  <div class="post-body">I tried it:<br>
+dcl_Control_GetItemData returns nil while dcl_ComboBox_GetCurSel returns 0 and dcl_ComboBox_GetEBText returns "Color 130" ...<br>
+Any idea ?</div>
+</article>
+<article class="post" id="msg3795">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-05-27 22:04 UTC</span>
+  </div>
+  <div class="post-body">OK I get it:<br>
+(dcl_ComboBox_GetItemData Mycbox ItemIndex) -&gt; It works now !<br>
+<br>
+Thanks for your help !</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>combobox style 12 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1630</p>
+    <h1>combobox style 12</h1>
+    <p class="meta">Started by marcoheuer ·
+      2011-05-31 17:42 UTC ·
+      13 replies · SMF topic #1630</p>
+<article class="post" id="msg8025">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2011-05-31 17:42 UTC</span>
+  </div>
+  <div class="post-body">hello,<br>
+I have the following problems with combobox style 12:<br>
+1. I need 3 clicks, so that the directory selection opens (the first time after opening the dialog).<br>
+2. as an example: if the drive c: is selected, i open the directory selection, mouse move over drive e: (do not click), so that drive e: looks chosen (it's not because you do not click) and then somewhere else click anywhere, close the directory selection and drive E: is displayed as selected.<br>
+<br>
+can someone that reproduce?<br>
+(i use version 6.0.2.3)<br>
+<br>
+in german:<br>
+<br>
+hallo,<br>
+ich habe folgende probleme mit combobox style 12.<br>
+1. ich benötige 3 klicks, damit sich die verzeichniswahl öffnet (beim ersten mal nach öffnen des dialogs).<br>
+2. als bsp: wenn laufwerk c: ausgewählt ist, ich die verzeichniswahl öffne, die maus über laufwerk e: bewege (nicht anklicke), so dass laufwerk e: ausgewählt ausschaut (es aber nicht ist, da nicht angeklickt) und dann irgendwo anders hinklicke, geht die verzeichniswahl zu und laufwerk e: wird als ausgewählt angezeigt.<br>
+<br>
+kann das jemand nachvollziehen? <br>
+(ich verwende version 6.0.2.3)<br>
+<br>
+best regards<br>
+marco</div>
+</article>
+<article class="post" id="msg8027">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-06-01 07:51 UTC</span>
+  </div>
+  <div class="post-body">1: No<br>
+2: Yes</div>
+</article>
+<article class="post" id="msg8028">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-01 08:32 UTC</span>
+  </div>
+  <div class="post-body">Hello, marco, I've already seen your post yesterday but I needed a sample at first to test. I cannot reproduce that it would take 3 clicks to select an existing folder from the list, even if the control is not the first in the Z/Tab order list. But I detected that the <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/ComboBox/Dir.htm" rel="nofollow noopener">{2}</a>-method does not fill the combobox. I've attached my example.<br>
+<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1609/dir.LSP">dir.LSP</a> <span class="muted">(982 bytes)</span></li><li><a href="../attachments/1610/dir.odcl">dir.odcl</a> <span class="muted">(776 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8029">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2011-06-01 09:54 UTC</span>
+  </div>
+  <div class="post-body">hello roy_043 and fred,<br>
+thanks for testing.<br>
+<br>
+@fred<br>
+the problem of 3 clicks at the first open of the directory selection is also in your example (for me).<br>
+for the other problem i have add in the function c:dir_dlg_dir_cbb_dir_OnSelChanged (alert strPath).<br>
+- when i open the directory selection and click a directory then opens the alert dialog<br>
+- when i open the directory selection, mouse move over drive directory (do not click), so that the directory looks chosen (it's not because you do not click) and then somewhere else click anywhere, close the directory selection, directory is displayed as selected, but not open the alert dialog. that is my problem.<br>
+<br>
+best regards<br>
+marco<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1611/dir.LSP">dir.LSP</a> <span class="muted">(1002 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8030">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-01 10:17 UTC</span>
+  </div>
+  <div class="post-body">Hi, marco,<br>
+<br>
+I could reproduce that the selection has changed although the event was not fired.<br>
+On my workstation (Win7 x64, Map 2012 x64) I see the following:<br>
+<ul><br>
+DropDown the list<br>
+Select something -&gt; the alert is displaying and the dropdown collapses<br>
+DropDown the list again<br>
+move the mouse over the drives, leave the list sideward so that the latest item the mouse was over keeps highlighted (and not selected) and the list collapses<br>
+the previous selection is still visible in the integrated textbox.<br>
+When I move the mouse over the combobox the latest highlighted item suddenly appears in the integrated textbox so the seems to be selected but the OnSelect-event won't be fired.<br>
+</ul><br>
+<br>
+I still cannot reproduce that it would take 3 clicks to open the drop down. Have you already tried on another workstation?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg8031">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-01 10:37 UTC</span>
+  </div>
+  <div class="post-body">Hi, marco, I've updated the code and added two other events. Please have a look if there's a difference in the behavior when clicking outside the form. I think you have also to catch OnKillFocus and OnMouseMove to compare the latest selection and the current selection. It seems the OnSelChanged is not enough.<br>
+<br>
+That leads me to the thought: what does the combobox do with simple texts when clicking outside the form?<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8032">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-01 10:46 UTC</span>
+  </div>
+  <div class="post-body">Forgotten to add the files:<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1612/dir.odcl">dir.odcl</a> <span class="muted">(758 bytes)</span></li><li><a href="../attachments/1613/dir.LSP">dir.LSP</a> <span class="muted">(2106 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8033">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2011-06-01 12:04 UTC</span>
+  </div>
+  <div class="post-body">problem 1<br>
+i have make a few tests:<br>
+<br>
+computer 1 (win xp 32bit):<br>
+acad 2007: 3 clicks<br>
+acad 2010: 3 clicks<br>
+in vm win xp 32 bit, acad 2007: 1 click<br>
+<br>
+computer 2 (win 7 64 bit):<br>
+acad 2011: 1 click<br>
+in vm win xp 32 bit, acad 2007: 1 click<br>
+<br>
+what the f...<br>
+(my problem)<br>
+<br>
+problem 2:<br>
+OnKillFocus is not bad, but too late.<br>
+if the selection / display is changed, i need the new value immediately.<br>
+<br>
+best regards<br>
+marco<br>
+<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8034">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2011-06-01 12:57 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">what does the combobox do with simple texts when clicking outside the form?</blockquote><br>
+<br>
+it only changed, when I was clicking from the drop down list (normal)<br>
+<br>
+best regards<br>
+marco</div>
+</article>
+<article class="post" id="msg8035">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2011-06-01 14:01 UTC</span>
+  </div>
+  <div class="post-body">and another thing:<br>
+with the english version of odcl i have the same behavior as fred:<br>
+<blockquote class="quote">... When I move the mouse over the combobox the latest highlighted item suddenly appears in the integrated textbox so the seems to be selected but the OnSelect-event won't be fired.</blockquote><br>
+<br>
+and with the german version the same behavior as I wrote at the beginning:<br>
+<blockquote class="quote">... and then somewhere else click anywhere, close the directory selection and drive E: is displayed as selected.</blockquote><br>
+<br>
+best regards<br>
+marco</div>
+</article>
+<article class="post" id="msg8036">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-01 15:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=marcoheuer link=topic=1630.msg8035#msg8035 date=1306936861 wrote:</cite><br>
+and another thing:<br>
+with the english version of odcl i have the same behavior as fred:<br>
+<blockquote class="quote">... When I move the mouse over the combobox the latest highlighted item suddenly appears in the integrated textbox so the seems to be selected but the OnSelect-event won't be fired.</blockquote><br>
+</blockquote><br>
+<br>
+Hm, should I tell you that I <strong>only </strong> use the German release?<br>
+<br>
+Regards,<br>
+Fred</div>
+</article>
+<article class="post" id="msg8037">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2011-06-01 15:48 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">Hm, should I tell you that I only  use the German release?</blockquote><br>
+ ;D or  :'(</div>
+</article>
+<article class="post" id="msg8047">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-06-05 05:51 UTC</span>
+  </div>
+  <div class="post-body">I've made a few changes to fix the behavior so that it doesn't change the current combo selection until you left-click or press enter. I can't reproduce the extra click behavior, so I don't know if these changes affect that.</div>
+</article>
+<article class="post" id="msg8048">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2011-06-05 13:38 UTC</span>
+  </div>
+  <div class="post-body">thanks owen<br>
+<br>
+best regards<br>
+marco</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

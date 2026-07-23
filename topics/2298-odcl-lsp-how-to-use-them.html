@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>*.odcl.lsp how to use them? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2298</p>
+    <h1>*.odcl.lsp how to use them?</h1>
+    <p class="meta">Started by Lube ·
+      2015-08-19 09:18 UTC ·
+      2 replies · SMF topic #2298</p>
+<article class="post" id="msg11558">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2015-08-19 09:18 UTC</span>
+  </div>
+  <div class="post-body">Hello guys, I have something to ask about *.odcl.lsp.<br>
+<br>
+I've search on google the answer but I didn't find it, maybe because I'm not native english.. don't know.<br>
+<br>
+I want to compile all my project (7 .lsp + 1 .odlc) in one .vlx.<br>
+I know there is the possibility to create an odcl.lsp from the program save as, but what then?<br>
+<br>
+If i try to start my program i get an error: "no function definition: dcl_Project_Load"<br>
+<br>
+Can someone help me doing the job?<br>
+<br>
+(vl-load-com)<br>
+(defun C:cordoli ( / )  <br>
+(COMMAND "OPENDCL")<br>
+  ;(DCL_PROJECT_LOAD "cordoli") ;non più in sviluppo<br>
+  (DCL_PROJECT_LOAD "cordoli" T)<br>
+  (dcl-Form-Show cordoli/cordoli 50 300)<br>
+  (vl-load-com)<br>
+<br>
+  <br>
+  (PRINC)<br>
+)<br>
+<br>
+Thanks guys :)</div>
+</article>
+<article class="post" id="msg11559">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-08-19 09:31 UTC</span>
+  </div>
+  <div class="post-body">Hi, please have a look at the samples (C:\Program Files (x86)\OpenDCL Studio\[your language]\Samples) and at the <a href="http://www.opendcl.com/HelpFiles/index.php?page=Advanced/Deployment.htm" rel="nofollow noopener">{2}</a>.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11560">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2015-08-19 10:21 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred!<br>
+<br>
+It seems to work in developing mode, but after compiling and running the .vlx file I get this error..<br>
+<br>
+<em>Comando: CORDOLI<br>
+You've pressed ESC! AutoCAD variable rejected: OSMODE nil</em><br>
+it should be something like that in English.<br>
+<br>
+(DEFUN C:Cordoli (/)<br>
+  (vl-load-com)<br>
+  (COMMAND "OPENDCL")<br>
+  (load-project nil "cordoli")<br>
+  (dcl-Form-Show cordoli/cordoli 50 300)<br>
+  )<br>
+<br>
+(defun load-project ( password alias /)<br>
+<br>
+(setq project '("YWt6Axr5BwBSj9gqBuKT etc etc" )<br>
+<br>
+(dcl-project-import project password alias)<br>
+ )<br>
+  )<br>
+<br>
+Can you help me?<br>
+<br>
+<br>
+EDIT:<br>
+it seems that if i change the command name to something else it works.. <br>
+C:cordoli -&gt; C:C_Cordoli<br>
+<br>
+but i need to maintain this name.. what can i do? :/</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

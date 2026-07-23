@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with ComboBox · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 66</p>
+    <h1>Problem with ComboBox</h1>
+    <p class="meta">Started by Kelie ·
+      2007-10-11 17:49 UTC ·
+      6 replies · SMF topic #66</p>
+<article class="post" id="msg281">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2007-10-11 17:49 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+Using OpenDCL Runtime [4.1.0.10] here.<br>
+<br>
+The SelChanged event for ComboBox only fires after the same item is selected (from dropdown) twice.<br>
+<br>
+Thanks.<br>
+<br>
+kelie</div>
+</article>
+<article class="post" id="msg282">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-10-12 04:54 UTC</span>
+  </div>
+  <div class="post-body">Kelie, I've confirmed the problem<br>
+.. code attached.<br>
+<br>
+I'll add it to the bug list at SourceForge<br>
+<strong>added:</strong> https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1812018&amp;group_id=187950&amp;atid=923363<br>
+<br>
+<pre class="code"><code>(DEFUN C:ComboBox (/ )<br>
+    <br>
+    ;;--------------------------------------<br>
+    ;; ASSUME THE OpenDCL .arx IS LOADED<br>
+    ;;--------------------------------------<br>
+    (DCL_LOADPROJECT "20071012-ComboBox" T)<br>
+    (DCL_FORM_SHOW 20071012-ComboBox_Form1)<br>
+    (PRINC)<br>
+)<br>
+;;============================<br>
+<br>
+<br>
+;;============================<br>
+(DEFUN c:20071012-ComboBox_Form1_ComboBox1_OnSelChanged (nSelection sSelText /)<br>
+    (DCL_CONTROL_SETTEXT 20071012-ComboBox_Form1_TextBox3 (itoa nSelection))<br>
+    (DCL_CONTROL_SETTEXT 20071012-ComboBox_Form1_TextBox2 sSelText)<br>
+)<br>
+;;============================<br>
+(DEFUN c:20071012-ComboBox_Form1_OnInitialize (/)<br>
+    (DCL_COMBOBOX_SETCURSEL 20071012-ComboBox_Form1_ComboBox1 2)<br>
+)<br>
+<br>
+;;============================<br>
+<br>
+(princ)</code></pre><br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg283">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2007-10-12 06:33 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=66.msg282#msg282 date=1192164892 wrote:</cite><br>
+Kelie, I've confirmed the problem<br>
+.. code attached.<br>
+</blockquote><br>
+<br>
+Kerry, thanks for taking the time. </div>
+</article>
+<article class="post" id="msg294">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-10-16 10:22 UTC</span>
+  </div>
+  <div class="post-body">Did Ver 4.1.1.1 fix the issue Kelie ?<br>
+<br>
+<br>
+added : Looks like it :-)<br>
+Piccy added.<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg297">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2007-10-16 17:19 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=66.msg294#msg294 date=1192530128 wrote:</cite><br>
+Did Ver 4.1.1.1 fix the issue Kelie ?<br>
+<br>
+added : Looks like it :-)<br>
+Piccy added.<br>
+</blockquote><br>
+<br>
+thanks Kerry. yeah, it has been fixed. <br>
+<br>
+i could not find a way to get a list of items that are in a ComboBox. i was expecting to find a method named "GetItems" or something like that. also it seems ComboBox does not have property named "Length" which indicates how many items are in it. Otherwise, as a walkaround, i could use GetItemData method to loop through the indexes to get all the items. did i miss something? thanks.</div>
+</article>
+<article class="post" id="msg298">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2007-10-16 17:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=66.msg282#msg282 date=1192164892 wrote:</cite><br>
+Kelie, I've confirmed the problem<br>
+.. code attached.<br>
+<br>
+I'll add it to the bug list at SourceForge<br>
+<strong>added:</strong> https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1812018&amp;group_id=187950&amp;atid=923363<br>
+<br>
+<pre class="code"><code>(DEFUN C:ComboBox (/ )<br>
+    <br>
+    ;;--------------------------------------<br>
+    ;; ASSUME THE OpenDCL .arx IS LOADED<br>
+    ;;--------------------------------------<br>
+    (DCL_LOADPROJECT "20071012-ComboBox" T)<br>
+    (DCL_FORM_SHOW 20071012-ComboBox_Form1)<br>
+    (PRINC)<br>
+)<br>
+;;============================<br>
+<br>
+<br>
+;;============================<br>
+(DEFUN c:20071012-ComboBox_Form1_ComboBox1_OnSelChanged (nSelection sSelText /)<br>
+    (DCL_CONTROL_SETTEXT 20071012-ComboBox_Form1_TextBox3 (itoa nSelection))<br>
+    (DCL_CONTROL_SETTEXT 20071012-ComboBox_Form1_TextBox2 sSelText)<br>
+)<br>
+;;============================<br>
+(DEFUN c:20071012-ComboBox_Form1_OnInitialize (/)<br>
+    (DCL_COMBOBOX_SETCURSEL 20071012-ComboBox_Form1_ComboBox1 2)<br>
+)<br>
+<br>
+;;============================<br>
+<br>
+(princ)</code></pre><br>
+</blockquote><br>
+<br>
+Kerry, after typing something in the TextBox for the ComboBox, press ENTER, the Form is closed. is this the expected behavior? as a fix, i set the ComboBox's "ReturnAsTab" property to True.  or am i not supposed to press ENTER after finish editing? i guess i could move my mouse away and handle the KillFocus event. <br>
+<br>
+thank you.</div>
+</article>
+<article class="post" id="msg300">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-10-16 22:00 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kelie link=topic=66.msg298#msg298 date=1192555902 wrote:</cite><br>
+........... after typing something in the TextBox for the ComboBox, press ENTER, the Form is closed. is this the expected behavior? as a fix, i set the ComboBox's "ReturnAsTab" property to True.  or am i not supposed to press ENTER after finish editing? i guess i could move my mouse away and handle the KillFocus event. <br>
+<br>
+....<br>
+</blockquote><br>
+<br>
+Setting the ComboBox's "ReturnAsTab" property to True if the way I handle it.<br>
+I forget to do that with regularity. ;)<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

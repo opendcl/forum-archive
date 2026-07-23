@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dialog start position · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2970</p>
+    <h1>Dialog start position</h1>
+    <p class="meta">Started by fred_tomke ·
+      2025-07-29 09:16 UTC ·
+      2 replies · SMF topic #2970</p>
+<article class="post" id="msg14238">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2025-07-29 09:16 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+when I close the form, the latest position is stored in the registry to make sure to reshow it on the latest position before closing.<br>
+<br>
+<pre class="code"><code>(vl-registry-read (strcat "HKEY_CURRENT_USER\\" (vlax-product-key) "\\Profiles\\" (getvar "CPROFILE") "\\OpenDCL\\Dialogs\\") "TopLeftX")</code></pre><br>
+<br>
+It works fine on a workstation with a never changing screen configuration with 0,0 at the leftmost screen. <br>
+<br>
+In former times - when I was young and unexperienced - I tried to make sure that the form will appear on a place within the visible monitor area. I couldn't image that form positions could be negative values.<br>
+<br>
+In the meantime a customer told me that she cannot see the (modeless) dialog although it is open. A research for the reason ended up with the result in exactly the position-overriding in my former code: start the form at x=30 and y=30 when the last form position is obviously outside the visible monitor area. But infact x=30 and y=30 is outside for this customer. Less than 0 for x and more than 1980 for x is actually visible.<br>
+<br>
+Is the any chance to retreive minx miny maxx maxy for each accessible screen and not only screensize?<br>
+<br>
+I hope I was understandable.<br>
+With regards, Fred</div>
+</article>
+<article class="post" id="msg14239">
+  <div class="post-head">
+    <span class="post-author">DW</span>
+    <span class="post-date muted">2025-08-01 04:32 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred,<br>
+I had the same problem with screen size / resolution changes. I use a function called during the initalisation of every form...<br>
+<br>
+So in the OnInitialize function:<br>
+<br>
+;; Make form visible if monitor size changes<br>
+    (setq sz (dcl-GetScreenSize)<br>
+         px (get_ODCL_pos "pm/edit" "TopLeftX")<br>
+	 py (get_ODCL_pos "pm/edit" "TopLeftY")<br>
+    )<br>
+    (if (or (&lt; (car sz) px)(&lt; (cadr sz) py))<br>
+      (dcl-Form-Center (vl-doc-ref 'pm/edit))<br>
+    ) <br>
+<br>
+;; ================================================================<br>
+;; Function:    dpiSF<br>
+;; Purpose:     Get DPI scaling factor for display adjustments (cached)<br>
+;; Parameters:  None<br>
+;; Returns:     Float - DPI scaling factor (1.0 for 96 DPI, proportional for others)<br>
+;; ================================================================<br>
+(defun dpiSF (/ res)<br>
+  (or <br>
+    ;; Return cached value if already calculated<br>
+    *dpiSF*<br>
+    ;; Otherwise calculate and cache the scaling factor<br>
+    (and<br>
+      ;; Read current DPI setting from Windows registry<br>
+      (setq res (vl-registry-read <br>
+                  "HKEY_CURRENT_USER\\Control Panel\\Desktop\\WindowMetrics" <br>
+                  "AppliedDPI"))<br>
+      ;; Calculate scaling factor: 96 DPI = 1.0 scale<br>
+      (if (&lt; 96 res)<br>
+        ;; For higher DPI, scale down (96/current_dpi)<br>
+        (setq *dpiSF* (/ 96.0 res))<br>
+        ;; For 96 DPI or lower, use 1.0 (no scaling)<br>
+        (setq *dpiSF* 1.0)<br>
+      )<br>
+    )<br>
+  )<br>
+  ;; Return the scaling factor<br>
+  *dpiSF*<br>
+)<br>
+<br>
+<br>
+;; ================================================================<br>
+;; Function:    get_ODCL_pos<br>
+;; Purpose:     Retrieve OpenDCL dialog position from registry with DPI scaling<br>
+;; Parameters:  dlg - Dialog name/identifier string<br>
+;;              pos - Position parameter name (e.g., "Left", "Top")<br>
+;; Returns:     Scaled position value (integer) or default value 200<br>
+;; ================================================================<br>
+(defun get_ODCL_pos (dlg pos / val)<br>
+  (if<br>
+    ;; Attempt to read position value from registry<br>
+    (setq val<br>
+      (vl-registry-read<br>
+        (strcat "HKEY_CURRENT_USER\\" <br>
+                (vlax-product-key) <br>
+                "\\Profiles\\" <br>
+                (getActiveProfile) <br>
+                "\\OpenDCL\\Dialogs\\" <br>
+                dlg)<br>
+        pos<br>
+      )<br>
+    )<br>
+    ;; If registry value found, scale by DPI factor<br>
+    (* (dpiSF) val)<br>
+    ;; Default position if registry read fails<br>
+    200<br>
+  )<br>
+)</div>
+</article>
+<article class="post" id="msg14240">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2025-08-01 17:33 UTC</span>
+  </div>
+  <div class="post-body">In the C Windows API it is possible to get coordinates of UL and LR corner of each display. I wouldn't be surprised if there was some Windows COM API that could retrieve that same information, but I've never looked for such a thing myself.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

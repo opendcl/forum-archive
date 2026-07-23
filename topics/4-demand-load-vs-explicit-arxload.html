@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demand load vs explicit arxload ... · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 4</p>
+    <h1>Demand load vs explicit arxload ...</h1>
+    <p class="meta">Started by MP ·
+      2007-06-23 15:53 UTC ·
+      11 replies · SMF topic #4</p>
+<article class="post" id="msg4">
+  <div class="post-head">
+    <span class="post-author">MP</span>
+    <span class="post-date muted">2007-06-23 15:53 UTC</span>
+  </div>
+  <div class="post-body">I understand the benefit of providing demand loading to general consumers of OpenDCL but what's the benefit of calling <strong>(command "opendcl")</strong>  or <strong>(vl-cmdf "opendcl")</strong> from a loader program, e.g. <strong>(_Load_ODCL_Runtimes)</strong> rather than explicilty loading the arx file?<br>
+<br>
+In other words, is it being invoked merely because it's available or because it's better than explicit loading?<br>
+<br>
+To illuminate, is this --<br>
+<br>
+<pre class="code"><code>(defun _Load_ODCL_Runtimes ( )<br>
+<br>
+    ;;  If ObjectDCL is already loaded return T, otherwise<br>
+    ;;  attempt to load (return T on successful load, else<br>
+    ;;  print an appropriate message; return nil).<br>
+<br>
+    (or<br>
+<br>
+        ;;  Already loaded, no need to do anything else.<br>
+<br>
+        dcl_getversionex<br>
+<br>
+        ;;  Attempt to demand-load the runtimes.<br>
+<br>
+        (if (&lt; 1 (getvar "demandload"))<br>
+            (   (lambda ( / cmdecho )<br>
+                    (setq cmdecho (getvar "cmdecho"))<br>
+                    (setvar "cmdecho" 0)<br>
+                    (vl-catch-all-apply 'vl-cmdf '("opendcl"))<br>
+                    (setvar "cmdecho" cmdecho)<br>
+                    dcl_getversionex<br>
+                )<br>
+            )<br>
+        )<br>
+<br>
+        ;;  Still not loaded, attempt to load the runtimes explicitly.<br>
+<br>
+        (   (lambda ( / proc_arch arxname arxpath )<br>
+<br>
+                ;;  Determine the appropriate arx module for<br>
+                ;;  the processor and the AutoCAD version.<br>
+<br>
+                (setq arxname<br>
+                    (strcat "OpenDCL"<br>
+                        (if<br>
+                            (and<br>
+                                (setq proc_arch<br>
+                                    (getenv "PROCESSOR_ARCHITECTURE")<br>
+                                )<br>
+                                (&lt; 1 (strlen proc_arch))<br>
+                                (eq "64"<br>
+                                    (substr<br>
+                                        proc_arch<br>
+                                        (1- (strlen proc_arch))<br>
+                                    )<br>
+                                )<br>
+                            )<br>
+                            ".x64."<br>
+                            "."<br>
+                        )<br>
+                        (substr (getvar "acadver") 1 2)<br>
+                        ".arx"<br>
+                    )<br>
+                )<br>
+<br>
+                ;;  What was the result?<br>
+<br>
+                (cond<br>
+                    (   (null (setq arxpath (findfile arxname)))<br>
+                        (princ (strcat "Couldn't find " arxname ".\n"))<br>
+                        nil<br>
+                    )<br>
+                    (   (null (arxload arxpath nil))<br>
+                        (princ (strcat "Failed to load " arxname ".\n"))<br>
+                        nil<br>
+                    )<br>
+                    (   t   ) ;; We're good.<br>
+                )<br>
+            )<br>
+        )<br>
+    )<br>
+)</code></pre><br>
+<br>
+Better than this --<br>
+<br>
+<pre class="code"><code>(defun _Load_ODCL_Runtimes ( )<br>
+<br>
+    ;;  If ObjectDCL is already loaded return T, otherwise<br>
+    ;;  attempt to load (return T on successful load, else<br>
+    ;;  print an appropriate message; return nil).<br>
+<br>
+    (or<br>
+<br>
+        ;;  Already loaded, no need to do anything else.<br>
+<br>
+        dcl_getversionex<br>
+<br>
+        ;;  Not loaded, attempt to load the runtimes explicitly.<br>
+<br>
+        (   (lambda ( / proc_arch arxname arxpath )<br>
+<br>
+                ;;  Determine the appropriate arx module for<br>
+                ;;  the processor and the AutoCAD version.<br>
+<br>
+                (setq arxname<br>
+                    (strcat "OpenDCL"<br>
+                        (if<br>
+                            (and<br>
+                                (setq proc_arch<br>
+                                    (getenv "PROCESSOR_ARCHITECTURE")<br>
+                                )<br>
+                                (&lt; 1 (strlen proc_arch))<br>
+                                (eq "64"<br>
+                                    (substr<br>
+                                        proc_arch<br>
+                                        (1- (strlen proc_arch))<br>
+                                    )<br>
+                                )<br>
+                            )<br>
+                            ".x64."<br>
+                            "."<br>
+                        )<br>
+                        (substr (getvar "acadver") 1 2)<br>
+                        ".arx"<br>
+                    )<br>
+                )<br>
+<br>
+                ;;  What was the result?<br>
+<br>
+                (cond<br>
+                    (   (null (setq arxpath (findfile arxname)))<br>
+                        (princ (strcat "Couldn't find " arxname ".\n"))<br>
+                        nil<br>
+                    )<br>
+                    (   (null (arxload arxpath nil))<br>
+                        (princ (strcat "Failed to load " arxname ".\n"))<br>
+                        nil<br>
+                    )<br>
+                    (   t   ) ;; We're good.<br>
+                )<br>
+            )<br>
+        )<br>
+    )<br>
+)</code></pre><br>
+<br>
+<strong>?</strong><br>
+<br>
+Also, since demand loading may not be enabled one cannot omit the explicit loading anyway, so I'm thinking I'll probably go the latter.<br>
+<br>
+Thoughts?<br>
+<br>
+Thanks!<br>
+<br>
+Michael.<br>
+<br>
+:)</div>
+</article>
+<article class="post" id="msg5">
+  <div class="post-head">
+    <span class="post-author">MP</span>
+    <span class="post-date muted">2007-06-24 14:11 UTC</span>
+  </div>
+  <div class="post-body">Should I nuke this post?</div>
+</article>
+<article class="post" id="msg6">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-06-24 21:34 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=MP link=topic=4.msg5#msg5 date=1182694266 wrote:</cite><br>
+Should I nuke this post?<br>
+</blockquote><br>
+<br>
+Perhaps just add a note when you decide which way to handle it Michael.<br>
+<br>
+For viewers: There is an ongoing discussion at SourceForge about this topic.</div>
+</article>
+<article class="post" id="msg7">
+  <div class="post-head">
+    <span class="post-author">MP</span>
+    <span class="post-date muted">2007-06-25 03:40 UTC</span>
+  </div>
+  <div class="post-body">Thanks Kerry.<br>
+<br>
+I've pretty much finalized my loader code; I'll post it tomorrow.<br>
+<br>
+Should I --<br>
+<br>
+(A) post here but keep mum about this site (I have so far)? <br>
+(B) Post here and make brief post on SF pointing back here? <br>
+(C) Teach a fish how to ride a bicycle?<br>
+<br>
+;D</div>
+</article>
+<article class="post" id="msg8">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2007-06-25 03:55 UTC</span>
+  </div>
+  <div class="post-body">You guys can go ahead &amp; keep posting here so we can test out the forum, but the main discussions should still be at SF.<br>
+And ya keep it quite for awhile. I want to have the main site up &amp; running before things go public &amp; hopefully at the same time as when OpenDCL goes public...</div>
+</article>
+<article class="post" id="msg9">
+  <div class="post-head">
+    <span class="post-author">MP</span>
+    <span class="post-date muted">2007-06-25 03:57 UTC</span>
+  </div>
+  <div class="post-body">Thanks and will do BC.<br>
+<br>
+:)</div>
+</article>
+<article class="post" id="msg10">
+  <div class="post-head">
+    <span class="post-author">MP</span>
+    <span class="post-date muted">2007-06-25 18:01 UTC</span>
+  </div>
+  <div class="post-body">I'm posting here because there's no other proper place to review source code snips like this and doing it by email is not very efficient in my estimation.<br>
+<br>
+Slay away --<br>
+<br>
+<pre class="code"><code>    (defun _Load_ODCL_Runtime ( / loaderp proc_arch arxname arxpath errmsg )<br>
+    <br>
+        ;;  Let's be clear on the intent of the loader. When Joe User <br>
+        ;;  loads up the parent application there is full intent to <br>
+        ;;  run it, regardless whatever the demand load setting may be. <br>
+        ;;  Speaking frankly if I may, the majority of users don't know <br>
+        ;;  diddly about demand loading and I don't believe it's the <br>
+        ;;  responsibility of this loader to edumacate 'em. <br>
+        ;;<br>
+        ;;  What Joe thinks he knows when the application he intended to<br>
+        ;;  run fails (because demand loading is disabled) is that it is<br>
+        ;;  somehow broken (despite any lucid explainations about demand<br>
+        ;;  loading that migh be provided) - "Yeah, I saw some cryptic <br>
+        ;;  message about demand something or other ... maybe they will <br>
+        ;;  fix that in the next version". <br>
+        ;;<br>
+        ;;  Further, at our camp we want the applications to run. Period.<br>
+        ;;  I acknowledge that this perspective won't necessarilly be<br>
+        ;;  shared universally, but I'm making the attempt to explain my<br>
+        ;;  rationale for what follows.<br>
+        ;;<br>
+        ;;  Finally, if someone actually knows what they're doing and re-<br>
+        ;;  quires a clean environment (one possible intent for disabling <br>
+        ;;  demand loading) they'll know how to dump the OpenDCL runtime <br>
+        ;;  via arxunload.<br>
+        ;;<br>
+        ;;  With the above as a context this function is hereby designed.<br>
+        ;;<br>
+        ;;  The loading attempt order (if not already loaded):<br>
+        ;;<br>
+        ;;  1.  If OpenDCL has been installed on this machine via the<br>
+        ;;      installer use the path to the runtime as specified in <br>
+        ;;      the registry for demand loading -- but load via arxload<br>
+        ;;      regardles the demand load setting.<br>
+        ;;<br>
+        ;;  2.  If the OpenDCL runtime is found in the support path use <br>
+        ;;      arxload to load said runtime.<br>
+        ;;<br>
+        ;;  3.  If OpenDCL has been installed on this machine via the<br>
+        ;;      installer *AND* demand loading is enabled force the load-<br>
+        ;;      ing of the runtime via invoking the OpenDCL command.<br>
+        ;;<br>
+        ;;  Verbosely / gratuitously annotated for noobs and bit weiners <br>
+        ;;  alike.<br>
+<br>
+        (or<br>
+<br>
+            ;;  Already loaded, vacate now (return t to caller).<br>
+<br>
+            dcl_getversionex<br>
+            <br>
+            ;;  SECTION 1. Attempt to load the runtime via arxload using <br>
+            ;;  the path associated with the opendcl demand loader (the <br>
+            ;;  intent: Use said path but do not use the OpenDCL command <br>
+            ;;  to induce loading the arx). In other words don't use <br>
+            ;;  command / vl-cmdf.<br>
+            <br>
+            (and <br>
+            <br>
+                ;;  Is demand loading is specified for OpenDCL?<br>
+            <br>
+                (setq arxpath<br>
+                    (vl-registry-read<br>
+                        (strcat<br>
+                            "HKEY_LOCAL_MACHINE\\"<br>
+                            (vlax-product-key)<br>
+                            "\\Applications\\OpenDCL"<br>
+                        )<br>
+                        "Loader"<br>
+                    )                <br>
+                )<br>
+                <br>
+                ;;  We'll use the following variable in SECTION 3.<br>
+                <br>
+                (setq loaderp t) <br>
+                <br>
+                ;;  Is she an arx file?<br>
+                <br>
+                (wcmatch (strcase arxpath) "*`.ARX")          <br>
+                <br>
+                ;;  Was the load attempt successful?<br>
+                <br>
+                (arxload arxpath nil)<br>
+                <br>
+                ;;  Is core OpenDCL functionality now defined?<br>
+                <br>
+                dcl_getversionex<br>
+            )                    <br>
+<br>
+            ;;  SECTION 2. Attempt to arxload the runtime explicitly by <br>
+            ;;  finding it in the support path.<br>
+            <br>
+            (and<br>
+<br>
+                ;;  Determine the appropriate arx module for the pro-<br>
+                ;;  cessor and the AutoCAD version.<br>
+<br>
+                (setq arxname<br>
+                    (strcat "OpenDCL"<br>
+                        (if<br>
+                            (and<br>
+                                (setq proc_arch<br>
+                                    (getenv "PROCESSOR_ARCHITECTURE")<br>
+                                )<br>
+                                (&lt; 1 (strlen proc_arch))<br>
+                                (eq "64"<br>
+                                    (substr<br>
+                                        proc_arch<br>
+                                        (1- (strlen proc_arch))<br>
+                                    )<br>
+                                )<br>
+                            )<br>
+                            ".x64."<br>
+                            "."<br>
+                        )<br>
+                        (substr (getvar "acadver") 1 2)<br>
+                        ".arx"<br>
+                    )<br>
+                )<br>
+                <br>
+                ;;  Is the arxfile in the support path somewhere?<br>
+                <br>
+                (setq arxpath (findfile arxname))<br>
+                <br>
+                ;;  Was the load attempt successful?                <br>
+                <br>
+                (arxload arxpath nil)<br>
+                <br>
+                ;;  Is core OpenDCL functionality now defined?<br>
+                <br>
+                dcl_getversionex                <br>
+            )<br>
+            <br>
+            ;;  SECTION 3. If demand loading is enabled use the OpenDCL <br>
+            ;;  command to induce the loading of the OpenDCL runtime. <br>
+            ;;  If we got here it possibly means the runtime is no lon-<br>
+            ;;  ger an arx file (maybe an exe) or the arxload attempt in<br>
+            ;;  SECTION 1 failed for some reason. Regardless, it appears<br>
+            ;;  a demand loader is still present, so let's try to use it <br>
+            ;;  to load the OpenDCL runtime.<br>
+<br>
+            (and<br>
+                <br>
+                ;;  The following variable 'loaderp' is initialized from <br>
+                ;;  the first attempt to load the runtime in SECTION 1. <br>
+                ;;  If null it means no OpenDCL loader is present on this <br>
+                ;;  machine so there's no point in invoking the OpenDCL <br>
+                ;;  command.<br>
+                <br>
+                loaderp <br>
+<br>
+                ;;  A loader is defined but let's ensure demand loading <br>
+                ;;  is enabled, lest the invocation of the OpenDCL com-<br>
+                ;;  mand be pointless.<br>
+<br>
+                (&lt; 1 (getvar "demandload"))<br>
+                <br>
+                ;;  We're good, invoke the OpenDCL command ...<br>
+                                                <br>
+                (vl-catch-all-apply 'vl-cmdf '("opendcl"))<br>
+                <br>
+                ;;  Is core OpenDCL functionality now defined?<br>
+                <br>
+                dcl_getversionex<br>
+            )<br>
+            <br>
+            ;;  If we got here the opendcl runtime was not loaded.<br>
+<br>
+            (progn<br>
+            <br>
+                ;;  Inform the user of the sad news.<br>
+            <br>
+                (princ <br>
+                    (strcat<br>
+                        "Error: "<br>
+                        (if arxpath <br>
+                            (strcat arxpath " ")<br>
+                            "OpenDCL runtime "<br>
+                        )<br>
+                        ".\n" <br>
+                    )<br>
+                )<br>
+                <br>
+                nil<br>
+            )<br>
+        )<br>
+        <br>
+        dcl_getversion<br>
+<br>
+    )</code></pre></div>
+</article>
+<article class="post" id="msg11">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2007-06-25 18:20 UTC</span>
+  </div>
+  <div class="post-body">Looks good. I think I'll use this for the "ManualLoading.lsp" example, without your initial commands. ;-)<br>
+Unless anyone else objects...</div>
+</article>
+<article class="post" id="msg12">
+  <div class="post-head">
+    <span class="post-author">MP</span>
+    <span class="post-date muted">2007-06-25 19:52 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=4.msg11#msg11 date=1182795615 wrote:</cite><br>
+Looks good. I think I'll use this for the "ManualLoading.lsp" example, without your initial <strong>commands</strong>. ;-)<br>
+Unless anyone else objects...</blockquote><br>
+<br>
+If you meant "comments" I agree - they were provided to stimulate discussion amonsgt you folks, not for public consumption.<br>
+<br>
+I'd wait to including it as is unril some feedback comes in -- while it's perfect for my needs I can't comment on it's general useability / applicability.<br>
+<br>
+But thanks for the implied vote of confidence (if it's ok to infer that).<br>
+<br>
+:)</div>
+</article>
+<article class="post" id="msg13">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-06-25 22:36 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Michael, How are you proposing implementing this. ?<br>
+<br>
+ie, where and how will the loader be loaded , and how and how often will it be called.<br>
+<br>
+I'm currently demand loading from my MNL file without fault. I imagine your loader could be run in-line (or  called) from an MNL in a similar manner ... eliminating the need for any further checking.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg14">
+  <div class="post-head">
+    <span class="post-author">MP</span>
+    <span class="post-date muted">2007-06-27 22:26 UTC</span>
+  </div>
+  <div class="post-body">It's a good question Kerry, my apologies for failing to put the snip into some perspective (and for the delay responding).<br>
+<br>
+Basically it is an excerpt from the two dist samples I penned and I was looking for feedback and / or a sanity check. I didn't think it was mature enough to suggest it as a global loader per se, though in my own coding I will be using a library / toolbox approach, as defining said code repeatedly doesn't make much sense.<br>
+<br>
+Thanks,<br>
+<br>
+Michael.</div>
+</article>
+<article class="post" id="msg15">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-06-28 08:59 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=MP link=topic=4.msg14#msg14 date=1182983168 wrote:</cite><br>
+...........   though in my own coding I will be using a library / toolbox approach, as defining said code repeatedly doesn't make much sense.<br>
+.............Michael.<br>
+</blockquote><br>
+<br>
+I Concur. <br>
+<br>
+I imagine that most people wiil aim in the same direction after they become comfortable with the Odcl tools.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

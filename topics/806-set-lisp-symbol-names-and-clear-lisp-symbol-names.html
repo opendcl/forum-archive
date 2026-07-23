@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Set Lisp Symbol Names and Clear Lisp Symbol Names · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 806</p>
+    <h1>Set Lisp Symbol Names and Clear Lisp Symbol Names</h1>
+    <p class="meta">Started by Kelie ·
+      2009-06-10 23:20 UTC ·
+      12 replies · SMF topic #806</p>
+<article class="post" id="msg3965">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2009-06-10 23:20 UTC</span>
+  </div>
+  <div class="post-body">What do they do? I see the "VarName" in Property Palette being changed. But anything else happens behind the scene? It does not modify the associated lisp files, does it? When are you supposed use Set Lisp Symbol Names and Clear Lisp Symbol Names? Thanks.</div>
+</article>
+<article class="post" id="msg3966">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-06-10 23:29 UTC</span>
+  </div>
+  <div class="post-body">They are there for legacy code.<br>
+No they don't modify the LSP code.<br>
+Legacy code used to only be able to use the "VarName" property to refer to a control. Now OpenDCL figures it out at runtime, based on the Project name_Form name_Control name. So the "VarName" property isn't used for new project files.<br>
+If you want to convert old code to the new method, you can use the "Clear" tool.<br>
+And if you want new projects to use the old method (for some strange reason) you'd use the "Set" tool.<br>
+<br>
+That remands me, Owen can we hide the "VarName" property for new projects &amp; only show it when it's set? (to avoid confusion)</div>
+</article>
+<article class="post" id="msg3967">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2009-06-11 00:17 UTC</span>
+  </div>
+  <div class="post-body">Barry, very good explanation. Thanks.</div>
+</article>
+<article class="post" id="msg3968">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-11 03:54 UTC</span>
+  </div>
+  <div class="post-body">I think Fred uses the VarName property extensively, even in new projects, to create custom symbol names that suit his tastes and naming convention. I could easily mark it as a hidden property, but I don't think that would be popular among some of the old timers.</div>
+</article>
+<article class="post" id="msg3971">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-11 07:52 UTC</span>
+  </div>
+  <div class="post-body">No no no  :o :o :o please, please, please, please, keep it urgently, please. Not because of legacy code but it makes me coding new code much, much, much faster. It would mean horror to me.<br>
+<br>
+I do ask myself everyday how do others have access to the controls if the VarName property isn't filled automatically. I can't really imagine that they copy each accessing line from the control browser  ???<br>
+<br>
+Mostly, I write my code by hand and only if I'm unsure about new arguments then I copy it from the control browser.<br>
+<br>
+Event function names won't be changed. And that's correct. In some cases (also already dicussed in the forum) some events may call the same event function by design. But it's worth to discuss about optionally replacing old varname with new varname in the event function names if the old name is a part of the event name.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3977">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-06-11 17:24 UTC</span>
+  </div>
+  <div class="post-body">Calm down Fred. :)  I wasn't suggesting getting read of it, just hiding it for new users.<br>
+<br>
+I have one last suggestion, if you both don't like it, then I'll drop it.<br>
+How about making it an option in the Studio? Anther check mark menu item under the Tools pull-down like "Copy Events to Clipboard". It could say something like "Show (VarName) Property" and would be OFF by default. It would be a system setting, so Fred (or other old timers) would only have to enable it once...<br>
+<br>
+Just a thought.  ;D</div>
+</article>
+<article class="post" id="msg3978">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-11 19:42 UTC</span>
+  </div>
+  <div class="post-body">Sorry for the long delay until I could answer. Was in hospital 'cause of a heart attack because of being frightened losing my lovely VarName property ;).<br>
+<br>
+No, let's be serious now:<br>
+<br>
+The only reason why I use the VarName property now is to copy it to clipboard, because I'm too lazy to call the control browser each time only to copy the automatically generated VarName into clipboard. How could we solve this? Indeed, I would clear my VarName values, too, if there would be a simplier solution than (or as simple as) copy the content of VarName into clipboard! Maybe I miss something for years!<br>
+<br>
+I do not override VarName content, in fact, in some cases I override event function names. I always remove the "_OnClicked"-suffix from Imagebuttons, Textbuttons, OptionButtons, Checkboxes, cause I only activate this event at these controls. In some cases I use one event name for different controls. But these are exceptions. Barry you are right, automatic copy into clipboard at the time of activating an event could be a helpful option.<br>
+<br>
+Let's add it as a feature request!<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3980">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-06-11 23:18 UTC</span>
+  </div>
+  <div class="post-body"><br>
+I do the same as Fred .. Have VarNames ON and Select/Copy the name to post into code.<br>
+<br>
+.. OLD habit I guess ( for us OLD guys )  :P Barry</div>
+</article>
+<article class="post" id="msg3982">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-12 03:07 UTC</span>
+  </div>
+  <div class="post-body">I'm all for eliminating any extra work. I'm inclined to leave the VarName property editable as it is now, but anything that eliminates the need to override it for convenience would be a good improvement, I think.</div>
+</article>
+<article class="post" id="msg3983">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2009-06-12 08:15 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=806.msg3971#msg3971 date=1244706751 wrote:</cite><br>
+I do ask myself everyday how do others have access to the controls if the VarName property isn't filled automatically. <br>
+</blockquote><br>
+<br>
+Fred, do you mean there is a function that will return a control based on its name? What is the function? I only found dcl_Form_GetControls which returns all the controls on a form. Thanks.</div>
+</article>
+<article class="post" id="msg3990">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-12 11:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">Fred, do you mean there is a function that will return a control based on its name?</blockquote><br>
+<br>
+Kelie, no, I don't mean this. I mean, when I'm painting my form and I'm coding at the same time then I want to have the VarName in clipboard to add additional (accessing) lines in my source code files. At this time I call "Set Lisp Symbol Names" at first to copy the VarName value from the property's pane into my lisp file. In most of the cases I have the needed dcl_control_...-functions in mind and then I paste the VarName into the VLISP editor. The "nice-to-have" I mean is a command in the context menu that the VarName of the currently selected control or form can be copied as text into clipboard to fasten the coding process and to avoid that the VarName property must be filled before.<br>
+<br>
+I hope it was a little understandable.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3999">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-06-12 17:40 UTC</span>
+  </div>
+  <div class="post-body">It sounds like the guys are only using the VarNames because they need an easy way to copy the control name to the clipboard.... (Am I right guys?)<br>
+<br>
+When you select a control it's full name is shown in the status bar across the bottom, but you can't copy it.<br>
+How about adding something to do so... Maybe clicking on the status bar, or a button on the status bar, a new button in the properties panel, or a new toolbar button... Just a few ideas.<br>
+I'm open to suggestions, but I do see their point. I have found myself opening the control browser just to copy a controls name or copying it out of the Event field.<br>
+So I think something like this would make things more efficient.</div>
+</article>
+<article class="post" id="msg13959">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2024-01-29 15:32 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=806.msg3990#msg3990 date=1244807103 wrote:</cite><br>
+<blockquote class="quote">Fred, do you mean there is a function that will return a control based on its name?</blockquote><br>
+<br>
+Kelie, no, I don't mean this. I mean, when I'm painting my form and I'm coding at the same time then I want to have the VarName in clipboard to add additional (accessing) lines in my source code files. At this time I call "Set Lisp Symbol Names" at first to copy the VarName value from the property's pane into my lisp file. In most of the cases I have the needed dcl_control_...-functions in mind and then I paste the VarName into the VLISP editor. The "nice-to-have" I mean is a command in the context menu that the VarName of the currently selected control or form can be copied as text into clipboard to fasten the coding process and to avoid that the VarName property must be filled before.<br>
+<br>
+I hope it was a little understandable.<br>
+Fred<br>
+</blockquote><br>
+<br>
+Fred, Can you please explain how this works: At this time I call "Set Lisp Symbol Names" </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with Uninstall · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/19-deployment.html">Deployment</a> /
+      Topic 1708</p>
+    <h1>Problem with Uninstall</h1>
+    <p class="meta">Started by kenkrupa ·
+      2011-10-20 18:15 UTC ·
+      3 replies · SMF topic #1708</p>
+<article class="post" id="msg8422">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2011-10-20 18:15 UTC</span>
+  </div>
+  <div class="post-body">I'm using Innosetup to install ODCL along with my app. At Uninstall, it's going into an endless loop that can only be terminated using Task Manager. Below is what the messages looks like. If you answer Yes at message 3, message 2 repeats. If No, message 3 repeats until ending in Task Manager. <br>
+<br>
+Here are the applicable lines in the .iss file, per the tutorial:<br>
+<br>
+<br>
+Source: C:\_KCS\KCS_AEC\OpenDCL.Runtime.6.0.2.3.msi; DestDir: {app}; Flags: onlyifdoesntexist<br>
+<br>
+<br>
+Filename: msiexec.exe; Parameters: "/i ""{app}\OpenDCL.Runtime.6.0.2.3.msi"" /qn"<br>
+<br>
+<br>
+Filename: msiexec.exe; Parameters: "/x ""{app}\OpenDCL.Runtime.6.0.2.3.msi"""<br>
+<br>
+What's wrong?<br>
+<br>
+Using InnIDE v1.0.0.0078, Win7-64<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1678/Uninstall1.png">Uninstall1.png</a> <span class="muted">(5563 bytes)</span></li><li><a href="../attachments/1679/Uninstall2.png">Uninstall2.png</a> <span class="muted">(6367 bytes)</span></li><li><a href="../attachments/1680/Uninstall3.png">Uninstall3.png</a> <span class="muted">(3912 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8434">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2011-10-24 17:31 UTC</span>
+  </div>
+  <div class="post-body">Has no one else run into this???</div>
+</article>
+<article class="post" id="msg8435">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-10-24 21:32 UTC</span>
+  </div>
+  <div class="post-body">Nobody else has reported it. It looks suspicious to me (I would expect there to be a condition that signals it to uninstall only if it's already installed and being uninstalled), but I'm not familiar with Innosetup so not sure how it works under the hood.</div>
+</article>
+<article class="post" id="msg8438">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2011-10-25 00:30 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen. That info got me investigating further, and I cleared it up. What I think happened is that I have two apps being installed to the same folder, and I think re-installing both of them repeatedly without uninstalling first created a confusion between the uninstall .exe files and their .dat files. Once I got rid of them and installed again, uninstall is now fine.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>(dcl_project_saveas · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 390</p>
+    <h1>(dcl_project_saveas</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2008-08-01 00:49 UTC ·
+      6 replies · SMF topic #390</p>
+<article class="post" id="msg1743">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-08-01 00:49 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Does anyone have a small sample using (dcl_project_saveas .... <br>
+<br>
+I'm getting an error:No object Instance<br>
+when I try to use it , so I'm obviously doing something wrong.<br>
+<br>
+I'm trying to save ALL the current settings in a fairly complex project so they can be restored at the next invocation without the need for complicated writing and translation to and from a memory construct or data file<br>
+<br>
+Regards<br>
+Kerry</div>
+</article>
+<article class="post" id="msg1745">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-08-01 03:14 UTC</span>
+  </div>
+  <div class="post-body">This seems to work ..<br>
+<br>
+ (kdub:SaveTheProjectFile)<br>
+<pre class="code"><code><br>
+(defun kdub:SaveTheProjectFile (/ FNAME PROJECT)<br>
+  (if (setq fname (findfile "C:\\KDUB_TestSave.Modified.odcl"))<br>
+    (setq project (dcl_project_load fname))<br>
+    ;; else<br>
+    (setq project (dcl_project_load "C:\\KDUB_TestSave.odcl"))<br>
+  )<br>
+  (dcl_form_show kdub_pipeflanges_main)<br>
+  ;;<br>
+  ;; do mojo<br>
+  ;; then close<br>
+  ;;<br>
+  (dcl_project_saveas project "C:\\KDUB_TestSave.Modified.odcl" nil)<br>
+  (princ)<br>
+)</code></pre><br>
+<br>
+<br>
+Though the Option List Values don't seem to be saved ?? Can anyone check this please ?<br>
+<br>
+Regards<br>
+Kerry<br>
+</div>
+</article>
+<article class="post" id="msg1748">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-08-01 15:46 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=390.msg1745#msg1745 date=1217560477 wrote:</cite><br>
+Though the Option List Values don't seem to be saved ??<br>
+</blockquote><br>
+<br>
+Hmm, they should be.  What you're doing is exactly the same thing that happens when you open the file in the editor, modify it, then save it.</div>
+</article>
+<article class="post" id="msg1758">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-08-04 04:33 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Owen , Do you want this reported as a bug ?</div>
+</article>
+<article class="post" id="msg1761">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-08-04 05:42 UTC</span>
+  </div>
+  <div class="post-body">Yes, along with a small sample.</div>
+</article>
+<article class="post" id="msg1764">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-08-04 06:14 UTC</span>
+  </div>
+  <div class="post-body">Done ..</div>
+</article>
+<article class="post" id="msg1773">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-08-05 10:14 UTC</span>
+  </div>
+  <div class="post-body"><br>
+For anyone wanting to follow up on this ..<br>
+This issue is being resolved.<br>
+https://sourceforge.net/tracker/index.php?func=detail&amp;aid=2037360&amp;group_id=187950&amp;atid=923363<br>
+<br>
+Thanks Owen<br>
+<br>
+Regards<br>
+Kerry</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

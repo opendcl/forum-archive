@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fatal Error 2010 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2121</p>
+    <h1>Fatal Error 2010</h1>
+    <p class="meta">Started by jbuzbee ·
+      2014-04-04 19:10 UTC ·
+      57 replies · SMF topic #2121</p>
+<article class="post" id="msg10533">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-04 19:10 UTC</span>
+  </div>
+  <div class="post-body">I'm getting a pretty nasty fatal error in Acad 2010 when the OpenDCL.arx is loaded.  I've painstakingly isolated it to OpenDCL.  It happens when closing a document and executing the "new" command.  At first I thought it was my command reactor but ruled that out as well.<br>
+<br>
+Has anyone else seen this?<br>
+<br>
+jb</div>
+</article>
+<article class="post" id="msg10534">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2014-04-04 19:12 UTC</span>
+  </div>
+  <div class="post-body">What version of OpenDCL are you using?</div>
+</article>
+<article class="post" id="msg10535">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-04 19:21 UTC</span>
+  </div>
+  <div class="post-body">8.0.0.5<br>
+<br>
+Also happened with 7.0.1.4</div>
+</article>
+<article class="post" id="msg10536">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-04 23:12 UTC</span>
+  </div>
+  <div class="post-body">I could not reproduce the problem with AutoCAD 2010 64 bit on Windows 7 64 bit. I started AutoCAD 2010, entered OPENDCL to load OpenDCL Runtime 8.0.0.5, entered QNEW and started a new drawing, entered CLOSE to close the second drawing, entered NEW to start another new drawing. All worked as expected.</div>
+</article>
+<article class="post" id="msg10539">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-08 15:25 UTC</span>
+  </div>
+  <div class="post-body">Ok, everyone knows that if I proclaim the problem is solved with the latest version the problem will return with a vengeance.   &gt;:(<br>
+<br>
+So, I'm not going to say the problem is solved - that's not what I'm saying at all.  ;)</div>
+</article>
+<article class="post" id="msg10540">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-08 17:22 UTC</span>
+  </div>
+  <div class="post-body">DAMN IT  &gt;:( &gt;:( &gt;:( &gt;:( &gt;:(</div>
+</article>
+<article class="post" id="msg10580">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-16 15:42 UTC</span>
+  </div>
+  <div class="post-body">Could someone load the attached and see if you can repeat what I'm seeing.<br>
+<br>
+1. Open AutoCAD with a single drawing opened.<br>
+2. In the VLIDE editor load the attached lisp<br>
+3. command "kbadt"<br>
+4. Close the only opened drawing . . . Fatal Error<br>
+<br>
+Thanks for any help.<br>
+<br>
+jb<br>
+<br>
+AutoCAD Architecture 2010<br>
+OpenDCL 8.0.0.5<br>
+Windows 7 64 bit<br>
+<br>
+This didn't happen on ACA 2009, Opendcl 7, WinXP<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1995/Commands_ADT.lsp">Commands_ADT.lsp</a> <span class="muted">(34318 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10581">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-16 16:40 UTC</span>
+  </div>
+  <div class="post-body">I can reproduce it in plain AutoCAD 2010. Have you narrowed down which code causes it? I'll have a look under the debugger later today to see if I can tell from there.</div>
+</article>
+<article class="post" id="msg10582">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-16 17:45 UTC</span>
+  </div>
+  <div class="post-body">It's difficult for me to narrow done any suspect code because it worked flawlessly in 2009.  I'm not doing anything weird like reactors or accessing AEC via com.  It's pretty straight forward stuff.  <br>
+Thanks for your help Owen!<br>
+<br>
+jb</div>
+</article>
+<article class="post" id="msg10583">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-16 19:31 UTC</span>
+  </div>
+  <div class="post-body">I've narrowed the problem down to your (dcl_Form_Close) call in OnEnteringNoDocState. It appears to be a bug in AutoCAD that occurs when an asynchronous event is fired while entering no-document state. Offhand I don't see any easy way to detect and prevent it in the OpenDCL code, but I'll keep looking. A workaround in the meantime would be to set your form's Event Invoke property to Synchronous so that the OnClose fires synchronously instead of asynchronously.<br>
+<br>
+BTW, the code you attached creates registry keys when executed. It's not really a good idea to upload code for testing that modifies the registry or file system, as it adds more time that I have to spend cleaning the code before I can test it. In this case it wasn't too difficult, but worth mentioning in case you had not thought about it.</div>
+</article>
+<article class="post" id="msg10584">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-17 03:15 UTC</span>
+  </div>
+  <div class="post-body">For the next build, I've implemented an experimental fix for this problem. I added code to force synchronous event handling when a form is closing. This seems reasonable, since an asynchronous event handler will no longer be able to access the form (because the form will be closed before the handler executes). It does prevent this crash from occurring; hopefully it doesn't introduce any unwanted new problems.</div>
+</article>
+<article class="post" id="msg10586">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-17 14:37 UTC</span>
+  </div>
+  <div class="post-body">Thank you Owen.  I don't know what I would do without OpenDCL and obviously you.<br>
+<br>
+Thank you again  8)<br>
+<br>
+jb<br>
+<br>
+p.s. sorry about the registry stuff</div>
+</article>
+<article class="post" id="msg10600">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-18 12:48 UTC</span>
+  </div>
+  <div class="post-body">8.0.0.6 seems to have fixed the bug - Thanks again Owen</div>
+</article>
+<article class="post" id="msg10609">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-22 18:54 UTC</span>
+  </div>
+  <div class="post-body">Well, now I have another Fatal Error: this one is, however, random.  Same palette as posted here, multiple drawings opened, upon closing a drawing - bang.<br>
+<br>
+Any thoughts?<br>
+<br>
+jb</div>
+</article>
+<article class="post" id="msg10611">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-22 20:08 UTC</span>
+  </div>
+  <div class="post-body">See if you can narrow it down to a specific piece of code like I did with the other crash. If you can get to where you can reproduce fairly reliably, then try Synchronous to see if that resolves it. If it does, then we'll know it's probably the same thing as before, just a different trigger.</div>
+</article>
+<article class="post" id="msg10612">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-04-22 20:13 UTC</span>
+  </div>
+  <div class="post-body">Hi, what does the dmpuserinfo.xml say? <br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10613">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-23 12:34 UTC</span>
+  </div>
+  <div class="post-body">Couldn't find one Fred</div>
+</article>
+<article class="post" id="msg10614">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-23 12:46 UTC</span>
+  </div>
+  <div class="post-body">Well, that's weird - OnEnteringNoDocState, the OnClose event fires. <br>
+Nevermind - I had that event selected in the editor . . ..</div>
+</article>
+<article class="post" id="msg10615">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-23 15:15 UTC</span>
+  </div>
+  <div class="post-body">Owen the only thing I can think of is the OnDocActivated event?</div>
+</article>
+<article class="post" id="msg10617">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-23 15:47 UTC</span>
+  </div>
+  <div class="post-body">That's plausible. Test your theory by removing the event. Did anything change when you tested Synchronous? If not, then it's probably something completely different.</div>
+</article>
+<article class="post" id="msg10618">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-23 16:25 UTC</span>
+  </div>
+  <div class="post-body"><em>Did anything change when you tested Synchronous?</em><br>
+<br>
+No.<br>
+<br>
+I'll try removing the event - thanks Owen</div>
+</article>
+<article class="post" id="msg10619">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-23 16:43 UTC</span>
+  </div>
+  <div class="post-body">I cannot replicate the fatal error with the OnDocActivated event turned off.<br>
+<br>
+jb</div>
+</article>
+<article class="post" id="msg10620">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-23 17:13 UTC</span>
+  </div>
+  <div class="post-body">Does it still crash if you define the OnDocActivated event handler, but with only a (princ) and nothing else? And no change at all between Synchronous vs. Asynchronous?</div>
+</article>
+<article class="post" id="msg10621">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-23 17:34 UTC</span>
+  </div>
+  <div class="post-body">no change between making the form synchronous or asynchronous </div>
+</article>
+<article class="post" id="msg10622">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-23 18:43 UTC</span>
+  </div>
+  <div class="post-body">Well now I can't get it to crash at all - this morning was bad, but now, nothing.   :o<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg10623">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-24 14:15 UTC</span>
+  </div>
+  <div class="post-body">Can I get any help on this - I'm in production on 4 stations and it's causing havoc - any help will be greatly appreciated.<br>
+<br>
+Thank you very much.<br>
+<br>
+James Buzbee</div>
+</article>
+<article class="post" id="msg10624">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-24 15:24 UTC</span>
+  </div>
+  <div class="post-body">Unless I or someone else can reproduce the problem, I'm afraid you're the only one that can debug the problem. I have some additional ideas of things to try, but the next step depends on your answer to my earlier question about OnDocActivated.</div>
+</article>
+<article class="post" id="msg10625">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-24 15:40 UTC</span>
+  </div>
+  <div class="post-body">Ok just happened. OnDocActivated didn't crash with just a princ so it must be in my code in the event call.  I'll revise the code to effectively turn of the event for now.<br>
+<br>
+(defun c:ADT/ADTPalette#OnDocActivated  (/ dwg path)	   <br>
+  (dcl_Tree_Clear ADT_ADTPalette_StyleTreeControl)<br>
+    (kb:Propogate_00_StyleTreeControl)<br>
+  (princ)<br>
+  (princ))<br>
+<br>
+(defun kb:Propogate_00_StyleTreeControl  ( / llist doors hmlist sclist allist sllist fd1list<br>
+				   fd2list fd3list fd4list otlist)<br>
+  (dcl_Tree_AddParent<br>
+    ADT_ADTPalette_StyleTreeControl<br>
+    (list (list "Walls" "wall" 0 0 0)<br>
+	  (list "Doors" "door" 1 1 1)<br>
+	  (list "Storefront" "doorwinass" 2 2 2)<br>
+	  (list "Windows" "window" 3 3 3)<br>
+	  (list "Curtain Wall" "curtain" 4 4 4)<br>
+	  (list "Spaces" "space" 5 5 5)<br>
+	  (list "Stairs" "stair" 6 6 6)<br>
+	  (list "Railings" "rail" 7 7 7)<br>
+	  (list "Roofs" "roof" 8 8 8)<br>
+	  (list "Slabs" "slab" 9 9 9)<br>
+	  (list "Masses" "mass" 10 10 10)<br>
+	  (list "Schedule Tags" "schdtag" 11 11 11)<br>
+	  (list "Schedules" "schd" 12 12 12)<br>
+	  (list "Tags and Symbols" "tags" 13 13 13)<br>
+          (list "Mask Blocks" "mbks" 14 14 14)))<br>
+  (dcl_Tree_AddChild<br>
+    ADT_ADTPalette_StyleTreeControl<br>
+    (list (list "door" "Metal Doors" "HM" 1 1 1)<br>
+	  (list "door" "Wood Doors" "SC" 1 1 1)<br>
+	  (list "door" "Aluminum &amp; Glass Doors" "AL" 1 1 1)<br>
+	  (list "door" "other Doors" "OT" 1 1 1)<br>
+	  (list "door" "Fire Doors" "FD" 1 1 1)))<br>
+  (dcl_Tree_AddChild<br>
+    ADT_ADTPalette_StyleTreeControl<br>
+    (list (list "FD" "1 hour doors" "FD1" 1 1 1)<br>
+	  (list "FD" "2 hour doors" "FD2" 1 1 1)<br>
+	  (list "FD" "3 hour doors" "FD3" 1 1 1)<br>
+	  (list "FD" "4 hour doors" "FD4" 1 1 1)))<br>
+;;;		Propogate Doors				;<br>
+  <br>
+	   (setq doorlist (kb:getlocalObjectList "AEC_DOOR_STYLES"))<br>
+	   <br>
+	 (foreach<br>
+		x  doorlist<br>
+	   (cond ((= (substr x 1 2) "HM") (setq hmlist (append (list x) hmlist)))<br>
+		 ((= (substr x 1 2) "SC") (setq sclist (append (list x) sclist)))<br>
+		 ((= (substr x 1 2) "AL") (setq allist (append (list x) allist)))<br>
+		 ((= (substr x 1 2) "SL") (setq sllist (append (list x) sllist)))<br>
+		 ((= (substr x 1 3) "FD1") (setq fd1list (append (list x) fd1list)))<br>
+		 ((= (substr x 1 3) "FD2") (setq fd2list (append (list x) fd2list)))<br>
+		 ((= (substr x 1 3) "FD3") (setq fd3list (append (list x) fd3list)))<br>
+		 ((= (substr x 1 3) "FD4") (setq fd4list (append (list x) fd4list)))<br>
+		 (t (setq otlist (append (list x) otlist)))))<br>
+	 (if hmlist<br>
+	   (foreach<br>
+		  i  hmlist<br>
+	     (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "HM" i i 1 1 1)))<br>
+	 (if sclist<br>
+	   (foreach<br>
+		  i  sclist<br>
+	     (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "SC" i i 1 1 1)))<br>
+	 (if allist<br>
+	   (foreach<br>
+		  i  allist<br>
+	     (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "AL" i i 1 1 1)))<br>
+	 (if sllist<br>
+	   (foreach<br>
+		  i  sllist<br>
+	     (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "AL" i i 1 1 1)))<br>
+	 (if otlist<br>
+	   (foreach<br>
+		  i  otlist<br>
+	     (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "OT" i i 1 1 1)))<br>
+	 (if fd1list<br>
+	   (foreach<br>
+		  i  fd1list<br>
+	     (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "FD1" i i 1 1 1)))<br>
+	 (if fd2list<br>
+	   (foreach<br>
+		  i  fd2list<br>
+	     (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "FD2" i i 1 1 1)))<br>
+	 (if fd3list<br>
+	   (foreach<br>
+		  i  fd3list<br>
+	     (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "FD3" i i 1 1 1)))<br>
+	 (if fd4list<br>
+	   (foreach<br>
+		  i  fd4list<br>
+	     (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "FD4" i i 1 1 1)))<br>
+;;;		Propogate DoorWinAssembly		;<br>
+  (setq llist (kb:getlocalObjectList "AEC_WINDOW_ASSEMBLY_STYLES"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "DoorWinAss" x x 2 2 2))<br>
+;;;		Propogate Walls				;<br>
+  (setq llist (kb:getlocalObjectList "AEC_WALL_STYLES"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "wall" x x 0 0 0))<br>
+;;;		Propogate CurtainWalls			;<br>
+  (setq llist (kb:getlocalObjectList "AEC_CURTAIN_WALL_LAYOUT_STYLES"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "curtain" x x 4 4 4))<br>
+;;;		Propogate Windows			;<br>
+  (setq llist (kb:getlocalObjectList "AEC_WINDOW_STYLES"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "window" x x 3 3 3))<br>
+;;;		Propogate Spaces			;<br>
+  (setq llist (kb:getlocalObjectList "AEC_SPACE_STYLES"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "space" x 5 5 5))<br>
+;;;		Propogate Stairs			;<br>
+  (setq llist (kb:getlocalObjectList "AEC_STAIR_STYLES"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "stair" x x 6 6 6))<br>
+;;;		Propogate Railings			;<br>
+  (setq llist (kb:getlocalObjectList "AEC_RAILING_STYLES"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "rail" x x 7 7 7))<br>
+;;;		Propogate Roof			;<br>
+  (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "roof" "standard" 8 8 8)<br>
+  (setq llist (kb:getlocalObjectList "AEC_ROOF_SLAB_STYLES"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "roof" x x 8 8 8))<br>
+;;;		Propogate Slab			;<br>
+  (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "slab" "standard" 9 9 9)<br>
+  (setq llist (kb:getlocalObjectList "AEC_SLABE_STYLES"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "slab" x x 9 9 9))<br>
+;;;		Propogate Mass			;<br>
+  (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "mass" "standard" 10 10 10)<br>
+  (setq llist (kb:getlocalObjectList "AEC_MASS_ELEM_STYLES"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "mass" x x 10 10 10))<br>
+<br>
+  ;;;		Propogate Mask Blocks			;<br>
+  (setq llist (kb:getlocalObjectList "AEC_MASKBLOCK_DEFS"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "mbks" x x 14 14 14))<br>
+<br>
+  ;;;		Propogate Schedules			;<br>
+  (setq llist (kb:getlocalObjectList "AEC_SCHEDULE_TABLE_STYLES"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "schd" x x 12 12 12))<br>
+;;;		Propogate Schedule Tags			;<br>
+  (setq llist (kb:getlocaltaglist))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "schdtag" x x 11 11 11))<br>
+<br>
+  ;;;		Propogate Anno Tags			;<br>
+  (dcl_Tree_AddChild<br>
+    ADT_ADTPalette_StyleTreeControl<br>
+    (list (list "tags" "Annotation" "anno" 13 13 13)<br>
+	  (list "tags" "Layout Blocks" "lay" 13 13 13)<br>
+	  (list "tags" "Appliances" "appl" 13 13 13)<br>
+	  (list "tags" "Furniture" "furn" 13 13 13)<br>
+	  (list "tags" "Lighting" "lite" 13 13 13)<br>
+	  (list "tags" "Power" "powr" 13 13 13)<br>
+	  (list "tags" "HVAC" "hvac" 13 13 13)<br>
+	  (list "tags" "Plumbing" "plmb" 13 13 13)<br>
+	  (list "tags" "Fire" "fire" 13 13 13)<br>
+	  (list "tags" "Equipment" "eqmt" 13 13 13)))<br>
+<br>
+  (setq llist (kb:GetLocalSymbolBlocks "TAG_*"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "anno" x x 13 13 13))<br>
+<br>
+  (setq llist (kb:GetLocalSymbolBlocks "LAY_*"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "lay" x x 13 13 13))<br>
+<br>
+  (setq llist (kb:GetLocalSymbolBlocks "I_APPL*"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "appl" x x 13 13 13))<br>
+<br>
+  (setq llist (kb:GetLocalSymbolBlocks "I_APPL*"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "appl" x x 13 13 13))<br>
+<br>
+  (setq llist (kb:GetLocalSymbolBlocks "I_FURN*"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "furn" x x 13 13 13))<br>
+<br>
+  (setq llist (kb:GetLocalSymbolBlocks "E_LIGHT*"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "lite" x x 13 13 13))<br>
+<br>
+  (setq llist (kb:GetLocalSymbolBlocks "E_POWER*"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "powr" x x 13 13 13))<br>
+<br>
+  (setq llist (kb:GetLocalSymbolBlocks "M_HVAC*"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "hvac" x x 13 13 13))<br>
+<br>
+  (setq llist (kb:GetLocalSymbolBlocks "M_PLUMB*"))<br>
+  (foreach<br>
+	 x  llist<br>
+    (dcl_Tree_AddChild ADT_ADTPalette_StyleTreeControl "plmb" x x 13 13 13))<br>
+<br>
+  (princ)<br>
+  (princ))</div>
+</article>
+<article class="post" id="msg10626">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-24 15:55 UTC</span>
+  </div>
+  <div class="post-body">Ok, that helps narrow it down to the tree control. Next thing to try would be just a normal button (could even be a separate toolbar button) that runs the same code when you press the button, then see if the crash occurs only during OnDocActivated, or also when pressing the button. Also it would be useful if you can determine some pattern to when it crashes vs. when it doesn't.</div>
+</article>
+<article class="post" id="msg10627">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-24 16:05 UTC</span>
+  </div>
+  <div class="post-body">I already have a refresh button which calls the OnInitialize event (which is the exact same code as the OnDocActivated event) - will that do?</div>
+</article>
+<article class="post" id="msg10628">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-24 17:25 UTC</span>
+  </div>
+  <div class="post-body">Yes, that will work. The idea is to see whether the problem occurs in the same code regardless of context, or whether it only happens during the OnDocActivated context. This is similar to the purpose for testing whether Synchronous vs. Asynchronous had any effect.</div>
+</article>
+<article class="post" id="msg10630">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-24 18:10 UTC</span>
+  </div>
+  <div class="post-body">Ok just happened again this time with the OnDocActivated event with just a (princ).  The button never caused a crash - I think it's in the event handler.<br>
+<br>
+(defun c:ADT/ADTPalette#OnDocActivated  ( / )	   <br>
+  ;(dcl_Tree_Clear ADT_ADTPalette_StyleTreeControl)<br>
+  ;  (kb:Propogate_00_StyleTreeControl)<br>
+  ;(princ)<br>
+  (princ "OnDocActivated"))</div>
+</article>
+<article class="post" id="msg10631">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-24 18:29 UTC</span>
+  </div>
+  <div class="post-body">Notice any patterns? Activating drawings a certain way? Windows maximized? Clicking the mouse vs. typing commands?</div>
+</article>
+<article class="post" id="msg10632">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-24 18:48 UTC</span>
+  </div>
+  <div class="post-body">Windows maximized, activating drawings from the "Switch Windows" pull-down on the ribbon, and quite often when opening a drawing from the Project Navigator another window will pop-up over AutoCAD like Microsoft Outlook.<br>
+<br>
+Closing a drawing with the "x"</div>
+</article>
+<article class="post" id="msg10633">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-24 19:34 UTC</span>
+  </div>
+  <div class="post-body">So just to clarify: have you seen it crash when closing drawings *and* when switching drawings? Does it crash only when switching drawings via ribbon, or also when switching drawings in other ways? It might be useful to analyze a screen shot when it crashes, along with an explanation of the exact steps that lead up to it. Your goal is to figure out how to reproduce it reliably enough that I can reproduce it here.</div>
+</article>
+<article class="post" id="msg10634">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-24 20:26 UTC</span>
+  </div>
+  <div class="post-body">Ok this happens fairly consistently: more than 4 drawings opened, closing a drawing with the "x" boom<br>
+<br>
+The fatal error only happens on close with the "x"</div>
+</article>
+<article class="post" id="msg10635">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-25 00:08 UTC</span>
+  </div>
+  <div class="post-body">I've attached a test project. See if you can reproduce the crash with the test project. Just (vl-load-all "DocActivatedCrash") to get started.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1998/DocActivatedCrash.zip">DocActivatedCrash.zip</a> <span class="muted">(843 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10641">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-28 16:29 UTC</span>
+  </div>
+  <div class="post-body">I can't get a fatal error DocActivatedCrash</div>
+</article>
+<article class="post" id="msg10642">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-28 16:35 UTC</span>
+  </div>
+  <div class="post-body">Apparently there is something else needed. I'd sure like to get his figured out. Please keep me posted.</div>
+</article>
+<article class="post" id="msg10643">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-28 16:37 UTC</span>
+  </div>
+  <div class="post-body">Are you calling (command) anywhere in your code? If so, see if anything changes after you switch to (command-s).</div>
+</article>
+<article class="post" id="msg10644">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-28 17:15 UTC</span>
+  </div>
+  <div class="post-body">(command) - no.  I'm still on 2010</div>
+</article>
+<article class="post" id="msg10645">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-29 12:44 UTC</span>
+  </div>
+  <div class="post-body">Owen, still random fatal errors on closing one of multiple drawings opened.  Sorry - nothing new.</div>
+</article>
+<article class="post" id="msg10647">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-04-30 15:56 UTC</span>
+  </div>
+  <div class="post-body">Don't know if this matters but the fatal error seems to happen when 6 or more drawings are opened. 2 or 3 drawings no problem.</div>
+</article>
+<article class="post" id="msg10649">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-30 16:14 UTC</span>
+  </div>
+  <div class="post-body">That's certainly worth noting, but I'm not able to reproduce it even with 10 drawings open. I hope you can figure out what the other missing ingredients are.</div>
+</article>
+<article class="post" id="msg10699">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-05-08 14:34 UTC</span>
+  </div>
+  <div class="post-body">Well I've been using this routine with the OnDocActivated call-back only with (princ) with no fatal errors.  So that means there is a problem with:<br>
+<br>
+(defun c:ADT/ADTPalette#OnDocActivated  ( / )	   <br>
+  (dcl_Tree_Clear ADT_ADTPalette_StyleTreeControl)<br>
+    (kb:Propogate_00_StyleTreeControl)<br>
+  (princ)<br>
+)<br>
+<br>
+<br>
+?</div>
+</article>
+<article class="post" id="msg10700">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-08 14:58 UTC</span>
+  </div>
+  <div class="post-body">I would start adding things one small piece at a time until the error returns, then back up and keep adding smaller chunks until the error returns again, and so on until hopefully you've narrowed it down to a specific line of code.</div>
+</article>
+<article class="post" id="msg10701">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-05-08 15:18 UTC</span>
+  </div>
+  <div class="post-body">Got it - I'm on it</div>
+</article>
+<article class="post" id="msg10712">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-05-21 16:47 UTC</span>
+  </div>
+  <div class="post-body">Well I'm on another system (the other was temp) and everything seems to be operating fine.  Windows 8, AutoCAD 2014, Dell Server</div>
+</article>
+<article class="post" id="msg10713">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-21 17:05 UTC</span>
+  </div>
+  <div class="post-body">Thanks for following up. So far there haven't been any other similar reports, so maybe it was just a hiccup in that particular setup. Please let us know if you see the error crop up again.</div>
+</article>
+<article class="post" id="msg10862">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-09-12 18:24 UTC</span>
+  </div>
+  <div class="post-body">Well I've found the culprit but it's a pretty intense routine: a Block Manager. See attached<br>
+<br>
+Thanks, jb<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2038/Commands_Blocks.lsp">Commands_Blocks.lsp</a> <span class="muted">(16876 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10863">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-09-13 03:40 UTC</span>
+  </div>
+  <div class="post-body">What is the relationship of this code with the call to (dcl_Tree-Clear) in your OnDocActivated event? In any case, I'd like to have a stripped down sample, ideally at a bare minimum so that removing anything at all makes the problem go away. At the very least, I need all registry access removed so I can test on my development system. Also, it wouldn't hurt to reiterate the exact steps I need to perform in order to reproduce the fatal error.</div>
+</article>
+<article class="post" id="msg10864">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-09-15 12:23 UTC</span>
+  </div>
+  <div class="post-body">Attached is a stripped down version - Thanks for any help<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2039/Commands_Blocks.lsp">Commands_Blocks.lsp</a> <span class="muted">(8715 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10865">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-09-15 14:32 UTC</span>
+  </div>
+  <div class="post-body">What are the steps to reproduce the crash? I have a feeling your issue is related to <a href="https://sourceforge.net/p/opendcl/bugs/768/" rel="nofollow noopener">{2}</a>.</div>
+</article>
+<article class="post" id="msg10866">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-09-16 12:06 UTC</span>
+  </div>
+  <div class="post-body">Yes that sounds very similar.  With the kbBlockManager docked on the left side of the screen, open several drawings.  Upon closing the drawings, usually with the first one - but not always - fatal error.<br>
+<br>
+command "kbBlockManager"<br>
+<br>
+AutoCAD 2015 Win 8 64 bit<br>
+<br>
+jb</div>
+</article>
+<article class="post" id="msg10867">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-09-16 17:07 UTC</span>
+  </div>
+  <div class="post-body">I've made some changes for the next build of OpenDCL that I think will fix this crash issue. I don't have a timetable yet, but please test and report back when the next build is released.</div>
+</article>
+<article class="post" id="msg10868">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-09-16 18:50 UTC</span>
+  </div>
+  <div class="post-body">Thank you Owen - will do!<br>
+<br>
+jb</div>
+</article>
+<article class="post" id="msg10870">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2014-09-18 18:08 UTC</span>
+  </div>
+  <div class="post-body">8.0.0.8 same problem</div>
+</article>
+<article class="post" id="msg11192">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2015-02-12 20:11 UTC</span>
+  </div>
+  <div class="post-body">Well I decided to fix the problem by moving from a palette form (always opened) to a modeless form.  The modeless form is closed at the end of several operations so there is no possibility of the fatal error when documents are opened and closed.  Works for me.<br>
+<br>
+jb</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenDCL Runtime MSM · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/4-source-code.html">Source Code</a> /
+      Topic 11</p>
+    <h1>OpenDCL Runtime MSM</h1>
+    <p class="meta">Started by dkh007 ·
+      2007-07-10 23:40 UTC ·
+      9 replies · SMF topic #11</p>
+<article class="post" id="msg30">
+  <div class="post-head">
+    <span class="post-author">dkh007</span>
+    <span class="post-date muted">2007-07-10 23:40 UTC</span>
+  </div>
+  <div class="post-body">Not sure if this is the right place to post this... I used the OpenDCL Runtime MSM file to add it to my installation program. When I run the new INSTALL file, it adds the TXT, ARX &amp; DLL files to the proper "Commons" folder. But when you launch AutoCAD it does not do the demand load (OpenDCL is an unknown command). Is there something I should look for in my INSTALL to make sure the ARX are added to the demand load of AutoCAD?</div>
+</article>
+<article class="post" id="msg31">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2007-07-10 23:57 UTC</span>
+  </div>
+  <div class="post-body">This might be a stupid question, since I know nothing about these installers, but is your demandload sys. var. set to 2 or 3?</div>
+</article>
+<article class="post" id="msg32">
+  <div class="post-head">
+    <span class="post-author">dkh007</span>
+    <span class="post-date muted">2007-07-11 00:02 UTC</span>
+  </div>
+  <div class="post-body">DEMANDLOAD is set to 3. I'm guessing that my Installer is not registering the DLL... Just not sure.</div>
+</article>
+<article class="post" id="msg33">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-11 01:20 UTC</span>
+  </div>
+  <div class="post-body">Daniel,<br>
+What is the value in the registry at ;<br>
+HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R17.1\ACAD-6001:409\Applications\OpenDCL<br>
+<br>
+your version may differ<br>
+.. something like this ??<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg34">
+  <div class="post-head">
+    <span class="post-author">dkh007</span>
+    <span class="post-date muted">2007-07-11 02:31 UTC</span>
+  </div>
+  <div class="post-body">There is no entry for OpenDCL under the ACAD Application... in any version. I'm assuming I need to add the registry items for OpenDCL to each version of AutoCAD in my installer. I don't have 2004 or 2005 loaded. Is there a list for these registry locations? I can make some assumptions, but I would prefer to do it right.<br>
+<br>
+Also what is in the "Command" key under OpenDCL? I guess I could install the OpenDCL Runtime MSI to get these... but I was trying to work with a clean install. May be useful to list this in the documentation. At this point, I'm just babbling  ;)</div>
+</article>
+<article class="post" id="msg35">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-11 02:48 UTC</span>
+  </div>
+  <div class="post-body">Here's a piccy of mine for AC2008<br>
+<br>
+<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg36">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-07-11 02:52 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=dkh007 link=topic=11.msg34#msg34 date=1184121114 wrote:</cite><br>
+There is no entry for OpenDCL under the ACAD Application...</blockquote><br>
+<br>
+The MSM should create the demand load registry keys. Both the Runtime MSI and the Studio MSI include the same MSM file, so I'm not sure why it's not working for you. Are you running the MSI with no administrative privileges, or installing for "Just Me"? If this is the case, the demand load keys should be created under the HKCU key instead of HKLM, but it should still work for that user.<br>
+<br>
+What process and settings are you using to incorporate the MSM into your installation? I'm guessing that either your installer does something that causes the custom actions to be ignored, or else there is something causing the RxInstall.dll to malfunction.</div>
+</article>
+<article class="post" id="msg37">
+  <div class="post-head">
+    <span class="post-author">dkh007</span>
+    <span class="post-date muted">2007-07-11 03:35 UTC</span>
+  </div>
+  <div class="post-body">The OpenDCL Runtime MSI installs the Demand load keys just fine. It has worked for both XP and Vista. I install it with Administrator privillages.<br>
+<br>
+I'm using Tarma ExpertInstall <a href="http://www.tarma.com" rel="nofollow noopener">{2}</a>. It has a section for working with and importing Merge Modules. When I do the import it does not include the registry keys. I'm assuming this is a limitation of Tarma. At this point, I think the best bet is to install the Runtime MSI, export the registry keys and then import those into the Tarma Installer. Of course, I have normally stayed away from the ACAD registry, not sure if the (R16.0\ACAD-xxx:xxx, R17.1\ACAD-xxxx:xxx, etc) xxxx:xxx are the same on all machines/installs, just different for each version... Any insight is greatly appreciated, even though I know this probably isn't the place for the AutoCAD registry 101 course.</div>
+</article>
+<article class="post" id="msg38">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-07-11 06:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=dkh007 link=topic=11.msg37#msg37 date=1184124949 wrote:</cite><br>
+... At this point, I think the best bet is to install the Runtime MSI, export the registry keys and then import those into the Tarma Installer...</blockquote><br>
+<br>
+That won't work for general installations. Your installer has to enumerate the registry to find the installed AutoCAD (or AutoCADs). RxInstall.dll does this (and does the reverse on uninstall). It looks to me like your best bet is to include the entire Runtime MSI and execute it (see ).</div>
+</article>
+<article class="post" id="msg40">
+  <div class="post-head">
+    <span class="post-author">dkh007</span>
+    <span class="post-date muted">2007-07-11 10:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">It looks to me like your best bet is to include the entire Runtime MSI and execute it</blockquote><br>
+<br>
+Thanks Owen! That was going to be my original approach, but I thought I would give the MSM a try. Including the entire MSI worked just fine.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Run command of an event in form palette · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2798</p>
+    <h1>Run command of an event in form palette</h1>
+    <p class="meta">Started by hildevascorou ·
+      2021-10-27 23:48 UTC ·
+      0 replies · SMF topic #2798</p>
+<article class="post" id="msg13623">
+  <div class="post-head">
+    <span class="post-author">hildevascorou</span>
+    <span class="post-date muted">2021-10-27 23:48 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+I'm having problem with palette type form in which I have a combo box containing the names of the polygons<br>
+I want that when selecting it, the object in the drawing is zoomed in according to the attached codes.<br>
+I am grateful to anyone who can help me because all the attempts I made were unsuccessful to make the zoom command run<br>
+<br>
+Combobox event example<br>
+<br>
+Combobox list contains object names<br>
+<br>
+(defun c:cmbPolygonoSet_OnSelChanged ( ItemIndexOrCount Value )<br>
+  (setq LstMinMax (CalMinMax Value 10.0))<br>
+  (vl-cmdf "zoom" "w" (nth 0 LstMinMax) (nth 1 LstMinMax))<br>
+)<br>
+<br>
+;Routine to calculate the minimum and maximum point of an object<br>
+(defun CalMinMax ( NPol DxDy / ObjPol PMin PMax LstPMinPMax )<br>
+  (setq ObjPol (vlax-ename-&gt;vla-object NPol))<br>
+  (vla-getboundingbox ObjPol 'PMin 'PMax)<br>
+  (setq PMin (mapcar '- (vlax-safearray-&gt;list PMin) (list DxDy DxDy 0.0)))<br>
+  (setq PMax (mapcar '+ (vlax-safearray-&gt;list PMax) (list DxDy DxDy 0.0)))<br>
+  (setq LstPMinPMax (list PMin PMax))<br>
+   LstPMinPMax<br>
+)<br>
+<br>
+<strong><strong></strong></strong><div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2538/sample_combo_prop_form.png">sample_combo_prop_form.png</a> <span class="muted">(13501 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

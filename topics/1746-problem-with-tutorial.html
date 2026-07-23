@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with Tutorial · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1746</p>
+    <h1>Problem with Tutorial</h1>
+    <p class="meta">Started by anishtain4 ·
+      2012-01-30 07:41 UTC ·
+      3 replies · SMF topic #1746</p>
+<article class="post" id="msg8578">
+  <div class="post-head">
+    <span class="post-author">anishtain4</span>
+    <span class="post-date muted">2012-01-30 07:41 UTC</span>
+  </div>
+  <div class="post-body">hi,<br>
+<br>
+I'm new in OpenDCL and I love it from the first place, I'm doing the tutorials but there is something I can't figure it out by myself. in Page 8 of tutorials for the level 1 when you have:<br>
+<br>
+(defun c:HelloWorld_Form1_TextButton1_OnClicked (/)<br>
+  (setq sText (dcl_Control_GetText HelloWorld_Form1_TextBox1))<br>
+  (dcl_messagebox (strcat "You Typed: " sText))<br>
+  (dcl_Form_Close HelloWorld_Form1)<br>
+)<br>
+<br>
+if you click on the text button it works fine, but if you fill in the text box and click enter on keyboard the form just closes without any messagebox. What am I missing?</div>
+</article>
+<article class="post" id="msg8579">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-01-30 09:40 UTC</span>
+  </div>
+  <div class="post-body">Hello and welcome anishtain4,<br>
+<br>
+in some development languages you can set a dialogresult to a control (like a button). So it is not in OpenDCL, as I remember. There are events like OnOk or OnCancel. You can activate them to catch the events. But I have no experience in that.<br>
+<br>
+For the case the user hits Enter in a focussed TextBox, Grid or ListView I catch OnCancelClose where I get also the hint if the user pressed ESC. If not, I can decide whether the form should be closed (for instance in a form with a single textbox) or not (in forms with a grid in editing state).<br>
+<br>
+I believe the tutorial was made to get into the way using OpenDCL with lisp. Catching Enter will be the next step after working through the tutorial :) .<br>
+You will find a sample for that <a href="http://www.opendcl.com/forum/index.php?topic=1061.0" rel="nofollow noopener">{2}</a>.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8580">
+  <div class="post-head">
+    <span class="post-author">anishtain4</span>
+    <span class="post-date muted">2012-01-30 10:07 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred,<br>
+<br>
+I have two more questions on the intermediate tutorial:<br>
+<br>
+1.in the code below:<br>
+<br>
+<br>
+(defun c:AUBlockTool_PalBlkTool_cmdMInsBlk_OnClicked ( / CSel BlkName X Y Z rot pt)<br>
+(setq CSel (dcl_ListBox_GetCurSel AUBlockTool_PalBlkTool_BlockNameList))<br>
+(setq BlkName (dcl_ListBox_GetText AUBlockTool_PalBlkTool_BlockNameList CSel))<br>
+(setq X (dcl_Control_GetValue AUBlockTool_PalBlkTool_SliderBarXScale))<br>
+(setq Y (dcl_Control_GetValue AUBlockTool_PalBlkTool_SliderBarYScale))<br>
+(setq Z (dcl_Control_GetValue AUBlockTool_PalBlkTool_SliderBarZScale))<br>
+(setq rot (dcl_Control_GetValue AUBlockTool_PalBlkTool_AngleSliderBlkRot))<br>
+(setq *blocks* (ssadd))<br>
+(while (setq pt (getpoint "Select base point\\Right-click to exit: "))<br>
+(command ".insert" BlkName "X" X "Y" Y "Z" Z "R" rot pt)<br>
+(ssadd (entlast) *blocks*)<br>
+(UpdateSStext)<br>
+)<br>
+(princ)<br>
+)<br>
+<br>
+the values from the sliders should be read, but when I have set up these from the first and there is no other code available for them it reads them zero, I checked the minval property in studio and it is set to 1!! I used a (setq x (max x 1)) to pass this point<br>
+<br>
+2. I for the last slider I have:<br>
+<br>
+(defun c:AuBlockTool_PalBlkTool_SliderBarXScale_OnScroll (nValue /)<br>
+  (dcl_Control_SetText AUBlockTool_PalBlkTool_TxtScaleX (itoa nValue))<br>
+  (DoScale 41 nValue)<br>
+  (UpdateLinks (itoa nValue))<br>
+  (princ)<br>
+)<br>
+<br>
+(defun c:AuBlockTool_PalBlkTool_SliderBarYScale_OnScroll (nValue /)<br>
+  (dcl_Control_SetText AUBlockTool_PalBlkTool_txtScaleY (itoa nValue))<br>
+  (DoScale 42 nValue)<br>
+  (princ)<br>
+)<br>
+<br>
+(defun c:AuBlockTool_PalBlkTook_SliderBarZScale_OnScroll (nValue /)<br>
+  (dcl_Control_SetText AUBlockTool_PalBlkTool_txtScaleZ (itoa nValue))<br>
+  (DoScale 43 nValue)<br>
+  (princ)<br>
+)<br>
+<br>
+but when I move the Z slider value of x and y change in a linked manner!!! I'm sure name of the scroll I'm sliding is right and there is no (updatelink) in that's event function. I couldn't figure this one out</div>
+</article>
+<article class="post" id="msg8581">
+  <div class="post-head">
+    <span class="post-author">anishtain4</span>
+    <span class="post-date muted">2012-01-30 11:47 UTC</span>
+  </div>
+  <div class="post-body">Got it, I set all the options of x slider then I copied that and changed the name, but the event name was the same, I had to change that one too.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

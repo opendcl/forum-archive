@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>unselecting a tree node · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1180</p>
+    <h1>unselecting a tree node</h1>
+    <p class="meta">Started by jb ·
+      2010-02-16 19:42 UTC ·
+      5 replies · SMF topic #1180</p>
+<article class="post" id="msg6283">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2010-02-16 19:42 UTC</span>
+  </div>
+  <div class="post-body">Can't see a way to do this.  I need to unselect all tree nodes before clearing the tree.  If a node is selected, it throws an error I guess during the onSelected event.  <br>
+<br>
+But that's another story: I can't see how the SelectItem function can be used to "select nothing" - like by passing nil.<br>
+<br>
+Thanks for any help.</div>
+</article>
+<article class="post" id="msg6284">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-16 20:10 UTC</span>
+  </div>
+  <div class="post-body">Hi, I can remember that I had the same problem: when the clear method will be executed it seems that the current selection is jumping from one item to the next item.<br>
+<br>
+The only advise I can give you for the meantime is to clear the OnSelChanged event at runtime:<br>
+<br>
+<br>
+(setq strOldEvent (dcl_Control_GetProperty MyProj_MyForm_MyTree "SelChanged"))<br>
+(dcl_Control_SetProperty MyProj_MyForm_MyTree "SelChanged" "")<br>
+(dcl_Tree_Clear MyProj_MyForm_MyTree)<br>
+(dcl_Control_SetProperty MyProj_MyForm_MyTree "SelChanged" strOldEvent)<br>
+<br>
+<br>
+Maybe it would be good to add this as a new feature request. Because I could need this, too. Would you be so kind to add this there?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6285">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-16 23:04 UTC</span>
+  </div>
+  <div class="post-body">Are you saying that the SelChanged event firing multiple times during the call to Clear?  If so, I would call that a bug.</div>
+</article>
+<article class="post" id="msg6287">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2010-02-17 01:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">Are you saying that the SelChanged event firing multiple times during the call to Clear?</blockquote><br>
+it would appear so.  Most controls have a way of "deslecting" or passing nil to deselect an item.  The tree control doesn't seedm to have that option.  Could we just have the option of passing "nil" to the selectItem method for having no node selected?  Or, if you want to handle the apparent bug differently, that would work too.<br>
+<br>
+Fred, thanks - I'll have a look.<br>
+<br>
+Owen: thanks, for well, everything!!<br>
+</div>
+</article>
+<article class="post" id="msg6288">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-17 01:49 UTC</span>
+  </div>
+  <div class="post-body">I did a quick test, and in my test the OnSelChanged event did not fire during Tree_Clear.  I think the inability to remove the selection was an oversight, and I have now changed the code so that passing a handle of NIL removes the selection.</div>
+</article>
+<article class="post" id="msg6292">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2010-02-17 12:05 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen.<br>
+<br>
+<br>
+You da Man!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

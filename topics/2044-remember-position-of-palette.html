@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Remember position of palette · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2044</p>
+    <h1>Remember position of palette</h1>
+    <p class="meta">Started by Peter2 ·
+      2013-10-15 19:56 UTC ·
+      4 replies · SMF topic #2044</p>
+<article class="post" id="msg10088">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-10-15 19:56 UTC</span>
+  </div>
+  <div class="post-body">I made a small palette (resizeable, dock all) and can it dock everywhere. Every position is remembered and restored when I restart Acad - nearly ... <br>
+When I dock it beneath or at the right of the command-line, then it is restored above the command-line (between drawing-area and command-line).<br>
+<br>
+Is it possible to restore it right of the command-line?<br>
+(The lisp which calls the palette is started via the start-group (i hope this is the right name in English).</div>
+</article>
+<article class="post" id="msg10091">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-10-15 21:05 UTC</span>
+  </div>
+  <div class="post-body">If the problem is due to the command line loading after the palette loads, then perhaps you can delay loading of the palette via <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Function/DelayedInvoke.htm" rel="nofollow noopener">{2}</a>.</div>
+</article>
+<article class="post" id="msg10094">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-10-16 07:07 UTC</span>
+  </div>
+  <div class="post-body">Yes, it was a timing problem with the command-line. "delayedinvoke" is fine, thanks.<br>
+<br>
+But it is strange:<br>
+With every new drawing and new "delayed show of palette" the palette (which is docked right of the command-line) increases its width. Only 2-3 mm every time, but one time the command-line shrinked to 4 cm (2") and the palette took the rest.</div>
+</article>
+<article class="post" id="msg10101">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-10-16 22:46 UTC</span>
+  </div>
+  <div class="post-body">I'm not sure about the changing width. As a test, can you reproduce that when docking on the left, or in another position on the screen? It might be an AutoCAD bug, but requires further testing to determine the cause.</div>
+</article>
+<article class="post" id="msg13033">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-10-08 15:22 UTC</span>
+  </div>
+  <div class="post-body">JFYI<br>
+<br>
+<blockquote class="quote"><cite> author=Peter2 link=topic=2044.msg10094#msg10094 date=1381907270 wrote:</cite><br>
+Yes, it was a timing problem with the command-line. "delayedinvoke" is fine, thanks....</blockquote><br>
+<br>
+Five years later I'm happy to find my own posting again and I have to confirm - yes, with current software-versions:<br>
+- same problem, same solution.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

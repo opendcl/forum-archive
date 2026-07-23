@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bug in the blockview control  Autocad 2006 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 912</p>
+    <h1>Bug in the blockview control  Autocad 2006</h1>
+    <p class="meta">Started by Sun_tk ·
+      2009-09-11 09:03 UTC ·
+      18 replies · SMF topic #912</p>
+<article class="post" id="msg4540">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2009-09-11 09:03 UTC</span>
+  </div>
+  <div class="post-body">When a modal form with a blockview control is floating,<br>
+upon closing autocad - fatal error.</div>
+</article>
+<article class="post" id="msg4541">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2009-09-11 17:41 UTC</span>
+  </div>
+  <div class="post-body">I worked around that by adding a command reactor (close, quit) to close any floating forms.  And sorry - I'd have a hard time putting my hands on it now: I'm actually just a tourist these days, don't do any coding or cad work any more.<br>
+<br>
+jb</div>
+</article>
+<article class="post" id="msg4544">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-12 03:04 UTC</span>
+  </div>
+  <div class="post-body">I assume you meant a modeless form. I can't reproduce the problem in OpenDCL 6.0 on AutoCAD 2010. Please upload a small sample app with instructions to reproduce the crash.</div>
+</article>
+<article class="post" id="msg4555">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2009-09-14 09:33 UTC</span>
+  </div>
+  <div class="post-body">Sample error in OpenDCL 6.0.0.3 on AutoCAD 2006<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/889/test.zip">test.zip</a> <span class="muted">(622716 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4559">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-14 15:28 UTC</span>
+  </div>
+  <div class="post-body">I tested with 6.0.0.4 by taking the following steps based on your video:<br>
+<br>
+1) Start AutoCAD 2006 (_VERNUM=Z.54.10)<br>
+2) Open AutoCAD 2006\Sample\colorwh.dwg<br>
+3) Load _MasterDemo.lsp<br>
+4) Click on [View DWG]<br>
+5) Click  and open AutoCAD 2006\Sample\Tablet.dwg<br>
+6) Press <br>
+7) Click the close button in the AutoCAD 2006 title bar<br>
+<br>
+AutoCAD closes without any error on my system (Vista with all service packs installed).<br>
+</div>
+</article>
+<article class="post" id="msg4561">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2009-09-14 15:50 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=912.msg4559#msg4559 date=1252942136 wrote:</cite><br>
+I tested with 6.0.0.4 by taking the following steps based on your video:<br>
+<br>
+1) Start AutoCAD 2006 (_VERNUM=Z.54.10)<br>
+2) Open AutoCAD 2006\Sample\colorwh.dwg<br>
+3) Load _MasterDemo.lsp<br>
+4) Click on [View DWG]<br>
+5) Click  and open AutoCAD 2006\Sample\Tablet.dwg<br>
+6) Press <br>
+7) Click the close button in the AutoCAD 2006 title bar<br>
+<br>
+AutoCAD closes without any error on my system (Vista with all service packs installed).<br>
+<br>
+</blockquote><br>
+<br>
+Ok you do it right but my system XP SP3 and AutoCAD closed with error </div>
+</article>
+<article class="post" id="msg4562">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-14 16:28 UTC</span>
+  </div>
+  <div class="post-body">Have you tested 6.0.0.4 to make sure the problem was not fixed since 6.0.0.3?</div>
+</article>
+<article class="post" id="msg4563">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2009-09-14 18:48 UTC</span>
+  </div>
+  <div class="post-body">I tested 6.0.0.4 problem persists</div>
+</article>
+<article class="post" id="msg4564">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-14 19:09 UTC</span>
+  </div>
+  <div class="post-body">I repeated the test in Windows XP SP2, and still I see no crash. Have you tried to reproduce the crash on a different computer?</div>
+</article>
+<article class="post" id="msg4566">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-09-15 05:26 UTC</span>
+  </div>
+  <div class="post-body">Hi, sun_tk, which drawing do you load in the block view? Are there any AEC-objects in the dwg-file?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4567">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2009-09-15 05:43 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=912.msg4564#msg4564 date=1252955382 wrote:</cite><br>
+I repeated the test in Windows XP SP2, and still I see no crash. Have you tried to reproduce the crash on a different computer?<br>
+</blockquote><br>
+<br>
+yes tested on other computers, error there<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4568">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2009-09-15 05:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=912.msg4566#msg4566 date=1252992397 wrote:</cite><br>
+which drawing do you load in the block view? Are there any AEC-objects in the dwg-file?<br>
+</blockquote><br>
+<br>
+Hi Fred in the block only lines and attributes.</div>
+</article>
+<article class="post" id="msg4571">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-09-15 12:34 UTC</span>
+  </div>
+  <div class="post-body">sun_tk, I've downloaded your <a href="http://www.opendcl.com/forum/index.php?action=dlattach;topic=912.0;attach=889" rel="nofollow noopener">{2}</a> from your <a href="http://www.opendcl.com/forum/index.php?topic=912.msg4555#msg4555" rel="nofollow noopener">{2}</a>, but there's a mp4-file in. Maybe you've uploaded a wrong zip-file?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4572">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2009-09-15 15:04 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=912.msg4571#msg4571 date=1253018078 wrote:</cite><br>
+sun_tk, I've downloaded your <a href="http://www.opendcl.com/forum/index.php?action=dlattach;topic=912.0;attach=889" rel="nofollow noopener">{2}</a> from your <a href="http://www.opendcl.com/forum/index.php?topic=912.msg4555#msg4555" rel="nofollow noopener">{2}</a>, but there's a mp4-file in. Maybe you've uploaded a wrong zip-file?<br>
+Fred<br>
+</blockquote><br>
+<br>
+correctly in the archives of videos in order as an error occurs</div>
+</article>
+<article class="post" id="msg4573">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-15 16:08 UTC</span>
+  </div>
+  <div class="post-body">If you haven't yet, try the same test with the same sample files that I used. This will help determine whether the problem is related to the files you used.</div>
+</article>
+<article class="post" id="msg4575">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2009-09-16 05:51 UTC</span>
+  </div>
+  <div class="post-body">on your sample all right! <br>
+<br>
+ this file, I want to display.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/892/L1L2L3N.dwg">L1L2L3N.dwg</a> <span class="muted">(34144 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4578">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-16 09:48 UTC</span>
+  </div>
+  <div class="post-body">Thanks, I can reproduce the crash now with your file.</div>
+</article>
+<article class="post" id="msg4613">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-17 21:33 UTC</span>
+  </div>
+  <div class="post-body">This is now fixed for Alpha 5.</div>
+</article>
+<article class="post" id="msg4670">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2009-09-22 10:23 UTC</span>
+  </div>
+  <div class="post-body">Solved all OK.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

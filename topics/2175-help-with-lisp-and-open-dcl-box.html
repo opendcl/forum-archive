@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>help with lisp and open dcl box · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2175</p>
+    <h1>help with lisp and open dcl box</h1>
+    <p class="meta">Started by jarods350z ·
+      2014-09-26 16:01 UTC ·
+      9 replies · SMF topic #2175</p>
+<article class="post" id="msg10909">
+  <div class="post-head">
+    <span class="post-author">jarods350z</span>
+    <span class="post-date muted">2014-09-26 16:01 UTC</span>
+  </div>
+  <div class="post-body">I am having an issue getting one of my old files to work. the tool is a command that will bring in an AIA layer list and add the layers to acad.<br>
+<br>
+for some reason I cant get the box to pull up with the layers. I keep getting the failed to load resource file error<br>
+<br>
+Thanks in advance for the help<br>
+<br>
+p.s. I am using opendcl version 8.0.0.8 and autoCAD 2014<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2046/error.JPG">error.JPG</a> <span class="muted">(33446 bytes)</span></li><li><a href="../attachments/2047/LayZer.lsp">LayZer.lsp</a> <span class="muted">(9010 bytes)</span></li><li><a href="../attachments/2048/LayZer.odcl">LayZer.odcl</a> <span class="muted">(4185 bytes)</span></li><li><a href="../attachments/2049/Masterlayerlist.txt">Masterlayerlist.txt</a> <span class="muted">(63462 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10910">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-09-26 20:47 UTC</span>
+  </div>
+  <div class="post-body"> Have you checked the value of mstLayZerFile at the point where the code displays the error message? I'm pretty sure it is not a valid path.</div>
+</article>
+<article class="post" id="msg10911">
+  <div class="post-head">
+    <span class="post-author">jarods350z</span>
+    <span class="post-date muted">2014-09-26 21:30 UTC</span>
+  </div>
+  <div class="post-body">Thanks Own you are always the first to respond but unfortunately It looks like I do unless my lisp is trying to call the ip address and not just the s drive.<br>
+<br>
+see attached directory tree<br>
+<br>
+Oh and by the way it is AutoCAD 2015 not 2014<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2050/directory.JPG">directory.JPG</a> <span class="muted">(34165 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10913">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-09-27 02:34 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jarods350z link=topic=2175.msg10911#msg10911 date=1411767002 wrote:</cite><br>
+Thanks Own you are always the first to respond but unfortunately It looks like I do unless my lisp is trying to call the ip address and not just the s drive.<br>
+</blockquote><br>
+<br>
+It looks like your reply got messed up. Did you check the value of mstLayZerFile?</div>
+</article>
+<article class="post" id="msg10921">
+  <div class="post-head">
+    <span class="post-author">jarods350z</span>
+    <span class="post-date muted">2014-09-30 19:55 UTC</span>
+  </div>
+  <div class="post-body">Owen<br>
+<br>
+What do you mean?<br>
+<br>
+the lisp errors at this point<br>
+(defun c:lz (/ t1 ct file line pos layernamelist pre mid)<br>
+  (if (not LayZerLayerData)<br>
+    (progn<br>
+      (setq t1 (getvar "MILLISECS")<br>
+            ct 0<br>
+      )<br>
+      (if (not (setq file (open mstLayZerFile "r")))<br>
+        (progn<br>
+          (alert "LayZer: Failed to load resource file. Exiting.")<br>
+          (exit)<br>
+        )<br>
+      )</div>
+</article>
+<article class="post" id="msg10922">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-09-30 20:19 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jarods350z link=topic=2175.msg10921#msg10921 date=1412106904 wrote:</cite><br>
+What do you mean?<br>
+</blockquote><br>
+<br>
+I'm trying to help you debug your code. If you inspect the value of mstLayZerFile at the point where the error occurs, I think it will be obvious what you did wrong. You can inspect its value either by stepping through the code with the Visual Lisp IDE, or by placing an inline diagnostic output in your code:<br>
+(princ (strcat "\nmstLayZerFile=" mstLayZerFile "\n"))</div>
+</article>
+<article class="post" id="msg10923">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-10-01 06:25 UTC</span>
+  </div>
+  <div class="post-body">Note: The alert message produced by the code already provides diagnostic output.</div>
+</article>
+<article class="post" id="msg10924">
+  <div class="post-head">
+    <span class="post-author">jarods350z</span>
+    <span class="post-date muted">2014-10-01 15:10 UTC</span>
+  </div>
+  <div class="post-body">wahoo getting closer now I get this error man this is like a lisp openDCL puzzle<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2054/new error.jpg">new error.jpg</a> <span class="muted">(93035 bytes)</span></li><li><a href="../attachments/2055/LayZer.lsp">LayZer.lsp</a> <span class="muted">(12228 bytes)</span></li><li><a href="../attachments/2056/LayZer.odcl">LayZer.odcl</a> <span class="muted">(4166 bytes)</span></li><li><a href="../attachments/2057/Masterlayerlist.txt">Masterlayerlist.txt</a> <span class="muted">(63742 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10925">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-10-01 15:27 UTC</span>
+  </div>
+  <div class="post-body">Once (dcl-Form-Show) returns, your dialog box has been closed and the controls no longer exist. You need to perform any dialog operations in an event handler while the dialog is open.</div>
+</article>
+<article class="post" id="msg10999">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-11-12 18:42 UTC</span>
+  </div>
+  <div class="post-body">Hi, jarods350z,<br>
+<br>
+I recommend you to study the OpenDCL samples: then for you it is no "this is like a lisp openDCL puzzle" anymore. :)<br>
+In addition to Owens explanation I want add that you should enable the event Initialize of the form and rewrite/reorder your code this way:<br>
+<br>
+<br>
+(defun c:myprog (/ c:myproj_myform_OnInitialize doContinue intReturnValue  )<br>
+  (defun c:myproj_myform_OnInitialize()<br>
+    (dcl-listbox-setlist myproj_myform_mylistbox lstMyList)<br>
+  ); c:myproj_myform_OnInitialize<br>
+<br>
+  (setq doContinue T)<br>
+  (while doContinue <br>
+    (setq intReturnValue (dcl-form-show myproj_myform))<br>
+    (cond<br>
+      ((= intReturnValue 0) (select_point_or_objects))<br>
+      ((= intReturnValue 1) (do_something) (setq doContinue nil))<br>
+      ((= intReturnValue 2) (setq doContinue nil))<br>
+    ); cond<br>
+  ); while<br>
+  (princ)<br>
+); myprog<br>
+<br>
+<br>
+The following link hits the same notch: http://www.opendcl.com/forum/index.php?topic=947.msg4759#msg4759<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

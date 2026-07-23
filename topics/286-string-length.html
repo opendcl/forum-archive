@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>String Length · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 286</p>
+    <h1>String Length</h1>
+    <p class="meta">Started by jb ·
+      2008-04-14 13:59 UTC ·
+      4 replies · SMF topic #286</p>
+<article class="post" id="msg1280">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-04-14 13:59 UTC</span>
+  </div>
+  <div class="post-body">ListBox control: there appears to be a limit to the length of a string that can be returned with dcl_ListBox_Gettext.  I have a keynoting routine and if the string is longer than 208 characters the form freezes.  I'm having a hard time running this one down.  Any thoughts or known limitations with String Length and OpenDCL?<br>
+<br>
+4.1.2.1<br>
+Architecture 2006, 2008<br>
+WinXP Pro<br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg1281">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-04-14 17:34 UTC</span>
+  </div>
+  <div class="post-body">I just did a quick test with a 300 character string, and it was returned without error.</div>
+</article>
+<article class="post" id="msg1282">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-04-14 17:35 UTC</span>
+  </div>
+  <div class="post-body">Well I found it.  If the EventInvoke property is set to 1 - Allow, the text string is limited, if 0 - Keep Focus, no limitation.  Strange.</div>
+</article>
+<article class="post" id="msg1351">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-04-28 02:51 UTC</span>
+  </div>
+  <div class="post-body">This problem is due to a 256 character string length limit when passing strings to the AutoCAD command line. In Alpha 13 I've added code to detect event handler calls that exceed 256 characters, and in that case it replaces the first (presumably very long) string with "&lt;...&gt;". This means that if your OnSelChanged event handler needs to handle very long strings as the currently selected text, it must get the string via (dcl_ListBox_GetText) instead of relying on the sSelText argument to the event handler function.</div>
+</article>
+<article class="post" id="msg1352">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-04-28 11:41 UTC</span>
+  </div>
+  <div class="post-body">Cool, Thanks Owen!<br>
+<br>
+ ;)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

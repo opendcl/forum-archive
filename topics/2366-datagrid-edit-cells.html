@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Datagrid edit cells · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2366</p>
+    <h1>Datagrid edit cells</h1>
+    <p class="meta">Started by cadplayer ·
+      2016-04-26 18:30 UTC ·
+      3 replies · SMF topic #2366</p>
+<article class="post" id="msg11862">
+  <div class="post-head">
+    <span class="post-author">cadplayer</span>
+    <span class="post-date muted">2016-04-26 18:30 UTC</span>
+  </div>
+  <div class="post-body">I am not sure I understand right Datagrid-object in odcl. <br>
+I only want to can type or edit datagrid-cells-captions, what I have to do or which events are important to know ?!<br>
+<br>
+(defun c:fm_ProjectManager/dialoag_PM#OnInitialize (/)<br>
+    (dcl-Grid-Clear fm_ProjectManager/dialoag_PM/db_Data)<br>
+    (dcl-Control-SetRowHeader fm_ProjectManager/dialoag_PM/db_Data t)<br>
+    (dcl-Control-SetColumnCaptionList fm_ProjectManager/dialoag_PM/db_Data (list "Type" "Description"))<br>
+  )<br>
+These rows only initialize datagrid, but I cannot edit or write in cells !</div>
+</article>
+<article class="post" id="msg11863">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-04-26 18:47 UTC</span>
+  </div>
+  <div class="post-body">Two important things to consider:<br>
+1. The first column behaves differently than the others. Sometimes you have to make it zero width and skip it.<br>
+2. You have to set a cell style for every cell in order to edit them. The cell style is everything.<br>
+<br>
+I hope this helps.</div>
+</article>
+<article class="post" id="msg11864">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-04-27 03:35 UTC</span>
+  </div>
+  <div class="post-body">Hi, I set RowHeader to false, if I don't need it. Regards, Fred</div>
+</article>
+<article class="post" id="msg11866">
+  <div class="post-head">
+    <span class="post-author">cadplayer</span>
+    <span class="post-date muted">2016-04-28 06:56 UTC</span>
+  </div>
+  <div class="post-body">thanks for reply works perfect!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

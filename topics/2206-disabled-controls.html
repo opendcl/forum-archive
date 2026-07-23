@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Disabled controls. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2206</p>
+    <h1>Disabled controls.</h1>
+    <p class="meta">Started by velasquez ·
+      2014-11-21 23:37 UTC ·
+      14 replies · SMF topic #2206</p>
+<article class="post" id="msg11076">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-11-21 23:37 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen.<br>
+There is a difference in the appearance of a control OpenDCL disabled in 7.0.1.4 and 8.0.0.9 OpenDCL.<br>
+Is there a way to work around this?<br>
+I made no change in the project 7.0.1.4 only saved in the new version.<br>
+Thanks.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2068/enabled_FALSE.png">enabled_FALSE.png</a> <span class="muted">(71986 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11077">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-22 04:48 UTC</span>
+  </div>
+  <div class="post-body">Do you see the problem if you use the original .odcl file in OpenDCL 8 runtime? Can you attach a simple sample that I can use to reproduce the problem here?</div>
+</article>
+<article class="post" id="msg11079">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-11-22 12:12 UTC</span>
+  </div>
+  <div class="post-body">Hi, I can reproduce this in AutoCAD 2015 with controls with BackColor = -24. Change them to -16 (3D-Objects/Button). But then font color may not be rendered properly. I added 4 cases for optionlist.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2069/Enabled-24.PNG">Enabled-24.PNG</a> <span class="muted">(3977 bytes)</span></li><li><a href="../attachments/2070/Disabled-24.PNG">Disabled-24.PNG</a> <span class="muted">(3323 bytes)</span></li><li><a href="../attachments/2071/Enabled-16.PNG">Enabled-16.PNG</a> <span class="muted">(3058 bytes)</span></li><li><a href="../attachments/2072/Disabled-16.PNG">Disabled-16.PNG</a> <span class="muted">(3298 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11082">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-11-22 13:53 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2206.msg11077#msg11077 date=1416631731 wrote:</cite><br>
+Do you see the problem if you use the original .odcl file in OpenDCL 8 runtime? Can you attach a simple sample that I can use to reproduce the problem here?<br>
+</blockquote><br>
+<br>
+Hello Owen,<br>
+I posted the example you asked.<br>
+I worked with OpenDCL Studio 8.0.0.9 and runtime.<br>
+I tested with AutoCAD 2010 2012 2013 and 2015 with the same result.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2076/Test_Enabled.odcl">Test_Enabled.odcl</a> <span class="muted">(1298 bytes)</span></li><li><a href="../attachments/2077/TestEnable.LSP">TestEnable.LSP</a> <span class="muted">(1734 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11083">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-11-22 13:56 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2206.msg11079#msg11079 date=1416658348 wrote:</cite><br>
+Hi, I can reproduce this in AutoCAD 2015 with controls with BackColor = -24. Change them to -16 (3D-Objects/Button). But then font color may not be rendered properly. I added 4 cases for optionlist.<br>
+<br>
+Fred<br>
+</blockquote><br>
+Thanks for your help Fred.<br>
+velasquez<br>
+</div>
+</article>
+<article class="post" id="msg11084">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-22 17:08 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=2206.msg11082#msg11082 date=1416664417 wrote:</cite><br>
+I posted the example you asked.</blockquote><br>
+<br>
+Unfortunately the sample does not load in OpenDCL 7. I will try to create one here.</div>
+</article>
+<article class="post" id="msg11085">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-22 17:21 UTC</span>
+  </div>
+  <div class="post-body">I tested your sample in OpenDCL 8, but I do not see the problem with background color on my system. It looks like your dialog background color is different, so probably you have a different Windows theme. Do you have aero enabled? Which theme?</div>
+</article>
+<article class="post" id="msg11086">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-11-22 19:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2206.msg11085#msg11085 date=1416676890 wrote:</cite><br>
+I tested your sample in OpenDCL 8, but I do not see the problem with background color on my system. It looks like your dialog background color is different, so probably you have a different Windows theme. Do you have aero enabled? Which theme?<br>
+</blockquote><br>
+<br>
+The theme I use is the same as always I used to OpenDCL 7 ....<br>
+I do not even temho areo on my Windows 7 Home Basic.<br>
+I do not think you need to create an example because the problem only happens to version 8 ...<br>
+</div>
+</article>
+<article class="post" id="msg11087">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-22 19:40 UTC</span>
+  </div>
+  <div class="post-body">I created a sample, and was able to reproduce the problem. It happens when themes are enabled.<br>
+<br>
+I found a flaw in the OpenDCL code for determining when themes are active for a given control. The flaw affects Check Boc, Frame, Label, and Radio Button controls. This is now fixed for the next build.<br>
+<br>
+Fred, it seems the problem with the option list control is a different problem.</div>
+</article>
+<article class="post" id="msg11088">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-11-22 21:21 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2206.msg11079#msg11079 date=1416658348 wrote:</cite><br>
+Hi, I can reproduce this in AutoCAD 2015 with controls with BackColor = -24. Change them to -16 (3D-Objects/Button). But then font color may not be rendered properly. I added 4 cases for optionlist.<br>
+<br>
+Fred<br>
+</blockquote><br>
+ Hello Fred,<br>
+I skirted the problem with the image below using dcl_control_redraw.<br>
+Have you tried?<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2078/Disabled-16.PNG">Disabled-16.PNG</a> <span class="muted">(3298 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11089">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-11-22 21:24 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2206.msg11087#msg11087 date=1416685217 wrote:</cite><br>
+I created a sample, and was able to reproduce the problem. It happens when themes are enabled.<br>
+<br>
+I found a flaw in the OpenDCL code for determining when themes are active for a given control. The flaw affects Check Boc, Frame, Label, and Radio Button controls. This is now fixed for the next build.<br>
+<br>
+Fred, it seems the problem with the option list control is a different problem.<br>
+</blockquote><br>
+<br>
+Thanks Owen,<br>
+You know when it will launch the next building?</div>
+</article>
+<article class="post" id="msg11090">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-22 21:48 UTC</span>
+  </div>
+  <div class="post-body">After some testing, I found that the option list problem happens on only one of my two monitors. If I move the test dialog between monitors it looks correct on one, and wrong on the other. I have made a small change that should fix that problem as well. This change is also related to themes, and the fix affects other controls as well (specifically on the the listbox I noticed a change -- other controls may not have any noticeable change).<br>
+<br>
+I don't know yet when the next build will be uploaded. If it is critically important for you to get the fix, I can upload it soon.</div>
+</article>
+<article class="post" id="msg11093">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-11-23 11:13 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2206.msg11090#msg11090 date=1416692913 wrote:</cite><br>
+After some testing, I found that the option list problem happens on only one of my two monitors. If I move the test dialog between monitors it looks correct on one, and wrong on the other. I have made a small change that should fix that problem as well. This change is also related to themes, and the fix affects other controls as well (specifically on the the listbox I noticed a change -- other controls may not have any noticeable change).<br>
+<br>
+I don't know yet when the next build will be uploaded. If it is critically important for you to get the fix, I can upload it soon.<br>
+</blockquote><br>
+<br>
+Thank you for your attention Owen.<br>
+I need to update a large project for AutoCAD 2015 and all forms appear with the problem with disabled = False. <br>
+Fix it is critically important for me.</div>
+</article>
+<article class="post" id="msg11103">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-25 16:29 UTC</span>
+  </div>
+  <div class="post-body">Please test Alpha 10 and verify that your controls display as expected.</div>
+</article>
+<article class="post" id="msg11106">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-11-25 21:20 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2206.msg11103#msg11103 date=1416932997 wrote:</cite><br>
+Please test Alpha 10 and verify that your controls display as expected.<br>
+</blockquote><br>
+<br>
+Hello Owen<br>
+I tested Alpha 10 and the controls are displayed with no problem as they are expected.<br>
+Thank you for your fast response.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2080/enabled_false_1.jpg">enabled_false_1.jpg</a> <span class="muted">(55254 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

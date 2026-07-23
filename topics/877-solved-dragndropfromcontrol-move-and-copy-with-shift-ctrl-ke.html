@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[SOLVED]DragnDropFromControl move and copy with shift &amp; Ctrl key in treecontrol. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 877</p>
+    <h1>[SOLVED]DragnDropFromControl move and copy with shift &amp; Ctrl key in treecontrol.</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-08-17 10:38 UTC ·
+      5 replies · SMF topic #877</p>
+<article class="post" id="msg4355">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-08-17 10:38 UTC</span>
+  </div>
+  <div class="post-body">Hello !<br>
+<br>
+I mess something or control key (shift &amp; ctrl) does not take effect on process ?<br>
+<br>
+With 5.1.1.7, node was moved or copied.<br>
+<br>
+I wonder if it is possible also to enable or disable copy (or move) depending of destinate node .<br>
+<br>
+thanks again  ;)</div>
+</article>
+<article class="post" id="msg4357">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-08-17 14:09 UTC</span>
+  </div>
+  <div class="post-body">Hi stephan,<br>
+<br>
+if you don't activate the events for OnDragDropFromControl and so on it should as you desires. Did I understand correctly that it doesn't work so?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4360">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-08-17 19:46 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=877.msg4357#msg4357 date=1250518181 wrote:</cite><br>
+ Did I understand correctly that it doesn't work so?<br>
+Fred<br>
+</blockquote><br>
+<br>
+	<br>
+Hello,<br>
+<br>
+Sorry do not express myself properly.<br>
+<br>
+So the event DragnDropFromControl no longer works as before: only the symbol "+" appears,<br>
+- Function move (with the shift key) is abandoned?<br>
+- Function copy (with ctrl) is abandoned?<br>
+<br>
+Prior to version 5.1.1.7, when copying or moving the node was automatically copied or moved without any control on our part, it's time for us to develop the copy or move the node (which is correct! ).<br>
+<br>
+It may be that correction that has inhibited other function?<br>
+<br>
+My other request (less important) concerns the concept of permission or prohibition to copy or move a node:<br>
+Take the example of a tree on a hard drive, I want to allow moving and copying of file and directory node in the node directory only.<br>
+A file can not be moved to a file!<br>
+To do so would create an "event" that controls the destination with a control that changes the icon "forbidden" or "authorized".<br>
+<br>
+Best regards.<br>
+		</div>
+</article>
+<article class="post" id="msg4362">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-08-17 20:03 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+Found that using "DragnDropBegin" event , inhibited  Shift &amp; Ctrl key of DragnDropFromControl event ???<br>
+<br>
+Is that correct ???<br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg4363">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-08-17 20:21 UTC</span>
+  </div>
+  <div class="post-body">Yes, that is by design. The control uses built-in behavior only when no events are defined. To have the behavior you desire would mean adding additional infrastructure to the event handling system. This is certainly possible, but it would require significant changes.</div>
+</article>
+<article class="post" id="msg4364">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-08-17 20:43 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=877.msg4363#msg4363 date=1250540513 wrote:</cite><br>
+Yes, that is by design. The control uses built-in behavior only when no events are defined. To have the behavior you desire would mean adding additional infrastructure to the event handling system. This is certainly possible, but it would require significant changes.<br>
+</blockquote><br>
+<br>
+	<br>
+I imagine the workload that would be!  ;D<br>
+<br>
+In the immediate future, I stop the command if the destination is not correct, although this is not very ergonomic it will be a first solution.<br>
+<br>
+Best regards<br>
+<br>
+thanks</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

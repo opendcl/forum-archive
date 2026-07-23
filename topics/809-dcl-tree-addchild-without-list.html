@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_Tree_AddChild without list · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 809</p>
+    <h1>dcl_Tree_AddChild without list</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-06-12 08:56 UTC ·
+      1 replies · SMF topic #809</p>
+<article class="post" id="msg3986">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-06-12 08:56 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+With old opendcl version, we can use dcl_Tree_AddChild with and without list ...<br>
+<br>
+<blockquote class="quote"><br>
+Method AddChild (Without Lists) as Long<br>
+<br>
+This method adds a child tree item to a top level tree item or other child tree item. A child is a tree item that is connected to a parent or owner tree item. This method returns the long integer value of the new node item key. <br>
+<br>
+Please note! Adding node items with String Keys attached to them can have expanded images.  <br>
+ <br>
+AutoLISP Syntax:<br>
+(Setq rValue (dcl_Tree_AddChild  boite <br>
+	ParentKey [as String or Long] <br>
+	Text  [as String] <br>
+	OptionalKey  [as String] <br>
+	OptionalImageIndex [as Integer] <br>
+	OptionalSelectedImageIndex  [as Integer] <br>
+	OptionalExpandedImageIndex [as Integer]))<br>
+</blockquote><br>
+<br>
+<br>
+<blockquote class="quote"><br>
+Method AddChild (Using Lists) <br>
+<br>
+This method adds a child tree item to a top level tree item or other child tree item. <br>
+<br>
+Note:<br>
+Create list in the manor shown as follows: <br>
+          (List (List x y ...) (List x y ...) ...)<br>
+We have found ObjectARX does not always like lists created as follows:<br>
+         '(x y ...) (x y ...) ...  <br>
+<br>
+Please note! Adding node items with String Keys attached to them can have expanded images.  <br>
+ <br>
+AutoLISP Syntax:<br>
+(dcl_Tree_AddChild  boite <br>
+	(list (list  <br>
+	ParentKey [as String or Long] <br>
+	Text  [as String] <br>
+	OptionalKey  [as String] <br>
+	OptionalImageIndex [as Integer] <br>
+	OptionalSelectedImageIndex  [as Integer] <br>
+	OptionalExpandedImageIndex [as Integer]) <br>
+	...))<br>
+<br>
+<br>
+</blockquote><br>
+<br>
+With new OpenDCL V5x<br>
+<br>
+(dcl_Tree_AddChild boite(List of Lists as (ParentItem [as Handle or String] Label [as String] {Key [as String]} {ImageIndex [as Integer]} {SelectedImageIndex [as Integer]} {ExpandedImageIndex [as Integer]}) ...))<br>
+<br>
+<br>
+Will you give up working without list ????<br>
+<br>
+Thanks for reply</div>
+</article>
+<article class="post" id="msg3988">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-12 09:42 UTC</span>
+  </div>
+  <div class="post-body">The function should still accept either syntax. To make things simpler, only the more flexible form is documented.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

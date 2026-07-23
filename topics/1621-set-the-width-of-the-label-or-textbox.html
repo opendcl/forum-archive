@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Set the width of the Label or TextBox · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1621</p>
+    <h1>Set the width of the Label or TextBox</h1>
+    <p class="meta">Started by velasquez ·
+      2011-05-09 21:49 UTC ·
+      4 replies · SMF topic #1621</p>
+<article class="post" id="msg7973">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2011-05-09 21:49 UTC</span>
+  </div>
+  <div class="post-body">You can set the width of the Label or TextBox with the length of the string.<br>
+eg: (strlen "ABCD") -&gt; 4<br>
+I need to work with this function OnInitialize.</div>
+</article>
+<article class="post" id="msg7974">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-05-09 22:58 UTC</span>
+  </div>
+  <div class="post-body">Hi, velasquez,<br>
+<br>
+why don't you simply use the dcl_control_setpos method within OnInitialize?<br>
+<br>
+(defun c:myproj_myform_OnInitialize()<br>
+  (dcl_control_setcaption myproj_myform_mylabel strData)<br>
+  (dcl_Control_SetPos myproj_myform_mylabel<br>
+    (dcl_control_getleft myproj_myform_mylabel)<br>
+    (dcl_control_gettop myproj_myform_mylabel)<br>
+    (* (strlen strData) intFontSize)<br>
+    (dcl_control_getheight myproj_myform_mylabel))<br>
+); c:myproj_myform_OnInitialize<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg7975">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2011-05-10 13:29 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1621.msg7974#msg7974 date=1304981934 wrote:</cite><br>
+Hi, velasquez,<br>
+<br>
+why don't you simply use the dcl_control_setpos method within OnInitialize?<br>
+<br>
+(defun c:myproj_myform_OnInitialize()<br>
+  (dcl_control_setcaption myproj_myform_mylabel strData)<br>
+  (dcl_Control_SetPos myproj_myform_mylabel<br>
+    (dcl_control_getleft myproj_myform_mylabel)<br>
+    (dcl_control_gettop myproj_myform_mylabel)<br>
+    (* (strlen strData) intFontSize)<br>
+    (dcl_control_getheight myproj_myform_mylabel))<br>
+); c:myproj_myform_OnInitialize<br>
+<br>
+Regards, Fred<br>
+</blockquote><br>
+<br>
+Thanks Fred,<br>
+I used this method in OnInitialize but it did not work.<br>
+You can post a picture showing this?<br>
+<br>
+Regards, Velasquez<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg7984">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-05-12 05:33 UTC</span>
+  </div>
+  <div class="post-body">Hi velasquez,<br>
+<br>
+I've attached a sample for you. <br>
+<br>
+Please have a look at the line where nSize is defined: the FontSize value may be negative depending on the fontscaling setting. Furthermore I used the width-to-height-ratio of 0.8. It may differ from other fonts. Please note that textlength of not-conditional fonts like Arial cannot simply computed by the number of characters.<br>
+<br>
+Please have a look at the line where the new width is assigned: the 4 pixels are set for the border of the control.<br>
+<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1606/proj.odcl">proj.odcl</a> <span class="muted">(703 bytes)</span></li><li><a href="../attachments/1607/proj.LSP">proj.LSP</a> <span class="muted">(750 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7986">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2011-05-12 11:35 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1621.msg7984#msg7984 date=1305178394 wrote:</cite><br>
+Hi velasquez,<br>
+<br>
+I've attached a sample for you. <br>
+<br>
+Please have a look at the line where nSize is defined: the FontSize value may be negative depending on the fontscaling setting. Furthermore I used the width-to-height-ratio of 0.8. It may differ from other fonts. Please note that textlength of not-conditional fonts like Arial cannot simply computed by the number of characters.<br>
+<br>
+Please have a look at the line where the new width is assigned: the 4 pixels are set for the border of the control.<br>
+<br>
+Regards, Fred<br>
+</blockquote><br>
+<br>
+Thank you for your work Fred.<br>
+He will help me a lot I will work with a fixed font.<br>
+<br>
+Regards, Velasquez<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

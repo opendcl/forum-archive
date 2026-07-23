@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>check boxes · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1877</p>
+    <h1>check boxes</h1>
+    <p class="meta">Started by Atwist ·
+      2012-08-24 09:40 UTC ·
+      8 replies · SMF topic #1877</p>
+<article class="post" id="msg9205">
+  <div class="post-head">
+    <span class="post-author">Atwist</span>
+    <span class="post-date muted">2012-08-24 09:40 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+<br>
+ I have about 10 check boxes that I want to select as I press the output button that the assignments are made​​.<br>
+<br>
+ How can I make this</div>
+</article>
+<article class="post" id="msg9207">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2012-08-24 10:15 UTC</span>
+  </div>
+  <div class="post-body">I guess when you say you want to "select" them, you mean you want them to be checked. To check a checkbox, you must set their value to 1. For example, if in Form1 from Project you want to check Checkbox1, this is the code to do it:<br>
+(dcl_Control_SetValue Project_Form1_CheckBox1 1). And you repeat this for other checkboxes, so for Checkbox2 you will write (dcl_Control_SetValue Project_Form1_CheckBox2 1) etc.</div>
+</article>
+<article class="post" id="msg9210">
+  <div class="post-head">
+    <span class="post-author">Atwist</span>
+    <span class="post-date muted">2012-08-24 11:26 UTC</span>
+  </div>
+  <div class="post-body">Not quite.<br>
+<br>
+ so I have 10 check boxes with 1 button ready.<br>
+ If I now 5 checkboxes and then select the button ready to press the command of these 5 checkboxern be done.<br>
+<br>
+ So first select the commands and then press the button to make the assignment.<br>
+<br>
+I have this <br>
+<br>
+(defun c:cadtool_Main_Chbpurlay_OnClicked (Value /)<br>
+(dcl_Control_Setvalue cadtool_Main_Chbpurlay 1 )<br>
+	(command "-purge" "LA" "*" "N" "")<br>
+)</div>
+</article>
+<article class="post" id="msg9211">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2012-08-24 11:42 UTC</span>
+  </div>
+  <div class="post-body">Oh, I understand now. If the checkbox is selected and you click the button, you want to execute the commands.<br>
+Try this code:<br>
+<br>
+<br>
+(defun c:cadtool_Main_Chbpurlay_OnClicked (Value /)<br>
+(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurlay) 1 )<br>
+        (command "-purge" "LA" "*" "N" "")<br>
+)<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg9212">
+  <div class="post-head">
+    <span class="post-author">Atwist</span>
+    <span class="post-date muted">2012-08-24 11:52 UTC</span>
+  </div>
+  <div class="post-body">Okay I did, but how do I link a button that the assignments are made​​.<br>
+<br>
+ I have now made ​​this<br>
+<br>
+<br>
+(defun c:cadtool_Main_cmdpuruit_OnClicked (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:cadtool_Main_cmdpuruit_OnClicked" "To do")<br>
+)<br>
+<br>
+(defun c:cadtool_Main_Chbpurbloc_OnClicked (Value /)<br>
+(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurbloc)1 )<br>
+	(command "-purge" "D" "*" "N" "")<br>
+)<br>
+)<br>
+(defun c:cadtool_Main_Chbpurdim_OnClicked (Value /)<br>
+(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurdim)1 )<br>
+	(command "-purge" "B" "*" "N" "")<br>
+)<br>
+)<br>
+(defun c:cadtool_Main_Chbpurlay_OnClicked (Value /)<br>
+(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurlay) 1 )<br>
+	(command "-purge" "LA" "*" "N" "")<br>
+)<br>
+<br>
+As I now know how to do it with the button then I'm already very happy<br>
+<br>
+Thanks for your help</div>
+</article>
+<article class="post" id="msg9215">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2012-08-24 12:11 UTC</span>
+  </div>
+  <div class="post-body">Try this code instead:<br>
+<br>
+(defun c:cadtool_Main_cmdpuruit_OnClicked (/)<br>
+(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurbloc) 1)<br>
+		(command "-purge" "B" "*" "N")<br>
+)<br>
+(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurdim) 1)<br>
+       (command "-purge" "D" "*" "N")<br>
+)<br>
+<br>
+(if (= (dcl_Control_Getvalue cadtool_Main_Chbpurlay) 1)<br>
+        (command "-purge" "LA" "*" "N")<br>
+)<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg9217">
+  <div class="post-head">
+    <span class="post-author">Atwist</span>
+    <span class="post-date muted">2012-08-24 13:48 UTC</span>
+  </div>
+  <div class="post-body"><br>
+no, this does not<br>
+ Get an error message<br>
+ see below<br>
+<br>
+<img src="https://dl.dropbox.com/u/100214188/To%20Do%20error.bmp" alt="" loading="lazy"><br>
+</div>
+</article>
+<article class="post" id="msg9219">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-08-24 14:41 UTC</span>
+  </div>
+  <div class="post-body">Hi, I'd prefer to look at your project file. I guess there is a type mismatch or you have renamed the event handler name.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9223">
+  <div class="post-head">
+    <span class="post-author">Atwist</span>
+    <span class="post-date muted">2012-08-24 17:09 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred,<br>
+<br>
+ Indeed I make a new button and now it works.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

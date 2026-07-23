@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl-Form-StartTimer · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2201</p>
+    <h1>dcl-Form-StartTimer</h1>
+    <p class="meta">Started by velasquez ·
+      2014-11-19 18:47 UTC ·
+      8 replies · SMF topic #2201</p>
+<article class="post" id="msg11044">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-11-19 18:47 UTC</span>
+  </div>
+  <div class="post-body">The Splash archive of examples of OpenDCL working with dcl-Form-startTimer with an accountant.<br>
+Working only with dcl-Form-startTimer I just need to control the time that the form will appear on the screen.<br>
+<br>
+<pre class="code"><code><br>
+(defun c:splash/Form1#OnTimer ()<br>
+ (dcl-Control-SetCaption Splash/Form1/Label1 (strcat "Loading..." (itoa *Count*)))<br>
+  (setq *Count* (1- *Count*))<br>
+  (if (/= *Count* -1)<br>
+    (dcl-Form-StartTimer Splash/Form1 1000)<br>
+    (dcl-Form-Close Splash/Form1)<br>
+  )<br>
+  (princ)<br>
+)</code></pre><br>
+<br>
+I tested the example below by changing the value for dcl-Form-startTimer but not working.<br>
+Can anyone tell me where this my mistake?<br>
+<pre class="code"><code><br>
+(defun c:splash/Form1#OnTimer ()<br>
+  (dcl-form-starttimer Splash/Form1 1000)<br>
+  (dcl-form-close Splash/Form1)<br>
+)<br>
+</code></pre><br>
+</div>
+</article>
+<article class="post" id="msg11048">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-19 22:57 UTC</span>
+  </div>
+  <div class="post-body">Where are you calling dcl-Form-StartTimer to start the timer? Also, calling dcl-Form-StartTimer inside the OnTimer handler looks like a mistake.</div>
+</article>
+<article class="post" id="msg11057">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-11-20 11:01 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2201.msg11048#msg11048 date=1416437858 wrote:</cite><br>
+Where are you calling dcl-Form-StartTimer to start the timer? Also, calling dcl-Form-StartTimer inside the OnTimer handler looks like a mistake.<br>
+</blockquote><br>
+<br>
+Hello Owen,<br>
+What I did was remove the funçãoque works with counter SPLASH.lsp file and it stopped working.<br>
+I do not understand what the function of the counter along with dcl-Form-startTimer.<br>
+<br>
+Follows the code I modified<br>
+<pre class="code"><code><br>
+;;;<br>
+;;; Splash Sample<br>
+;;;<br>
+;;; This sample demonstrates the timer event with a splash screen.<br>
+;;;<br>
+<br>
+;; Main program<br>
+(defun c:Splash (/ cmdecho)<br>
+<br>
+  ;; Ensure OpenDCL Runtime is (quietly) loaded<br>
+  (setq cmdecho (getvar "CMDECHO"))<br>
+  (setvar "CMDECHO" 0)<br>
+  (command "_OPENDCL")<br>
+  (setvar "CMDECHO" cmdecho)<br>
+<br>
+  ;; Load the project<br>
+  (dcl-Project-Load (*ODCL:Samples-FindFile "Splash.odcl"))<br>
+<br>
+  ;; Show the main form<br>
+  (dcl-Form-Show Splash/Form1)<br>
+<br>
+  ;; This is a modeless form, so (dcl-Form-Show) returns immediately,<br>
+  ;; leaving the event handlers to manage the form.<br>
+<br>
+;;;  (setq *Count* 4)<br>
+  (c:splash/Form1#OnTimer)<br>
+<br>
+  (princ)<br>
+)<br>
+<br>
+;|«OpenDCL Event Handlers»|;<br>
+<br>
+(defun c:splash/Form1#OnTimer ()<br>
+;;;  (dcl-Control-SetCaption Splash/Form1/Label1 (strcat "Loading..." (itoa *Count*)))<br>
+;;;  (setq *Count* (1- *Count*))<br>
+;;;  (if (/= *Count* -1)<br>
+    (dcl-Form-StartTimer Splash/Form1 4000)<br>
+    (dcl-Form-Close Splash/Form1)<br>
+;;;)<br>
+  (princ)<br>
+)<br>
+<br>
+(princ)<br>
+<br>
+;|«OpenDCL Samples Epilog»|;<br>
+<br>
+;;;######################################################################<br>
+;;;######################################################################<br>
+;;; The following section of code is designed to locate OpenDCL Studio<br>
+;;; sample files in the samples folder by prefixing the filename with<br>
+;;; the path prefix that was saved in the registry by the installer.<br>
+;;; The global *ODCL:Prefix and function *ODCL:Samples-FindFile<br>
+;;; are used throughout the samples.<br>
+;;;<br>
+(or *ODCL:Samples-FindFile<br>
+  (defun *ODCL:Samples-FindFile (file)<br>
+    (setq *ODCL:Prefix<br>
+      (cond<br>
+        (	*ODCL:Prefix<br>
+        ) ;_ already defined<br>
+        (	(vl-registry-read<br>
+             "HKEY_CURRENT_USER\\SOFTWARE\\OpenDCL"<br>
+             "SamplesFolder"<br>
+          )<br>
+        ) ;_ 32-bit location<br>
+        (	(vl-registry-read<br>
+             "HKEY_LOCAL_MACHINE\\SOFTWARE\\OpenDCL"<br>
+             "SamplesFolder"<br>
+          )<br>
+        ) ;_ 32-bit location<br>
+        (	(vl-registry-read<br>
+             "HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\OpenDCL"<br>
+             "SamplesFolder"<br>
+          )<br>
+        ) ;_ 64-bit location<br>
+      )<br>
+    )<br>
+    (cond<br>
+      ((findfile file)) ; check the support path first<br>
+      (*ODCL:Prefix (findfile (strcat *ODCL:Prefix file)))<br>
+      (file)<br>
+    )<br>
+  )<br>
+)<br>
+<br>
+;; If AllSamples is active, run the main function immediately; otherwise<br>
+;; display a banner. The extra gymnastics allow the sample name to be<br>
+;; specified in only one place, thus making it easier to reuse this code.<br>
+(	(lambda (demoname)<br>
+    (if *ODCL:AllSamples<br>
+      (progn<br>
+        (princ (strcat "'" demoname "\n"))<br>
+        (apply (read (strcat "C:" demoname)) nil)<br>
+      )<br>
+      (progn<br>
+        (princ (strcat "\n" demoname " OpenDCL sample loaded"))<br>
+        (princ (strcat " (Enter " (strcase demoname) " command to run)\n"))<br>
+      )<br>
+    )<br>
+  )<br>
+  "Splash"<br>
+)<br>
+(princ)<br>
+<br>
+;;;######################################################################<br>
+;;;######################################################################<br>
+<br>
+;|«Visual LISP© Format Options»<br>
+(80 4 50 2 nil "end of " 80 50 0 0 2 nil nil nil T)<br>
+;*** DO NOT add text below the comment! ***|;<br>
+</code></pre><br>
+</div>
+</article>
+<article class="post" id="msg11061">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-20 14:30 UTC</span>
+  </div>
+  <div class="post-body">In your modified code, the form is always closed immediately after opening because the main function calls (dcl-Form-Show), then immediately calls (c:splash/Form1#OnTimer) which calls (dcl-Form-Close). Just replace (c:splash/Form1#OnTimer) with (dcl-Form-StartTimer Splash/Form1 4000) to start the timer. Then in your c:splash/Form1#OnTimer, just close the form; do not start the timer again. I hope this helps.</div>
+</article>
+<article class="post" id="msg11070">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-11-21 09:50 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2201.msg11061#msg11061 date=1416493848 wrote:</cite><br>
+In your modified code, the form is always closed immediately after opening because the main function calls (dcl-Form-Show), then immediately calls (c:splash/Form1#OnTimer) which calls (dcl-Form-Close). Just replace (c:splash/Form1#OnTimer) with (dcl-Form-StartTimer Splash/Form1 4000) to start the timer. Then in your c:splash/Form1#OnTimer, just close the form; do not start the timer again. I hope this helps.<br>
+</blockquote><br>
+<br>
+Hello Owen,<br>
+I did further testing and found the following.<br>
+1- I found that the call to the Form-OnTimer function is automatic after dcl-Form-StartTimer finish. <br>
+2 -I do not need to call (.... #Form-OnTime). Is that right?<br>
+3 -Why Form-OnTimer function can not be declared as a local function?</div>
+</article>
+<article class="post" id="msg11072">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-21 15:14 UTC</span>
+  </div>
+  <div class="post-body">1) Yes, that is the purpose of calling (dcl-Form-StartTimer).<br>
+2) Correct. I answered this in the previous reply.<br>
+3) If you declare it as a local function, it will no longer exist by the time it is needed.</div>
+</article>
+<article class="post" id="msg11073">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-11-21 16:22 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2201.msg11072#msg11072 date=1416582896 wrote:</cite><br>
+3) If you declare it as a local function, it will no longer exist by the time it is needed.<br>
+</blockquote><br>
+<br>
+Thanks Owen<br>
+About this item I asked why could aver many functions (c: splash /...# OnTimer ...) in the same project.<br>
+<br>
+dcl-Form-StartTimer is great.</div>
+</article>
+<article class="post" id="msg11074">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-21 17:05 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=2201.msg11073#msg11073 date=1416586972 wrote:</cite><br>
+About this item I asked why could aver many functions (c: splash /...# OnTimer ...) in the same project.</blockquote><br>
+<br>
+Sorry, your question is not clear. There is only one OnTimer function per form because a timer must be associated with a window, and the OpenDCL event design makes it simple to handle OnTimer as an event. This dictates the design.</div>
+</article>
+<article class="post" id="msg11075">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-11-21 17:32 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2201.msg11074#msg11074 date=1416589506 wrote:</cite><br>
+[quote author=velasquez link=topic=2201.msg11073#msg11073 date=1416586972]<br>
+About this item I asked why could aver many functions (c: splash /...# OnTimer ...) in the same project.</blockquote><br>
+<br>
+Sorry, your question is not clear. There is only one OnTimer function per form because a timer must be associated with a window, and the OpenDCL event design makes it simple to handle OnTimer as an event. This dictates the design.<br>
+<br>
+<br>
+Thanks for your answers Owen.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

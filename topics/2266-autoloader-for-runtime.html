@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>&quot;Autoloader&quot; for Runtime · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/19-deployment.html">Deployment</a> /
+      Topic 2266</p>
+    <h1>&quot;Autoloader&quot; for Runtime</h1>
+    <p class="meta">Started by Peter2 ·
+      2015-05-17 19:42 UTC ·
+      11 replies · SMF topic #2266</p>
+<article class="post" id="msg11396">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-05-17 19:42 UTC</span>
+  </div>
+  <div class="post-body">There is no discussion here about "Autoloader", so I want to ask if it will work: "Autoloader" for runtime?<br>
+<br>
+Who has experience? Good ones or bad ones?<br>
+<br>
+(I know that the best way is the "installation", but the admin of the client only accepts Autoloader-bundles and has locked all setups.)</div>
+</article>
+<article class="post" id="msg11403">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-05-19 04:46 UTC</span>
+  </div>
+  <div class="post-body">Hi, there was a discussion in the past about loading the arx manually - but not with .bundles. As far as I know, using apps from Autodesk Exchange need to start installers, too.<br>
+<br>
+How do you store your files without setup? Just copy? Then copy the arx-files and the runtime.res of the desired language along with your lsp-files.<br>
+Make sure that you arxload the correct arx file manually depending of the loaded AutoCAD-release.<br>
+<br>
+I made something like this in the past:<br>
+<br>
+<br>
+(defun load_opendcl (/ strArx )<br>
+  (or (and dcl-project-load (= (type dcl-project-load) 'EXRXSUBR))<br>
+      (and (setq strARX (findfile (strcat "OpenDCL" (if (not (= (getenv "PROCESSOR_ARCHITECTURE") "x86")) ".x64." ".") (substr (getvar "ACADVER") 1 2) ".arx")))<br>
+	   (arxload strARX (strcat "\nIch konnte die Datei " strFile " nicht laden!\n"))<br>
+	   (and dcl-project-load (= (type dcl-project-load) 'EXRXSUBR))))<br>
+); load_opendcl<br>
+<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11404">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-05-19 16:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2266.msg11403#msg11403 date=1432010779 wrote:</cite><br>
+... As far as I know, using apps from Autodesk Exchange need to start installers, too....</blockquote><br>
+Yes, they have an installer, but I'm not sure what it really does. I suppose - and I saw it with a "handcrafted" CMD in a big system - that the main Installer-function is the extraction of the .bundle from the installer and a simple copy to the folder. More complex feature (registry, environment...) should be done with the .bundle-features.<br>
+<br>
+This is what I tried: to use a package with vlx+arx+... inside a bundle, without additional lisp-configurations or loads. The first trial failed: it only activated the VLX, the ARX are ignored. <br>
+<br>
+Any hints are appreciated.</div>
+</article>
+<article class="post" id="msg11482">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-06-10 06:56 UTC</span>
+  </div>
+  <div class="post-body">I'm still fiddling about this topic ...<br>
+<br>
+Why?<br>
+The "Autoloader" offers a way to "install" something (incl. command-registration, env.-variables ...) without an "Installer". Some companies have locked all setups and installers to their (AutoCAD-)Users.<br>
+<br>
+Of course the Autoloader (from Autodesk app-store) itself comes with an installer, but this is a simple "copy from source to c:\" and could be replaced with a manual copy.<br>
+<br>
+The code to register Opendcl:<br>
+<br>
+	<br>
+		<br>
+		<br>
+		<br>
+			<br>
+		<br>
+<br>
+<br>
+It would work, but if OpenDCL is already installed (which can not be determined by this solution) I get a double-registration: see attachment.<br>
+<br>
+The next idea - to make the muddle perfect - is to use a renamed ARX: OpenDCL_X.arx loads with command "OpenDCL_X"<br>
+<br>
+	<br>
+		<br>
+		<br>
+		<br>
+			<br>
+		<br>
+<br>
+<br>
+Result:<br>
+My lisp would always use the "_X" version, no matter if the full version is installed or not. If my lisp is "deinstalled" (removed), also the "_X" version will be removed.<br>
+<br>
+Question:<br>
+Genius or insanity?<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2142/OpenDCL_double_reg.png">OpenDCL_double_reg.png</a> <span class="muted">(11810 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11483">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-06-10 18:42 UTC</span>
+  </div>
+  <div class="post-body">I highly recommend against loading a renamed OpenDCL ARX module for a non-internal plugin application, as it defines shared functions that may be used by other applications as well. If your application presumes to control that module, soon others will do the same (because maybe they need a more recent version, for example), and an arms race will ensue.<br>
+<br>
+I see this kind of discussion often, but I still don't understand really why there is so much resistance to using the installer. Can you identify a problem that restricted user privileges creates when installing normally? Maybe it would be more useful to address such problems in the installer rather than trying to duplicate its work manually.<br>
+</div>
+</article>
+<article class="post" id="msg11484">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-06-10 21:18 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+it is not my personal passion to avoid the installer. I mentioned the problem some time ago - there are companies where the CAD-department is small and depends absolutely on the IT-department (Mordac). They need an Admin to run a MSI or Innosetup, and sometimes it takes two weeks to talk to the IT which started to discuss "What is it? Do we need it? Is it clean? It is a lot of work because we don't have ..." and after 4 weeks nothing is done. So I'm looking for a way - smooth and clear. But I don't want to create something wrong.</div>
+</article>
+<article class="post" id="msg11488">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-06-13 03:47 UTC</span>
+  </div>
+  <div class="post-body">I wonder if modifying the runtime MSI file to support <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd408068(v=vs.85).aspx" rel="nofollow noopener">{2}</a> would solve this problem with permissions. It seems to be available only in Windows 7 and later. Alternatively, maybe a special .mst file could be produced to transform the existing MSI into one that installs runtime files to user folders.</div>
+</article>
+<article class="post" id="msg11489">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-06-13 08:25 UTC</span>
+  </div>
+  <div class="post-body">I've never made a MSI/MS*, so I'm sorry that I can not contribute to this special question.</div>
+</article>
+<article class="post" id="msg11493">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-06-21 22:09 UTC</span>
+  </div>
+  <div class="post-body">I played around and tried to make an "OpenDCL.bundle" for AutoCAD 2012-2016 (not for Mac, not for ZWcad and Bricscad and of course not for Acad &lt; 2012).<br>
+<br>
+I deinstalled OpenDCL - Runtime and Studio and made a quick test with the bundle in %appdata%, and it was "loaded on demand" in 2012 - 2016 and I got the German messages ("DEU")<br>
+<br>
+Find attached the "PackageContents.xml" in the current draft; maybe someone want to check and test it in his environment and language. If it works, maybe this could be an additional option to offer the software to users.<br>
+<br>
+BTW - "language": The subfolder "ESM" contains the Spanish files, but Spanish is "ESP". What is ESM?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2143/PackageContents.zip">PackageContents.zip</a> <span class="muted">(1608 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11508">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-07-03 17:11 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Peter2 link=topic=2266.msg11493#msg11493 date=1434924568 wrote:</cite><br>
+...Find attached the "PackageContents.xml" in the current draft; maybe someone want to check and test it ...</blockquote><br>
+No remarks? No comments?<br>
+<br>
+<blockquote class="quote"><cite> author=Peter2 link=topic=2266.msg11493#msg11493 date=1434924568 wrote:</cite><br>
+BTW - "language": The subfolder "ESM" contains the Spanish files, but Spanish is "ESP". What is ESM?<br>
+</blockquote><br>
+Bump up..</div>
+</article>
+<article class="post" id="msg11509">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-07-04 09:20 UTC</span>
+  </div>
+  <div class="post-body">ESM = Spanish (Mexico), which I suppose is similar bot not the same as ESP.</div>
+</article>
+<article class="post" id="msg11510">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-07-07 07:05 UTC</span>
+  </div>
+  <div class="post-body">But "Autoloader" only supports ESP. It is possible to load ESM-folder under ESP-definition, but that's (very little) inconsistent.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

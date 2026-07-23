@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ObjectDCL bug? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2768</p>
+    <h1>ObjectDCL bug?</h1>
+    <p class="meta">Started by ziele_o2k ·
+      2021-04-08 21:09 UTC ·
+      15 replies · SMF topic #2768</p>
+<article class="post" id="msg13510">
+  <div class="post-head">
+    <span class="post-author">ziele_o2k</span>
+    <span class="post-date muted">2021-04-08 21:09 UTC</span>
+  </div>
+  <div class="post-body">I'm working with small project and I have some error which I don't understand:<br>
+This code is ok:<br>
+<pre class="code"><code>(defun c:CalculateReinforcement/Zginanie/TabStrip1#OnChanged (ItemIndex /) <br>
+    (cond <br>
+        ((= ItemIndex 0)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/ComboBox4 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/ComboBox3 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox7 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox8 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox9 T)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox1 T)<br>
+         ;(dcl-Control-SetPicture CalculateReinforcement/Zginanie/ZginanieIMG 103)<br>
+        )<br>
+        ((= ItemIndex 1)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/ComboBox4 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/ComboBox3 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox7 T)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox8 T)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox9 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox1 T)<br>
+         (dcl-Control-SetPicture CalculateReinforcement/Zginanie/ZginanieIMG 101)<br>
+        )<br>
+        ((= ItemIndex 2)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/ComboBox4 T)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/ComboBox3 T)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox7 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox8 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox9 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox1 nil)<br>
+         (dcl-Control-SetPicture CalculateReinforcement/Zginanie/ZginanieIMG 102)<br>
+        )<br>
+    )<br>
+    (princ)<br>
+)</code></pre><br>
+But this one:<br>
+<pre class="code"><code>(defun c:CalculateReinforcement/Zginanie/TabStrip1#OnChanged (ItemIndex /) <br>
+    (cond <br>
+        ((= ItemIndex 0)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/ComboBox4 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/ComboBox3 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox7 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox8 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox9 T)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox1 T)<br>
+         (dcl-Control-SetPicture CalculateReinforcement/Zginanie/ZginanieIMG 103)<br>
+        )<br>
+        ((= ItemIndex 1)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/ComboBox4 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/ComboBox3 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox7 T)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox8 T)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox9 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox1 T)<br>
+         (dcl-Control-SetPicture CalculateReinforcement/Zginanie/ZginanieIMG 101)<br>
+        )<br>
+        ((= ItemIndex 2)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/ComboBox4 T)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/ComboBox3 T)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox7 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox8 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox9 nil)<br>
+         (dcl-Control-SetEnabled CalculateReinforcement/Zginanie/TextBox1 nil)<br>
+         (dcl-Control-SetPicture CalculateReinforcement/Zginanie/ZginanieIMG 102)<br>
+        )<br>
+    )<br>
+    (princ)<br>
+)</code></pre> end with error when dcl_Form_Show jums in<br>
+<br>
+Edit:<br>
+Win10, AC2022<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2519/2021-04-08_23-06-33_acad.jpg">2021-04-08_23-06-33_acad.jpg</a> <span class="muted">(23048 bytes)</span></li><li><a href="../attachments/2520/CalculateReinforcement.odcl">CalculateReinforcement.odcl</a> <span class="muted">(24618 bytes)</span></li><li><a href="../attachments/2521/CalculateReinforcement.lsp">CalculateReinforcement.lsp</a> <span class="muted">(5678 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13511">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2021-04-09 02:40 UTC</span>
+  </div>
+  <div class="post-body">The error tells you that CalculateReinforcement/Zginanie/ZginanieIMG is NIL, which indicates some mistake in the control symbol. You can copy and paste the symbol name from the Studio property pane to be sure you have it right.</div>
+</article>
+<article class="post" id="msg13512">
+  <div class="post-head">
+    <span class="post-author">ziele_o2k</span>
+    <span class="post-date muted">2021-04-09 06:04 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen for quick replay, but in my opinion code I posted is fine. <br>
+When window is loading this event is triggered:<br>
+<pre class="code"><code>(defun c:CalculateReinforcement/Zginanie#OnInitialize (/) <br>
+    (...)<br>
+    (dcl-Control-SetPicture CalculateReinforcement/Zginanie/ZginanieIMG 103)<br>
+    (princ)<br>
+)</code></pre><br>
+And it work ok.<br>
+This event works ok but when loading, OpenDCL returns error I posted earlier.<br>
+<pre class="code"><code>(defun c:CalculateReinforcement/Zginanie/TabStrip1#OnChanged (ItemIndex /) <br>
+    (cond <br>
+        ((= ItemIndex 0)<br>
+         (...)<br>
+         (dcl-Control-SetPicture CalculateReinforcement/Zginanie/ZginanieIMG 103)<br>
+        )<br>
+        ((= ItemIndex 1)<br>
+         (...)<br>
+         (dcl-Control-SetPicture CalculateReinforcement/Zginanie/ZginanieIMG 101)<br>
+        )<br>
+        ((= ItemIndex 2)<br>
+         (...)<br>
+         (dcl-Control-SetPicture CalculateReinforcement/Zginanie/ZginanieIMG 102)<br>
+        )<br>
+    )<br>
+    (princ)<br>
+)</code></pre><br>
+Code below do not trigger error on load:<br>
+<pre class="code"><code>(defun c:CalculateReinforcement/Zginanie/TabStrip1#OnChanged (ItemIndex /) <br>
+    (cond <br>
+        ((= ItemIndex 0)<br>
+         (...)<br>
+         ;(dcl-Control-SetPicture CalculateReinforcement/Zginanie/ZginanieIMG 103)<br>
+        )<br>
+        ((= ItemIndex 1)<br>
+         (...)<br>
+         (dcl-Control-SetPicture CalculateReinforcement/Zginanie/ZginanieIMG 101)<br>
+        )<br>
+        ((= ItemIndex 2)<br>
+         (...)<br>
+         (dcl-Control-SetPicture CalculateReinforcement/Zginanie/ZginanieIMG 102)<br>
+        )<br>
+    )<br>
+    (princ)<br>
+)</code></pre><br>
+<br>
+Edit:<br>
+Tested on: Win10 AC2021 ZW2015 GStar2018</div>
+</article>
+<article class="post" id="msg13534">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2021-05-21 11:32 UTC</span>
+  </div>
+  <div class="post-body">Hello ziele_o2k I have the same problem.<br>
+But it's happening on different machines with AutoCAD 2021.<br>
+Did you manage to solve it? </div>
+</article>
+<article class="post" id="msg13536">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2021-05-22 06:24 UTC</span>
+  </div>
+  <div class="post-body">It sounds like OnChanged event is firing before the symbol names are set. I would just check the symbol name, i.e. (if CalculateReinforcement/Zginanie/ZginanieIMG (cond ...</div>
+</article>
+<article class="post" id="msg13537">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2021-05-22 20:24 UTC</span>
+  </div>
+  <div class="post-body">After testing I discovered my problem with the old symbol names, in AutoCAD 2021 and 2022.<br>
+I updated the names and the problem ended on my computer, I will test it on another device <br>
+<br>
+;;;Before<br>
+dcl_Control_SetPicture<br>
+;;;After<br>
+dcl-Control-SetPicture<br>
+<br>
+;;;Before<br>
+dcl_ListBox_Clear<br>
+;;;After<br>
+dcl-ListBox-Clear <br>
+<br>
+;;;Before<br>
+dcl_ComboBox_Clear<br>
+;;;After<br>
+dcl-ComboBox-Clear <br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2522/errors.png">errors.png</a> <span class="muted">(50130 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13538">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2021-05-24 19:44 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=2768.msg13537#msg13537 date=1621715087 wrote:</cite><br>
+After testing I discovered my problem with the old symbol names, in AutoCAD 2021 and 2022.<br>
+I updated the names and the problem ended on my computer, I will test it on another device <br>
+<br>
+;;;Before<br>
+dcl_Control_SetPicture<br>
+;;;After<br>
+dcl-Control-SetPicture<br>
+<br>
+;;;Before<br>
+dcl_ListBox_Clear<br>
+;;;After<br>
+dcl-ListBox-Clear <br>
+<br>
+;;;Before<br>
+dcl_ComboBox_Clear<br>
+;;;After<br>
+dcl-ComboBox-Clear<br>
+</blockquote><br>
+<br>
+These errors keep happening on my client's computer, I can't understand why.<br>
+Any ideas for testing? </div>
+</article>
+<article class="post" id="msg13539">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2021-05-24 19:58 UTC</span>
+  </div>
+  <div class="post-body">I haven't seen these problems with older versions of OpenDCL Studio, but I don't have anything to test. </div>
+</article>
+<article class="post" id="msg13549">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2021-06-04 18:33 UTC</span>
+  </div>
+  <div class="post-body">Please nobody has an answer to this problem? </div>
+</article>
+<article class="post" id="msg13551">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2021-06-05 14:17 UTC</span>
+  </div>
+  <div class="post-body">I answered on May 22.</div>
+</article>
+<article class="post" id="msg13553">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2021-06-06 10:59 UTC</span>
+  </div>
+  <div class="post-body">Sorry I didn't understand your answer.<br>
+Everything worked fine until AutoCAD 2019, the problem happened from AutoCAD 2021 without anything being changed.<br>
+I'm updating all the names to the new pattern, it looks like that's the only solution. </div>
+</article>
+<article class="post" id="msg13554">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2021-06-06 11:41 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2768.msg13536#msg13536 date=1621664661 wrote:</cite><br>
+It sounds like OnChanged event is firing before the symbol names are set. I would just check the symbol name, i.e. (if CalculateReinforcement/Zginanie/ZginanieIMG (cond ...<br>
+</blockquote><br>
+<br>
+I have a foreach with many symbol names to change the index of the image.<br>
+Do I need to check them all? </div>
+</article>
+<article class="post" id="msg13555">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2021-06-08 18:39 UTC</span>
+  </div>
+  <div class="post-body">If the problem is related to old style symbols no longer being define, then my answer would not be helpful. I'm not aware of a problem with the old style symbol names, but it may well have gone unnoticed. I'll make a note to check this in Acad 2021.</div>
+</article>
+<article class="post" id="msg13556">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2021-06-08 19:14 UTC</span>
+  </div>
+  <div class="post-body">I did a quick test, but I don't see any problem with function names in Acad 2021 with OpenDCL Runtime 9.1.3.0. For example, both dcl-Control-SetPicture and dcl_Control_SetPicture are defined and point to the same function. Additionally, the fact that you get an error about the function *argument* proves that the function itself is defined and executed.</div>
+</article>
+<article class="post" id="msg13557">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2021-06-08 20:11 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2768.msg13556#msg13556 date=1623179698 wrote:</cite><br>
+I did a quick test, but I don't see any problem with function names in Acad 2021 with OpenDCL Runtime 9.1.3.0. For example, both dcl-Control-SetPicture and dcl_Control_SetPicture are defined and point to the same function. Additionally, the fact that you get an error about the function *argument* proves that the function itself is defined and executed.<br>
+</blockquote><br>
+<br>
+Everything works fine on my computer with AutoCAD 2021 and 2022, I've updated all the function and control names.<br>
+But on my client's computer with AutoCAD 2021 the errors happen with dcl-Control-SetPicture or dcl_Control_SetPicture.<br>
+The error also happens with  (dcl-ComboBox-Clear EstudoPlanos/Canaliza<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2524/tela.png">tela.png</a> <span class="muted">(74683 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13564">
+  <div class="post-head">
+    <span class="post-author">serrano</span>
+    <span class="post-date muted">2021-07-06 16:00 UTC</span>
+  </div>
+  <div class="post-body">These errors happen if the LispSys variable in AutoCAD 2021 and 2022 is set to 1 or 2.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

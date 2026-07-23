@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LISP to Load OpenDCL · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2935</p>
+    <h1>LISP to Load OpenDCL</h1>
+    <p class="meta">Started by DGCSCAD ·
+      2024-09-11 19:47 UTC ·
+      2 replies · SMF topic #2935</p>
+<article class="post" id="msg14096">
+  <div class="post-head">
+    <span class="post-author">DGCSCAD</span>
+    <span class="post-date muted">2024-09-11 19:47 UTC</span>
+  </div>
+  <div class="post-body">Hi. First post here. Been a member of theSwamp for many years (deegeecees) and although I haven't used LISP much over the past 2 decades, I've been needing to get back into it recently.<br>
+<br>
+I'm looking for a way to load OpenDCL on other PC's through a network via LISP.<br>
+<br>
+I've put this together after some searching around, but it doesn't recognize ODCL after installing:<br>
+<br>
+<pre class="code"><code>(defun checkodcl ()<br>
+	(if (and (not dcl_project_load) (vl-cmdf "OPENDCL") (not dcl_project_load))<br>
+		(progn<br>
+			(startapp "msiexec.exe" (strcat "/i \"" "OpenDCL.Runtime.9.2.3.3.msi" "\""))<br>
+		)<br>
+	)<br>
+)</code></pre><br>
+<br>
+The MSI file is located in a support path, so it runs as it should. I'm not sure what I'm missing. Any help is appreciated.</div>
+</article>
+<article class="post" id="msg14097">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2024-09-11 22:08 UTC</span>
+  </div>
+  <div class="post-body">You would need to restart before the new demand load registry keys are active. You could complete the install, then read the newly added demand load registry key via lisp to get the full path to the OpenDCL runtime module, then load it via (arxload).</div>
+</article>
+<article class="post" id="msg14098">
+  <div class="post-head">
+    <span class="post-author">DGCSCAD</span>
+    <span class="post-date muted">2024-09-12 10:59 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=msg=14097 date=1726092507 wrote:</cite><br>
+You would need to restart before the new demand load registry keys are active. You could complete the install, then read the newly added demand load registry key via lisp to get the full path to the OpenDCL runtime module, then load it via (arxload).<br>
+</blockquote><br>
+<br>
+Ok, thank you. I appreciate help, and the fast response.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

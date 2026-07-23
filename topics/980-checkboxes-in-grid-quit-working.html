@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkboxes in Grid quit working · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 980</p>
+    <h1>Checkboxes in Grid quit working</h1>
+    <p class="meta">Started by seej ·
+      2009-10-20 19:56 UTC ·
+      3 replies · SMF topic #980</p>
+<article class="post" id="msg4995">
+  <div class="post-head">
+    <span class="post-author">seej</span>
+    <span class="post-date muted">2009-10-20 19:56 UTC</span>
+  </div>
+  <div class="post-body">I have a grid with a column of check boxes. For the first 13 or so, I cannot change the check once it has been checked. for the remaining boxes, I can turn them on and off as expected. Here is the code I use to populate the grid along with a sample of the data at the top. This is is on 5.1.0.2 and i tried it on the latest version I could download and it did the same. Is there something I'm doing wrong or is it a bug?<br>
+<br>
+<br>
+    ;Attr	Width	Just	Title	CheckboxTitle	Checkstate	Order<br>
+    ;("ROOM_NUMBER" "1\"" "Left" "ROOM NO." "" 1 "1")<br>
+<br>
+    (dcl_Grid_FillList Schedule-Room_Form1_Grid2 lstOrderList)<br>
+    <br>
+    (setq count 0)<br>
+    (while (&lt; count (length lstOrderList))<br>
+      (dcl_Grid_SetCellCheckState Schedule-Room_Form1_Grid2 count 4 (nth 5 (nth count lstOrderList)))<br>
+      (setq count (1+ count))<br>
+      )<br>
+<br>
+<br>
+<br>
+thanks,<br>
+<br>
+CJ<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/983/checkbox.png">checkbox.png</a> <span class="muted">(51200 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4997">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-20 21:24 UTC</span>
+  </div>
+  <div class="post-body">See if you can reproduce the problem in a new project with just a single grid control and an OnInitialize event handler. If you can, post the .odcl and .lsp files so I can have a look.</div>
+</article>
+<article class="post" id="msg5001">
+  <div class="post-head">
+    <span class="post-author">seej</span>
+    <span class="post-date muted">2009-10-21 14:28 UTC</span>
+  </div>
+  <div class="post-body">OK it is my data that is messing it up. I am feeding the list an integer after the checkbox which I am not supposed to do. It appears if the integer is a zero, it will function still but if the integer is greater than 0, the it locks the checkbox once it is checked. the reason why my data allowed me to check some and not others is that I am setting some as defaults to on and they had a setting of 1, the other were optional and they had a setting of zero.  It was only my default ones that were locked. I need to remove those settings from my fill list. I actually found this when i had a typo with this test code when i was getting it to work. Led me to the conclusion that the data was bad.<br>
+<br>
+So it is my bad data that is locking the checkbox but perhaps we need an error check or something in the ODCL so that people like me don't mess it up. ;D<br>
+<br>
+Thanks,<br>
+<br>
+<br>
+<br>
+here is the code. <br>
+<br>
+  (defun c:gridtest_Form1_OnInitialize (/)<br>
+    (setq datalist (list 1 1 1 1 1 1 1))  <br>
+    (setq filllist (list (list "1" "1\"" "left" "Check 1" "" "1")<br>
+			 (list "2" "1\"" "left" "Check 2" "" "2")<br>
+			 (list "3" "1\"" "left" "Check 3" "" "3")<br>
+			 (list "4" "1\"" "left" "Check 4" "" "4")<br>
+			 (list "5" "1\"" "left" "Check 5" "" "5")<br>
+			 (list "6" "1\"" "left" "Check 6" "" 1);;&lt;- this one will lock <br>
+			 (list "7" "1\"" "left" "Check 7" "" 0);;&lt;- this one will not lock but is also incorrect<br>
+			 (list "8" "1\"" "left" "Check 8" "" "8")<br>
+			 (list "9" "1\"" "left" "Check 9" "" "9")<br>
+			 (list "10" "1\"" "left" "Check 10" "" "10")<br>
+			 (list "11" "1\"" "left" "Check 11" "" "11")<br>
+			 (list "12" "1\"" "left" "Check 12" "" "12")<br>
+			 (list "13" "1\"" "left" "Check 13" "" "13")<br>
+			 (list "14" "1\"" "left" "Check 14" "" "14")<br>
+			 )<br>
+	  )<br>
+    (dcl_grid_filllist gridtest_form1_grid1 filllist)<br>
+    (setq count 0)<br>
+    (while (&lt; count (length datalist))<br>
+      (dcl_grid_setcellcheckstate gridtest_form1_grid1 count 4 (nth count datalist))<br>
+      (setq count (1+ count))<br>
+      )<br>
+    )<br>
+<br>
+  (dialog_gridtest)<br>
+  )<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/984/gridtest.odcl">gridtest.odcl</a> <span class="muted">(774 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5004">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-21 17:19 UTC</span>
+  </div>
+  <div class="post-body">The integer is interpreted as the optional "ImageIndex" for the cell. A cell's ImageIndex is stored in the cell state, which is also used to track the checked/unchecked state of the cell. It turns out that when you set the image index of a cell to 1, the cell's checked and unchecked cell states then use the same image, so toggling has no effect.<br>
+<br>
+That's a weird one, but I don't see any way to prevent this potential situation without significant changes in how the cell state is tracked. I'm going to leave it the way it is. If this problem happens to someone else, hopefully a search will turn up this thread and they'll know what to look for.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

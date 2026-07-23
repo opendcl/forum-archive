@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>some questions of modeless form with textbox and button on Returnpress · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1301</p>
+    <h1>some questions of modeless form with textbox and button on Returnpress</h1>
+    <p class="meta">Started by khann ·
+      2010-06-25 02:46 UTC ·
+      4 replies · SMF topic #1301</p>
+<article class="post" id="msg6968">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-06-25 02:46 UTC</span>
+  </div>
+  <div class="post-body">Hi.<br>
+I'm testing just simple code of modeless form with 2 textboxs and 1 button.<br>
+(tested odcl ver. 6.0.0.27 and AcadMap 2005 , Win XP sp2.)<br>
+<br>
+At first I wondered why button does not have Returnpressed event.<br>
+<br>
+In the test, pressed Tab, controls get focus from top to bottom.<br>
+Pressed Enter Key passes two textboxs but button closes the Form.<br>
+<br>
+<br>
+First question is :<br>
+Return pressed on the button I want to stop to check whether close the form or sustain.<br>
+I've checked the (dcl_form_close ) method and CancelClose Event.<br>
+<br>
+   (<span style="color:blue">dcl_Form_Close </span> TEST_form {DialogStatus [as Long]})<br>
+<br>
+   (<span style="color:blue">defun</span> c:TEST_form_OnCancelClose (Reason [as Integer] /))<br>
+<br>
+I hope to get some sample of this context : <br>
+"A return value of T prevents the dialog from closing; otherwise the dialog is closed."<br>
+<br>
+<br>
+Second question is :<br>
+When the Form's <span style="color:brown">Cancel</span> and <span style="color:brown">OK</span> Event starts.<br>
+Return pressed on the button it goes to <span style="color:brown">CancelClose</span> and <span style="color:brown">Close</span> Event no other Event runs.<br>
+<br>
+And the last question is :<br>
+Pressed the upper right corner <span style="color:red">"x"</span> close button crashes the ACAD.<br>
+What's wrong with this test code?<br>
+<br>
+Hope someone check the attached test code.<br>
+Thanks.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1410/(TEST)ODCLTest.LSP">(TEST)ODCLTest.LSP</a> <span class="muted">(2458 bytes)</span></li><li><a href="../attachments/1411/TEST.lsp">TEST.lsp</a> <span class="muted">(1143 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6969">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-06-25 03:48 UTC</span>
+  </div>
+  <div class="post-body">The Events sample demonstrates the use of OnCancelClose. I didn't test your code, but I suspect that the call to (dcl_Form_Close) from within the event handler is probably what is causing the crash.</div>
+</article>
+<article class="post" id="msg6970">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-06-25 06:13 UTC</span>
+  </div>
+  <div class="post-body">Thanks, Owen for your reply.<br>
+Ok, so what is the right usage of (<span style="color:blue">dcl_Form_Close</span>) method not the event ?<br>
+Can you show me a sample?<br>
+</div>
+</article>
+<article class="post" id="msg6971">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-06-25 14:32 UTC</span>
+  </div>
+  <div class="post-body">Take a look at the Events sample. The reason your call to (dcl-Form_Close) is suspicious is because the OnCancelClose event handler is called when the form is already closing.</div>
+</article>
+<article class="post" id="msg6986">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-06-29 00:28 UTC</span>
+  </div>
+  <div class="post-body">All right.<br>
+I'll check that again.<br>
+Thanks.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

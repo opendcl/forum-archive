@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Suppressing event handlers from command history · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2743</p>
+    <h1>Suppressing event handlers from command history</h1>
+    <p class="meta">Started by Moshe-A ·
+      2020-09-29 10:56 UTC ·
+      7 replies · SMF topic #2743</p>
+<article class="post" id="msg13438">
+  <div class="post-head">
+    <span class="post-author">Moshe-A</span>
+    <span class="post-date muted">2020-09-29 10:56 UTC</span>
+  </div>
+  <div class="post-body">Guys Hi,<br>
+<br>
+in order to suppress the event handlers from popping in command history i thought this:<br>
+say i have awf.lsp. the (c:awf) function will only load it self and the main function to control the dialog box<br>
+wrapped in (apply '(lambda () ....) '())  - see the example<br>
+at the end set to nil all the event handlers<br>
+<br>
+does this make sense?<br>
+(consider the load time of standard lisp file is less than a second)<br>
+<br>
+Moshe<br>
+<br>
+<br>
+<pre class="code"><code><br>
+<br>
+(vl-load-com)<br>
+<br>
+(defun c:awf ()<br>
+ (prompt "\nLoading awf.lsp...")<br>
+ (load "awf")<br>
+)<br>
+<br>
+<br>
+; execute at load time<br>
+; control the dialog box<br>
+(apply<br>
+ '(lambda (/ whatnext)<br>
+   (command "OPENDCL") <br>
+   (dcl_Project_Load "awf")<br>
+    <br>
+   (setq whatnext 10) <br>
+    <br>
+   (while (&gt; whatnext 2)<br>
+    (dcl_Form_Show "awf/Form1") <br>
+   )<br>
+    <br>
+   ; remove handlers<br>
+   (foreach func (list 'c:event/handler1 'c:event/handler2 'c:event/handler3)<br>
+    (set func nil)<br>
+   )<br>
+<br>
+   (princ)<br>
+  ); lambda<br>
+ '()<br>
+); apply<br>
+<br>
+<br>
+(defun c:event/handler1 ()<br>
+ ; func code <br>
+ ; ...<br>
+)<br>
+<br>
+(defun c:event/handler2 ()<br>
+ ; func code <br>
+ ; ...<br>
+)<br>
+<br>
+(defun c:event/handler3 ()<br>
+ ; func code <br>
+ ; ...<br>
+)<br>
+<br>
+</code></pre> </div>
+</article>
+<article class="post" id="msg13439">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2020-09-29 16:14 UTC</span>
+  </div>
+  <div class="post-body">AFAIKT, your suggestion would only work for a modal form, and does not offer any advantage over putting everything, including event handlers, in a single named function.<br>
+<br>
+Note that you do not have to use:<br>
+(apply '(lambda ...) '())<br>
+This will also work:<br>
+((lambda ...))</div>
+</article>
+<article class="post" id="msg13440">
+  <div class="post-head">
+    <span class="post-author">Moshe-A</span>
+    <span class="post-date muted">2020-09-29 19:04 UTC</span>
+  </div>
+  <div class="post-body">Roy hi,<br>
+<br>
+a. yes i'm talking on modal form.<br>
+b. if all event handlers will be defined as local, they would be suppressed at command history but they also be hidden to command line - what i am missing here?<br>
+<br>
+thank you<br>
+Moshe<br>
+</div>
+</article>
+<article class="post" id="msg13444">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2020-09-30 06:37 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Moshe-A link=topic=2743.msg13440#msg13440 date=1601406270 wrote:</cite><br>
+b. if all event handlers will be defined as local..</blockquote><br>
+Assuming this is indeed what you want, why don't you use this structure:<br>
+<pre class="code"><code>(defun c:awf ( / c:event/handler1 c:event/handler2 c:event/handler3) ...)</code></pre><br>
+</div>
+</article>
+<article class="post" id="msg13445">
+  <div class="post-head">
+    <span class="post-author">Moshe-A</span>
+    <span class="post-date muted">2020-09-30 07:01 UTC</span>
+  </div>
+  <div class="post-body">did that but the event handlers were suppressed from the command line.<br>
+</div>
+</article>
+<article class="post" id="msg13446">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2020-09-30 18:29 UTC</span>
+  </div>
+  <div class="post-body">You need to explain what you mean by that. Were the event handlers not executed, or were they not included in the command history?<br>
+<br>
+Here is an example of what I mean:<br>
+https://opendcl.com/forum/index.php?topic=1946.msg9549#msg9549</div>
+</article>
+<article class="post" id="msg13447">
+  <div class="post-head">
+    <span class="post-author">Moshe-A</span>
+    <span class="post-date muted">2020-09-30 18:42 UTC</span>
+  </div>
+  <div class="post-body">OK re-checked and the result is:<br>
+all event handler functions declare as local, the event handler functions exists in command history (which i do not like) <br>
+but OPENDCL still can call them but i can not key-in them in the command line and i curious to know how this is done?<br>
+<br>
+thanks<br>
+Moshe<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg13448">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2020-10-01 18:22 UTC</span>
+  </div>
+  <div class="post-body">If the event handlers are nested and localized in a parent function they do not exist outside the scope of that function. And in BricsCAD event handlers then do not leave a trace in the command history. I seem to remember that AutoCAD behaves differently here. You'll have to search the forum for more info.<br>
+<br>
+Of course this approach can only work for modal forms.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My first odcl form · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2297</p>
+    <h1>My first odcl form</h1>
+    <p class="meta">Started by s_plant ·
+      2015-08-18 13:36 UTC ·
+      9 replies · SMF topic #2297</p>
+<article class="post" id="msg11551">
+  <div class="post-head">
+    <span class="post-author">s_plant</span>
+    <span class="post-date muted">2015-08-18 13:36 UTC</span>
+  </div>
+  <div class="post-body">I read tutorial to create very simple form but does anyone know how can I call lisp routine within an loading odcl lisp? It makes me crazy, sometimes it working sometime not. I created very simple form and checked that and nothing is wrong. Here is my odcl lisp and my function lisp.<br>
+<br>
+Function lisp:<br>
+;;;;;;;;; Part of long lisp<br>
+<br>
+(defun c:DELDIM (/ ss)<br>
+  (setq ss (ssget "x" (list (cons 0 "Dimension"))))<br>
+  (if ss<br>
+    (vl-cmdf ".erase" ss "")<br>
+    (princ "\nNo dimensions in this drawing!")<br>
+  )<br>
+  (princ)<br>
+)<br>
+;;;;;;;;;<br>
+<br>
+and here is odcl lisp:<br>
+<br>
+<br>
+(setq cmdecho (getvar "CMDECHO"))<br>
+  (setvar "CMDECHO" 0)<br>
+  (command "_OPENDCL")<br>
+  (setvar "CMDECHO" cmdecho)<br>
+ <br>
+(defun c:ddim () <br>
+ ; call the method to load the deldim.odcl file. <br>
+ (dcl_Project_Load "deldim" T) <br>
+ (dcl_Form_Show deldim/Form1)<br>
+ (princ) <br>
+) <br>
+<br>
+(defun c:deldim/Form1/cmdDelDim#OnClicked (/)<br>
+(load "C:\\Lisps\\function.lsp")<br>
+(prompt "\function.lsp Loaded...")<br>
+  (c:DELDIM)<br>
+  (princ)<br>
+)<br>
+<br>
+(defun c:deldim/Form1/cmdClose#OnClicked (/)<br>
+  (dcl-Form-Close deldim/Form1)<br>
+  (princ)<br>
+)<br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg11552">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-08-18 14:25 UTC</span>
+  </div>
+  <div class="post-body">To execute commands in an event handler, you must ensure the control's Event Invoke property is set to Asynchronous so the event handler executes asynchronously.</div>
+</article>
+<article class="post" id="msg11553">
+  <div class="post-head">
+    <span class="post-author">s_plant</span>
+    <span class="post-date muted">2015-08-18 15:53 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen. Can you please tell me which part I need to revisit? </div>
+</article>
+<article class="post" id="msg11554">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-08-19 00:57 UTC</span>
+  </div>
+  <div class="post-body">Design time properties can be changed in OpenDCL Studio. Open your .odcl file, open your form, select the button that triggers the event, then modify its Event Invoke property in the properties bar. I hope that helps.</div>
+</article>
+<article class="post" id="msg11555">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-08-19 05:00 UTC</span>
+  </div>
+  <div class="post-body">Hi, s_plant, in addtion to Owens suggestions I recommend you to follow the <a href="http://www.opendcl.com/forum/index.php?topic=1080.msg5675#msg5675" rel="nofollow noopener">{2}</a>. Sure, you don't want to pick a point, but they kind of code is quite similar: at the position of (getpoint) you have to put your deldim-command. Please also read the explanations in this FAQ: AutoCAD needs the control back at first before modifying the database. At the runtime of a modal form it has nach the control.<br>
+<br>
+HTH, Fred</div>
+</article>
+<article class="post" id="msg11556">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-08-19 05:05 UTC</span>
+  </div>
+  <div class="post-body">Hi, please note that Owen's suggestions belongs to a palette, dockable and modeless form, my suggestion is related to a modal form. In modal forms there is no Event Invoke property, and you don't need to close a palette, dockable and modeless to call your deldim command. So, to give you the correct path, we need to know what type of form you've created.<br>
+<br>
+HTH, Fred </div>
+</article>
+<article class="post" id="msg11557">
+  <div class="post-head">
+    <span class="post-author">s_plant</span>
+    <span class="post-date muted">2015-08-19 06:57 UTC</span>
+  </div>
+  <div class="post-body">Please find attached all files. It screws with my head :o<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2150/deldim.odcl">deldim.odcl</a> <span class="muted">(904 bytes)</span></li><li><a href="../attachments/2151/functions.lsp">functions.lsp</a> <span class="muted">(198 bytes)</span></li><li><a href="../attachments/2152/deldim.lsp">deldim.lsp</a> <span class="muted">(628 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11574">
+  <div class="post-head">
+    <span class="post-author">s_plant</span>
+    <span class="post-date muted">2015-08-20 12:43 UTC</span>
+  </div>
+  <div class="post-body">any help????</div>
+</article>
+<article class="post" id="msg11576">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-08-20 17:55 UTC</span>
+  </div>
+  <div class="post-body">Your files show a number of naming conflicts:<br>
+[list type=decimal]<br>
+The close button has a different name in the .odcl file<br>
+The event names in the .odcl file don't match with the function names in the .lsp file.<br>
+The name of the additional .lsp file is 'functions.lsp' and not 'function.lsp'<br>
+</ul>Try to pay more attention to this. It will make your life as a programmer a lot easier if you do.<br>
+<br>
+I have adapted your code following Fred's advice in post #4.<br>
+(setvar "CMDECHO" 0)<br>
+(command "_OPENDCL")<br>
+(setvar "CMDECHO" 1)<br>
+<br>
+(defun c:ddim (<br>
+                / c:deldim/Form1/cmdClose#OnClicked<br>
+                  c:deldim/Form1/cmdDelDim#OnClicked<br>
+                  c:deldim/Form1/cmdBDelDim#OnClicked<br>
+                  intResult<br>
+              )<br>
+<br>
+  (defun c:deldim/Form1/cmdClose#OnClicked ()<br>
+    (dcl-Form-Close deldim/Form1 3)<br>
+  )<br>
+<br>
+  (defun c:deldim/Form1/cmdDelDim#OnClicked ()<br>
+    (dcl-Form-Close deldim/Form1 4)<br>
+  )<br>
+<br>
+  (defun c:deldim/Form1/cmdBDelDim#OnClicked ()<br>
+    (dcl-Form-Close deldim/Form1 5)<br>
+  )<br>
+<br>
+  (setq intResult 100) ; Set intResult to 'big' dummy value.<br>
+  (dcl-Project-Load "deldim" T)<br>
+  (while (&lt; 3 intResult) ; Keep (re)showing the dialog if intResult is 4 or 5.<br>
+    (setq intResult (dcl-Form-Show deldim/Form1))<br>
+    (cond<br>
+      ((= 4 intResult)<br>
+        (if (not c:DELDIM) (load "functions.lsp"))<br>
+        (c:DELDIM)<br>
+      )<br>
+      ((= 5 intResult)<br>
+        (if (not c:DELDIM) (load "functions.lsp"))<br>
+        (c:DELDIM)<br>
+      )<br>
+    )<br>
+  )<br>
+  (princ)<br>
+)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2161/deldim.lsp">deldim.lsp</a> <span class="muted">(1004 bytes)</span></li><li><a href="../attachments/2162/deldim.odcl">deldim.odcl</a> <span class="muted">(862 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11582">
+  <div class="post-head">
+    <span class="post-author">s_plant</span>
+    <span class="post-date muted">2015-08-23 12:20 UTC</span>
+  </div>
+  <div class="post-body">Thanks Roy, You made my day  :D</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

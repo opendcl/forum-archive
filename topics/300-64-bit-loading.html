@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>64 Bit loading · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 300</p>
+    <h1>64 Bit loading</h1>
+    <p class="meta">Started by fred_tomke ·
+      2008-04-25 06:30 UTC ·
+      5 replies · SMF topic #300</p>
+<article class="post" id="msg1340">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-04-25 06:30 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+if I cannot use the opendcl command (because of political reasons), I would do it by hand using arxload. But how to decide whether 64 Bit runtime must be loaded or not. Does anybody have any solution for it?<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg1341">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-04-25 13:47 UTC</span>
+  </div>
+  <div class="post-body">Take a look at ManualLoading.lsp in the Samples folder.</div>
+</article>
+<article class="post" id="msg1345">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-04-26 16:16 UTC</span>
+  </div>
+  <div class="post-body">Thanks, I will do.<br>
+<br>
+Meanwhile I tried to load using demand load and I got an error:<br>
+<br>
+Befehl: opendcl<br>
+Laden nach Bedarf wegen eines fehlenden Moduls fehlgeschlagen:<br>
+Name: OpenDCL<br>
+Beschreibung: OpenDCL<br>
+Modulpfad: C:\Program Files (x86)\Common Files\OpenDCL.x64.17.arx<br>
+<br>
+In the registry the loader item of runtime install is not correct:<br>
+<br>
+C:\Program Files (x86)\Common Files\OpenDCL.x64.17.arx<br>
+<br>
+Regards, Fred<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg1346">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-04-26 18:45 UTC</span>
+  </div>
+  <div class="post-body">Fred, can you be more specific about how and what you installed?  I did find and fix a bug whereby the "Language" value is not read correctly on x64, but this results in a "Language module not found" error and does not affect demand loading.</div>
+</article>
+<article class="post" id="msg1347">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-04-26 19:28 UTC</span>
+  </div>
+  <div class="post-body">Sorry Owen,<br>
+<br>
+OS: Vista Business 64 Bit<br>
+CAD: AutoCAD 2008 Deu 64 Bit<br>
+ODCL: Only Runtime Alpha 12 DEU<br>
+<br>
+Common Files Folder: C:\Program Files (x86)\Common Files\OpenDCL\OpenDCL.x64.17.arx<br>
+<br>
+Registry Information: C:\Program Files (x86)\Common Files\OpenDCL.x64.17.arx<br>
+<br>
+I think the subfolder OpenDCL in C:\Program Files (x86)\Common Files was missed.<br>
+<br>
+Error message:<br>
+Befehl: opendcl<br>
+Laden nach Bedarf wegen eines fehlenden Moduls fehlgeschlagen:<br>
+Name: OpenDCL<br>
+Beschreibung: OpenDCL<br>
+Modulpfad: C:\Program Files (x86)\Common Files\OpenDCL.x64.17.arx<br>
+<br>
+Hope that is more enough to debug.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1348">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-04-26 20:21 UTC</span>
+  </div>
+  <div class="post-body">Got it.  This is now fixed.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

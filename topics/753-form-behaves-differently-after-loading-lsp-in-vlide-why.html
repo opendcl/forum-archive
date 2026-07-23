@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Form behaves differently after loading lsp in vlide - why? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 753</p>
+    <h1>Form behaves differently after loading lsp in vlide - why?</h1>
+    <p class="meta">Started by mkweaver ·
+      2009-05-11 19:17 UTC ·
+      2 replies · SMF topic #753</p>
+<article class="post" id="msg3680">
+  <div class="post-head">
+    <span class="post-author">mkweaver</span>
+    <span class="post-date muted">2009-05-11 19:17 UTC</span>
+  </div>
+  <div class="post-body">The attached file - odcl and lisp - behaves differently after I load the lsp in the vlisp ide.  Specifically, prior to the load I often get cancel even when I select the Okay dialog.  After loading in the vlide it always seems to work correctly.  The lsp file includes a c:test function.<br>
+<br>
+What am I doing wrong?<br>
+<br>
+Thanks,<br>
+Mike Weaver<br>
+<br>
+Edit: could someone please move this to the runtime / autolisp forum?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/721/MultiSelectListBox.lsp">MultiSelectListBox.lsp</a> <span class="muted">(3539 bytes)</span></li><li><a href="../attachments/722/MultiSelectListBox.odcl">MultiSelectListBox.odcl</a> <span class="muted">(931 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3687">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-11 22:51 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+1. deactivate the cancel event<br>
+2. do <strong>never</strong> call the close method within an event which is called when the form is going to be closed (OnCancel, OnClose, OnCancelClose, ...)<br>
+3. don't set mlb:okay to nil in events which are also called at the time when the form is going to be closed but not cancelled (OnCancelClose, OnClose, ...)<br>
+4. I often write a line on top of each event for debugging to get known what OpenDCL is returning back. On the other hand you recognize when will which event be fired.<br>
+<br>
+<br>
+(defun c:MultiSelectListBox_Form1_OnCancel (/)<br>
+  (princ "\nOnCancel\r")<br>
+); c:MultiSelectListBox_Form1_OnCancel <br>
+<br>
+<br>
+Please try the LSP I attached. It worked also without VLIDE on my workstation.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/723/MultiSelectListBox.lsp">MultiSelectListBox.lsp</a> <span class="muted">(3475 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3699">
+  <div class="post-head">
+    <span class="post-author">mkweaver</span>
+    <span class="post-date muted">2009-05-12 15:09 UTC</span>
+  </div>
+  <div class="post-body">That did the trick.<br>
+<br>
+Thanks</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

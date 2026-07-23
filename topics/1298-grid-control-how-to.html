@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid control how-to · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1298</p>
+    <h1>Grid control how-to</h1>
+    <p class="meta">Started by honkinberry ·
+      2010-06-23 17:25 UTC ·
+      5 replies · SMF topic #1298</p>
+<article class="post" id="msg6952">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-06-23 17:25 UTC</span>
+  </div>
+  <div class="post-body">I'm struggling through getting my first Grid control working.<br>
+I was hoping to find a simple Tutorial.<br>
+<br>
+I've got a Grid on a form, intended to be only a single row.<br>
+My form OnInitialize is firing, now I just need to know what else is required.<br>
+<br>
+Should I use AddRow to pad the grid data?  AddString?  SetCellText?<br>
+When are the LabelEdit functions required?<br>
+<br>
+Is there way to DataSource a grid to an AutoLISP list?<br>
+<br>
+All my questions for now.  Thanks for any assistance!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg6953">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-06-23 19:35 UTC</span>
+  </div>
+  <div class="post-body">The main steps are adding columns (which you can do either at design time in studio or at runtime), then adding row(s). There are different ways to do both, so use whatever works for you.</div>
+</article>
+<article class="post" id="msg6954">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-06-23 20:08 UTC</span>
+  </div>
+  <div class="post-body">Is the first column always read-only?<br>
+As a workaround, I have set column 0 to 0px wide.<br>
+<br>
+I've got my columns added with addcolumns, then addrow to throw in the data, finally SetCellStyle for each cell (gotta be sure to do that *after* the addrow call).<br>
+<br>
+I have all cells as ComboDropDowns, which brings additional challenges.<br>
+Users have requested a sort of auto-complete, so they can just start typing a few of the characters from the list.  *shaking first at Google for making everything so easy*<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg6956">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-06-24 00:16 UTC</span>
+  </div>
+  <div class="post-body">Change the Row Header property to false if you want column 0 cells to be editable. The auto-complete should kinda sorta work if the combo list contains the items, but you're certainly limited in how you can change that behavior since there are no further events fired until editing is complete.</div>
+</article>
+<article class="post" id="msg6988">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-06-30 18:20 UTC</span>
+  </div>
+  <div class="post-body">I'm not having any luck with that first column.<br>
+Row Header is set to False in the Editor.  Yet when I add rows and columns at runtime, even if I reset the property to False, column 0 is still read-only.  Note that all cells are combo-boxes.<br>
+Other issues with editing values in a grid of all Comboboxes:  Tab doesn't move to the next cell; when entering a new value into the cell, user must click on another cell on the grid, which then fires EndLabelEdit -- if user just clicks the form's OK button, or anywhere else on form, EndLabelEdit does not fire, and the new value is not saved.  So it seems the code that checks cell value against dropdown list, adding as necessary, should be moved to KeyUp?<br>
+<br>
+Should I repost in Runtime with sample code, or add it here?<br>
+<br>
+thanks for any help!<br>
+<br>
+--J</div>
+</article>
+<article class="post" id="msg6989">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-06-30 20:02 UTC</span>
+  </div>
+  <div class="post-body">Yes, please post sample code in Runtime.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

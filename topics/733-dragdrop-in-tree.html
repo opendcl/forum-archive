@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DragDrop in Tree · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 733</p>
+    <h1>DragDrop in Tree</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-04-29 09:47 UTC ·
+      3 replies · SMF topic #733</p>
+<article class="post" id="msg3573">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-29 09:47 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I have a tree with enabled EditLabel, DragDropAllowDrag and DragDropAllowDrop.<br>
+Please imagine 3 items:<br>
+<br>
+A<br>
+B<br>
+C<br>
+<br>
+I want to drag C to drop between A and B. If A is currently selected and I drag C without selecting C explicitly, I don't know which item was dragged.<br>
+<br>
+To solve this the user has to select the item before he can drag and drop it. But that might cause unexpected results. How can I get the real dragged item? Unfortunately, there is also no HitPointTest for tree controls as it is in ListViews. If so I could use the current MouseCoords to get the dragged item.<br>
+<br>
+<br>
+(defun c:layer_sc_ltm_tree_OnDragnDropBegin (/)<br>
+  (princ "\ntree_OnDragnDropBegin\r")<br>
+  (setq ***ltm_label_drag*** (dcl_Tree_GetSelectedItem layer_sc_ltm_tree))<br>
+); c:layer_sc_ltm_tree_OnDragnDropBegin<br>
+<br>
+(defun c:layer_sc_ltm_tree_OnDragnDropFromControl (strProjectName strFormName strControlName uDropPoint /)<br>
+  (if (and strProjectName (= strProjectName "layer")<br>
+	   strFormName (= strFormName "sc_ltm")<br>
+	   strControlName (or (= strControlName "tree") (= strControlName "lst_prop"))<br>
+	   uDropPoint (= (type uDropPoint) 'STR)<br>
+	   ***ltm_label_drag***<br>
+	   (/= ***ltm_label_drag*** uDropPoint))<br>
+    (princ (strcat "\ntree_OnDragnDropFromControl: " (dcl_Tree_GetItemText layer_sc_ltm_tree ***ltm_label_drag***)<br>
+		   "-&gt;" (dcl_Tree_GetItemText layer_sc_ltm_tree uDropPoint) "\r"))<br>
+  ); if<br>
+  (setq ***ltm_label_drag*** nil)<br>
+); c:layer_sc_ltm_tree_OnDragnDropFromControl<br>
+<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3590">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-30 01:48 UTC</span>
+  </div>
+  <div class="post-body">I tried to test this with the tree sample. It always selects the item before the drag operation begins, so it is obvious which item is being moved. Can you attach a small sample file that demonstrates the problem?</div>
+</article>
+<article class="post" id="msg3598">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-30 07:38 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+I attached an example, I hope this works for you. I removed all unneeded sourcecode but I left all the events active to show whats going on. Let me know if you need something more.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/700/090430.zip">090430.zip</a> <span class="muted">(37826 bytes)</span></li><li><a href="../attachments/701/dragdrop.gif">dragdrop.gif</a> <span class="muted">(208196 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3619">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-01 14:45 UTC</span>
+  </div>
+  <div class="post-body">I see the problem. Unfortunately, I don't see any easy way to solve it. The ideal solution would be to create a drag image of the item that is being dragged, but that requires much more sophisticated drag/drop code. I didn't try it, but perhaps it would help to temporarily change the item label of the item during OnDragDropBegin. In any case, you could add a feature request for creating and using a custom drag image.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

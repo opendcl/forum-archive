@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem load ARX 5.0.0.3? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 151</p>
+    <h1>Problem load ARX 5.0.0.3?</h1>
+    <p class="meta">Started by Sun_tk ·
+      2008-02-05 11:19 UTC ·
+      10 replies · SMF topic #151</p>
+<article class="post" id="msg665">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2008-02-05 11:19 UTC</span>
+  </div>
+  <div class="post-body">At loading arx in Autocad the message is deduced "Missing language:UKR Reverting to US English". <br>
+In what the reason?<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg667">
+  <div class="post-head">
+    <span class="post-author">Laxtor</span>
+    <span class="post-date muted">2008-02-05 14:10 UTC</span>
+  </div>
+  <div class="post-body">I get the same thing with the ENU language pack installed, I reinstalled the US English pack but that didn't make a difference.<br>
+<br>
+I assume that this message is raised when the default language is not US, so we will just have to wait until they fix the problem... &gt;:(</div>
+</article>
+<article class="post" id="msg668">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-05 15:05 UTC</span>
+  </div>
+  <div class="post-body">The runtime should revert to the US English language module and continue loading. If you install OpenDCL Studio, it sets a registry key to specify the language so that it doesn't look for a nonexistent language module. If you only installed the OpenDCL Runtime, you can set this registry key manually. Just create a new string key named "Language" in HKLM\Software\OpenDCL and set its value to "ENU". OpenDCL Runtime will then look for the resource DLL in the ENU subdirectory.<br>
+<br>
+I will investigate how this situation can be improved in Alpha 4.</div>
+</article>
+<article class="post" id="msg673">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2008-02-06 11:12 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=151.msg668#msg668 date=1202223938 wrote:</cite><br>
+Just create a new string key named "Language" in HKLM\Software\OpenDCL and set its value to "ENU". OpenDCL Runtime will then look for the resource DLL in the ENU subdirectory.<br>
+</blockquote><br>
+<br>
+Has made. There is nothing has not changed. Message is deduced "Missing language:ENU Reverting to US English". </div>
+</article>
+<article class="post" id="msg675">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-06 15:50 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Sun_tk link=topic=151.msg673#msg673 date=1202296338 wrote:</cite><br>
+[Has made. There is nothing has not changed.</blockquote><br>
+<br>
+Does it in fact work correctly using the English language resources like before?  If not, have you verified that the Runtime.Res.dll file exists in the ENU subdirectory?</div>
+</article>
+<article class="post" id="msg690">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-11 19:06 UTC</span>
+  </div>
+  <div class="post-body">Please let me know the current status of this problem. Has anything changed with Alpha 4?</div>
+</article>
+<article class="post" id="msg693">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-02-11 19:54 UTC</span>
+  </div>
+  <div class="post-body">Why is this so complicated?  Why can't there just be the arx?<br>
+<br>
+Nice work on the palette by the way . . . </div>
+</article>
+<article class="post" id="msg702">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2008-02-12 09:51 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=151.msg690#msg690 date=1202756789 wrote:</cite><br>
+Please let me know the current status of this problem. Has anything changed with Alpha 4?<br>
+</blockquote><br>
+<br>
+In Alpha 4 there is nothing did not change.</div>
+</article>
+<article class="post" id="msg705">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-12 14:30 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Sun_tk link=topic=151.msg702#msg702 date=1202809866 wrote:</cite><br>
+In Alpha 4 there is nothing did not change.</blockquote><br>
+<br>
+Does the Runtime.Res.dll file exists in the ENU subdirectory. What version of Windows? Which language? Please help me find the problem.</div>
+</article>
+<article class="post" id="msg708">
+  <div class="post-head">
+    <span class="post-author">Sun_tk</span>
+    <span class="post-date muted">2008-02-12 15:30 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=151.msg705#msg705 date=1202826636 wrote:</cite><br>
+[quote author=Sun_tk link=topic=151.msg702#msg702 date=1202809866]<br>
+In Alpha 4 there is nothing did not change.</blockquote><br>
+<br>
+Does the Runtime.Res.dll file exists in the ENU subdirectory. What version of Windows? Which language? Please help me find the problem.<br>
+<br>
+<br>
+Res.dll file exists in the ENU subdirectory. - yes.<br>
+Windows                                            - Microsoft Windows XP Professional 5.1.2600 Rus SP2<br>
+language                                            - Russian</div>
+</article>
+<article class="post" id="msg712">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-12 23:05 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Sun_tk link=topic=151.msg708#msg708 date=1202830257 wrote:</cite><br>
+Res.dll file exists in the ENU subdirectory. - yes.</blockquote><br>
+<br>
+The filename is "Runtime.Res.dll", not just "Res.dll" -- correct? Please email me (owenw@manusoft.com) with a valid reply-to address so I can send you a diagnostic file to help determine where the problem is.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

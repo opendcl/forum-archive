@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cleaning up after my dialog is done. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 680</p>
+    <h1>Cleaning up after my dialog is done.</h1>
+    <p class="meta">Started by mr nick ·
+      2009-03-27 12:54 UTC ·
+      1 replies · SMF topic #680</p>
+<article class="post" id="msg3304">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-03-27 12:54 UTC</span>
+  </div>
+  <div class="post-body">This may be a dumb question but here goes anyway...<br>
+<br>
+When I have used a dialog box and finished with it, I close it down and unload the project but as part of the lisp file that controls it, I dozens of 'commands' defined which then stay resident even though the dialog is now unloaded from the system. Is there a clean and simple way of 'un-defining' all these commands or do you just live with them being resident in your session until you close down?</div>
+</article>
+<article class="post" id="msg3305">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-27 18:15 UTC</span>
+  </div>
+  <div class="post-body">Generally there is no harm just leaving them defined. The OS will reclaim the physical memory by paging them out until they are needed again. If your dialog is a modal dialog, you can declare the event handler function names as local variables to the main function and define them at runtime inside the function (so that they automatically get reset when the function exits), but even this is usually not worth the effort.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

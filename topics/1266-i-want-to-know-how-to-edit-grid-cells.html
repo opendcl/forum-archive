@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>I want to know how to edit grid cells.. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1266</p>
+    <h1>I want to know how to edit grid cells..</h1>
+    <p class="meta">Started by mycino ·
+      2010-04-22 09:13 UTC ·
+      2 replies · SMF topic #1266</p>
+<article class="post" id="msg6784">
+  <div class="post-head">
+    <span class="post-author">mycino</span>
+    <span class="post-date muted">2010-04-22 09:13 UTC</span>
+  </div>
+  <div class="post-body">Well, I want to ask you guys about edit grid cellls..<br>
+<br>
+I added up a picture of them.<br>
+<br>
+How can i edit grid cells by keyboard?<br>
+<br>
+I will added up my lisp source ..<br>
+<br>
+please tell me <br>
+<br>
+<br>
+<br>
+<br>
+(defun c:EDIT_TABLE (/ )<br>
+ <br>
+ (command "opendcl")<br>
+ (dcl_Project_Load "Mapatt" t)<br>
+(dcl_form_Show MapAtt_attDATA)<br>
+<br>
+);속성 편집방법 선택<br>
+<br>
+(defun c:MapAtt_attDATA_OnInitialize (/)<br>
+(dcl_Control_SetEventInvoke MapAtt_attDATA 1 )<br>
+(dcl_Control_SetEventInvoke MapAtt_attDATA_exit 1)<br>
+(dcl_Control_SetEventInvoke MapAtt_attDATA_SelObj 1)<br>
+(dcl_Control_SetEventInvoke MapAtt_attDATA_InputClear 1)<br>
+(dcl_Control_SetEventInvoke MapAtt_attDATA_singleObj 1)<br>
+(dcl_Control_SetEventInvoke MapAtt_attDATA_mutlipleObj 1)<br>
+(dcl_Control_SetEventInvoke MapAtt_attDATA_LayersObj 1)<br>
+(dcl_Control_SetEventInvoke MapAtt_attDATA_BlankObj 1)<br>
+);OD테이블 편집.하기메뉴들 초기화.<br>
+<br>
+(defun c:MapAtt_attDATA_SelObj_OnClicked (/ singleIdx MulIdx LayerIdx BlnkIdx singleTbl MulTbl LayerTbl obj singlelist mulist layerlist)<br>
+(setq singleIdx (rtos (dcl_Control_GetValue MapAtt_attDATA_singleObj) 2 0))<br>
+(setq  MulIdx (rtos (dcl_Control_GetValue MapAtt_attDATA_mutlipleObj) 2 0))<br>
+(setq LayerIdx (rtos (dcl_Control_GetValue MapAtt_attDATA_LayersObj) 2 0))<br>
+(setq BlnkIdx (rtos (dcl_Control_GetValue MapAtt_attDATA_BlankObj) 2 0))<br>
+(dcl_Grid_Clear MapAtt_attDATA_ODEdit)<br>
+  (dcl_Control_SetText MapAtt_attDATA_SeletedTable "객체선택중입니다" )<br>
+  (repeat (dcl_Grid_GetColumnCount MapAtt_attDATA_ODEdit)<br>
+	  (dcl_Grid_DeleteColumn MapAtt_attDATA_ODEdit 0)<br>
+	  );repeat<br>
+	<br>
+(cond<br>
+  ((= singleIdx "1")<br>
+ (progn<br>
+     (setq obj (car (entsel)))<br>
+     (setq singleTbl (car (ade_odgettables obj)))<br>
+	  (setq singlelist (get_OD_list obj))<br>
+	  (dcl_Control_SetText MapAtt_attDATA_SeletedTable  singleTbl )<br>
+	  (dcl_Grid_AddColumns MapAtt_attDATA_ODEdit (list (list "필드이름" 1 130.0 )) )<br>
+	  (dcl_Grid_AddColumns MapAtt_attDATA_ODEdit (list (list "필드속성값" 1 90.0 )) )<br>
+	  (dcl_Grid_FillList MapAtt_attDATA_ODEdit singlelist)	  <br>
+	 );progn<br>
+	 );single객체종료.<br>
+  ((= MulIdx "1")<br>
+       (progn<br>
+     <br>
+	     ))<br>
+	 <br>
+  ((= LayerIdx "1")<br>
+       (progn<br>
+     <br>
+	      ))<br>
+<br>
+    		<br>
+  ((= BlnkIdx "1")<br>
+       (progn<br>
+     <br>
+	    ))	 <br>
+ <br>
+);END COND객체선택---단일 또는 복수또는 레이어별.또는 빈테이블별<br>
+)<br>
+<br>
+<br>
+(defun c:MapAtt_attDATA_exit_OnClicked (/)<br>
+(dcl_Form_Close MapAtt_attDATA );폼닫기.<br>
+)<br>
+<br>
+ (defun c:MapAtt_attDATA_ODEdit_OnBeginLabelEdit (Row  Column /)<br>
+ (dcl_Grid_StartCellEdit MapAtt_attDATA_ODEdit Row Column)<br>
+)<br>
+<br>
+<br>
+<br>
+;-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------<br>
+;체크박스 선택사항소스부분.<br>
+(defun c:MapAtt_attDATA_singleObj_OnClicked (Value / singleCheck)<br>
+(setq singlecheck (rtos (dcl_Control_GetValue MapAtt_attDATA_singleObj) 2 0))<br>
+(cond<br>
+((= singlecheck "0")<br>
+(progn<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_mutlipleObj t) ;복수객체체크박스활성화<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_LayersObj t) ;레이어객체체크박스 활성화<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_BlankObj t) ;빈테이블선택체크박스 활성화<br>
+));singlecheck "0"일때 켜기..<br>
+((= singlecheck "1")<br>
+(progn<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_mutlipleObj "not set") ;복수객체체크박스활성화<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_LayersObj "not set") ;레이어객체체크박스 활성화<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_BlankObj "not set") ;빈테이블선택체크박스 활성화<br>
+));singlecheck"1"일때 끄기<br>
+);end cond<br>
+<br>
+);단일객체선택시 <br>
+<br>
+(defun c:MapAtt_attDATA_mutlipleObj_OnClicked (Value  / Mulcheck)<br>
+(setq Mulcheck (rtos (dcl_Control_GetValue MapAtt_attDATA_mutlipleObj) 2 0))<br>
+(cond<br>
+((= Mulcheck "0")<br>
+(progn<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_singleObj t) ;싱글객체체크박스활성화<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_LayersObj t) ;레이어객체체크박스 활성화<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_BlankObj t) ;빈테이블선택체크박스 활성화<br>
+));Mulcheck "0"일때 켜기..<br>
+((= Mulcheck  "1")<br>
+(progn<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_singleObj "not set") ;싱글객체체크박스활성화<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_LayersObj "not set") ;레이어객체체크박스 활성화<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_BlankObj "not set") ;빈테이블선택체크박스 활성화<br>
+));Mulcheck "1"일때 끄기<br>
+);end cond<br>
+);복합객체 선택시 <br>
+<br>
+(defun c:MapAtt_attDATA_LayersObj_OnClicked (Value  / layersCheck)<br>
+(setq layersCheck (rtos (dcl_Control_GetValue MapAtt_attDATA_LayersObj) 2 0))<br>
+(cond<br>
+((= layersCheck "0")<br>
+(progn<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_mutlipleObj t) ;복수객체체크박스활성화<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_singleObj t) ;싱글객체체크박스 활성화<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_BlankObj t) ;빈테이블선택체크박스 활성화<br>
+));layersCheck "0"일때 켜기..<br>
+((= layersCheck "1")<br>
+(progn<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_mutlipleObj "not set") ;복수객체체크박스활성화<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_singleObj "not set") ;싱글객체체크박스 활성화<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_BlankObj "not set") ;빈테이블선택체크박스 활성화<br>
+));layersCheck  "1"일때 끄기<br>
+);end cond<br>
+);레이어별 객체선택시<br>
+<br>
+<br>
+<br>
+(defun c:MapAtt_attDATA_BlankObj_OnClicked (Value  / BlankCheck)<br>
+<br>
+(setq BlankCheck (rtos (dcl_Control_GetValue MapAtt_attDATA_BlankObj) 2 0))<br>
+(cond<br>
+((= BlankCheck  "0")<br>
+(progn<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_mutlipleObj t) ;복수객체체크박스활성화<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_singleObj t) ;싱글객체체크박스 활성화<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_layersObj t) ;레이어별선택체크박스 활성화<br>
+));lBlankCheck "0"일때 켜기..<br>
+((= BlankCheck  "1")<br>
+(progn<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_mutlipleObj "not set") ;복수객체체크박스활성화<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_singleObj "not set") ;싱글객체체크박스 활성화<br>
+(dcl_Control_SetEnabled MapAtt_attDATA_layersObj "not set") ;레이어별선택체크박스 활성화<br>
+));BlankCheck "1"일때 끄기<br>
+);end cond<br>
+);레이어별 객체선택시<br>
+;체크박스선택사항 판별 소스종료.<br>
+;-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------<br>
+<br>
+(defun AM_GetTableRecord ( ename TableNaclrnrme recNum / Tables ColLst NumRecs ColDef Col)<br>
+<br>
+(setq<br>
+	Tables (AM_GetTables ename)<br>
+	ColLst '()<br>
+)<br>
+<br>
+(if Tables<br>
+(progn<br>
+	(if (member TableName Tables)<br>
+	(progn<br>
+		(setq NumRecs (ade_odrecordqty ename TableName))<br>
+		(if (&lt; recNum NumRecs)<br>
+		(progn<br>
+			(setq ColDef (AM_GetTableFormat TableName))<br>
+			(if ColDef<br>
+			(progn<br>
+				(setq ColDef (mapcar 'car ColDef))<br>
+				(foreach Col ColDef<br>
+					(setq ColLst (cons (ade_odgetfield ename TableName Col recNum) ColLst))<br>
+				)<br>
+				(setq ColLst (reverse ColLst))<br>
+			))<br>
+		))<br>
+	))<br>
+))<br>
+ColLst<br>
+)<br>
+<br>
+<br>
+(defun AM_GetTables( ename / Tables )<br>
+(setq Tables (ade_odgettables ename))<br>
+(if Tables<br>
+(progn<br>
+	(if (not (listp Tables))<br>
+		(setq Tables (list Tables))<br>
+	)<br>
+	(setq Tables (mapcar 'strcase Tables))<br>
+	(setq Tables (reverse Tables))<br>
+))<br>
+Tables<br>
+)<br>
+<br>
+(defun get_OD_list (en_OD / cnt_rec fld fld_list name_list rec_num OD_Table_list table_def val_list)<br>
+(if (setq OD_Table_list (ade_odgettables en_OD))<br>
+(progn<br>
+(foreach OD_Table OD_Table_list<br>
+(setq table_def (ade_odtabledefn OD_Table)<br>
+fld_list (cdr (nth 2 table_def))<br>
+)<br>
+(foreach fld fld_list<br>
+(setq name_list (append name_list (list (cdr (nth 0 fld)))))<br>
+);foreach field in list<br>
+(setq rec_num (ade_odrecordqty en_OD OD_Table) cnt_rec 0)<br>
+(while (&lt; cnt_rec rec_num)<br>
+(foreach fld name_list<br>
+(setq val_list<br>
+(append val_list (list (list fld (ade_odgetfield en_OD OD_Table fld cnt_rec))))<br>
+)<br>
+);foreach field in list<br>
+(setq cnt_rec (1+ cnt_rec))<br>
+);while<br>
+);foreach<br>
+);pr<br>
+);if OD tables attached to entity<br>
+val_list<br>
+);get_OD_list<br>
+<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1378/test1.JPG">test1.JPG</a> <span class="muted">(38314 bytes)</span></li><li><a href="../attachments/1379/test2.JPG">test2.JPG</a> <span class="muted">(6464 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6786">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-04-22 11:14 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+ my advice is to use events like OnSelChanged to notice whenever an editable cell is selected to call StartCellEdit and to use OnCancelClose to end up editing the currently selected cell and to select the next editable cell. As far as I remember there was already a topic about that.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6787">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-04-22 11:15 UTC</span>
+  </div>
+  <div class="post-body">Additionally I can advice you to use OnKeyDown event for a certain key (like F2) to start editing.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

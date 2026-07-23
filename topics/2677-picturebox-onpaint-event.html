@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>picturebox ONPAINT event · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2677</p>
+    <h1>picturebox ONPAINT event</h1>
+    <p class="meta">Started by domenicomaria ·
+      2019-04-27 18:02 UTC ·
+      9 replies · SMF topic #2677</p>
+<article class="post" id="msg13223">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2019-04-27 18:02 UTC</span>
+  </div>
+  <div class="post-body">I use a <strong>picture box</strong><br>
+to <strong>show</strong> a <strong>linetype</strong><br>
+using <strong>dcl-picturebox-drawsolidrect</strong><br>
+<br>
+<strong>it normally works</strong><br>
+<br>
+<span style="color:red"><strong>but NEVER works</strong></span><br>
+<strong>the first time</strong><br>
+when I <strong>show</strong> the <strong>form</strong><br>
+<br>
+If I put the function that shows the linetype<br>
+in the <strong>ONINITIALIZE </strong>defun<br>
+it <strong><span style="color:red">executes </span></strong>that <strong>function</strong><br>
+but <span style="color:red"><strong>it shows nothing</strong></span><br>
+<br>
+if i put<br>
+the same function<br>
+in the <strong><span style="color:red">ONPAINT </span></strong>defun<br>
+<span style="color:red"><strong>IT LOCKS THE PC ! ! !</strong></span> <br>
+<br>
+<strong>it works only</strong> <br>
+when i <strong>change </strong>the <strong>selection</strong><br>
+in the <strong>list</strong> of <strong>linetypes</strong><br>
+<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2480/onpaint 01.jpg">onpaint 01.jpg</a> <span class="muted">(54561 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13224">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2019-04-27 18:05 UTC</span>
+  </div>
+  <div class="post-body">with OBJECT DCL of CHAD WANLESS<br>
+with ACAD 2006<br>
+the SAME CODE<br>
+WORKS !<br>
+<br>
+OT:<br>
+I was a FRIEND of CHAD WANLESS<br>
+But i have lost any contact with him !<br>
+Does somebody knows something about this ?</div>
+</article>
+<article class="post" id="msg13225">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2019-04-28 10:00 UTC</span>
+  </div>
+  <div class="post-body">what is the <span style="color:red"><strong>SEQUENCE </strong></span>?<br>
+<br>
+<strong>ON INITIALIZE</strong><br>
+<strong>ON PAINT</strong><br>
+and after<br>
+is the <strong>FORM SHOWN </strong>?<br>
+<br>
+Why<br>
+the <strong>ON PAINT event</strong><br>
+seems to enter<br>
+in an <span style="color:red"><strong>INFINITE LOOP</strong></span><br>
+while<br>
+the <strong>SAME CODE</strong><br>
+contained in the ON PAINT defun,<br>
+<strong>WORKS PERFECTLY</strong><br>
+when i <strong>CHANGE </strong>the <strong>SELECTION</strong><br>
+in the list of LINETYPES ?<br>
+<br>
+i need to <strong>UNDERSTAND </strong>WELL<br>
+the <strong>BEHAVIOR </strong>of the ON PAINT event,<br>
+because it is very <strong>PARTICULAR </strong>! <br>
+</div>
+</article>
+<article class="post" id="msg13226">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2019-04-28 18:52 UTC</span>
+  </div>
+  <div class="post-body">The OnPaint event of the pictureBox is triggered after the OnInitialize event of the form.<br>
+Maybe this example can help:<br>
+http://opendcl.com/forum/index.php?topic=1946.0</div>
+</article>
+<article class="post" id="msg13227">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2019-04-28 19:53 UTC</span>
+  </div>
+  <div class="post-body">yes<br>
+but it <strong>is not enough</strong><br>
+to <strong>understand </strong>the <strong>behaviour</strong><br>
+of <strong>my <strong>ONPAINT </strong>defun</strong> . . .<br>
+. . . <br>
+In my ONPAINT defun<br>
+i <strong>call </strong>a <strong>SUB-ROUTINE</strong><br>
+. . .<br>
+<span style="color:red"><strong>I do ONLY THIS !</strong></span><br>
+. . .<br>
+<br>
+And I <strong>do the same</strong><br>
+when the <strong>selection </strong>is <strong>changed</strong><br>
+in the list of linetypes <br>
+. . .<br>
+and <strong>in this case</strong><br>
+<strong>it works</strong><br>
+. . .<br>
+while <strong>the same routine</strong><br>
+creates an <strong>INFINITE LOOP</strong><br>
+if I call it from the <strong>ONPAINT </strong>defun<br>
+. . .<br>
+Maybe<br>
+that it could depend from <br>
+<span style="color:red"><strong>dcl-picturebox-drawsolidrect ?</strong></span><br>
+<br>
+</div>
+</article>
+<article class="post" id="msg13228">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2019-04-28 20:00 UTC</span>
+  </div>
+  <div class="post-body">see the attachment ...<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2481/onpaint 02.jpg">onpaint 02.jpg</a> <span class="muted">(108773 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13229">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2019-04-28 20:07 UTC</span>
+  </div>
+  <div class="post-body">however <br>
+it <strong>does not depend</strong>  from<br>
+dcl-picturebox-drawsolidrect !<br>
+<br>
+I removed it from the sub routine<br>
+and I got the same behavior<br>
+from the ONPAINT defun :<br>
+IT LOCKS ACAD ! </div>
+</article>
+<article class="post" id="msg13230">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2019-04-28 20:28 UTC</span>
+  </div>
+  <div class="post-body"><span style="color:red"><strong>SOLVED !</strong></span><br>
+<br>
+I <span style="color:red"><strong>removed </strong></span>from the SUB-ROUTINE<br>
+called from the <strong>ONPAINT</strong> defun<br>
+these 2 DCL FUNCTIONS :<br>
+<span style="color:red"><strong>dcl-control-setbackcolor <br>
+dcl-PictureBox-Clear </strong></span><br>
+and I <strong>added </strong>them<br>
+in the <strong>ONINITIALIZE </strong>defun . . .<br>
+...<br>
+<span style="color:red"><strong>Is it possible </strong></span><br>
+that these <strong>2 DCL FUNCTIONS</strong><br>
+<strong>produce </strong>another <strong>ONPAINT EVENT</strong><br>
+and this produces<br>
+an <span style="color:red"><strong>INFINITE LOOP</strong></span>  ? !<br>
+</div>
+</article>
+<article class="post" id="msg13231">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2019-04-28 20:56 UTC</span>
+  </div>
+  <div class="post-body"><span style="color:black"><strong>TRY the ATTACHMENT !</strong></span><br>
+<br>
+<span style="color:red"><strong>It will LOCK AUTOCAD !</strong></span><div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2482/onpaint.LSP">onpaint.LSP</a> <span class="muted">(376 bytes)</span></li><li><a href="../attachments/2483/ONPAINT.odcl">ONPAINT.odcl</a> <span class="muted">(585 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13232">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2019-04-28 21:22 UTC</span>
+  </div>
+  <div class="post-body">However<br>
+<strong>dcl-control-setbackcolor</strong> does <strong><u><span style="color:red">NOT </span></u></strong><strong>create </strong>any <strong>problem </strong>...<br>
+while<br>
+if we call<br>
+<span style="color:red"><strong>dcl-PictureBox-Clear</strong></span><br>
+<strong>from the <span style="color:red">ONPAINT </span>defun</strong><br>
+this will <strong><span style="color:red">LOCK ACAD</span></strong>.<br>
+<br>
+<strong>Is this a BUG ?</strong><br>
+Maybe <strong>NO </strong>!<br>
+<br>
+Because there is <strong>no sense</strong><br>
+to <strong>call </strong><strong>dcl-PictureBox-Clear</strong><br>
+when the <strong>ONPAINT </strong>event <strong>happens</strong>.<br>
+<br>
+Because <strong>there is nothing to clear</strong> !<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

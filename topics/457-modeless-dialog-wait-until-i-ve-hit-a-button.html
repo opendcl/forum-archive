@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modeless Dialog - Wait until I've Hit a Button · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 457</p>
+    <h1>Modeless Dialog - Wait until I've Hit a Button</h1>
+    <p class="meta">Started by vosey ·
+      2008-10-23 15:03 UTC ·
+      5 replies · SMF topic #457</p>
+<article class="post" id="msg2060">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2008-10-23 15:03 UTC</span>
+  </div>
+  <div class="post-body">Hi... First post so Hello to all..<br>
+<br>
+I'm not sure how to get OpenDCL show a dialog and wait for me to click something on the dialog, and then show the second dialog?.  My feeble attempt is shown below, the idea is to get a response from the first, and if it's true, go on to the second, but what actually happens is that the first flashes on and off and goes straight to the second before I've had a chance to click in it.  I guess the answer may be to use Modal Dialogs instead of Modeless, but would appreciate the advice of an expert.<br>
+<br>
+Thanks<br>
+Pete<br>
+<br>
+(defun c:GetStartandEnd ()<br>
+	(if (setq usc (getstartchain))<br>
+		(if (setq dsc (getendchain))<br>
+			(addsingletemplate usc dsc)<br>
+		)<br>
+	)<br>
+)<br>
+<br>
+(defun getstartchain ()<br>
+	(Odcl_LoadProject "manualtemplate.odc" T)<br>
+	(Odcl_Form_Show manualtemplate_Form1)<br>
+)<br>
+<br>
+(defun getendchain ()<br>
+	(Odcl_Form_Show manualtemplate_Form2)<br>
+)</div>
+</article>
+<article class="post" id="msg2061">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-10-23 15:27 UTC</span>
+  </div>
+  <div class="post-body">Which version of OpenDCL are you using?<br>
+<br>
+The reason your code fails is because (Odcl_Form_Show manualtemplate_Form1) returns immediately. Making manualtemplate_Form1 a modal dialog would be one way to get your current code working. Better is to handle the OnClicked event for your button and show the second dialog from that event handler.<br>
+</div>
+</article>
+<article class="post" id="msg2062">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2008-10-27 07:51 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen, Seems obvious when someone's pointed it out!! - Thanks.   I'm using v4.0.1.6  - The program's great!!.</div>
+</article>
+<article class="post" id="msg2071">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-10-29 18:36 UTC</span>
+  </div>
+  <div class="post-body">v4.0.1.6 is really old. You should at lease upgrade to the most correct stable version: 4.1.2.2<br>
+</div>
+</article>
+<article class="post" id="msg2358">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2009-01-14 21:42 UTC</span>
+  </div>
+  <div class="post-body">Finally got round to upgrading (a case of having to as we are now using Acad 2007 (was 2004)). Seem to be hitting a load of problems though (first one is that 'odcl_loadproject' is not recognised as a command.  I'm assuming I need to update my lisp files to suit the latest 'opendcl' format.  Is there some kind of migration tips file or help I could get to help me on my way?  Thanks for any help.  Pete</div>
+</article>
+<article class="post" id="msg2359">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-01-14 22:01 UTC</span>
+  </div>
+  <div class="post-body">The "Help File" link on the OpenDCL main page should have some information.  To migrate, you can start by globally searching for and replacing "odcl_" with "dcl_".  That should get you 95% of the way there.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Routine not working the same in different versions of Autocad and Bricscad · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1802</p>
+    <h1>Routine not working the same in different versions of Autocad and Bricscad</h1>
+    <p class="meta">Started by hmspe ·
+      2012-05-14 03:52 UTC ·
+      10 replies · SMF topic #1802</p>
+<article class="post" id="msg8868">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2012-05-14 03:52 UTC</span>
+  </div>
+  <div class="post-body">I've been working on a text input routine that echoes what is typed in a text box on the the screen in real time.  It is working as intended in Bricscad 11.  I tried similar code in Bricscad 12.1 and as I remember it worked OK.  I've upgraded to Bricscad 12.2.6 and the routine appears to exit before I type in the text box.  In Autocad 2010 everything works except backspace -- if I enter several characters then press backspace the textbox updates but the on-screen does not.  Checking Autocad's command history shows &gt;&gt; ; error: too many arguments &lt;&lt; at this point.  Pressing backspace a second time updates the text box properly and removes two characters from the on-screen display.  <br>
+<br>
+Could someone try the attached files and verify whether they work in Bricscad 12.2 and in Autocad? It is entirely possible that I've made a mistake in programming, but three different results makes me wonder.  FWIW the other ODCL routines that I have used for about two years that have textboxes are also not working in Bricscad 12.2.6.  I know that there were major changes in Bricscad 12.2 that could have broken ODCL.  Not so sure what's going on in Autocad 2010, but the execution tracing I did does not show any errors in the lisp code.  It looks to me like the wrong number of arguments (or a mal-formed list) are being sent with OnEditChanged every other time backspace is pressed.<br>
+<br>
+To run the demo type   texthook  .  The on-screen text is inserted at (10 10 0) using the default style, height, and rotation. <br>
+<br>
+Thanks for all help and suggestions.    <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1734/texthookdemo2.lsp">texthookdemo2.lsp</a> <span class="muted">(6841 bytes)</span></li><li><a href="../attachments/1735/TextHook.odcl">TextHook.odcl</a> <span class="muted">(622 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8871">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-05-14 06:27 UTC</span>
+  </div>
+  <div class="post-body">It's a bug in rendering the backspace character when calling the OnKeyDown handler. I've fixed it for the next build.</div>
+</article>
+<article class="post" id="msg8872">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2012-05-14 12:04 UTC</span>
+  </div>
+  <div class="post-body">Thanks.  </div>
+</article>
+<article class="post" id="msg8879">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2012-05-21 20:55 UTC</span>
+  </div>
+  <div class="post-body">Owen:  Thanks for the 7.0.0.5 update.  It fixes the problem in Autocad.  I appreciate the work you've put into OpenDCL.<br>
+<br>
+All:  Still having an issue in Bricscad 12.2.7 and I'm not sure if it is my coding or a Bricscad problem.  My intent is that when the form is loaded that the textbox automatically has focus.  In BC11 and BC 12.1 the code runs correctly.  In BC 12.2.7 I have to manually click on the form then leave the mouse cursor on the form for the textbox to have focus.  I have tried setting focus to the form, setting focus to the textbox, and setting focus to the form first then to the textbox, but still no joy.  If anyone can verify that this is a Bricscad problem or can point out an error in my code I would appreciate the help.<br>
+<br>
+Martin </div>
+</article>
+<article class="post" id="msg8883">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-05-22 09:38 UTC</span>
+  </div>
+  <div class="post-body">I think this is a Bricscad problem.<br>
+<br>
+I have added a c:TextHook_TextHook_TextBox_OnKillFocus function to your sample and tested in BC V11.4.6 and BC V12.2.7.<br>
+<br>
+BC V11.4.6:<br>
+The dialog is displayed and the focus is on the textbox. The KillFocus event does not fire.<br>
+<br>
+BC V12.2.7:<br>
+The dialog is displayed but the KillFocus event fires 3 times removing the focus from the textbox.</div>
+</article>
+<article class="post" id="msg8885">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2012-05-22 13:06 UTC</span>
+  </div>
+  <div class="post-body">roy_043,<br>
+<br>
+Thanks for the verification.  </div>
+</article>
+<article class="post" id="msg8887">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2012-05-22 13:30 UTC</span>
+  </div>
+  <div class="post-body">I added an OnKillFocus function that resets the focus to the textbox when OnKillFocus fires.  This makes the test code work in BC12.2.7, but with a lot of screen flashing if the mouse cursor is not over the form.  The firing of OnKillFocus stops if the mouse cursor is over the form.  I have filed a bug report with Bricsys.</div>
+</article>
+<article class="post" id="msg8896">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-05-23 17:02 UTC</span>
+  </div>
+  <div class="post-body">It looks like the latest Bricscad v12 is not sending the WM_ACAD_KEEPFOCUS message. That's definitely a bug.</div>
+</article>
+<article class="post" id="msg8897">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2012-05-23 17:11 UTC</span>
+  </div>
+  <div class="post-body">Note that the latest version of Bricscad (12.2.7) also kills the Member function, firing an exception if the List argument is nil.<br>
+It has been fixed and will be part of the next release.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg8913">
+  <div class="post-head">
+    <span class="post-author">t.moses@gmx.de</span>
+    <span class="post-date muted">2012-06-04 21:51 UTC</span>
+  </div>
+  <div class="post-body">Hi, All,<br>
+<br>
+we are also just about to fix missing WM_ACAD_KEEPFOCUS ...<br>
+there was also an issue taking focus back to Bricscad, unconditionally;<br>
+forced focus switch is just fixed, and WM_ACAD_KEEPFOCUS is now sent;<br>
+the original code works fine then ... please check with an upcoming Bricscad update.<br>
+<br>
+Greetings to all, Torsten</div>
+</article>
+<article class="post" id="msg8914">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2012-06-05 13:35 UTC</span>
+  </div>
+  <div class="post-body">Thank you for the update.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

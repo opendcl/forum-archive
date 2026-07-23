@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ImageCombo to select colors: Problems and Questions · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1656</p>
+    <h1>ImageCombo to select colors: Problems and Questions</h1>
+    <p class="meta">Started by roy_043 ·
+      2011-07-14 12:05 UTC ·
+      9 replies · SMF topic #1656</p>
+<article class="post" id="msg8224">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-07-14 12:05 UTC</span>
+  </div>
+  <div class="post-body">ImageCombo to select colors: Problems and Questions<br>
+<br>
+Hello,<br>
+<br>
+This is a continuation of<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=1654.0" rel="nofollow noopener">{2}</a><br>
+<br>
+The program has been renamed to ComboTest and now uses an ImageCombo to select colors which is my reason for starting this new topic.<br>
+<br>
+System:<br>
+Bricscad 11.4.2<br>
+Windows XP<br>
+OpenDCL 6.0.2.4<br>
+<br>
+Files:<br>
+ComboTest.lsp<br>
+ComboTest.odcl<br>
+ComboTest_Images.zip<br>
+<br>
+1.<br>
+After starting the program two problems are immediately apparent. The first one is that the ImageCombo shows the correct image but not the correct text.<br>
+<br>
+2<br>
+The second obvious problem is that the text in the TextBox has been selected. This seems a different manifestation of the problem described here:<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=1647.msg8218#msg8218" rel="nofollow noopener">{2}</a><br>
+It would seem that the first control in the tab order is somehow triggered in Bricscad.<br>
+<br>
+3.<br>
+After selecting 'Red' two new problems appear:<br>
+Both the image and the text in the ImageCombo are marked with a blue background/'overlay' (this may depend on the current theme). This obscures the color swatch. If you click behind the text its blue background disappears but the blue 'overlay' remains for the image portion. Clicking outside the dialog will clear the image. Is there a way to clear this automatically?<br>
+<br>
+4.<br>
+The other new problem:<br>
+The OnSelChanged event always returns -1 for ItemIndexOrCount.<br>
+<br>
+5.<br>
+Selecting one of the true colors shows that Bricscad displays true colors incorrectly in ODCL dialogs. The Red and Blue values are reversed:<br>
+RGB:247,186,011 displays as RGB:011,186,247 and vice versa.<br>
+<br>
+6.<br>
+And finally a very strange one:<br>
+- Open ComboTest.odcl<br>
+- Change ListImages for ImageCombo1 to: <code>0|1|2|3|4|5|6|7|8|9|10|11</code><br>
+- Restart the program<br>
+- Select 'Red'<br>
+Result:<br>
+The top left pixel of the image is not displayed. This seems to be related to the use of png images and the image index. Not using the zero-index png image or changing that image to a bmp will solve this. The missing pixel is also visible if you open the Control Property Wizard on the Image List tab. If you delete the zero-index image you have to reopen the wizard to see the effect.<br>
+<br>
+Regards, Roy.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1640/ComboTest.lsp">ComboTest.lsp</a> <span class="muted">(1137 bytes)</span></li><li><a href="../attachments/1641/ComboTest.odcl">ComboTest.odcl</a> <span class="muted">(1180 bytes)</span></li><li><a href="../attachments/1642/ComboTest_Images.zip">ComboTest_Images.zip</a> <span class="muted">(3219 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8226">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-07-14 12:59 UTC</span>
+  </div>
+  <div class="post-body">One obvious solution for problem 3:<br>
+Change the focus to another control on the dialog:<br>
+<pre class="code"><code>(dcl_Control_SetFocus ComboTest_Form1_textbox1)</code></pre><br>
+This may be confusing for the user however.</div>
+</article>
+<article class="post" id="msg8227">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-07-14 21:35 UTC</span>
+  </div>
+  <div class="post-body">roy_043,<br>
+<br>
+it is necessary to set the imagecombobox style value to 2 for DropDown. Then it works very fine. I'd recommend you not to use an imagecombo as an editable combobox.<br>
+<br>
+Furthermore the function to get rgb value need to be inverted: AutoCAD is computing it differently:<br>
+<br>
+<br>
+(defun kg_ColorRgbToOle (rgbLst)<br>
+  (+<br>
+    (lsh (caddr rgbLst) 16)<br>
+    (lsh (cadr rgbLst) 8)<br>
+    (car rgbLst)<br>
+  )<br>
+)<br>
+<br>
+<br>
+After changing both your project works fine.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg8229">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-07-15 00:12 UTC</span>
+  </div>
+  <div class="post-body">The -1 for ItemIndexOrCount was a bug, now fixed for the next build. Fred is correct that your color bytes are reversed, but that is a Windows thing (AutoCAD in fact uses BGR color representation internally, not RGB as Windows does). <br>
+<br>
+It would be less confusing if you passed your RGB color as a list of RGB bytes, but while testing this I noticed another bug: an (R G B) list is not accepted for the ForeColor or BackColor properties. I'll see if I can't address that as well.<br>
+<br>
+In any case, you can use the built-in (dcl_GetOLEColorValue) function to do the dirty work -- but you'll want to avoid the DXF code bug by ensuring that the first element is not an integer:<br>
+(dcl_GetOLEColorValue (mapcar 'float (read (strcat "(" (vl-string-translate "," " "  (substr Value 5)) ")"))))</div>
+</article>
+<article class="post" id="msg8233">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-07-15 12:25 UTC</span>
+  </div>
+  <div class="post-body">Fred and Owen thank you very much for your answers.<br>
+<br>
+Setting the ImageCombo style to '2 - Drop Down' as advised by Fred solves problem #1.<br>
+<br>
+Problem #3 remains see image ComboTest_after_selecting_red.png.<br>
+<br>
+Confronted with problem #5 I was of course surprised. To make sure that my function kg_ColorRgbToOle was correct I created a layer "Orange" with color RGB:247,186,011 and checked its entity list:<br>
+<pre class="code"><code><br>
+(<br>
+  (-1 . )<br>
+  (0 . "LAYER")<br>
+  ...<br>
+  (2 . "Orange")<br>
+  (70 . 0)<br>
+  (62 . 40)<br>
+  (420 . 16235019)<br>
+  ...<br>
+)<br>
+</code></pre><br>
+And I compared group code 420 with the result of my function:<br>
+<pre class="code"><code>(kg_ColorRgbToOle '(247 186 11)) ; =&gt; 16235019</code></pre><br>
+This convinced me that my function was OK. But judging from your comments this is not the case.<br>
+For my understanding:<br>
+If you create a layer following the above steps in AutoCAD, what is the group code 420 value?<br>
+<br>
+Thanks again for your time and patience.<br>
+<br>
+Regard, Roy.<br>
+<br>
+Edit: dwg attachment removed.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1646/ComboTest_after_selecting_red.png">ComboTest_after_selecting_red.png</a> <span class="muted">(684 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8234">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-07-15 14:37 UTC</span>
+  </div>
+  <div class="post-body">AutoCAD and Bricscad both use BGR for true colors, so yes, AutoCAD reports the same color value as Bricscad. Windows, however, uses an RGB color format.<br>
+<br>
+As for Problem #3, from your description I would say this is behaving as designed when the control has focus. Have you considered turning off Keep Focus?</div>
+</article>
+<article class="post" id="msg8235">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-07-15 20:04 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1656.msg8234#msg8234 date=1310740675 wrote:</cite><br>
+AutoCAD and Bricscad both use BGR for true colors, so yes, AutoCAD reports the same color value as Bricscad. Windows, however, uses an RGB color format.</blockquote>Finally I understand my confusion. Up to now I have been reading a group code 420 color value from left to right. This, of course, makes no sense. An integer is 'filled' from right to left.<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1656.msg8234#msg8234 date=1310740675 wrote:</cite><br>
+As for Problem #3, from your description I would say this is behaving as designed when the control has focus. Have you considered turning off Keep Focus?<br>
+</blockquote>The form has Keep Focus turned off. I can't find this setting for a control.<br>
+<br>
+Attached updated files.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1648/ComboTest.lsp">ComboTest.lsp</a> <span class="muted">(807 bytes)</span></li><li><a href="../attachments/1649/ComboTest.odcl">ComboTest.odcl</a> <span class="muted">(1180 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8236">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-07-15 20:24 UTC</span>
+  </div>
+  <div class="post-body">Hi, roy,<br>
+<br>
+a non-modal form (modeless, dockable and palette) has the property KeepFocus and the property EventInvoke. A control has only the property EventInvoke which you can switch between KeepFocus and AllowCommand.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8237">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-07-19 07:43 UTC</span>
+  </div>
+  <div class="post-body">I have switched EventInvoke to '1 - Asynchronous' (which I think is meant by 'AllowCommand') for the ImageCombo. But problem #3 remains.<br>
+<br>
+Additionally switching EventInvoke to 1 for the form also has no effect on problem #3. KeepFocus was already 'False' for the form.</div>
+</article>
+<article class="post" id="msg8239">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-07-19 16:48 UTC</span>
+  </div>
+  <div class="post-body">FWIW, problem #3 does not occur in AutoCAD, only Bricscad.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

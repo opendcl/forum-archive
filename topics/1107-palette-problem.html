@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Palette problem · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1107</p>
+    <h1>Palette problem</h1>
+    <p class="meta">Started by fred_tomke ·
+      2010-01-03 21:17 UTC ·
+      2 replies · SMF topic #1107</p>
+<article class="post" id="msg5860">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-03 21:17 UTC</span>
+  </div>
+  <div class="post-body">Hello and have a good new year!<br>
+<br>
+Today I have a new problem. Owen, I tried making a smaller sample. But in this smaller sample which you desire to debug I cannot reproduce my problem. So I try to point it with a little less code.<br>
+<br>
+<strong><span style="color:red">Problem:</span> A palette seems to forget its properties and VarNames.</strong><br>
+<br>
+<ul><br>
+Start AutoCAD and load the code by calling (vl-load-all "forms.lsp").<br>
+Create another new empty drawing. The code will be loaded automatically.<br>
+Call the command TEST in the second in the latest opened drawing.<br>
+Move the mouse over the form. In the bottom of the palette the KeepFocus text will be changed.<br>
+Switch to the first opened drawing. An error will occure.<br>
+Move the mouse over the form. Another error occurs.<br>
+Try to close the form by calling (dcl_form_close forms_blocks).<br>
+A returning value is given back but the palette won't disappear.<br>
+Close AutoCAD.<br>
+Open the odcl-file in the Studio and delete the tab control.<br>
+Save the project and start AutoCAD anew.<br>
+Load the code by calling (vl-load-all "forms.lsp").<br>
+Create another new empty drawing. The code will be loaded automatically.<br>
+Call the command TEST in the second in the latest opened drawing.<br>
+Move the mouse over the form. In the bottom of the palette the KeepFocus text will be changed.<br>
+Switch to the first opened drawing. The KeepFocus text will be changed.<br>
+Move the mouse over the form. The KeepFocus text will be changed.<br>
+No error occurs. Every thing seems to work.<br>
+</ul><br>
+<br>
+Does this issue depend to the tab control?<br>
+<br>
+Fred<br>
+<br>
+[EDIT:] I tested it in 5.1.2.3 and in this releases I couldn't reproduce this. I haven't tested it in all the 16 alpha releases of OpenDCL 6 before A17.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1199/forms.LSP">forms.LSP</a> <span class="muted">(1214 bytes)</span></li><li><a href="../attachments/1200/forms.odcl">forms.odcl</a> <span class="muted">(4798 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5863">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-04 08:57 UTC</span>
+  </div>
+  <div class="post-body">This was caused by a bug in the code that sets lisp symbols when switching documents. The symbols were being set to the last tab page (because tab pages have the same varname as their parent form). I've fixed the problem in Alpha 18.</div>
+</article>
+<article class="post" id="msg5865">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-04 10:23 UTC</span>
+  </div>
+  <div class="post-body">Hi, Owen, thanks a lot!<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

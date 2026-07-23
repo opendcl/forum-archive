@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>&quot;Project failed to load&quot; with simple code · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2687</p>
+    <h1>&quot;Project failed to load&quot; with simple code</h1>
+    <p class="meta">Started by NVIT ·
+      2019-07-10 00:14 UTC ·
+      1 replies · SMF topic #2687</p>
+<article class="post" id="msg13271">
+  <div class="post-head">
+    <span class="post-author">NVIT</span>
+    <span class="post-date muted">2019-07-10 00:14 UTC</span>
+  </div>
+  <div class="post-body">Using AutoCAD 2016<br>
+<br>
+---------------------------<br>
+AutoCAD Message<br>
+---------------------------<br>
+Project failed to load!<br>
+The file could not be found or an error occurred while reading the file.<br>
+<br>
+<br>
+---------------------------<br>
+OK   <br>
+---------------------------<br>
+<br>
+---------------------------<br>
+OpenDCL Runtime Error<br>
+---------------------------<br>
+An OpenDCL function argument processing exception has occurred!<br>
+<br>
+Error: NIL value not allowed<br>
+Function: dcl_Form_Show<br>
+Argument: 0<br>
+---------------------------<br>
+OK   <br>
+---------------------------<br>
+<br>
+Error: ADS request error<br>
+<br>
+-------------------------------------------------------------------------------<br>
+At the first OpenDCL arx load in AutoCAD 2016, I got the LSP security dialog. So, I picked "Always load"<br>
+<br>
+(findfile"OpenDCL.20.arx")<br>
+"C:\\program files (x86)\\common files\\opendcl\\OpenDCL.20.arx"<br>
+<br>
+Command: (command "OPENDCL")<br>
+OpenDCL Runtime [9.0.3.0] loaded<br>
+<br>
+-------------------------------------------------------------------------------<br>
+At first, I installed v9.3. So I uninstalled it then installed the stable v8.2<br>
+<br>
+The .odcl form file is in the same folder as the .lsp file.<br>
+<br>
+Here's my .lsp code...<br>
+<br>
+; Ensure the appropriate OpenDCL ARX file is loaded <br>
+(command "OPENDCL") <br>
+ <br>
+(defun c:HelloWorld () <br>
+   ; call the method to load the HelloWorld.odcl file. <br>
+   (dcl_Project_Load "HelloWorld" T) <br>
+   ; call the method to show the Hello World dialog box example <br>
+   (dcl_Form_Show HelloWorld_Form1) <br>
+   (princ) <br>
+)<br>
+(defun c:HelloWorld/Form1#OnInitialize (/)<br>
+  (dcl-Control-SetCaption HelloWorld/Form1/Label1 "Hello World")<br>
+)<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg13272">
+  <div class="post-head">
+    <span class="post-author">NVIT</span>
+    <span class="post-date muted">2019-07-10 00:36 UTC</span>
+  </div>
+  <div class="post-body"><u><strong>Solved.</strong></u><br>
+<br>
+Moving the .odcl form file to one of AutoCAD's search paths fixed it.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

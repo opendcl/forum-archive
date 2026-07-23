@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with my Lisp · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1383</p>
+    <h1>Problem with my Lisp</h1>
+    <p class="meta">Started by mging63 ·
+      2010-11-16 18:59 UTC ·
+      14 replies · SMF topic #1383</p>
+<article class="post" id="msg7335">
+  <div class="post-head">
+    <span class="post-author">mging63</span>
+    <span class="post-date muted">2010-11-16 18:59 UTC</span>
+  </div>
+  <div class="post-body">I try for many hours to solve this problem. I want to reset a checkbox in initialize and can't apply this. When i start my lisp, a message appear : insufficient number of arguments. I can't see what's appen.<br>
+<br>
+This is my lisp:<br>
+<br>
+(defun C:QD ( / )<br>
+(command "OPENDCL")<br>
+(dcl_Project_Load "Quickdraw")<br>
+(dcl_Form_Show Quickdraw_Pal)<br>
+(princ)<br>
+)<br>
+(defun c:QuickDraw_Pal_OnInitialize (Value /)<br>
+  (dcl_Control_SetValue QuickDraw_Pal_Top-Lt 0)<br>
+  (dcl_Control_SetValue QuickDraw_Pal_Top-Lt-1 0)<br>
+)<br>
+<br>
+;Vue top-lt<br>
+(defun c:QuickDraw_Pal_Top-Lt_OnClicked (Value /)<br>
+  (setq Top-Lt1 (dcl_Control_Getvalue QuickDraw_Pal_Top-Lt))<br>
+ )<br>
+<br>
+(defun c:QuickDraw_Pal_Top-Lt-1_OnClicked (Value /)<br>
+  (setq Top-Lt-on (dcl_Control_Getvalue QuickDraw_Pal_Top-Lt-1))<br>
+)<br>
+<br>
+(defun c:QuickDraw_Pal_OK_OnClicked (/)<br>
+  (dcl_Form_Close Quickdraw_Pal)<br>
+)<br>
+<br>
+;|«Visual LISP© Format Options»<br>
+(80 2 50 2 nil "end of " 80 50 2 0 2 nil nil nil T)<br>
+;*** DO NOT add text below the comment! ***|;<br>
+<br>
+<br>
+My program is not finish, but i stop with this problem.<br>
+<br>
+Another question: Is that the picture box control can turn gray when you click inside?<br>
+<br>
+I'm a novice.<br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg7336">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-11-16 19:22 UTC</span>
+  </div>
+  <div class="post-body">None of your events should have a "Value" arguments passed to them:<br>
+<br>
+(defun c:QuickDraw_Pal_OnInitialize (<s><span style="color:red">Value </span></s>/)<br>
+<br>
+(defun c:QuickDraw_Pal_Top-Lt_OnClicked (<s><span style="color:red">Value </span></s>/)<br>
+<br>
+(defun c:QuickDraw_Pal_Top-Lt-1_OnClicked (<s><span style="color:red">Value </span></s>/)<br>
+<br>
+Did you use the "Clipboard Copy" option from the Events tab to copy your code over?<br>
+They wouldn't be there if so...<br>
+</div>
+</article>
+<article class="post" id="msg7337">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-11-16 19:28 UTC</span>
+  </div>
+  <div class="post-body">To change a pic. box color to gray on click, you'd do something like this:<br>
+<br>
+<br>
+(defun c:Untitled_Form1_PictureBox1_OnClicked (/)<br>
+  (dcl_Control_SetBackColor Untitled_Form1_PictureBox1 9)<br>
+)<br>
+<br>
+<br>
+See here for color options:<br>
+<a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/DataType/Color.htm" rel="nofollow noopener">{2}</a><br>
+I used Acad color 9 or you may want to use something like -16 for the windows button face gray color...<br>
+</div>
+</article>
+<article class="post" id="msg7338">
+  <div class="post-head">
+    <span class="post-author">mging63</span>
+    <span class="post-date muted">2010-11-16 19:34 UTC</span>
+  </div>
+  <div class="post-body">The only arguments that have "Value" in my events is<br>
+<br>
+(defun c:QuickDraw_Pal_Top-Lt-1_OnClicked (Value /)<br>
+<br>
+I use "Clipboard copy" but i modify to test the problem.<br>
+<br>
+I correct the lines and a message appear:<br>
+<br>
+An OpenDCL function argument processing exception has occured!<br>
+Error: Invalis argument<br>
+Function: dcl_Control_Setvalue<br>
+Argument: 0<br>
+<br>
+Property  not found</div>
+</article>
+<article class="post" id="msg7339">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-11-16 21:36 UTC</span>
+  </div>
+  <div class="post-body">The error message means the control does not have a 'Value' property. Check the control name, and make sure you don't have multiple controls with the same name.</div>
+</article>
+<article class="post" id="msg7342">
+  <div class="post-head">
+    <span class="post-author">mging63</span>
+    <span class="post-date muted">2010-11-17 13:48 UTC</span>
+  </div>
+  <div class="post-body"> ??? Ok, i work on my code and always arguments problems. I can't see what's appen.<br>
+There is my code:<br>
+<br>
+(DEFUN C:QD (/)<br>
+  (COMMAND "OPENDCL")<br>
+  (DCL_PROJECT_LOAD "Quickdraw")<br>
+  (DCL_FORM_SHOW Quickdraw_Pal)<br>
+  (PRINC)<br>
+)<br>
+(setvar "cmdecho" 1)<br>
+(DEFUN c:QuickDraw_Pal_OnInitialize (/)<br>
+  (DCL_CONTROL_SETVALUE QuickDraw_Pal_Top-Lt 0)  ;reset control Top-Lt à OFF<br>
+  (DCL_CONTROL_SETVALUE QuickDraw_Pal_Top-Lt-1 0);reset chexbox Top-Lt-1 à OFF<br>
+  (DCL_CONTROL_SETVALUE QuickDraw_Pal_Top 0)     ;reset control Top à OFF<br>
+  (DCL_CONTROL_SETVALUE QuickDraw_Pal_Top-1 0)   ;reset chexbox Top-1 à OFF<br>
+)<br>
+<br>
+ ;Vue top-lt<br>
+(DEFUN c:QuickDraw_Pal_Top-Lt_OnClicked (/)<br>
+  (SETQ Top-Lt1 (DCL_CONTROL_GETVALUE QuickDraw_Pal_Top-Lt))<br>
+  (dcl_Control_SetBackColor QuickDraw_Pal_Top-Lt -11)<br>
+)<br>
+<br>
+(DEFUN c:QuickDraw_Pal_Top-Lt-1_OnClicked (/)<br>
+  (SETQ Top-Lt-on (DCL_CONTROL_GETVALUE QuickDraw_Pal_Top-Lt-1))<br>
+)<br>
+<br>
+;Vue Top<br>
+(DEFUN c:QuickDraw_Pal_Top_OnClicked (/)<br>
+  (SETQ Top_1 (DCL_CONTROL_GETVALUE QuickDraw_Pal_Top))<br>
+  (if<br>
+    (= Top_1 1)<br>
+      (DCL_CONTROL_SETBACKCOLOR QuickDraw_Pal_Top 9)<br>
+      (DCL_CONTROL_SETBACKCOLOR QuickDraw_Pal_Top -6)<br>
+  )<br>
+)  <br>
+<br>
+(DEFUN c:QuickDraw_Pal_Top-1_OnClicked (/)<br>
+  (SETQ Top-1-on (DCL_CONTROL_GETVALUE QuickDraw_Pal_Top-1))<br>
+)<br>
+<br>
+(DEFUN c:QuickDraw_Pal_OK_OnClicked (/)<br>
+  (DCL_FORM_CLOSE Quickdraw_Pal)<br>
+)<br>
+<br>
+ ;|«Visual LISP© Format Options»<br>
+(80 2 50 2 nil "end of " 80 50 2 0 2 nil nil nil T)<br>
+;*** DO NOT add text below the comment! ***|;<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1477/Quickdraw.lsp">Quickdraw.lsp</a> <span class="muted">(1332 bytes)</span></li><li><a href="../attachments/1478/QuickDraw.odcl">QuickDraw.odcl</a> <span class="muted">(10905 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7343">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-11-17 14:23 UTC</span>
+  </div>
+  <div class="post-body">Look at each of your Clicked events in the events tab and compare those event handler function names to the functions in your code.  You will see that they do not match.  It also looks like some of them were originally added while the form was named "Form1".  You probably should reset event handler names via Tools -&gt; Reset Event Names.<br>
+<br>
+The SetValue problem is due to calling the function on a picturebox control, which does not have a Value property.  You probably intended to call it on the checkbox control instead.<br>
+<br>
+Does that help?</div>
+</article>
+<article class="post" id="msg7346">
+  <div class="post-head">
+    <span class="post-author">mging63</span>
+    <span class="post-date muted">2010-11-17 19:03 UTC</span>
+  </div>
+  <div class="post-body">After resetting my events and correct the code, always the same problem!<br>
+<br>
+This is my last code.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1479/Quickdraw.lsp">Quickdraw.lsp</a> <span class="muted">(1381 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7348">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-11-18 00:30 UTC</span>
+  </div>
+  <div class="post-body">It looks like your code still has errors. There is no property name specified for (DCL_GETPROPERTY), and it looks like you are passing a picturebox control instead of a checkbox to (DCL_GETVALUE).</div>
+</article>
+<article class="post" id="msg7540">
+  <div class="post-head">
+    <span class="post-author">mging63</span>
+    <span class="post-date muted">2010-11-19 16:14 UTC</span>
+  </div>
+  <div class="post-body">Is anyone can debug my lisp?<br>
+<br>
+Thanks in advance.</div>
+</article>
+<article class="post" id="msg7541">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-11-19 16:24 UTC</span>
+  </div>
+  <div class="post-body">Attach your current .odcl and .lsp to a post, and I'm sure someone will help.</div>
+</article>
+<article class="post" id="msg7542">
+  <div class="post-head">
+    <span class="post-author">mging63</span>
+    <span class="post-date muted">2010-11-19 18:12 UTC</span>
+  </div>
+  <div class="post-body">This is the last codes<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1493/Quickdraw.lsp">Quickdraw.lsp</a> <span class="muted">(1379 bytes)</span></li><li><a href="../attachments/1494/QuickDraw.odcl">QuickDraw.odcl</a> <span class="muted">(10911 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7543">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-11-19 18:46 UTC</span>
+  </div>
+  <div class="post-body">I suggest you see if you can fix the code on your own.  Start by cleaning up the inconsistent naming in your .odcl file.  Select each control and remove the (VarName) override, then make sure the control's Name is uniform and consistent.  I have a feeling that the naming issues are a big part of your problems.<br>
+<br>
+Once the names are corrected, choose Tools -&gt; Reset Event Names and reset all controls, then save your file.  Next, copy and paste the event name for each event handler function to ensure your lisp uses the correct function name.  Next, fix the symbol name for each control in your lisp function calls (this should be very easy if you followed a uniform naming convention).<br>
+<br>
+I hope this helps.<br>
+</div>
+</article>
+<article class="post" id="msg7544">
+  <div class="post-head">
+    <span class="post-author">mging63</span>
+    <span class="post-date muted">2010-11-19 20:28 UTC</span>
+  </div>
+  <div class="post-body">Thanks for your help. Fisr, I remove all (VarName) in my odcl. Second i reset Events. Third i copy events of all controls and past in my lisp file. I think that i've fix name of control. Still the problem. Sorry<br>
+<br>
+Thanks<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1495/Quickdraw.lsp">Quickdraw.lsp</a> <span class="muted">(1381 bytes)</span></li><li><a href="../attachments/1496/QuickDraw.odcl">QuickDraw.odcl</a> <span class="muted">(10855 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7545">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-11-19 21:21 UTC</span>
+  </div>
+  <div class="post-body">Take a look at the attached version. Hopefully this gets you going in the right direction.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1497/Quickdraw.lsp">Quickdraw.lsp</a> <span class="muted">(1532 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

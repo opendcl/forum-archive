@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prompt in the command line. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 43</p>
+    <h1>Prompt in the command line.</h1>
+    <p class="meta">Started by velasquez ·
+      2007-08-15 17:44 UTC ·
+      10 replies · SMF topic #43</p>
+<article class="post" id="msg172">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2007-08-15 17:44 UTC</span>
+  </div>
+  <div class="post-body">I used the function of error of Selections.lsp of the examples of OpenDcl to show my problem.  <br>
+I need to play a message in the line of command of AutoCAD, when the user presses ESC.  <br>
+Attention cannot use DCL_MESSAGEBOX.  <br>
+I need to use (princ "FUNÇÃO CANCELADA PELO USUÁRIO ") or similar thing.<br>
+The message is always hidden of the user it can only be seen with the key F2.  <br>
+Does anybody can me to say because this happens?  <br>
+<br>
+Thanks<br>
+<br>
+<pre class="code"><code><br>
+;;Standard error trap<br>
+(DEFUN *error* (msg)<br>
+        (WHILE (&lt; 0 (GETVAR "cmdactive")) (COMMAND))<br>
+        (COND<br>
+            ((NOT msg))                           ; no error, do nothing<br>
+            ((VL-POSITION<br>
+                 (STRCASE msg T)                  ; cancel<br>
+                 '("console break" "function cancelled" "quit / exit abort")<br>
+             )<br>
+;; just for the Demo ...<br>
+;;;(DCL_MESSAGEBOX ".... Quit/Exit/Abort/*Cancelled*"<br>
+;;;"Inside Error Handler" ; Form Caption<br>
+;;;2                    ; OK Button Only<br>
+;;;1                    ; exclamation point icon is displayed in the message box.<br>
+;;;             )<br>
+;;;MY MESSAGE<br>
+             (princ "FUNÇÃO CANCELADA PELO USUÁRIO")<br>
+            )<br>
+            ((PRINC (STRCAT "\nApplication Error: " (GETVAR "errno") " :- " msg)<br>
+             )<br>
+            )<br>
+        )<br>
+        (SETVAR "errno" 0)<br>
+        ;;<br>
+        ;;        <br>
+        (SETQ bflag nil)<br>
+        (DCL_FORM_CLOSE Selections_Form)<br>
+        (SETVAR "BLIPMODE" blipper)<br>
+        (VL-CMDF "._REGEN")<br>
+        (SETVAR "CMDECHO" echo)<br>
+        (PRINC)<br>
+    )<br>
+</code></pre><br>
+</div>
+</article>
+<article class="post" id="msg177">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-08-16 07:11 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=43.msg172#msg172 date=1187199880 wrote:</cite><br>
+The message is always hidden of the user it can only be seen with the key F2.  <br>
+</blockquote><br>
+<br>
+The REGEN command causes it. You'll need to either print the message after the regen command is executed, or remove the regen command from the code.</div>
+</article>
+<article class="post" id="msg183">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2007-08-16 13:26 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen,  <br>
+  <br>
+I made the changes that you suggested, I eliminated the command REGEN and the whole rest but the problem continues.  <br>
+I posted a video please showing this it accesses in<br>
+<a href="http://www.easycad.com.br/opendcl/prompt-commandline.zip" rel="nofollow noopener">{2}</a> <br>
+See that in some situation the problem doesn't appear.  <br>
+Why does this happen?  <br>
+Thanks</div>
+</article>
+<article class="post" id="msg184">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2007-08-16 14:14 UTC</span>
+  </div>
+  <div class="post-body">Hi, velasquez,<br>
+<br>
+is it necessary to send the message to the commandline? Could a odcl_messagebox help?<br>
+Can you upload the lisp and odcl file for testing?<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg185">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2007-08-16 14:26 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred,  <br>
+<br>
+I need to place several messages for this reason for the user I need them in the command line.  <br>
+odcl_messagebox is excellent but it doesn't help me in this case.  <br>
+  <br>
+Thanks for the help</div>
+</article>
+<article class="post" id="msg186">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2007-08-16 14:43 UTC</span>
+  </div>
+  <div class="post-body">Hi velasquez,<br>
+<br>
+hm, I've attached an example, maybe it will help. It will show you how do I solve that normally.<br>
+<br>
+Regards, Fred<br>
+<br>
+P.S. I'm not familiar with the new kind of storing projects in lspfiles. So I use the good old odcl files.<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg189">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-08-16 15:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=43.msg183#msg183 date=1187270783 wrote:</cite><br>
+I made the changes that you suggested, I eliminated the command REGEN and the whole rest but the problem continues.</blockquote><br>
+<br>
+I don't have time to track down the reason. It can happen any time a modeless operation calls acedPostCommandPrompt(), which is the case when a modeless OpenDCL form calls an event handler. That may be the case here.</div>
+</article>
+<article class="post" id="msg191">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2007-08-16 17:48 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred,  <br>
+Thank you very much for your file, very good.  <br>
+The problem with the command line happens when the function is finished by an ESC.  <br>
+<br>
+I think OpenDcl prints a clean prompt.  <br>
+<br>
+<br>
+Regards, Velasquez<br>
+<br>
+P.S I created the problem in your file for you to see.<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg192">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2007-08-16 18:48 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+it's not a problem of OpenDCL, I think. Substitute the while()-condition (don't know the right word) with the following:<br>
+<br>
+<pre class="code"><code><br>
+  (while continue<br>
+    (setq continue "select")<br>
+;;;    (dcl_form_show vela_vela)<br>
+    (cond<br>
+      ((= continue "cancel") (princ "\nNothing will happen, you pressed Cancel!") (setq continue nil))<br>
+      ((= continue "accept") (princ "\nSomething will happen, you pressed OK!") (setq continue nil))<br>
+      ((= continue "select") (while (selpoint)))<br>
+    ); cond<br>
+  ); while<br>
+<br>
+</code></pre><br>
+<br>
+You can see, no form is shown. But an additional command-line is added nevertheless. We tell our customers to use 3 commandlines at least. 2 are too less.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg193">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2007-08-16 18:51 UTC</span>
+  </div>
+  <div class="post-body">I had a final test with sysvar NOMUTT=1 - but an additional commandline was added. Use 3 commandlines  ;D</div>
+</article>
+<article class="post" id="msg198">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2007-08-17 18:07 UTC</span>
+  </div>
+  <div class="post-body">I tested Selections.lsp in AutoCAD <span style="color:red"><strong>2006</strong></span> with the change in the function *error * and any problem didn't happen with the command line.   <br>
+The message was not hidden even with (VL-CMDF " ._REGEN ").<br>
+I didn't test in <span style="color:red"><strong>2008</strong></span>.  <br>
+Perhaps this can help to discover the track<br>
+<br>
+Thanks</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

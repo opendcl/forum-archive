@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_GetDwgMouseCoords · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1557</p>
+    <h1>dcl_GetDwgMouseCoords</h1>
+    <p class="meta">Started by velasquez ·
+      2010-12-16 13:17 UTC ·
+      9 replies · SMF topic #1557</p>
+<article class="post" id="msg7610">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-12-16 13:17 UTC</span>
+  </div>
+  <div class="post-body">The return of the function dcl_GetDwgMouseCoords is not same the function grread 5 of AutoCAD?  <br>
+  <br>
+See <strong>(setq ptgrread (grread 5))</strong> and<strong> (setq ptOpenDCL (dcl_GetDwgMouseCoords))</strong>  <br>
+The very different healthy values.  <br>
+Should not the return be the position of the cursor of the mouse?<br>
+<br>
+Velasquez</div>
+</article>
+<article class="post" id="msg7613">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-12-16 14:47 UTC</span>
+  </div>
+  <div class="post-body">I don't think there would be any need for a special function if it was identical to (grread), but I'm not quite sure how they are supposed to be different. I looked at the code, and I'm pretty sure the current implementation has a bug because it doesn't account for the document window client coordinate offset from screen coordinates, but even correcting for this, it looks like the results do not quite match (grread).</div>
+</article>
+<article class="post" id="msg7614">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-12-16 16:22 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1557.msg7613#msg7613 date=1292510839 wrote:</cite><br>
+I don't think there would be any need for a special function if it was identical to (grread), but I'm not quite sure how they are supposed to be different. I looked at the code, and I'm pretty sure the current implementation has a bug because it doesn't account for the document window client coordinate offset from screen coordinates, but even correcting for this, it looks like the results do not quite match (grread).<br>
+</blockquote><br>
+<br>
+I didn't understand your answer.  <br>
+will dcl_GetDwgMouseCoords come back the correct position of the cursor of the mouse in the next version?</div>
+</article>
+<article class="post" id="msg7615">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-12-16 16:37 UTC</span>
+  </div>
+  <div class="post-body">I can't answer that because I don't know what you mean by "correct".</div>
+</article>
+<article class="post" id="msg7617">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-12-16 18:26 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1557.msg7615#msg7615 date=1292517467 wrote:</cite><br>
+I can't answer that because I don't know what you mean by "correct".<br>
+</blockquote><br>
+<br>
+I think the correct return of dcl_GetDwgMouseCoords would be the position of the cursor of the mouse.  <br>
+See the image.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1517/MouseCursor.png">MouseCursor.png</a> <span class="muted">(4546 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7618">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-12-16 20:16 UTC</span>
+  </div>
+  <div class="post-body">Do you think it should return the same thing as (grread)?  If so, why not just use (grread)?</div>
+</article>
+<article class="post" id="msg7619">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-12-16 21:05 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=1557.msg7617#msg7617 date=1292523989 wrote:</cite><br>
+[quote author=owenwengerd link=topic=1557.msg7615#msg7615 date=1292517467]<br>
+I can't answer that because I don't know what you mean by "correct".<br>
+</blockquote><br>
+<br>
+I think the correct return of dcl_GetDwgMouseCoords would be the position of the cursor of the mouse.  <br>
+See the image.<br>
+<br>
+<br>
+I don't use grread for the function it is very closed, while she is running.  <br>
+dcl_GetDwgMouseCoords would be very good to simulate an I drag for instance.  <br>
+So that it serves dcl_GetDwgMouseCoords as this today?</div>
+</article>
+<article class="post" id="msg7630">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-12-20 10:46 UTC</span>
+  </div>
+  <div class="post-body">Should I add a Feature request for dcl_GetDwgMouseCoords to return the coordinate of the position of the cursor of the mouse?  <br>
+Can this be assisted?  <br>
+Thanks</div>
+</article>
+<article class="post" id="msg7632">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-12-20 22:31 UTC</span>
+  </div>
+  <div class="post-body">Yes, but you have to define "position of the cursor" (i.e. what units of measure, and relative to what). Should it return the same coordinates as (grread)? Those are relative to the current viewport. For dragging, wouldn't you use (dcl_GetMouseCoords) instead?  </div>
+</article>
+<article class="post" id="msg7633">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-12-21 10:52 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1557.msg7632#msg7632 date=1292884298 wrote:</cite><br>
+Yes, but you have to define "position of the cursor" (i.e. what units of measure, and relative to what). Should it return the same coordinates as (grread)? Those are relative to the current viewport. For dragging, wouldn't you use (dcl_GetMouseCoords) instead?  <br>
+</blockquote><br>
+<br>
+The function dcl_GetDwgMouseCoords is ideal to drag an object while a point is asked for.  <br>
+Should it return the same coordinates as (grread) relative to the current viewport.  <br>
+The problem is that (grread) it doesn't allow OSNAPS while this working.<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

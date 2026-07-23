@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>how to convert odcl.lsp files to embedded for des compile · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1997</p>
+    <h1>how to convert odcl.lsp files to embedded for des compile</h1>
+    <p class="meta">Started by jmaeding ·
+      2013-08-07 21:17 UTC ·
+      3 replies · SMF topic #1997</p>
+<article class="post" id="msg9857">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2013-08-07 21:17 UTC</span>
+  </div>
+  <div class="post-body">This is not a new topic, but I went through it and thought to document the process.<br>
+I started out with a folder of odcl.lsp files my programs use. That folder is in the support paths, so is used first while in the development process. After development is over, and vlx/des is deployed, the odcl.lsp files are not available and the embedded ones get used.<br>
+<br>
+The key to this is understanding that odcl has a funtion to load a dialog project from a list contiaining a string of the dialog definition. Process of conversion:<br>
+<br>
+1) open a dialog file in vlide that is of type odcl.lsp. You will see its just a list of strings - gibbereish. That list is exactly what you feed to (dcl_project_import thelist ...) to load the dialogs.<br>
+2) make a copy of the odcl.lsp files, and place in same folder as the lisps being compiled to vlx/des.<br>
+3) rename each to replace the . before odcl.lsp to a dash. This is because the vlide does not like .'s in the lsp names in your prv files. Also, we want the filenames different to control what gets loaded during development. Its ambiguous what was found if the names are the same.<br>
+4) add a line of code to the top of each file, it should be (SETQ -odcl  also add a closing paren at the end of the file.<br>
+5) modify your prv files to add the new files with -odcl.lsp, as :lsp items. So they move from the resource files part, and up to lsp files. Replace the :txt with :lsp for each.<br>
+6) use a routine to load things, that takes the name of a project as string, and tries to load the various possibilities in this order:<br>
+Load an outside "old" .odcl file if found<br>
+Load an outside odcl.lsp file if found<br>
+Load the embedded list from odcl list variable named -odcl<br>
+Load the embedded list from odcl.lsp files as resource files<br>
+<br>
+Now when you compile to vlx or des, the dialogs will be included.<br>
+The trick here that I use so I can make a generic load routine, is to name the old .odcl.lsp files to -odcl.lsp, and also set a variable of the sma ename to the list inside with the setq at top.<br>
+Then my load function knows to add the -odcl to the project name when looking to see if that variable exists.<br>
+<br>
+Here is my load function for acad and bricscad versions:<br>
+<br>
+(DEFUN LOAD-ODCL-PROJ (NAME-STR GLOBAL-VAR / ITEM ODCLFILE TMP BCAD NOGO)<br>
+  ;TEST FOR BRICSCAD<br>
+  (IF (AND (WCMATCH (STRCASE (VLAX-PRODUCT-KEY)) "*BRICSCAD*")<br>
+           (SETQ BCAD 1)<br>
+      )<br>
+    (COND<br>
+      ((WCMATCH (VLAX-PRODUCT-KEY) "*\\V13*")<br>
+       (IF (Acad64Bit-version)<br>
+         (SETQ ODCLFILE "opendcl.X64.13.brx")<br>
+         (SETQ ODCLFILE "opendcl.13.brx")<br>
+       )<br>
+      )<br>
+      ((WCMATCH (VLAX-PRODUCT-KEY) "*\\V12*")<br>
+       (IF (Acad64Bit-version)<br>
+         (SETQ ODCLFILE "opendcl.X64.12.brx")<br>
+         (SETQ ODCLFILE "opendcl.12.brx")<br>
+       )<br>
+      )<br>
+      ((WCMATCH (VLAX-PRODUCT-KEY) "*\\R11*")(SETQ ODCLFILE "opendcl.11.brx"))<br>
+      ((WCMATCH (VLAX-PRODUCT-KEY) "*\\R10*")(SETQ ODCLFILE "opendcl.10.brx"))<br>
+    )<br>
+    ;ELSE ACAD<br>
+    (COND<br>
+      ((WCMATCH (VLAX-PRODUCT-KEY) "*\\R19*")<br>
+       (IF (Acad64Bit-version)<br>
+         (SETQ ODCLFILE "opendcl.X64.19.arx")<br>
+         (SETQ ODCLFILE "opendcl.19.arx")<br>
+       )<br>
+      )<br>
+      ((WCMATCH (VLAX-PRODUCT-KEY) "*\\R18*")<br>
+       (IF (Acad64Bit-version)<br>
+         (SETQ ODCLFILE "opendcl.X64.18.arx")<br>
+         (SETQ ODCLFILE "opendcl.18.arx")<br>
+       )<br>
+      )<br>
+      ((WCMATCH (VLAX-PRODUCT-KEY) "*\\R17*")(SETQ ODCLFILE "opendcl.17.arx"))<br>
+      ((WCMATCH (VLAX-PRODUCT-KEY) "*\\R16*")(SETQ ODCLFILE "opendcl.16.arx"))<br>
+    )<br>
+  )<br>
+  ;LOAD IT<br>
+  (IF (AND (not (IsLoadedArx ODCLFILE))(FINDFILE ODCLFILE))(arxload ODCLFILE))<br>
+  ;LOAD PROJECT<br>
+  (IF (NOT (IsLoadedArx ODCLFILE)) ;(IsLoadedArx "opendcl.12.brx")<br>
+    (ALERT (STRCAT "This tool will not work without the file " ODCLFILE " in AutoCad's search path."))<br>
+    (PROGN<br>
+      (IF (NOT (EVAL (READ GLOBAL-VAR))) ;(EVAL (READ "CT-CIVIL:LOADED"))<br>
+        (PROGN<br>
+          (IF (NOT BCAD)<br>
+            (vl-arx-import ODCLFILE)<br>
+          )<br>
+          (FOREACH ITEM (STR-TOKENS NAME-STR (LIST ","))<br>
+            (OR<br>
+              ;OUTSIDE ODCL.LSP FILE<br>
+              (IF (SETQ TMP (FINDFILE (STRCAT ITEM ".odcl.lsp")))(DCL_Project_Load TMP))<br>
+              ;REGULAR ODCL FILE<br>
+              (IF (SETQ TMP (FINDFILE (STRCAT ITEM ".odcl")))(DCL_Project_Load TMP))<br>
+              ;EMBEDDED RESOURCE AS GLOBAL VARIABLE (dcl_project_import (EVAL (READ "CheckXrefs-odcl")) nil nil) CheckXrefs-odcl<br>
+              (IF (EVAL (READ (STRCAT ITEM "-odcl"))) (dcl_project_import (EVAL (READ (STRCAT ITEM "-odcl"))) nil nil))<br>
+              ;EMBEDDED RESOURCE AS ODCL.LSP FILE<br>
+              (IF (SETQ TMP (FINDFILE (STRCAT ITEM ".odcl")))(dcl_project_import (VL-GET-RESOURCE (STRCAT ITEM ".odcl")) NIL NIL))<br>
+            )<br>
+          )<br>
+        )<br>
+      )<br>
+      (IF GLOBAL-VAR (SET (READ GLOBAL-VAR) 1))<br>
+    )<br>
+  )<br>
+  (EVAL (READ GLOBAL-VAR))<br>
+)<br>
+<br>
+<br>
+some helpers:<br>
+<br>
+(defun IsLoadedArx (filename / )(IF (MEMBER (STRCASE filename T) (ARX)) T NIL))<br>
+<br>
+<br>
+<br>
+(defun Acad64Bit-version ()<br>
+  (&gt; (strlen (vl-prin1-to-string (vlax-get-acad-object))) 40)<br>
+)<br>
+<br>
+<br>
+<br>
+(DEFUN STR-TOKENS (STR-IN DELIM-LST<br>
+                   / CHAR-POS DELIM E1 E2 INDEX LAST-POS POS POS-LIST RET-LIST STR-LEFT)<br>
+  (FOREACH DELIM DELIM-LST<br>
+    (SETQ STR-LEFT STR-IN<br>
+          CHAR-POS 0<br>
+    )<br>
+    (WHILE (SETQ POS (vl-string-search DELIM STR-LEFT))<br>
+      (SETQ POS-LIST (CONS (LIST (+ CHAR-POS POS) (STRLEN DELIM)) POS-LIST)<br>
+            STR-LEFT (SUBSTR STR-LEFT (+ POS 1 (STRLEN DELIM)))<br>
+            CHAR-POS (+ CHAR-POS (+ POS (STRLEN DELIM)))<br>
+      )<br>
+    )<br>
+  )<br>
+  (SETQ POS-LIST (vl-sort POS-LIST (function (lambda (e1 e2)(&lt; (car e1) (car e2))))))<br>
+  ;NOW USE POS-LIST TO CREATE LIST OF STRINGS<br>
+  (SETQ INDEX 1<br>
+        LAST-POS 1<br>
+  )<br>
+  (FOREACH POS POS-LIST<br>
+    (SETQ RET-LIST (CONS (SUBSTR STR-IN LAST-POS (+ 1 (- (CAR POS) LAST-POS))) RET-LIST))<br>
+    (SETQ LAST-POS (+ 1 (CAR POS)(CADR POS))<br>
+          INDEX (+ 1 INDEX)<br>
+    )<br>
+    ;IF ON LAST ITEM, DO TIL END<br>
+    (IF (AND (&gt; INDEX (LENGTH POS-LIST))<br>
+             (&lt; (- LAST-POS 1) (STRLEN STR-IN))<br>
+        )<br>
+      (SETQ RET-LIST (CONS (SUBSTR STR-IN LAST-POS) RET-LIST))<br>
+    )<br>
+  )<br>
+  (IF RET-LIST<br>
+    (REVERSE RET-LIST)<br>
+    (LIST STR-IN)<br>
+  )<br>
+)<br>
+<br>
+<br>
+the usage of the load function is like:<br>
+<br>
+(IF (not (LOAD-ODCL-PROJ "CT-Civil10,CT-Civil10-B,CT-Civil10-C" "CT-CIVIL:LOADED"))<br>
+    (VL-EXIT-WITH-VALUE (PRINC))<br>
+  )<br>
+<br>
+<br>
+the first string is a comma delim list of projects to load, the next string is a global var to remember if the project was already loaded. I know "CT-CIVIL:LOADED" is a string, not a variable, but we use (eval (read "name")) to get the value of the variable if it exists.<br>
+<br>
+In the end, this system allows you to have a folder of .odcl.lsp files that get used during development, and a set of -odcl.lsp files that get used for the vlx/des compile. The  LOAD-ODCL-PROJ function takes care of loading things in developement or depolyment situations.<br>
+It could be modified for passwords, I do not use them.<br>
+You could automate the updating of the -odcl.lsp files, I have seen it done. Just know you must update them somehow if you update the .odcl.lsp files.<br>
+<br>
+thx</div>
+</article>
+<article class="post" id="msg9860">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-08-08 01:56 UTC</span>
+  </div>
+  <div class="post-body">Thanks for posting your process, James. Just for the record, I recommend to load OpenDCL via (command "_OPENDCL") instead of trying to manually locate and load a specific OpenDCL Runtime .arx module.</div>
+</article>
+<article class="post" id="msg9862">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-08-08 08:11 UTC</span>
+  </div>
+  <div class="post-body">A discussion that touches on similar concepts:<br>
+http://www.opendcl.com/forum/index.php?topic=1830<br>
+<br>
+I am surprised by this:<br>
+(VL-GET-RESOURCE (STRCAT ITEM ".odcl"))<br>
+According to the documentation (vl-get-resource) only works with .txt files.<br>
+<br>
+@ jmaeding:<br>
+You should consider automating the whole process and not relying on a number 'manual' steps. Because manual steps are easily forgotten when you 'recompile' for the umpteenth time.</div>
+</article>
+<article class="post" id="msg9864">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2013-08-08 18:10 UTC</span>
+  </div>
+  <div class="post-body">The vla-get-resource does allow .lsp files, my old prv file looked like this for resources:<br>
+<br>
+(:require-file-list<br>
+   (:txt "CT-Civil10-B.odcl.lsp")<br>
+   (:txt "CT-Civil10-C.odcl.lsp")<br>
+   (:txt "CT-Civil10.odcl.lsp")<br>
+<br>
+The descoder does not currently allow lsp as a resource, but Torsten said he intended to fix this.<br>
+He just might be my second favorite CAD programmer, Owen still holds top place for the moment ;)<br>
+Hmm, seems the names of my favorites all end in "n". Owen, Torsten, Kean, Clayton...dang, my name ends in s.<br>
+The advantage of using the odcl.lsp files as resources is you need not duplicate any info.<br>
+The same file opendcl studio reads is the one compiled in your vlx/des.<br>
+So that fix would get rid of a lot of discussion.<br>
+<br>
+On Owen's comment about using the _opendcl command, that must assume opendcl was installed which puts the arx/brx in the prog files\common...folder.<br>
+At my office, that install is a pain because only I and IT have admin rights. We could make it a standard install at machine build time, but then any updates are <em>tricky</em>. We all know that word tricky is bad in the computer world, read Hitchhikers Guide TTG and pay attention to Deep Thought's response when asked to find the answer to Life, the universe, and everything....<br>
+ok, lets just say I much prefer xcopy style tool deployment, and I keep the tools in a place the user has rights to, which is not in Program Files. If they ever have an admin rights parade, I will boycott it. I prefer all users to have full rights so updates could run right with user logged in.<br>
+<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

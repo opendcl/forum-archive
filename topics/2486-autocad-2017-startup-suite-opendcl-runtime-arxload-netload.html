@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AutoCAD 2017 Startup Suite, OpenDCL Runtime, ARXLOAD, NETLOAD · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2486</p>
+    <h1>AutoCAD 2017 Startup Suite, OpenDCL Runtime, ARXLOAD, NETLOAD</h1>
+    <p class="meta">Started by chrismichaelgentile ·
+      2017-02-20 18:33 UTC ·
+      3 replies · SMF topic #2486</p>
+<article class="post" id="msg12415">
+  <div class="post-head">
+    <span class="post-author">chrismichaelgentile</span>
+    <span class="post-date muted">2017-02-20 18:33 UTC</span>
+  </div>
+  <div class="post-body">Hey community, here's my situation: I'm deploying a custom UI for AutoCAD 2017 using DCL projects that are called to load from the acaddoc.lsp on startup. I cannot get the ARX or the DLL to load. Any help would be great!<br>
+<br>
+Here is the lines from acaddoc.lsp<br>
+<br>
+(command "._netload" (strcat @app "opendcl/OpenDCL/ENU/Runtime.Res.dll"))<br>
+(arxload (strcat @app "opendcl/OpenDCL/OpenDCL.x64.17"))<br>
+(command "opendcl")<br>
+(load (strcat @dcl "M_swassm"))<br>
+(dcl_project_load "M_swassm" T)<br>
+<br>
+Here is the return on manually loading the DLL.<br>
+<br>
+<blockquote class="quote">Command: NETLOAD<br>
+Cannot load assembly. Error details: System.BadImageFormatException: Could not load file or assembly 'file:///C:\Users\Public\swaCAD\app\opendcl\OpenDCL\ENU\Runtime.Res.dll' or one of its dependencies. The module was expected to contain an assembly manifest.<br>
+File name: 'file:///C:\Users\Public\swaCAD\app\opendcl\OpenDCL\ENU\Runtime.Res.dll'<br>
+   at System.Reflection.RuntimeAssembly._nLoad(AssemblyName fileName, String codeBase, Evidence assemblySecurity, RuntimeAssembly locationHint, StackCrawlMark&amp; stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)<br>
+   at System.Reflection.RuntimeAssembly.InternalLoadAssemblyName(AssemblyName assemblyRef, Evidence assemblySecurity, RuntimeAssembly reqAssembly, StackCrawlMark&amp; stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)<br>
+   at System.Reflection.RuntimeAssembly.InternalLoadFrom(String assemblyFile, Evidence securityEvidence, Byte[] hashValue, AssemblyHashAlgorithm hashAlgorithm, Boolean forIntrospection, Boolean suppressSecurityChecks, StackCrawlMark&amp; stackMark)<br>
+   at System.Reflection.Assembly.LoadFrom(String assemblyFile)<br>
+   at Autodesk.AutoCAD.Runtime.ExtensionLoader.Load(String fileName)<br>
+   at loadmgd()<br>
+<br>
+WRN: Assembly binding logging is turned OFF.<br>
+To enable assembly bind failure logging, set the registry value [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) to 1.<br>
+Note: There is some performance penalty associated with assembly bind failure logging.<br>
+To turn this feature off, remove the registry value [HKLM\Software\Microsoft\Fusion!EnableLog].<br>
+</blockquote><br>
+<br>
+I ran the OpenDCL Runtime and copied the contents of the .../common files/OpenDCL to a custom directory that will be copied with other dependent files for the custom UI. Side note, is there something in the registry the runtime edits?<br>
+<br>
+Thank you in advance,</div>
+</article>
+<article class="post" id="msg12416">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2017-02-20 20:53 UTC</span>
+  </div>
+  <div class="post-body">Hi, have a try without the first two lines.<br>
+<br>
+(command "opendcl")<br>
+(load (strcat @dcl "M_swassm"))<br>
+(dcl_project_load "M_swassm" T)<br>
+<br>
+is enough if you installed OpenDCL runtime after AutoCAD.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg12417">
+  <div class="post-head">
+    <span class="post-author">chrismichaelgentile</span>
+    <span class="post-date muted">2017-02-21 15:06 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred, we progressed from your comment. My question from here now is if I can change the module path that the command OPENDCL demand loads from, see quote from command window below. <br>
+<br>
+<blockquote class="quote">Command: OPENDCL<br>
+Demand load failed due to missing module:<br>
+Name: OpenDCL<br>
+Description: OpenDCL<br>
+Module Path: C:\Program Files (x86)\Common Files\OpenDCL\OpenDCL.x64.21.arx<br>
+Demand load failed due to missing module:<br>
+Name: OpenDCL<br>
+Description: OpenDCL<br>
+Module Path: C:\Program Files (x86)\Common Files\OpenDCL\OpenDCL.x64.21.arx<br>
+Unknown command "OPENDCL".  Press F1 for help.</blockquote><br>
+<br>
+Thanks again!</div>
+</article>
+<article class="post" id="msg12418">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2017-02-22 05:49 UTC</span>
+  </div>
+  <div class="post-body">Hi, there's no need to change the module path. Please, be aware of other tools using OpenDCL runtime. Other applications depend on standard location of OpenDCL runtime, you will cause many problems with changing the module path . Thats why, let it as it is and everything will work.<br>
+Greetings, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

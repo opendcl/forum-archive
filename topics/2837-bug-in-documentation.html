@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bug in documentation · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/7-site-management.html">Site Management</a> /
+      Topic 2837</p>
+    <h1>Bug in documentation</h1>
+    <p class="meta">Started by Dovys ·
+      2022-10-23 20:05 UTC ·
+      1 replies · SMF topic #2837</p>
+<article class="post" id="msg13720">
+  <div class="post-head">
+    <span class="post-author">Dovys</span>
+    <span class="post-date muted">2022-10-23 20:05 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+I found bug in documentation of OpenDCL or in OpenDCL. Here is image https://ibb.co/0CY9fJz<br>
+Image show documentation window and my app window above it. Bug is in justifications.<br>
+I have created columns with command<br>
+<pre class="code"><code>(dcl-Grid-AddColumns <br>
+    MineralDeposit/DH/Data<br>
+    (list <br>
+      (list "No" 0 100)<br>
+      (list "X" 0 100)<br>
+      (list "Y" 1 100)<br>
+      (list "Z" 2 100)<br>
+    )<br>
+)</code></pre><br>
+<br>
+After it I have added rows with command<br>
+<pre class="code"><code>(dcl-Grid-AddRow <br>
+  MineralDeposit/DH/Data<br>
+  (nth 0 row)<br>
+  (rtos (nth 0 (nth 1 row)) 2 2)<br>
+  (rtos (nth 1 (nth 1 row)) 2 2)<br>
+  (rtos (nth 2 (nth 1 row)) 2 2)<br>
+)</code></pre><br>
+<br>
+Justification in header is right, but in all other rows right and centered is exchanged. I have tried changing justification in AddColumns command and it effected header and other rows, but header and other rows are exchanged all the time.</div>
+</article>
+<article class="post" id="msg13723">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2022-10-30 00:21 UTC</span>
+  </div>
+  <div class="post-body">Good catch. Surprising that nobody noticed this before. The bug is fixed in 9.2.03, which will be available soon.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

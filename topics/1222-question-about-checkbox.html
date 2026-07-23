@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>question about Checkbox · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1222</p>
+    <h1>question about Checkbox</h1>
+    <p class="meta">Started by Iulian ·
+      2010-03-22 13:24 UTC ·
+      20 replies · SMF topic #1222</p>
+<article class="post" id="msg6544">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2010-03-22 13:24 UTC</span>
+  </div>
+  <div class="post-body">On my modeless form I have a few tools ( Option Lists, Frames, Check Boxes etc.)...<br>
+I made this procedure: when the CheckBox1 (cb1) is checked the OptionList1(OL1) appears, and when the CheckBox1 is unchecked the OptionList1 is hidden.<br>
+<br>
+OnInitialize event I have set up the Long Value of the CheckBox1 on zero ( what means UNCHECKED), and (dcl_Control_SetVisible Proj_Form1_OptionList1 NIL), to have hidden the OptionList1, and UNCHECKED the CheckBox1.<br>
+<br>
+Now, when I run my project, CheckBox1 is CHECKED, and OptionList1 VISIBLE, although  these were been set up in ONINITIALIZE event of the form1.<br>
+<br>
+What I have remarked, is that after form1 appears, my CheckBox1 is selected...like in picture below....<br>
+After that, I putted another CheckBox  (Checkbox2) on my form1, and after project runs, Checkbox2 was selected (I think because was the last putted on the form..),  and my settings from the ONINITIALIZE event of form1 were OK...After that, I have erased the last CheckBox  (cb2), and CheckBox1 were again checked, how it should not be...<br>
+<br>
+What I should do for overseen the selection, on ONINITIALIZE event? because I think this cause my problem...<br>
+Thanks.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1346/checkbox.bmp">checkbox.bmp</a> <span class="muted">(139962 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6545">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-22 13:50 UTC</span>
+  </div>
+  <div class="post-body">Can you upload a simple form and lisp file that demonstrates the problem?  Which version of OpenDCL are you using?</div>
+</article>
+<article class="post" id="msg6554">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2010-03-23 07:40 UTC</span>
+  </div>
+  <div class="post-body">This is a simple example...if CheckBox is first in Z/tab order, goes wrong, and for example if Close button is first, everything is OK.<br>
+I`m using  OpenDCL.Studio.ENU.6.0.0.23.msi<br>
+Thanks.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1348/example.odcl">example.odcl</a> <span class="muted">(767 bytes)</span></li><li><a href="../attachments/1349/example.LSP">example.LSP</a> <span class="muted">(692 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6557">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-23 12:07 UTC</span>
+  </div>
+  <div class="post-body">I cannot reproduce the problem in AutoCAD 2010 on Windows 7 x64.  Can you test on another computer to see if the problem is reproducible on more than 1 computer?</div>
+</article>
+<article class="post" id="msg6558">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2010-03-23 13:22 UTC</span>
+  </div>
+  <div class="post-body">I run the project on 3 different PC, all with Windows XP x 32, with AutoCAD 2007 and AutoCAD 2005...all with the same  OpenDCL.Studio.ENU.6.0.0.23.msi alpha version.<br>
+The same result.. </div>
+</article>
+<article class="post" id="msg6561">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-23 16:02 UTC</span>
+  </div>
+  <div class="post-body">Hopefully someone else will test your sample and let us know whether they have the same problem.</div>
+</article>
+<article class="post" id="msg6563">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-03-23 17:13 UTC</span>
+  </div>
+  <div class="post-body">Try removing the t reload option from this line:<br>
+<br>
+(dcl_project_load "example" <span style="color:red">t</span>)<br>
+(dcl_project_load "example")</div>
+</article>
+<article class="post" id="msg6564">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-03-23 17:23 UTC</span>
+  </div>
+  <div class="post-body">Also, these lines don't look right:<br>
+<br>
+<br>
+(defun c:example_Form1_CheckBox1_OnClicked (Value /)<br>
+    (setq cb_value (dcl_Control_GetValue example_Form1_CheckBox1))  ;;;; &lt;---- you don't need this line, use the Value passed in by the OnClick function<br>
+<br>
+  (cond ((= cb_value 0)<br>
+	 ((dcl_Control_SetVisible example_Form1_OptionList1 NIL))  ;;; &lt;--- too many ()<br>
+        )<br>
+    <br>
+        ((= cb_value 1)<br>
+	 ((dcl_Control_SetVisible example_Form1_OptionList1 T))   ;;; &lt;--- too many ()<br>
+        )   <br>
+)<br>
+)<br>
+<br>
+<br>
+Try this:<br>
+<br>
+(defun c:example_Form1_CheckBox1_OnClicked (Value /)<br>
+  (cond<br>
+    ((= Value 0)<br>
+	 (dcl_Control_SetVisible example_Form1_OptionList1 NIL)<br>
+     )<br>
+     ((= Value 1)<br>
+	 (dcl_Control_SetVisible example_Form1_OptionList1 T)<br>
+     )<br>
+  );_ cond<br>
+);_ defun<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6565">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-23 17:26 UTC</span>
+  </div>
+  <div class="post-body">Barry, are you able to reproduce the OP's problem?<br>
+<br>
+BTW, this would be my version:<br>
+<br>
+(defun c:example_Form1_CheckBox1_OnClicked (Value /)<br>
+  (dcl_Control_SetVisible example_Form1_OptionList1 (= Value 1))<br>
+);_ defun<br>
+</div>
+</article>
+<article class="post" id="msg6567">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-03-23 18:04 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1222.msg6565#msg6565 date=1269365183 wrote:</cite><br>
+Barry, are you able to reproduce the OP's problem?<br>
+</blockquote><br>
+<br>
+I didn't try it yet, since I'm on Win7 &amp; Acad2010. I can try on an other XP machine wit hAcad2008 &amp; 2010 late....<br>
+But since it sounded like an issue with reshowing the form &amp; ONINITIALIZE even I thought it might be the reload flag...</div>
+</article>
+<article class="post" id="msg6572">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-24 00:53 UTC</span>
+  </div>
+  <div class="post-body">Since the checkbox state is being set in OnInitialize, the initial value (and hence reloading) shouldn't matter one way or the other.  In any case, I hope you get a chance to test it on both systems.</div>
+</article>
+<article class="post" id="msg6575">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2010-03-24 09:21 UTC</span>
+  </div>
+  <div class="post-body">Thank you guys for your interest ... I tried all your alternatives, and the result is the same... the single way to resolve this is to put the checkbox in the bottom of the Z/Tab order list...As long as it works...it`s ok.<br>
+Thank you again ! </div>
+</article>
+<article class="post" id="msg6582">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-24 13:05 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Iulian link=topic=1222.msg6575#msg6575 date=1269422477 wrote:</cite>As long as it works...it`s ok.</blockquote><br>
+<br>
+Hopefully we can track down the cause in case there's a bug hidden somewhere.</div>
+</article>
+<article class="post" id="msg6849">
+  <div class="post-head">
+    <span class="post-author">c2k</span>
+    <span class="post-date muted">2010-05-11 15:03 UTC</span>
+  </div>
+  <div class="post-body">I am having similar problems with what seems like the oninitialize not working with check boxes.  Thought I should mention I am using Windows 7 64 bit.<br>
+Mine is a modal form.  I have a picture box at the front of the Z order and a few check boxes following.  The first check box seems to ignore my oninitialize code.  And as Iulian stated, if I put a button before the check box in the Z order, the check boxes initialize as expected.  It seems the object before the check box needs to have an event or the work around has no effect as my picture box made no difference.</div>
+</article>
+<article class="post" id="msg6851">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-05-12 07:09 UTC</span>
+  </div>
+  <div class="post-body">Can you upload a simple project that demonstrates the problem?</div>
+</article>
+<article class="post" id="msg6854">
+  <div class="post-head">
+    <span class="post-author">c2k</span>
+    <span class="post-date muted">2010-05-13 14:26 UTC</span>
+  </div>
+  <div class="post-body">I have attached a zip file with an .odcl and a .lsp.<br>
+<br>
+What I find is you have to run it and tick some check boxes, then close it.  And do it all over again. After a few times it starts messing up.  I can't figure out any certain way to make it mess up, it just eventually happens.  Sometimes I can't seem to get it to mess up for a long time.<br>
+<br>
+I did find that if you open the .lsp code in the vlide, and then reload it from there it seems to mess up right away.  I have definitely noticed it more when I am working on the lisp.  Hope that helps in some way.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1390/sample1.zip">sample1.zip</a> <span class="muted">(1785 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6858">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-05-15 15:06 UTC</span>
+  </div>
+  <div class="post-body">In the sample project, your main function loads and shows the dialog <strong>before</strong> it defines the event handler functions. Try moving your event handler function definitions in front of the code that displays the dialog. Let me know whether that resolves your problem.</div>
+</article>
+<article class="post" id="msg6862">
+  <div class="post-head">
+    <span class="post-author">c2k</span>
+    <span class="post-date muted">2010-05-17 13:40 UTC</span>
+  </div>
+  <div class="post-body">I changed the code as suggested and tried again.  I am still seeing the problem.  First time I ran it I checked box 2, pressed text button 2, &amp; closed the dialog.  Ran it again, and check box 1 was checked.  I attached the revised lisp so you can confirm I did what you wanted.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1391/sample1-code.lsp">sample1-code.lsp</a> <span class="muted">(1322 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6863">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-05-17 16:02 UTC</span>
+  </div>
+  <div class="post-body">I have a theory. Are you starting the command by typing it, then pressing the space bar? If so, try it again but press and hold the space bar, then wait to release it until the dialog is completely displayed. Now when you release it, the check box gets checked because it has focus and "space bar up" translates to toggling the check box state. Is that what you're seeing? You can test the theory by using the  key instead of the space bar when starting the command.</div>
+</article>
+<article class="post" id="msg6864">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-05-17 16:21 UTC</span>
+  </div>
+  <div class="post-body">I've added code to ignore the space bar if it wasn't pressed while the check box control had input focus. This should fix the problem in the next build if I'm correct about the cause.</div>
+</article>
+<article class="post" id="msg6865">
+  <div class="post-head">
+    <span class="post-author">c2k</span>
+    <span class="post-date muted">2010-05-17 17:45 UTC</span>
+  </div>
+  <div class="post-body">You are correct.  Using enter seems to work fine... holding space until the dialog is visible seems to work fine.<br>
+I look forward to the next build  ;D Thank you Owen.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BlockList's OnDragnDropToAutoCAD ??? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 774</p>
+    <h1>BlockList's OnDragnDropToAutoCAD ???</h1>
+    <p class="meta">Started by khann ·
+      2009-05-28 12:12 UTC ·
+      9 replies · SMF topic #774</p>
+<article class="post" id="msg3808">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2009-05-28 12:12 UTC</span>
+  </div>
+  <div class="post-body">Hi, everyone.<br>
+Now I'm trying to make an ODCL form of preview blocks and Dragndrop one block to AutoCAD.<br>
+But the OnDragnDropToAutoCAD of BlockList returns nothing.<br>
+It didn't stop at the break point of OnDragnDropToAutoCAD routine and did not show any alert message.<br>
+Even the MasterDemo's DragNDrop test is the same.<br>
+<br>
+Would somebody show me the way?<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg3809">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-28 13:54 UTC</span>
+  </div>
+  <div class="post-body">I could reproduce that it did no work for me, too.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3812">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-28 17:08 UTC</span>
+  </div>
+  <div class="post-body">It looks like I commented out some code while testing, and forgot to uncomment it when I was finished. This should be fixed now for Beta 3.</div>
+</article>
+<article class="post" id="msg3819">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2009-05-29 00:45 UTC</span>
+  </div>
+  <div class="post-body">Thanks for your reply.<br>
+I can wait until it fixed.<br>
+In addition when I click one block item in the BlockList and dragndrop to AutoCAD, just the blockname appears with type of MText at the upper left corner of the AutoCAD screen.<br>
+Is this by design? or some kind of bugs?<br>
+<br>
+And Fred already wrote in some other reply, the dragndroped block gone away from the BlockList.<br>
+So I reloaded the block file everytime after dragndrop event to prevent this.<br>
+How can I make this better? <br>
+Help me through, please.<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg3847">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-30 05:07 UTC</span>
+  </div>
+  <div class="post-body">Currently the built-in handling just uses the default behavior defined for all controls. This default handling should be customized for the block list to default to "copy" instead of "move", and to insert the block at the drop point. Please add this as a feature request.<br>
+<br>
+In the meantime, you can override the built-in drag and drop functionality by handling OnDragnDropToAutoCAD and performing your custom operation there.</div>
+</article>
+<article class="post" id="msg3852">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2009-05-31 01:14 UTC</span>
+  </div>
+  <div class="post-body">Thanks owen.<br>
+So, what is feature request? <br>
+Is that a site of here? where is it?</div>
+</article>
+<article class="post" id="msg3854">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-31 02:03 UTC</span>
+  </div>
+  <div class="post-body">You can click on the "Wish List" link from the OpenDCl home page. Here is the URL:<br>
+<a href="https://sourceforge.net/tracker/?group_id=187950&amp;atid=923366" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg3855">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2009-06-01 00:58 UTC</span>
+  </div>
+  <div class="post-body">All right, owen.<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg3856">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-01 01:37 UTC</span>
+  </div>
+  <div class="post-body">It looks like you added bug reports instead of feature requests.</div>
+</article>
+<article class="post" id="msg3874">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2009-06-04 00:57 UTC</span>
+  </div>
+  <div class="post-body">Oh, sorry!.<br>
+I wrote about that, but I'm not sure it was at bugreports or feature requests.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

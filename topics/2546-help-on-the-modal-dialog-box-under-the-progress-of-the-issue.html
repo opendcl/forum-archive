@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help, on the modal dialog box under the progress of the issue of synchronization · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2546</p>
+    <h1>Help, on the modal dialog box under the progress of the issue of synchronization</h1>
+    <p class="meta">Started by XDCAD ·
+      2017-12-06 06:01 UTC ·
+      3 replies · SMF topic #2546</p>
+<article class="post" id="msg12633">
+  <div class="post-head">
+    <span class="post-author">XDCAD</span>
+    <span class="post-date muted">2017-12-06 06:01 UTC</span>
+  </div>
+  <div class="post-body">Hello everyone, how to make the LABEL control's CAPTION and progress bar synchronized and clearly displayed。<br>
+<br>
+Demo see animation GIF<br>
+<br>
+<img src="http://bbsfile.xdcad.net/dev/xd_tools/2013/ODCL.gif" alt="" loading="lazy"><br>
+<br>
+<pre class="code"><code>(defun c:tt (/)<br>
+  (setq XD-ODCL-DATA-PURGEALL '<br>
+	("YWt6A9ILAABzerQKBuKjKEUxKj9qgJB0tXapuh5yZVVsLjYKc3XS/kh679b+XiwuxMXp6VLxXlTP" "z8rOz8yMWYYyArusNEU1dQF+99zrNtzMAE31CZBivFB7d/cJTQmxSZkPseJHoaIFzs4v9tmu9EjK"<br>
+	 "XfMtXqjdEGB/DLZd93tSHOCMRtCN6Tv4RjfKMhfopEIbcb65VN7kgaTDT06QY5Y8WX3Zlq47jWo5" "7EZeFNmqt3kILKgNY+ITHXRHyg5Qs+dQsOcKdEQc6Nb9aNOKt0/zWt17yrNkEUNBH1wwrlEz1/sN"<br>
+	 "Zx3XOT6VSgud1v7RzRuufO7+jG69mLu5KogP0/UiKXSUQxSBF0gzqnajXenEHSgQ0Gt4KnFvofrg" "sCKDb4bYvsuoASO5hVKKyWLitp9KuK61q3MNih92XWY6fYGZDv8dZDViZxC3ShAN05TL8xGMA1eO"<br>
+	 "Vf8hdoI1ms1SDqINjxElYWM2ozsrJiIj4fgT9YNw6285VltcAQ5CiRHT/BTIxyHbmhWFfXjg6sVi" "YR7vzFIuAOUD8D/7S+4FIm8YJKpxJ4Nl852w3d5UuzQCL70Z3Nng9WRAa4gxegBSjl3/1TvCR1lB"<br>
+	 "AW4pLrFPG7Tv2aK1hVqqy67Rxl2NfLH4lYioCiMY+kBRjiUl2SsTUQlCvPsE8/H1RGFohB/1xVfX" "BRyj6dNA35NJEkDYcKE6ANUfI/SAIbpAAMmVS4ghvaBQnDifASqaBbecMWSJddBzdkJWjjv/yRu6"<br>
+	 "VrCP6mb7FGxFYR82zRi2QHTA/1laPRQ4s3fB+mCingP3OuOlfylcIkbxUyL2c9/BYmFwxxniiFbg" "ERmz1+i9cm11NMy4noH7S5smjD6aZx+3TCLo0t5KNfKDYMyaQCLoMh9pJnyx0/G15FTJrTRPGP+9"<br>
+	 "qbMhHR7tGvJBEsDtWAdRAFeL5lHbjOL3wjHKRLRfLe/h3LyVfAXg9QF2g+S+zM01CiZNCA6QuEJJ" "gUTVcUowJhLgCTrilYziQF3mwvljp3PJXbOFA8lFjOarlbEZr98Ppd/XzFnEwIB8WGkYiw=="<br>
+	)<br>
+  )<br>
+  (defun c:XD-P-FORM#OnInitialize (/)<br>
+    (dcl-Control-SetValue XD-P-1 0)<br>
+  )<br>
+<br>
+  (defun c:XD-P-OK#OnClicked (/)<br>
+    (dcl-Control-SetMaxValue XD-P-1 (length dwglst))<br>
+    (setq i 1)<br>
+    (foreach n dwglst<br>
+      (dcl-Control-SetCaption XD-P-TEXT n)<br>
+      (dcl-Control-SetValue XD-P-1 i)<br>
+;      (dcl-Control-SetCaptionMinute XD-P-1 (itoa i))<br>
+      (princ)<br>
+      (setq n 1000000)<br>
+      (while (&gt; n 0)<br>
+	(setq n (1- n))<br>
+      )<br>
+      (setq i (1+ i))<br>
+    )<br>
+  )<br>
+  (setq dwglst '("1111111111.dwg" "222222222222.dwg"<br>
+	 "3333333333333.dwg" "444444444444444.dwg"<br>
+	 "55555555555555.dwg" "6666666666666666.dwg"<br>
+	 "7777777777.dwg" "888888888888.dwg"<br>
+	 "9999999999.dwg"<br>
+	)<br>
+  )<br>
+  (dcl-project-import XD-ODCL-DATA-PURGEALL "123456")<br>
+  (dcl-Form-Show XD-P-FORM)<br>
+  (princ)<br>
+)</code></pre><div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2358/ODCL.gif">ODCL.gif</a> <span class="muted">(92014 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12634">
+  <div class="post-head">
+    <span class="post-author">XDCAD</span>
+    <span class="post-date muted">2017-12-06 12:39 UTC</span>
+  </div>
+  <div class="post-body">Text problem has been solved，used (dcl-control-redraw ......)，<br>
+<br>
+However, the progress bar and text are not synchronized problem exists, see figure。<br>
+<br>
+When the number of 6, the progress bar has not yet started, how to synchronize?<br>
+<br>
+<br>
+<pre class="code"><code>(defun c:tt (/)<br>
+  (setq XD-ODCL-DATA-PURGEALL '<br>
+	("YWt6A/MdAAD6fnL+BuKTJzMRJTtqQ1ET4qmq3tTWFPomOhQ0Xa8+kqa6/zMqNHvKX98arxuD78rb" "ECzrfi9Jzh1/dSi+/OG+2brpJgh7xVInzh4nd3QSduv++AXRY8HnbZlDRQga9g6L4kcNGbiJs6IN"<br>
+	 "GbCKrrjD8yp4JzJe+UJg+R4D8FDd/EzUZr0Lor7M6mmOzIJV31YGMq7U6tD3y1SbQH4Vfb7egquQ" "XWuVQPdXahqe8grm7JhnB7h6KXqb2iruYVI2J5VY2wg8IlYdIpSMLE1bC5iw+PAmbEpXU8ys2VIQ"<br>
+	 "8rcWaxclzKAkwRZdUDTBwuq429AWU4vXNpXCpmiu8QreMLR5Zjxm5o3WRaABOKCL+MIpeJ/JRsIX" "10l3sR1B4jGGRPyzjBNnToJ+10Ryqo2OEbzRbEBii8HVnYM+iKlCQiq4bcb+rYwIDYziv1KwHXi5"<br>
+	 "mpFs4OuZdCiaV7TsIr8zB6mO1RYCjYl1vCFsgOKO4ZqxVJ8qnp3B3Iev/7xJT67mIuPhHaUwiFMn" "5tZdvO44gLCVBx6VUvrd75Fp2+qoiIllAuopRwswWNdabSrrznetiiyDiq3h7oNdvGFtgO4Oy09X"<br>
+	 "yynFNIYkvY8eM1kX55JRbwD1uMGtBslkwGnLyTuG+4SBoibqZGDfgME4gObDd3GEbhAoE5++gLg0" "qBweSMxB3UabU3u8Mfct4S9yc2yYNieMuDWxnjtytQ2n6MlUm62MA3efSe9hCaox+QV7Y5lvjIU2"<br>
+	 "GoEzjyL60VUAX7w99AHciURgpymrgAL6oS4C6MYI8I5yn5l2hfI2O/K2X0I/DZgOnXyUosaxHmJJ" "5Jm+aKmgkrCkAfNYFbEqHVRYu3gt7de2KhsUDBLLZDUyN9jSPZcL42nYQtl68DPwD1ko+Z+51Kfx"<br>
+	 "7qP3q5feN7SepjM0Z+IcRqhHG1rb5p2a0b3zka8LEEbFu0LgaHiyuUwaKgnxAyw2ZUK3ckdGEdnh" "a+K8VYzDXOWmLHUi97H9A81G5br5eYKDIQWqiIDZErlRndRGKPcb85/DvORa6MI1AERSz/KSzppI"<br>
+	 "nCcckwW27AmezZpMxL5seoCChtJnjl1T8E/EYdhLhnFkQr/yN7Hn+MZaoUtrD7QqOkwZ4oM6s1D5" "EjiA3mfANUZ2AoJFp6l3WeNL4nZlO3UHyVGOjYqvtgA+j27Ttv3qqUcxQTcykB86ML3xNqWhxWPv"<br>
+	 "cckEmLdaGIq/3qgXGj9k8fX2suQSUjaZd/e0LCP4aNMg+5r8qhXjdLQ7bdttrFQZTCjbFFozy4Hc" "8+tpNb+4tzSlwusqlBQjrxJHhcPS6nRY8U1YKs2ope3YcRNVM803rKog4fEYZeqiEGwQKcSg3C4L"<br>
+	 "1h8lBsLqQ9clJwUJcvFf5P5mt8XxPNYtd4JIw7kF+kXrtqU2nBLsemCiVP/NgD9BFjl6CTGaJxyC" "yWGKRwQJn3bNyO39AXncqvB6TznmPZaT+L9chlyAVVwGyVH2Rmalxk4koSVpOBgJDLeFFuw1pMNO"<br>
+	 "lLx7r06kbaP7fiXHaQ0/GoPFA+aU93ag5xyD4S9jT1QAidMjU1ojdJLqS2P2kGGfzbrQKx0mvFym" "0C+I/naYFpMPSrv2ECXfo2ijE/YStc3wtkgBY+8j/1HME4Jm7xMH5DsIMjowvfE2pdEIL3qVgdEI"<br>
+	 "XPyLjXHR8Qiv"<br>
+	)<br>
+  )<br>
+  (defun c:XD-P-FORM#OnInitialize (/)<br>
+    (dcl-Control-SetMaxValue XD-P-1 (length dwglst))<br>
+    (dcl-Control-SetMinValue XD-P-1 0)<br>
+    (dcl-Control-SetValue XD-P-1 0)<br>
+    (dcl-Control-Redraw XD-P-1)<br>
+  )<br>
+<br>
+  (defun c:XD-P-OK#OnClicked (/)<br>
+    (setq i 1)<br>
+    (dcl-Control-SetMaxValue XD-P-1 (length dwglst))<br>
+    (dcl-Control-SetMinValue XD-P-1 0)<br>
+    (dcl-Control-SetValue XD-P-1 0)<br>
+    (dcl-Control-Redraw XD-P-1)<br>
+    (foreach n dwglst<br>
+      (dcl-Control-SetCaption XD-P-TEXT n)<br>
+      (dcl-Control-Redraw XD-P-TEXT)<br>
+      (dcl-Control-SetValue XD-P-1 i)<br>
+      (dcl-Control-Redraw XD-P-1)<br>
+      (dcl-Control-SetCaption XD-P-4 (itoa i))<br>
+      (dcl-Control-Redraw XD-P-4)<br>
+      (setq n 500000)<br>
+      (while (&gt; n 0)<br>
+	(setq n (1- n))<br>
+      )<br>
+      (setq i (1+ i))<br>
+    )<br>
+    (princ)<br>
+  )<br>
+  (setq dwglst '("1111111111.dwg" "222222222222.dwg"<br>
+	 "3333333333333.dwg" "444444444444444.dwg"<br>
+	 "55555555555555.dwg" "6666666666666666.dwg"<br>
+	 "7777777777.dwg" "888888888888.dwg"<br>
+	 "9999999999.dwg"<br>
+	)<br>
+  )<br>
+  (dcl-project-import XD-ODCL-DATA-PURGEALL "123456")<br>
+  (dcl-Form-Show XD-P-FORM)<br>
+  (princ)<br>
+)</code></pre><div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2359/ODCL2.gif">ODCL2.gif</a> <span class="muted">(54162 bytes)</span></li><li><a href="../attachments/2360/20171206202919.png">????20171206202919.png</a> <span class="muted">(2815 bytes)</span></li><li><a href="../attachments/2361/20171206203008.png">????20171206203008.png</a> <span class="muted">(2889 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12635">
+  <div class="post-head">
+    <span class="post-author">XDCAD</span>
+    <span class="post-date muted">2017-12-06 13:24 UTC</span>
+  </div>
+  <div class="post-body">The issue of synchronization is solved and is a matter of percentage<br>
+However, the first two codes when I design the dialog box did not choose the percentage, the election is NONE, <br>
+in this case VALUE value also give a percentage? Not by the number of increments?<br>
+<br>
+<pre class="code"><code>(defun c:tt (/)<br>
+  (setq XD-ODCL-DATA-PURGEALL '<br>
+	("YWt6Aw8hAADVhgHlBuKTJMERIjtugOBt4WGwf+8vanUvJvQ9Um/9kQJp4Tcd+25/9893UCyYAKY3" "trvw/H9VcwpqLi5/ewF8QVsA90wrliIsLi5cP3ZzWGxuTU2xx8mFuwCxGaGb9rsnkRDB46MDzcWN"<br>
+	 "s5DywgmLiBRY+UI4Lz5vOV4m4YN11t/0RPgPZynOXpsnwlQBa+p7cXUk7Kxb76jbonsex3mW6yGT" "QCbNkB1mOTd4sDf5Dxfg7RkmDjMuPzRbBx83tCRJWMvd3DxrXSwp6uQP100LKAu69N5PF+/pQCsv"<br>
+	 "HSY41Tel9IuohEdlDzCEa9tKXAsbFdcxMyRpO0j1csz/VFdh3mEfHrQdM4+QbUypVUzRYryVlsVd" "JxVs4LgQRuGOM3oJtEG1/p85TAKKdyqNjmG80W2Q9YWhrI8AWodlYJDRnBfivw/no8pCWU77rea6"<br>
+	 "f4fjuY2MIr7cQhun7HXGVA1zwfe5SQPBXIJLn1F3gTuEUm+wekCARSBhY1YCZUPzu6uLR86fHCE9" "ya1vHzZdAZGLAp6QK3b5HKOxNFfVk2FIhlqRDJjqUiw7aNZQOMygQAlfEtJ/kY+Q+NivYtkcxwh0"<br>
+	 "TaDVbgAwSI170y9RnwfRAQhsUR0+4I3YECO0uZuFYryRnImgLsNiJVSXRjHu4IUch8ycl2bB2Ybb" "ZolVgPuYD07oAdWMaR1C34Zap7BXvO36IV6SkQ5YoJ9cvD3KOLAgUVew7CMI7YsCOIwxdgE0hh28"<br>
+	 "EuOL+EBvwDaGLD3BHieJGP+a0W4A+aAJ3c9ob8BjycmHgTiDAROOUrz9qoEY0vEAZ0lgTOK68wKF" "aYhAIbZohPCZrnyhvwgEcQK3kY4DtxtKmTXywfBRB3WTilv7OiEMeBWiBq4ebEmowWESDJEzkJLD"<br>
+	 "hy2gBdhkLU+zSObkMjvYVC0N1ZlsLexXlS4EO6n7V7FQ/xPtE6LPq3+GyBSMA1oJEgtcJrkbzpPY" "x3IITxKVkkysIrI/rKmfuHEWR0ni5apy4Gt4slpMGjYRKMXa7ksG5mfMGbhc/TtivRWMw1Zpwocz"<br>
+	 "DluncQgznxpkYWCPkbikXcRpQR3Jn1RQ9BzLOqhmoFfSNx23hdrZvexfhlJX286aRES1bMXDRFJH" "8WjOev/BQEAVBAI1NRzy4PknS4BDeHFPHcytaCHh7ZFWvEAYbwhEGeKNOrtQ+RI7gNprwDtGdgKC"<br>
+	 "ebcpdtmjS4S2/KyCECmelcFB6Klqia3wQjQA44OKL6zR/WhHf6FckwIRyztAwKdFMVCr3Yl4L9m/" "JxdC/F0MjanqNDdE8fQrKKgsShvVqVq10qoV41glmFIfTVTTdOicr0ow4sivgA1IKC9aW2VZURP1"<br>
+	 "KKxK7qjrMyjOiZvbKsyqL7DsRgeVo5PYE2ClThPtMTWlpoqHFMg0sJNUnxitRKm2KmMUpm/g4phH" "0jknDYfJ2W5RPjxEFmnnrgitPZGsQkBewqOKr3iX3AIkBNaJkIouoMGWebN6v9N1jLJPgKlRhBLD"<br>
+	 "E8a8UhGbnMHz3qrQencp5sOWkv+/P44nolE/jsO1wjvtFFwfyszNbDhYCQK3+Sa56Qpep0L+mPwQ" "dVnmBXd3XJWhlLUqOfye0zvSgU0UJfI0QAPdqjwkLB7V0hdclshtvh+3MY4nHBereugObhIX6mNu"<br>
+	 "es3LCKbkbPwQpd8IeaMzeqeYGeV2zBOC+l6lgoovHDj8OzC+yTZF0aRmepWBYBJZdqixwU+qspE="<br>
+	)<br>
+  )<br>
+  (defun c:XD-P-FORM#OnInitialize (/)<br>
+    (dcl-Control-SetMaxValue XD-P-1 (length dwglst))<br>
+    (dcl-Control-SetMinValue XD-P-1 0)<br>
+    (dcl-Control-SetValue XD-P-1 0)<br>
+    (dcl-Control-Redraw XD-P-1)<br>
+  )<br>
+<br>
+  (defun c:XD-P-OK#OnClicked (/)<br>
+    (setq i 1)<br>
+    (dcl-Control-SetMaxValue XD-P-1 100)<br>
+    (dcl-Control-SetMinValue XD-P-1 0)<br>
+    (dcl-Control-SetValue XD-P-1 0)<br>
+    (dcl-Control-Redraw XD-P-1)<br>
+    (foreach n dwglst<br>
+      (dcl-Control-SetCaption XD-P-TEXT n)<br>
+      (dcl-Control-Redraw XD-P-TEXT)<br>
+      (setq pos (fix (+ 0.5 (* 100 (/ i (length dwglst) 1.0)))))<br>
+      (dcl-Control-SetValue XD-P-1 pos)<br>
+      (dcl-Control-Redraw XD-P-1)<br>
+      (dcl-Control-SetCaption XD-P-4 (itoa i))<br>
+      (dcl-Control-Redraw XD-P-4)<br>
+      (dcl-Control-SetCaption XD-P-5 (strcat (itoa pos) "%"))<br>
+      (dcl-Control-Redraw XD-P-5)<br>
+      (setq n 2500000)<br>
+      (while (&gt; n 0)<br>
+	(setq n (1- n))<br>
+      )<br>
+      (setq i (1+ i))<br>
+    )<br>
+    (princ)<br>
+  )<br>
+  (setq dwglst '("1111111111.dwg" "222222222222.dwg"<br>
+	 "3333333333333.dwg" "444444444444444.dwg"<br>
+	 "55555555555555.dwg" "6666666666666666.dwg"<br>
+	 "7777777777.dwg" "888888888888.dwg"<br>
+	 "9999999999.dwg"<br>
+	)<br>
+  )<br>
+  (dcl-project-import XD-ODCL-DATA-PURGEALL "123456")<br>
+  (dcl-Form-Show XD-P-FORM)<br>
+  (princ)<br>
+)</code></pre><br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2362/20171206212306.png">????20171206212306.png</a> <span class="muted">(8956 bytes)</span></li><li><a href="../attachments/2363/odcl3.gif">odcl3.gif</a> <span class="muted">(69569 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12636">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2017-12-07 13:25 UTC</span>
+  </div>
+  <div class="post-body">Try changing the 'Max. value' property of the progress bar to 200 for example, then I think the difference will be more clear.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

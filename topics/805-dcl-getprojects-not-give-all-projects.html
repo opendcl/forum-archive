@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_GetProjects not give all projects ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/21-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 805</p>
+    <h1>dcl_GetProjects not give all projects ?</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-06-10 18:51 UTC ·
+      4 replies · SMF topic #805</p>
+<article class="post" id="msg3957">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-06-10 18:51 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+As i wrote, i always work with several projects.<br>
+<br>
+I needed use dcl_GetProjects, and respond only 2 projects ....<br>
+I loaded them with NewProjectKey...<br>
+<br>
+;#gpe:debug:ReloadOpenDclBoxes is T  <br>
+(dcl_Project_Load "boite.projet.odcl" #gpe:debug:ReloadOpenDclBoxes "GPE:LOAD:PRO") <br>
+<br>
+<br>
+I miss something ?<br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg3958">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-10 19:43 UTC</span>
+  </div>
+  <div class="post-body">What do you expect (dcl_GetProjects) to return in that case? From your post title, it sounds like you expect more than two, but this is not clear from your post.</div>
+</article>
+<article class="post" id="msg3959">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-06-10 19:58 UTC</span>
+  </div>
+  <div class="post-body">Sorry for my poor english, i must improve it ...  ;D<br>
+<br>
+What i tried to explain and understand :<br>
+Is it normal to have only two answer with (dcl_GetProjects) order :<br>
+<br>
+(dcl_Project_Load "boite.projet.odcl" #gpe:debug:ReloadOpenDclBoxes "Load1")<br>
+(dcl_Project_Load "boite.splash.odcl" #gpe:debug:ReloadOpenDclBoxes "Load2")<br>
+(dcl_Project_Load "Project.odcl" #gpe:debug:ReloadOpenDclBoxes "Load3")<br>
+(dcl_GetProjects)<br>
+<br>
+<blockquote class="quote"><br>
+("indices" "Load3")<br>
+</blockquote><br>
+<br>
+"indices" was an old project loaded when open drawing, whatever i do, these is only 2 "tag" in the list.<br>
+"Load1" "Load2" "load3" appeared in the list, succefully replaced by the lasted load.<br>
+<br>
+I know dcl_Project_Load with nil value load project if it's need, but i have to know wich project was loaded by user, so ... i miss something ?<br>
+<br>
+I can't use is_active, because of if boxes was closed ....<br>
+<br>
+This is not really important yet .<br>
+<br>
+Thanks a lot !</div>
+</article>
+<article class="post" id="msg3960">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-06-10 20:32 UTC</span>
+  </div>
+  <div class="post-body">Ya mine seams to always return 2 in the list, no matter how many I load.<br>
+Seams like a bug..</div>
+</article>
+<article class="post" id="msg3961">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-10 21:04 UTC</span>
+  </div>
+  <div class="post-body">Yep, it was a bug in (dcl_GetProjects). It's fixed now for Beta 6.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

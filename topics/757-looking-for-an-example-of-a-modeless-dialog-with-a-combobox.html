@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Looking for an example of a modeless dialog with a combobox · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 757</p>
+    <h1>Looking for an example of a modeless dialog with a combobox</h1>
+    <p class="meta">Started by mkweaver ·
+      2009-05-14 03:57 UTC ·
+      2 replies · SMF topic #757</p>
+<article class="post" id="msg3709">
+  <div class="post-head">
+    <span class="post-author">mkweaver</span>
+    <span class="post-date muted">2009-05-14 03:57 UTC</span>
+  </div>
+  <div class="post-body">I am working on a modeless dialog with a combobox.  The only time I want the dialog to keep focus is when the combobox has focus.  I've not been able to achieve this.<br>
+<br>
+I thought I could respond to the setfocus event, expecting it to fire when I clicked in the edit box, but clicking in the edit box doesn't seem to fire the setfocus event.<br>
+<br>
+Any suggestions?<br>
+<br>
+Thanks,<br>
+Mike</div>
+</article>
+<article class="post" id="msg3710">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-14 11:09 UTC</span>
+  </div>
+  <div class="post-body">Hello mkweaver, I hope I understand you right but try a <br>
+<br>
+(dcl_Control_SetKeepFocus MyProj_MyForm T)<br>
+<br>
+within c:MyProj_MyForm_MyCombobox_OnSetFocus and a<br>
+<br>
+(dcl_Control_SetKeepFocus MyProj_MyForm nil)<br>
+<br>
+within c:MyProj_MyForm_MyCombobox_OnKillFocus. Please have a try with the attached sample. I hope that is what you're looking for.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/725/modelesscbb.lsp">modelesscbb.lsp</a> <span class="muted">(2911 bytes)</span></li><li><a href="../attachments/726/modelesscbb.odcl">modelesscbb.odcl</a> <span class="muted">(824 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3722">
+  <div class="post-head">
+    <span class="post-author">mkweaver</span>
+    <span class="post-date muted">2009-05-15 20:37 UTC</span>
+  </div>
+  <div class="post-body">Thanks, Fred.  That gave me exactly what I wanted.<br>
+<br>
+Mike</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Searching: Drawing Area in ACAD/BricsCAD · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1904</p>
+    <h1>Searching: Drawing Area in ACAD/BricsCAD</h1>
+    <p class="meta">Started by npcdarkeldar666 ·
+      2012-10-16 11:41 UTC ·
+      3 replies · SMF topic #1904</p>
+<article class="post" id="msg9369">
+  <div class="post-head">
+    <span class="post-author">npcdarkeldar666</span>
+    <span class="post-date muted">2012-10-16 11:41 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+I am working on a replacement for the AutoCAD screenmenu that would run in BricsCAD and later ACAD-Versions that no longer contain the original screenmenu.<br>
+<br>
+Most functions are working fine - I already have replacements for grtext and menucmd, that work according to the used environment (original screenmenu or my screenmenu) but I am having difficulties with the position of the menu.<br>
+<br>
+It is a non-modular dialog that is shown when called and hidden, when not needed.<br>
+<br>
+Getting the position and size of the main application window is no problem thanks to the code block<br>
+(SETQ app (VLAX-GET-ACAD-OBJECT)<br>
+      w   (VLA-GET-WIDTH app)<br>
+      h   (VLA-GET-HEIGHT app)<br>
+      x   (VLA-GET-WINDOWLEFT app)<br>
+      y   (VLA-GET-WINDOWTOP app)<br>
+      )<br>
+(thanks Slavko Ivanovic (<a href="http://www.opendcl.com/forum/index.php?topic=952.msg4779#msg4779" rel="nofollow noopener">{2}</a>))<br>
+<br>
+My problem right now is that I would like to place the menu on the same side as the Promptmenu in bricsCAD ( (getvar "promptmenu") ) or left, if this can not be determined.<br>
+I can however not find a way to get the maximum drawing area of the current application window (the area a drawing is shown, if it is maximized). This area would be limited by some factors like number of toolboxes on the top, height of the console screen, docked palettes left an right an all the other things around the drawing area.<br>
+<br>
+Does anyone have an idea of how to get these values?<br>
+<br>
+Kind regards <br>
+<br>
+IP</div>
+</article>
+<article class="post" id="msg9372">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-10-16 15:20 UTC</span>
+  </div>
+  <div class="post-body">Have you considered making your form a dockable control bar instead? Control bars already include the positioning and docking logic that you're trying to implement.</div>
+</article>
+<article class="post" id="msg9374">
+  <div class="post-head">
+    <span class="post-author">npcdarkeldar666</span>
+    <span class="post-date muted">2012-10-16 15:41 UTC</span>
+  </div>
+  <div class="post-body">The first try was a dockable dialog, but that was trashed and the non-modal dialog was created so that the new menu's look would be more like BricsCAD's initget menu.<br>
+That means the dialog should not really dock to a border (that would make the drawing flicker when activating/deactivating the dialog) but instead should stick to the top/left or top/right of the drawing. That way the screen would not be to full in BricsCAD, but the menu would be there when it is needed.<br>
+<br>
+I am currently browsing through the many not to well documented vla- functions in hopes to find a solution.<br>
+if nothing else helps I will have to go back to a dockable dialog or need to build a DLL, that will implement the needed data through the .NET interfaces, but that is a way I don't want really want to go, since I would have to build the DLL for all AutoCAD und BricsCAD Verions. A clean solution in LISP would make this menu a easy maintainable Fire-And-Forget application that could be made public without much work in the future.</div>
+</article>
+<article class="post" id="msg9375">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-10-16 16:12 UTC</span>
+  </div>
+  <div class="post-body">There are still numerous problems with Palette forms in Bricscad, but maybe the palette behavior would be more to your liking. Unfortunately I don't know of any way to get the document window position via lisp.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

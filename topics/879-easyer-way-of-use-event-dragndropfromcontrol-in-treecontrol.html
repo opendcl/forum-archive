@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Easyer way of use event DragnDropFromControl in treecontrol. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 879</p>
+    <h1>Easyer way of use event DragnDropFromControl in treecontrol.</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-08-19 22:42 UTC ·
+      1 replies · SMF topic #879</p>
+<article class="post" id="msg4371">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-08-19 22:42 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I encounter enormous problems in the process "event" DragnDropFromControl in treecontrol.   :'(<br>
+<br>
+Firstly I do not know how to recognize the user's actions, indeed the CTRL and SHIFT keys are usable, but I do not master the result.<br>
+<br>
+The "event" keydown KeyUp and can not be combined with the "event" DragnDropFromControl.<br>
+<br>
+The movement of "node" are performed dynamically in treecontrol, while it was desirable that it be made by the developer (in my point of view  ;) )<br>
+<br>
+And finally, this deleted node is the only clue that I have to know the action of the user ...<br>
+<br>
+So, to know the user action, I must test the "node" delete previously stored "n -2" by the event "onclick" in the "treecontrol" ... Yes, because the "event" onclick "is also called during the process of displacement" DragnDropFromControl "...<br>
+<br>
+In short, I think I will get it, but I wanted to show the difficulty of programming and process.<br>
+<br>
+My tools will smell like "bloatware" or "white elephant" (sorry for my translate   ;D)<br>
+<br>
+Thank you to make your experience   ;)<br>
+<br>
+Best regards. </div>
+</article>
+<article class="post" id="msg4372">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-08-20 08:57 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+Should be better if you can add in the "event" return, the selected point as DropPoint is, like :<br>
+<br>
+(defun c:event_DragnDropFromControl (ProjectName FormName ControlName DropPoint SelectedPoint / )<br>
+<br>
+<br>
+Just because , as i try to explain, we have to store the previous last selected point (node) , and this is not an eaysy way.<br>
+<br>
+Actual process to be write inside event in lisp<br>
+<br>
+(defun c:Tree_onclicked(/)<br>
+; have to store the last selected because of event DragnDrop !!!!<br>
+(if &amp;selected (setq &amp;last &amp;selected))<br>
+(setq &amp;selected (list <br>
+(dcl_tree_GetParentItem tree (dcl_tree_GetSelectedItem Tree))<br>
+(dcl_tree_GetSelectedItem Tree)<br>
+(dcl_tree_GetItemLabel tree (dcl_tree_GetSelectedItem Tree))<br>
+(dcl_tree_GetItemImages tree (dcl_tree_GetSelectedItem Tree))<br>
+)<br>
+....<br>
+)<br>
+<br>
+)<br>
+(defun c:event_DragnDropFromControl (ProjectName FormName ControlName DropPoint / )<br>
+; test if last selected item is alive, if not, move action<br>
+(if (dcl_tree_SelectItem (nth 1 &amp;Last)<br>
+...<br>
+...<br>
+)<br>
+; if action is unautorized, restore the delected item , ARRRGGGHHH<br>
+(if (do my test)<br>
+ (dcl_tree_addchild (all nth from &amp;last)<br>
+)<br>
+)<br>
+)<br>
+<br>
+<br>
+Also, in a move case, the selected node is deleted, so it could be interesting to give back all data from selected node, like parent, key, label and icones ....<br>
+<br>
+Other way, is to do nothing in event, and all process shoud be write by developper ...  ;D<br>
+<br>
+Thanks<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

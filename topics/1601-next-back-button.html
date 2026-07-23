@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>&quot;next/back&quot; button · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1601</p>
+    <h1>&quot;next/back&quot; button</h1>
+    <p class="meta">Started by Derfell ·
+      2011-03-16 10:39 UTC ·
+      5 replies · SMF topic #1601</p>
+<article class="post" id="msg7849">
+  <div class="post-head">
+    <span class="post-author">Derfell</span>
+    <span class="post-date muted">2011-03-16 10:39 UTC</span>
+  </div>
+  <div class="post-body">Good morning, i'm new with Autolisp and DCL so probably this is a stupid question but i hope you can help me. How can I realize the next and back buttons to go from one dialog to the other?<br>
+thanks</div>
+</article>
+<article class="post" id="msg7851">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-16 10:46 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+I think you should clarify : <br>
+- what do you call "dialog" ? Is it a (displayed) Form ?<br>
+- what do you call "go from to" ? Give focus or display ?</div>
+</article>
+<article class="post" id="msg7852">
+  <div class="post-head">
+    <span class="post-author">Derfell</span>
+    <span class="post-date muted">2011-03-16 11:00 UTC</span>
+  </div>
+  <div class="post-body">Hi, i'm sorry for my bad English.<br>
+I try to clarify:<br>
+I've 2 Modal Dialogs: "a" and "b". I need to put in "a" the "next" button  to close "a" and display "b". Then i have to put in "b" the "back" button to close "b" and display "a"</div>
+</article>
+<article class="post" id="msg7854">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-16 11:45 UTC</span>
+  </div>
+  <div class="post-body">This is something like that (try the sample below)<br>
+<br>
+But the last dcl_Form_Show doesn't work, I don't know why (I probably miss something)<br>
+May be someone will complete...<br>
+<br>
+(defun c:go ()<br>
+  (command "OPENDCL")<br>
+  (dcl_Project_Load "ToggleForm" T)<br>
+  (dcl_Form_Show ToggleForm_Form1)<br>
+  (princ)<br>
+)<br>
+(defun c:ToggleForm_Form1_TextButton1_OnClicked (/)<br>
+  (dcl_Form_Close ToggleForm_Form1)<br>
+  (dcl_Form_Show ToggleForm_Form2)<br>
+)<br>
+(defun c:ToggleForm_Form2_TextButton1_OnClicked (/)<br>
+  (dcl_Form_Close ToggleForm_Form2)<br>
+  (dcl_Form_Show ToggleForm_Form1) ; doesn't work :-(<br>
+)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1579/ToggleForm.odcl">ToggleForm.odcl</a> <span class="muted">(719 bytes)</span></li><li><a href="../attachments/1580/ToggleForm.lsp">ToggleForm.lsp</a> <span class="muted">(391 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7855">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2011-03-16 12:16 UTC</span>
+  </div>
+  <div class="post-body">Effectively I missed something, this version works...<br>
+<br>
+(defun c:go (/ tmp)<br>
+  (command "OPENDCL")<br>
+  (dcl_Project_Load "ToggleForm" T)<br>
+  <br>
+  (setq tmp 1)<br>
+  (while (&gt; tmp 0)<br>
+    (setq tmp (dcl_Form_Show "ToggleForm" (if (= tmp 1) "Form1" "Form2")))<br>
+  )<br>
+  (princ)<br>
+)<br>
+(defun c:ToggleForm_Form1_TextButton1_OnClicked (/)<br>
+  (dcl_Form_Close ToggleForm_Form1 2)<br>
+)<br>
+(defun c:ToggleForm_Form2_TextButton1_OnClicked (/)<br>
+  (dcl_Form_Close ToggleForm_Form2 1)<br>
+)<br>
+(defun c:ToggleForm_Form1_OnCancelClose (Reason /)<br>
+  (dcl_Form_Close ToggleForm_Form1 0)<br>
+)<br>
+(defun c:ToggleForm_Form2_OnCancelClose (Reason /)<br>
+  (dcl_Form_Close ToggleForm_Form2 0)<br>
+)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1581/ToggleForm.odcl">ToggleForm.odcl</a> <span class="muted">(702 bytes)</span></li><li><a href="../attachments/1582/ToggleForm.lsp">ToggleForm.lsp</a> <span class="muted">(576 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7864">
+  <div class="post-head">
+    <span class="post-author">Derfell</span>
+    <span class="post-date muted">2011-03-16 19:25 UTC</span>
+  </div>
+  <div class="post-body">Thanks for your help, you're very kind. It works perfectly!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

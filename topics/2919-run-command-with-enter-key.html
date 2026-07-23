@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Run command with enter key · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2919</p>
+    <h1>Run command with enter key</h1>
+    <p class="meta">Started by dsm_dude ·
+      2024-03-27 12:30 UTC ·
+      1 replies · SMF topic #2919</p>
+<article class="post" id="msg13999">
+  <div class="post-head">
+    <span class="post-author">dsm_dude</span>
+    <span class="post-date muted">2024-03-27 12:30 UTC</span>
+  </div>
+  <div class="post-body">I cant seem to figure out why the enter button gives me this error<br>
+<br>
+Error: NIL value not allowed<br>
+Function: dcl-Control-GetText<br>
+Argument: 0<br>
+<br>
+Below is my lisp:<br>
+<pre class="code"><code>(defun c:FINDMS (/ *error*)<br>
+  (command "OPENDCL")<br>
+  (dcl_Project_Load "FindMS" T)<br>
+  (dcl_Form_Show FindMS_Form1)<br>
+  (princ)<br>
+  )<br>
+<br>
+<br>
+;; Error Trap<br>
+  (defun *error* ( msg )<br>
+    (if (not (wcmatch (strcase msg t) "*break,*cancel*,*exit*"))<br>
+      (princ (strcat "\nError: " msg))<br>
+      );if<br>
+    (princ)<br>
+    );error<br>
+<br>
+<br>
+;; Start Dialog box<br>
+(defun c:FindMS/Form1#OnInitialize (/)<br>
+  (if (not MS#)<br>
+    (setq MS# "")<br>
+    );if<br>
+  (if (not uOpt)<br>
+    (setq uOpt 1)<br>
+    );if  <br>
+  (dcl-Control-SetText FindMS/Form1/TextBox1 MS#)<br>
+  (dcl-OptionList-SetCurSel FindMS/Form1/OptionList1 uOpt)<br>
+)<br>
+<br>
+<br>
+;; OK Button<br>
+(defun c:FindMS/Form1/TextButton1#OnClicked (/)<br>
+  (setq MS# (dcl-Control-GetText FindMS/Form1/TextBox1)<br>
+	uOpt (dcl-OptionList-GetCurSel FindMS/Form1/OptionList1)<br>
+	);setq<br>
+  (command "_UnisolateObjects")<br>
+  (if (tblsearch "Layer" MS#)<br>
+    (if (setq SS (ssget "_X" (list (cons 8 MS#))))<br>
+	(command "Zoom" "_object" SS "")<br>
+	(alert (strcat "No Objects assigned to " MS#))<br>
+	);if<br>
+      (alert (strcat MS# " Not Found!"))<br>
+      );if<br>
+  (UserOption) ;; Option Button<br>
+  (princ)<br>
+  );defun<br>
+<br>
+<br>
+;; Cancel Button<br>
+(defun c:FindMS/Form1/TextButton2#OnClicked (/)<br>
+  (dcl_Form_Close FindMS_Form1)<br>
+)<br>
+<br>
+<br>
+;; Isloate Option<br>
+(defun UserOption (/)<br>
+  (cond<br>
+    ((= uOpt 0)(command "_IsolateObjects" "P" ""))<br>
+    ((= uOpt 1)(command "_UnisolateObjects"))<br>
+    );cond<br>
+  )<br>
+<br>
+<br>
+;; Run command with retrun key<br>
+(defun c:FindMS/Form1/TextBox1#OnReturnPressed (/)<br>
+  (dcl-sendstring "FindMS/Form1/TextButton1#OnClicked\r")<br>
+)<br>
+<br>
+<br>
+;; Keep dialog open when pressing return<br>
+(defun c:FindMS/Form1#OnCancelClose (Reason /)<br>
+  (/= intIsESC 1)<br>
+)</code></pre><div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2597/FindMS.odcl">FindMS.odcl</a> <span class="muted">(1085 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg14000">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2024-03-30 01:54 UTC</span>
+  </div>
+  <div class="post-body">I suppose the error occurs because the sent string does not execute until after the modal dialog is closed. Try this, it might work better:<br>
+<pre class="code"><code><br>
+(c:FindMS/Form1/TextButton1#OnClicked)<br>
+</code></pre></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

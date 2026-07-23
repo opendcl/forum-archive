@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Textbox custom filter · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1006</p>
+    <h1>Textbox custom filter</h1>
+    <p class="meta">Started by mr nick ·
+      2009-11-09 14:04 UTC ·
+      5 replies · SMF topic #1006</p>
+<article class="post" id="msg5121">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-11-09 14:04 UTC</span>
+  </div>
+  <div class="post-body">I have a textbox on a dialog and I want to be able to allow all characters apart from lowercase and it must be multi-line. From the standard selections this isn't possible so it looks like I'd need to use a custom filter but this would need me to enter every keyboard character into a string which seems a little long-handed. Is there a slicker way to do this? I had looked at just forcing all typed text to uppercase but this results in the cursor being forced to the front of the text with every keypress so you actually end up typing backwards. I then thought about just repositioning the cursor to the end of the text which works OK provided you don't need to edit any text such as adding a missing word as the cursor keeps moving to the end. I could work around this if there were a way of determining the cursor position within the textbox but from what I can ascertain there is no way of extracting this info.<br>
+<br>
+Can anyone give me a hint on a clean way of reaching my goal or am I just going to have to create a custom filter string with every keyboard character in it?</div>
+</article>
+<article class="post" id="msg5124">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-09 15:31 UTC</span>
+  </div>
+  <div class="post-body">I think GetSel might return your cursor position, but by far the simplest solutin would be to just convert the entered text to upper case at the point of use. Alternatively, an OnKillFocus handler could perform the conversion.</div>
+</article>
+<article class="post" id="msg5126">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-11-09 15:38 UTC</span>
+  </div>
+  <div class="post-body">I tried getsel but that only returns selected characters so always returns (0 0) as there is no actual selection made. I also tried the case-conversion but I detailed the problems this gives when trying to add missing characters or words - unless there is a way of converting the case that I don't know of - the method I've tried is this:<br>
+<br>
+(dcl_Control_SetText mydialog_txtbox1 (strcase (dcl_Control_GetText mydialog_txtbox1)))<br>
+</div>
+</article>
+<article class="post" id="msg5128">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-09 18:25 UTC</span>
+  </div>
+  <div class="post-body">What I meant was to convert the case wherever you use the text without updating the textbox itself.</div>
+</article>
+<article class="post" id="msg5131">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-11-09 23:20 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1006.msg5128#msg5128 date=1257791136 wrote:</cite><br>
+What I meant was to convert the case wherever you use the text without updating the textbox itself.<br>
+</blockquote><br>
+<br>
+Ah, gotcha. Unfortunately I used to do this but then had people complaining that their text wasn't coming out as they entered it - despite the fact that it's a company standard that we don't use lowercase text in drawings. So now I have to spoonfeed people with exact stuff or I know I will get someone complaining even though it's caused by their own <s>stupidity</s> misunderstanding.  ::)</div>
+</article>
+<article class="post" id="msg5132">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-10 02:39 UTC</span>
+  </div>
+  <div class="post-body">Then I would try doing the updating from the OnKillFocus handler. Otherwise, you may just have to settle for the very long filter.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[SOLVED]Stop calling OnClicked event when DragnDropFromControl in treecontrol ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 889</p>
+    <h1>[SOLVED]Stop calling OnClicked event when DragnDropFromControl in treecontrol ?</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-08-25 22:18 UTC ·
+      16 replies · SMF topic #889</p>
+<article class="post" id="msg4407">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-08-25 22:18 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I discover that event "OnClicked" is called again before DragnDropFromControl, and that maybe because DragnDropFromControl event delete the node or because of changing node (depending if move or copy).<br>
+<br>
+"Onclicked" is selected first !<br>
+<br>
+My question is, could it be easy for you to stop calling "Onclicked" event ???<br>
+<br>
+Yes, because, i didn't clicked anything else after droping action in TreeControl !<br>
+<br>
+Best Regards &amp; thanks.</div>
+</article>
+<article class="post" id="msg4410">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-08-26 04:12 UTC</span>
+  </div>
+  <div class="post-body">I don't understand the problem. I did a quick test, and indeed OnClicked is called when you select a tree item with the mouse to begin a drag and drop operation. This is working as it should, I think.</div>
+</article>
+<article class="post" id="msg4411">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-08-26 13:08 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=889.msg4410#msg4410 date=1251259930 wrote:</cite><br>
+I don't understand the problem. I did a quick test, and indeed OnClicked is called when you select a tree item with the mouse to begin a drag and drop operation. This is working as it should, I think.<br>
+</blockquote><br>
+<br>
+<br>
+<a href="http://www.ad-informatique.net/pages//posts/opendcl---event-onclicked-called-with-dragndropfromcontrol-event33.php" rel="nofollow noopener">{2}</a><br>
+<br>
+OnClicked is call, but not the good one ! <br>
+<br>
+Best regards<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/866/test.lsp">test.lsp</a> <span class="muted">(1977 bytes)</span></li><li><a href="../attachments/867/Test.odcl">Test.odcl</a> <span class="muted">(3481 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4414">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-08-26 20:07 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+Some news, now i can't know wich item was selected on dragndrop event !!!<br>
+<br>
+After select one, oneclicked event return the good one,<br>
+If you select another item and if you directky move it to  another item , there is no way to know wich one was selected !<br>
+<br>
+As i explain onClicked return the next selected item after move action,(and no the selected item)<br>
+<br>
+That is a problem for me ! thanks for help<br>
+<br>
+The solution should be return in DragnDropFromControl event  the SelectedItem "From"  (like droppoint), or return in OnClicked event the selected item "From" .... <br>
+<br>
+Best regards .</div>
+</article>
+<article class="post" id="msg4420">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-08-27 17:21 UTC</span>
+  </div>
+  <div class="post-body">It sounds like you have trouble because asynchronous events do not fire until AutoCAD is quiescent.  Do you have better luck if you change the tree control's Event Invoke property to 'Synchronous'?</div>
+</article>
+<article class="post" id="msg4422">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-08-27 19:03 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=889.msg4420#msg4420 date=1251393679 wrote:</cite><br>
+It sounds like you have trouble because asynchronous events do not fire until AutoCAD is quiescent.  Do you have better luck if you change the tree control's Event Invoke property to 'Synchronous'?<br>
+</blockquote><br>
+<br>
+Thanks for reply owen  ;)<br>
+<br>
+So, i 'll try what you suggest me , and i'll cross my finger  :D<br>
+<br>
+i just see that i can use tree control from windows,should i have better luck with this ???<br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg4423">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-08-27 19:34 UTC</span>
+  </div>
+  <div class="post-body">Less than before !<br>
+<br>
+now, onclicked return the last selectd node !!!<br>
+<br>
+and DragnDropFromControl return the good drop point but nothing change with onclicked wihtin dragondrop !!!<br>
+<br>
+that is a problem  &gt;:(<br>
+<br>
+I don't know how to get the selected item within dragndropfromcontrol event !<br>
+<br>
+i'll get all suggest for    ;)<br>
+<br>
+thanks</div>
+</article>
+<article class="post" id="msg4424">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-08-27 20:29 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=stephan_35 link=topic=889.msg4423#msg4423 date=1251401688 wrote:</cite><br>
+I don't know how to get the selected item within dragndropfromcontrol event !</blockquote><br>
+<br>
+Do you mean the destination item, or the source item? The source should be the one that was selected in OnClicked; the destination item should be passed as the last argument to OnDragnDropFromControl.</div>
+</article>
+<article class="post" id="msg4425">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-08-27 21:38 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=889.msg4424#msg4424 date=1251404981 wrote:</cite><br>
+Do you mean the destination item, or the source item? The source should be the one that was selected in OnClicked; the destination item should be passed as the last argument to OnDragnDropFromControl.<br>
+</blockquote><br>
+<br>
+I mean source item (or From item), and i know that the source should be return by Onclicked event !<br>
+<br>
+That is what i try to explain to you from the begining :<strong>it's impossible to know wich item was selected because onClicked does not return the correct selected item</strong>, it return only next selected item after move action !!!!!!!<br>
+<br>
+I know that i must improve my english  ;D<br>
+<br>
+Thanks for help </div>
+</article>
+<article class="post" id="msg4427">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-08-27 22:07 UTC</span>
+  </div>
+  <div class="post-body">Hello owen,<br>
+<br>
+<br>
+you can have a see here :<br>
+<br>
+<a href="http://www.ad-informatique.net/pages//posts/opendcl---event-onclicked-called-with-dragndropfromcontrol-event33.php" rel="nofollow noopener">{2}</a><br>
+<br>
+When i move node24 to  node3 Onclicked event return node25 ???<br>
+<br>
+When i drop directly node29 to node4,<strong> never seen Onclicked event "Node29"</strong> !!!!!<br>
+<br>
+<br>
+Thanks<br>
+<br>
+Best regards<br>
+</div>
+</article>
+<article class="post" id="msg4428">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-08-27 22:22 UTC</span>
+  </div>
+  <div class="post-body">I watched your video, and it helps me understand what you are saying.<br>
+<br>
+<blockquote class="quote"><cite> author=stephan_35 link=topic=889.msg4427#msg4427 date=1251410826 wrote:</cite><br>
+When i move node24 to  node3 Onclicked event return node25 ???</blockquote><br>
+<br>
+  This looks correct to me. Node 25 is "selected" after the drag/drop operation is completed because Node 24 no longer exists.<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=stephan_35 link=topic=889.msg4427#msg4427 date=1251410826 wrote:</cite><br>
+When i drop directly node29 to node4,<strong> never seen Onclicked event "Node29"</strong> !!!!!</blockquote><br>
+<br>
+I will see if I can reproduce this.</div>
+</article>
+<article class="post" id="msg4430">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-08-27 22:49 UTC</span>
+  </div>
+  <div class="post-body">I tested, and I could not see any bug in the code. In my test, the OnClicked event always fires when it should. The problem you have is that in the case of a drag and drop operation, OnClicked does not fire until after the drag and drop operation completes. This is working as designed.<br>
+<br>
+To accomplish what you want, you'll need to either handle the OnSelChanged event, or better, call GetSelectedItem from the OnDragnDropBegin event. During OnDragnDropBegin the source item will be the current selection.</div>
+</article>
+<article class="post" id="msg4433">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-08-28 13:23 UTC</span>
+  </div>
+  <div class="post-body">Hello owen,<br>
+<br>
+here is what i try, as you suggest me :<br>
+<br>
+Event "SelChanged" :<br>
+<br>
+During DragnDrop action ,nothing has changed !<br>
+Return only the last know position as getselecteditem, but no the selected item witch has been moved !<br>
+in fact the same as "OnClicked" event !<br>
+<br>
+GetSelectedItem during OnDragnDropFromControl :<br>
+Get the last selected item<br>
+<br>
+GetSelecteditem during OnDragnDropBegin :<br>
+<br>
+YES!!! This work fine <strong>BUT: CTRL KEY &amp; SHIFT KEY has no effect during Drag &amp; Drop ation, so no choice of copy or move !!!!  &gt;:( </strong> as i explain in another post ....<br>
+<br>
+so, what could i do now !<br>
+<br>
+I really hope to find an issue  ;D<br>
+<br>
+Thanks.<br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg4435">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-08-28 15:05 UTC</span>
+  </div>
+  <div class="post-body">hello owen.<br>
+<br>
+I'm afraid about modify DragnDropFromControl event and catch the seletitem before it was moved or copy ???<br>
+or any event to catch the selected item before it has been moved ...<br>
+<br>
+I know how much time you may spend on it .....<br>
+<br>
+I'm afraid about go round in circles .... ;D <br>
+<br>
+Thanks<br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg4438">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-08-28 18:56 UTC</span>
+  </div>
+  <div class="post-body">I've made a change in the next build to allow both move and copy even when OnDragnDropBegin is enabled. Please test it and let me know whether the change causes any problems.</div>
+</article>
+<article class="post" id="msg4439">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-08-28 19:23 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=889.msg4438#msg4438 date=1251485778 wrote:</cite><br>
+I've made a change in the next build to allow both move and copy even when OnDragnDropBegin is enabled. Please test it and let me know whether the change causes any problems.<br>
+</blockquote><br>
+<br>
+Hello,<br>
+<br>
+This is good news for me!<br>
+<br>
+I really want to test this new version<br>
+<br>
+Best regards<br>
+<br>
+Thanks !</div>
+</article>
+<article class="post" id="msg4446">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-01 11:06 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+I make two new post for this ..... afraid about go back to the last version .....<br>
+<br>
+Best regards.<br>
+<br>
+Same here : <a href="http://www.opendcl.com/forum/index.php?topic=896.msg4447#msg4447" rel="nofollow noopener">{2}</a></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

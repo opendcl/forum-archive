@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_form_show does not work · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 969</p>
+    <h1>dcl_form_show does not work</h1>
+    <p class="meta">Started by meh ·
+      2009-10-16 08:54 UTC ·
+      8 replies · SMF topic #969</p>
+<article class="post" id="msg4894">
+  <div class="post-head">
+    <span class="post-author">meh</span>
+    <span class="post-date muted">2009-10-16 08:54 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+as newcomer in working with open dcl I face a major problem in applying open dcl dialogs. The facts are:<br>
+- on my computer, with my user (with extended administrator rights) everything worked out OK right from the start (Windows XP Professional, Acad 2008, open dcl studio 6.0.0.7)<br>
+- when trying on my colleague's computer (his rights similar to mine) with 6.0.0.7 runtime only, loading of project seemed OK, but dcl_form_show <br>
+  with a modal dialog simply did nothing visible, while with a modal dialog it produced an error "Exception in dcl_Form_show ARX-Command / <br>
+  unhandled exception E9CF627 (Access violation reading ..."; In this case (only with the modeless box and the error message) the ACAD options dialog did no longer apear. <br>
+  After my colleague also installed the studio and did several trials, which unfortuntely are not able to be reconstructed in detail and step by step, <br>
+  suddenly things worked out also on his PC/with his user<br>
+- on no other computer we were ble to get open dcl running. Same behaviour as described above for my colleague<br>
+- when logging in with my user on any other PC, same error<br>
+- when logging in with a different user on my PC, things work as they should<br>
+- deinstalling open dcl on a foreign computer and reinstaling it logged on with my user doesn't change anything. Opendcl anyway refuses to show a dialog<br>
+<br>
+Evidently, the failing to work is dependant on PC, not on windows user.<br>
+I am quite aware that remote diagnostics with such vague informations are difficult - but i put my hope on the possibility that someone else has in the past faced similar problems.<br>
+Anyone able to help me?</div>
+</article>
+<article class="post" id="msg4897">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-16 09:53 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I can reproduce that forms of my odcl-projects cannot be shown on both Vista 32 Bit and 64 Bit with runtime 6.0.0.8.<br>
+But they can be shown with the runtime 5.1.2.3. . I don't know if it has the same reason as your posting. I suggest you downloading the last stable release for production (means development of your application) until this is solved.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4900">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-16 14:19 UTC</span>
+  </div>
+  <div class="post-body">Strange. What happens when you start AutoCAD and drag and drop _masterdemo.lsp (from the OpenDCL Studio\\Samples folder) onto the document window? If the sample is displayed, press the  button.  What happens?</div>
+</article>
+<article class="post" id="msg4902">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-16 14:50 UTC</span>
+  </div>
+  <div class="post-body">Hi, it must be a problem of modal form. Palette and option tab work fine with runtime 6.0.0.8. But no modal form can be show by pressing a button, even on my XP machine where I could start modal forms with runtime 6.0.0.8 before. But not from the palette now.<br>
+<br>
+I cannot show a modal form in 6.0.0.8 from the palette<br>
+<br>
+- Acad 2009 on XP<br>
+- Acad 2010 x86 on Vista x86<br>
+- Acad 2010 x64 on Vista x64<br>
+<br>
+Everything works fine in 5.1.2.3.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4903">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-16 16:02 UTC</span>
+  </div>
+  <div class="post-body">Obviously there is a bug somewhere. If you can provide more detailed information about the state of the system (especially the dialog settings in the registry) and exactly what happens when the failure occurs, I may be able to make some guesses as to where to look.</div>
+</article>
+<article class="post" id="msg4975">
+  <div class="post-head">
+    <span class="post-author">meh</span>
+    <span class="post-date muted">2009-10-19 08:44 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I tried version 5.1.2.3, and with it everything works as it should. The solution was so strikingl simple, but I don't know how long it would have taken before I myself, without Fred's help, would have found it!<br>
+Thanks Fred!<br>
+<br>
+War beeindruckt wie schnell Deine Antwort gekommen ist - großartig, danke!<br>
+<br>
+As far as I myself am concerned, I am quite satisfied with working with V5.1. If you like more detailed information about the situation here, to be able to fix the bug or whatever it is, please let me know which info especially you need!<br>
+<br>
+Bye, Heimo</div>
+</article>
+<article class="post" id="msg4977">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-19 08:58 UTC</span>
+  </div>
+  <div class="post-body">This problem should now be fixed in 6.0 Alpha 9. Please test Alpha 9 and let me know whether you still experience any problems.</div>
+</article>
+<article class="post" id="msg4981">
+  <div class="post-head">
+    <span class="post-author">meh</span>
+    <span class="post-date muted">2009-10-19 11:51 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I can confirm: no more problems with 6.0.0.9!<br>
+<br>
+Installed the 6.0.0.9 runtime at a test user's computer (the project also re-compiled in studio 6.0.0.9; don't know wether this would have been necessary), and as far as I could see in a quick test, everything works perfectly.<br>
+<br>
+thanx, really great!<br>
+Heimo<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4982">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-19 15:39 UTC</span>
+  </div>
+  <div class="post-body">Great, I'm glad it's working now. New versions of the runtime will always load older version ODCL files.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

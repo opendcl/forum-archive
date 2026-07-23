@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>close_all ?? how to activate when exiting drawings? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1667</p>
+    <h1>close_all ?? how to activate when exiting drawings?</h1>
+    <p class="meta">Started by Hypersonic ·
+      2011-08-06 16:18 UTC ·
+      8 replies · SMF topic #1667</p>
+<article class="post" id="msg8267">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2011-08-06 16:18 UTC</span>
+  </div>
+  <div class="post-body">I have a problem withi dialogs remaining open when I open a different drawing or reopen the current drawing, and then the dialogs are not really loaded.<br>
+Does anyone have any pointers on how to automatically close out dialog boxes when reopoening a drawing or opening a different drawing?<br>
+<br>
+Thanks!</div>
+</article>
+<article class="post" id="msg8268">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-08-06 21:06 UTC</span>
+  </div>
+  <div class="post-body">Hello, Hypersonic, you have two possibilities: either you define a editor or drawing reactor which closes or update the form when a new drawing will be opened. Otherwise you define a command which will be automatically started when your lisp application will be loaded in each drawing.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8269">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-08-06 21:09 UTC</span>
+  </div>
+  <div class="post-body">Hi, Hypersonic, my answer followed the contents of your topic. When following the title of your topic I'd rather activate the EnteringNoDocState event.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8281">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2011-08-14 15:00 UTC</span>
+  </div>
+  <div class="post-body">Awesome thanks Fred!</div>
+</article>
+<article class="post" id="msg8282">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2011-08-14 15:05 UTC</span>
+  </div>
+  <div class="post-body">I have never done a reactor, but have always thought it would be useful to learn how, would you be able to point me in the right direction as to where to learn about them?<br>
+<br>
+Thanks!</div>
+</article>
+<article class="post" id="msg8284">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-08-14 15:22 UTC</span>
+  </div>
+  <div class="post-body">Hello, Hypersonic, during the AutoCAD installation you can add the VisualLISP tutorium. That includes the garden path sample using reactors.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8337">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2011-09-25 13:56 UTC</span>
+  </div>
+  <div class="post-body">I used this in my startup routine and it works great!  (dcl_Form_CloseAll 0);closes all open dialog boxes<br>
+<br>
+Thanks!</div>
+</article>
+<article class="post" id="msg8790">
+  <div class="post-head">
+    <span class="post-author">vpost</span>
+    <span class="post-date muted">2012-04-19 13:33 UTC</span>
+  </div>
+  <div class="post-body">Hello. I have a question on the same subject.<br>
+At me in AutoCAD some windows are open. How to execute a command (dcl_Form_CloseAll 0) upon transition from one window in another. I tried EnteringNoDocState but it works only when closing the last window?<br>
+<br>
+Regards</div>
+</article>
+<article class="post" id="msg8793">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-04-20 10:49 UTC</span>
+  </div>
+  <div class="post-body">Hi, EnteringNoDocState is only used for modeless forms (modeless, palette, dockable) when the last drawing ist closed.<br>
+<br>
+(dcl_Form_CloseAll 0) closes all OpenDCL forms. Querying the systemvariable CMDACTIVE tells you, if a modal AutoCAD form is active.<br>
+<br>
+(vl-remove-if-not 'dcl_form_isactive (apply 'append (mapcar 'dcl_project_getforms (dcl_getprojects)))) returns a list of all open forms.<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

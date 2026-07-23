@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Directory picker · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1097</p>
+    <h1>Directory picker</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-12-18 07:54 UTC ·
+      6 replies · SMF topic #1097</p>
+<article class="post" id="msg5795">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-18 07:54 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+please start the OpenDCL dwglist sample. On my machine the combobox in directory picker-style shows Desktop by default (anyone else?). The expression (dcl_ComboBox_GetDir DwgList_DwgListForm_ComboBox1) will return "Desktop" (instead of C:\Dokumente und Einstellungen\Fred Tomke\Desktop). Now I don't know what to do:<br>
+<br>
+1. If it is a bug I would report it.<br>
+2. If it is by design and worth to change, I'd like to add it as a feature request.<br>
+3. If it is consistent to Windows returning values, I'd workaround this.<br>
+<br>
+What shall I do? I'm so helpless  ;)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5797">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2009-12-18 13:12 UTC</span>
+  </div>
+  <div class="post-body">For me, also return only "Desktop". <br>
+Fred, why don't you do all 1 2 and 3?<br>
+<br>
+Or if is to much, i offer u to do one of them. ;)</div>
+</article>
+<article class="post" id="msg5800">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-18 16:09 UTC</span>
+  </div>
+  <div class="post-body">The answer is easy, Slavko: I have learned to ask if a behavior is by design before adding a bug report. I don't want to do anything wrong  :)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5809">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-19 16:30 UTC</span>
+  </div>
+  <div class="post-body">I would say this is a bug, since the 'Desktop' does have an associated file system path. However, shouldn't the root folder be 'My Computer' (which does <strong>not</strong> have an associated file system path)?</div>
+</article>
+<article class="post" id="msg5810">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-20 12:17 UTC</span>
+  </div>
+  <div class="post-body">Hi, Owen,<br>
+<br>
+<blockquote class="quote">shouldn't the root folder be 'My Computer' </blockquote><br>
+<br>
+I'm not sure, but it sounds not bad. Mostly, the initial directory is 'My documents', but I think it is set by each application. <br>
+<br>
+If the returning value is 'My Computer' than it must be interpreted manually because the name of the workstation can be changed manually. The application using OpenDCL has to manage it by itself, I think.<br>
+<br>
+HKEY_CURRENT_USER\Software\Microsoft\Windows\ShellNoRoam\MUICache<br>
+@C:\WINDOWS\system32\SHELL32.dll,-9216<br>
+<br>
+For me it is only important to know if the returning values are correct as they are now. I do know that you try to keep it consistent to the Windows API. And because I do not know the returning values of the pure Windows API for this control I asked this question. If it is 'Desktop' by default then I have to manage it by maself. I have no problem with it.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5841">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-28 06:57 UTC</span>
+  </div>
+  <div class="post-body">I took a look at the directory picker code. I think it needs to be fixed, but it's going to take a significant rewrite of major portions of the code, so I decided not to start anything for Alpha 17. I suggest to add a bug report so that I don't forget about it.</div>
+</article>
+<article class="post" id="msg5844">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-28 08:00 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1097.msg5841#msg5841 date=1261983428 wrote:</cite><br>
+[...] I suggest to add a bug report so that I don't forget about it.<br>
+</blockquote><br>
+<br>
+I've done it!<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>help to manage database files .mdb · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1941</p>
+    <h1>help to manage database files .mdb</h1>
+    <p class="meta">Started by mclisp ·
+      2013-01-25 09:45 UTC ·
+      14 replies · SMF topic #1941</p>
+<article class="post" id="msg9517">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2013-01-25 09:45 UTC</span>
+  </div>
+  <div class="post-body">I greet all<br>
+I'm starting to use OpenDCL I need help.<br>
+with adolisp the library, I have to handle many files. mdb access.<br>
+I can create a list with the names of file.mdb example  ("file1" "file2" "file3")<br>
+I can create a list with the names of the tables contained in the above file example ("tab1" "tab2" "tab3" "tab4") <br>
+I can create a list with the names of all the column headings example  ("col1" "col2" "col3" col4")<br>
+I can create a list of all data row from the file example (("row1" 1 2 3)("row2" 1 2 3)("row3" 1 2 3))<br>
+<br>
+I would like to to read and display the values of each row of these file. mdb using combobox<br>
+and text boxes to display the values<br>
+anyone have an example to do this.<br>
+any help is appreciated.<br>
+thanks <br>
+mclisp <br>
+</div>
+</article>
+<article class="post" id="msg9518">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-01-25 16:52 UTC</span>
+  </div>
+  <div class="post-body">Hi, do you mean filling a combobox with a list of field values? Then you have to use (dcl_Control_SetList myproj_myform_mycombo lstNewValues).<br>
+But if you mean a combobox in a grid then you have to set the list by using  (dcl_Grid_SetCellDropList myproj_myform_mygrid 5 2 lstNewValues).<br>
+Maybe you have a small project to illustrate.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9539">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2013-02-01 10:59 UTC</span>
+  </div>
+  <div class="post-body">hi<br>
+I managed to do what I asked above thanks<br>
+now I have another problem:<br>
+because this function <strong>(drawrectangle)</strong> CheckBox works<br>
+<br>
+(defun c:Rectangle_Form1_CheckBox1_OnClicked (Value /)<br>
+  (setq Diagonal Value)(princ)<br>
+   <strong> (drawrectangle) &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;ok work</strong><br>
+(princ))<br>
+<br>
+This function<strong> (drawrectangle)</strong> ComboBox does not work<br>
+(defun c:Rectangle_Form1_ComboBox3_OnSelChanged (ItemIndexOrCount Value / )<br>
+(setq n ItemIndexOrCount<br>
+      #Name (nth n #ListaNomiProfili) &lt;&lt;ok work<br>
+      #Data (nth n #TableData))         &lt;&lt;&lt;ok work<br>
+<strong>(drawrectangle)&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt; NO Work</strong><br>
+    )<br>
+<br>
+what is wrong?<br>
+Thank you for your time</div>
+</article>
+<article class="post" id="msg9540">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2013-02-02 12:06 UTC</span>
+  </div>
+  <div class="post-body">here you can see how the function <strong>(DrawRectangle)</strong> works with CheckBox,  works with TextBox  <br>
+and does not work with ComboBox<br>
+Why?<br>
+<br>
+<a href="http://www.youtube.com/watch?v=wX8jUmiUZ4k&amp;feature=youtu.be" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg9541">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-02-02 16:08 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=mclisp link=topic=1941.msg9540#msg9540 date=1359806778 wrote:</cite><br>
+here you can see how the function <strong>(DrawRectangle)</strong> works with CheckBox,  works with TextBox  <br>
+and does not work with ComboBox<br>
+</blockquote><br>
+<br>
+Where exactly can I see (DrawRectangle)? I watched your video, but did not see that code anywhhere.</div>
+</article>
+<article class="post" id="msg9542">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2013-02-03 07:15 UTC</span>
+  </div>
+  <div class="post-body">hello<br>
+Thank you for your time.<br>
+I'm learning OpenDCL be patient.<br>
+I simplified the program to repeat what does not work.<br>
+if I change the value of the function COMBOBOX3 (DrawRectangle) crashes and error: invalid AutoCAD command: nil<br>
+this error does not happen with TEXTBOX and CHECBOX.<br>
+I want that if I change the value in COMBOBOX3 you redraw the rectangle.<br>
+thanks again.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1851/combobox.zip">combobox.zip</a> <span class="muted">(2878 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9543">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-02-03 16:04 UTC</span>
+  </div>
+  <div class="post-body">Good job at simplifying the problem. When your event handler code is called from a modeless form, you have to be careful about calling the (command) function. If you set the Event Invoke property for your combo box controls to 1 - Asynchronous, calls to the (command) function should work. You can check the OpenDCL help or search the forum for 'asynchronous' to read more.</div>
+</article>
+<article class="post" id="msg9544">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2013-02-03 17:54 UTC</span>
+  </div>
+  <div class="post-body">thank you very much owenwengerd<br>
+I was going crazy, now works<br>
+ciao</div>
+</article>
+<article class="post" id="msg9569">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2013-02-19 08:29 UTC</span>
+  </div>
+  <div class="post-body">I want to share my efforts to learn OpenDCL use version 7.0.0.5<br>
+https://sites.google.com/site/mclisp/prosteel-3d-creating-parametric-cross<br>
+I am very happy and I thank you for your help.<br>
+I still ask for help, I want to insert the image above a CHECK BOX<br>
+but I can not, it is still below the image,<br>
+even if active the Send to Back Control OFZ / Tab order<br>
+you have any idea?<br>
+thanks again</div>
+</article>
+<article class="post" id="msg9570">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-02-19 19:22 UTC</span>
+  </div>
+  <div class="post-body">Hi, make sure that the backcolor of the checkbox is not -24 (transparent).<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9571">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-02-19 20:44 UTC</span>
+  </div>
+  <div class="post-body">Tab/Z order does not control painting order. The only thing that Windows guarantees is that transparent controls will always be painted after non-transparent sibling controls. If you want the check box "above" the picturebox, then the check box must be transparent and the picture box must not be transparent. You may also find it helpful to uncheck "Use visual style" for the check box, as the current checkbox visual style may not support transparency.</div>
+</article>
+<article class="post" id="msg9575">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2013-02-20 09:45 UTC</span>
+  </div>
+  <div class="post-body">perfect,  very nice<br>
+I have many macros you create the interface,<br>
+I can have your opinion, critical, defect, problem on my method of creating form.<br>
+ie with background image.<br>
+I find it very intuitive?<br>
+easy to use and does not require a lot of translation in different languages.<br>
+what do you think.<br>
+what are the problems that you may encounter?<br>
+what do you think<br>
+thanks again</div>
+</article>
+<article class="post" id="msg9613">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2013-03-27 13:38 UTC</span>
+  </div>
+  <div class="post-body">hi<br>
+wonder if it is possible to rotate a textbox of 90 °.<br>
+For now believe is not possible,<br>
+you could do in the future?<br>
+thanks<br>
+</div>
+</article>
+<article class="post" id="msg9614">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-03-28 02:32 UTC</span>
+  </div>
+  <div class="post-body">A text box is a standard Windows control that doesn't support rotation, so it isn't possible without making a new control type.</div>
+</article>
+<article class="post" id="msg9615">
+  <div class="post-head">
+    <span class="post-author">mclisp</span>
+    <span class="post-date muted">2013-03-28 19:28 UTC</span>
+  </div>
+  <div class="post-body">I like to think that one day there will be this new control.<br>
+thanks anyway</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

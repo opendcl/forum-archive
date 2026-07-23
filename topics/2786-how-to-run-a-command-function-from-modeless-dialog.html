@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to run a (command..) function from modeless dialog · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2786</p>
+    <h1>How to run a (command..) function from modeless dialog</h1>
+    <p class="meta">Started by rakesh_rao ·
+      2021-09-21 12:55 UTC ·
+      3 replies · SMF topic #2786</p>
+<article class="post" id="msg13591">
+  <div class="post-head">
+    <span class="post-author">rakesh_rao</span>
+    <span class="post-date muted">2021-09-21 12:55 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Dear Forum Users,<br>
+<br>
+I am using BricsCAD V21 and trying to run a Lisp function from a modeless dialog. The Lisp function uses (command) function many times.<br>
+<br>
+It seems to fail with the following error:<br>
+<br>
+; error : during LISP function  invoke from BRX/SDS interface,<br>
+          please check Lisp function definition and call arguments.<br>
+<br>
+I have already set the event invoke property of the form to 1 (asynchronous) as per what I saw in some posts, and get the same error.<br>
+<br>
+The function works perfectly when called manually from the command-line.<br>
+<br>
+Any pointers would be deeply appreciated. I have volunteered to do a major job in OpenDCL and hope to get this through.<br>
+<br>
+I have even tried setting the KeepFocus property to True and False, and both give me the same result (error).<br>
+<br>
+<br>
+Many thanks and Best Regards<br>
+Rakesh Rao</div>
+</article>
+<article class="post" id="msg13592">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2021-09-21 15:25 UTC</span>
+  </div>
+  <div class="post-body">There are some events which must run synchronously (because the return value is required by the event handler). OnClicked should work asynchronously, so you might double check to make sure you are loading the correct project that has the form set to EventInvoke=1. An alternative solution is to make the event handler just call (dcl-SendString "THE_REAL_HANDLER\n") (defined as (defun C:THE_REAL_HANDLER '()) in my example), to then execute the asynchronous portion later, after the handler has returned.</div>
+</article>
+<article class="post" id="msg13595">
+  <div class="post-head">
+    <span class="post-author">rakesh_rao</span>
+    <span class="post-date muted">2021-09-22 04:45 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Thanks Owen, That worked, more or less. I need to test further.<br>
+<br>
+Also, I just realized that if I make EventInvoke=1 (asynchronous), the callback function works only if it is preceded with a C:.<br>
+<br>
+I normally like to have Lisp functions without a C:, b ut I found that  Creator_O/Creator_O/Tree_Main#OnClicked does not work but c:Creator_O/Creator_O/Tree_Main#OnClicked does work.<br>
+<br>
+Am I doing something wrong?<br>
+<br>
+The EventInvoke property is available both for the form and for the Tree Control. I have set it to 0 for the form and 1 for the Tree, and it worked for the moment.<br>
+<br>
+What is the impact of changing the value  0/1 in the Form?<br>
+<br>
+Many thanks &amp; Best Regards<br>
+Rakesh Rao<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg13597">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2021-09-22 16:29 UTC</span>
+  </div>
+  <div class="post-body">I believe the form property only affects form events, so setting it on the control is appropriate. Modeless dialogs are running in application context at the UI level, but using (command) requires to be running inside a command context, so that is why you can only make the event handler a command. It is then executed like any other command, in order to create your command context, then call your event handler from within the running command.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

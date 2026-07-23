@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project load problem · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 84</p>
+    <h1>Project load problem</h1>
+    <p class="meta">Started by Shoey ·
+      2007-11-07 16:59 UTC ·
+      9 replies · SMF topic #84</p>
+<article class="post" id="msg357">
+  <div class="post-head">
+    <span class="post-author">Shoey</span>
+    <span class="post-date muted">2007-11-07 16:59 UTC</span>
+  </div>
+  <div class="post-body">Hello all,<br>
+<br>
+First post so be gentle with me!<br>
+<br>
+Ive changed my files to odcl and code from odcl to dcl.<br>
+<br>
+But my main form will now not load when called from lisp.<br>
+<br>
+code -<br>
+(dcl_Project_Load "LOGINPROFILE2005" T)<br>
+(dcl_Form_Show LOGINPROFILE2005_Form1)<br>
+<br>
+It comes with the following error-<br>
+error: no function definition: DCL_PROJECT_LOAD<br>
+<br>
+The OpenDCL16.arx is loaded.<br>
+<br>
+Any help is appreciated.<br>
+<br>
+Regards<br>
+Shoey</div>
+</article>
+<article class="post" id="msg358">
+  <div class="post-head">
+    <span class="post-author">Zibster</span>
+    <span class="post-date muted">2007-11-07 17:21 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Shoey link=topic=84.msg357#msg357 date=1194454783 wrote:</cite><br>
+Hello all,<br>
+<br>
+First post so be gentle with me!<br>
+<br>
+Ive changed my files to odcl and code from odcl to dcl.<br>
+<br>
+But my main form will now not load when called from lisp.<br>
+<br>
+code -<br>
+(dcl_Project_Load "LOGINPROFILE2005" T)<br>
+(dcl_Form_Show LOGINPROFILE2005_Form1)<br>
+<br>
+It comes with the following error-<br>
+error: no function definition: DCL_PROJECT_LOAD<br>
+<br>
+The OpenDCL16.arx is loaded.<br>
+<br>
+Any help is appreciated.<br>
+<br>
+Regards<br>
+Shoey<br>
+</blockquote><br>
+<br>
+<br>
+Hi,<br>
+<br>
+have you add project files to AutoCAD path (menu Tools / Options...)?<br>
+and what Autocad version have you?<br>
+If LT, you need install LT-Extender to activate LISP command (www.lt-extender.com)<br>
+<br>
+regards,<br>
+Zbyszek </div>
+</article>
+<article class="post" id="msg359">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2007-11-07 18:43 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Shoey link=topic=84.msg357#msg357 date=1194454783 wrote:</cite><br>
+<br>
+error: no function definition: DCL_PROJECT_LOAD<br>
+<br>
+</blockquote><br>
+<br>
+If you're getting "error: no function definition: DCL_PROJECT_LOAD", then that means the arx isn't loaded.<br>
+Do you get something like:<br>
+<strong>OpenDCL Runtime [4.1.1.4] loaded</strong><br>
+At the command line when you try to load it?<br>
+If you're installed the full studio version, then you can type <strong>"OPENDCL"</strong> at the command line &amp; it will demand load it for you.</div>
+</article>
+<article class="post" id="msg2419">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2009-02-16 08:27 UTC</span>
+  </div>
+  <div class="post-body">Is it possible for an end user to simply load the 'OpenDCL.17.arx' file to enable him to run OpenDCL applications that I have written, without running the runtime installation (msi) file?.   I have a 'remote' colleague who has no internet access,  I could obviously send him the installation file, but I'd prefer to keep things as simple as possible, and just place the 'arx' file in a viewable (from Acad) folder, so that he can automatically load it using (arxload) from an 'mnl' file?.   I have tried this approach but it appears that the OpenDCL functions are still not available after the file has been loaded, I can't work out why!. I know it all worked fine in the first release of OpenDCL - I suspect it's something to do with demand loading, which I can't really get my head around!!</div>
+</article>
+<article class="post" id="msg2421">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-16 16:31 UTC</span>
+  </div>
+  <div class="post-body">Hi, vosey, yes you can do so. We do it over 1800 times with our customers in Germany and noone installs the msi for the runtime.<br>
+<br>
+What do you have to do?<br>
+<ul><br>
+create a folder with all the files of your application<br>
+copy all the files of C:\Program Files\Common Files\OpenDCL into the folder with your application<br>
+you can remove the unneeded arx-files of AutoCAD-releases your application doesn't support from the folder of your application<br>
+copy the files of C:\Program Files\Common Files\OpenDCL\ENU <strong>directly </strong> into the folder with your application and not into a subfolder (as it was at Common Files). In this case you don't need to add a registry key of the language<br>
+make sure that the OpenDCL.17.arx will be loaded at the time of loading your application<br>
+create a zip-archive to send the application folder to your colleague<br>
+now, it should work at your colleague<br>
+</ul><br>
+<br>
+I hope it was understandable and reproducable. If not, let me know.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2426">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-02-16 17:09 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=vosey link=topic=84.msg2419#msg2419 date=1234772831 wrote:</cite><br>
+Is it possible for an end user to simply load the 'OpenDCL.17.arx' file to enable him to run OpenDCL applications that I have written, without running the runtime installation (msi) file?</blockquote><br>
+<br>
+Yes, that is possible, but it's not recommended. If you send the .msi file, you avoid exactly the sorts of problems you are now faced with. Is he loading the correct file? Does he have multiple versions of the file in different locations? Has he installed another OpenDCL application? If you send the .msi, you don't need to worry about all that -- it will simply work.</div>
+</article>
+<article class="post" id="msg2455">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2009-02-17 08:12 UTC</span>
+  </div>
+  <div class="post-body">Thanks Very much for the advice.  The copying of the 'ENU' files has done the trick and all is working perfectly.  I'll ensure that the .msi is used in future, but Freds solution has helped a lot in this instance.</div>
+</article>
+<article class="post" id="msg2459">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-02-17 11:29 UTC</span>
+  </div>
+  <div class="post-body">Is it possible to know all the steps of the file OpenDCL.Runtime.ENU.5.0.1.7.msm?  <br>
+I need this for the program InnoSetup.  <br>
+My customer cannot work with other file in the installation.<br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg2462">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-17 13:05 UTC</span>
+  </div>
+  <div class="post-body">Hi, velasquez, I don't know wheter if it is possible to extract an ini from a msm, but maybe from the runtime msi. Call the msi-file in the commandline using parameter /?. Maybe a list of parameters will be shown.<br>
+<br>
+Do you know InstallWatchPro or SnAppShot from Novell Zenworks? Both products document the changes on harddisk and in the registry.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2463">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-02-17 13:40 UTC</span>
+  </div>
+  <div class="post-body">Thank you Fred  <br>
+I will seek the programs.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

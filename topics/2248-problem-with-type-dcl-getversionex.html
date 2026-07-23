@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with (type dcl_getversionex) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2248</p>
+    <h1>Problem with (type dcl_getversionex)</h1>
+    <p class="meta">Started by Emiliano ·
+      2015-03-21 10:33 UTC ·
+      2 replies · SMF topic #2248</p>
+<article class="post" id="msg11295">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2015-03-21 10:33 UTC</span>
+  </div>
+  <div class="post-body">Hello everyone,<br>
+to load my project use this function:<br>
+<br>
+<br>
+(defun LoadRunTime ( / )<br>
+    ;; Demand load the OpenDCL.##.ARX. This requires the OpenDCL Runtime or Studio to be installed on each PC first.<br>
+    (cond<br>
+      ( (= 'EXRXSUBR (type dcl_getversionex)) )<br>
+      ( (= 2 (boole 1 (getvar "DEMANDLOAD") 2))<br>
+        (vl-cmdf "_OPENDCL")<br>
+        (if (/= 'EXRXSUBR (type dcl_getversionex))<br>
+          (progn<br>
+            (princ "\nThe OpenDCL Runtime module failed to load. Please repair the OpenDCL installation and try again.")<br>
+            ;(exit)<br>
+          )<br>
+        )<br>
+      )<br>
+      ( (progn<br>
+          (princ "\nThe OpenDCL Runtime module cannot be loaded because demand loading is disabled.\nLoad the OpenDCL ARX file manually, or enable demand loading for commands by setting the DEMANDLOAD system variable to 2 or 3.\nSee the \"ManualLoading.lsp\" sample for a demonstration.")<br>
+          ;(exit) <br>
+        )<br>
+      )<br>
+    )<br>
+)<br>
+<br>
+<br>
+<br>
+Unfortunately, on some occasions (random), the error appears "\nThe OpenDCL Runtime module failed to load. Please repair the OpenDCL installation and try again.".<br>
+This happens because (type dcl_getversionex) = SUBR instead of EXRXSUBR<br>
+<br>
+Even if this error appears, the form is loaded and working properly.<br>
+<br>
+You have no idea why this happens?<br>
+Any advice?<br>
+<br>
+Thanks in advance<br>
+</div>
+</article>
+<article class="post" id="msg11297">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-03-22 12:20 UTC</span>
+  </div>
+  <div class="post-body">You can avoid the issue by changing Line 4 to:<br>
+( dcl_getversionex )<br>
+<br>
+And changing Line 7 to:<br>
+(if (not dcl_getversionex)</div>
+</article>
+<article class="post" id="msg11298">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-03-22 14:01 UTC</span>
+  </div>
+  <div class="post-body">I recommend to replace all of that with simply<br>
+(command "_OPENDCL")</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

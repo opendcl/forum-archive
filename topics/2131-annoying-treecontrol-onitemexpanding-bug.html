@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Annoying TreeControl_OnItemExpanding bug · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2131</p>
+    <h1>Annoying TreeControl_OnItemExpanding bug</h1>
+    <p class="meta">Started by bazzacad ·
+      2014-04-17 17:29 UTC ·
+      6 replies · SMF topic #2131</p>
+<article class="post" id="msg10589">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2014-04-17 17:29 UTC</span>
+  </div>
+  <div class="post-body">OK I've been chasing this bug for months now.<br>
+The prob. is 99% of the time the code run fine.<br>
+Only about once or twice a week across 30 users does the bug pop up.<br>
+<br>
+I keep getting this invalid argument type for my tree control (see attached pic).<br>
+I've added this debug code:<br>
+<br>
+<br>
+(defun c:MainTMaCAD_TreeControl_OnItemExpanding (ItemText Key /  x n1 tpkey rValue PathList CurrectKey ParentKey SubFolders KidKey ParKey)<br>
+  (if DEBUG<br>
+    (progn<br>
+    	(princ "\nRunning TreeControl_OnItemExpanding... ")<br>
+  		(princ "\nItemText: ")<br>
+      (princ ItemText)      <br>
+  		(princ "\nKey: ")<br>
+      (princ Key)  ;&lt;--- Crashing here<br>
+    )<br>
+  );_ if<br>
+<br>
+ (if (dcl_Tree_IsItemExpanded TMaCAD_MainTMaCAD_TreeControl Key) ;&lt;--- Crashing here, if DEBUG is off<br>
+.......<br>
+<br>
+<br>
+The output I get is:<br>
+<code><br>
+Running TreeControl_OnItemExpanding...<br>
+ItemText: 13081<br>
+Key: 2.1868e+009; error: ADS request error<br>
+</code><br>
+<br>
+When the code is working 99% of the time I get, something like this:<br>
+<code><br>
+Running TreeControl_OnItemExpanding...<br>
+ItemText: 13081<br>
+Key: 833029504<br>
+</code><br>
+<br>
+What is wrong with the key? Is this a memory addressing issue?<br>
+OpenDCL Runtime [7.0.1.2]<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1997/tree.png">tree.png</a> <span class="muted">(55986 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10592">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-17 19:35 UTC</span>
+  </div>
+  <div class="post-body">Is the form's Event Invoke property set to Synchronous or Asynchronous?</div>
+</article>
+<article class="post" id="msg10595">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2014-04-17 20:19 UTC</span>
+  </div>
+  <div class="post-body">The form's is: Synchronous<br>
+The Tree control is: Asynchronous</div>
+</article>
+<article class="post" id="msg10597">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-18 00:42 UTC</span>
+  </div>
+  <div class="post-body">Asynchronous calls require the event handler arguments to be passed as strings, so I suspect that has something to do with it. I'll have a look at the code to see if I can figure out how your observed behavior might happen.</div>
+</article>
+<article class="post" id="msg10598">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-18 02:40 UTC</span>
+  </div>
+  <div class="post-body">I'm pretty sure the problem you see is due to sufficiently large handle values causing the argument to become a floating point value, which is then rejected as a valid handle when using it to call back into OpenDCL. The problem should now be fixed in the next build.</div>
+</article>
+<article class="post" id="msg10601">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2014-04-18 22:32 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen.<br>
+I guess I should have posted earlier.<br>
+I've been trying to narrow this down to something in my code. ;-)<br>
+What is making the handles values to become large?<br>
+The number of items in the tree?</div>
+</article>
+<article class="post" id="msg10602">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-04-19 00:34 UTC</span>
+  </div>
+  <div class="post-body">A handle is essentially a pointer to something in memory, so it just depends where the memory happens to get allocated. I doubt that the number of items has any noticeable effect.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

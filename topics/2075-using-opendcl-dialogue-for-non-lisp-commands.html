@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Using OpenDCl-Dialogue for NON-Lisp commands? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2075</p>
+    <h1>Using OpenDCl-Dialogue for NON-Lisp commands?</h1>
+    <p class="meta">Started by Peter2 ·
+      2013-12-11 17:29 UTC ·
+      16 replies · SMF topic #2075</p>
+<article class="post" id="msg10231">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-12-11 17:29 UTC</span>
+  </div>
+  <div class="post-body">As a follower of my question here "Breaking a Lisp-Loop with another Lisp"<br>
+http://www.opendcl.com/forum/index.php?topic=2046.msg10103#msg10103<br>
+<br>
+I wrote<br>
+<blockquote class="quote"><cite> author=Peter2 link=topic=2046.msg10103#msg10103 date=1382026051 wrote:</cite><br>
+My idea is, with usage of OpenDCL:<br>
+<br>
+a) set a varable to TRUE - Start an (endless) loop "while 'var = true'"<br>
+b) use another lisp which sets the variable to NIL - loop a) will stop<br>
+...<br>
+</blockquote><br>
+<br>
+The result of the thread was:<br>
+- no solution inside lisp<br>
+- "external way" is necessary to control this behaviour<br>
+<br>
+-&gt; so I should use an OpenDCl-Dialogue for Lisp and a second function (software, doubleclick on reg..)<br>
+<br>
+I'm not really confident that the following answer will be "Yes", but ...<br>
+<br>
+"Is it possible to integrate a button / feature / event to an OpenDCL-Dialogue, that would start something (e.g. change registry-value or runs an exe) <strong>while(!!) an endless loop in running in Lisp</strong>?"<br>
+<br>
+High-end-solution like "compiled C++ event-tracking-handler in combination with ......" are over my level ...<br>
+<br>
+The reason for my question is "user friendly handling" - I want to present the user one single dialogue and not a collection of commands in different dialogues ..<br>
+<br>
+Have a nice day!</div>
+</article>
+<article class="post" id="msg10234">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-11 17:50 UTC</span>
+  </div>
+  <div class="post-body">I didn't understand your overall goal before, and I still don't have any idea what the underlying problem is that you're trying to solve. I can only answer that yes, technically it is possible to "start something" within an endless loop. An OpenDCL event handler is a good example. A modal dialog is an endless loop. An event handler for a modal dialog control runs "inside" that endless loop.</div>
+</article>
+<article class="post" id="msg10236">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-12-11 19:10 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+thanks for your reply. I will try to explain with a simple example:<br>
+<br>
+- Make a mode-less dialogue.<br>
+- Add Buttons "Start loop" and "Stop loop".<br>
+<br>
+- "Start loop" starts a lisp (pseudocode):<br>
+set myregistry = 1<br>
+while myregistry = 1<br>
+wait 5 sec<br>
+princ "I'm looping."<br>
+<br>
+- "Stop loop" starts a lisp  or an exe or ....(pseudocode):<br>
+set myregistry = 0<br>
+<br>
+How to make it?<br>
+<br>
+Thanks for hints and ideas.<br>
+</div>
+</article>
+<article class="post" id="msg10237">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-11 19:32 UTC</span>
+  </div>
+  <div class="post-body">I think it will be easier to discern the problem if you provide real code instead of pseudocode (and describe how it fails).</div>
+</article>
+<article class="post" id="msg10238">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-12-11 20:30 UTC</span>
+  </div>
+  <div class="post-body">Hi, guys,<br>
+<br>
+I've attached a sample to demonstrate.<br>
+Maybe it does not describe exactly the practical case of Peter2 but it demonstrates the problem in general.<br>
+<br>
+<ul><br>
+The start button call a function with a while loop.<br>
+AutoCAD does not leeave the while loop until the condition will result in false.<br>
+Meanwhile no other event or command is recognzied.<br>
+So I have not the possibility to stop the loop by pressing a button (to cancel a progress).<br>
+In my experiences, even parallel C#-threads/backgroundworkers only start after the calling method/event (startbutton event) has finished.<br>
+</ul><br>
+<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1937/loop.zip">loop.zip</a> <span class="muted">(1290 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10239">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-12-11 20:48 UTC</span>
+  </div>
+  <div class="post-body">Hello, I've attached a new lisp to demonstrate a solution without a while-loop.<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1938/loop.LSP">loop.LSP</a> <span class="muted">(867 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10240">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-11 21:11 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred, I suspect you are correct about the problem. If so, the issue is really about allowing Windows to process messages from within an AutoLISP loop. The (dcl_SendString) or (dcl_DelayedInvoke) functions are good ways to do that.</div>
+</article>
+<article class="post" id="msg10241">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-12-12 23:04 UTC</span>
+  </div>
+  <div class="post-body">Thanks both for the postings<br>
+<br>
+if I see it right the second solution with the "self-recursive-dcl_DelayedInvoke 1000" is the solution, right?<br>
+<br>
+Peter</div>
+</article>
+<article class="post" id="msg10242">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-12-12 23:54 UTC</span>
+  </div>
+  <div class="post-body">Yes, that's it!<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10243">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-12-15 21:37 UTC</span>
+  </div>
+  <div class="post-body">Thanks a lot, Fred. I hope I will bring it to start within the next weeks.</div>
+</article>
+<article class="post" id="msg10290">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-01-01 20:17 UTC</span>
+  </div>
+  <div class="post-body">Additional info:<br>
+<br>
+Command "dos_getcancel" from DosLib also does the trick: it can break a "while-loop"<br>
+http://www.en.na.mcneel.com/doslib/interface_functions/dos_getcancel.htm</div>
+</article>
+<article class="post" id="msg10291">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-01 21:01 UTC</span>
+  </div>
+  <div class="post-body">Apparently I did not understand the problem you're trying to solve. As I suggested earlier, actual code that demonstrates would be more clear. If you just want to display a modeless dialog with a cancel button that closes the dialog, that is pretty simple to do. Then you can check inside your while loop whether the dialog is still open.</div>
+</article>
+<article class="post" id="msg10293">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-01-01 22:07 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+I'm sorry that I'm still not able to express myself good enough, but I thought that Fred' postings and examples above could explain and solve my problem. He showed that a "while-loop" could not be cancelled from OpenDCL, and with his other example he showed that a loop with a "self-calling-function" could to the trick.<br>
+<br>
+I tried only to give an additional info that the mentioned DosLib-Function could also break a while loop.</div>
+</article>
+<article class="post" id="msg10294">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-01 23:05 UTC</span>
+  </div>
+  <div class="post-body">I think the issue is in what you mean by "break a while loop". Neither OpenDCL nor (dos_getcancel) can break a while loop. In either case, it is the code inside the while loop itself that decides when to break out of the loop. It seems your question is more about how to program a while loop that breaks when some condition is met.<br>
+<br>
+My previous responses (and I think Fred's) were about processing Windows messages while a long process (i.e. a while loop) completes.</div>
+</article>
+<article class="post" id="msg10296">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-01-02 11:38 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=2075.msg10294#msg10294 date=1388617508 wrote:</cite><br>
+I think the issue is in what you mean by "break a while loop". Neither OpenDCL nor (dos_getcancel) can break a while loop....</blockquote><br>
+Yes, of course you are right.<br>
+<br>
+My basic question should be formulated:<br>
+<blockquote class="quote">How to modify the condition of a "while-loop" <br>
+- via a dialogue and <br>
+- while the loop is ¨looping'</blockquote><br>
+<br>
+The current answers are:<br>
+a) (dos_getcancel) can be used for a "while-loop"<br>
+b) Fred's self-recursive loop (see above) makes a loop without (while) which accepts modifications of conditions<br>
+<br>
+I hope it is clearer now.(?)</div>
+</article>
+<article class="post" id="msg10298">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-02 14:59 UTC</span>
+  </div>
+  <div class="post-body">Inside a while loop, you can use (and MyProject_Myform (<a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Form/IsActive.htm" rel="nofollow noopener">{2}</a> MyProject_MyForm)) to check whether a modeless form is still active. Does that help?</div>
+</article>
+<article class="post" id="msg10299">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-01-02 15:10 UTC</span>
+  </div>
+  <div class="post-body">I will see, but not immediately, because the project is delayed. I will report later.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Strange behaviour of OpenDCL in ZWCAD2023 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2866</p>
+    <h1>Strange behaviour of OpenDCL in ZWCAD2023</h1>
+    <p class="meta">Started by JustCurious ·
+      2023-06-03 09:37 UTC ·
+      2 replies · SMF topic #2866</p>
+<article class="post" id="msg13847">
+  <div class="post-head">
+    <span class="post-author">JustCurious</span>
+    <span class="post-date muted">2023-06-03 09:37 UTC</span>
+  </div>
+  <div class="post-body">Hi there,<br>
+<br>
+I have installed a trial version of ZWCAD2023 an I am running the latest OpenDCL ZRX runtime extension as well.<br>
+During this trial period I try to find out if my programs will run in ZWCAD.<br>
+<br>
+My OpenDCL project contains a slide image, when I click on it I want something to happen.<br>
+<br>
+This piece of code works:<br>
+<pre class="code"><code>(defun c:Test/Form1/SlideView1#OnClicked (/)<br>
+ (dcl-MessageBox "To Do: code must be added to event handler\r\nc:Test/Form1/SlideView1#OnClicked" "To do")<br>
+ )</code></pre><br>
+<br>
+I do get the Alert dialog which tells me the slide-on-clicked does work.<br>
+<br>
+Now if I replace that code with this, then nothing happens:<br>
+<pre class="code"><code>(defun c:Test/Form1/SlideView1#OnClicked (/)<br>
+(command "_.linetype" "_load" "myLinetypeName" "myCustomLinetypeFile.lin" "")<br>
+ )</code></pre><br>
+<br>
+If I just copy the line of actual code into the commandbar it works:<br>
+<pre class="code"><code>(command "_.linetype" "_load" "myLinetypeName" "myCustomLinetypeFile.lin" "")</code></pre><br>
+The variables "myLinetypeName" and "myCustomLinetypeFile.lin" are set properly.<br>
+<br>
+Why does ObjectDCL not invoke the command?<br>
+Any ideas on this one? Thanks in advance.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg13848">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2023-06-04 23:29 UTC</span>
+  </div>
+  <div class="post-body">Hi, is it a modal form? Then it will not work within an event. If it is a modeless form or a palette, it will only work when in the control the property event invoke is set to allow command.<br>
+AutoCAD needs full access to the database. And that is not the case in a modal form or a modeless form with keep focus in event invoke.<br>
+With regards, fred</div>
+</article>
+<article class="post" id="msg13860">
+  <div class="post-head">
+    <span class="post-author">JustCurious</span>
+    <span class="post-date muted">2023-06-09 13:25 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred,<br>
+<br>
+Thanks for the reply.<br>
+<br>
+It is a palette, the event is checked therefore the <pre class="code"><code>(dcl-MessageBox "To do: .... </code></pre> is working. Just not the command inside the defun. I have decided to part from Odcl, at least for this part of my journey.<br>
+<br>
+Have a great weekend!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

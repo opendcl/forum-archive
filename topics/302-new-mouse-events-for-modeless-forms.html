@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>New Mouse events for Modeless Forms · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 302</p>
+    <h1>New Mouse events for Modeless Forms</h1>
+    <p class="meta">Started by jb ·
+      2008-04-28 15:14 UTC ·
+      4 replies · SMF topic #302</p>
+<article class="post" id="msg1353">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-04-28 15:14 UTC</span>
+  </div>
+  <div class="post-body">5.0.0.13<br>
+I'm trying to use the two new events, OnMouseEntered &amp; OnMouseMovedOff, to automatically roll up a modeless form.  I'm using the two subs below just to see when the events are firing: this throws AutoCAD in to a loop printing the two princs at the command line over and over.  Must use Task Manager to shut down AutoCAD.  What's the appropriate use of these two events???<br>
+<br>
+<pre class="code"><code><br>
+(defun c:jb001_00_OnMouseEntered ( /)<br>
+     (princ "\nOnMouseEntered")<br>
+)<br>
+(defun c:jb001_00_OnMouseMovedOff ( /)<br>
+     (princ "\nOnMouseMovedOff")<br>
+)</code></pre><br>
+<br>
+Thanks for any help . . .<br>
+<br>
+jb</div>
+</article>
+<article class="post" id="msg1354">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-04-28 16:01 UTC</span>
+  </div>
+  <div class="post-body">The problem is that OnMouseEnter is being called continuously instead of only when the mouse first enters the dialog.  I'll get that corrected for the next Alpha.  In the meantime, you could set a flag when the mouse moves off, then ignore the OnMouseEnter event if the flag is not set.</div>
+</article>
+<article class="post" id="msg1355">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-04-28 16:44 UTC</span>
+  </div>
+  <div class="post-body">I'll try that - Thanks Owen</div>
+</article>
+<article class="post" id="msg1402">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2008-05-09 17:54 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+<br>
+The OnMouseEntered and OnMouseMovedOff event is working nicely. Thanks! But they behave in a slightly different manner. The OnMouseEntered event is fired whenever mouse is hovered over the form, no click is needed, but the OnMouseMovedOff event is only fired when user clicks on the screen. Is this the intended behavior?<br>
+<br>
+Thank you!</div>
+</article>
+<article class="post" id="msg1403">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-05-10 03:22 UTC</span>
+  </div>
+  <div class="post-body">Yes, that is by design when the keyboard focus is on a control that accepts keyboard input. In that case, the mouse is "captured" by the control with focus and not released until it is clicked outside the form.<br>
+<br>
+<blockquote class="quote"><cite> author=Kelie link=topic=302.msg1402#msg1402 date=1210355691 wrote:</cite><br>
+The OnMouseEntered event is fired whenever mouse is hovered over the form, no click is needed, but the OnMouseMovedOff event is only fired when user clicks on the screen. Is this the intended behavior?</blockquote></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

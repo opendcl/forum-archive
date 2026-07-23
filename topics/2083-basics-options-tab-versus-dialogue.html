@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Basics: &quot;Options Tab&quot; versus &quot;Dialogue&quot; · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2083</p>
+    <h1>Basics: &quot;Options Tab&quot; versus &quot;Dialogue&quot;</h1>
+    <p class="meta">Started by Peter2 ·
+      2013-12-29 11:20 UTC ·
+      7 replies · SMF topic #2083</p>
+<article class="post" id="msg10281">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-12-29 11:20 UTC</span>
+  </div>
+  <div class="post-body">In the last time I made two small routines <br>
+- with "Options Tab" and <br>
+- others with "modal Dialogues" which have options for the routines too.<br>
+<br>
+Now I want to ask for your opinion - <strong>"What is the best place for a collection of controls which handles options and settings?"</strong><br>
+<br>
+No doubt - a routine which "talks with the user" (very often usage of input, output, selection, .. ) needs a dialogue which comes and goes quick and easy.<br>
+But for a routine which works in the background, based on some rarely changed settings ... - would you select an "Option Tab" or a "Modal Dialogue"?<br>
+<br>
+Thanks, best regards and <br>
+A happy new year</div>
+</article>
+<article class="post" id="msg10282">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-12-29 12:57 UTC</span>
+  </div>
+  <div class="post-body">Hello, Peter2,<br>
+<br>
+I never used option tabs for settings. I made many setting forms - each one for the special module. Of course, it's a nice idea to place general settings in the option tab. But over the years in my experiences AutoCAD needs more and more time to open the option dialog, so it's worth again to think about an own settings dialog, which can be called also very fast from your app within an own command.<br>
+Sure, not a clear anwser, but only some thoughts.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10283">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-12-29 15:19 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=2083.msg10282#msg10282 date=1388321864 wrote:</cite><br>
+... but only some thoughts....</blockquote><br>
+This is exactly what I am looking for ...<br>
+<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=2083.msg10282#msg10282 date=1388321864 wrote:</cite><br>
+...AutoCAD needs more and more time to open the option dialog...</blockquote><br>
+Yes, that is an important fact. And another fact is that the user has to search the right tab.</div>
+</article>
+<article class="post" id="msg10284">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-29 15:54 UTC</span>
+  </div>
+  <div class="post-body">They are not OpenDCL based, but for QuikPik and Periscope I made both an options tab and a standalone modal dialog (called with a XXXSETTINGS command) with identical controls. I suspect that most people use the modal dialog version, but the Options tab can be useful for browsing all user settings when someone is not familiar with the specific system setup or is simply new to CAD.</div>
+</article>
+<article class="post" id="msg10285">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-12-30 08:49 UTC</span>
+  </div>
+  <div class="post-body">Owen, I know there was a similar question in the past but this matches here again: is it possible to design a container dialog which can be used as an instance in the option tab as well as in a modal form? A tab is nothing else as such an instance of a control container.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10287">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-12-30 08:56 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2083.msg10285#msg10285 date=1388393354 wrote:</cite><br>
+...A tab is nothing else as such an instance of a control container...</blockquote><br>
+Do you mean something like "external references" (like DWG)? Defined once, used (referenced) often?</div>
+</article>
+<article class="post" id="msg10288">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-12-30 09:09 UTC</span>
+  </div>
+  <div class="post-body">Yes, Peter2, I mean it this way. It's a standard procedere in an object orientated development language (like C++, C#): you define an own custom control with a couple of controls and some custom events and properties. All the subcontrol's events are managed within the custom control.<br>
+Greetings, Fred</div>
+</article>
+<article class="post" id="msg10289">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-30 14:47 UTC</span>
+  </div>
+  <div class="post-body">Fred, the problem is that the OpenDCL forms system currently does not follow a proper container architecture that allows such a multiple-instance system. It will be pretty disruptive to change the design, but maybe some day.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

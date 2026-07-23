@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sizing modeless forms using the cursor in Studio · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1030</p>
+    <h1>Sizing modeless forms using the cursor in Studio</h1>
+    <p class="meta">Started by AutoKAD ·
+      2009-11-26 00:13 UTC ·
+      5 replies · SMF topic #1030</p>
+<article class="post" id="msg5265">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2009-11-26 00:13 UTC</span>
+  </div>
+  <div class="post-body">Studio - Stable Release: 5.1.2.3 <br>
+<br>
+When stretching a modeless form to size it using the cursor in Studio the change is shown but not applied.  After resizing the modeless form using the cursor, you cannot move a control beyond the previous size.  The only way to size the modeless form is to manually enter the size in its properties.  Can someone confirm that they are having the same issue?</div>
+</article>
+<article class="post" id="msg5266">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-11-26 01:25 UTC</span>
+  </div>
+  <div class="post-body">Seems to be ok for me...</div>
+</article>
+<article class="post" id="msg5271">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-26 02:44 UTC</span>
+  </div>
+  <div class="post-body">AutoKAD'<br>
+Are you able to post a small sample  LSP and ODCL to demonstrate. ?</div>
+</article>
+<article class="post" id="msg5305">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2009-11-26 16:03 UTC</span>
+  </div>
+  <div class="post-body">You won't need a sample for this one.  Do the following to quickly reproduce this behavior:<br>
+<br>
+Note: Behavior seems to be somewhat random.  I can't figure out a specific pattern. (see note below 6)<br>
+<br>
+1. Start up Studio<br>
+2. Add a modeless form<br>
+3. Change TitleBar = False<br>
+4. Add another modeless form<br>
+5. Change TitleBar = False<br>
+6. *Resizing with cursor FAIL. (resized values are not applied to the form's height and width properties)<br>
+      *Note: this sometimes will not occur on the second form addition, a third or forth addition is sometimes needed to reproduce behavior.<br>
+7. Add a control to that form in which cursor resizing failed.  You cannot move the control past the default size.<br>
+8. Behavior carriers over regardless of new form type and with new projects in same Studio instance.<br>
+<br>
+The TitleBar  property seems to be the culprit.  I've tried this with other properties set to false and was unable to reproduce the same behavior.<br>
+<br>
+-Kevin</div>
+</article>
+<article class="post" id="msg5314">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-26 22:12 UTC</span>
+  </div>
+  <div class="post-body">I could not reproduce this in OpenDCL 6, so it may be something that was fixed in the meantime. It would be helpful if you could try to reproduce in OpenDCL 6 to see if you can verify that the problem has been fixed.</div>
+</article>
+<article class="post" id="msg5316">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2009-11-27 00:14 UTC</span>
+  </div>
+  <div class="post-body">You're right Owen.  This cannot be reproduced in OpenDCL 6.  Switching to 6 right now.<br>
+<br>
+Thanks!<br>
+<br>
+-Kevin</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

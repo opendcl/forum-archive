@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How can I get a control object from his name or varname ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1346</p>
+    <h1>How can I get a control object from his name or varname ?</h1>
+    <p class="meta">Started by krunch ·
+      2010-10-02 15:15 UTC ·
+      7 replies · SMF topic #1346</p>
+<article class="post" id="msg7187">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2010-10-02 15:15 UTC</span>
+  </div>
+  <div class="post-body">Hello there, and thanks for this great system !<br>
+<br>
+As I have an array of controls, I need a reference to control objects from their name or varname, wich is a string argument..<br>
+How can I do that ? there's no 'GetControl' méthod..</div>
+</article>
+<article class="post" id="msg7188">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-10-02 19:32 UTC</span>
+  </div>
+  <div class="post-body">You can either specify controls by name rather than reference, or you can get the control reference by concatenating and evaluating the control's symbol name at runtime.</div>
+</article>
+<article class="post" id="msg7189">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2010-10-03 08:21 UTC</span>
+  </div>
+  <div class="post-body">Ok but how can I do that ?<br>
+<br>
+I miss a basic syntax, tentatively I made this...<br>
+<blockquote class="quote">(defun GetControl (name / tmp u)<br>
+  (setq tmp (dcl_Form_GetControls Proj_Form))<br>
+  (car(vl-remove-if-not '(lambda(u) (= (dcl_Control_Getname u) name)) tmp))<br>
+)</blockquote><br>
+<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg7190">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-10-03 09:01 UTC</span>
+  </div>
+  <div class="post-body">Hi, just use<br>
+<br>
+(dcl_Control_SetText myproj_myform_mytextbox "That's all!")<br>
+Please note that the variable myproj_myform_mytextbox will only be set during the form is visible.<br>
+<br>
+Or you do it that way:<br>
+<br>
+(dcl_Control_SetText "myproj" "myform" "mytextbox" "That's all!")<br>
+<br>
+With the last sample you can do:<br>
+<br>
+(mapcar '(lambda (strCtrl strValue) (dcl_Control_SetText "myproj" "myform" strCtrl strValue))  '("mytextbox1" "mytextbox2") '("A" "B"))<br>
+<br>
+Fred<br>
+</div>
+</article>
+<article class="post" id="msg7191">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2010-10-03 10:34 UTC</span>
+  </div>
+  <div class="post-body">Ok, I missed your 2nd (and 3rd) syntax ("mytextbox" is in a string handler).<br>
+<br>
+Thanks a lot</div>
+</article>
+<article class="post" id="msg7217">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2010-10-17 11:05 UTC</span>
+  </div>
+  <div class="post-body">hello krunch.<br>
+<br>
+I have published one demo that i think part of it include things u are looking for.<br>
+I will give you preview and upload here only one file from that demo.<br>
+<br>
+<br>
+;;;MID:SI-LBE-PUB-41/09 25. November 09<br>
+;;;OpenDCL_LanguageFile_Sample_f2/3<br>
+;;;dcl_xt_LibPart<br>
+;;;=====================================================================================================<br>
+;;;	Slavko Solutions for AutoCAD									<br>
+;;;	ArchiTools, LandTools, ToolsPlus, LBE								<br>
+;;;	PROGRAM © by SLAVKO IVANOVIC 									<br>
+;;;	slavko.ivanovich@gmail.com									<br>
+;;;	www.SlavkoSolutions.com[url=http://][url=http://]										<br>
+;;;-----------------------------------------------------------------------------------------------------<br>
+;;; License Agreement (Author's request)								<br>
+;;;													<br>
+;;; * You are free to use, modify this programs and code segments under following conditions:		<br>
+;;;		1. If you applying some changes on this code, save file with different name,		<br>
+;;;		   so original file content can always be traceable.					<br>
+;;;		2. If you are re-publishing original file, or partial content, leave Copyright Header.	<br>
+;;;		3. Don't expect from me any kind of support, but you can email me though.		<br>
+;;;-----------------------------------------------------------------------------------------------------<br>
+;;; * Content:												<br>
+;;;													<br>
+;;; This file contains some of functions that are part of My DCL Extented Functions (dcl_xt) library.  	<br>
+;;;													<br>
+;;; They are referenced with my -OpenDCL Language File Demo- so I decided to provide them Open as well. <br>
+;;;													<br>
+;;; But then, this file is also Sample by its self, so i will add description header. 			<br>
+;;;=====================================================================================================<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+;;;=====================================================================================================<br>
+;;;  ***												<br>
+;;;    Description:											<br>
+;;;													<br>
+;;;  Loading Odcl Project, user actually "fill" Acad namespace with Enames - OpenDCL Control Pointers.	<br>
+;;;  When Project is loaded, in runtime enviorment you can change almost everything in Project.		<br>
+;;;													<br>
+;;;  To make life easier to programer, OpenDCL automaticly (rhythmically) generate Symbol_Names		<br>
+;;;  and bound with specific ENAME handle, somelike (setq Symbol Value), and after set that symbol 	<br>
+;;;  name to NIL (recycle) when acces to Control is "no longer needed".					<br>
+;;;  													<br>
+;;;  For example:											<br>
+;;;	   In case of Project (MyProject.odcl), with one form (Form1), with one button (Button1),	<br>
+;;;  By defailt, OpenDCL do following:									<br>
+;;;    (Dcl_Project_Load "MyProject.odcl") 								<br>
+;;;	-&gt; This loads project and return string, but also allocate "first set" of Symbol_Names,		<br>
+;;;	   to enable access to Forms. In this example symbol is one &gt;&gt; MyProject_Form1.			<br>
+;;;	   Note that exposed Forms through symbols remain exposed.					<br>
+;;;    (Dcl_Form_Show MyProject_Form1)									<br>
+;;;	-&gt; This show a Form1, but also allocate set of symbols for each Control in a Form,		<br>
+;;;	   in this example symbol is one &gt;&gt; MyProject_Form1_Button1.					<br>
+;;;	   Note that after (Dcl_Form_Close MyProject_Form1) this symbol is nil.				<br>
+;;;													<br>
+;;;  When Form is active, you can catch this handle, iex (setq SaveMeControl MyProject_Form1_Button1),	<br>
+;;;  but what if you want to access ALL Controls and theirs Properties without Showing Forms?		<br>
+;;;-----------------------------------------------------------------------------------------------------<br>
+;;;  													<br>
+;;;  Functions in this Example File demonstrate powerful possibility to access and manipilate		<br>
+;;;  with Forms, Controls, Properties and Events immediately after calling (Dcl_Project_Load)		<br>
+;;;													<br>
+;;;  OpenDCL Runtime Enviorment provide few but Essential functions (methods) to Start digging		<br>
+;;;  OpenDCL Control Pointers that are represented as a ENAMEs.						<br>
+;;;													<br>
+;;;  For better understanding of this functions important is to note:					<br>
+;;;	* Both (Forms and Controls) are actually Controls.						<br>
+;;;	* Both (Properties and Events) are actually Properties.						<br>
+;;;													<br>
+;;;  - this kind of Opendcl handling is good for:							<br>
+;;;	- TRANSLATION, DIAGNOSTIC, MULTIPLE CONTORLS EDITING (check function dcl_Project_SaveAs),	<br>
+;;;	  VLX NAMESPACE HANDLING, ERROR TRAPPING, ... ... and expanding ideas ;)			<br>
+;;;													<br>
+;;;							Slavko Ivanovic, designer/drafter/programmer	<br>
+;;; Included (dcl_xt) Functions : 									<br>
+;;;						========================================================<br>
+;;;	dcl_Project_GetControls			<br>
+;;;	dcl_Project_GetControlsSpecial		<br>
+;;;	dcl_Project_ExposeControls		<br>
+;;;	dcl_Control_PropertyAvlb-p		<br>
+;;;	dcl_Control_FilterCommon		<br>
+;;;	dcl_Control_FilterExclusive		<br>
+;;;	dcl_Control_Type			<br>
+;;;	dcl_Control_GetAvlbProperties		<br>
+;;;	Dcl_Control_GetForm			<br>
+;;;	dcl_Control_GetEvents			<br>
+;;;	dcl_Lng_PrepareFromat			<br>
+;;;	dcl_Lng_ReadFile			<br>
+;;;						<br>
+;;;=============================================<br>
+											<br>
+<br>
+<br>
+Demo with all files was published here:  <a href="http://www.opendcl.com/forum/index.php?topic=1031.0" rel="nofollow noopener">{2}</a><br>
+<br>
+and here is lisp from preview.<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1453/LNGF-DCL_XT.LSP">LNGF-DCL_XT.LSP</a> <span class="muted">(38330 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10386">
+  <div class="post-head">
+    <span class="post-author">daka90</span>
+    <span class="post-date muted">2014-02-11 09:58 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1346.msg7190#msg7190 date=1286096474 wrote:</cite><br>
+Hi, just use<br>
+<br>
+(dcl_Control_SetText myproj_myform_mytextbox "That's all!")<br>
+Please note that the variable myproj_myform_mytextbox will only be set during the form is visible.<br>
+<br>
+Or you do it that way:<br>
+<br>
+(dcl_Control_SetText "myproj" "myform" "mytextbox" "That's all!")<br>
+<br>
+With the last sample you can do:<br>
+<br>
+(mapcar '(lambda (strCtrl strValue) (dcl_Control_SetText "myproj" "myform" strCtrl strValue))  '("mytextbox1" "mytextbox2") '("A" "B"))<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+THANK YOU FRED<br>
+Those examples should really be added to the helpfile ! I was fighting for 2 hours until I found this post.<br>
+here is the part about control name from the doc:<br>
+<br>
+<blockquote class="quote">[..] In such cases, the control can be identified either by passing the control handle that is stored automatically in the AutoLISP symbol named in the control's VarName property, or by passing the project name, form name, and control name (or in the case of forms, only the project name and form name) as strings.<br>
+</blockquote><br>
+<br>
+From that I never thought I should separate literally the parts of the control name string <br>
+<br>
+Thank you very much again</div>
+</article>
+<article class="post" id="msg10387">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-02-11 16:13 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=daka90 link=topic=1346.msg10386#msg10386 date=1392112687 wrote:</cite><br>
+Those examples should really be added to the helpfile !</blockquote><br>
+<br>
+Thanks for the feedback. I am looking at the documentation now to see how this could be improved. The Concepts\Object Model page only shows an example using the symbol name, and I will change this now to add an additional example using separate strings. The reference section of the help file that you quote is intended to be very short and concise, so I think it's best to not duplicate the examples there, but I'm open to suggestions for improving the wording to make the meaning more clear.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Opendcl 8.0.0.7 Help Needed. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2178</p>
+    <h1>Opendcl 8.0.0.7 Help Needed.</h1>
+    <p class="meta">Started by goodonline ·
+      2014-10-06 01:27 UTC ·
+      3 replies · SMF topic #2178</p>
+<article class="post" id="msg10933">
+  <div class="post-head">
+    <span class="post-author">goodonline</span>
+    <span class="post-date muted">2014-10-06 01:27 UTC</span>
+  </div>
+  <div class="post-body">Looking for help or possibly helping with a bug report for the latest alpha build.<br>
+This routine is bugging out on me after the _.dtext call<br>
+wish i could give you a line number! <br>
+Once you select a text option, instead of letting you type out the text it brings back the dialog (dialog should be closed for good at this point). When you cancel the dialog it crashes Autocad 2015<br>
+<br>
+This routine calls or utilizes many others so you won't be able to run it effectively, but may be able to read along and see what is happening.<br>
+<br>
+Autocad 2015<br>
+Opendcl 8.0.0.7<br>
+<br>
+This routine runs fine up to Autocad 2014<br>
+<br>
+If you need more files to test this fully, I can provide privately.<br>
+<br>
+ Thank you!<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2058/QText.lsp">QText.lsp</a> <span class="muted">(14123 bytes)</span></li><li><a href="../attachments/2059/LQ_2014.odcl">LQ_2014.odcl</a> <span class="muted">(17048 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10934">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-10-06 02:39 UTC</span>
+  </div>
+  <div class="post-body">You need to move your call to (command) into the main function after the call to (dcl-Form-Show) returns, otherwise it can run before AutoCAD has finished closing the modal dialog. There are several recent threads in this forum about the problem if you want to read more.</div>
+</article>
+<article class="post" id="msg10935">
+  <div class="post-head">
+    <span class="post-author">goodonline</span>
+    <span class="post-date muted">2014-10-06 15:19 UTC</span>
+  </div>
+  <div class="post-body">Awesome. I also had a missing variable at the end of the close statement.<br>
+<br>
+Thank you so much for keeping this project alive!<br>
+<br>
+Thank you Owen!<br>
+</div>
+</article>
+<article class="post" id="msg10936">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-10-06 16:05 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=goodonline link=topic=2178.msg10935#msg10935 date=1412608746 wrote:</cite><br>
+Thank you so much for keeping this project alive!</blockquote><br>
+<br>
+You're welcome, I'm glad you got it resolved. Thank you very much for helping to fund the OpenDCL project!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

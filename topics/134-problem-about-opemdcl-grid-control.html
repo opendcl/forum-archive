@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem about opemdcl grid control · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 134</p>
+    <h1>Problem about opemdcl grid control</h1>
+    <p class="meta">Started by dayange ·
+      2008-01-15 05:07 UTC ·
+      8 replies · SMF topic #134</p>
+<article class="post" id="msg541">
+  <div class="post-head">
+    <span class="post-author">dayange</span>
+    <span class="post-date muted">2008-01-15 05:07 UTC</span>
+  </div>
+  <div class="post-body">I am trying to use grid control, but I don't know how to get the value of a specified cell in gird control,<br>
+for example, if the cell type is set to AcadColor or Dropdown?<br>
+<br>
+Would you please give me some example code?<br>
+<br>
+And how to set default value for Dropdown cell in grid?</div>
+</article>
+<article class="post" id="msg542">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-01-15 06:42 UTC</span>
+  </div>
+  <div class="post-body">Hello dayange &amp; welcome to the team.<br>
+First have a look at the "Examples" folder under your OpenDCL install folder (usually C:\Program Files\OpenDCL Studio\Examples).<br>
+Drag the "_MasterDemo.LSP" file into your Acad window for an easy walk through of all the project. Most importantly have a look at the "GRID" project. It will show you how to pre-load the control, I.E. your Dropdown cell.<br>
+Second, when you're in the editor right-click on the grid and select "Intelligent Help". This will give you all the properties &amp; methods for that control.<br>
+Have a looks at:<br>
+(dcl_Grid_AddColumns)<br>
+(dcl_Grid_AddRow)<br>
+(dcl_Grid_AddString)<br>
+<br>
+(dcl_Grid_GetItemText)<br>
+(dcl_Grid_GetRowItems)<br>
+<br>
+Hope this helps &amp; let us know how you're doing &amp; if you need any more help.<br>
+</div>
+</article>
+<article class="post" id="msg544">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-01-15 08:42 UTC</span>
+  </div>
+  <div class="post-body">Hello dayange,<br>
+<br>
+I use opendcl grid control very often.<br>
+In some cases I use it in combination with a database.<br>
+The largest dialog I created with the grid control was a systemvariable manager - there are very different types of data. And all of them can be present in the grid.<br>
+<br>
+The values you put in the grid, must be strings in any case, even the original values are numbers.<br>
+Maybe I can help furthermore when you give me more details.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg545">
+  <div class="post-head">
+    <span class="post-author">dayange</span>
+    <span class="post-date muted">2008-01-15 10:55 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred, and thanks BazzaCAD.<br>
+I have gotten a row's list by (dcl_Grid_GetRowItems).<br>
+<br>
+Moreover, My quesstions are:<br>
+1. how to set default value for AcadColor cell in grid? <br>
+   I set "Red" or other integer number by dcl_Grid_AddString, but the control cannot <br>
+   display the correct color. What should I do?<br>
+<br>
+2. When I add a ComboBox(type is Colors) in Form, without adding any code, the list program<br>
+   will shutdown my Autocad 2006 at runtime--No alert, no message. What happened? How to solve it?<br>
+</div>
+</article>
+<article class="post" id="msg549">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-01-15 15:56 UTC</span>
+  </div>
+  <div class="post-body">Good catch, dayange,<br>
+<br>
+1. I already know about color issues in grid control, I already send a list with grid issues (especially with colors) to Owen.<br>
+<br>
+2. I don't know about issues in color combobox. Do you mean color combobox within the grid? Or as seperate combobox on the form?<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg554">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-01-15 23:26 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=dayange link=topic=134.msg545#msg545 date=1200394512 wrote:</cite><br>
+Thanks Fred, and thanks BazzaCAD.<br>
+I have gotten a row's list by (dcl_Grid_GetRowItems).<br>
+<br>
+Moreover, My quesstions are:<br>
+1. how to set default value for AcadColor cell in grid? <br>
+   I set "Red" or other integer number by dcl_Grid_AddString, but the control cannot <br>
+   display the correct color. What should I do?<br>
+<br>
+2. When I add a ComboBox(type is Colors) in Form, without adding any code, the list program<br>
+   will shutdown my Autocad 2006 at runtime--No alert, no message. What happened? How to solve it?<br>
+<br>
+</blockquote><br>
+<br>
+#1 Try this:<br>
+(dcl_Grid_SetItemStyle Grid_Dcl-1_grid1 <br>
+	 nRow [as Integer] <br>
+	 nCol [as Integer] <br>
+	 nStyle [as Integer] <br>
+	{Optional} nData1  [as Integer] <br>
+	{Optional} nData2 [as Integer] <br>
+	{Optional} sString [as Integer])<br>
+<br>
+See the Intelligent Help fro more info...<br>
+<em>Note:The style change only governs the behavior of the cell and what happens when the user clicks on the cell.<br>
+<br>
+For example if you set the style 33 - Linetype Cell, the current selection for the linetype must be correctly set in the dcl_Grid_AddString or dcl_Grid_AddRow functions. The item may not be changed to correctly display one of the listed items.</em><br>
+<br>
+#2, Sound's like a bug, and when I just tried to load the Misc demo in 2006 it did crash (ran fine 2008). Bug reported:<br>
+<a href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1872452&amp;group_id=187950&amp;atid=923363" rel="nofollow noopener">{2}</a><br>
+<br>
+</div>
+</article>
+<article class="post" id="msg566">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-01-17 05:43 UTC</span>
+  </div>
+  <div class="post-body">I don't have time to test right now, but you might try using (dcl_Grid_SetItemImage) function to set a color in the color dropdown.  Likewise, try (dcl_Grid_GetItemImage) to get the current selection.  I think this will work because the "image index" value is used as the current selection index for combo style cells. :)</div>
+</article>
+<article class="post" id="msg596">
+  <div class="post-head">
+    <span class="post-author">JMack</span>
+    <span class="post-date muted">2008-01-21 06:51 UTC</span>
+  </div>
+  <div class="post-body">Hi dayange,<br>
+<br>
+BazzaCAD got it right with dcl_Grid_SetItemStyle.  This dcl function will allow you to set the colors when the form initializes.<br>
+<br>
+When you add the row don't provide any data for the columns except the first one.<br>
+(setq iRowIndex (dcl_Grid_AddRow Project1_Form1_Grid1 "Row 1"))<br>
+Save the row index so you can setup the default values for the row with the proper data.<br>
+<br>
+To add a an AcadColor index do this.<br>
+(dcl_Grid_SetItemStyle Project1_Form1_Grid1 iRowIndex iColumnIndex iCellStyleIndex iAcadColorIndex)<br>
+<br>
+This will add a magenta cell to row 1 column 2:<br>
+(dcl_Grid_SetItemStyle Project1_Form1_Grid1 1 2 30 6)<br>
+<br>
+Hope that helps you out when you work with AcadColor Cells.  I'm not sure about setting default data, but it could be related to dcl_Grid_SetItemStyle.<br>
+<br>
+Cheers, JM<br>
+<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg598">
+  <div class="post-head">
+    <span class="post-author">dayange</span>
+    <span class="post-date muted">2008-01-21 10:22 UTC</span>
+  </div>
+  <div class="post-body">Thanks everyone.<br>
+I got it.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

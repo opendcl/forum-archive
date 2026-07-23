@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>5.0.0.4 so far · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/21-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 176</p>
+    <h1>5.0.0.4 so far</h1>
+    <p class="meta">Started by jb ·
+      2008-02-15 17:12 UTC ·
+      6 replies · SMF topic #176</p>
+<article class="post" id="msg773">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-02-15 17:12 UTC</span>
+  </div>
+  <div class="post-body">1. From a modeless Form: (getfiled . . .) function is disabled.  The dialog appears but nothing works - must escape to exit.  Works fine from a Palette.<br>
+<br>
+2. checkboxes : (dcl_Control_GetValue returns nil when the box is checked.  The onClicked event returns the correct value though - either a 1 or 0. I thought it was supposed to be nil or t?<br>
+<br>
+3. ListBox: calling the (command . . .) function bombs with a "Command: ; error: An error has occurred inside the *error* functioninvalid <br>
+AutoCAD command: nil"<br>
+<br>
+4. Tree Control: OK<br>
+<br>
+5. GraphicButton: calling the (command . . .) function bombs with a "Command: ; error: An error has occurred inside the *error* functioninvalid <br>
+AutoCAD command: nil"<br>
+<br>
+6. Splitter: OK - other than the sunken option is too "sunken". And the performance issue.<br>
+<br>
+7. Label: OK - but not using any of the new onClicked or mouse events - yet.<br>
+<br>
+more to come . . .</div>
+</article>
+<article class="post" id="msg778">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-02-15 19:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=176.msg773#msg773 date=1203095520 wrote:</cite><br>
+1. From a modeless Form: (getfiled . . .) function is disabled.  The dialog appears but nothing works - must escape to exit.  Works fine from a Palette.<br>
+2. checkboxes : (dcl_Control_GetValue returns nil when the box is checked.  The onClicked event returns the correct value though - either a 1 or 0. I thought it was supposed to be nil or t?<br>
+3. ListBox: calling the (command . . .) function bombs with a "Command: ; error: An error has occurred inside the *error* functioninvalid <br>
+AutoCAD command: nil"<br>
+4. Tree Control: OK<br>
+5. GraphicButton: calling the (command . . .) function bombs with a "Command: ; error: An error has occurred inside the *error* functioninvalid <br>
+AutoCAD command: nil"<br>
+6. Splitter: OK - other than the sunken option is too "sunken". And the performance issue.<br>
+7. Label: OK - but not using any of the new onClicked or mouse events - yet.<br>
+more to come . . .<br>
+</blockquote><br>
+<br>
+#1, Works for me. What is calling the (getfiled)?<br>
+#2, I think check boxes can now return 0, 1, or 2: https://sourceforge.net/forum/forum.php?thread_id=1937214&amp;forum_id=658811<br>
+#3 &amp; #5, set there "Event Invoke" to 1 - Allow (command...)</div>
+</article>
+<article class="post" id="msg780">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-02-15 20:11 UTC</span>
+  </div>
+  <div class="post-body">&gt;&gt; 6. Splitter: OK - other than the sunken option is too "sunken". And the performance issue.<br>
+<br>
+Already fixed for alpha 5<br>
+<br>
+&gt;&gt; 7. Label: OK - but not using any of the new onClicked or mouse events - yet.<br>
+<br>
+Works fine for me.<br>
+<br>
+Fred<br>
+</div>
+</article>
+<article class="post" id="msg784">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-02-15 21:13 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=176.msg778#msg778 date=1203104753 wrote:</cite><br>
+#2, I think check boxes can now return 0, 1, or 2: https://sourceforge.net/forum/forum.php?thread_id=1937214&amp;forum_id=658811<br>
+</blockquote><br>
+<br>
+Owen isn't this going to break existing code?<br>
+(if (dcl_Control_GetValue Proj_Form_ChkBox) T)</div>
+</article>
+<article class="post" id="msg791">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-15 22:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=176.msg784#msg784 date=1203110018 wrote:</cite><br>
+Owen isn't this going to break existing code?<br>
+(if (dcl_Control_GetValue Proj_Form_ChkBox) T)<br>
+</blockquote><br>
+<br>
+Yes, it will break existing code that expects a T or Nil.</div>
+</article>
+<article class="post" id="msg819">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-02-17 17:01 UTC</span>
+  </div>
+  <div class="post-body">#1 Ok, this is working now - my bad.<br>
+<br>
+#2 Checkbox: (dcl_Control_GetValue returns nil when the box is checked.  The onClicked event returns the correct value though - either a 1 or 0. <br>
+<br>
+Ok, the event invoke solved #3 and #5<br>
+<br>
+The new one is the Palette focus and user input thing.<br>
+<br>
+more to come . . ..<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg822">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-18 00:46 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=176.msg819#msg819 date=1203267678 wrote:</cite><br>
+#2 Checkbox: (dcl_Control_GetValue returns nil when the box is checked.</blockquote><br>
+<br>
+I can't reproduce this. Perhaps it has already been fixed in my internal build.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

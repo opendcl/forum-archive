@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Having an issue with dcl_ComboBox_SetCurSel · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1619</p>
+    <h1>Having an issue with dcl_ComboBox_SetCurSel</h1>
+    <p class="meta">Started by Chris K ·
+      2011-05-03 16:17 UTC ·
+      3 replies · SMF topic #1619</p>
+<article class="post" id="msg7960">
+  <div class="post-head">
+    <span class="post-author">Chris K</span>
+    <span class="post-date muted">2011-05-03 16:17 UTC</span>
+  </div>
+  <div class="post-body">I'm using OpenDCL to manage layer modifiers by discipline and subdiscipline.  As part of the the initial setup I set the current selection to the discipline and subdiscipline for the current drawing.  All works great until the discipline is the last one in the list.  Then, the next to last item is set active and you are not allowed to select the last item.<br>
+<br>
+<br>
+;; fill cboDiscipline<br>
+(defun Fill_cboDiscipline (/ cboList discipline)<br>
+  (dcl_Combobox_Clear LayerToolsForms_frmSetSystem_cboDiscipline)<br>
+  (setq	discipline (cdr (assoc "Disc" (cdr (getfileinfo))))<br>
+	cboList	   (acad_strlsort<br>
+		     (mapcar<br>
+		       'car<br>
+		       (GetDisciplineListByName)<br>
+		     )<br>
+		   )<br>
+  )<br>
+  (if (/= nil cboList)<br>
+    (progn<br>
+      (dcl_Control_SetList<br>
+	LayerToolsForms_frmSetSystem_cboDiscipline<br>
+	cboList<br>
+      )<br>
+      (if (member discipline cboList)<br>
+	(dcl_ComboBox_SetCurSel<br>
+	  LayerToolsForms_frmSetSystem_cboDiscipline<br>
+	  (- (length cboList) (length (member discipline cboList)))<br>
+	)<br>
+	(dcl_ComboBox_SetCurSel<br>
+	  LayerToolsForms_frmSetSystem_cboDiscipline<br>
+	  0<br>
+	)<br>
+      )<br>
+    )<br>
+  )<br>
+  <br>
+)<br>
+Anyone else experience a similar issue? <br>
+Below are a couple of items needed to test the code. I'm using version 6.0.2.2.<br>
+<br>
+GetFileInfo - returns a list with the following info for a drawing name "01RGA.dwg"<br>
+("01RGA"<br>
+   ("Bldg" . "01")<br>
+   ("BldgName" . "TUNNEL")<br>
+   ("Disc" . "Process")<br>
+   ("DiscAbbrev" . "R")<br>
+   ("SubDisc" . "Gases")<br>
+   ("SubDiscAbbrev" . "G")<br>
+   ("System" . "")<br>
+   ("SystemAbbrev" . "")<br>
+   ("Series" . "")<br>
+   ("Lvl" . "A")<br>
+   ("Sec" . "")<br>
+   ("SubSec" . "")<br>
+   ("Sequence" . "")<br>
+   ("SubSequence" . "")<br>
+   ("Switchboard" . "")<br>
+   ("SwitchboardSide" . "")<br>
+   ("Switch" . "")<br>
+   ("Column" . "")<br>
+   ("LookingDir" . "")<br>
+   ("DrawingType" . "Process Gases Base File")<br>
+   ("DrawingTypeID" . 1.0)<br>
+   ("IsBaseFile" . T)<br>
+   ("IsBaseGrid")<br>
+   ("IsSection")<br>
+   ("IsBaseBuildFile")<br>
+   ("IsWorkorder")<br>
+   ("IsXSheet")<br>
+   ("IsHookupFile")<br>
+   ("IsDetail")<br>
+   ("IsSUD")<br>
+   ("IsCover")<br>
+   ("IsPlan")<br>
+   ("IsPartial")<br>
+   ("IsTemp")<br>
+   ("IsModel")<br>
+   ("IsPOC")<br>
+   ("IsOp")<br>
+   ("IsDemo")<br>
+   ("IsUnderground")<br>
+   ("IsUnnamed")<br>
+   ("IsError")<br>
+   ("ErrorMsg" "")<br>
+)<br>
+<br>
+GetDisciplineListByName - returns a list with the following info:<br>
+(<br>
+   ("Life Safety" . "B")<br>
+   ("Civil" . "C")<br>
+   ("Fire Protection" . "F")<br>
+   ("Plumbing" . "P")<br>
+   ("Process" . "R")<br>
+)</div>
+</article>
+<article class="post" id="msg7961">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-05-03 17:08 UTC</span>
+  </div>
+  <div class="post-body">I don't see anything wrong with your code. Can you attach a simple example .odcl and .lsp file that demonstrates the problem?</div>
+</article>
+<article class="post" id="msg7962">
+  <div class="post-head">
+    <span class="post-author">Chris K</span>
+    <span class="post-date muted">2011-05-03 21:52 UTC</span>
+  </div>
+  <div class="post-body">Wierd.  I put together a little test form using the same code and it works as expected. I'm at a lost.  Still will not work with the same code in the main application.</div>
+</article>
+<article class="post" id="msg7963">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-05-04 02:03 UTC</span>
+  </div>
+  <div class="post-body">It may be a bug in your code, or it could be some unusual condition that exposes a bug. In any case, post back if you learn anything new about the cause.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

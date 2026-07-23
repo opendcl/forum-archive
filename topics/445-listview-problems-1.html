@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ListView Problems (1) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 445</p>
+    <h1>ListView Problems (1)</h1>
+    <p class="meta">Started by garcigj ·
+      2008-10-06 14:01 UTC ·
+      4 replies · SMF topic #445</p>
+<article class="post" id="msg1997">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2008-10-06 14:01 UTC</span>
+  </div>
+  <div class="post-body">OpenDCL Version 5.0.0.25 <br>
+ListView Problems: <br>
+<br>
+property "style" = 3 - Report <br>
+3 columns <br>
+<br>
+Use: AddItem (For Report Style) as Integer :<br>
+(Setq nRow (dcl_ListView_AddItem 2DrawArch_MemCarp_ListView1 IdImage Text1 Text2 Text3) <br>
+<br>
+ERROR: too many arguments <br>
+<br>
+Is this a BUG?<br>
+<br>
+Solution??? :<br>
+(Setq nRow (dcl_ListView_AddItem  2DrawArch_MemCarp_ListView1 IdImage Text1 ))  : OK<br>
+(dcl_ListView_SetItemText 2DrawArch_MemCarp_ListView1 nRow 1 Text2)<br>
+(dcl_ListView_SetItemText 2DrawArch_MemCarp_ListView1 nRow 2 Text3)</div>
+</article>
+<article class="post" id="msg2001">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-06 14:44 UTC</span>
+  </div>
+  <div class="post-body">Hi, garcigj, have a look into the help. The syntax of arguments have changed between ODCL 4 to ODCL 5!!!<br>
+<br>
+The position is not needed anymore. Try this:<br>
+<br>
+(Setq nRow (dcl_ListView_AddItem 2DrawArch_MemCarp_ListView1 (list IdImage Text1 Text2 Text3))<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2005">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2008-10-06 15:05 UTC</span>
+  </div>
+  <div class="post-body">OK. Thanks Fred..</div>
+</article>
+<article class="post" id="msg2009">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-06 18:15 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I just read my answer again and I saw that the first part "The position is not needed anymore. Try this:" doesn't match to the code "(Setq nRow (dcl_ListView_AddItem 2DrawArch_MemCarp_ListView1 (list IdImage Text1 Text2 Text3))". At first I wanted to write that the AddColumns method syntax has changed, too.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2015">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2008-10-07 14:09 UTC</span>
+  </div>
+  <div class="post-body">Fred, <br>
+<br>
+We understand anyway, it would be necessary to update the aid, but that is busy walks owen. <br>
+<br>
+Deputy code working:<br>
+(dcl_ListView_AddColumns 2DrawArch_MemCarp_ListView1<br>
+	  (list (list  "Rótulo" 0 90 0)(list  "Ud." 2 32 1)(list  "Bloque Db" 0 90 2)))<br>
+......<br>
+......<br>
+(Setq nRow (dcl_ListView_AddItem  2DrawArch_MemCarp_ListView1 (list IdImage (car Dato) (itoa (cadr Dato)) NameBlkDb)))<br>
+.....<br>
+<br>
+thanks</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

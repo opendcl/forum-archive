@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Slow load of project to autocad · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/4-source-code.html">Source Code</a> /
+      Topic 2940</p>
+    <h1>Slow load of project to autocad</h1>
+    <p class="meta">Started by Mostafa AbdelBaset ·
+      2024-09-25 19:57 UTC ·
+      3 replies · SMF topic #2940</p>
+<article class="post" id="msg14109">
+  <div class="post-head">
+    <span class="post-author">Mostafa AbdelBaset</span>
+    <span class="post-date muted">2024-09-25 19:57 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+i have a consideration about the load &amp; show form function.<br>
+when i load a project multiple times to autocad it gets slower and slower each time i load the project and show the form.<br>
+i have calculated the time for repeating load project/show form for 100 times and the result was as follow in milli seconds<br>
+<br>
+<span style="color:brown"><strong>(156 172 172 187 188 203 204 203 187 203 219 203 219 218 250 219 235 235 250 250 250 250 265 281 265 281 281 282 281 281 297 297 281 312 328 328 313 329 344 328 344 344 344 360 375 360 375 375 375 375 390 390 391 390 391 406 391 406 422 422 422 437 437 438 438 437 438 453 454 484 468 484 468 484 468 484 485 500 500 500 516 516 531 516 531 516 532 546 547 547 547 563 562 578 578 562 578 578 594 609)</strong></span><br>
+<br>
+as shown the more times i load the project/show the form the slower it will be.<br>
+is there any solution to make the load process faster?<br>
+<br>
+thank for your help in advance<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg14110">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2024-09-26 01:43 UTC</span>
+  </div>
+  <div class="post-body">Are you testing with the latest development build of OpenDCL Runtime? Which version of Acad? Can you attach the form and code you used to obtain these results?</div>
+</article>
+<article class="post" id="msg14111">
+  <div class="post-head">
+    <span class="post-author">Mostafa AbdelBaset</span>
+    <span class="post-date muted">2024-09-26 10:32 UTC</span>
+  </div>
+  <div class="post-body">i use autocad 2022 and 2023 and both face the same problem.<br>
+the problem solved when i updated from opendcl version 9.2.03 to 9.2.3.3<br>
+i didn't update to the 9.2.4.1 version as i have no admin rights on my PC to install it right now.may be i will check later when i update to this version<br>
+<br>
+this is the function i used to calculate the load project/show form time<br>
+<br>
+<br>
+(defun c:test ( / tmlst)<br>
+(defun timer ( / rTimeDiff)<br>
+; Check to see if the function was previously called<br>
+(if (= *g-timer-start-time* nil)<br>
+(progn<br>
+; Stores the current milliseconds<br>
+(setq *g-timer-start-time* (getvar "MILLISECS"))<br>
+(princ)<br>
+)<br>
+(progn<br>
+; Calculates and returns the time difference<br>
+(setq rTimeDiff (- (getvar "MILLISECS") *g-timer-start-time*)<br>
+*g-timer-start-time* nil)<br>
+rTimeDiff<br>
+)<br>
+)<br>
+)<br>
+<br>
+(repeat 100<br>
+(timer)<br>
+(dcl_Project_Load "findreplace" T)<br>
+(dcl_Form_Show findreplace_findreplace)<br>
+(setq tmlst (cons (timer) tmlst))<br>
+(dcl-Form-Close findreplace/findreplace 1)<br>
+(command "_.delay" 200) ; take a break time after each load<br>
+)<br>
+<br>
+tmlst<br>
+)<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg14112">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2024-09-26 18:14 UTC</span>
+  </div>
+  <div class="post-body">There were some reason performance and resource leak fixes, so I guess those fixes resolved the problem you encountered.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>INITIALIZE a COMBO-BOX with STYLE = &quot;4 - Colors&quot; · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2913</p>
+    <h1>INITIALIZE a COMBO-BOX with STYLE = &quot;4 - Colors&quot;</h1>
+    <p class="meta">Started by domenicomaria ·
+      2024-02-07 16:47 UTC ·
+      1 replies · SMF topic #2913</p>
+<article class="post" id="msg13974">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2024-02-07 16:47 UTC</span>
+  </div>
+  <div class="post-body">How to INITIALIZE a<br>
+COMBO-BOX with STYLE = "4 - Colors"<br>
+to a <strong>SPECIFIC INITIAL COLOR</strong>?<br>
+<br>
+DCL-COMBOBOX-SETCURSEL wants an INTEGER<br>
+<br>
+and this doesn't work<br>
+with this type of COMBO-BOX</div>
+</article>
+<article class="post" id="msg13977">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2024-02-11 07:23 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=domenicomaria link=msg=13975 date=1707326966 wrote:</cite><br>
+<pre class="code"><code>(defun =&gt;&lt;=  (valx start-val end-val) (and (&gt;= valx start-val) (&lt;= valx end-val)))<br>
+<br>
+(if(=&gt;&lt;= col-no 0 7)<br>
+   (dcl-combobox-setcursel ctrl-name (+ col-no 1) )<br>
+   (progn<br>
+      (dcl-ComboBox-AddColor  ctrl-name col-no)<br>
+      (dcl-combobox-setcursel ctrl-name 0)<br>
+   )<br>
+)</code></pre><br>
+<br>
+this works <br>
+</blockquote><br>
+<br>
+<strong>the previuos it is wrong !</strong><br>
+<br>
+<pre class="code"><code>(defun DCL-COMBOBOX-COLOR-INIT ( ctrl-name col-no / col-pos )<br>
+	(if(not (setq col-pos (dcl-ComboBox-FindColor ctrl-name col-no) ) )<br>
+		(progn<br>
+			(dcl-ComboBox-AddColor ctrl-name col-no )<br>
+			(setq col-pos (dcl-ComboBox-FindColor ctrl-name col-no) )<br>
+		)<br>
+	)<br>
+	(dcl-combobox-setcursel ctrl-name col-pos )<br>
+)</code></pre><br>
+<br>
+while this one seems to be good !</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

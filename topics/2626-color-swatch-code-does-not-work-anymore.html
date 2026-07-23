@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Color Swatch code does not work anymore · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2626</p>
+    <h1>Color Swatch code does not work anymore</h1>
+    <p class="meta">Started by RGUS ·
+      2018-08-22 21:55 UTC ·
+      4 replies · SMF topic #2626</p>
+<article class="post" id="msg12969">
+  <div class="post-head">
+    <span class="post-author">RGUS</span>
+    <span class="post-date muted">2018-08-22 21:55 UTC</span>
+  </div>
+  <div class="post-body">Years ago, I had some great help from people here to create a color swatch using OpenDCL. It was awesome!<br>
+Now with ACAD 2019.1 Version P103.0.0 and OpenDCL Version 9.0.1.5, It doesn't close the dialog box anymore.<br>
+<br>
+I have tried all sorts of syntax with the (Dcl-Form-Close), but nothing closes the dialog box.<br>
+<br>
+I'm sure I'm doing something basically wrong, but what use to work in previous versions of ACAD and OpenDCL no longer does.<br>
+Any pointers and slapping about my face would be appreciated.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2417/SWATCH.LSP">SWATCH.LSP</a> <span class="muted">(1593 bytes)</span></li><li><a href="../attachments/2418/SWATCH.odcl">SWATCH.odcl</a> <span class="muted">(10106 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12970">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-08-22 22:21 UTC</span>
+  </div>
+  <div class="post-body">Hi, <br>
+<br>
+these are the problematic lines:<br>
+<pre class="code"><code>(Defun Colorbuttononclick (Index)<br>
+(command "color" Index)<br>
+(Dcl-Form-Close SWATCH/SWATCH)<br>
+)</code></pre><br>
+<br>
+Beginning with AutoCAD 2015 you are forced to finish event right before calling commands. It matches to many forum topics and my answer alsways is: don't leave the car before stopping it! Means: don't start any command until any event function has completely finished. You have either to switch the event invoke of every button to Allow command or move the (command ...)-line outside the event or use ActiveX-functions instead of commands.<br>
+<br>
+Buttons in modeless forms the Event Invoke=KeepFocus have to be handled similar to buttons in modal forms.<br>
+Hope that helps.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg12971">
+  <div class="post-head">
+    <span class="post-author">RGUS</span>
+    <span class="post-date muted">2018-08-22 22:32 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2626.msg12970#msg12970 date=1534976508 wrote:</cite><br>
+Hi, <br>
+<br>
+these are the problematic lines:<br>
+<pre class="code"><code>(Defun Colorbuttononclick (Index)<br>
+(command "color" Index)<br>
+(Dcl-Form-Close SWATCH/SWATCH)<br>
+)</code></pre><br>
+<br>
+Beginning with AutoCAD 2015 you are forced to finish event right before calling commands. It matches to many forum topics and my answer alsways is: don't leave the car before stopping it! Means: don't start any command until any event function has completely finished. You have either to switch the event invoke of every button to Allow command or move the (command ...)-line outside the event or use ActiveX-functions instead of commands.<br>
+<br>
+Buttons in modeless forms the Event Invoke=KeepFocus have to be handled similar to buttons in modal forms.<br>
+Hope that helps.<br>
+Regards, Fred<br>
+</blockquote><br>
+<br>
+Thanks for the quick response Fred.<br>
+I just have no idea what "<em>switch the event invoke of every button to Allow command</em>" means or how to do this in the OpenDCL Studio.<br>
+Why doesn't the EXIT function work when there is no 'command' called inside the function or outside.<br>
+<br>
+(defun c:SWATCH/SWATCH/EXIT#OnClicked (/)<br>
+(dcl-Form-Close SWATCH/SWATCH)<br>
+)<br>
+<br>
+It doesn't close the dialog box when clicked.<br>
+<br>
+I'm too scared to ask much more in case I'm thrashed with a big stick.<br>
+</div>
+</article>
+<article class="post" id="msg12973">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-08-23 04:20 UTC</span>
+  </div>
+  <div class="post-body">Hi, your exit button works for me.<br>
+To be honest, I didn't look at your odcl file yesterday. I've just seen that all your buttons are already set to AllowCommand.<br>
+In the end I started your project - and it works like a charm. So where is the problem?<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2419/swatch.zip">swatch.zip</a> <span class="muted">(1239634 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12976">
+  <div class="post-head">
+    <span class="post-author">RGUS</span>
+    <span class="post-date muted">2018-08-23 06:01 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2626.msg12973#msg12973 date=1534998041 wrote:</cite><br>
+Hi, your exit button works for me.<br>
+To be honest, I didn't look at your odcl file yesterday. I've just seen that all your buttons are already set to AllowCommand.<br>
+In the end I started your project - and it works like a charm. So where is the problem?<br>
+Regards, Fred<br>
+</blockquote><br>
+<br>
+Thanks, Fred,<br>
+I just got home and tried it on my machine here, and yes all is good. There must be a bad installation of something at work. Frustrating, but I'll find it.<br>
+Thanks so much for your input and help.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

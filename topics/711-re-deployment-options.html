@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Re: deployment options.. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/19-deployment.html">Deployment</a> /
+      Topic 711</p>
+    <h1>Re: deployment options..</h1>
+    <p class="meta">Started by owenwengerd ·
+      2009-04-05 21:46 UTC ·
+      13 replies · SMF topic #711</p>
+<article class="post" id="msg3393">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-05 21:46 UTC</span>
+  </div>
+  <div class="post-body">I've attached a VBScript example that performs a silent reinstall of the OpenDCL Runtime MSI by looking up the product code from the list of installed applications. Note that this won't work unless you installed from the runtime MSI, because the hard-coded UpgradeCode is from the runtime MSI. The same tactic can be used with the OpenDCL Studio MSI, but the UpgradeCode is different.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/661/RepairOpenDCLRuntime.zip">RepairOpenDCLRuntime.zip</a> <span class="muted">(658 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3399">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-06 06:53 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=698.msg3386#msg3386 date=1238949962 wrote:</cite><br>
+The other option is to specify the MSI file instead of the product code GUID.<br>
+</blockquote><br>
+<br>
+Hm, that could be a solution. Specifing the MSI makes it possible to include a newer Runtime.MSI within a single Servicepack.exe along with other new files. If the ReleaseNumber of the copied MSI is newer than the installed release on the client computer (in a network environment) the MSI will be called to install (checking the release means to avoid that the MSI will be called at <strong>every</strong> start of our application).<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3407">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-04-06 16:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=698.msg3393#msg3393 date=1238968015 wrote:</cite><br>
+I've attached a VBScript example that performs a silent reinstall of the OpenDCL Runtime MSI by looking up the product code from the list of installed applications. Note that this won't work unless you installed from the runtime MSI, because the hard-coded UpgradeCode is from the runtime MSI. The same tactic can be used with the OpenDCL Studio MSI, but the UpgradeCode is different.<br>
+</blockquote><br>
+<br>
+Thanks Owen, looks good. But does this only work for reinstalls or for first time installs also?<br>
+</div>
+</article>
+<article class="post" id="msg3409">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-06 18:13 UTC</span>
+  </div>
+  <div class="post-body">That only works for re-installs. First time installs must use the MSI file.</div>
+</article>
+<article class="post" id="msg4009">
+  <div class="post-head">
+    <span class="post-author">chairpak</span>
+    <span class="post-date muted">2009-06-15 23:27 UTC</span>
+  </div>
+  <div class="post-body">Hello, <br>
+I have some new machines that are 64 bit running ACAD MEP 2010. I had just got all the ACAD MEP 2009 up and running using OpenDCL. I have not found a msi version (past or present) that installs correctly on these newer Dell Laptops. They are new and only have ACAD MEP on them outside of the usual windows and Internet softwares. Any suggestions?<br>
+<br>
+Thank you in advance.</div>
+</article>
+<article class="post" id="msg4010">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2009-06-16 06:12 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen.</div>
+</article>
+<article class="post" id="msg4011">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-16 06:33 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=chairpak link=topic=711.msg4009#msg4009 date=1245108432 wrote:</cite><br>
+I have not found a msi version (past or present) that installs correctly on these newer Dell Laptops.</blockquote><br>
+<br>
+What exactly does not work?</div>
+</article>
+<article class="post" id="msg4024">
+  <div class="post-head">
+    <span class="post-author">chairpak</span>
+    <span class="post-date muted">2009-06-16 16:03 UTC</span>
+  </div>
+  <div class="post-body">System:<br>
+Windows XP Professional x64 Edition<br>
+Intel xeon 1.6 Ghz CPU<br>
+4GB Ram<br>
+ACAD MEP 2010<br>
+<br>
+When installing 5.1.1.4 Runtime we get:<br>
+Error code 2356<br>
+<br>
+When installing 5.1.1.5 Studio:<br>
+Error Code 2356<br>
+<br>
+Then tolds to restart the installer again.<br>
+</div>
+</article>
+<article class="post" id="msg4027">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-16 16:38 UTC</span>
+  </div>
+  <div class="post-body">Please try logging the installation and attach the log file (or email it to me at owenw@manusoft.com) so I can see where it's failing. Create the log file by running msiexec at the command prompt:<br>
+<br>
+msiexec /log /i OpenDCL.Runtime.5.1.1.6.msi</div>
+</article>
+<article class="post" id="msg4032">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-06-16 16:56 UTC</span>
+  </div>
+  <div class="post-body">I just updated my Studio from 5.1.1.5 to 5.1.1.6 on Win XP Pro (32 bit) with Acad 2008, 2009, 2010 installed &amp; all seams fine.<br>
+Seams like it maybe a 64 bit issue our a vertical product issue....</div>
+</article>
+<article class="post" id="msg4038">
+  <div class="post-head">
+    <span class="post-author">chairpak</span>
+    <span class="post-date muted">2009-06-16 18:32 UTC</span>
+  </div>
+  <div class="post-body">OK,<br>
+<br>
+Ran the install from dos and it seemed to install correctly. <br>
+The log file was more like a help file and gave no stats of this machine.<br>
+<br>
+I ran it twice thinking I may have mistyped the command but still get the same result.<br>
+<br>
+Also, If there is a procedure that I could follow to do a manual install I would like to have that as well. I see that there is talk of a manual setup, but I have yet to actually find it.<br>
+<br>
+<br>
+Here is what the log looks like:<br>
+<br>
+<br>
+Windows ® Installer. V 4.5.6001.22159 <br>
+<br>
+msiexec /Option  [Optional Parameter]<br>
+<br>
+Install Options<br>
+	 <br>
+		Installs or configures a product<br>
+	/a <br>
+		Administrative install - Installs a product on the network<br>
+	/j  [/t ] [/g ]<br>
+		Advertises a product - m to all users, u to current user<br>
+	 <br>
+		Uninstalls the product<br>
+Display Options<br>
+	/quiet<br>
+		Quiet mode, no user interaction<br>
+	/passive<br>
+		Unattended mode - progress bar only<br>
+	/q[n|b|r|f]<br>
+		Sets user interface level<br>
+		n - No UI<br>
+		b - Basic UI<br>
+		r - Reduced UI<br>
+		f - Full UI (default)<br>
+	/help<br>
+		Help information<br>
+Restart Options<br>
+	/norestart<br>
+		Do not restart after the installation is complete<br>
+	/promptrestart<br>
+		Prompts the user for restart if necessary<br>
+	/forcerestart<br>
+		Always restart the computer after installation<br>
+Logging Options<br>
+	/l[i|w|e|a|r|u|c|m|o|p|v|x|+|!|*] <br>
+		i - Status messages<br>
+		w - Nonfatal warnings<br>
+		e - All error messages<br>
+		a - Start up of actions<br>
+		r - Action-specific records<br>
+		u - User requests<br>
+		c - Initial UI parameters<br>
+		m - Out-of-memory or fatal exit information<br>
+		o - Out-of-disk-space messages<br>
+		p - Terminal properties<br>
+		v - Verbose output<br>
+		x - Extra debugging information<br>
+		+ - Append to existing log file<br>
+		! - Flush each line to the log<br>
+		* - Log all information, except for v and x options<br>
+	/log <br>
+		Equivalent of /l* <br>
+Update Options<br>
+	/update [;Update2.msp]<br>
+		Applies update(s)<br>
+	/uninstall [;Update2.msp] /package <br>
+		Remove update(s) for a product<br>
+Repair Options<br>
+	/f[p|e|c|m|s|o|d|a|u|v] <br>
+		Repairs a product<br>
+		p - only if file is missing<br>
+		o - if file is missing or an older version is installed (default)<br>
+		e - if file is missing or an equal or older version is installed<br>
+		d - if file is missing or a different version is installed<br>
+		c - if file is missing or checksum does not match the calculated value<br>
+		a - forces all files to be reinstalled<br>
+		u - all required user-specific registry entries (default)<br>
+		m - all required computer-specific registry entries (default)<br>
+		s - all existing shortcuts (default)<br>
+		v - runs from source and recaches local package<br>
+Setting Public Properties<br>
+	<br>
+<br>
+Consult the Windows ® Installer SDK for additional documentation on the<br>
+command line syntax.<br>
+<br>
+Copyright © Microsoft Corporation. All rights reserved.<br>
+Portions of this software are based in part on the work of the Independent JPEG Group.<br>
+<br>
+<br>
+Thank you is advance.<br>
+</div>
+</article>
+<article class="post" id="msg4044">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-06-16 21:49 UTC</span>
+  </div>
+  <div class="post-body">The help file popped up because you (&amp; Owen :)) didn't do the arguments right. (I made the same mistake &amp; read the help)<br>
+You'll note in the help file the /log is expecting a file name, where to put the log.<br>
+<br>
+msiexec /log C:log.txt /i OpenDCL.Runtime.5.1.1.6.msi<br>
+<br>
+then C:log.txt will be created...<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4045">
+  <div class="post-head">
+    <span class="post-author">chairpak</span>
+    <span class="post-date muted">2009-06-16 23:21 UTC</span>
+  </div>
+  <div class="post-body">Sheesh... Thank you Bazzad.<br>
+<br>
+I did a complete thrashing of any and all programs that were installed on the new laptop.<br>
+I then re-installed ACAD MEP 2010<br>
+I then re-installed OpenDCL 5.1.1.6 with no hick - ups<br>
+<br>
+Everything is fine now. My dialogs work perfect. <br>
+<br>
+Just a note to all: re-compile your odcl.lsp files and add to your code. <br>
+<br>
+Thanks all for your help. Now I can play with the other new machines scattered all over the US.</div>
+</article>
+<article class="post" id="msg4047">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-17 02:57 UTC</span>
+  </div>
+  <div class="post-body">I'm glad you got it working. Sorry about the wild goose chase.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

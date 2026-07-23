@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Incorrect display of pallets in Bricscad · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1782</p>
+    <h1>Incorrect display of pallets in Bricscad</h1>
+    <p class="meta">Started by joern bosse ·
+      2012-04-02 10:36 UTC ·
+      2 replies · SMF topic #1782</p>
+<article class="post" id="msg8764">
+  <div class="post-head">
+    <span class="post-author">joern bosse</span>
+    <span class="post-date muted">2012-04-02 10:36 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+I have a problem with the representation of pallets into Bricscad, they are only shown as a gray area, more is not to see.<br>
+<br>
+I'm using OpenDcl 7.0.0.4 and Bricscad 12.1.22 DE<br>
+<br>
+In AutoCAD 2012 the pallet will be displayed correctly. Do I make a mistake?<br>
+<br>
+greetings<br>
+Jörn bosse<br>
+<br>
+<br>
+(defun c:Palette ( / )<br>
+  (command "OPENDCL")<br>
+  (dcl_Project_Load (findfile "Palette4Bricscad.odcl") T)<br>
+  (dcl_Form_Show Palette4BricsCAD)<br>
+  )<br>
+<br>
+<br>
+(defun c:Palette4BricsCAD_OnInitialize (/)<br>
+  (dcl_Control_SetText Palette4BricsCAD_Text_Test "Palettentest für Bricscad")<br>
+)<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1717/PaletteInAutoCAD.gif">PaletteInAutoCAD.gif</a> <span class="muted">(22385 bytes)</span></li><li><a href="../attachments/1718/PaletteInBricscad.gif">PaletteInBricscad.gif</a> <span class="muted">(23828 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8765">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-04-02 14:30 UTC</span>
+  </div>
+  <div class="post-body">It seems that palettes are not yet (correctly) implemented in BC.<br>
+Using a control bar can be a good alternative:<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=1618.0" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg8766">
+  <div class="post-head">
+    <span class="post-author">joern bosse</span>
+    <span class="post-date muted">2012-04-02 15:43 UTC</span>
+  </div>
+  <div class="post-body">Hallo Roy,<br>
+Thank you for your tip, I think I'll make it so (it has already works in the test-run).<br>
+<br>
+greets<br>
+Jörn<br>
+<br>
+PS: Sorry, my English is sponsored by google-Translator ;D</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

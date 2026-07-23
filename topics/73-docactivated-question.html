@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DocActivated question · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 73</p>
+    <h1>DocActivated question</h1>
+    <p class="meta">Started by Matt W ·
+      2007-10-18 13:23 UTC ·
+      2 replies · SMF topic #73</p>
+<article class="post" id="msg317">
+  <div class="post-head">
+    <span class="post-author">Matt W</span>
+    <span class="post-date muted">2007-10-18 13:23 UTC</span>
+  </div>
+  <div class="post-body">I've got a dockable form with a treeview control.  When I close all open drawings the treeview is cleared (using the EnteringNoDocState event).  When I open or start a new drawing, the treeview remains empty....but I don't want it to.  I want it to repopulate itself.  I've got code in place for the DocActivated event, but nothing seems to happen when a new drawing is started or an existing drawing is opened.<br>
+<br>
+Also, should I be loading the LSP within my ACAD.lsp so it's available with each drawing?  I'm confused on what the "best practices" would be for something like this.<br>
+<br>
+Thanks (and yes, I've cross-posted at the Swamp).</div>
+</article>
+<article class="post" id="msg318">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2007-10-18 14:48 UTC</span>
+  </div>
+  <div class="post-body">I have a custom menu which handles loading all my lisp / fas apps through the associated mnl file.  I would think you would want to use the acaddoc.lsp file - which loads with every drawing (like a .mnl file).  I have the following code at the bottom of the form control code which handles floating forms:<br>
+<br>
+<pre class="code"><code>;;;							;<br>
+;;;		Floating Form				;<br>
+;;;		Document Opened				;<br>
+;;;							;<br>
+<br>
+(defun jb:Layerstates_IsFloating  (/ )<br>
+  (jbLoadARX)<br>
+  (defun EnsureProjectLoaded  (project / project-path)<br>
+    (if	(not (setq project-path (dcl_Project_Load project)))<br>
+      (progn <br>
+	(alert (strcat "ODCL project \"" project "\" failed to load!"))<br>
+	(exit) <br>
+	)))<br>
+  (EnsureProjectLoaded "jb501")<br>
+<br>
+  (if dcl_HideErrorMsgBox<br>
+    (progn<br>
+  (if (dcl_Form_IsActive jb501_00)<br>
+    (c:jb501_00_OnDocActivated)))<br>
+    (alert "The OpenDCL arx module did not load!"))<br>
+  (princ))<br>
+<br>
+(jb:Layerstates_IsFloating)</code></pre><br>
+<br>
+The code ensures the ARX is loaded, the project is loaded, and if the form is active runs the onInitialize sub routine.</div>
+</article>
+<article class="post" id="msg335">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-10-19 20:28 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Matt W link=topic=73.msg317#msg317 date=1192713806 wrote:</cite><br>
+Also, should I be loading the LSP within my ACAD.lsp so it's available with each drawing?  I'm confused on what the "best practices" would be for something like this.<br>
+</blockquote><br>
+<br>
+You should load and initialize your form in AcadDoc.lsp (not Acad.lsp).  The lisp will run every time a new drawing is opened.  In your lisp, check whether the form is already active -- if it is, just repopulate the controls.  If you don't want the form displayed automatically at startup, you have to set a global flag on the blackboard to signal your startup code whether or not the form is to be displayed. :)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

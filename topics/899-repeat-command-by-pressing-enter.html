@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Repeat Command By Pressing Enter · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 899</p>
+    <h1>Repeat Command By Pressing Enter</h1>
+    <p class="meta">Started by c2k ·
+      2009-09-02 18:48 UTC ·
+      7 replies · SMF topic #899</p>
+<article class="post" id="msg4479">
+  <div class="post-head">
+    <span class="post-author">c2k</span>
+    <span class="post-date muted">2009-09-02 18:48 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+Does anyone know how to get the command a button performs to repeat by pressing enter at the command line?<br>
+<br>
+What I have noticed is the button executes the command just fine, but if I press enter in order to repeat the command it doesn't repeat the command the button performed, instead it repeats the last command issued before the DCL button was pushed.<br>
+<br>
+Thanks in advance.</div>
+</article>
+<article class="post" id="msg4481">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-02 19:09 UTC</span>
+  </div>
+  <div class="post-body">What you describe indicates that the button lost the input focus. At the end of your button's OnClicked event handler, try setting the input focus back to the button to see if that works for you. You may also need to set the form's Keep Focus property.</div>
+</article>
+<article class="post" id="msg4483">
+  <div class="post-head">
+    <span class="post-author">c2k</span>
+    <span class="post-date muted">2009-09-02 20:17 UTC</span>
+  </div>
+  <div class="post-body">I tried setting the focus back in the lisp... didn't work.  I had the Visual LISP editor open with it set to animate and after hitting the button it starts the function which in turn issues the first of 3 operations.  This operation is an external command that opens a dialog that is not part of the DCL, it is part of a different program.  Once I am done in that dialog &amp; press OK to close it, the function continues and issues the second &amp; third operations which set a value to a progress bar on the form &amp; sets a caption on the form. Then the first operation continues by having me select objects in the drawing.  FYI, the form is a palette (modeless).<br>
+<br>
+When I add the operation to set the focus back it issues it right after the caption is updated and before the external command has me select objects.  So that doesn't work.<br>
+<br>
+I don't think my problem is with the setup of the form, but with AutoCAD not recognizing the function for the button as a command.  Does that make sense?<br>
+<br>
+If I manually type the function name for the button and after running it once, hit enter, it executes it again.  So it works when manually running the function, but not when it is run from the form.  Why would that be?</div>
+</article>
+<article class="post" id="msg4485">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-03 03:00 UTC</span>
+  </div>
+  <div class="post-body">The event handler is executed as a lisp function, not as a command, so that is why it doesn't repeat on its own. You could define a second command that contains the button's event handler code, then change the button's event handler to a single dcl_SendString call that executes the new command. This would allow AutoCAD to process the command in the normal way, thus allowing it to be repeated.</div>
+</article>
+<article class="post" id="msg4490">
+  <div class="post-head">
+    <span class="post-author">c2k</span>
+    <span class="post-date muted">2009-09-03 13:53 UTC</span>
+  </div>
+  <div class="post-body">I figured it had to be something like that.  So even though in the lisp it is defined with a "c:" as in "(defun <strong>c:</strong>_OnClicked (/))" it is only sending it as "(defun _OnClicked (/))".<br>
+<br>
+So if my external command is "renumber", instead of issuing "(vl-cmdf "renumber")", I could issue "(dcl_SendString "renumber")"<br>
+<br>
+Thanks for your help.  :)</div>
+</article>
+<article class="post" id="msg4491">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-03 14:39 UTC</span>
+  </div>
+  <div class="post-body">Actually the event handler is called as e.g. (c:_OnClicked), but you have the right idea. Also, don't forget to append a space or line feed to the end of your command in the call to dcl_SendString.</div>
+</article>
+<article class="post" id="msg4493">
+  <div class="post-head">
+    <span class="post-author">c2k</span>
+    <span class="post-date muted">2009-09-03 14:46 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=899.msg4491#msg4491 date=1251988745 wrote:</cite><br>
+Actually the event handler is called as e.g. (c:_OnClicked), but you have the right idea.</blockquote><br>
+OK, I just copied that out of the help file.<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=899.msg4491#msg4491 date=1251988745 wrote:</cite>Also, don't forget to append a space or line feed to the end of your command in the call to dcl_SendString.<br>
+</blockquote><br>
+OK, thanks for the additional info.  I will give it a try.</div>
+</article>
+<article class="post" id="msg4495">
+  <div class="post-head">
+    <span class="post-author">c2k</span>
+    <span class="post-date muted">2009-09-03 15:58 UTC</span>
+  </div>
+  <div class="post-body"> ;D  Alright, that worked great! Thanks again.  8)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_ListBox_SelectString not working? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2025</p>
+    <h1>dcl_ListBox_SelectString not working?</h1>
+    <p class="meta">Started by funkitect ·
+      2013-09-11 18:57 UTC ·
+      7 replies · SMF topic #2025</p>
+<article class="post" id="msg9987">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2013-09-11 18:57 UTC</span>
+  </div>
+  <div class="post-body">I can't get dcl_ListBox_SelectString to work using version 7.0.0.14.  I've got the control in multi-select mode and I can confirm that I have the correct text being feed into the function using "(alert scale1)" as shown in my code below.  Nothing is ever selected.<br>
+<br>
+<br>
+<br>
+		(cond<br>
+			(#lsLastScales<br>
+				;select all the scales in the list...'("48" "24" "96")<br>
+				;I'm not at all sure if this is a valid way to select multiple<br>
+				;items in a listbox since I can't get the function to work!<br>
+				(foreach scale1 #lsLastScales<br>
+					 (alert scale1)<br>
+					 (dcl_ListBox_SelectString LSscale scale1)<br>
+				)<br>
+			)<br>
+				<br>
+			((&gt; (atoi SFdflt) 0)<br>
+				;select just the default scale..i.e. "48"<br>
+				;This doesn't work either....<br>
+				(alert scale1)<br>
+				(dcl_ListBox_SelectString LSscale SFdflt)<br>
+			)<br>
+			(t<br>
+				;just select the first item on the list<br>
+				(dcl_ListBox_SelectItem LSscale 0 t)<br>
+			)<br>
+		)<br>
+<br>
+....bug or user error?  <br>
+<br>
+James</div>
+</article>
+<article class="post" id="msg9988">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-09-11 19:15 UTC</span>
+  </div>
+  <div class="post-body">The SelectString function uses the LB_SELECTSTRING message, and <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb761327(v=vs.85).aspx" rel="nofollow noopener">{2}</a> that message will not work in a multi-select listbox. You can use FindString + SelectItem instead. I'll have a look at the function to see if it's feasible to fake it for a multi-select listbox, and if not, add a note to the documentation.</div>
+</article>
+<article class="post" id="msg9989">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2013-09-11 19:57 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen,<br>
+<br>
+I came to the same conclusion for the workaround and it works perfectly for multiple selections. There is still a bit of a problem.  I've found that if one of the items in the listbox is an empty string "" and you search for "" all the items get selected. <br>
+<br>
+		(cond<br>
+			(#lsLastScales<br>
+				;select all the scale in the list...'("" "48" "24" "96")<br>
+				(foreach scale1 #lsLastScales<br>
+					 (dcl_ListBox_SelectItem LSscale (dcl_ListBox_FindString LSscale scale1) t)<br>
+				)<br>
+			)<br>
+			<br>
+			((&gt; (atoi SFdflt) 0)<br>
+				;select just the default scale..i.e. "48"<br>
+				(dcl_ListBox_SelectItem LSscale (dcl_ListBox_FindString LSscale SFdflt) t)<br>
+			)<br>
+			(t<br>
+				;just select the first item on the list<br>
+				(dcl_ListBox_SelectItem LSscale 0 t)<br>
+			)<br>
+		)</div>
+</article>
+<article class="post" id="msg9990">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-09-11 20:19 UTC</span>
+  </div>
+  <div class="post-body">You need to check the result of FindString to make sure something was found before you call SelectItem, as SelectItem(-1) selects all items in the list.</div>
+</article>
+<article class="post" id="msg9991">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2013-09-11 23:07 UTC</span>
+  </div>
+  <div class="post-body">OK...that fixes selecting everything...but now it selects nothing.<br>
+<br>
+If the list box contains an empty string FindString will not find it (returns -1) when searching for "".<br>
+<br>
+		(foreach scale1 #lsLastScales<br>
+			 (setq index (dcl_ListBox_FindString LSscale scale1))<br>
+			 (if (&gt; index -1)<br>
+			 	 (dcl_ListBox_SelectItem LSscale index t)<br>
+			 )<br>
+		)<br>
+</div>
+</article>
+<article class="post" id="msg9994">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-09-12 14:19 UTC</span>
+  </div>
+  <div class="post-body">FindString searches for any item that <strong>starts with</strong> the search text, so it doesn't really make sense to search for an empty string. It sounds like FindStringExact would be more appropriate.</div>
+</article>
+<article class="post" id="msg9996">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2013-09-12 16:09 UTC</span>
+  </div>
+  <div class="post-body">Jeee-sus!  Didn't notice that one!   Unfortunately, FindStringExact doesn't find a blank string either.  I'll write my own search program as a work around.<br>
+<br>
+James LeVieux</div>
+</article>
+<article class="post" id="msg9997">
+  <div class="post-head">
+    <span class="post-author">funkitect</span>
+    <span class="post-date muted">2013-09-12 16:27 UTC</span>
+  </div>
+  <div class="post-body">In case anyone runs into this also...this seems to work:<br>
+<br>
+(defun ccFindStringExact (listBoxControl searchStr / i s rtrn)<br>
+	(setq i 0 n (dcl_ListBox_GetCount ListBoxControl))<br>
+	(while (&lt; i n)<br>
+		(setq str (dcl_ListBox_GetItemText ListBoxControl i))<br>
+		(if (= str SearchStr)<br>
+			(setq <br>
+				rtrn i <br>
+				i n<br>
+			)<br>
+		)<br>
+		(setq i (+ i 1))<br>
+	)<br>
+	(if rtrn rtrn -1)<br>
+)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

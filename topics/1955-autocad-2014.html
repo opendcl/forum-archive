@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AutoCAD 2014 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/19-deployment.html">Deployment</a> /
+      Topic 1955</p>
+    <h1>AutoCAD 2014</h1>
+    <p class="meta">Started by DanW ·
+      2013-04-03 16:41 UTC ·
+      29 replies · SMF topic #1955</p>
+<article class="post" id="msg9628">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2013-04-03 16:41 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen,<br>
+<br>
+I thought I would get in first with this one.  Apologies for being so quick off the mark after the AutoCAD 2014 release.<br>
+<br>
+I was just wondering if a Runtime Installer will soon be issued that registers Opendcl on to AutoCAD 2014's registry for use in our deployments in  the usual way? <br>
+<br>
+Just asking because I'm presuming no arx recompile is required for this new release of CAD.<br>
+<br>
+Many thanks<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg9629">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-04-03 17:42 UTC</span>
+  </div>
+  <div class="post-body">As soon as I figure out how to work around the new trusted path feature in 2014, I'll upload the new build. Hopefully this weekend, but I can't be certain.</div>
+</article>
+<article class="post" id="msg9632">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2013-04-04 07:47 UTC</span>
+  </div>
+  <div class="post-body">Thought that would probably be the case. <br>
+<br>
+If you can find a way to do it before AutoCAD is launched (or installing directly into the Autodesk\\ApplicationPlugins folder), I would be most interested.  <br>
+<br>
+Not least because the issue also affects the smooth operation of your lovely Lsploader too.<br>
+</div>
+</article>
+<article class="post" id="msg9633">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-04-05 01:03 UTC</span>
+  </div>
+  <div class="post-body">I've decided that for OpenDCL Runtime, it will add it's own path to TRUSTEDPATHS when it loads. I'll use a different approach for ManuSoft .arx modules, because I think appending paths to TRUSTEDPATHS will eventually create a huge mess.</div>
+</article>
+<article class="post" id="msg9642">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2013-04-05 16:11 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen,<br>
+<br>
+I'm now thinking the easiest way, is just to install the lspload modules into the ApplicationsPlugins Folder.  Then use the loader's lisp file to silently add my application, odcl runtime or (anything else, as required) to the TRUSTEDPATHS.<br>
+<br>
+What a completely pointless step by Autodesk this is.</div>
+</article>
+<article class="post" id="msg9679">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2013-05-01 15:21 UTC</span>
+  </div>
+  <div class="post-body">any word when this will be ready for 2014?<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg9680">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-05-02 12:20 UTC</span>
+  </div>
+  <div class="post-body">The current development build includes support for AutoCAD 2014.</div>
+</article>
+<article class="post" id="msg9681">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2013-05-02 14:15 UTC</span>
+  </div>
+  <div class="post-body">well it doesnt work then<br>
+ive installed the current release and its not working for me<br>
+are there any special instructions im missing?</div>
+</article>
+<article class="post" id="msg9682">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-05-02 14:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=andrew link=topic=1955.msg9681#msg9681 date=1367504156 wrote:</cite><br>
+well it doesnt work then<br>
+ive installed the current release and its not working for me<br>
+are there any special instructions im missing?<br>
+</blockquote><br>
+<br>
+You need to be more specific than "it doesn't work". Explain what you did, what you expected to happen, and what actually happened.</div>
+</article>
+<article class="post" id="msg9683">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2013-05-02 15:12 UTC</span>
+  </div>
+  <div class="post-body">what i did<br>
+i uninstalled the previous version, as i always do when upgrading versions.<br>
+clicked on the .msi file, ODCL studio version 7.0.0.12.<br>
+it installed fine.<br>
+i launched acad2014 and i get the following on the opening of acad:<br>
+; error: no function definition: DCL_PROJECT_LOAD<br>
+<br>
+what i expect to happen:<br>
+i install ODCL, launch acad and my programs work.<br>
+</div>
+</article>
+<article class="post" id="msg9684">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-05-02 15:27 UTC</span>
+  </div>
+  <div class="post-body">If you get an error when you launch AutoCAD, then you must have some code running at startup that is attempting to call OpenDCL functions before OpenDCL Runtime is loaded. Please trying entering the OPENDCL command manually after AutoCAD is started to ensure that it loads correctly (it should display status information at the command line when it loads). If it does not load correctly on demand, check the value of your DEMANDLOAD system variable. If OpenDCL does load correctly when you use the OPENDCL command, then you'll need to debug your code to see why it fails at startup.</div>
+</article>
+<article class="post" id="msg9685">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2013-05-02 15:40 UTC</span>
+  </div>
+  <div class="post-body">my secureload variable was set to 2<br>
+so whatever ODCL needs to get passed that variable setting to allow for running, in the secure mode, it isnt successful at doing.<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg9686">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-05-02 17:06 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I don't understand. Is the OPENDCL command working or not?</div>
+</article>
+<article class="post" id="msg9687">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2013-05-02 20:56 UTC</span>
+  </div>
+  <div class="post-body">yes it is now<br>
+only because i have set the secureload variable to 0 instead of 2<br>
+when this variable is set to 2, it will not let it load.<br>
+</div>
+</article>
+<article class="post" id="msg9690">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-05-03 02:00 UTC</span>
+  </div>
+  <div class="post-body">I recommend to leave SECURELOAD set to 2.</div>
+</article>
+<article class="post" id="msg9696">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2013-05-09 19:04 UTC</span>
+  </div>
+  <div class="post-body">leaving secureload at 2 will not let odcl load (for me)<br>
+i have to change it to 0 first, close acad, install the runtime then<br>
+relaunch acad and after verifying that odcl directory is added to the trusted path, i then can reset the secureload.<br>
+<br>
+<br>
+this is how it works for me, maybe this will come in handy for someone else that might have this issue</div>
+</article>
+<article class="post" id="msg9697">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-05-09 23:16 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I meant leave it set to the default value of 1, not 2.</div>
+</article>
+<article class="post" id="msg9704">
+  <div class="post-head">
+    <span class="post-author">macuma</span>
+    <span class="post-date muted">2013-05-14 07:54 UTC</span>
+  </div>
+  <div class="post-body">Wasn't sure whether to start a new thread but I have the same problem but only on a machine running Windows XP.<br>
+<br>
+OpenDCL loads and runs fine on Windows 7 and Windows 8. When run on XP using (command "opendcl") I get a return of nil.<br>
+<br>
+I'm running XP 64 bit and Windows Update is telling me that I am up to date.<br>
+<br>
+I've loaded OpenDCL using Appload and I get a return of "OpenDCL Runtime [7.0.0.12] loaded OpenDCL.x64.19.arx successfully loaded." When I type (command "opendcl") I'm still getting nil when I should be getting OpenDCL Runtime [7.0.0.12] loaded.</div>
+</article>
+<article class="post" id="msg9705">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-05-15 03:26 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=macuma link=topic=1955.msg9704#msg9704 date=1368518059 wrote:</cite>When I type (command "opendcl") I'm still getting nil when I should be getting OpenDCL Runtime [7.0.0.12] loaded.</blockquote><br>
+<br>
+Strange. What happens if you just enter the OPENDCL command directly without calling the (command) function?</div>
+</article>
+<article class="post" id="msg9706">
+  <div class="post-head">
+    <span class="post-author">macuma</span>
+    <span class="post-date muted">2013-05-15 07:55 UTC</span>
+  </div>
+  <div class="post-body">A blank command line is returned.</div>
+</article>
+<article class="post" id="msg9707">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-05-15 13:44 UTC</span>
+  </div>
+  <div class="post-body">I suggest you start a new thread. It's difficult to tell from what you've posted whether your problem is related to the new SECURELOAD system in AutoCAD 2014.</div>
+</article>
+<article class="post" id="msg9726">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2013-06-11 20:06 UTC</span>
+  </div>
+  <div class="post-body">Does anyone have any idea how to override this message?<br>
+The first load the application it will appear 2 times.<br>
+<br>
+Thanks velasquez<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1879/SecurityConcern.png">SecurityConcern.png</a> <span class="muted">(21243 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9728">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2013-06-12 09:49 UTC</span>
+  </div>
+  <div class="post-body">I got around it by having my app automatically adding the "...Common Files//OpenDCL//" folder to AutoCAD 2014's "TrustedPaths" variable prior to the first load of the Opendcl runtime module.</div>
+</article>
+<article class="post" id="msg9729">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2013-06-12 12:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Danner link=topic=1955.msg9728#msg9728 date=1371030587 wrote:</cite><br>
+I got around it by having my app automatically adding the "...Common Files//OpenDCL//" folder to AutoCAD 2014's "TrustedPaths" variable prior to the first load of the Opendcl runtime module.<br>
+</blockquote><br>
+<br>
+Have you ever thought of working with AutoLoader and an xml file from Autodesk?</div>
+</article>
+<article class="post" id="msg9730">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-06-12 14:54 UTC</span>
+  </div>
+  <div class="post-body">For the record, I don't recommend adding the OpenDCL runtime directory to the support path without the user's permission. I think it's better to do that *after* the user has consented to loading rather than before, which is how OpenDCL Runtime is designed to work.</div>
+</article>
+<article class="post" id="msg9732">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2013-06-12 16:41 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=1955.msg9729#msg9729 date=1371038570 wrote:</cite><br>
+Have you ever thought of working with AutoLoader and an xml file from Autodesk?<br>
+</blockquote><br>
+<br>
+I'm more of a Bricscad man really.  I use a single installer in conjunction with Owen's "LspLoader" for my deployments across all platforms of AutoCAD/BricsCAD.<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1955.msg9730#msg9730 date=1371048865 wrote:</cite><br>
+For the record, I don't recommend adding the OpenDCL runtime directory to the support path without the user's permission. I think it's better to do that *after* the user has consented to loading rather than before, which is how OpenDCL Runtime is designed to work.<br>
+</blockquote><br>
+<br>
+Fair point.  (For what its worth - I should say my app is installed via a digitally signed installer).</div>
+</article>
+<article class="post" id="msg9733">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2013-06-13 08:01 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+<br>
+Would you consider digitally signing the opendcl.19.arx modules instead of adding Opendcl to the "TrustedPaths" in AutoCAD 2014? <br>
+<br>
+This would be a more legitimate way to allow us to obtain a silent first install than the method I suggested. </div>
+</article>
+<article class="post" id="msg9734">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2013-06-13 12:47 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Danner link=topic=1955.msg9733#msg9733 date=1371110483 wrote:</cite><br>
+Owen,<br>
+<br>
+Would you consider digitally signing the opendcl.19.arx modules instead of adding Opendcl to the "TrustedPaths" in AutoCAD 2014? <br>
+<br>
+This would be a more legitimate way to allow us to obtain a silent first install than the method I suggested.<br>
+</blockquote><br>
+<br>
+Hello Danner,<br>
+<br>
+See the link below'm studying the same method.<br>
+Maybe this is the way.<br>
+http://adndevblog.typepad.com/autocad/Downloads/CP2080_PAL.pdf<br>
+<br>
+<br>
+vleasquez</div>
+</article>
+<article class="post" id="msg9735">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-06-13 16:00 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Danner link=topic=1955.msg9733#msg9733 date=1371110483 wrote:</cite><br>
+Would you consider digitally signing the opendcl.19.arx modules instead of adding Opendcl to the "TrustedPaths" in AutoCAD 2014? <br>
+</blockquote><br>
+<br>
+That was considered and ruled out. The problem is that (in order to not violate the open source principle) the signing key would need to be made public by including it in the source code repository. However, doing so would make it easy for malicious users to sign their code with our key.<br>
+<br>
+There is also a philosophical case to be made that third party developers should not insulate Autodesk from the problems it created. IOW, if users don't want the security warnings, let them hold Autodesk to the fire. If we as developers try to fix it once, we'll "own" it forever.</div>
+</article>
+<article class="post" id="msg9736">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2013-06-14 11:08 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=1955.msg9734#msg9734 date=1371127654 wrote:</cite><br>
+<br>
+Hello Danner,<br>
+<br>
+See the link below'm studying the same method.<br>
+Maybe this is the way.<br>
+http://adndevblog.typepad.com/autocad/Downloads/CP2080_PAL.pdf<br>
+<br>
+<br>
+vleasquez<br>
+</blockquote><br>
+<br>
+Hi Velasquez,<br>
+<br>
+Thanks for the link.  That is indeed an excellent method.  For once Autodesk have simplified things. So much easier to install your ".bundle" into a static "ApplicationPlugins" folder and edit a PackageContents.xml file.  No need to touch the Windows Registry, Acaddoc.lsp etc.  There are no horrible messages when your app is loaded for the first time from the  "ApplicationPlugins". <br>
+<br>
+From my perspective, because I support older AutoCAD platforms and Bricscad  - I may as well continue with the traditional installer approach (which makes the necessary registry entries within Bricscad/Autocad to allow useage of Lsploader).  <br>
+<br>
+Now that AutoCAD 2014 has created TrustedPaths.  My app now loads the relevant LspLoader files for AutoCAD 2014 into a new ".bundle" folder in the "ApplicationPlugins" folder.  So for me, paradoxically things have actually got slightly more complicated deployment wise but has the advantage that I can use the same installer for deployments across all CAD platforms.<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1955.msg9735#msg9735 date=1371139207 wrote:</cite><br>
+<br>
+That was considered and ruled out. The problem is that (in order to not violate the open source principle) the signing key would need to be made public by including it in the source code repository. However, doing so would make it easy for malicious users to sign their code with our key.<br>
+<br>
+There is also a philosophical case to be made that third party developers should not insulate Autodesk from the problems it created. IOW, if users don't want the security warnings, let them hold Autodesk to the fire. If we as developers try to fix it once, we'll "own" it forever.<br>
+</blockquote><br>
+<br>
+Thanks Owen, <br>
+<br>
+I had a feeling it was something to do with being open source. <br>
+<br>
+I get your point I think that the security warnings are between Autodesk and their users and we developers shouldn't try and take ownership of this issue by finding ways to circumnavigate them. (I realize that is in direct contradiction of my previous reply).<br>
+ </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

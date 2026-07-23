@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to remove each command line with onMouseMove Event .... · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 928</p>
+    <h1>How to remove each command line with onMouseMove Event ....</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-09-20 10:46 UTC ·
+      7 replies · SMF topic #928</p>
+<article class="post" id="msg4635">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-20 10:46 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I needed to know where is the mouse (coord) on an Treeview control.<br>
+<br>
+The only way for this , is to use OnMouseMove Event with Treeview control, now, but i meet a new problem :<br>
+<br>
+For each event call, a new command line (in AutoCAD) is inserted.<br>
+<br>
+With OnMouseMove, a lot of lines are inserted : maybe One undred or more .... ! <br>
+<br>
+I understood that OpenDCL send AutoCAD order on an Event, wich is defined in Studio.<br>
+<br>
+So, could it be possible to call directly lisp order without send AutoCad Order ?<br>
+<br>
+Or anyway else to remove these Autocad Command lines ....<br>
+<br>
+Or, is ther another way to get coords of mouse over a treeview ?<br>
+<br>
+Hope i explain correctly my problem  ;D<br>
+<br>
+Best regards.<br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg4637">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-20 13:38 UTC</span>
+  </div>
+  <div class="post-body">Set the tree control's Event Invoke property to 'Synchronous' to call the handler directly.</div>
+</article>
+<article class="post" id="msg4642">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-20 22:28 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=928.msg4637#msg4637 date=1253453904 wrote:</cite><br>
+Set the tree control's Event Invoke property to 'Synchronous' to call the handler directly.<br>
+</blockquote><br>
+<br>
+Here is an example with MouseMove Event, full fail with 'Synchronous' event .<br>
+<br>
+Maybe i mess something ?<br>
+<br>
+<br>
+(load "d:test.lsp")<br>
+<br>
+<br>
+And move mouse over treeview  ;D<br>
+<br>
+Best regards.<br>
+<br>
+<strong><br>
+Oops, forget another thing :</strong> need to use more events wich can't work in a 'Synchronous' way ......<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/909/test.lsp">test.lsp</a> <span class="muted">(2782 bytes)</span></li><li><a href="../attachments/910/Test.odcl">Test.odcl</a> <span class="muted">(935 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4645">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-21 04:45 UTC</span>
+  </div>
+  <div class="post-body">Your sample works as expected in my test with Alpha 5. Are you using an older runtime version for your test? Did you forget to reload the project after changing Event Invoke?<br>
+<br>
+If you have events that need to perform functions that are not possible from a synchronous event handler, just offload the asynchronous code into a new function, then trigger a call to that new function from your event handler via (dcl_DelayedInvoke) or (dcl_SendString).</div>
+</article>
+<article class="post" id="msg4669">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-22 07:50 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=928.msg4645#msg4645 date=1253508353 wrote:</cite><br>
+Your sample works as expected in my test with Alpha 5. Are you using an older runtime version for your test? Did you forget to reload the project after changing Event Invoke?<br>
+<br>
+If you have events that need to perform functions that are not possible from a synchronous event handler, just offload the asynchronous code into a new function, then trigger a call to that new function from your event handler via (dcl_DelayedInvoke) or (dcl_SendString).<br>
+</blockquote><br>
+<br>
+Was done with 6.0.0.3 arx .<br>
+<br>
+Will try with 6.0.0.5 as soon as available to download ;)<br>
+<br>
+the best way for me should be to catch directly the mouse coords with an function , without use an event ....<br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg4676">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-22 16:20 UTC</span>
+  </div>
+  <div class="post-body">Alpha 5 was uploaded 2 days ago. Do you not see it yet?</div>
+</article>
+<article class="post" id="msg4686">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-09-22 20:03 UTC</span>
+  </div>
+  <div class="post-body">when I looked yesterday the ENG Studio but the ENG Runtime was not.</div>
+</article>
+<article class="post" id="msg4746">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-28 12:50 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=928.msg4645#msg4645 date=1253508353 wrote:</cite><br>
+Your sample works as expected in my test with Alpha 5. Are you using an older runtime version for your test? Did you forget to reload the project after changing Event Invoke?<br>
+<br>
+If you have events that need to perform functions that are not possible from a synchronous event handler, just offload the asynchronous code into a new function, then trigger a call to that new function from your event handler via (dcl_DelayedInvoke) or (dcl_SendString).<br>
+</blockquote><br>
+<br>
+Hello owen,<br>
+<br>
+I get 6.0.0.6 arx.<br>
+<br>
+I just tried what you suggest me. (change event invoke to synchronous)<br>
+<br>
+First, i tried "(dcl_DelayedInvoke)" , but i have to store value before send them, because it's imposible to send parameters.<br>
+<br>
+New problem, The first drag &amp; drop from treeview to autocad does not work properly, i had to launch a second time to see a graphical drawing (circle).<br>
+<br>
+After drag a drop no select is possible inside autocad screen, i have to press escape ! why , and where is my problem.<br>
+<br>
+Second, i have to use "(dcl_SendString)", because i want to launch autocad command while synchronous treeview.<br>
+<br>
+Third, adding new nodes inside treeview not appear immediatly.<br>
+<br>
+Do you think i could be easier to have a function like this :<br>
+<br>
+(dcl_Tree_GetMousePosition Test_Form1_TREE)<br>
+<br>
+And return a list (Flag X Y)<br>
+Wich i can call when i really need it ....<br>
+<br>
+Best regards.<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/922/Test.odcl">Test.odcl</a> <span class="muted">(1018 bytes)</span></li><li><a href="../attachments/923/test.lsp">test.lsp</a> <span class="muted">(3129 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_Grid_GetRowCount · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2267</p>
+    <h1>dcl_Grid_GetRowCount</h1>
+    <p class="meta">Started by Basher ·
+      2015-05-18 06:16 UTC ·
+      10 replies · SMF topic #2267</p>
+<article class="post" id="msg11397">
+  <div class="post-head">
+    <span class="post-author">Basher</span>
+    <span class="post-date muted">2015-05-18 06:16 UTC</span>
+  </div>
+  <div class="post-body">i have 52,000 rows when i use "dcl_Grid_GetRowCount" , i got a negative count ???</div>
+</article>
+<article class="post" id="msg11398">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-05-18 13:06 UTC</span>
+  </div>
+  <div class="post-body">Hi, I think it could be a limitation of lisp. I remember a borderline at nearly 32.000. The conversion from C++ to Lisp could lead in such a case. <br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11399">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-05-18 13:58 UTC</span>
+  </div>
+  <div class="post-body">It is my understanding that integers in AutoLisp are 32 bit. The maximum value is therefore 2147483647. According to the ODCL documentation the Row Count is a long (= 32 bit integer).</div>
+</article>
+<article class="post" id="msg11401">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-05-18 14:30 UTC</span>
+  </div>
+  <div class="post-body">Then I'm wrong, sorry.<br>
+Fred</div>
+</article>
+<article class="post" id="msg11402">
+  <div class="post-head">
+    <span class="post-author">Basher</span>
+    <span class="post-date muted">2015-05-18 16:40 UTC</span>
+  </div>
+  <div class="post-body">whats can I do ?<br>
+Any Idea ...</div>
+</article>
+<article class="post" id="msg11405">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-05-19 16:44 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Basher link=topic=2267.msg11402#msg11402 date=1431967243 wrote:</cite><br>
+whats can I do ?<br>
+Any Idea ...<br>
+</blockquote><br>
+Usually Owen is happy if you deliver a more precise description of what you do / have, what you expect and what you get. And of course a code snippet, reduce to the topic, it the must helpful thing.<br>
+</div>
+</article>
+<article class="post" id="msg11406">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-05-20 03:11 UTC</span>
+  </div>
+  <div class="post-body">AutoLISP uses 16 bit integers natively, and therefore interprets the return value as a signed 16-bit integer. In some cases OpenDCL uses a floating point type when the value is too large to represent as a short integer, but I checked the code and in this case the row count is returned without any tricks. If you never have more than 65535 rows, you can use some trickery to convert it to an unsigned integer:<br>
+(cond ((minusp val) (+ (- val) 32768)) (val))<br>
+<br>
+This trick won't work with more than 65535 rows because in that case the result would get truncated.<br>
+<br>
+I will look at the code to see if it's feasible to return a real instead of an integer when the row count exceeds the capacity of an integer type.</div>
+</article>
+<article class="post" id="msg11407">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-05-20 07:47 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2267.msg11406#msg11406 date=1432091497 wrote:</cite><br>
+AutoLISP uses 16 bit integers natively</blockquote><br>
+Then I must be missing something:<br>
+(type 2147483647) =&gt; INT</div>
+</article>
+<article class="post" id="msg11411">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-05-20 12:07 UTC</span>
+  </div>
+  <div class="post-body">Roy, I should have said that the ADS interface to AutoLISP uses 16 bit integers natively. I can't speak for AutoLISP internally. I do know that the ObjectARX documentation at one time explained that 32 bit integers could be passed between ADS applications only, and warned that passing a 32-bit integer back to AutoLISP would result in truncation to 16 bits. It's possible that AutoLISP has since been updated to use 32 bit integers internally, while the 16 bit ADS interface has never been updated. I did verify just now that returned integers are truncated to 16 bits.</div>
+</article>
+<article class="post" id="msg11412">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-05-20 12:31 UTC</span>
+  </div>
+  <div class="post-body">Thanks for that clarification Owen.</div>
+</article>
+<article class="post" id="msg11419">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-05-21 17:20 UTC</span>
+  </div>
+  <div class="post-body">It turns out that I had already added infrastructure to return 32-bit integers to AutoLISP, I just had to use it. I have now changed the grid methods and events for the next build of OpenDCL to pass row and column arguments as 32-bit integers.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

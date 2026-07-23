@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Options for playing video? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2435</p>
+    <h1>Options for playing video?</h1>
+    <p class="meta">Started by leo9 ·
+      2016-10-11 12:08 UTC ·
+      2 replies · SMF topic #2435</p>
+<article class="post" id="msg12123">
+  <div class="post-head">
+    <span class="post-author">leo9</span>
+    <span class="post-date muted">2016-10-11 12:08 UTC</span>
+  </div>
+  <div class="post-body">Can anyone advise the best way of playing video?  I've tried these options:<br>
+<br>
+1. Animation control.  I understand this has to be uncompressed AVI, which would make the files too large so I can't use this.<br>
+<br>
+2. ActiveX control.  The Window Media Player control fails to load in my project. Shockwave Flash Object control and Microsoft Web Browser control load OK but I can't see any method that allows me to specify the video file path/name to play. It may be necessary to use AxObject but I don't understand how this is done and can't find any samples.<br>
+<br>
+3. HTML control.  Issues an error message saying browser does not allow playback embedded video and also prompts user where to save the video file.</div>
+</article>
+<article class="post" id="msg12160">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-10-28 09:45 UTC</span>
+  </div>
+  <div class="post-body">Hi, are you looking for an animation during complex oprations?<br>
+I had such a try and failed because either the animation run fluently or the background process run - never both at the same time :(<br>
+For HTML try an animated gif. I recommend you to avoid videos/animations which need plugins or additional viewers.<br>
+For shockwave you should call (dcl-AxControl-Invoke Unbenannt/Dialog1/ShockwaveFlash1 "Play") after (dcl-AxControl-Invoke Unbenannt/Dialog1/ShockwaveFlash1 "LoadMovie" layer [as int] url [as string]).<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg12188">
+  <div class="post-head">
+    <span class="post-author">leo9</span>
+    <span class="post-date muted">2016-11-01 15:23 UTC</span>
+  </div>
+  <div class="post-body">I was trying to play training videos at full screen size, which were launched from OpenDCL buttons.  I think there's a display size limit for the animation control so I didn't pursue that option.<br>
+<br>
+I finally got the HTML control to play video by embedding Windows Media Player in a Word document as an ActiveX control, then saving the document as a single file web page (MHT).  If I load that MHT file in OpenDCL's HTML control it plays.<br>
+<br>
+Thanks for the animated gif suggestion - I will try that next time as presumably it's not reliant on WMP.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

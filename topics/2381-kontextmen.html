@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kontextmenü · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/11-german.html">GERMAN</a> /
+      Topic 2381</p>
+    <h1>Kontextmenü</h1>
+    <p class="meta">Started by CADwiesel ·
+      2016-06-30 11:52 UTC ·
+      1 replies · SMF topic #2381</p>
+<article class="post" id="msg11931">
+  <div class="post-head">
+    <span class="post-author">CADwiesel</span>
+    <span class="post-date muted">2016-06-30 11:52 UTC</span>
+  </div>
+  <div class="post-body">ist es möglich ein Kontextmenü bei einem rechts Mouseklick auf einen Eintrag in einer Liste oder Tree zu erzeugen?<br>
+..und wenn ja, wie?</div>
+</article>
+<article class="post" id="msg11934">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-06-30 19:08 UTC</span>
+  </div>
+  <div class="post-body">Hallo, Martin, ja, das ist möglich. Mit einem Popupmenü.<br>
+Google mal nach menucmd P0=<br>
+<br>
+In deinem Code schreibst Du<br>
+<br>
+  (menucmd "P0=FLAMAP_UPDATE.POP1")<br>
+  (menucmd "P0=*")<br>
+<br>
+<br>
+Und hattest natürlich zuvor ein Menü geladen:<br>
+<br>
+<blockquote class="quote">***MENUGROUP=FLAMAP_UPDATE<br>
+<br>
+***POP1<br>
+**Verwaltung<br>
+ID_VERWALTUNG	<br>
+MM_0001		[Prüfen]^C^C^Pflamap_blocks_check<br>
+MM_0002		^C^C^Pflamap_blocks_replace<br>
+MM_0020		[Versorgungsschlüssel]^C^C^Pflamap_blocks_code<br>
+MM_0003		[Neu nummerieren]^C^C^Pflamap_blocks_renum<br>
+MM_0004		[Einfügepunkte]^C^C^Pflamap_blocks_inspoint<br>
+		<br>
+MM_0005		[Flächenwerte]^C^C^Pflamap_blocks_area<br>
+MM_0006		^C^C^Pflamap_blocks_export<br>
+<br>
+***TOOLBARS<br>
+<br>
+**TB_FLAMAP_UPDATE<br>
+ID_TB_FLAMAP_UPDATE [_Toolbar("FLAMAP Update-Manager", _Floating, _Hide, 100, 100, 1)]<br>
+ID_PB_FLAMAP_UPDATE [_Button("FLAMAP_UPDATE", "IDB_FLAMAP16", "IDB_FLAMAP24")]^C^CFLAMAP_UPDATE<br>
+<br>
+<br>
+***HELPSTRINGS<br>
+ID_PB_FLAMAP_UPDATE     [Startet den FLAMAP-Update-Manager: FLAMAP_UPDATE]<br>
+ID_VERWALTUNG	[Verwaltungsaufgaben für Attributblöcke]<br>
+MM_0001		[Konsistenzprüfung der Attributblöcke.]<br>
+MM_0002		[Tauscht alte FLAECHEN-Blöcke in FAEIN-Blöcke.]<br>
+MM_0020		[Ändert den Versorgungsschlüssel an den gewählten Blöcken.]<br>
+MM_0003		[Nummeriert die Attributblöcke neu durch.]<br>
+MM_0004		[Erzeugt AutoCAD-Punkte an den Einfügepunkten der Attributblöcke]<br>
+MM_0005		[Analysiert die neuen Polygone und aktualisiert die Flächenwerte in den Attributblöcken.]<br>
+MM_0006		[Erzeugt eine Austauschdatei mit den Werten der Attributblöcke dieser Zeichnungsdatei.]</blockquote><br>
+<br>
+Mit freundlichen Grüßen<br>
+Fred Tomke<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

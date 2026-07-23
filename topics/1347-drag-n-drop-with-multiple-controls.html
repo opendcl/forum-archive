@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Drag'n drop with multiple controls · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1347</p>
+    <h1>Drag'n drop with multiple controls</h1>
+    <p class="meta">Started by krunch ·
+      2010-10-03 22:18 UTC ·
+      5 replies · SMF topic #1347</p>
+<article class="post" id="msg7192">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2010-10-03 22:18 UTC</span>
+  </div>
+  <div class="post-body">I want to manage drag'n drop with several picture controls, so I need the base + destination controls for each drag'n drop event...<br>
+<br>
+&gt; If I have N controls I have to place N DragnDropFromControl-event functions ? <br>
+   No general function can retrieves the control that triggered the current event ??<br>
+<br>
+&gt; DragnDropFromControl event needs a transparent function (with at least a princ) on DragnDropBegin event to trigger ???</div>
+</article>
+<article class="post" id="msg7193">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-10-03 22:42 UTC</span>
+  </div>
+  <div class="post-body">You can use the same event handler function for all controls, but you'll have to maintain your own state data separately. Offhand I don't know why DragnDropFromControl would need DragnDropBegin to be defined. It might be a bug, in which case a simple example would be useful.</div>
+</article>
+<article class="post" id="msg7194">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2010-10-04 09:22 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+Here is a simple example with 3 pictures, the lisp code below manages drag'n drop by flipping colors of the pictures...<br>
+<br>
+question1 : the 3 'DragnDropFrom events' just serve to retrieve the 'dest' control of the drag'n drop.. I was looking for a way to get a reference to this control, to do the same thing by 1 function instead of 1 function per control...<br>
+<br>
+question2 : the 'dummy function' can be the same for all pictures, but if you turn off the DragnDropBegin event for one of the picture the DragnDropFrom event is not triggered anymore..<br>
+<br>
+<br>
+<br>
+(command "OPENDCL")<br>
+<br>
+(defun c:Go ()<br>
+  (dcl_Project_Load "Dragtest" T)<br>
+  (dcl_Form_Show Dragtest_Form)<br>
+  (princ)<br>
+)<br>
+<br>
+; Dummy function<br>
+(defun c:Dragtest_Form_PictureBox1_OnDragnDropBegin (/)<br>
+  (princ)<br>
+)<br>
+; DragnDropFrom events<br>
+(defun c:Dragtest_Form_PictureBox1_OnDragnDropFromControl (ProjectName FormName ControlName DropPoint /)<br>
+  (Flip ControlName "PictureBox1")<br>
+)<br>
+(defun c:Dragtest_Form_PictureBox2_OnDragnDropFromControl (ProjectName FormName ControlName DropPoint /)<br>
+  (Flip ControlName "PictureBox2")<br>
+)<br>
+(defun c:Dragtest_Form_PictureBox3_OnDragnDropFromControl (ProjectName FormName ControlName DropPoint /)<br>
+  (Flip ControlName "PictureBox3")<br>
+)<br>
+; Flip colors<br>
+(defun Flip (from dest / tmp)<br>
+  (setq tmp (dcl_Control_GetBackColor "Dragtest" "Form" from))<br>
+  (dcl_Control_SetBackColor "Dragtest" "Form" from (dcl_Control_GetBackColor "Dragtest" "Form" dest))<br>
+  (dcl_Control_SetBackColor "Dragtest" "Form" dest tmp)<br>
+)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1446/Dragtest.odcl">Dragtest.odcl</a> <span class="muted">(686 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7198">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2010-10-07 09:00 UTC</span>
+  </div>
+  <div class="post-body">Hi. May be I've been forgotten, so I'd like to ask my double-question again...<br>
+<br>
+- On a general point of view, if a form contains 20 buttons to watch... does I necessarily need 20 triggered functions to get the control reference ?<br>
+Or is there a way to get the control from the current event ?<br>
+<br>
+- In my example (I re-join the lisp code) I think there's a drag'n drop problem : just turn off the DragnDropBegin event for one of the pictures and the DragnDropBegin dosn't works ...<br>
+Apparently it needs a (princ) function ?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1447/Dragtest.lsp">Dragtest.lsp</a> <span class="muted">(922 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7199">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-10-07 18:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">- On a general point of view, if a form contains 20 buttons to watch... does I necessarily need 20 triggered functions to get the control reference ?<br>
+Or is there a way to get the control from the current event ?</blockquote><br>
+<br>
+Strictly speaking, you can use the same event handler for multiple controls, but there is no intrinsic way to discern which control triggered a given event. In some cases you may be able to use other information to determine which control triggered the event. For example, in the case of DragnDropFromControl you could use the DropPoint to determine which control triggered the event.<br>
+<br>
+<br>
+<blockquote class="quote">- In my example (I re-join the lisp code) I think there's a drag'n drop problem : just turn off the DragnDropBegin event for one of the pictures and the DragnDropBegin dosn't works ...<br>
+Apparently it needs a (princ) function ?</blockquote><br>
+<br>
+You're correct, this was a bug, now fixed for the next build.  BTW, that was an excellent sample; it was short and to the point, demonstrated the bug clearly, and was even kind of fun to play with!</div>
+</article>
+<article class="post" id="msg7561">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2010-12-01 14:59 UTC</span>
+  </div>
+  <div class="post-body">Hi, thanks for your answer<br>
+I retrieve this problem as I finish my project...<br>
+<br>
+<blockquote class="quote">For example, in the case of DragnDropFromControl you could use the DropPoint to determine which control triggered the event.<br>
+</blockquote><br>
+&gt; The DropPoint argument specifies the control client coordinates, relatives to the PictureBox origin.. so it can't help me to determine the control.<br>
+<br>
+So I suppose there's no way  :( and as a conclusion : if a form contains 20 buttons it needs 20 triggered functions to watch them..</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

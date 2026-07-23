@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cleanup (hide events) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1777</p>
+    <h1>Cleanup (hide events)</h1>
+    <p class="meta">Started by Pieter ·
+      2012-03-22 18:59 UTC ·
+      2 replies · SMF topic #1777</p>
+<article class="post" id="msg8730">
+  <div class="post-head">
+    <span class="post-author">Pieter</span>
+    <span class="post-date muted">2012-03-22 18:59 UTC</span>
+  </div>
+  <div class="post-body">With R2012 the user sees all the C:commands.<br>
+So I would like to prevent this.<br>
+Is this possible?<br>
+Is it possible to claen this up?<br>
+Also the popup of Autocad that display all the commands.<br>
+Or is it best to use names that the user doesn't use (example starting with c:xx..)<br>
+<br>
+Is there a solution for this cleaning?<br>
+<br>
+Regards<br>
+Pieter</div>
+</article>
+<article class="post" id="msg8732">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-03-22 21:11 UTC</span>
+  </div>
+  <div class="post-body">Hi, no, there isn't. When creating a command in C#, I can add the commandflag for NoHistory. Then it also won't appear in the list of available commands. But in OpenDCL all the globally defined commands will be shown. You can reduce this if you define all the event functions as local functions for your modal forms. But you will need globally defined commands for the events in modeless forms.<br>
+<br>
+Regards,<br>
+Fred</div>
+</article>
+<article class="post" id="msg8737">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-03-24 16:14 UTC</span>
+  </div>
+  <div class="post-body">If your event handlers don't need to interact with the AutoCAD editor, you can set the control's Event Invoke property to '0 - Synchronous' to execute your event handler without sending it through the command processor.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

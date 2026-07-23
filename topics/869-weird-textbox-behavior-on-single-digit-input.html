@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>weird textbox behavior on single digit input? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 869</p>
+    <h1>weird textbox behavior on single digit input?</h1>
+    <p class="meta">Started by Balk ·
+      2009-08-10 09:47 UTC ·
+      3 replies · SMF topic #869</p>
+<article class="post" id="msg4301">
+  <div class="post-head">
+    <span class="post-author">Balk</span>
+    <span class="post-date muted">2009-08-10 09:47 UTC</span>
+  </div>
+  <div class="post-body">Hello, I'm new to openDCL.<br>
+<br>
+My question is: <br>
+I made a textbox in openDCL.<br>
+When I wanted to retrieve the user input (see below statement) somthing strange happend.  <br>
+<br>
+(setq fabricwidth  (dcl_TextBox_GetLine TreeView_Main_TxtBox1 0))<br>
+<br>
+If I have a user input of 2 digits or more it works fine. =&gt; input "1234" retrieved value fabricwidht "1234" <br>
+If theire is only 1 digit user input. this happens. =&gt; input "1" retrieved value fabricwidht ""<br>
+<br>
+Can anybody tell me how I can get a textbox to accept a single digit input??<br>
+<br>
+Best regards,<br>
+<br>
+Martijn  </div>
+</article>
+<article class="post" id="msg4303">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-08-10 12:57 UTC</span>
+  </div>
+  <div class="post-body">(dcl_TextBox_GetLine) worked for me with single digit input in a simple test. Can you post a small sample that demonstrates the problem? Have you considered using (dcl_Control_GetText) instead?</div>
+</article>
+<article class="post" id="msg4304">
+  <div class="post-head">
+    <span class="post-author">Balk</span>
+    <span class="post-date muted">2009-08-10 14:07 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+Attached you will find part of my project containing the problem. just load the lisp file and type `tree`. Put in a single digit in the textboxes and push the nest button. For every textbox a alert will display the content of the textbox. <br>
+<br>
+For the project I´m ussing a autocad 2004 LT including slingshot to enable autolisp could this be the problem. All other functions worked fine.<br>
+<br>
+As for your suggestion i tried it and it  works fine for me. But still the behavior of the dcl_TextBox_GetLine is strange <br>
+<br>
+Thanks so far<br>
+<br>
+Martijn   <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/854/problem.lsp">problem.lsp</a> <span class="muted">(2471 bytes)</span></li><li><a href="../attachments/855/problem.odcl">problem.odcl</a> <span class="muted">(1496 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4308">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-08-10 21:15 UTC</span>
+  </div>
+  <div class="post-body">I was able to reproduce the problem in AutoCAD 2006, and this is now fixed for the next build. Thanks for the sample files.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

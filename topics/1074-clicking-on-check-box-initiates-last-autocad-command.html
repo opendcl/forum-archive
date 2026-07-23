@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clicking on check box initiates last autocad command?? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1074</p>
+    <h1>Clicking on check box initiates last autocad command??</h1>
+    <p class="meta">Started by Hypersonic ·
+      2009-12-11 23:58 UTC ·
+      9 replies · SMF topic #1074</p>
+<article class="post" id="msg5642">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2009-12-11 23:58 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+;**** the Draw punches check box ****<br>
+<br>
+<br>
+If I enter the line command, start drawing lines, then cancel out....<br>
+Then go to the check box labels draw punches..... it wigs out and appears to attempt to resume the "line" command....<br>
+Am I not initiating something properly?<br>
+<br>
+below is the autolisp code for the check box....<br>
+<br>
+(defun c:Parametrics_PM_synthesis_CheckBox1_OnClicked (nValue /)<br>
+  (if (= nVAlue 1)<br>
+   (progn<br>
+     (ied_punches)<br>
+     (ied_headed_punches)<br>
+<br>
+     (make_edm_punch_from_groups)<br>
+     (make_headed_punch_from_groups)<br>
+<br>
+     (setq make_punches 1);this maybe should be based on successfull completion....<br>
+   )<br>
+   (progn<br>
+     (ied_punches)<br>
+     (ied_headed_punches)<br>
+     (setq make_punches 0)<br>
+   )<br>
+ );end if<br>
+<br>
+(save_all_completed_operation_values_to_db)<br>
+)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1142/SP32-20091211-185404.png">SP32-20091211-185404.png</a> <span class="muted">(23872 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5643">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-12-12 00:49 UTC</span>
+  </div>
+  <div class="post-body">Do you have "Event Invoke" set to 1 on the check box?</div>
+</article>
+<article class="post" id="msg5644">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2009-12-12 02:17 UTC</span>
+  </div>
+  <div class="post-body">Yes I do....</div>
+</article>
+<article class="post" id="msg5645">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-12-12 04:02 UTC</span>
+  </div>
+  <div class="post-body">Have you tried turning it off?</div>
+</article>
+<article class="post" id="msg5646">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-12 04:03 UTC</span>
+  </div>
+  <div class="post-body">Without seeing the code and dialog I'm just guessing ...<br>
+Is the form modeless.<br>
+What is your *error* function like<br>
+Is it local<br>
+<br>
+What's in your sub-routines inside the progn<br>
+Have you tried to debug/step-through the code.<br>
+.. how about adding (vl-bt) to your error trap<br>
+<br>
+If Modeless, Have you looked at using something like (dcl_SendString "(ied_punches)").<br>
+from help<br>
+<blockquote class="quote">Modeless dialog event handlers are normally invoked in the AutoCAD application context instead of the document context. AutoLISP code running in the application context cannot call document-dependent functions like the (command) function. To deal with this problem, the control's 'Event Invoke' property may be used to trigger the event handler asynchronously in the document context, thus allowing calls to (command) to succeed. Alternatively, the event handler may be executed synchronously, but instead of calling document-dependent functions within the handler function, it can simply trigger a new command to execute in the document context via the (dcl_SendString) function.</blockquote><br>
+</div>
+</article>
+<article class="post" id="msg5647">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-12 04:08 UTC</span>
+  </div>
+  <div class="post-body">I notice thay you have<br>
+<br>
+     (ied_punches)<br>
+     (ied_headed_punches)<br>
+<br>
+in both branches of the if statement.<br>
+<br>
+This is fine if it's really what you want but  the logic dictates those statements be run prior to the if statement.</div>
+</article>
+<article class="post" id="msg5648">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-12-12 04:29 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=1074.msg5646#msg5646 date=1260590600 wrote:</cite><br>
+Without seeing the code and dialog I'm just guessing ...<br>
+Is the form modeless.<br>
+<br>
+If Modeless, Have you looked at using something like (dcl_SendString "(ied_punches)").<br>
+from help<br>
+<blockquote class="quote">Modeless dialog event handlers are normally invoked in the AutoCAD application context instead of the document context. AutoLISP code running in the application context cannot call document-dependent functions like the (command) function. To deal with this problem, the control's 'Event Invoke' property may be used to trigger the event handler asynchronously in the document context, thus allowing calls to (command) to succeed. Alternatively, the event handler may be executed synchronously, but instead of calling document-dependent functions within the handler function, it can simply trigger a new command to execute in the document context via the (dcl_SendString) function.</blockquote><br>
+<br>
+</blockquote><br>
+<br>
+Kerry just an FYI, you can tell it's modeless by the titlebar in the screen shot.<br>
+Also, controls on Modal forms don't have an "Event Invoke" property, which he said he had. :)<br>
+</div>
+</article>
+<article class="post" id="msg5651">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2009-12-12 15:47 UTC</span>
+  </div>
+  <div class="post-body"><br>
+I don't have much for error trapping (ugh)<br>
+<br>
+What is this:  (vl-bt)<br>
+<br>
+I tried synchronous and asynchronous, and also the "send string" method.... all do the same thing....<br>
+It must be something in my other code,  I have run into this before it's like their is a command not closing out or something...<br>
+<br>
+the same code runs when pasted to the command line.. </div>
+</article>
+<article class="post" id="msg5662">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2009-12-13 15:38 UTC</span>
+  </div>
+  <div class="post-body">Never could get it to work....... so I switched to buttons and it worked just fine...? oh well<br>
+<br>
+could anyone tell me what the (vl-bt) mentioned above does for you?<br>
+<br>
+Thanks!</div>
+</article>
+<article class="post" id="msg5669">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-14 09:27 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Hypersonic link=topic=1074.msg5662#msg5662 date=1260718733 wrote:</cite><br>
+could anyone tell me what the (vl-bt) mentioned above does for you?<br>
+</blockquote><br>
+<br>
+Hi, Hypersonic,<br>
+bt stands for backtrace. So you can follow back in which function an error occured.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

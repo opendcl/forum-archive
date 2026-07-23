@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Call a function with an argument inside registry field · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/19-deployment.html">Deployment</a> /
+      Topic 2226</p>
+    <h1>Call a function with an argument inside registry field</h1>
+    <p class="meta">Started by velasquez ·
+      2015-01-12 22:08 UTC ·
+      4 replies · SMF topic #2226</p>
+<article class="post" id="msg11182">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2015-01-12 22:08 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=action=profile;u=4 date=1420830270 wrote:</cite><br>
+[quote author=velasquez link=action=profile;u=17 date=1420824060]<br>
+I need to call a function with an argument inside field registry.</blockquote><br>
+<br>
+Your syntax is incorrect. It should be:<br>
+ValueData: {code:myfunction|myargument};<br>
+<br>
+However, your function only appends the argument, so there is no need for it:<br>
+ValueData: {code:myfunction}myargument;<br>
+<br>
+Better:<br>
+ValueData: {app}\MAyapp r4.0\myargument;<br>
+<br>
+Please post future questions in the forum so that everyone can benefit from the discussion.<br>
+<br>
+<br>
+Hello Owen,<br>
+His answer was helpful with the function call.<br>
+What I need to pass to the function a variable I created in another point of my script.<br>
+ex:<br>
+<br>
+Ex: myvariable1: = test_a.vlx <br>
+      myvariable2:  = test_b.vlx<br>
+      myvariable3:  = test_c.vlx<br>
+<br>
+ValueData: {code:myfunction|myvariable..};<br>
+<br>
+I'm not getting it.<br>
+Thanks<br>
+</div>
+</article>
+<article class="post" id="msg11183">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-01-12 23:09 UTC</span>
+  </div>
+  <div class="post-body">If the value is in a global variable, your function can refer directly to the global variable and ignore the argument.</div>
+</article>
+<article class="post" id="msg11184">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2015-01-13 11:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2226.msg11183#msg11183 date=1421104165 wrote:</cite><br>
+If the value is in a global variable, your function can refer directly to the global variable and ignore the argument.<br>
+</blockquote><br>
+<br>
+This I do not understand Owen.<br>
+You mean I need a function for each variable?</div>
+</article>
+<article class="post" id="msg11185">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-01-13 16:29 UTC</span>
+  </div>
+  <div class="post-body">ValueData: {code:myFunction};<br>
+<br>
+var myVariable1: String;<br>
+<br>
+//set myVariable1 as required<br>
+<br>
+procedure myFunction();<br>
+begin<br>
+  //do something with myVariable1<br>
+end;<br>
+</div>
+</article>
+<article class="post" id="msg11186">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2015-01-13 16:33 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2226.msg11185#msg11185 date=1421166579 wrote:</cite><br>
+ValueData: {code:myFunction};<br>
+<br>
+var myVariable1: String;<br>
+<br>
+//set myVariable1 as required<br>
+<br>
+procedure myFunction();<br>
+begin<br>
+  //do something with myVariable1<br>
+end;<br>
+<br>
+</blockquote><br>
+<br>
+Ok Owen,<br>
+thank you<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

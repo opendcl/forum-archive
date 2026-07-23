@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calling commands from modeless forms · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1081</p>
+    <h1>Calling commands from modeless forms</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-12-14 11:35 UTC ·
+      9 replies · SMF topic #1081</p>
+<article class="post" id="msg5677">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-14 11:35 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I have a modeless form with some buttons on it. It should look like the <a href="http://opendcl.com/wordpress/wp-content/gallery/samples/draw_pline.gif" rel="nofollow noopener">{2}</a> from Corel, Photoshop or Illustrator. The buttons have no other task as to call a command in the command line. In OpenDCL 5.1.2.3 I made it this way:<br>
+<br>
+<ul><br>
+modeless form<br>
+KeepFocus: NO<br>
+EventInvoke: 0 (Keep Focus)<br>
+picture button<br>
+EventInvoke: 1 (Allow Command)<br>
+Event OnClicked activated<br>
+Name for OnClicked event function: name of the commandline option: <strong>A</strong><br>
+</ul><br>
+<br>
+I have added a sample for this. You can use it in 5.1.2.3 and you will see that you can invoke a commandline option by pressing a button.<br>
+But using 6.0.0.16 (and some releases before), it won't work anymore. I get an error message (in German language; try to translate: Cannot return to LISP. Needs a point or optiontitle.).<br>
+<br>
+Is it a wanted change in OpenDCL 6, so I have to rewrite my code?<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1149/option.odcl">option.odcl</a> <span class="muted">(544 bytes)</span></li><li><a href="../attachments/1150/option.LSP">option.LSP</a> <span class="muted">(735 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5678">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-14 12:17 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><br>
+<br>
+Can't reenter LISP.<br>
+Point or option keyword required.<br>
+<br>
+</blockquote><br>
+<br>
+<br>
+Same for me ... works in 5.1.2.3, not in 6.0.0.9 or 6.0.0.16<br>
+<br>
+Interesting method Fred.</div>
+</article>
+<article class="post" id="msg5684">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-14 17:33 UTC</span>
+  </div>
+  <div class="post-body">The revamped event handler code generates an async event handler call by sending the event handler and its arguments as a "command" like this: "( )\n", hence the error.  I added code to Alpha 17 to send just the handler name as a command for any event handler that gets no arguments.<br>
+<br>
+BTW, something to think about would be how prefixes might be given special meaning.  The \C\C prefix already has a special meaning, but prefixes like ' could also signify something.  In this case, I thought it wuld be nice if the "command" would be visible; that could be accomplished via prefix perhaps.</div>
+</article>
+<article class="post" id="msg5687">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-14 18:44 UTC</span>
+  </div>
+  <div class="post-body">Thanks, Owen, but there are some questions left - maybe I missed something or I didn't quite understand.<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1081.msg5684#msg5684 date=1260811985 wrote:</cite><br>
+The revamped event handler code generates an async event handler call by sending the event handler and its arguments as a "command" like this: "( )\n"<br>
+</blockquote><br>
+<br>
+Just for understanding the change: Wasn't it so already in 5.1.2.3? <br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1081.msg5684#msg5684 date=1260811985 wrote:</cite><br>
+[...] but prefixes like ' could also signify something [...]<br>
+</blockquote><br>
+<br>
+Do you mean transparent commands?<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1081.msg5684#msg5684 date=1260811985 wrote:</cite><br>
+[...] In this case, I thought it wuld be nice if the "command" would be visible; that could be accomplished via prefix perhaps.<br>
+</blockquote><br>
+<br>
+What did you mean by a "visible command"?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5688">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-14 19:19 UTC</span>
+  </div>
+  <div class="post-body">The major changes to the event handling code changed in 6.0, but it's possible that this particular change occurred before 6.0. Event handler prefixes could mean whatever the code interprets them as. By "visible", I mean that the user would see the command at the command line.</div>
+</article>
+<article class="post" id="msg5689">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-12-14 19:55 UTC</span>
+  </div>
+  <div class="post-body">I would love to make some commands invisible to the end user, if possible...</div>
+</article>
+<article class="post" id="msg5698">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-14 22:59 UTC</span>
+  </div>
+  <div class="post-body">I'm talking about making them visible (event handler calls are currently always invisible). Anyway, I've tweaked the code to leave them visible when they are not prefixed with "c:". I think this makes Fred's sample much more user friendly.</div>
+</article>
+<article class="post" id="msg5700">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-12-14 23:40 UTC</span>
+  </div>
+  <div class="post-body">Oops sorry, thanks.</div>
+</article>
+<article class="post" id="msg5708">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-15 06:19 UTC</span>
+  </div>
+  <div class="post-body">Hi, Owen,<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1081.msg5698#msg5698 date=1260831582 wrote:</cite><br>
+[...]it's possible that this particular change occurred before 6.0[...]<br>
+</blockquote><br>
+Maybe, but this little detail from my initial message must have been changed after 5.1.2.3 .  :)<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1081.msg5698#msg5698 date=1260831582 wrote:</cite><br>
+[...]event handler calls are currently always invisible[...]<br>
+</blockquote><br>
+<br>
+Normally, I prefer invisible commands. I don't know if this hits the same notch, but I'm looking anyway to supress the event handlers of controls whose EventInvoke property was set to asynchronous. In this case the batch of commands is listes in the recent command list (see screen shot).<br>
+<br>
+Maybe it is a good idea to use a certain prefix to make event handlers visible for some cases.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1154/context.png">context.png</a> <span class="muted">(7389 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5710">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-15 06:46 UTC</span>
+  </div>
+  <div class="post-body">I don't think there's any way to prevent event handlers from showing up in the command history. I'm referring only to whether they are visible at the command line.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ListView · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/11-german.html">GERMAN</a> /
+      Topic 1274</p>
+    <h1>ListView</h1>
+    <p class="meta">Started by SpEEDY ·
+      2010-05-06 13:05 UTC ·
+      21 replies · SMF topic #1274</p>
+<article class="post" id="msg6835">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2010-05-06 13:05 UTC</span>
+  </div>
+  <div class="post-body">Guten Tag Forum,<br>
+ich hätte mal einen Frage zum ListView.<br>
+Habe mich gerade durch die Hilfe von OpenDCL gearbeitet und bin auf folgendes gestoßen.<br>
+<br>
+Auszug aus OpenDCL Hilfe zum Thema ListView_SetItemData<br>
+„Diese Methode weist dem angegebenen Eintrag nutzerspezifische Daten zu (z.B. den eindeutigen Schlüssel eines Datensatzes aus einer Datenbanktabelle).“<br>
+<br>
+Da habe ich mich gefragt. OpenDCL kann einen Verbindung mit einer Datenbank aufnehmen und das auch anzeigen.<br>
+<br>
+Wenn ja hätte ich mal ein paar Fragen.<br>
+Um welche Form von Datenbank handelt es sich. Eine MDB?<br>
+Wie kann man sich mit der Datenbank verbinden?<br>
+Lässt sich die Datenbank ändern?<br>
+<br>
+Wahrscheinlich ist es nicht möglich.<br>
+Cool  8) wer es auf alle Fall. <br>
+<br>
+Danke schon mal für die Antworten.<br>
+<br>
+Mit freundlichen Grüßen<br>
+SpEEDY <br>
+</div>
+</article>
+<article class="post" id="msg6836">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-05-06 15:24 UTC</span>
+  </div>
+  <div class="post-body">Hallo, SpEEDY, <br>
+<br>
+Nein, OpenDCL kann selbst nicht auf Datenbanken zugreifen. Du kannst allenfalls Inhalte aus Datenbanken in OpenDCL-Dialogen visualisieren, eine Eingabemaske zum Verändern vorhalten und die Änderungen aus diesen Dialogen auslesen und selbst in die Datenbank zurückschreiben. Das Stichwort sei in diesem Falle AdoDb.Connection und Fleming Group. Ein Anwendungsbeispiel findest Du hier: <a href="http://acad.fleming-group.com/Download/ADOLisp/ADOLisp.html" rel="nofollow noopener">{2}</a><br>
+<br>
+Ich nutze SetItemData bei Trees, Grids und ListViews zur Adressierung der Einträge in diesen Steuerelementen in den Datensätzen verschiedener Datenquellen (MDB, MySQL, ...), wenn der Schlüssel eine Ganzahl (Integer) ist. Für den Fall, dass der eindeutige Schlüssel eines Datensatzes ein Integer-Wert ist, kann man ihn mit Hilfe von ListView_SetItemData der ListView-Zeile zuweisen, dass es selbst nach dem Sortieren mit Hilfe der OpenDCL-eigenen Methoden gelingt, vom markierten ListView-Eintrag die ID zu bekommen und den antsprechenden Datensatzeintrag zu adressieren, ohne die ID in einer zusätzlichen Spalte oder globalen Variable vorhalten zu müssen.<br>
+<br>
+Der Hinweis auf die Datenbank war eben (siehe "<strong>z.B.</strong>" in Deinem Zitat) nur ein Anwendungsbeispiel von vielen.  ;)<br>
+<br>
+Ich wollte schon länger ein Beispiel zum Thema OpenDCL und Datenbanken erstellen, habe es jedoch leider aus zeitlichen Gründen bisher nicht geschafft.<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg6846">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2010-05-11 10:20 UTC</span>
+  </div>
+  <div class="post-body">Hallo Fred,<br>
+erst mal Danke für das Programm.<br>
+Ich bin begeistert.<br>
+<br>
+Kämpfe mich ein bisschen mit dem Ding herum. <br>
+Ich möchte eine Verbindung mit deiner anderen Datenbank herstellen.<br>
+Habe den Pfad in der Expample Datei geändert und die SQL-Angepasst.<br>
+<br>
+Leider bekomme ich den Fehler das ich keine „Leseberechtigung“ habe.<br>
+Woran könnte das liegen? <br>
+Nutze Access 2003 um die MDB zu erstellen.<br>
+Könnte es daran liegen?<br>
+<br>
+Mit freundlichen Grüßen<br>
+SpEEDY<br>
+</div>
+</article>
+<article class="post" id="msg6848">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-05-11 13:48 UTC</span>
+  </div>
+  <div class="post-body">Ist das OS Vista oder Win7, kann vielleicht die Datenbank genau von dieser Stelle nicht gelesen werden. Mal woanders hinlegen. Stammverzeichnis von C: und D: mögen Vista und Win 7 nicht recht...<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg8153">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2011-06-28 13:24 UTC</span>
+  </div>
+  <div class="post-body">Mahlzeit Fred. <br>
+Wir haben über das Thema ADOLisp lange nicht mehr gesprochen. ;) <br>
+<br>
+An dieser Stelle Danke nochmal für das Tool. Hoffe das ich in nächster Zeit wieder mehr "Lipsen" kann. ;)<br>
+Hätte mal einen Frage an die, habe den "ConnectString" mit einer "normalen" Datenbank hinbekommen.<br>
+Wollte das ganze aber jetzt über eine *.WDW ,also eine Arbeitsdatei, laufen lassen. <br>
+Hast du vielleicht Erfahrung damit?<br>
+<br>
+Habe hier einen recht kurze Anweisung gefunden: <a href="http://208.74.205.69/t5/ASE-SQL-OLE-ADE/Workgroup-Information-file-mdw-missing-error/td-p/2112604" rel="nofollow noopener">{2}</a> <br>
+Meine ursprüngliche ist zu lang. <br>
+(setq ConnectString  (strcat "Provider=Microsoft.Jet.OLEDB.4.0;User ID=XXX;Data Source=" Datei ";Mode=Share Deny None;Jet OLEDB:System database=XXXX;Jet"<br>
+                              " OLEDB:Registry Path="";Jet OLEDB:Database Password="";Jet OLEDB:Engine Type=5;Jet OLEDB:Database Locking Mode=1;Jet OLEDB:Global Partial Bulk Ops=2;Jet OLEDB:Global Bulk "<br>
+                               "Transactions=1;Jet OLEDB:New Database Password="";Jet OLEDB:Create System Database=False;Jet OLEDB:Encrypt Database=False;Jet OLEDB:Don't Copy Locale on Compact=False;Jet"<br>
+                               " OLEDB:Compact Without Replica Repair=False;Jet OLEDB:SFP=False;"))<br>
+<br>
+Die XXX sind jetzt nur Platzhalter. MDW-Datei ist vorhanden!<br>
+<br>
+Erhalte dann aber den Fehler:  Automatisierungsfehler Die Anwendung kann nicht <br>
+gestartet werden. Die Informationsdatei für die Arbeitsgruppe fehlt oder ist <br>
+exklusiv von einem anderen Benutzer geöffnet.<br>
+<br>
+Vielleicht kennt sich jemand damit aus! <br>
+Ich bedanke mich schon mal im voraus.<br>
+<br>
+Grüß <br>
+SpEEDY<br>
+ <br>
+</div>
+</article>
+<article class="post" id="msg8155">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-28 13:41 UTC</span>
+  </div>
+  <div class="post-body">Hallo, SpEEDY, musste den Eintrag ein zweites Mal schreiben, weil ich bei meiner ersten Antwort auf eine falsche Frage antwortete -  jetzt aber:<br>
+<br>
+Hast Du schon <a href="http://support.microsoft.com/kb/300699/de" rel="nofollow noopener">{2}</a> angesehen? Da steht etwas zu.<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg8156">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-28 13:46 UTC</span>
+  </div>
+  <div class="post-body">Achso, und ich finde in deinem String die Security Info nicht (siehe Dein Link).<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg8164">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2011-06-29 07:36 UTC</span>
+  </div>
+  <div class="post-body">Vielen Dank für die Hilfe Fred. <br>
+Habe versucht wie in deinen Link beschrieben die Entwurfsansicht der "Datenzugriffsseite" zu öffnen, leider erhalte ich dabei immer den den Fehler "Der OLE-Server ist nicht registriert". Habe schon im Netz geschaut was das sein könnte. Habe gefunden das es an Norten Liegen könnte was ich nicht auf den PC haben oder an Bilder, die ich nicht in der MDW habe. Komischerweise hat meine MDW-Datei keine "Datenzugriffsseite" dort sind nur Abfragen. <br>
+<br>
+Naja, werde mal schauen ob ich noch was finde. Ich bedanke mich noch mal und wünsche dir einen schönen Warmen Tag. ;)<br>
+<br>
+Gruß<br>
+SpEEDY  </div>
+</article>
+<article class="post" id="msg8165">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-29 10:07 UTC</span>
+  </div>
+  <div class="post-body">Ja, den wünsch ich Dir auch. Ich sitz grad im Wald und dennoch brennt mir's Fell!<br>
+Morgen kommt ja Abkühlung.<br>
+<br>
+Mein Verweis auf die Microsoft-Seite galt inbesondere dem UNC-Pfad. Und die Sache mit der Berechtigung sollte meinen, dass Du den Eintrag Security Info in deinem ConnectionString ergänzt.<br>
+Kommst Du denn als Admin ran?<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg8166">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2011-06-29 11:53 UTC</span>
+  </div>
+  <div class="post-body">Im Wald sitzen das nenne ich mal Arbeit. ;-D <br>
+Ich freue mich über das Wetter, leider muss ich im Büro mir langer Hose sitzen. <br>
+Und du weißt wahrscheinlich wie man sich bei den Wetter dann fühlt. ;-D<br>
+<br>
+Das ist ja genau das Problem das ich habe. Die MDB-Datei die ich verwenden möchte, sind für den Admin gesperrt. <br>
+Sprich man muss für die entsprechenden Tabellen erst Lese und schreibe Rechte setzen. Die Rechte sind spezial für die Benutzergruppe gesetzt. <br>
+Deswegen muss ich mich über die MDW-Datei anmelden.<br>
+<br>
+Ich würde dir gerne die beiden Daten zu Verfügung stellen, das darf ich leider nicht machen. :-( Kundendaten und MDW ist halt Geschütz, bzw. Rechte gedöns. Sorry!!!<br>
+<br>
+Gruß<br>
+SpEEDY</div>
+</article>
+<article class="post" id="msg8167">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-29 12:05 UTC</span>
+  </div>
+  <div class="post-body">OK, fangen wir doch mal einfach an:<br>
+Man müsste erst einmal herausbekommen, ob der ConnectionString prinzipiell funktioniert. <br>
+Hast Du es mal mit einer einfachen anderen Datenbank mit MDW probiert?<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg8179">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2011-07-05 06:37 UTC</span>
+  </div>
+  <div class="post-body">Sorry Fred das ich ich mich erst jetzt melde. <br>
+Das Problem ist das ich nicht genau weiß wie ich eine eigen MDW Datei erstellen kann. <br>
+Versuche mich mal nächste Woche nochmal damit. Ich melde mich noch mal.<br>
+<br>
+Schönen Diensttag noch.<br>
+<br>
+Gruß<br>
+SpEEDY</div>
+</article>
+<article class="post" id="msg8304">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2011-09-08 09:58 UTC</span>
+  </div>
+  <div class="post-body">Morgen Fred wollte mich noch einmal melden. <br>
+Habe es hingekommen..  ;D ;D ;D<br>
+<br>
+Mit dem ConnectString  <br>
+<br>
+(setq ConnectString  (strcat "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" DatenbankName ";Persist Security Info=False;Jet OLEDB:System Database=.mdw" ))<br>
+<br>
+und<br>
+<br>
+(ADOLISP_ConnectToDB ConnectString USER PASSWORT)<br>
+<br>
+geht es!<br>
+<br>
+<br>
+Juhuhuh!!! Wollte ich nur mal mitteilen. Danke nochmal für die Hilfe.<br>
+<br>
+MFG<br>
+<br>
+SpEEDY</div>
+</article>
+<article class="post" id="msg8305">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-09-08 12:28 UTC</span>
+  </div>
+  <div class="post-body">Hallo, SpEEDY, vielen Dank für die Info. Das ist mit Sicherheit auch für andere hilfreich!<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg8306">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2011-09-08 12:57 UTC</span>
+  </div>
+  <div class="post-body">Keine Ursache, immer wieder gerne.<br>
+<br>
+Wollte nur mitteilen das es zu Problemen mit Win 7 uns SP1 gegeben kann. Microsoft hat da die ADO.DLL geändert und man bekommt keinen richtigen zugriff mehr. Habe noch keine richtige Hilfe dafür gefunden. <br>
+<br>
+MFG<br>
+SpEEDY</div>
+</article>
+<article class="post" id="msg8307">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-09-08 18:41 UTC</span>
+  </div>
+  <div class="post-body">Hi, auf 64-Bit-Betriebssystemen verwenden wir kein Jet mehr, sondern die AccessDatabaseEngine für Office 2010 x64.<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg8308">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2011-09-09 06:57 UTC</span>
+  </div>
+  <div class="post-body">Danke Fred und wieder was gelernt.<br>
+<br>
+Ein paar Fragen hätte ich aber noch. <br>
+- kann ich damit auch Access 2003 MDBs öffnen?<br>
+- Wie muss der "ConnectString" den aussehen? <br>
+- gibt es einen Möglichkeit in der Reg zu sehen ob es sich um ein x64 System handelt?<br>
+  Außer zu schauen ob "HKEY_LOCAL_MACHINE\Software\WOW6432Node" vorhanden ist?<br>
+<br>
+Sind auch meine letzten Fragen zu dem Thema.  ;D<br>
+Danke noch mal.<br>
+<br>
+MFG<br>
+<br>
+SpEEDY</div>
+</article>
+<article class="post" id="msg8309">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-09-09 10:28 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+<blockquote class="quote">kann ich damit auch Access 2003 MDBs öffnen</blockquote><br>
+ja<br>
+<br>
+<blockquote class="quote">Wie muss der "ConnectString" den aussehen?</blockquote><br>
+Ich mache das immer so:<br>
+(setq strDriver (if (= (getenv "PROCESSOR_ARCHITECTURE") "x86") "Microsoft.Jet.OLEDB.4.0" "Microsoft.ACE.OLEDB.12.0"))<br>
+(setq err (vl-catch-all-apply 'vlax-invoke-method (list oDbv "Open" (strcat "Provider=" strDriver ";Data Source=" strFile) strUser strPass -1)))<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg8315">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2011-09-15 11:38 UTC</span>
+  </div>
+  <div class="post-body">Danke Fred noch mal für die Antwort, leider funktioniert es nicht unter X64 Rechner. <br>
+Nutzt du die ADO.Lisp? oder gehts du über eine ActiveX verbindung?<br>
+<br>
+Gruß<br>
+SpEEDY</div>
+</article>
+<article class="post" id="msg8316">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-09-15 11:49 UTC</span>
+  </div>
+  <div class="post-body">Hi, was funktioniert konkret nicht?<br>
+<br>
+Eine ADO.Lisp kenne ich jetzt ad hoc nicht. Basierend auf dem Wissen aus den Beispielen der Flemming group und dem Buch AutoCAD Database Connectivity und meinen sonstigen Erfahrungen mit ActiveX habe ich mir eine ADO-Bibliothek gebaut, die im Prinzip auf Connection-Object holen, SQL-Statement absetzen und Connection-Objekt schließend besteht. Mit den unten genannten ConnectionStrings komme ich in die Datenbank (vorausgesetzt, sie liegt nicht in einem von Windows7 gesperrten Ordner wie unterhalb von C:\ProgramData).<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg8318">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2011-09-16 09:00 UTC</span>
+  </div>
+  <div class="post-body">bekomme einfach keine Verbindung auf einen X64 PC. Ich meine diese ADO.lsp <a href="http://acad.fleming-group.com/Download/ADOLisp/ADOLisp.html" rel="nofollow noopener">{2}</a> <br>
+<br>
+Habe mal was gebastelt womit man prüfen kann ob einen Verbindung steht. <br>
+Unter x86 PC ist alles in Ordnung, leider unter einem einzigen X64 nicht. <br>
+Dieser hat aber ein Office X86 Paket installiert. Könnte es vielleicht daran liegen?<br>
+Gibt es einen Möglichkeit auf die 32bit ADO zuzugreifen, falls es eine gibt? Leider bin ich noch nicht so fit in dem Thema. <br>
+<br>
+Was mich nur wundert ist folgendes. Es gib VB-Programme die unter einem 64-Bit System immer noch "Microsoft.Jet.OLEDB.4.0" diese werden wahrscheinlich auf 32bit-erstellt und greifen auf die Daten in "Programm X86" zu. Überlege mir die ganze zeit ob das auch mit Lisp möglich ist. <br>
+<br>
+Oder bin ich vielleicht vorkommen auf den Holzweg.<br>
+<br>
+(defun C:ACC ()<br>
+<br>
+(setq DatenbankName "X")<br>
+(setq MDWPFAD "X")<br>
+;;;(setq strDriver (if (= (getenv "PROCESSOR_ARCHITECTURE") "x86") "Microsoft.Jet.OLEDB.4.0" "Microsoft.ACE.OLEDB.12.0"))<br>
+  (setq strDriver "Microsoft.ACE.OLEDB.12.0")<br>
+  <br>
+    (setq ConnectString  (strcat "Provider=" strDriver ";Data Source=" DatenbankName ";Persist Security Info=False;Jet OLEDB:System Database=" MDWPFAD ))<br>
+    (setq ConnectionObject<br>
+                  (ADOLISP_ConnectToDB ConnectString "MASTER" "")<br>
+           )<br>
+<br>
+  (if ConnectionObject<br>
+    (alert "Verbindung OK")<br>
+    (alert "keine Verbindung")<br>
+   )<br>
+ ) <br>
+<br>
+PS. Für die Routine wird die "ADOLISP_Library.lsp" (<a href="http://acad.fleming-group.com/Download/ADOLisp/ADOLisp.html" rel="nofollow noopener">{2}</a>) benötigt. <br>
+Gruß<br>
+<br>
+SpEEDY</div>
+</article>
+<article class="post" id="msg8319">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-09-16 10:50 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=SpEEDY link=topic=1274.msg8318#msg8318 date=1316163604 wrote:</cite><br>
+[...] greifen auf die Daten in "Programm X86" zu. Überlege mir die ganze zeit ob das auch mit Lisp möglich ist.<br>
+</blockquote><br>
+Nein, Du arbeitest mit Lisp immer im AutoCAD-Kontext. Ist AutoCAD 64-Bit, werden alle Klassen aus dem 64-Umfeld instanziiert.<br>
+Wir haben aber eine 32-Bit-Komponente, die sich im 64-Bit-Kontext instanziieren lässt. Warum auch immer. Durch diesen Tunnel habe ich mir schon mal eine 32-Bit-ADO-Instanz ins 64-Bit-AutoCAD geholt. Ich halte das aber für keine gute Idee.<br>
+<br>
+Dein ConnectionString sieht eigenartig aus. Kann es sein, dass Du versuchst, auf eine MDW zuzugreifen? Von MDW's habe ich keine Ahnung. Kann ich eine Beispieldatenbank von Dir haben?<br>
+<br>
+Wichtig ist, dass Du auf einem 64-Bit-Rechner dringend die <a href="http://www.microsoft.com/downloads/de-de/details.aspx?familyid=c06b8369-60dd-4b64-a44b-84b371ede16d&amp;displaylang=de" rel="nofollow noopener">{2}</a> installierst. Ein etwaig installiertes Office muss zunächst runter. Danach kann auch eine ältere 32-Bit Version wieder drauf. Soll es aber unbedingt Office 2010 sein, musst Du auf 64-Bit-Systemen auch das Office 2010 x64 verwenden.<br>
+<br>
+VG, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

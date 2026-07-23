@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exception in the command ARX DCL_FORM_ISACTIVE · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1893</p>
+    <h1>Exception in the command ARX DCL_FORM_ISACTIVE</h1>
+    <p class="meta">Started by Emiliano ·
+      2012-09-15 16:14 UTC ·
+      2 replies · SMF topic #1893</p>
+<article class="post" id="msg9305">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-09-15 16:14 UTC</span>
+  </div>
+  <div class="post-body">Hello to all,<br>
+I have a problem with OpenDCL and the use of reactor ": vlr-documentToBeActivated".<br>
+<br>
+Initially, considering that there not is a problem related to OpenDCL I wrote in another forum:<br>
+http://www.theswamp.org/index.php?topic=42757.0<br>
+<br>
+I hope some of you will take a commitment to read the discussion ....<br>
+It would be impossible for me to rewrite the whole discussion here   :-\<br>
+In practice it seems that the dwg drawing is active but no Palettes of OpenDCL and then an exception is thrown (see attached picture) on the following line:<br>
+<br>
+(if (dcl_Form_IsActive NomeApp_Form_FormPrinc)<br>
+  (progn<br>
+     ......<br>
+  )<br>
+)<br>
+<br>
+<br>
+Can you help me understand what is happening and how to fix it?<br>
+There are many days that I work on this problem  :'(<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1821/Errore.JPG">Errore.JPG</a> <span class="muted">(20119 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9306">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-09-15 16:28 UTC</span>
+  </div>
+  <div class="post-body">I am very very very stupid!!! :'( :'( :'(<br>
+I have to write at least 100 times!<br>
+<br>
+After days of trying I realized I had the solution in front of my eyes, looked for days and I have not ever seen :o<br>
+<br>
+The palettes OpenDCL have the event "OnDocActivated" that does exactly what I want, it works fine and without reactors: a single line of code!!<br>
+<br>
+Forgive me for all my previous posts and for the time that I did lose :-[</div>
+</article>
+<article class="post" id="msg9307">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-09-16 07:26 UTC</span>
+  </div>
+  <div class="post-body">Hi, I'm convinced that you are not stupid - otherwise you wouldn't get the OnDocActivated-solution by your own.  ;)<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Getting wait cursor after a few seconds, then progress bar not updating · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1721</p>
+    <h1>Getting wait cursor after a few seconds, then progress bar not updating</h1>
+    <p class="meta">Started by jmaeding ·
+      2011-11-03 22:01 UTC ·
+      8 replies · SMF topic #1721</p>
+<article class="post" id="msg8470">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2011-11-03 22:01 UTC</span>
+  </div>
+  <div class="post-body">I am on Civil 3D2009 (runs as 32 bit prog) in windows 7<br>
+ 64bit. I have a modal form that counts app ids in files in a loop.<br>
+It has a progress bar that tracks the progress.<br>
+If the operation takes more than a few seconds, I get the little circle that spins, and acad essentially freezes until the looping is done.<br>
+Is there a way to get the form to refresh once per loop?  I tried several things as the first statement inside my loop.<br>
+set focus, redraw, and anything that made sense in the object broswer.<br>
+Is this something everyone sees, or just my 2009/win 7 64 combination.<br>
+Any suggestions?<br>
+thx</div>
+</article>
+<article class="post" id="msg8471">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-11-04 05:05 UTC</span>
+  </div>
+  <div class="post-body">Hi, yes I do know this. If you have luck, then dcl_Control_Redraw causes repainting the control, but there's no guarantee.<br>
+In the end you won't have any chance to solve this because your loop and your form seem to run in the same thread (Owen may correct me). And since Lisp does not allow multithreading you can't avoid this.<br>
+<br>
+You can try the following:<br>
+Build a modeless form. Create a progress bar and a button on it. Let the button call the event asynchronously (by setting EventInvoke to AllowCommand) and excecute your counting from this event. I just want to know if there's a difference, because a running modal form "stops" AutoCAD for the time (dcl_form_show ...) is running.<br>
+<br>
+And another thing: if you have 100.000 loops then you shouldn't call (dcl_control_setvalue oProgress (setq intCnt (1+ intCnt))) each time because it takes a recognizable amount of time.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8472">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2011-11-04 06:58 UTC</span>
+  </div>
+  <div class="post-body">hello,<br>
+the fundamental problem i'm just trying to solve here <a href="http://www.theswamp.org/index.php?topic=39931.0" rel="nofollow noopener">{2}</a> and here <a href="http://ww3.cad.de/foren/ubb/Forum145/HTML/003518.shtml" rel="nofollow noopener">{2}</a>.<br>
+i use among other things modeless dialogs with progressbar (EventInvoke: AllowCommand). that also occurs the problem. it does not seem to lie at opendcl.<br>
+<br>
+the problem seems to be, that is until autocad no feedback to the system as long as the lisp routine runs. when I break the program in the debugger and let continue to run it behaves autocad for some time normal (also progressbars).<br>
+<br>
+best regards<br>
+marco<br>
+<br>
+(sorry for my english)</div>
+</article>
+<article class="post" id="msg8473">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-11-04 07:46 UTC</span>
+  </div>
+  <div class="post-body">Hi, Marco, thanks for sharing your experiences. I can reproduce this behavior in my C# projects outside AutoCAD when I'm too lazy to create another thread for the time-expensive methods. So at least we have to live with it.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8474">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2011-11-04 08:53 UTC</span>
+  </div>
+  <div class="post-body">but this is not like the customer  :(</div>
+</article>
+<article class="post" id="msg8475">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2011-11-04 16:28 UTC</span>
+  </div>
+  <div class="post-body">ah, so the only answer is to sub out the task to a .net command.<br>
+That actually fits fine with me, as I am just finishing my set of functions in lisp and .net that serialize and deserialize a list/arraylist so I can pass strings back and forth in the resultbuffer.<br>
+Turns out 2009, at least, handles certain things in funcky ways, such as a list of three numbers.<br>
+I posted in the adesk groups on this and they confirmed it, so I have to resort to passing strings which are not "reinterpreted" by the .net list to resultbuffer translation the lispfunction mechanism performs.<br>
+<br>
+Maybe I just expose my loop task function from my vlx so .net can start the loop, and call the lisp function, then do the progress report.  I am starting to mix lisp and .net a lot now, its awesome as you can take advantage of both sets of tools.</div>
+</article>
+<article class="post" id="msg8476">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2011-11-05 09:59 UTC</span>
+  </div>
+  <div class="post-body">hello,<br>
+is there possibility to call from c# a lisp function?<br>
+in the way:<br>
+- start function in c# with parameters lispfunctionname<br>
+- in this function start the lispfunction<br>
+<br>
+and would this solve the problem?<br>
+<br>
+best regards<br>
+marco</div>
+</article>
+<article class="post" id="msg8477">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2011-11-05 10:14 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Marco,<br>
+I've answered your post at theSwamp<br>
+<br>
+Although I enjoy .NET you don't need it in this case ... depending on your actual problem :)</div>
+</article>
+<article class="post" id="msg8478">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-11-06 08:50 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+interacting AutoLISP and C# works fine as long you don't send many data between C# and Lisp. In my experiences it takes a recognizable time for AutoCAD to send a large ResultBuffer (for instance of a list with dotted pairs) from .NET to Lisp.<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

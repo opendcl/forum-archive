@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OnClose event · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 142</p>
+    <h1>OnClose event</h1>
+    <p class="meta">Started by johnM ·
+      2008-01-24 21:44 UTC ·
+      8 replies · SMF topic #142</p>
+<article class="post" id="msg618">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2008-01-24 21:44 UTC</span>
+  </div>
+  <div class="post-body">I have a dockable form with a tree control on it and I want to save the tree info to a file when the dialog box is closed. I have tried the OnClose event but the form name “qdiso_ISO_1_TreeControl1” becomes nil and<br>
+(dcl_Tree_GetRootItem qdiso_ISO_1_TreeControl1) returns an error<br>
+any suggestions?<br>
+</div>
+</article>
+<article class="post" id="msg619">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-01-24 22:29 UTC</span>
+  </div>
+  <div class="post-body">I would add a "Close" or "OK" button then in the OnClicked event for that button grab all the info from the tree, write to your file, then close the form.<br>
+Is that what you're trying to do?</div>
+</article>
+<article class="post" id="msg620">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-01-24 22:41 UTC</span>
+  </div>
+  <div class="post-body">It looks like OnClose fires too late in the process when AutoCAD is closing. I'll investigate to see if this can be fixed. As a workaround, you can try to use OnEnteringNoDocState to do your cleanup.</div>
+</article>
+<article class="post" id="msg621">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2008-01-25 04:29 UTC</span>
+  </div>
+  <div class="post-body">I don’t really want to put a close button on the form because it is inevitable that someone will close it by the “X” at the top of the form. (but never say never)<br>
+<br>
+When does the OnEnteringNoDocState fire?<br>
+I put in the code, made sure the dialog box was updated and it will not fire<br>
+I’m running studio version 4.2.1.0<br>
+In the intelligence help it states:<br>
+Event EnteringNoDocState <br>
+<br>
+The description for this Method, Property or Event has not been set in the ActiveX control. <br>
+ <br>
+AutoLISP Syntax: <br>
+c:qdiso_ISO_1_OnEnteringNoDocState () <br>
+<br>
+thanks<br>
+</div>
+</article>
+<article class="post" id="msg622">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2008-01-25 04:41 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I figured out the OnEnterNoDocState. It works when the drawing is closed, I’m sure I’ll find a use for it but it dose not solve my dilemma. But thanks for suggesting it.<br>
+The problem is if a person wants to keep the drawing open but close the dialog box, how do I save the tree info. <br>
+</div>
+</article>
+<article class="post" id="msg623">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-01-25 12:47 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=johnM link=topic=142.msg622#msg622 date=1201236116 wrote:</cite><br>
+The problem is if a person wants to keep the drawing open but close the dialog box, how do I save the tree info. <br>
+</blockquote><br>
+<br>
+I assumed OnClose would work in that case.  If not, I'll have to investigate.</div>
+</article>
+<article class="post" id="msg624">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2008-01-25 17:29 UTC</span>
+  </div>
+  <div class="post-body">I figured out how to solve the issue. First the project.vlx has to be in the AutoCAD start up suite so it loads automatically.<br>
+ I use the AutoCAD reactor vlr-docmanager-reactor with :vlr-documentToBeDeactivated and save the existing tree data before it closes.<br>
+I use the DocOnDocActivated to read the data to populate the tree for the new drawing.<br>
+</div>
+</article>
+<article class="post" id="msg627">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-01-27 09:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=johnM link=topic=142.msg624#msg624 date=1201282143 wrote:</cite><br>
+I figured out how to solve the issue.</blockquote><br>
+<br>
+I'm glad you found a workaround. I've fixed the OnClose event for the OpenDCL 5 Alpha 2 so that it always fires synchronously. This means you can't use the (command) function in your handler, but your handler will execute before the form is destroyed.</div>
+</article>
+<article class="post" id="msg639">
+  <div class="post-head">
+    <span class="post-author">JMack</span>
+    <span class="post-date muted">2008-02-01 00:51 UTC</span>
+  </div>
+  <div class="post-body">Owen, that's a great fix! I've been dealing with that issue since version 1.0.  I didn't even think it was a bug or a feature that could be implimented.<br>
+<br>
+Thanks,<br>
+JMack</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

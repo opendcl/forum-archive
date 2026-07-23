@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bug with Grid mousedown and up events · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2800</p>
+    <h1>Bug with Grid mousedown and up events</h1>
+    <p class="meta">Started by JMack ·
+      2021-11-11 14:03 UTC ·
+      0 replies · SMF topic #2800</p>
+<article class="post" id="msg13631">
+  <div class="post-head">
+    <span class="post-author">JMack</span>
+    <span class="post-date muted">2021-11-11 14:03 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+I'm having trouble with the onmousedown and onmouseup events on a grid control.  I'm trying to show a context menu with the onmouseup event with the right mouse button.<br>
+<br>
+It appears that the events are not being triggered correctly.  Attached is a simple project with a grid control and a lisp file with the onmousedown and onmouseup events.  I don't have the dblclicked event enabled and did not debug it.  The command is gridclicks.<br>
+<br>
+Below are the princ outputs when clicking mouse buttons on the grid control.<br>
+<br>
+Left click - <strong>the onmouseup event was not triggered</strong><br>
+1. OnMouseDown, Button: 1, Flags: 1<br>
+<br>
+double left click - appears to be OK, both events fired.  I'm not sure if the output should be down/up/down/up. <strong>onmouseup flag is incorrect.</strong><br>
+1. OnMouseDown, Button: 1, Flags: 1<br>
+2. OnMouseUp, Button: 1, Flags: 0<br>
+<br>
+middle click: appears to be OK, both events fired. <strong>onmouseup flag is incorrect.</strong><br>
+1. OnMouseDown, Button: 4, Flags: 16<br>
+2. OnMouseUp, Button: 4, Flags: 0<br>
+<br>
+right click: <strong>the onmousedown event triggered twice and the onmouseup event was not triggered</strong> <br>
+1. OnMouseDown, Button: 2, Flags: 2<br>
+2. OnMouseDown, Button: 2, Flags: 2<br>
+<br>
+double left click: <strong>onmouseup flag is incorrect.</strong> I assume the event sequence should be down/up/down/up but the output is not in the correct order.  I don't need to code for a double right click but this is the only way I could get the onmouseup event to trigger for the right button and this is where I want to show the context menu popup.<br>
+1. OnMouseDown, Button: 2, Flags: 2<br>
+2. OnMouseDown, Button: 2, Flags: 2<br>
+3. OnMouseUp, Button: 2, Flags: 0<br>
+4. OnMouseDown, Button: 2, Flags: 2<br>
+<br>
+AutoCAD 2021, OpenDCL 9.1.4.1., tested with two different mice.<br>
+<br>
+Any help would be appreciated.<br>
+<br>
+Cheers,<br>
+Jamie<br>
+<br>
+ <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2539/grid.odcl">grid.odcl</a> <span class="muted">(623 bytes)</span></li><li><a href="../attachments/2540/gridclicks.LSP">gridclicks.LSP</a> <span class="muted">(1281 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Is there a way to set position of a dialog after it is opened? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 130</p>
+    <h1>Is there a way to set position of a dialog after it is opened?</h1>
+    <p class="meta">Started by Hypersonic ·
+      2008-01-01 20:12 UTC ·
+      4 replies · SMF topic #130</p>
+<article class="post" id="msg508">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2008-01-01 20:12 UTC</span>
+  </div>
+  <div class="post-body"><br>
+i.e. to enable automatically "sliding" the dialog out of the way?<br>
+<br>
+Thanks!</div>
+</article>
+<article class="post" id="msg509">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-01-02 03:13 UTC</span>
+  </div>
+  <div class="post-body">You can move it on SHOW:<br>
+<br>
+(Setq rValue (dcl_Form_Show Project1_Form1 <br>
+	    UpperLeftXCoordinate [as Integer] <br>
+	    UpperLeftYCoordinate [as Integer]))<br>
+<br>
+<u>Owen</u> can you clarify something for me? You mention before you could move a form on OnInitialize:<br>
+<a href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1810592&amp;group_id=187950&amp;atid=923363" rel="nofollow noopener">{2}</a><br>
+<br>
+How do we do this? With (dcl_form_resize) or (dcl_control_setpos) or something else?</div>
+</article>
+<article class="post" id="msg510">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-01-02 04:37 UTC</span>
+  </div>
+  <div class="post-body"><u>Owen</u>, Also what's the best way to get the Height &amp; Width of a form?<br>
+I've learned from you that we can use:<br>
+(dcl_Control_GetHeight (car (dcl_Form_GetControls Proj_Form)))<br>
+But that includes the Titlebar &amp; borders.<br>
+I'm assuming this will be different for each version of windows &amp; VisualStyles, it makes things difficult to figure out what's on the users end.<br>
+Since we changed the Forms properties (Height &amp; Width) to no longer include the TitleBar &amp; borders for functions like (dcl_Form_Resize),<br>
+It would be nice if there was an opposing function to get the Height &amp; Width without the TitleBar &amp; borders included.<br>
+Maybe something like: (dcl_Form_GetSize)</div>
+</article>
+<article class="post" id="msg513">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-01-02 08:57 UTC</span>
+  </div>
+  <div class="post-body">Barry, you should be able to call either (dcl_form_resize) or (dcl_form_setpos) during OnInitialize. Also, (dcl_Control_GetHeight (car (dcl_Form_GetControls Proj_Form))) returns the client height (i.e. not including the title bar or border) *unless* it's an older form that was created before sizes used the client area. With newly created forms, all sizes should be client sizes, and should be correct and consistent on all platforms.</div>
+</article>
+<article class="post" id="msg514">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-01-02 20:43 UTC</span>
+  </div>
+  <div class="post-body">Is there a way to tell/check what version a for was created in?<br>
+If you have a look at JTHWAMAN sample form here:<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=127.msg507#msg507" rel="nofollow noopener">{2}</a><br>
+It returns the forms Height/Width with the TitleBar &amp; borders dimensions (so I guess it's an older form).<br>
+Is there a way to convert\upgrade the form to use the new client area code?</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Commandline Functions · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2306</p>
+    <h1>Commandline Functions</h1>
+    <p class="meta">Started by donnieworld ·
+      2015-09-03 18:52 UTC ·
+      3 replies · SMF topic #2306</p>
+<article class="post" id="msg11605">
+  <div class="post-head">
+    <span class="post-author">donnieworld</span>
+    <span class="post-date muted">2015-09-03 18:52 UTC</span>
+  </div>
+  <div class="post-body">I have a few OpenDCL projects loaded in AutoCAD and BricsCAD. The functions controlling all of the form actions are displayed in the autocomplete list of commands.<br>
+<br>
+Can I modify these or implement something so they are not included in the list?<br>
+<br>
+IncrementalText/FrmMain#OnInitialize<br>
+IncrementalText/FrmMain/bntCancel#OnClick<br>
+IncrementalText/FrmMain/bntOK#OnClick<br>
+...</div>
+</article>
+<article class="post" id="msg11606">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-09-03 22:38 UTC</span>
+  </div>
+  <div class="post-body">If you are dealing with a modal form you can use nested (localized) functions to avoid this. I don't know how to do this for a modeless form or a palette.</div>
+</article>
+<article class="post" id="msg11608">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-09-04 05:12 UTC</span>
+  </div>
+  <div class="post-body">Hi, these event handlers should only appear in the commandline or history list, when they are called from modeless forms with event invoke = 1 (allow command). See <a href="http://www.opendcl.com/forum/index.php?topic=1081.msg5677#msg5677" rel="nofollow noopener">{2}</a> for understanding. There were even another topics in this forum about this.<br>
+You can minimize this by calling the event handler synchronously and calling another "more readable" command by using delayedinvoke.<br>
+I did it so in the past. I called different events this way from a palette: setting some variable values in the synchronously fired event handlers and finally called a command which used these variables asynchronously.<br>
+<br>
+HTH, Fred</div>
+</article>
+<article class="post" id="msg11609">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-09-04 11:13 UTC</span>
+  </div>
+  <div class="post-body"><a href="http://www.opendcl.com/forum/index.php?topic=1081.msg5698#msg5698" rel="nofollow noopener">{2}</a> in the topic Fred has linked to seems to suggest that you can leave out the 'c:' prefix for event handlers. This would prevent the event name from being included in the autocomplete list. But somehow this is not possible if event invoke = 1 (BricsCAD V14).<br>
+<br>
+Event invoke = 1.<br>
+With the 'c:' prefix the event is sent as "(c:ModeLessTest/Form1/TextButton1#OnClicked)".<br>
+Which seems to confirm that the 'c:' prefix can be removed.<br>
+But if I remove it there is an error:<br>
+'Unable to recognize command "MODELESSTEST/FORM1/TEXTBUTTON1#ONCLICKED". Please try again.'<br>
+<br>
+With event invoke = 0 the 'c:' prefix can be removed.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2166/ModeLessTest.lsp">ModeLessTest.lsp</a> <span class="muted">(379 bytes)</span></li><li><a href="../attachments/2167/ModeLessTest.odcl">ModeLessTest.odcl</a> <span class="muted">(538 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

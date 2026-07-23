@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ODCL can upgrade from lisp??? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2007</p>
+    <h1>ODCL can upgrade from lisp???</h1>
+    <p class="meta">Started by TopoWAR ·
+      2013-08-12 22:13 UTC ·
+      13 replies · SMF topic #2007</p>
+<article class="post" id="msg9886">
+  <div class="post-head">
+    <span class="post-author">TopoWAR</span>
+    <span class="post-date muted">2013-08-12 22:13 UTC</span>
+  </div>
+  <div class="post-body">Hello to all! I use for my software ODCL runtime, the question is: can update only the arx located in the Common Files folder? or you need to run Windows Installer. MSI? you can create something from lisp to run the update of ODCL? thank you very much and congratulations on such a good job.</div>
+</article>
+<article class="post" id="msg9889">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-08-13 00:28 UTC</span>
+  </div>
+  <div class="post-body">It's important to perform the updates via Windows Installer so that reference counts get maintained correctly, otherwise you could break other OpenDCL applications that may be installed now or in the future. You can start the installer from lisp. There have been past discussions about this. If you search the discussion group for "msiexec" you should find those past threads.</div>
+</article>
+<article class="post" id="msg9891">
+  <div class="post-head">
+    <span class="post-author">TopoWAR</span>
+    <span class="post-date muted">2013-08-13 00:30 UTC</span>
+  </div>
+  <div class="post-body">thanks owenwengerd :)</div>
+</article>
+<article class="post" id="msg9894">
+  <div class="post-head">
+    <span class="post-author">TopoWAR</span>
+    <span class="post-date muted">2013-08-13 00:35 UTC</span>
+  </div>
+  <div class="post-body"><strong>owenwengerd</strong> , where the discussion group "msiexec"???<br>
+excuse my ignorance :(</div>
+</article>
+<article class="post" id="msg9895">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-08-13 00:56 UTC</span>
+  </div>
+  <div class="post-body">Here are two threads that may help:<br>
+<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=1641.15" rel="nofollow noopener">{2}</a><br>
+<a href="http://www.opendcl.com/forum/index.php?topic=1142.0" rel="nofollow noopener">{2}</a><br>
+<br>
+Note the use of (startapp) to run msiexec.exe, which is Windows Installer. You can run msiexec.exe in a command shell to see its command line options.</div>
+</article>
+<article class="post" id="msg10273">
+  <div class="post-head">
+    <span class="post-author">TopoWAR</span>
+    <span class="post-date muted">2013-12-25 19:36 UTC</span>
+  </div>
+  <div class="post-body">Hello, I tried to update using the code ODCL:<br>
+<br>
+(startapp "msiexec.exe" (strcat "/i \"" msi "\" /qn"))<br>
+<br>
+but it seems that it takes OpenDCL runtime autocad is closed! I tried to download the ARX before the upgrade but does not work, must be closed to proceed cad? if so then you can not upgrade from using lisp. msi</div>
+</article>
+<article class="post" id="msg10274">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-25 20:46 UTC</span>
+  </div>
+  <div class="post-body">I'm not sure I understand correctly. If you mean that OpenDCL Runtime cannot be upgraded while it is in use, then yes, that is correct. You must upgrade before the OpenDCL Runtime is loaded, else unload it manually before upgrading. I will see if I can add some code in the _MasterDemo sample app to upgrade at runtime, maybe that will help.</div>
+</article>
+<article class="post" id="msg10275">
+  <div class="post-head">
+    <span class="post-author">TopoWAR</span>
+    <span class="post-date muted">2013-12-25 22:00 UTC</span>
+  </div>
+  <div class="post-body"> <strong>owenwengerd </strong> , thanks for the answer, that would be amazing ODCL could update from lisp at runtime, I'll be on the lookout for this, thank a teacher!<br>
+<br>
+sorry but use a translator!</div>
+</article>
+<article class="post" id="msg10279">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-29 04:55 UTC</span>
+  </div>
+  <div class="post-body">The OpenDCL 7.0 RC2 build includes enhancements to the [Check for Update] button in the _MasterDemo sample. It now checks for an update and if one is available, allows you to download and install it.</div>
+</article>
+<article class="post" id="msg10295">
+  <div class="post-head">
+    <span class="post-author">TopoWAR</span>
+    <span class="post-date muted">2014-01-02 08:19 UTC</span>
+  </div>
+  <div class="post-body"><strong>owenwengerd</strong> , <br>
+Hello, I had previously made ​​a code very similar to yours, with this line sets<br>
+(foreach project (dcl_GetProjects) (dcl_Project_Unload project T))<br>
+I tried to upgrade to 7.0.1.4 7.0.1.2 ODCL but asks me to close the autocad, I run the msi with ODCL version 7.0.1.4 already installed in autocad but no longer asks me to close the autocad, perhaps changing to run the msi with ODCL in execution comes from version 7.0.1.4 onwards? thanks</div>
+</article>
+<article class="post" id="msg10297">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-02 14:55 UTC</span>
+  </div>
+  <div class="post-body">The reason it can work without closing AutoCAD is because (*ODCL:Vanish) unloads OpenDCL after unloading all projects. You can do the same in previous versions.</div>
+</article>
+<article class="post" id="msg10300">
+  <div class="post-head">
+    <span class="post-author">TopoWAR</span>
+    <span class="post-date muted">2014-01-02 17:18 UTC</span>
+  </div>
+  <div class="post-body">[<strong>owenwengerd</strong> , gracias, I have another question, this is their code<br>
+<br>
+  (dcl_SendString "(*ODCL:Vanish)\n")<br>
+  (startapp (strcat "msiexec.exe /i " msipath))<br>
+  (dcl_Form_Close _MasterDemo_Update 1)<br>
+<br>
+<br>
+is possible that it works well the function (* ODCL: Vanish) because at that time being used dcl_SendString and later dcl_Form_Close, personally for me worked well the upgrade chooses to use (* ODCL: Vanish) after downloading the form (dcl_Form_Close _MasterDemo_Update 1), do you think?<br>
+<br>
+I use this code works perfect, I add the supplement dos_exewait dos_lib function, to do wait until you finish autocad ODCL installed.<br>
+(dcl_Form_Show TopoWAR|update_UPDATE)<br>
+  (prompt "\n ** unload ARX OpenDCL**") (princ)<br>
+  (unload_odcl)<br>
+  (princ "\nIniciando Actualización, por favor espere... mientras se actualiza..")<br>
+  (dos_exewait (strcat "msiexec.exe /i " (strcat RUTA_TOPOWAR "\\Actualizaciones\\OpenDCL.Runtime.msi")))<br>
+  (command "_opendcl")<br>
+  (princ)</div>
+</article>
+<article class="post" id="msg10301">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-02 18:30 UTC</span>
+  </div>
+  <div class="post-body">I don't think it's a good idea to lock up AutoCAD while the installer runs, but I'm glad you got it working.</div>
+</article>
+<article class="post" id="msg10302">
+  <div class="post-head">
+    <span class="post-author">TopoWAR</span>
+    <span class="post-date muted">2014-01-02 19:42 UTC</span>
+  </div>
+  <div class="post-body"><strong>owenwengerd</strong> ;D teacher thank you, I'll consider your advice.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

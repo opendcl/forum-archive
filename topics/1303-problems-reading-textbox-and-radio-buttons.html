@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problems reading textbox and radio buttons · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1303</p>
+    <h1>Problems reading textbox and radio buttons</h1>
+    <p class="meta">Started by hmspe ·
+      2010-06-26 23:36 UTC ·
+      2 replies · SMF topic #1303</p>
+<article class="post" id="msg6973">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2010-06-26 23:36 UTC</span>
+  </div>
+  <div class="post-body">I'm probably missing something really simple here.  On the attached form there are four textboxes followed by several sets of radio buttons.  For the first textbox (labeled 'Current') OnEditChanged is not firing the function to store the value.  Identical code works for the other textboxes.  On the radio buttons the first button of the first set (labeled "Copper') does not fire the function to store the value.  All the other buttons work properly in their group.<br>
+<br>
+Any pointers on why this isn't working would be appreciated.  <br>
+<br>
+Martin<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1412/new_vd_odcl.lsp">new_vd_odcl.lsp</a> <span class="muted">(4818 bytes)</span></li><li><a href="../attachments/1413/vdrop.odcl">vdrop.odcl</a> <span class="muted">(2822 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6974">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-06-27 00:43 UTC</span>
+  </div>
+  <div class="post-body">The 'Current' textbox seems to be working fine, but look closely at the Clicked event handler function names for the following controls:<br>
+vdrop_Drop_obCopper<br>
+vdrop_Drop_obDC<br>
+vdrop_Drop_btnCancel<br>
+vdrop_Drop_btnOK<br>
+<br>
+and the Initialize event for:<br>
+vdrop_Drop<br>
+<br>
+Those function names don't match the function names in your code, so they are not executing. I suspect that resetting the event handler names in Studio (Tools -&gt; Reset event names) will fix everything up for you.</div>
+</article>
+<article class="post" id="msg6976">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2010-06-27 04:26 UTC</span>
+  </div>
+  <div class="post-body">Thanks, Owen.  All sorted out now. </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

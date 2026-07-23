@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How in LIST DATA input to the GRID form in,also may output in the writing file? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 370</p>
+    <h1>How in LIST DATA input to the GRID form in,also may output in the writing file?</h1>
+    <p class="meta">Started by JTHWAMAN ·
+      2008-07-02 16:22 UTC ·
+      1 replies · SMF topic #370</p>
+<article class="post" id="msg1625">
+  <div class="post-head">
+    <span class="post-author">JTHWAMAN</span>
+    <span class="post-date muted">2008-07-02 16:22 UTC</span>
+  </div>
+  <div class="post-body">How in LIST DATA input to the GRID form in,also may output in the writing file?<br>
+<br>
+<br>
+under has a section in series,<br>
+<br>
+(setq lst (list (list "A" 0 22)<br>
+		(list "B" 1 23) <br>
+		(list "C" 2 24)<br>
+		(list "D" 3 25)		<br>
+		(list "E" 4 26)<br>
+		))<br>
+<br>
+how are list data in the grid form ?<br>
+Moreover, may output into the writing file,<br>
+how should process?<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/430/07031.jpg">07031.jpg</a> <span class="muted">(67493 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1626">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-07-02 17:14 UTC</span>
+  </div>
+  <div class="post-body">as long as you have the 3 columns setup at design-time, this will work:<br>
+<br>
+<pre class="code"><code>(setq lst (list <br>
+      (list "A" "0" "22")<br>
+      (list "B" "1" "23")<br>
+      (list "C" "2" "24")<br>
+      (list "D" "3" "25")      <br>
+      (list "E" "4" "26")<br>
+      ))<br>
+(dcl_Grid_FillList Proj1_Form1_Grid1 lst)</code></pre><br>
+(Note, this need to be strings, not Int's)<br>
+<br>
+<strong>Have a look at the intelligent Help system for more info on these functions.</strong><br>
+<br>
+You can also use:<br>
+<pre class="code"><code>(Setq rValue (dcl_Grid_AddString Proj1_Form1_Grid1 <br>
+	 sString [as String] <br>
+	{Optional}  sDelimiters [as String]))</code></pre><br>
+<br>
+<strong>OR</strong><br>
+<br>
+<pre class="code"><code>(dcl_Grid_AddRow Proj1_Form1_Grid1 <br>
+	   (list  <br>
+	{Optional}  nImageIndex ... [as Integer] <br>
+	 sText [as String] <br>
+	{Optional}  sColText1 sColText2 sColText3 ... [as String])))</code></pre><br>
+<br>
+For writing to a file, use the LSP functions <strong>OPEN </strong>&amp; <strong>WRITE-LINE</strong>, there's no OpenDCL functions needed to write to a file.<br>
+<br>
+<pre class="code"><code>(setq output (open "C:\\temp.txt" "W"))<br>
+(write-line "HELLO WORLD" output)<br>
+(close output)</code></pre><br>
+  <br>
+<br>
+I hope this helps. :)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

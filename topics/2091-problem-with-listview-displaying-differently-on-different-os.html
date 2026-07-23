@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with ListView displaying differently on different OS's · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2091</p>
+    <h1>Problem with ListView displaying differently on different OS's</h1>
+    <p class="meta">Started by jrupert ·
+      2014-02-06 17:32 UTC ·
+      5 replies · SMF topic #2091</p>
+<article class="post" id="msg10376">
+  <div class="post-head">
+    <span class="post-author">jrupert</span>
+    <span class="post-date muted">2014-02-06 17:32 UTC</span>
+  </div>
+  <div class="post-body">I have a listview residing in a tabbed page of the main form.<br>
+Code has been written that when tab is selected, the listview column headers are created.<br>
+Other events on the form fill the listview.<br>
+<br>
+The problem that I amhaving is that the form and lisp code was all developed on a Windows XP SP3 32-bit PC, and when trying to run on a Win-7 SP1 64-bit PC, the column headers text is not displaying, nor is the event that populates the list items working.<br>
+<br>
+Is there some issue when attempting to run on different OS's that I may not be aware of?<br>
+<br>
+Thanks in advance for any info!<br>
+</div>
+</article>
+<article class="post" id="msg10377">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-02-06 18:00 UTC</span>
+  </div>
+  <div class="post-body">It's possible that OS differences are to blame, but most likely you're either seeing some differences in the timing of events firing due to different hardware or system configuration. If you can describe exactly what is not working (i.e. what does the code do, what do you expect to happen, and what actually happens), someone may be able to suggest a solution.</div>
+</article>
+<article class="post" id="msg10378">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-02-06 18:30 UTC</span>
+  </div>
+  <div class="post-body">Hello jrupert, can you repoduce this in a small sample which you can upload so we can test it, too?<br>
+I used many listviews in the past and I cannot remember that I had such problem.<br>
+Fred</div>
+</article>
+<article class="post" id="msg10379">
+  <div class="post-head">
+    <span class="post-author">jrupert</span>
+    <span class="post-date muted">2014-02-06 19:11 UTC</span>
+  </div>
+  <div class="post-body">Here is thecode that is in question...<br>
+<br>
+(defun c:GBSCC_FormGBSCC_TabStrip1_OnChanged (ItemIndex /)<br>
+    (if (= ItemIndex 0) ())	;COSMETIC<br>
+    (if (= ItemIndex 1) ())	;Export DXF<br>
+    (if (= ItemIndex 2) ())	;FOOD CRAFT<br>
+    (if (= ItemIndex 3) ())	;TOLERANCE<br>
+    (if (= ItemIndex 4) (ClearGBSPNOpenText))	;Open GBS P/N<br>
+    (if (= ItemIndex 5) ())	;MISC<br>
+    (if (= ItemIndex 6) (NDIStampTab))	;NDI<br>
+    (if (= ItemIndex 7) ())	;OPERATION<br>
+    (if (= ItemIndex 8) ())	;PLOT<br>
+    (if (= ItemIndex 9) ())	;SHEET NOTE<br>
+    (if (= ItemIndex 10) ())	;TUBE LASER<br>
+)<br>
+<br>
+(DEFUN NDIStampTab ()<br>
+    (SETQ pcuser (GETENV "username"))<br>
+    (dcl_Control_SetText GBSCC_FormGBSCC_CBoxProcess "")<br>
+    (dcl_Control_SetText GBSCC_FormGBSCC_CBoxType "")<br>
+    (dcl_Control_SetEnabled GBSCC_FormGBSCC_CBoxType T)<br>
+    (dcl_Control_SetText GBSCC_FormGBSCC_CBoxMaterial "")<br>
+    (dcl_ComboBox_Clear GBSCC_FormGBSCC_CBoxMaterial)<br>
+    (dcl_Control_SetText GBSCC_FormGBSCC_CBoxThickness "")<br>
+    (dcl_ComboBox_Clear GBSCC_FormGBSCC_CBoxThickness)<br>
+    (dcl_Control_SetText GBSCC_FormGBSCC_TBGBSPN "")<br>
+    (dcl_Control_SetText GBSCC_FormGBSCC_TBRevisionLevel "")<br>
+    (dcl_Control_SetText GBSCC_FormGBSCC_TBQtyPerParent "")<br>
+    (dcl_Control_SetEnabled GBSCC_FormGBSCC_BTNYes nil)<br>
+        <br>
+    (GetUserInitials pcuser)<br>
+<br>
+    ;CALCULATE REQUIRED COLUMN WIDTHS OF ListView1 IN NDI STAMP<br>
+    (setq Col0Width (dcl_ListView_CalcColWidth GBSCC_FormGBSCC_ListView1 "GBS PN          ")<br>
+          Col1Width (dcl_ListView_CalcColWidth GBSCC_FormGBSCC_ListView1 "Customer PN                    ")<br>
+          Col2Width (dcl_ListView_CalcColWidth GBSCC_FormGBSCC_ListView1 "Drawing Path                                                       ")<br>
+    )<br>
+<br>
+    ;ADD COLUMNS OF THE CALCULATED WIDTHS IN NDI STAMP<br>
+    (dcl_ListView_AddColumns GBSCC_FormGBSCC_ListView1<br>
+                             (list (list "GBS PN" 0 Col0Width)<br>
+		    (list "Customer PN" 0 Col1Width)<br>
+		    (list "Drawing Path" 0 Col2Width)<br>
+			     )<br>
+    )<br>
+)<br>
+<br>
+Again, this runs well on XP PC , but on Win-7 PC, the text of the column Headers and the list items are not displayed.<br>
+<br>
+I have attached both the LSP file and the ODCL in a ZIP.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1960/GBSCC.zip">GBSCC.zip</a> <span class="muted">(5315 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10380">
+  <div class="post-head">
+    <span class="post-author">jrupert</span>
+    <span class="post-date muted">2014-02-06 19:36 UTC</span>
+  </div>
+  <div class="post-body">OK...I'm stupid...I had a error when processing GetUserInitials that was breaking the code, and I did not include a Try...Catch.  <br>
+<br>
+The code works OK on both OS's.<br>
+</div>
+</article>
+<article class="post" id="msg10381">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-02-06 19:44 UTC</span>
+  </div>
+  <div class="post-body">I'm glad you got it sorted. (BTW, I added code tags to your previous post.)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Using commands / vl-cmdf &quot;#onclose&quot; · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2344</p>
+    <h1>Using commands / vl-cmdf &quot;#onclose&quot;</h1>
+    <p class="meta">Started by Lube ·
+      2015-12-29 12:01 UTC ·
+      4 replies · SMF topic #2344</p>
+<article class="post" id="msg11752">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2015-12-29 12:01 UTC</span>
+  </div>
+  <div class="post-body">Hello guys, I've got a problem..<br>
+<br>
+I need to undefine a command defined in "#oninitialize" but it doesn't work..<br>
+Maybe it's something like synchronous/asynchronous but why it works on #oninitialize?<br>
+<br>
+(defun C:cancella (/ i deleted )<br>
+  (setq deleted (ssget)<br>
+        i 0)<br>
+  (repeat (sslength deleted)<br>
+  (entdel (ssname deleted i))<br>
+    (setq i (1+ i))<br>
+  )<br>
+  <br>
+  (conta_elementi nome)<br>
+ ;(princ)<br>
+)<br>
+<br>
+<br>
+and<br>
+<br>
+(defun c:Cobiax/Main#OnClose (UpperLeftX UpperLeftY /)<br>
+  (setvar "CMDECHO" 0)<br>
+  (vl-cmdf "_redefine" "cancella")<br>
+  (setvar "CMDECHO" 1)<br>
+)<br>
+<br>
+Thanks, Dennis</div>
+</article>
+<article class="post" id="msg11753">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-12-29 19:14 UTC</span>
+  </div>
+  <div class="post-body">Hi, Lube, modeless or modal form? Just some thoughts without having some tests yet:<br>
+In modeless forms there is a event invoke property as well as it is for the controls on modeless forms. Maybe switch it to allow command.<br>
+Or you call the command using dcl_delayedinvoke to call it asynchronously.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11758">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2016-01-04 17:55 UTC</span>
+  </div>
+  <div class="post-body">Hello Fred! It's a palette.. Can you be a little bit more precise?<br>
+Thanks, Dennis</div>
+</article>
+<article class="post" id="msg11759">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2016-01-05 09:23 UTC</span>
+  </div>
+  <div class="post-body">Guys I really need help in this.. I'm getting mad  :'(<br>
+<br>
+(defun C:cancella (/ i deleted )<br>
+  (IF (dcl-Form-IsActive Cobiax/Main)<br>
+    (progn<br>
+      <br>
+    (princ "\n Selezionare gli alleggerimenti da eliminare")<br>
+    (setq deleted (ssget)<br>
+        i 0)<br>
+  (repeat (sslength deleted)<br>
+  (entdel (ssname deleted i))<br>
+    (setq i (1+ i))<br>
+  )<br>
+  <br>
+  (conta_elementi nome)<br>
+    )<br>
+    (progn<br>
+    (redef "cancella")<br>
+    (redef "erase")<br>
+    (command "._erase")<br>
+    )<br>
+    )<br>
+  <br>
+ ;(princ)<br>
+)<br>
+<br>
+I've tryed this way but it lose the shortcut in the first cicle :/</div>
+</article>
+<article class="post" id="msg11760">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-01-05 10:47 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Lube link=topic=2344.msg11758#msg11758 date=1451930114 wrote:</cite><br>
+Hello Fred! It's a palette.. Can you be a little bit more precise?<br>
+Thanks, Dennis<br>
+</blockquote>I think it is you who should try to be more precise. It will help if you explain better and perhaps post some files.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

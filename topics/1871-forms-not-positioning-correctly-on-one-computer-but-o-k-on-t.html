@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Forms not positioning correctly on one computer, but o.k. on the other... · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1871</p>
+    <h1>Forms not positioning correctly on one computer, but o.k. on the other...</h1>
+    <p class="meta">Started by Hypersonic ·
+      2012-08-22 15:12 UTC ·
+      1 replies · SMF topic #1871</p>
+<article class="post" id="msg9187">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2012-08-22 15:12 UTC</span>
+  </div>
+  <div class="post-body"><br>
+I have the following code to display a form in the upper right corner of the screen, it seems to work on a couple computers, but one it always puts the form in the middle of the screen.<br>
+It works on my computer with screen size of 2560 x 1920, it works on a computer with screen size of 1920 x 1080, but the one that is in between<br>
+with a screen size of 1920 x 1200 it puts the form in the middle of the screen.<br>
+Any thoughts ?  UGH this is driving me nuts!<br>
+<br>
+<br>
+<br>
+(defun c:synthesis_root_form ()<br>
+(entering "synthesis_root_form")<br>
+<br>
+ (vl-cmdf "_OPENDCL")<br>
+<br>
+(get_all_setup_values_from_db);otherwise the active_job variable below might not be set when going into a fresh drawing...<br>
+<br>
+<br>
+(setq form_is_active (dcl_Form_IsActive Parametrics_Root_form))<br>
+(if form_is_active (dcl_Form_Close Parametrics_Root_form))<br>
+<br>
+(setq project (strcat lsp_dir "parametrics/parametrics"))<br>
+   (dcl_project_load project T)                ;adding the T forces reload, i.e. for while makeing changes.....<br>
+ <br>
+<br>
+<br>
+;**** find corner to place it properly *****<br>
+<br>
+<br>
+(setq xsize (nth 0 (dcl_GetScreenSize)))<br>
+(setq ysize (nth 1 (dcl_GetScreenSize)))<br>
+<br>
+(princ "\n in synthesis root form and screen xsize is: ")<br>
+(princ xsize)<br>
+<br>
+(princ "\n in synthesis root form and screen ysize is: ")<br>
+(princ ysize)<br>
+<br>
+<br>
+<br>
+(setq form_width (dcl_Control_GetWidth Parametrics_Root_Form));136 currently<br>
+(princ "\n in synthesis root form and form width is: ")<br>
+(princ form_width)<br>
+<br>
+;just for testing, not used currently<br>
+(setq form_height (dcl_Control_GetHeight Parametrics_Root_Form));864 currently<br>
+<br>
+(setq ulc_pos (- xsize form_width 10));this makes it pushed into the upper right corner of the main "center" screen.<br>
+<br>
+;(setq ulc_pos (+ xsize 10));this pushes it to the left edge of the right screen...<br>
+<br>
+<br>
+(princ "\n in synthesis root form and the x value of the ulc_pos is: ")<br>
+(princ ulc_pos)<br>
+<br>
+<br>
+<br>
+(dcl_Form_Show Parametrics_Root_Form ulc_pos 0)<br>
+<br>
+<br>
+(dcl_Control_SetCaption Parametrics_Root_Form_Label1 (strcat "Active Job: " active_job))<br>
+<br>
+<br>
+);end defun</div>
+</article>
+<article class="post" id="msg9188">
+  <div class="post-head">
+    <span class="post-author">Hypersonic</span>
+    <span class="post-date muted">2012-08-22 15:22 UTC</span>
+  </div>
+  <div class="post-body">We reinstalled the video drivers just for fun, and Wala! that fixed it... Hmm maybe this will help someone down the road....</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

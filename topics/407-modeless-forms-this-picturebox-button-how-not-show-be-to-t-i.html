@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>&quot;Modeless Forms&quot; this &quot;PictureBox&quot; button, How not show be to &quot;T&quot; in &quot;COMMAND&quot; t · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 407</p>
+    <h1>&quot;Modeless Forms&quot; this &quot;PictureBox&quot; button, How not show be to &quot;T&quot; in &quot;COMMAND&quot; t</h1>
+    <p class="meta">Started by JTHWAMAN ·
+      2008-08-14 12:35 UTC ·
+      12 replies · SMF topic #407</p>
+<article class="post" id="msg1826">
+  <div class="post-head">
+    <span class="post-author">JTHWAMAN</span>
+    <span class="post-date muted">2008-08-14 12:35 UTC</span>
+  </div>
+  <div class="post-body">I define "MouseEntered" and "MouseMovedOff" the event, <br>
+and opens "EventInvoke = 1 - Allow (Command...)",<br>
+But works as my mouse after "PictureBox" the image button, <br>
+actually can again "COMMAND" appear "T" the message.<br>
+how are close show "T" the message.<br>
+Requests fellow masters to explain, thanks!<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/458/PQ11.jpg">PQ11.jpg</a> <span class="muted">(28832 bytes)</span></li><li><a href="../attachments/459/PQ2.JPG">PQ2.JPG</a> <span class="muted">(50638 bytes)</span></li><li><a href="../attachments/460/PQ3.JPG">PQ3.JPG</a> <span class="muted">(44127 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1827">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-08-14 14:03 UTC</span>
+  </div>
+  <div class="post-body">What is the 'AutoLISP Function To Call' for the MouseEntered and MouseMovedOff events?</div>
+</article>
+<article class="post" id="msg1828">
+  <div class="post-head">
+    <span class="post-author">JTHWAMAN</span>
+    <span class="post-date muted">2008-08-14 15:00 UTC</span>
+  </div>
+  <div class="post-body"><br>
+(defun C:MSF-ODCL_ONINITIALIZE (/)<br>
+<br>
+(setvar "cmdecho" 0)<br>
+<br>
+(dcl_Form_SetTitleBarText MSF-ODCL<br>
+(STRCAT "Function")<br>
+)<br>
+ (dcl_control_setcaption LBE "")<br>
+ (dcl_control_setpicture PB1 102)<br>
+ (dcl_control_setpicture PB2 103)<br>
+ (dcl_control_setpicture PB3 109)<br>
+ (dcl_control_setpicture PB4 114)<br>
+ (dcl_control_setpicture PB5 106)<br>
+<br>
+)<br>
+<br>
+;;;==================================================================<br>
+(defun c:PB4_OnClicked ( / )<br>
+(setvar "cmdecho" 0)<br>
+(COMMAND "_.LINE" "10,10" "50,50" "" )<br>
+)<br>
+<br>
+;;;==================================================================<br>
+(defun c:PB4_OnMouseEntered ( / )<br>
+(setvar "cmdecho" 0)<br>
+(dcl_control_setpicture PB4 113)<br>
+(dcl_Control_SetCaption LBE "Function")<br>
+)<br>
+<br>
+;;;==================================================================<br>
+(defun c:PB4_OnMouseMovedOff ( / )<br>
+(setvar "cmdecho" 0)<br>
+(dcl_control_setpicture PB4 114)<br>
+(dcl_control_setcaption LBE "")<br>
+)</div>
+</article>
+<article class="post" id="msg1829">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-08-14 16:38 UTC</span>
+  </div>
+  <div class="post-body">put a (PRINC) at the end of your events.<br>
+</div>
+</article>
+<article class="post" id="msg1830">
+  <div class="post-head">
+    <span class="post-author">JTHWAMAN</span>
+    <span class="post-date muted">2008-08-14 22:44 UTC</span>
+  </div>
+  <div class="post-body">THANK "BazzaCAD"<br>
+How cause it not to be add show "command" ?</div>
+</article>
+<article class="post" id="msg1834">
+  <div class="post-head">
+    <span class="post-author">JTHWAMAN</span>
+    <span class="post-date muted">2008-08-22 15:00 UTC</span>
+  </div>
+  <div class="post-body"><br>
+How closes mouse touch button the null message to command<br>
+<br>
+code:<br>
+;;;====================================<br>
+(defun SHOW_PB4T_OnClicked ()<br>
+(setvar "cmdecho" 0)<br>
+(command "undo" "be")<br>
+(setq oldlayer (getvar "clayer"))<br>
+(setq oldosmode (getvar "osmode"))<br>
+(ALERT oldlayer)<br>
+)<br>
+<br>
+;;;====================================<br>
+(defun c:PB4T_OnClicked ( / )<br>
+(SHOW_PB4T_OnClicked)<br>
+(PRINC))<br>
+<br>
+;;;====================================<br>
+(defun c:PB4T_OnMouseEntered ( / )<br>
+(dcl_control_setpicture PB4T 113)<br>
+(PRINC))<br>
+<br>
+;;;====================================<br>
+(defun c:PB4T_OnMouseMovedOff ( / )<br>
+(dcl_control_setpicture PB4T 114)<br>
+(PRINC))<br>
+<br>
+;;;====================================<br>
+(defun C:MSF-ODCL_042T_ONINITIALIZE (/)<br>
+(dcl_control_setpicture PB4T 114)<br>
+(PRINC))<br>
+<br>
+;;;====================================<br>
+(DEFUN C:ODCL_042T ( / )<br>
+(or loadruntime (load "_OpenDclUtils.lsp" ) (exit))<br>
+(LoadRunTime)<br>
+(dcl_project_load "ODCL_042T.odcl" T)<br>
+(dcl_FORM_SHOW MSF-ODCL_042T)<br>
+(PRINC))<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/462/ODCL_042T.odcl">ODCL_042T.odcl</a> <span class="muted">(6982 bytes)</span></li><li><a href="../attachments/463/qq.jpg">qq.jpg</a> <span class="muted">(47844 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1835">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-08-22 15:07 UTC</span>
+  </div>
+  <div class="post-body">I be leave because the DEFUNS are commands C: and they always give a new line.<br>
+So there's not much you can do about it, unless someone has anther solution, that I don't know about.<br>
+</div>
+</article>
+<article class="post" id="msg1836">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-08-22 16:43 UTC</span>
+  </div>
+  <div class="post-body">There is no way to prevent the blank line for modeless form events. Instead of using the mouse events for changing the picture, try simply setting the Picture and Mouse-Over Picture properties of the graphic button.</div>
+</article>
+<article class="post" id="msg1839">
+  <div class="post-head">
+    <span class="post-author">JTHWAMAN</span>
+    <span class="post-date muted">2008-08-25 22:43 UTC</span>
+  </div>
+  <div class="post-body">HI ~ owenwengerd <br>
+please asked how may demonstrate operates? <br>
+Thanks!</div>
+</article>
+<article class="post" id="msg1840">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-08-26 06:16 UTC</span>
+  </div>
+  <div class="post-body">Hi JTHWAMAN,<br>
+I believe that Owen thought that you only change the pictures while OnMouseEntered and OnMouseMovedOff is running.<br>
+<br>
+<ul><br>
+Open the project file in the OpenDCL Studio.<br>
+Select the PB4T control.<br>
+Select the event tab.<br>
+Deactivate OnMouseEntered event.<br>
+Deactivate OnMouseMovedOff event.<br>
+Select the properties tab.<br>
+Set Picture property to 114.<br>
+Set MouseOverPicture property to 113.<br>
+Save the project.<br>
+Use (dcl_project_load "ODCL_042T.odcl" T) to reload the project explicitly.<br>
+Then it will work.<br>
+</ul><br>
+<br>
+But this is only a solution if you change pictures while OnMouse-events.<br>
+<br>
+I hope it is understandable.<br>
+<br>
+Fred<br>
+</div>
+</article>
+<article class="post" id="msg1841">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-08-26 12:49 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I see, you're online  :) .<br>
+Why is it necessary that EventInvoke is set to AllowCommand in this case?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1843">
+  <div class="post-head">
+    <span class="post-author">JTHWAMAN</span>
+    <span class="post-date muted">2008-08-26 22:46 UTC</span>
+  </div>
+  <div class="post-body">Thank Fred <br>
+<br>
+i no Finds MouseOverPicture property.<br>
+How setup MouseOverPicture property ?<br>
+<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=407.msg1841#msg1841 date=1219754968 wrote:</cite><br>
+Why is it necessary that EventInvoke is set to AllowCommand in this case?<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+<br>
+<br>
+How are no setup AllowCommand ,<br>
+Also may carry out the "command" function ?<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg1845">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-08-27 05:52 UTC</span>
+  </div>
+  <div class="post-body">Ah, ok, we forgot that it is a picturebox control and not an imagebutton. Image buttons have a MouseOverPicture property, pictureboxes have not.<br>
+<br>
+<blockquote class="quote">How are no setup AllowCommand ,</blockquote><br>
+<br>
+Have a look at <a href="http://www.opendcl.com/forum/index.php?action=dlattach;topic=407.0;attach=459" rel="nofollow noopener">{2}</a>. Just select the picturebox and change the property's value from 1 (Allow command) to 0 (Keep focus).<br>
+<br>
+<blockquote class="quote">Also may carry out the "command" function ?</blockquote><br>
+<br>
+I didn't quite understand what you mean.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/467/props.jpg">props.jpg</a> <span class="muted">(14301 bytes)</span></li><li><a href="../attachments/468/eventinvoke.jpg">eventinvoke.jpg</a> <span class="muted">(18594 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

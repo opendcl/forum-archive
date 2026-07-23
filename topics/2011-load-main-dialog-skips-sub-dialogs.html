@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Load main dialog skips sub-dialogs · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2011</p>
+    <h1>Load main dialog skips sub-dialogs</h1>
+    <p class="meta">Started by Peter2 ·
+      2013-08-15 15:26 UTC ·
+      3 replies · SMF topic #2011</p>
+<article class="post" id="msg9921">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-08-15 15:26 UTC</span>
+  </div>
+  <div class="post-body">Maybe the title of the posting is not correct, I will try to explain.<br>
+<br>
+I have a project with<br>
+- 1 modeless dialogue incl "Button A" and Button B"<br>
+- 2 palettes<br>
+<br>
+The lisp behind is:<br>
+<br>
+<br>
+(defun c:myapp ()<br>
+...<br>
+(setq project ODCL_code)<br>
+<br>
+(dcl_Project_Import project nil nil)<br>
+...<br>
+...<br>
+) ; end of myapp<br>
+<br>
+;;----<br>
+(defun c:ButtonA_OnClicked (/)<br>
+    (dcl_Form_Show PaletteA)<br>
+)<br>
+(defun c:ButtonB_OnClicked (/)<br>
+    (dcl_Form_Show PaletteB)<br>
+)<br>
+<br>
+<br>
+So I do ..<br>
+<br>
+Command: myapp  -&gt; modeless dialogue is displayed (fine)<br>
+Click on "ButtonA" in dialogue -&gt; palette A is displayed (fine)<br>
+Click on "ButtonB" in dialogue -&gt; palette B is displayed (fine)<br>
+Close main-dialogue with "X" -&gt; modeless dialogue is disappears, palettes stay (fine)<br>
+<br>
+But ...<br>
+Command: myapp  -&gt; modeless dialogue is displayed (fine), palettes disappear (not fine)<br>
+<br>
+I suppose that the second call of "dcl_Project_Import" goes to the base-modus and disables the palettes. What to do that the palettes stay?</div>
+</article>
+<article class="post" id="msg9925">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-08-15 16:02 UTC</span>
+  </div>
+  <div class="post-body">Yes, you are right. :)<br>
+<br>
+EDIT:<br>
+I mean: you are right that the second call closes all instances of forms of the reloaded project.<br>
+<br>
+That's the solution: don't call it twice.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9926">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-08-15 16:10 UTC</span>
+  </div>
+  <div class="post-body">Ok, you can suppress the second call by using <br>
+<br>
+(if (not (member "projects" (dcl_getprojects)))<br>
+  (dcl_Project_Import project nil nil)<br>
+); if<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9927">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-08-15 16:40 UTC</span>
+  </div>
+  <div class="post-body">Thanks. Perfect.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

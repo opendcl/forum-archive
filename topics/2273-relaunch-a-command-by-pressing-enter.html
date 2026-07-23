@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>relaunch a command by pressing enter · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2273</p>
+    <h1>relaunch a command by pressing enter</h1>
+    <p class="meta">Started by Jim ·
+      2015-05-25 14:44 UTC ·
+      4 replies · SMF topic #2273</p>
+<article class="post" id="msg11438">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2015-05-25 14:44 UTC</span>
+  </div>
+  <div class="post-body">Autocad can relaunch a command by pressing enter. How does one make this possible when the (command) was issued by a OpenDCL control?</div>
+</article>
+<article class="post" id="msg11440">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-05-25 19:51 UTC</span>
+  </div>
+  <div class="post-body">Hi, Jim, when you work with modeless forms, you can call events from controls which have EventInvoke set to 1 for AllowCommand. Then they are called as commands.<br>
+In one case I called it from a button when property EventInvoke is set to 0 (KeepFocus). In the event handler I set some blackboard variables and finally I call a command asynchronously. If the user hits enter again the latest settings are used from the blackboard.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11442">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2015-05-25 21:50 UTC</span>
+  </div>
+  <div class="post-body">Still looking for way to relaunch an autocad command previously started by an opendcl event. That way pressing enter is faster than pressing a button again.<br>
+Commands run from the pull down menu will relaunch on pressing enter. Should this be possible in OpenDCL asynchronous events? <br>
+Jim</div>
+</article>
+<article class="post" id="msg11445">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-05-26 08:07 UTC</span>
+  </div>
+  <div class="post-body">Try using:<br>
+dcl-SendString<br>
+or:<br>
+vla-sendcommand<br>
+<br>
+(vla-sendcommand (vla-get-activedocument (vlax-get-acad-object)) "_COMMAND ")<br>
+Note the space at the end of the string.</div>
+</article>
+<article class="post" id="msg11465">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2015-05-29 21:11 UTC</span>
+  </div>
+  <div class="post-body">This works well, Thanks very much!<br>
+Jim</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

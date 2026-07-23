@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid drop down list · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 948</p>
+    <h1>Grid drop down list</h1>
+    <p class="meta">Started by johnM ·
+      2009-10-01 03:32 UTC ·
+      6 replies · SMF topic #948</p>
+<article class="post" id="msg4765">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2009-10-01 03:32 UTC</span>
+  </div>
+  <div class="post-body">Runtime 5.1.1.8<br>
+I have a column with the top cell being a drop down list and the cell below it is also a drop down list.<br>
+What I am trying to accomplish is: when I pick an item from the top cell I want the cell below to load a list pertaining to the item in the cell above.<br>
+<br>
+I have tried OnSelChanged, OnBeginLabelEdit and OnEndLabelEdit with no luck.<br>
+<br>
+When I select a item in the top cell then click on the cell below the list is blank, but if I <br>
+Then click back on the top cell then click the cell below the list is filled.<br>
+<br>
+I tried the code below and got the list to populate but now you have to click the cell 3 times to get it to drop down (but the list is there)<br>
+<br>
+<br>
+(defun c:QD_ELE1_ELE1_Grid1_OnEndLabelEdit (Row Column /)<br>
+  	(if (= row 4)(calrws1));_call to cal rows<br>
+  	(if (equal (list row column)(list 0 1))<br>
+        (progn<br>
+        (dcl_Grid_CancelCellEdit QD_ELE1_ELE1_Grid1);_added to populate style cell list<br>
+        (if(=(dcl_Grid_GetCellText QD_ELE1_ELE1_Grid1 Row Column)"Base");_type text<br>
+        (dcl_Grid_SetCellDropList QD_ELE1_ELE1_Grid1 (1+ Row) Column (qdcl_gtf "base.jdb"));_populate style cell w/ list<br>
+        );_if<br>
+        );_progn<br>
+        );_if<br>
+  	(princ)  	<br>
+);_defun<br>
+<br>
+any suggestions?<br>
+<br>
+thanks</div>
+</article>
+<article class="post" id="msg4767">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-01 05:08 UTC</span>
+  </div>
+  <div class="post-body">I think there where some bugs in the grid in this area. Try upgrading to 5.1.2.3 and see if that fixes it.</div>
+</article>
+<article class="post" id="msg4795">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-02 20:30 UTC</span>
+  </div>
+  <div class="post-body">Did you get this problem resolved?</div>
+</article>
+<article class="post" id="msg4804">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2009-10-03 01:04 UTC</span>
+  </div>
+  <div class="post-body">I have not downloaded 5.1.2.3 yet to try<br>
+But will soon and let all know. Any other suggestions are welcome<br>
+Right now I’m just having to double or triple click because the program I’m developing is huge and I have a ton of issues to overcome. I am putting the grid through a lot, calculating cell values, copying one column’s values to another, drop down selection fireing other actions and trying to find user errors and more.<br>
+Once I get to a certain point I will post other questions<br>
+<br>
+Thanks for the responce<br>
+</div>
+</article>
+<article class="post" id="msg4931">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2009-10-17 17:30 UTC</span>
+  </div>
+  <div class="post-body">I have the latest opendcl  5.1.2.3 and still have the list issue.<br>
+<br>
+Quick background so maybe this will make more sense.<br>
+I’m in the wood working industry. Most people have heard of plastic laminates<br>
+Most everyone knows Formica. There are several manufactures of laminates. Formica, pionite, wilsonart just to name a few.<br>
+I have a grid with 3 columns (manufacture / number / color/) all set to dropdown list 40<br>
+What I an trying to accomplish is when the user selects a manufacture, that manufactures list of laminates numbers and colors are loaded into the number and color dropdown lists<br>
+<br>
+The issue is when a manufacture is selected then you immediately click on the Number cell the list of numbers is not displayed just a blank dropdown list.<br>
+If you select a manufacture and click on a different cell then click on the number cell the list is displayed.<br>
+<br>
+I have verified that if you click on the number cell immediately after a manufacture is selected the list is loaded but not displayed<br>
+<br>
+I use the endlabeledit event to load the list and it seems like if you immediately click on the number cell its beginlabeledit event is overriding the display somehow. I do not have the beginlabeledit event active for that control.<br>
+Any suggestions?<br>
+</div>
+</article>
+<article class="post" id="msg4934">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-17 17:34 UTC</span>
+  </div>
+  <div class="post-body">I understand what you're saying. It would help me debug the problem if you could create a very simple modeless form with a grid and OnInitialize handler that populates it with two combos like you describe. You've provided enough information that I could probably create one myself, but if you do it you can verify that the problem still occurs in the sample before I spend time testing.</div>
+</article>
+<article class="post" id="msg4943">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2009-10-17 19:49 UTC</span>
+  </div>
+  <div class="post-body">Thanks for prompting me to write a test grid. It made me think and I made a few changes.<br>
+In my test grid, which was a very simple grid, every thing loaded like it should<br>
+In my real grid its loading but you have to click 3 times not twice but I have a lot going on and I will have to plow through the code.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

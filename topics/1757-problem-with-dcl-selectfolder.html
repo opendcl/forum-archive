@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>problem with dcl_SelectFolder · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1757</p>
+    <h1>problem with dcl_SelectFolder</h1>
+    <p class="meta">Started by krunch ·
+      2012-02-19 22:37 UTC ·
+      9 replies · SMF topic #1757</p>
+<article class="post" id="msg8626">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-02-19 22:37 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+dcl_SelectFolder returns "" if I select a Windows7 folder 'Libraries 'Network 'Group.. or any subfolder such as Documents.<br>
+I've tried some Flags argument, but no way .. is it normal ?</div>
+</article>
+<article class="post" id="msg8627">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-02-20 10:54 UTC</span>
+  </div>
+  <div class="post-body">Hi, I can reproduce this.<br>
+I'd say post it as a bug.<br>
+<br>
+<pre class="code"><code><br>
+Command: (dcl_selectfolder "Test" "c:\\" 81)<br>
+""</code></pre></div>
+</article>
+<article class="post" id="msg8677">
+  <div class="post-head">
+    <span class="post-author">HIPPODAMOS</span>
+    <span class="post-date muted">2012-03-04 13:00 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+I tried it standallone. It works in this environment error-free on Windows 7 64-bit and OpenDCL.x64.18.ARX<br>
+<br>
+Befehl: (dcl_selectfolder "Test" "c:\\" 81)<br>
+"D:\\Eike_Mailuefterl_Ackermannstrasse"<br>
+<br>
+Regards, Albert</div>
+</article>
+<article class="post" id="msg8679">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-03-06 22:09 UTC</span>
+  </div>
+  <div class="post-body">Strange, I'am almost sure it did not work ..<br>
+<br>
+But (dcl_selectfolder "Test" "c:\\" 81)  returns "" if I select some directories such as :<br>
+Libraries<br>
+Libraries/Documents<br>
+Libraries/Images<br>
+Music Video ...<br>
+<br>
+These folders have no path in win explorer (?) .. however Libraries/Documents/MyDocuments is "C:\\Users\\username\\Documents"<br>
+Something weird like that ..<br>
+</div>
+</article>
+<article class="post" id="msg8680">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-03-07 05:52 UTC</span>
+  </div>
+  <div class="post-body">Hi krunch, have you already posted it as a bug. Please also note the operating system because windows xp uses different enumerations to windows 7 for special folders.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8681">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-03-07 19:29 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred<br>
+<br>
+Yes it's there : <a href="http://sourceforge.net/tracker/?func=detail&amp;atid=923363&amp;aid=3489736&amp;group_id=187950" rel="nofollow noopener">{2}</a><br>
+<br>
+But I'm not sure that Owen has understood the initial problem (even if the bit 0 did not filter "system" folders..). Now it seems that this problem occurs only with a few directories.</div>
+</article>
+<article class="post" id="msg8695">
+  <div class="post-head">
+    <span class="post-author">HIPPODAMOS</span>
+    <span class="post-date muted">2012-03-10 12:30 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+I don´t think it´s a bug. If you select a folder, it works fine. It will return "", if you select a library instead of a folder.<br>
+<br>
+example: library selected instead of folder:<br>
+<br>
+<img src="http://img813.imageshack.us/img813/2134/libraryt.jpg" alt="" loading="lazy"><br>
+<br>
+<br>
+return: ""<br>
+<br>
+example: library selected instead of folder:<br>
+<img src="http://img401.imageshack.us/img401/8020/library2n.jpg" alt="" loading="lazy"><br>
+By <a href="http://profile.imageshack.us/user/hippodamos" rel="nofollow noopener">{2}</a> at 2012-03-10<br>
+<br>
+You cannot store data in a library. But you ca store data in a folder:<br>
+<br>
+<img src="http://img811.imageshack.us/img811/1296/folderlf.jpg" alt="" loading="lazy"><br>
+By <a href="http://profile.imageshack.us/user/hippodamos" rel="nofollow noopener">{2}</a> at 2012-03-10<br>
+<br>
+<br>
+Select a folder:<br>
+<br>
+<img src="http://img33.imageshack.us/img33/2663/folder2eg.jpg" alt="" loading="lazy"><br>
+By <a href="http://profile.imageshack.us/user/hippodamos" rel="nofollow noopener">{2}</a> at 2012-03-10<br>
+<br>
+return:<br>
+Befehl: (dcl_selectfolder "Test" "c:\\" 81)<br>
+"C:\\Users\\Albert\\Documents"<br>
+<br>
+Regards, Albert<br>
+<br>
+P.S. I think, you can handle this feature. If "" is returned, let your program write:<br>
+<br>
+(dcl_messagebox "I believe you have selected a library instead of a folder! \r\nSelect a folder please!")<br>
+<br>
+;-)<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8700">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-03-13 19:04 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+<blockquote class="quote">You cannot store data in a library. But you can store data in a folder:</blockquote><br>
+<br>
+For me 'Library' is only the root, but Library/Documents is a normal folder in wich I store files (same for Images etc ..). Please just drag a file onto the 'Documents' folder (Library/Documents, not 'MyDocuments') ..<br>
+<br>
+So, I can not select this folder with dcl_selectfolder, I have to make at least 1 sub-folder. For me it's just a minor inconvenience but that I have to remember<br>
+<br>
+Regards<br>
+</div>
+</article>
+<article class="post" id="msg8704">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-03-13 20:45 UTC</span>
+  </div>
+  <div class="post-body">Some file system folders are virtual folders that do not correspond directly to a file system path. Some virtual folders correspond to multiple actual folders whose contents are combined into a single virtual folder. I believe that is the case with the folder you are using as an example.</div>
+</article>
+<article class="post" id="msg8705">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-03-13 21:40 UTC</span>
+  </div>
+  <div class="post-body">Yes it is the default Win7 directories : Documents Images Music Videos<br>
+They appear in the dcl_selectfolder tree but retrieve "" when selected (instead of "C:\\Users\\username\\Documents"). <br>
+Those folders are doubled in 'Username/My documents' 'Images' .. (in the tree) so may be they could be erased (?)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

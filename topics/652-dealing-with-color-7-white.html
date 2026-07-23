@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dealing with 'color 7' - white. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 652</p>
+    <h1>Dealing with 'color 7' - white.</h1>
+    <p class="meta">Started by mr nick ·
+      2009-03-13 07:10 UTC ·
+      4 replies · SMF topic #652</p>
+<article class="post" id="msg3130">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-03-13 07:10 UTC</span>
+  </div>
+  <div class="post-body">I have a dialog which contains a textbox which previews a piece of text as it will appear on screen - the background of the box is set to show either the MS or PS background colour, the text shows in the selected layer colour and also the font of the selected style. The problem is that if you have a layer which uses colour 7 white and the PS background is white then the text is invisible. Also, if your MS background is the default true colour cream job, white text is also illegible. When AutoCAD displays 'white' it toggles between black and white depending on the background colour - is there a method of getting ODCL to replicate this behaviour? Making a bunch of IF conditions would be long-winded but feasible if you were restrained to 255 colours but with the introduction of true colour backgrounds this approach becomes pretty much impossible.</div>
+</article>
+<article class="post" id="msg3131">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-13 07:17 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I'm sure, you can query, if the textcolor should be 7. In this case you create a cond-condition with 3 cases:<br>
+<br>
+- if ps is white, then use a black RGB color just for the preview<br>
+- if ms is white, then use a white RGB color just for the preview<br>
+- any other case: use the color<br>
+<br>
+On my colour cream ms black is black and white is white anyway.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3132">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-03-13 08:55 UTC</span>
+  </div>
+  <div class="post-body">I really don't think three conditions would get this working. If a user has any form of 'darker' background i.e. browns or blues then colour 7 would display as white but if they use 'light' colours i.e yellows and pinks then colour 7 displays as black. As I said, with 255 colours then you could set up conditions but when using the true colours there are so many variations available it would be an incredibly long list of conditions.</div>
+</article>
+<article class="post" id="msg3133">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-13 12:29 UTC</span>
+  </div>
+  <div class="post-body">I don't know any function of getting inverse colors. In my experiences AutoCAD does it itself when updating the viewport. i.e. draw a 3dsolid (_solid) and polyline with constantwidth &gt; 0. Stretch a polyline's grip over the solid. The polyline has a different color partially.<br>
+<br>
+It would be quite interesting to get known the "inverse" color.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3135">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-13 15:11 UTC</span>
+  </div>
+  <div class="post-body">I'll bet you could convert both colors to an OLEColor via (dcl_GetOLEColorValue) and perform some arithmetic on the resulting RGB value to come up with a way to determine how much contrast there is between two colors, then change one of the colors accordingly.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

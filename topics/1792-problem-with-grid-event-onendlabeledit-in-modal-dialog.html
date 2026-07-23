@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>problem with grid event &quot;OnEndLabelEdit&quot; in modal dialog · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1792</p>
+    <h1>problem with grid event &quot;OnEndLabelEdit&quot; in modal dialog</h1>
+    <p class="meta">Started by marcoheuer ·
+      2012-04-25 10:46 UTC ·
+      9 replies · SMF topic #1792</p>
+<article class="post" id="msg8826">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2012-04-25 10:46 UTC</span>
+  </div>
+  <div class="post-body">hello,<br>
+i have a problem with grid event "OnEndLabelEdit" in modal dialogs in version 7.0.0.4:<br>
+when i select/edit a cell, then is called event "OnBeginLabelEdit". if i select a other cell then is called the event "OnEndLabelEdit".<br>
+this is ok.<br>
+<br>
+but:<br>
+when i select/edit a cell and then set the focus e.g. in a "text box", the event "OnEndLabelEdit" is not called.<br>
+(this behavior can be comprehend in the sample grid)<br>
+<br>
+what can i do?<br>
+<br>
+(this problem is not in version 6.0.2.5)<br>
+<br>
+regards<br>
+marco</div>
+</article>
+<article class="post" id="msg8830">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-04-26 17:21 UTC</span>
+  </div>
+  <div class="post-body">Hi, it looks like the same problem so you could try this code : <a href="http://www.opendcl.com/forum/index.php?topic=1774.msg8827#msg8827" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg8834">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2012-04-27 06:53 UTC</span>
+  </div>
+  <div class="post-body">hello krunch<br>
+thank's for your response.<br>
+the described "OnMouseMove" function I use that myself. everything works fine in version 6.0.2.5.<br>
+because I'm starting to test my programs for acad 2013, I use version 7.0.0.4<br>
+<br>
+the problem is in this version that the event grid "OnEndLabelEdit" not called, if I click outside of the grid. But this happens only in modal dialogs (for all modeless dialogs with grids it's all ok)<br>
+<br>
+regards<br>
+marco</div>
+</article>
+<article class="post" id="msg8835">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-04-27 09:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><br>
+the problem is in this version that the event grid "OnEndLabelEdit" not called, if I click outside of the grid.</blockquote><br>
+<br>
+I get the same problem (not really penalizing) with modeless in 6.0.2.5 : it's triggered if I click onto another control but not on the Form...<br>
+</div>
+</article>
+<article class="post" id="msg8836">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2012-04-27 10:59 UTC</span>
+  </div>
+  <div class="post-body">6.0.2.5<br>
+"OnEndLabelEdit" triggered if I click onto another control in modal and modeless dialogs<br>
+<br>
+7.0.0.4<br>
+"OnEndLabelEdit" triggered if I click onto another control in modeless dialogs<br>
+"OnEndLabelEdit" <strong>not</strong> triggered if I click onto another control in modal dialogs -&gt; and this is the problem<br>
+<br>
+regards<br>
+marco</div>
+</article>
+<article class="post" id="msg8837">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-04-27 15:52 UTC</span>
+  </div>
+  <div class="post-body">Can you attach a simple project that demonstrates the problem?</div>
+</article>
+<article class="post" id="msg8842">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2012-04-30 07:19 UTC</span>
+  </div>
+  <div class="post-body">hello owen,<br>
+here is an example<br>
+<br>
+regards<br>
+marco<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1727/TestDlg.lsp">TestDlg.lsp</a> <span class="muted">(971 bytes)</span></li><li><a href="../attachments/1728/TestDlg.odcl">TestDlg.odcl</a> <span class="muted">(1524 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8869">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-05-14 06:00 UTC</span>
+  </div>
+  <div class="post-body">I've made some changes in the grid cell editing mechanism for alpha 4 that I hope fixes this problem. When alpha 4 is released (probably next week), please test it and report any problems.</div>
+</article>
+<article class="post" id="msg8870">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2012-05-14 06:23 UTC</span>
+  </div>
+  <div class="post-body">i will make.<br>
+thanks.<br>
+<br>
+regards<br>
+marco</div>
+</article>
+<article class="post" id="msg8882">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2012-05-22 08:56 UTC</span>
+  </div>
+  <div class="post-body">hello owen,<br>
+the problem seems to be eliminated in version 7.0.0.5.<br>
+thanks<br>
+<br>
+but i have a new problem with grid in version 7.0.0.5<br>
+(look at here <a href="http://www.opendcl.com/forum/index.php?PHPSESSID=l4ogdbtaeigu7b4h5idqfgb5b3&amp;topic=1805.0" rel="nofollow noopener">{2}</a>)<br>
+<br>
+regards<br>
+marco</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

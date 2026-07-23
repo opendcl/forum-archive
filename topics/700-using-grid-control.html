@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Using Grid control · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 700</p>
+    <h1>Using Grid control</h1>
+    <p class="meta">Started by Jim ·
+      2009-04-05 21:49 UTC ·
+      12 replies · SMF topic #700</p>
+<article class="post" id="msg3394">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2009-04-05 21:49 UTC</span>
+  </div>
+  <div class="post-body">I am looking for information on how to navigate a grid with the keyboard.</div>
+</article>
+<article class="post" id="msg3396">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-05 21:58 UTC</span>
+  </div>
+  <div class="post-body">Fred is the grid expert, so hopefully he can provide some insight.</div>
+</article>
+<article class="post" id="msg3398">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-06 06:44 UTC</span>
+  </div>
+  <div class="post-body">Hi, Jim, yes, it's an interesting question. I must say I use grid control very often. But I did not have the idea yet to navigate through the grid using keyboard... <br>
+But I allow myself to be persuaded to create a small example. The advantage of the grid (towards the listview) is that there is a OnSelChanged event to get known when you've changed the selection using the keyboard. Unfortunately, the grid has no OnKeyDown and no OnKeyUp-event so you cannot start GridEditing via F2-key as in Windows-Explorer or in Excel. I think about adding a wish on sourceforge...<br>
+<br>
+If you click the row header in a grid, the whole row will be selected. In this case I had no chance anymore to select a single cell unles I click one cell explicitly. Then you can switch between the cells using the cursor keys. The TAB-key is reserved to switch between the controls, not between the cells within the grid.<br>
+<br>
+Jim, let me know if these notes are already helping in this case or what special tasks I should should include in the sample.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3413">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2009-04-07 14:11 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred,<br>
+<br>
+Thanks for taking a look at my Grid questions. I wish to use the Grid to display user data that is changed often. This data is presented in the form: Label = Value in column 0 and 1. Column 0 is not enabled just column 1. Efficient data entry would benefit from the following actions.<br>
+<br>
+Picking a cell selects contents<br>
+Typing in cell replaces contents<br>
+Pressing "Escape" while entering a new value restores previous value<br>
+Leaving a cell posts data if cell has been edited<br>
+Pressing arrow key moves between cells selecting contents<br>
+Pressing "Enter" has the affect of a down arrow key press<br>
+<br>
+Navigating the grid cells by using the arrow keys, typing values and pressing enter or down arrow key is very efficient.<br>
+<br>
+Some windows controls have this behavior built in. I am not that familiar with grid controls.<br>
+<br>
+Thanks,<br>
+Jim<br>
+</div>
+</article>
+<article class="post" id="msg3422">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-08 07:19 UTC</span>
+  </div>
+  <div class="post-body">Hi, Jim, this should also work with the current grid events and methods. After pressing Enter the event EndLabelEdit will be called. In this case do call a SetCurCell with the next row and call a StartCellEdit. The ESC-key can be caught by the form's event CancelClose.<br>
+<br>
+It's a very interesting task. Unfortunately, I have not the time today to build up such a sample. Until 4 p.m. I have to do much business work, until 6 p.m. I have to saw longitudinally the last tree trunks, from 7 to 8 I'm out for a course to train my back. After that I will have to go on my crosstrainer for 2 hours. But in between there is a break and I hope to find the silence to build it.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3438">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2009-04-08 15:37 UTC</span>
+  </div>
+  <div class="post-body">I will look into your suggestions.<br>
+<br>
+Thanks,<br>
+Jim</div>
+</article>
+<article class="post" id="msg3445">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-09 09:14 UTC</span>
+  </div>
+  <div class="post-body">Hi, Jim, now I have it. Please have a try with the attached example.<br>
+<br>
+<ul><br>
+Click into a cell starts editing immediately.<br>
+Click into a cell in the first column starts editing the cell in the second column immediately.<br>
+Press Enter in the editable cell accepts the new value and starts editing the cell in the next row.<br>
+Press ESC in an editable cell cancels editing and returns to the latest value before editing the cell. The entire row will be selected then so you are able to navigate to the desired line to press enter for editing.<br>
+Press ESC if no cell is in editable state to cancel the form and to return NIL to discard all changes.<br>
+Only pressing OK will apply the changes.<br>
+</ul><br>
+<br>
+Up- and Down-Arrow-keys cannot be triggered in the built-in editbox, I think. <br>
+<br>
+@Owen: Is it possible to trigger the pressed keys in the built-in controls of the grid?<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/669/userdata.zip">userdata.zip</a> <span class="muted">(3128 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3447">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-09 14:00 UTC</span>
+  </div>
+  <div class="post-body">Fred, it's not possible to send keystrokes to the edit control, if that is what you mean.</div>
+</article>
+<article class="post" id="msg3448">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-09 15:00 UTC</span>
+  </div>
+  <div class="post-body">Ok, I must express my self much better:<br>
+<br>
+Please, imagine a cell with CellStyle 6. When this cell turns to editable state, I want to get notified if the user presses the down- or the up-key on keyboard. Unfortunately, there is no OnKeyDown event in the grid. But I'm not sure if the internal editbox of the grid could fire an event at all.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3449">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-09 15:27 UTC</span>
+  </div>
+  <div class="post-body">The problem you have is that the edit control may want to process those keystrokes itself. For example, a combo box edit control has its own use for the arrow keys. There could probably be some special case handling for e.g. text box edit controls, but I don't see any good way to handle specific keys in a generic way, because the grid is designed to not know or care about what edit control gets used for cell editing.</div>
+</article>
+<article class="post" id="msg3458">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-09 20:45 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen, I already feared this.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3469">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2009-04-11 00:25 UTC</span>
+  </div>
+  <div class="post-body">Fred,<br>
+<br>
+I tried your example and it worked nice. <br>
+This gets data entry moving.<br>
+I can live without arrow keys.<br>
+<br>
+Thanks,<br>
+Jim</div>
+</article>
+<article class="post" id="msg8899">
+  <div class="post-head">
+    <span class="post-author">autocart</span>
+    <span class="post-date muted">2012-05-24 13:53 UTC</span>
+  </div>
+  <div class="post-body">Sorry to anybody who is bothered by me bringing this back up, but it is important for people like me, using the forum for help by searching in previous topics.<br>
+<br>
+Am I wrong or is the information presented here (above) outdated using OpenDCL 6.0.2.5 ?<br>
+I am using a grid in a palette and I just don't get any OnEndLabelEdit events at pressing Enter.<br>
+But I noticed that now there are available the desired events KeyDown and KeyUp.<br>
+Do I have to use these two events to catch all keystrokes and filter the one out that I want to react to (i.e. Enter or Arrows) and then again change the cell programatically with my own code? Or is there any easier way to start/end cell editing AND navigating in the grid by way of the keyboard?<br>
+<br>
+Thx, Stephan.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

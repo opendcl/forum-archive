@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Text Boxes Only Work Once · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2155</p>
+    <h1>Text Boxes Only Work Once</h1>
+    <p class="meta">Started by dbsilverbullet ·
+      2014-07-01 13:33 UTC ·
+      7 replies · SMF topic #2155</p>
+<article class="post" id="msg10774">
+  <div class="post-head">
+    <span class="post-author">dbsilverbullet</span>
+    <span class="post-date muted">2014-07-01 13:33 UTC</span>
+  </div>
+  <div class="post-body">I have built a Modeless form with about 11 text boxes that are used to enter values.  When you click the Insert button on my form it triggers the OnClick event to create a set of objects based on the values that it retrieves from the text boxes. Code: (setq pwdth (atof (dcl-control-GetText pwdth))).  The functionality works perfect the first time that you click the button and everything is drawn just right, but the problem is that when you click the button again(whether you have changed and values or not) I get an exception error: "Invalid argument type" on the dcl-control-GetText function stating argument:0.  It seems as though the controls are going inactive and I can't get them to re-activate.</div>
+</article>
+<article class="post" id="msg10777">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-07-01 18:17 UTC</span>
+  </div>
+  <div class="post-body">It's difficult to guess what the problem is without more information and code to reproduce.</div>
+</article>
+<article class="post" id="msg10779">
+  <div class="post-head">
+    <span class="post-author">dbsilverbullet</span>
+    <span class="post-date muted">2014-07-01 19:36 UTC</span>
+  </div>
+  <div class="post-body">Attached is the OpenDCL Modeless form and the associated LISP file.  There are some other things in it that might not be perfect in it, but the main issue is that you can not click the "Insert Front View" button more than once.</div>
+</article>
+<article class="post" id="msg10780">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-07-01 19:46 UTC</span>
+  </div>
+  <div class="post-body">Your code is overwriting the control handles:<br>
+(setq pwdth (atof (dcl-control-GetText pwdth)))<br>
+<br>
+After this code executes, pwdth is a floating point value instead of the control handle it started out as.<br>
+</div>
+</article>
+<article class="post" id="msg10781">
+  <div class="post-head">
+    <span class="post-author">dbsilverbullet</span>
+    <span class="post-date muted">2014-07-02 12:30 UTC</span>
+  </div>
+  <div class="post-body">That made my week.  Fixed the problem and the form has been unleashed.  Thank you very much.  I had it in a format that I was using with DCL code that worked and didn't know that it would not in ODCL.  Thanks again.</div>
+</article>
+<article class="post" id="msg10782">
+  <div class="post-head">
+    <span class="post-author">dbsilverbullet</span>
+    <span class="post-date muted">2014-07-02 17:47 UTC</span>
+  </div>
+  <div class="post-body">Well I have a new issue with the same program.  If you use one buttons to draw the object and then use another tool, such as the move tool.  When you click on the button on the form again to draw another object from the form it calls that last tool(Move in this example) back up when you click to define the insertion point.<br>
+<br>
+Update:<br>
+I was able to get the point to define the next time after using another tool and have trace it down to after it draws the first rectangle.  When it goes to draw the second rectangle it instead calls up that last used tool before clicking the button on my form again.<br>
+<br>
+	  (command "_RECTANG" ip bbbs "")<br>
+	  (command "_rectang" ebrs ebre "");error happens when it tries to execute this line.<br>
+<br>
+You can use the button over and over when the form is first initialized.  It is only after you use another AutoCAD tool and then go back to the Modeless form that this happens.</div>
+</article>
+<article class="post" id="msg10783">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-07-02 18:57 UTC</span>
+  </div>
+  <div class="post-body">It sounds like you may be sending an extra carriage return to the command line somewhere.</div>
+</article>
+<article class="post" id="msg10784">
+  <div class="post-head">
+    <span class="post-author">dbsilverbullet</span>
+    <span class="post-date muted">2014-07-02 19:19 UTC</span>
+  </div>
+  <div class="post-body">That was it.  I was imitating the _LINE command and adding a "" to the end of the command that shouldn't have been there.<br>
+<br>
+Thanks again.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

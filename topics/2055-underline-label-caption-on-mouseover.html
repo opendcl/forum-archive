@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Underline Label Caption on MouseOver? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2055</p>
+    <h1>Underline Label Caption on MouseOver?</h1>
+    <p class="meta">Started by MiD-AwE ·
+      2013-11-05 17:02 UTC ·
+      4 replies · SMF topic #2055</p>
+<article class="post" id="msg10147">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-11-05 17:02 UTC</span>
+  </div>
+  <div class="post-body">Hi all,<br>
+<br>
+I have a modal form with several text labels. I want the text labels to underline like a URL once the mouse moves over the Label. I have checked the MouseMove Event but I'm not sure how to gain access to the underline property of the text. <br>
+<br>
+Can anyone help with this?<br>
+<br>
+Thank you.</div>
+</article>
+<article class="post" id="msg10149">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-11-05 17:31 UTC</span>
+  </div>
+  <div class="post-body">Hi, have a try with <br>
+(dcl_Control_SetFontUnderline Unbenannt_Dialog1_Bezeichnung1 isNewValue [als Boolean])<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10150">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-11-05 18:27 UTC</span>
+  </div>
+  <div class="post-body">Thank you Fred.  :)<br>
+<br>
+That works great. But, how would I go about removing the underline on MouseLeave?<br>
+<br>
+Thank you.<br>
+<br>
+BTW- I tried:<br>
+(while (= Flags 0)<br>
+    (DCL_CONTROL_SETFONTUNDERLINE CNTRL-PNL_SoftscapeForm_GraniteLinkLabel "true")<br>
+    (DCL_CONTROL_SETFONTUNDERLINE CNTRL-PNL_SoftscapeForm_GraniteLinkLabel "false")<br>
+  )<br>
+<br>
+The underline flashes for a while then AutoCAD Crashes. What is the correct way to do this?</div>
+</article>
+<article class="post" id="msg10151">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-11-05 19:40 UTC</span>
+  </div>
+  <div class="post-body">Hi, put a picture box behind the labels with color -16 in background. Activate OnMouseEntered event and whenever you leave the caption you enter the picturebox, then you can remove alle the underlines from the labels.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg10154">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-11-05 23:30 UTC</span>
+  </div>
+  <div class="post-body"> :D<br>
+Very Clever Fred. Thank you.<br>
+<br>
+(Kinda a hack, but it'll do)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

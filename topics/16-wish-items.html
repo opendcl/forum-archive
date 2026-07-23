@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wish Items · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 16</p>
+    <h1>Wish Items</h1>
+    <p class="meta">Started by hermanm ·
+      2007-07-14 02:30 UTC ·
+      16 replies · SMF topic #16</p>
+<article class="post" id="msg59">
+  <div class="post-head">
+    <span class="post-author">hermanm</span>
+    <span class="post-date muted">2007-07-14 02:30 UTC</span>
+  </div>
+  <div class="post-body">Using RC3<br>
+<br>
+1. Hide the LISP globals from Recent Input when an ODCL project is loaded.<br>
+Is this possible? <br>
+<br>
+2. Provide a (dcl_unloadproject) function.<br>
+Or, correct my (mis)understanding that it is necessary to shut down autoCAD in order to reload a changed ODCDL project. </div>
+</article>
+<article class="post" id="msg60">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-14 03:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"> ... to reload a changed ODCDL project.</blockquote> <br>
+<br>
+When developing you could use the 'reload' flag for that method ..<br>
+... just add <span style="color:blue"> T   </span> to the parameter list. <br>
+<br>
+See attached ..<br>
+<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg61">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2007-07-14 05:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=hermanm link=topic=16.msg59#msg59 date=1184380244 wrote:</cite><br>
+Using RC3<br>
+<br>
+2. Provide a (dcl_unloadproject) function.<br>
+Or, correct my (mis)understanding that it is necessary to shut down autoCAD in order to reload a changed ODCDL project. <br>
+</blockquote><br>
+<br>
+Kerry is right in his suggestion to use the 'T' during development, but an FYI, yes there is a  (dcl_Project_UnLoad  ProjectName [as String]) function already...<br>
+Not sure I under stand your first wish...</div>
+</article>
+<article class="post" id="msg62">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-14 05:36 UTC</span>
+  </div>
+  <div class="post-body">I can imagine times when removing loaded projects from memory would be useful. <br>
+<br>
+Sorry, I meant to mention <strong>(<span style="color:blue">dcl_Project_UnLoad</span></strong>  .... <br>
+</div>
+</article>
+<article class="post" id="msg65">
+  <div class="post-head">
+    <span class="post-author">hermanm</span>
+    <span class="post-date muted">2007-07-14 18:18 UTC</span>
+  </div>
+  <div class="post-body">Thnks for the info..<br>
+Just what I was looking for.:)<br>
+<br>
+RE: First wish<br>
+<br>
+ACAD context menu (right click menu) Recent Input -&gt; shows odcl callbacks for form controls, which seems undesirable to me.<br>
+These function calls do not appear in the command history window (F2), which seems to me more desirable.</div>
+</article>
+<article class="post" id="msg66">
+  <div class="post-head">
+    <span class="post-author">hermanm</span>
+    <span class="post-date muted">2007-07-14 20:32 UTC</span>
+  </div>
+  <div class="post-body">OK, I notice the help says this<br>
+(under Additional Functions):<br>
+<br>
+Note that (dcl_loadproject) and (dcl_unloadproject) are deprecated and replaced by (dcl_project_load) and (dcl_project_unload)<br>
+<br>
+In fact:<br>
+<br>
+Command: !dcl_unloadproject<br>
+nil<br>
+<br>
+Command: !dcl_loadproject<br>
+#&gt;<br>
+<br>
+Command: !dcl_project_load<br>
+#&gt;<br>
+<br>
+Command: !dcl_project_unload<br>
+#&gt;<br>
+<br>
+So, it might be good to change the function calls in exmple files to reflect the new usage.<br>
+Thanks again.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg67">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2007-07-14 23:34 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=hermanm link=topic=16.msg66#msg66 date=1184445155 wrote:</cite><br>
+So, it might be good to change the function calls in exmple files to reflect the new usage.<br>
+Thanks again.<br>
+</blockquote><br>
+<br>
+Which examples are you referring to?<br>
+All the examples use  "_OpendclUtils.lsp" to load the projects &amp; it calls (dcl_PROJECT_LOAD), so I'm a little confused....</div>
+</article>
+<article class="post" id="msg68">
+  <div class="post-head">
+    <span class="post-author">hermanm</span>
+    <span class="post-date muted">2007-07-15 00:01 UTC</span>
+  </div>
+  <div class="post-body">OK, I must be confused also<br>
+I used the old function call, but may have picked it up from an old ODC project file.<br>
+Been awhile since I messed with this stuff.<br>
+<br>
+Sorry about that.:(</div>
+</article>
+<article class="post" id="msg69">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-07-15 01:25 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=hermanm link=topic=16.msg65#msg65 date=1184437138 wrote:</cite><br>
+ACAD context menu (right click menu) Recent Input -&gt; shows odcl callbacks for form controls, which seems undesirable to me.</blockquote><br>
+<br>
+I don't think there's any way to prevent this for modeless dialogs.</div>
+</article>
+<article class="post" id="msg70">
+  <div class="post-head">
+    <span class="post-author">hermanm</span>
+    <span class="post-date muted">2007-07-15 02:29 UTC</span>
+  </div>
+  <div class="post-body">OK<br>
+I tried to localize the callback, without success:<br>
+<br>
+Command: ; error: no function definition: C:SLIDE_ONMOUSEDOWN<br>
+<br>
+(I left _ONMOUSEUP global, -&gt; no error msg)<br>
+<br>
+When I expose the callback, the control works as expected.<br>
+<br>
+The help file gives this example:<br>
+<br>
+Here is the same routine with functions nested to eliminate global variables<br>
+<br>
+<br>
+(defun c:Events       (/ sVariable <br>
+                             c:EventHandling_TextBox1_EditChanged                              c:EventHandling_OK_Clicked <br>
+                             )<br>
+  (defun c:EventHandling_TextBox1_EditChanged (sText /)<br>
+<br>
+Is this supposed to work?<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg71">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-15 03:30 UTC</span>
+  </div>
+  <div class="post-body">Herman,<br>
+I've had mixed results localising the USBR's defining the Event callbacks. <br>
+Generally I've been able to localise them for modal dialogs.<br>
+<br>
+I'd need to see your code and ODCL to comment on your question and observations.<br>
+</div>
+</article>
+<article class="post" id="msg72">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-15 03:39 UTC</span>
+  </div>
+  <div class="post-body">additionally,<br>
+For instance ; C:SLIDE_ONMOUSEDOWN (..) does not seem quite correct. <br>
+I assume you've edited the Callback Function Name in the editor from it's original<br>
+<br>
+c:Project1_Form1_SLIDE_OnMouseDown<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg76">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-07-15 15:11 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=hermanm link=topic=16.msg70#msg70 date=1184466567 wrote:</cite><br>
+I tried to localize the callback, without success:</blockquote><br>
+<br>
+As long as the callback function is defined when the dialog needs to call it, localizing will work fine. Just be aware that when you call (dcl_form-show) to display a modeless form, the form will still be displayed (and need to call its event handlers) *after* the (dcl_form_show function returns. Localizing ab event handler for a modeless dialog will therefore fail, because by the time the dialog calls it, the containing function will have completed and the local functions will have gone out of scope.<br>
+<br>
+The moral of the story is that you can only define local callback functions for modal dialogs.</div>
+</article>
+<article class="post" id="msg77">
+  <div class="post-head">
+    <span class="post-author">hermanm</span>
+    <span class="post-date muted">2007-07-15 16:19 UTC</span>
+  </div>
+  <div class="post-body">Yes, this is a modeless dialog.<br>
+Yes, I provided a var name.<br>
+here is code fragment:<br>
+<br>
+;;;command to load odcl project &amp; initialize the form<br>
+(defun C:ImgBtn ( / );c:Slide_OnMouseDown)<br>
+;;;callbacks for image button<br>
+;;;OnMouseDown acquires image coordinates to enable swapping slides<br>
+;;;and set variable(s) to do something useful based on the selected point<br>
+(defun c:Slide_OnMouseDown (nButton nFlags nX nY /)<br>
+      (setq  %X (/ nX Width) %Y (/ nY Height))<br>
+      (princ (strcat "\n" "X= " (rtos %X 2 2) "\n" "Y= " (rtos %Y 2 2)));diagnostic print<br>
+;;need to map the pick point, based on _relative_ coords<br>
+      (setq Map# (map_slide %X %Y XMap YMap))<br>
+      (display_slide  slide (slide_name Map#) nil)<br>
+      (dcl_Control_SetCaption Text1<br>
+        (cdr(assoc Map# just_list )))<br>
+)<br>
+  (if (dcl_Project_Load "ImgBtn.odcl" T);T is reload option<br>
+   (progn<br>
+    (dcl_Form_Show ImgBtn)<br>
+    (dcl_SlideView_Load Slide "A0.sld")<br>
+<br>
+;;---------end fragment----------------<br>
+<br>
+I get it (I think). The C:xxx function which displays the form - i.e., calls (dcl_form_show) - runs to completion, but the (modeless) form is still active after the function which calls it returns, so the form still needs its callbacks. <br>
+IOW, what Owen said.<br>
+<br>
+Thanks very much to all for info.:)<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg78">
+  <div class="post-head">
+    <span class="post-author">hermanm</span>
+    <span class="post-date muted">2007-07-15 16:28 UTC</span>
+  </div>
+  <div class="post-body">Further comment:<br>
+<br>
+Presumably(?), the callbacks would have to be exposed, if the project was compiled to a separate namespace vlx.<br>
+Is this a correct assumption?</div>
+</article>
+<article class="post" id="msg79">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-15 21:43 UTC</span>
+  </div>
+  <div class="post-body">From memory ..<br>
+<br>
+Yes Callbacks need to be global ... and <br>
+<br>
+Add (vl-arx-import "Opendcl.xx.arx")<br>
+to the head of lisp file<br>
+<br>
+call all control methods something like this<br>
+(Odcl_Control_xxxxxxx  (vl-doc-ref ) )<br>
+<br>
+<br>
+It's been a while since I've done  seperate namespace work .. sorry not more explicit.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg80">
+  <div class="post-head">
+    <span class="post-author">DW</span>
+    <span class="post-date muted">2007-07-16 00:29 UTC</span>
+  </div>
+  <div class="post-body">Also you need to quote ' the symbol so you will end up with (dcl_Control_xxxxxxx  (vl-doc-ref ') ). <br>
+<br>
+However if you construct the ControlName at runtime (say if you want to populate many edit boxes with data using the same dcl_control functions) - you shouldn't quote it because it gets evaluated, for example :<br>
+<br>
+(dcl_Control_xxx   (vl-doc-ref (read (strcat "" (itoa ct)))) )<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

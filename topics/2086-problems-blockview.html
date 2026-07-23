@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>problems BlockView · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2086</p>
+    <h1>problems BlockView</h1>
+    <p class="meta">Started by garcigj ·
+      2014-01-10 11:46 UTC ·
+      18 replies · SMF topic #2086</p>
+<article class="post" id="msg10323">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-01-10 11:46 UTC</span>
+  </div>
+  <div class="post-body">I have encountered problems with BlockView control when a preload of a drawing is made and this blocks are displayed. (dcl_BlockView_PreLoadDwg)<br>
+Problems arise when the BlockView resizes in height or width and its dimension is less than or equal to 0.<br>
+In dockable forms when pallets or controls accumulate bars and BlockView stops working, this is because when these forms are anchored and BlockView is lost, out of view of the application, for example to resize the application window.<br>
+The problem can not be resolved, and I tested with dcl_Control_Redraw dcl_BlockView_RefreshBlock, but do not solve the problem. You have to close and reopen the form again. (this is inevitable)<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1949/BlockView1a.gif">BlockView1a.gif</a> <span class="muted">(2904885 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10324">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-01-10 11:54 UTC</span>
+  </div>
+  <div class="post-body">Hm, quite interesting, haven't seen this yet. I'd bet (dcl_BlockView_RefreshBlock) would did the trick, but you say, it doesn't.<br>
+Try a clear in Form_OnSize event and reload the block anew.<br>
+This test could fence the problem's source.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10325">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-01-10 12:00 UTC</span>
+  </div>
+  <div class="post-body">Fred,<br>
+This happens only with dcl_BlockView_PreLoadDwg<br>
+Not solved with dcl_BlockView_DisplayBlock, we must re-load the drawing dcl_BlockView_PreLoadDwg<br>
+this is very problematic.<br>
+<br>
+I will add more examples where the error occurs.<br>
+</div>
+</article>
+<article class="post" id="msg10326">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-01-10 12:42 UTC</span>
+  </div>
+  <div class="post-body">(dcl_BlockView_PreLoadDwg)<br>
+BlockView problem when docked palettes:<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1950/BlockView2.gif">BlockView2.gif</a> <span class="muted">(2478817 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10327">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-01-10 13:23 UTC</span>
+  </div>
+  <div class="post-body">(dcl_BlockView_PreLoadDwg)<br>
+BlockView force error manually<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1951/BlockView3.gif">BlockView3.gif</a> <span class="muted">(1568730 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10328">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-01-10 13:28 UTC</span>
+  </div>
+  <div class="post-body">I need to publish my application and I can not do with these failures.<br>
+Any advice?<br>
+<br>
+<br>
+sorry for my bad English</div>
+</article>
+<article class="post" id="msg10329">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-10 14:34 UTC</span>
+  </div>
+  <div class="post-body">I was able to reproduce the problem in AutoCAD 2010. It looks like AutoCAD's GsView gets confused if one of the control dimensions reaches zero. Bricscad does not have the problem. I added some code to block zero dimensions from being passed along to the underlying GsView, and this seems to solve the problem. In the meantime, I think the only solution is to prevent the blockview control size from reaching zero in either dimension.</div>
+</article>
+<article class="post" id="msg10338">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-01-11 17:45 UTC</span>
+  </div>
+  <div class="post-body">I'm working with OnSize event without good results.<br>
+I noticed this:<br>
+<br>
+I've been setting well actually no fault BlockView that minimize to 0, but because it disappears from the screen of the document.<br>
+Can this be so?<br>
+be set in steps of image:<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1953/BlockView4.gif">BlockView4.gif</a> <span class="muted">(7182343 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10339">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-11 18:12 UTC</span>
+  </div>
+  <div class="post-body">Is your form set as resizable? Is the OnSize event for the form or the control?</div>
+</article>
+<article class="post" id="msg10340">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-01-11 18:17 UTC</span>
+  </div>
+  <div class="post-body">Is the OnSize event for the form<br>
+<br>
+Allow Resizing = true<br>
+<br>
+Owen, I send the form?<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1954/11-01-2014 19-16-11.png">11-01-2014 19-16-11.png</a> <span class="muted">(13182 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10341">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-11 18:19 UTC</span>
+  </div>
+  <div class="post-body">I did a quick test and could not reproduce the problem. Please create a new project with only the minimum required controls and code, and attach it with exact steps needed to reproduce the problem.</div>
+</article>
+<article class="post" id="msg10342">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-01-11 18:20 UTC</span>
+  </div>
+  <div class="post-body">OK.</div>
+</article>
+<article class="post" id="msg10343">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-01-11 19:29 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+I hope with this you can reproduce the problem<br>
+<br>
+you have to change this path for your path<br>
+<br>
+;;Change this path for why you need<br>
+;;Path for proyect:<br>
+(defun 2DA-GetPathSupport ()<br>
+ "E:\\Users\\joseluis\\Pictures\\borrar\\"<br>
+)<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1955/SamplePalette.zip">SamplePalette.zip</a> <span class="muted">(66184 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10344">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-11 20:11 UTC</span>
+  </div>
+  <div class="post-body">Sorry, that project is way too complicated for debugging. I have attached my test project that uses the sample file AllControls.dwg. Please give me the exact steps needed to reproduce the problem, or explain what must be changed for the problem too occur.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1956/bvsize.zip">bvsize.zip</a> <span class="muted">(1120 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10345">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-01-11 21:28 UTC</span>
+  </div>
+  <div class="post-body">Sorry the delay, I have gone a moment<br>
+<br>
+Do not touch anything, just try it<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1957/BlockView5.gif">BlockView5.gif</a> <span class="muted">(2992353 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10346">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-11 22:03 UTC</span>
+  </div>
+  <div class="post-body">I understood that OnSize is not firing. However, your demo appears to show OnSize firing as expected.</div>
+</article>
+<article class="post" id="msg10347">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-11 22:45 UTC</span>
+  </div>
+  <div class="post-body">I put the following in the OnSize handler for my test app and set the splitter's Closest Outside value to 100. This prevents the control from getting to a zero height. I did not test the width, but the same principle can be applied. Maybe this will help you.<br>
+<br>
+<br>
+(defun c:bvsize/Form1#OnSize (NewWidth NewHeight /)<br>
+  (if (&lt; NewHeight 200)<br>
+    (dcl-Control-SetUseBottomFromBottom bvsize/Form1/BlockView1 0)<br>
+    (progn<br>
+      (dcl-Control-SetBottomFromBottom bvsize/Form1/BlockView1 5)<br>
+      (dcl-Control-SetUseBottomFromBottom bvsize/Form1/BlockView1 1)<br>
+    )<br>
+  )<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg10348">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-01-11 23:59 UTC</span>
+  </div>
+  <div class="post-body">Still not working, I'm a little frustrated, will investigate this a bit more but I think there is no solution.<br>
+<br>
+I will inform the forum if I get some conclusion.<br>
+<br>
+Thanks anyway Owen<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg10349">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-12 00:07 UTC</span>
+  </div>
+  <div class="post-body">If you want help, I need more information than "not working". Is my sample not working, or is something else not working? It is working for me.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

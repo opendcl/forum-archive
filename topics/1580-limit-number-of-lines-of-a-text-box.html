@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Limit number of lines of a Text Box · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1580</p>
+    <h1>Limit number of lines of a Text Box</h1>
+    <p class="meta">Started by lfe011969 ·
+      2011-01-27 16:18 UTC ·
+      9 replies · SMF topic #1580</p>
+<article class="post" id="msg7725">
+  <div class="post-head">
+    <span class="post-author">lfe011969</span>
+    <span class="post-date muted">2011-01-27 16:18 UTC</span>
+  </div>
+  <div class="post-body">Is there some way of limiting the number of lines allowed inside a text box?  The titles on our drawings are a maximum of 4 lines and I project I'm working on allows the user to enter the title of the drawing into a text box which then updates the correct attribute of the title block.  However, right now if a user enters more than 4 lines of text into the text box then the title overlaps its boundary.  See below for an example of what I'm talking about.<br>
+<br>
+I would appreciate any suggestions.  Thanks!<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1537/title.JPG">title.JPG</a> <span class="muted">(23091 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7727">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2011-01-27 17:41 UTC</span>
+  </div>
+  <div class="post-body">There isn't a property to limit the number of lines, but you could enable the "ReturnPressed" event &amp; handle it there.<br>
+If the user presses return more then 4 times, then you could make the text box read-only or read the "text" value &amp; truncate it if needed...<br>
+<br>
+<br>
+(defun c:Untitled_Form1_TextBox1_OnReturnPressed (/)<br>
+)</div>
+</article>
+<article class="post" id="msg7728">
+  <div class="post-head">
+    <span class="post-author">lfe011969</span>
+    <span class="post-date muted">2011-01-27 17:54 UTC</span>
+  </div>
+  <div class="post-body">I've actually tried that but I can't seem to get it to work.  Here is what I was using:<br>
+<br>
+(defun c:1_form1_dwgtitle_OnReturnPressed (/)<br>
+  (setq xxx (dcl_TextBox_GetLineCount 1_form1_dwgtitle))<br>
+  (if (&lt; 4 xxx)<br>
+    (progn<br>
+      (dcl_MessageBox "WARNING!!!!\r\nDrawing Titles can only have 4 lines!!!" "WARNING")<br>
+      (dcl_TextBox_LineScroll 1_form1_dwgtitle 1)<br>
+    )<br>
+  )<br>
+)<br>
+<br>
+I was hoping using the LineScroll property would make the cursor move back to the top line but it doesn't work with the code I have.</div>
+</article>
+<article class="post" id="msg7729">
+  <div class="post-head">
+    <span class="post-author">lfe011969</span>
+    <span class="post-date muted">2011-01-27 17:59 UTC</span>
+  </div>
+  <div class="post-body">Oops, I messed up the conditional statement.  I changed:<br>
+<br>
+(if (&lt; 4 xxx)<br>
+<br>
+to<br>
+<br>
+(if (&lt;= 4 xxx)<br>
+<br>
+and now it works.<br>
+<br>
+Thanks for your help!</div>
+</article>
+<article class="post" id="msg7730">
+  <div class="post-head">
+    <span class="post-author">lfe011969</span>
+    <span class="post-date muted">2011-01-28 03:52 UTC</span>
+  </div>
+  <div class="post-body">Even though my code works with ReturnPressed, I believe I've found a better solution for limiting the number of lines of text within a text box.<br>
+<br>
+Using the EditChanged Text Box event, I've come up with some code that toggles the SetReturnAsTab value to accomplish my goal of limiting the number of lines.  If the number of lines equals 3 or less then SetReturnAsTab is set to nil and is then set to T when the number of lines is greater than 3.  This way once the user is typing his fourth line, the SetReturnAsTab is set to T resulting in setting the focus to the next control instead of acting as a carriage return within the text box.<br>
+<br>
+(defun c:1_form1_dwgtitle_OnEditChanged (NewValue /)<br>
+    (setq linecnt (dcl_TextBox_GetLineCount 1_form1_dwgtitle))<br>
+    (cond<br>
+      ((&gt;= 3 linecnt)(dcl_Control_SetReturnAsTab 1_form1_dwgtitle nil))<br>
+      ((&lt; 3 linecnt)(dcl_Control_SetReturnAsTab 1_form1_dwgtitle T))<br>
+    )<br>
+  )</div>
+</article>
+<article class="post" id="msg7732">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-01-28 16:03 UTC</span>
+  </div>
+  <div class="post-body">Well done, I like it!</div>
+</article>
+<article class="post" id="msg7735">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2011-01-28 17:47 UTC</span>
+  </div>
+  <div class="post-body">Ya great code, but I'm just curious, why don't you use attributes in your titleblock instead of Mtext. That would avoid this whole issue....<br>
+And they're much easier to code &amp; script for....</div>
+</article>
+<article class="post" id="msg7740">
+  <div class="post-head">
+    <span class="post-author">lfe011969</span>
+    <span class="post-date muted">2011-02-02 15:38 UTC</span>
+  </div>
+  <div class="post-body">Sorry for not answering back in a timely fashion, been busy at work....<br>
+<br>
+Actually the object I'm updating with my Text Box is an attribute.  The reason I'm doing it this way is so that the user has an idea of what his title will look like on the drawing before he actually changes it.  Sometimes a title is just a little longer than a line and asthetically it looks better to break up the title so that the words are more equally distributed across multiple lines. See attached picture for an example.<br>
+<br>
+Before this I was just using the Drawing Title in the Summary Info of the drawing to store the title which was then tied to a field within the titleblock.  By doing it this way there was just no way to break up the title (that I could figure out) as placing a \\N or \\P never made the title break where desired.  Many of the project leads requested this be changed so I began looking into using Open DCL.<br>
+<br>
+If there is a better way then I'm all ears  :)<br>
+<br>
+Lonnie<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1540/dwgtitle.JPG">dwgtitle.JPG</a> <span class="muted">(25242 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7741">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2011-02-03 18:20 UTC</span>
+  </div>
+  <div class="post-body">Oh you're using a multi-line attribute.<br>
+We just use single line attributes, so we don't get the extra line, like you showed in your original post...<br>
+But I guess you've worked around that now too. :)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1541/titleB.png">titleB.png</a> <span class="muted">(40061 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7743">
+  <div class="post-head">
+    <span class="post-author">lfe011969</span>
+    <span class="post-date muted">2011-02-04 13:41 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=1580.msg7727#msg7727 date=1296150081 wrote:</cite><br>
+There isn't a property to limit the number of lines, but you could enable the "ReturnPressed" event &amp; handle it there.<br>
+If the user presses return more then 4 times, then you could make the text box read-only or read the "text" value &amp; truncate it if needed...</blockquote><br>
+<br>
+Based on your suggestion to truncate the text value of the box, I've come up with an enhancement to my code to prevent the user entering too many characters on the last line.  My original code only took into account if the user hits  to go to the next line.  However my code wouldn't prevent the user from continuously typing while on the last line to the point where the text wraps down to the next line.  Theoretically the user could just keep typing without hitting  forever  ;D<br>
+<br>
+Hopefully with this little enhancement I've got everything covered.  Thanks for your suggestion.<br>
+<br>
+(defun c:1_form1_dwgtitle_OnEditChanged ( Newvalue / linecnt )<br>
+    (setq linecnt (dcl_TextBox_GetLineCount 1_form1_dwgtitle))<br>
+    (cond<br>
+      ((&gt;= 3 linecnt)(dcl_Control_SetReturnAsTab 1_form1_dwgtitle nil))<br>
+      ((&lt; 3 linecnt)(dcl_Control_SetReturnAsTab 1_form1_dwgtitle T))<br>
+    )<br>
+    (if (&gt; linecnt 4)<br>
+      (progn<br>
+        (setq txt1 (dcl_TextBox_GetLine 1_form1_dwgtitle 0))<br>
+        (setq txt2 (dcl_TextBox_GetLine 1_form1_dwgtitle 1))<br>
+        (setq txt3 (dcl_TextBox_GetLine 1_form1_dwgtitle 2))<br>
+        (setq txt4 (dcl_TextBox_GetLine 1_form1_dwgtitle 3))<br>
+        (setq txtlst (strcat txt1 "\r\n" txt2 "\r\n" txt3 "\r\n" txt4))<br>
+        (dcl_Control_SetText 1_form1_dwgtitle txtlst)<br>
+        (dcl_Control_SetFocus 1_form1_custdwgnum)<br>
+      )<br>
+    )<br>
+    (princ)<br>
+  )</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

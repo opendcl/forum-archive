@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid and ComboBoxes Type 36 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1853</p>
+    <h1>Grid and ComboBoxes Type 36</h1>
+    <p class="meta">Started by seemsixty7 ·
+      2012-08-07 16:48 UTC ·
+      2 replies · SMF topic #1853</p>
+<article class="post" id="msg9099">
+  <div class="post-head">
+    <span class="post-author">seemsixty7</span>
+    <span class="post-date muted">2012-08-07 16:48 UTC</span>
+  </div>
+  <div class="post-body">I am going crazy trying to get my grid to behave as i want it to. I'm sure I'm forgetting something simple and obvious, but for the life of me I can't spot it.<br>
+<br>
+OpenDCL 6.0.2.5 on AutoCAD 2006 SP1 and Windows XP SP3<br>
+<br>
+(defun c:QuickTest()<br>
+	(command "_OPENDCL")<br>
+	(if (dcl_Project_Load "QuickTest")<br>
+    	(setq Result (dcl_Form_Show QuickTest_Form1))<br>
+    )<br>
+)<br>
+(defun c:QuickTest_Form1_OnInitialize (/)<br>
+	(while (dcl_Grid_DeleteColumn QuickTest_Form1_Grid1 0))<br>
+	(dcl_Grid_Clear QuickTest_Form1_Grid1)<br>
+	(dcl_Control_SetRowHeader QuickTest_Form1_Grid1 T)<br>
+	(setq dbfieldlist (list "Dwgnumber" "DwgTitle" "Dwgname" "Dwgissue"))<br>
+	(dcl_Grid_AddColumns QuickTest_Form1_Grid1 (list (list "" 0 20 0) (list "" 0 20 0) (list "DatabaseField" 0 140 0)))<br>
+	;(dcl_Control_SetColumnStyleList QuickTest_Form1_Grid1 0 1 36)<br>
+	;(dcl_Control_SetColumnListItems QuickTest_Form1_Grid1 (list nil nil dbfieldlist))<br>
+	(dcl_Grid_DeleteColumn QuickTest_Form1_Grid1 3)<br>
+	(dcl_Grid_InsertRow QuickTest_Form1_Grid1 1 "" "" "DwgNumber1")<br>
+	(setq combodatalist (append (list "Dwgnumber1") dbfieldlist))<br>
+	(dcl_Grid_SetCellStyle QuickTest_Form1_Grid1 1 2 36)<br>
+	(dcl_Grid_SetCellDropList QuickTest_Form1_Grid1 1 2 combodatalist)<br>
+)<br>
+<br>
+The Form is just a modal dailog box with a grid component only.<br>
+<br>
+If I run it like this it will not set the type to 36. a call to getcelltype will return as 36, but it is not in the actual form. Please educate me as to what I am doing wrong. If I uncoment out the 2 lines above that sets the column default and the coulm default list value it works but I am unable to modify the list to append the current value. any help is greatly appreciated.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg9100">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-08-07 18:10 UTC</span>
+  </div>
+  <div class="post-body">Hi, without knowing if it solves your problem I'd call dcl_grid_AddRow instead of InsertRow. InsertRow means to insert a new row between existing rows. I prefer to do it this way:<br>
+<br>
+<br>
+(setq lstItems '("Line1" "Line2"))<br>
+(foreach strItem lstItems<br>
+  (if (setq intRow (dcl_Grid_AddRow myGrid strItem "" ""))<br>
+    (progn<br>
+      (dcl_Grid_SetCellStyle myGrid intRow 2 36)<br>
+      (dcl_Grid_SetCellDropList myGrid intRow 2 lstItems)<br>
+      (dcl_Grid_SetCellDropList myGrid intRow 2 strItem)    <br>
+    ); progn<br>
+  ); if<br>
+); foreach<br>
+<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9101">
+  <div class="post-head">
+    <span class="post-author">seemsixty7</span>
+    <span class="post-date muted">2012-08-07 18:36 UTC</span>
+  </div>
+  <div class="post-body">Fred,<br>
+<br>
+THANKS! This works perfect. That makes sense. I was essentially always insertinga  row and then modifying a different row, so i guess my setstyle or list settings were never getting applied to the correct cell. using the add method works like a charm.<br>
+<br>
+Danke, das ist sehr gut!<br>
+<br>
+Thank you and have a great day,<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

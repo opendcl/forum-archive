@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Forms not centering in BricsCAD · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2637</p>
+    <h1>Forms not centering in BricsCAD</h1>
+    <p class="meta">Started by leo9 ·
+      2018-10-30 10:44 UTC ·
+      5 replies · SMF topic #2637</p>
+<article class="post" id="msg13048">
+  <div class="post-head">
+    <span class="post-author">leo9</span>
+    <span class="post-date muted">2018-10-30 10:44 UTC</span>
+  </div>
+  <div class="post-body">I can't get dialogs to centre in BricsCAD, whlist in AutoCAD they are fine (see attachments).  Forms are also scaled up larger in BricsCAD than in AutoCAD.<br>
+<br>
+Also, (dcl-getscreensize) gives different values for AutoCAD and BricsCAD, which may be related to the first issue.  For example, on a 1920 x 1080 display with fonts at 125% scaling, (dcl-getscreensize) returns (1536 824) for BricsCAD and (1920 x 1030) for AutoCAD.<br>
+<br>
+I thought these issues may be related to this: <br>
+<br>
+http://opendcl.com/forum/index.php?topic=2586.msg12807#msg12807<br>
+<br>
+I updated to OpenDCL 9.0.2.0 and it's still the same.  It seems as if everything is scaled up in BricsCAD by 25%.<br>
+<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2427/bcad capture.JPG">bcad capture.JPG</a> <span class="muted">(175447 bytes)</span></li><li><a href="../attachments/2428/acad capture.JPG">acad capture.JPG</a> <span class="muted">(168487 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13049">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2018-10-30 20:09 UTC</span>
+  </div>
+  <div class="post-body">How are you centering your dialog? The difference between Acad and Bcad can be explained if they are running with different DPI awareness. Which version of Bcad? If V18, make sure you test the latest version, because early versions used a custom DPI awareness setting as a temporary workaround for a weird display bug.</div>
+</article>
+<article class="post" id="msg13050">
+  <div class="post-head">
+    <span class="post-author">leo9</span>
+    <span class="post-date muted">2018-10-31 10:30 UTC</span>
+  </div>
+  <div class="post-body">I'm using dcl_Form_Center - please see attached test.odcl and testdg.lsp.  The BricsCAD version is 18.2.20, which I believe is the latest.<br>
+<br>
+In BricsCAD, the attached 800 x 600 dialog is scaled up 125%.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2429/test.odcl">test.odcl</a> <span class="muted">(687 bytes)</span></li><li><a href="../attachments/2430/testdg.lsp">testdg.lsp</a> <span class="muted">(112 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13051">
+  <div class="post-head">
+    <span class="post-author">leo9</span>
+    <span class="post-date muted">2018-10-31 12:40 UTC</span>
+  </div>
+  <div class="post-body">I just checked this on three other PCs and the test dialog centred correctly, so the problem is specific to the first PC.<br>
+<br>
+I think it's an issue with BricsCAD and Intel UHD 620 graphics settings. It can be temporarily fixed by setting font scaling to 100%, rebooting, then setting font scaling back to 125%.  The dialogs then appear centred.<br>
+<br>
+However, another reboot will bring the original problem back again.</div>
+</article>
+<article class="post" id="msg13052">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2018-10-31 13:11 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the files. I was able to reproduce the centering bug, but it is exactly the same on both Bcad and Acad (I tested Acad 2016 and Acad 2018, as well as Bcad V18). I've fixed the centering bug now, so it should work correctly in the next build.<br>
+<br>
+Note that changing display scale does not affect Acad/Bcad until you log out and back in. This is the case because both use 'System Aware' DPI awareness (unless you've changed it in file properties).</div>
+</article>
+<article class="post" id="msg13053">
+  <div class="post-head">
+    <span class="post-author">leo9</span>
+    <span class="post-date muted">2018-10-31 14:43 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen, I'll wait for the update, I have a workaround for now.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

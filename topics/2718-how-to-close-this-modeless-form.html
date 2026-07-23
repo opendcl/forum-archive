@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to close this Modeless Form · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2718</p>
+    <h1>How to close this Modeless Form</h1>
+    <p class="meta">Started by RGUS ·
+      2020-02-20 22:54 UTC ·
+      2 replies · SMF topic #2718</p>
+<article class="post" id="msg13365">
+  <div class="post-head">
+    <span class="post-author">RGUS</span>
+    <span class="post-date muted">2020-02-20 22:54 UTC</span>
+  </div>
+  <div class="post-body">Hi Guys,<br>
+I have no hair left after fighting with this issue for a couple of days.<br>
+<br>
+I have a DCL dialogue box that calls an OpenDCL modeless dialogue box to display steel section dimensions.<br>
+Modeless, because I want it open while I draw the necessary information from the figured dimensions that will be shown in the modeless dialogue box.<br>
+When I',m finished drawing I want to close the Modeless form... but I can't, it won't let me.<br>
+<br>
+I know, I could rewrite the complete existing AutoLISP code using OpenDCL dialogue forms, but that would take forever.<br>
+<br>
+I appreciate any help and slap across the face for an obvious lack of knowledge and errors.<br>
+<br>
+Regards.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2504/STEEL DIMS.zip">STEEL DIMS.zip</a> <span class="muted">(7595 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13366">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2020-02-21 14:44 UTC</span>
+  </div>
+  <div class="post-body">Maybe this helps:<br>
+<pre class="code"><code>(defun C:STEEL_DIMS ( / dcl_id ret)<br>
+   (setq dcl_id (load_dialog "STEEL_DIMS.dcl"))<br>
+   (if (not (new_dialog "STEEL_DIMS" dcl_id)) (exit))<br>
+   (action_tile "DISPLAY_SLIDE" "(done_dialog 2)")<br>
+   ; (action_tile "accept" "(done_dialog 1)")<br>
+   (action_tile "cancel" "(done_dialog 0)")<br>
+   (setq ret (start_dialog))<br>
+   (unload_dialog dcl_id)<br>
+   (if (= 2 ret)<br>
+      (sps)<br>
+   )<br>
+   (princ)<br>
+)</code></pre></div>
+</article>
+<article class="post" id="msg13367">
+  <div class="post-head">
+    <span class="post-author">RGUS</span>
+    <span class="post-date muted">2020-02-21 18:27 UTC</span>
+  </div>
+  <div class="post-body">Thanks, Roy,<br>
+Obvious now to close the ACAD dialogue before opening the OPENDCL form now that I see it.<br>
+<br>
+Sometimes, wood and trees just look the same.<br>
+Thanks again.<br>
+ </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

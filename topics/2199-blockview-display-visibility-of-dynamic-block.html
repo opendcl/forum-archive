@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>&quot;Blockview&quot; - Display visibility of Dynamic block? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2199</p>
+    <h1>&quot;Blockview&quot; - Display visibility of Dynamic block?</h1>
+    <p class="meta">Started by Peter2 ·
+      2014-11-17 11:29 UTC ·
+      8 replies · SMF topic #2199</p>
+<article class="post" id="msg11023">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-17 11:29 UTC</span>
+  </div>
+  <div class="post-body">The "Subject" says it all:<br>
+<br>
+Can "Blockview" display the visibility of a dynamic block?</div>
+</article>
+<article class="post" id="msg11025">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-11-17 12:51 UTC</span>
+  </div>
+  <div class="post-body">Not directly I think. But it is possible to create a temporary block, add an insert of the dynamic block to that block definition, set the correct visibility, and display the temporary block in a BlockView.</div>
+</article>
+<article class="post" id="msg11026">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-17 13:59 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2199.msg11025#msg11025 date=1416228687 wrote:</cite><br>
+Not directly I think. But it is possible to create a temporary block, add an insert of the dynamic block to that block definition, set the correct visibility, and display the temporary block in a BlockView.<br>
+</blockquote><br>
+Also "on the fly" - at a "on_clicked_event"?</div>
+</article>
+<article class="post" id="msg11030">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-11-17 16:00 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Peter2 link=topic=2199.msg11026#msg11026 date=1416232796 wrote:</cite><br>
+Also "on the fly" - at a "on_clicked_event"?<br>
+</blockquote>Yes*, I have just tested this. Let me know if you need any help.<br>
+*Note: I work with BricsCAD.</div>
+</article>
+<article class="post" id="msg11031">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-11-17 16:08 UTC</span>
+  </div>
+  <div class="post-body">Hi, <br>
+<blockquote class="quote"><cite> author=Peter2 link=topic=2199.msg11026#msg11026 date=1416232796 wrote:</cite><br>
+Also "on the fly" - at a "on_clicked_event"?<br>
+</blockquote><br>
+it should work if you use vla-methods instead of commands.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11033">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-17 17:05 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2199.msg11030#msg11030 date=1416240000 wrote:</cite><br>
+Yes*, I have just tested this. Let me know if you need any help...</blockquote><br>
+Any code-snippet is appreciated  :)</div>
+</article>
+<article class="post" id="msg11035">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-11-17 18:40 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Peter2 link=topic=2199.msg11033#msg11033 date=1416243948 wrote:</cite><br>
+Any code-snippet is appreciated  :)<br>
+</blockquote>See the attached .zip file.<br>
+The function CreateTmpBlock creates anonymous blocks. These are hidden from the user, but are still present when the drawing is saved. When the drawing is reopened unused anonymous blocks are automatically deleted. If CreateTmpBlock is called many times the file size of the drawing will increase and you may then want to have your application erase them or want to reuse the same anonymous block definition.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2064/TestDyn.zip">TestDyn.zip</a> <span class="muted">(46700 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11040">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-11-18 08:16 UTC</span>
+  </div>
+  <div class="post-body">Note: for AutoCAD you need to add:<br>
+(vl-load-com)</div>
+</article>
+<article class="post" id="msg11041">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-11-18 09:05 UTC</span>
+  </div>
+  <div class="post-body">Note 2: for AutoCAD you may have to change:<br>
+<pre class="code"><code>(vla-put-value a propValue)</code></pre><br>
+To:<br>
+<pre class="code"><code>(vlax-put a 'value propValue)</code></pre><br>
+<br>
+BricsCAD is a little more flexible here.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[Maybe a BUG] Tab page in dockable forms · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/22-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 101</p>
+    <h1>[Maybe a BUG] Tab page in dockable forms</h1>
+    <p class="meta">Started by colder ·
+      2007-11-28 00:31 UTC ·
+      5 replies · SMF topic #101</p>
+<article class="post" id="msg414">
+  <div class="post-head">
+    <span class="post-author">colder</span>
+    <span class="post-date muted">2007-11-28 00:31 UTC</span>
+  </div>
+  <div class="post-body">AutoCAD 2004 + OpenDCL 4.1.2.0<br>
+<br>
+First, add dockable form. And then, add a Tabcontrol.<br>
+Put something in Tab page.<br>
+<br>
+In CAD. Give focus to tab page. At this time, when I press "ESC" or "ENTER". Tab page is blank. All in it has been disappear. But switch tab page can get it again.<br>
+<br>
+I'm sorry for my poor English.</div>
+</article>
+<article class="post" id="msg415">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-11-28 04:02 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Can you attach a simple functional .LSP and .ODCL file to demonstrate your problem. ?</div>
+</article>
+<article class="post" id="msg420">
+  <div class="post-head">
+    <span class="post-author">colder</span>
+    <span class="post-date muted">2007-11-29 01:37 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=101.msg415#msg415 date=1196222563 wrote:</cite><br>
+<br>
+Can you attach a simple functional .LSP and .ODCL file to demonstrate your problem. ?<br>
+</blockquote><br>
+<br>
+Here is a simply project. <br>
+(Load "DockTab.lsp")<br>
+U can see the Dock &amp; Tab.<br>
+Give focus to TextBox. And then, Press "Enter" or "ESC".<br>
+The content of Tab will disappear.<br>
+<br>
+I has tested it in OpenDCL 4.1.2.0 (AutoCAD 2004/2008)<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg421">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-11-29 05:34 UTC</span>
+  </div>
+  <div class="post-body">Thanks for posting colder,<br>
+<br>
+The TextBox property 'ReturnAsTab', if set to True, will solve the ENTER issue.<br>
+<br>
+<br>
+<strong><em>For Owen.</em></strong><br>
+<br>
+The ESC issue looks like a bug when the TextBox is contained in a TabPane..<br>
+a TextBox directly on the dockable form is not an issue.<br>
+and<br>
+It appears the 'OnReturnPressed' Event is not firing, irrespective of the 'ReturnAsTab' setting .</div>
+</article>
+<article class="post" id="msg422">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2007-11-29 05:54 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=101.msg421#msg421 date=1196314468 wrote:</cite><br>
+The ESC issue looks like a bug when the TextBox is contained in a TabPane..</blockquote><br>
+<br>
+Agreed. Please enter a bug report on that so I don't forget to investigate when I return from AU.</div>
+</article>
+<article class="post" id="msg431">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-12-06 01:50 UTC</span>
+  </div>
+  <div class="post-body">Done<br>
+https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1845259&amp;group_id=187950&amp;atid=923363</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

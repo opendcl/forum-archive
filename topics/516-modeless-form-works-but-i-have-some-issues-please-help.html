@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modeless form works but I have some issues-Please help · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 516</p>
+    <h1>Modeless form works but I have some issues-Please help</h1>
+    <p class="meta">Started by Mak ·
+      2008-12-26 07:43 UTC ·
+      11 replies · SMF topic #516</p>
+<article class="post" id="msg2322">
+  <div class="post-head">
+    <span class="post-author">Mak</span>
+    <span class="post-date muted">2008-12-26 07:43 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Barry - Owen , I was in in your class in LV<br>
+I need some help to reveal some questions as a new user<br>
+1) why i get several different results  when I use the (Setq rValue (dcl_Form_GetHwnd MakPalette)) ? <br>
+2) would bepossible if I provided the class AFX: for the form and the Autocad any chance someone with C++ could help hide and top most the .Odcl form with the right click event?<br>
+3) is in the near new release will be possible to resize the control, and  form proportional by grap the form, and write .ini so the last change will be preset.<br>
+4) is in the new release we will have an index in the properties of the OpenDcl ?<br>
+5) did any one have a luck to MoveTablet or palette to follow the last click or position of mousepos.x and mousepos.y on autocad?<br>
+<br>
+6) Does this looks okay, it works but not with every bottun?<br>
+(defun c:MakPalette_MakPalette_GraphicButton4_OnClicked ()<br>
+(dcl_Form_hide MakPalette)<br>
+(command "._ddinsert")<br>
+(dcl_Form_show MakPalette))<br>
+<br>
+these all my question in version 4 , any help will be appreciated, sorry for my broken English.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/548/Makpalette.png">Makpalette.png</a> <span class="muted">(21729 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2324">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-12-26 16:19 UTC</span>
+  </div>
+  <div class="post-body">Here's a quick reply to some of your questions:<br>
+<br>
+1) Different results means different windows.<br>
+2) Not sure I understand what you're after.<br>
+3) Resizable forms are easy in OpenDCL, and sizing changes are remembered automatically.<br>
+4) I don't understand the question.<br>
+5) I don't know.<br>
+6) The last line should be (dcl_Form_Hide MakPalette NIL) to unhide the form. What you have now just creates a new one instead (which explains question 1).</div>
+</article>
+<article class="post" id="msg2325">
+  <div class="post-head">
+    <span class="post-author">Mak</span>
+    <span class="post-date muted">2008-12-27 01:36 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen, thanks for your comments<br>
+regarding #2) if Opendcl supports a external hook, with AutoCad class &amp; form class a dll will allow Hwnd the form on top of autocad with mouse right click.<br>
+             #3) Okay I noticed I can resize the form, I want to be able to re size the controls during the run time, which I did not see in version 4.2 -so is it possible in the next version?<br>
+             #4) in Microsoft visual basic properties has an index for every controls, I was wondering if this available?<br>
+              #1, #6) thanks but what is the disadvantage of using (dcl_Form_hide MakPalette 1) instead of Nil, I want to be able to hide the form once button clicked, and Show once action completed? Though still very nice software for the short time I'm using it. any help will be appreciated.</div>
+</article>
+<article class="post" id="msg2326">
+  <div class="post-head">
+    <span class="post-author">Mak</span>
+    <span class="post-date muted">2008-12-27 03:37 UTC</span>
+  </div>
+  <div class="post-body"> ;) :)<br>
+Owen, I found a quick &amp; dirty way to do what I need , I may change it later to a function of callback_button<br>
+I'm posting it for calling back the opendcl, I test it with 80 buttons so far &amp; not failed yet. here it is<br>
+Please let me know if this may cause any disadvantage or problem which I may not see!!!!!!<br>
+<br>
+(defun c:MakPalette_MakPalette_GraphicButton80_OnClicked ( / ql)<br>
+(dcl_Form_hide MakPalette 1)      ;;to hide the form<br>
+(command "_quickcalc" "")           ;; get the calculator for autocad<br>
+(princ)<br>
+(if (ql "makpalette.lsp")(c:makpalette)(princ))  ;;get back the opendcl subject to find the path.<br>
+);end of button 80<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg2327">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-12-27 06:10 UTC</span>
+  </div>
+  <div class="post-body">Mak, I still don't understand what you're after. I think Barry's class handout covers control resizing in OpenDCL. You just have to set the resizing properties in OpenDCL Studio.<br>
+<br>
+With regard to hiding, you should unhide your form after you hide it, otherwise you create a new instance of your form every time you display it. If you want to create a new instance every time, then you should close the form instead of hiding it.<br>
+<br>
+For what it's worth, I recommend to use OpenDCL 5 beta, as it has fixed a lot of problems since version 4. I think form hiding was flaky in version 4.</div>
+</article>
+<article class="post" id="msg2328">
+  <div class="post-head">
+    <span class="post-author">Mak</span>
+    <span class="post-date muted">2008-12-30 14:15 UTC</span>
+  </div>
+  <div class="post-body">Owen, Wish you happy New year<br>
+I'm after the following :<br>
+1) once project loaded and click a button then;<br>
+2) Hide the project not to unload it;<br>
+3) Once action button on autocad is completed then;<br>
+4) The form will be show;<br>
+Though looking on the help file could not find DCL_form_unhide function?<br>
+<br>
+Also I'm after resize the form with each control on the form proportion when I drag any corner of the form.<br>
+write *.ini to the folder for the last set set up<br>
+<br>
+You were correct I found out I was creating several instance which I do not want to.</div>
+</article>
+<article class="post" id="msg2330">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-12-31 03:36 UTC</span>
+  </div>
+  <div class="post-body">You use the (dcl_form_hide) function to hide *and* unhide a form, depending on the boolean argument. The control resizing is just a matter of setting the position and size properties relative to the form edges. Right click on a control in the editor and select Properties, then look at the options on the Geometry tab. You can also play with the Methods sample (Manipulation tab) to see how resizing works.</div>
+</article>
+<article class="post" id="msg2331">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-12-31 04:42 UTC</span>
+  </div>
+  <div class="post-body">Hi Mak,<br>
+Sorry for the delayed replay.<br>
+Yes as Owen mentioned, you should upgrade to version 5 or ODCL.<br>
+Just because it says experimental doesn't mean it's unstable.<br>
+It's very stable now &amp; version 4 did have some resizing issues at run-time.<br>
+After you get v5 installed have a look at the "Selections" project in the "Samples" folder.<br>
+Unfortunately this sample needs to be updated, because it's still using (DCL_FORM_CLOSE) and should be changed to (DCL_FORM_HIDE).<br>
+<br>
+And also as Owen said, use the Geometry tab to make the controls resize as the form gets resized. You don't need to save the forms info to an .INI as they will be saved in the registry and will be re-shown in the same location &amp; size. This also may have been broken in version 4.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg2332">
+  <div class="post-head">
+    <span class="post-author">Mak</span>
+    <span class="post-date muted">2008-12-31 22:13 UTC</span>
+  </div>
+  <div class="post-body"> :D ;)<br>
+Owen - Barry , Appreciated, &amp; my regards to both of you, and Happy new year to both of you!!!<br>
+I will download V5, and play with it, I do like 4 though I have some problem with it-hope 5 will be easy for me.<br>
+<br>
+One more questions, If I already keeping my icons in a *.dll file,  <br>
+How to refernce any grapgic to those buttons pictures?<br>
+Does the dll Name must be the same as the project name or the form name?<br>
+your help will be appreciated<br>
+<br>
+So Long</div>
+</article>
+<article class="post" id="msg2333">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-12-31 22:58 UTC</span>
+  </div>
+  <div class="post-body">I don't think ODCL can currently import images from DLL's. Owen can correct me if I'm wrong. I use this old program called Resource Hacker to extract images from DLL's if I don't have the originals. Here's a link: <a href="http://www.angusj.com/resourcehacker/" rel="nofollow noopener">{2}</a><br>
+</div>
+</article>
+<article class="post" id="msg2334">
+  <div class="post-head">
+    <span class="post-author">Mak</span>
+    <span class="post-date muted">2009-01-01 03:44 UTC</span>
+  </div>
+  <div class="post-body">Barry<br>
+version 5 works fine appreciated.<br>
+<br>
+I have Resource Hacker, &amp; "eXeScope " if I want to get information or edit dll, Exescope will powerfull.<br>
+however I create my dll using VB6 with Resource, and add all my images to it, and compile it as dll.<br>
+I name the dll and the menu toolbar the same name, put it in the same path for autocad and works great <br>
+this will avoid smily faces, and not worried about collect all images .<br>
+<br>
+I was just hoping that this could be referenced in case you may add it to your project, <br>
+http://www.softpedia.com/get/Programming/File-Editors/eXeScope.shtml<br>
+<br>
+best regards</div>
+</article>
+<article class="post" id="msg2335">
+  <div class="post-head">
+    <span class="post-author">Mak</span>
+    <span class="post-date muted">2009-01-01 05:05 UTC</span>
+  </div>
+  <div class="post-body">Barry<br>
+I noticed one thing in version 5, under the properties /picture  and pictures, however  which was in version 4 was gone?<br>
+is this is intential? <br>
+<br>
+best regards</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

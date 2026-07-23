@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Building a single select List Box · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2216</p>
+    <h1>Building a single select List Box</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2014-12-09 22:53 UTC ·
+      6 replies · SMF topic #2216</p>
+<article class="post" id="msg11141">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2014-12-09 22:53 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Has anyone built a listbox ( similar to upper piccy shown )<br>
+<br>
+I tried using a listView and can't get reduced height rows to dosplay ; and can't remove the first empty column.<br>
+<br>
+I want something that is called like this<br>
+<br>
+(call_listbox (strcat "Re-path : " xrefName)<br>
+             "Select a File name"<br>
+             (list candidateFile candidateFile candidateFile)<br>
+)<br>
+<br>
+My feeble attempt is fugly.<br>
+<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2088/ListBox 2014-12-10_08-41-36.png">ListBox 2014-12-10_08-41-36.png</a> <span class="muted">(59176 bytes)</span></li><li><a href="../attachments/2089/ListBox - FAIL 2014-12-10_08-41-36.png">ListBox - FAIL 2014-12-10_08-41-36.png</a> <span class="muted">(50602 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11142">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2014-12-09 22:59 UTC</span>
+  </div>
+  <div class="post-body">Perhaps I should read this http://www.opendcl.com/forum/index.php?topic=2213.0;topicseen<br>
+<br>
+.. or one of the 100 odd posts that refer to<strong><em> ListView</em></strong><br>
+<br>
+I'll be back tomorrow.</div>
+</article>
+<article class="post" id="msg11143">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-12-09 23:03 UTC</span>
+  </div>
+  <div class="post-body">Is there some reason why you can't use the List Box control?</div>
+</article>
+<article class="post" id="msg11144">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2014-12-09 23:07 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2216.msg11143#msg11143 date=1418166209 wrote:</cite><br>
+Is there some reason why you can't use the List Box control?<br>
+</blockquote><br>
+Probably 'cause I couldn't see the trees for the forest ...<br>
+It's been a while since I built new ODCL dialogs :-)</div>
+</article>
+<article class="post" id="msg11145">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2014-12-09 23:13 UTC</span>
+  </div>
+  <div class="post-body">DUH !!<br>
+<br>
+I've used the ListBox umpteen times before.<br>
+<br>
+I'm Blind as well as silly.<br>
+<br>
+Thanks Owen<br>
+</div>
+</article>
+<article class="post" id="msg11146">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-12-09 23:14 UTC</span>
+  </div>
+  <div class="post-body">I'm glad you're coming out of retirement. Metaphorically, that is.</div>
+</article>
+<article class="post" id="msg11147">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2014-12-10 06:16 UTC</span>
+  </div>
+  <div class="post-body">after my nap ...<br>
+Thanks for the nudge in the correct direction Owen.<br>
+<br>
+<br>
+;; (vlisp-compile 'st (findfile "N:\\kdub-listboxSource.lsp") "N:\\kdub-listbox.fas")<br>
+<br>
+(defun c:doit (/ ui-captionString ui-promptString ui-listContent UIReturn)<br>
+  ;; Proof of concept code for listbox Single Selection<br>
+  (setq ui-captionString nil<br>
+        ui-promptString nil<br>
+        ui-listContent<br>
+         (list<br>
+           "N:\\Project_XYZ\\10_Drawings\\02_Xref\\03_SubFolder\\XR_AR_N+00.dwg"<br>
+           "Another Option ... pick me pick me"<br>
+           "Yet another option"<br>
+         )<br>
+        ui-SelectedList nil<br>
+  )<br>
+<br>
+  ;;<br>
+  (if (not (member "kdub-ListBox" (dcl_getprojects)))<br>
+    (dcl_project_load "kdub-ListBox")<br>
+  )<br>
+  (if dcl_hideerrormsgbox<br>
+    (setq UIReturn (dcl-form-show kdub-ListBox/Form))<br>
+    (alert "The OpenDCL arx module did not load!")<br>
+  )<br>
+  (cond<br>
+    ((and (= UIReturn 100)<br>
+          ui-SelectedList<br>
+     )<br>
+     ;; display for multi Selection Style ( for later )<br>
+     (dcl-messagebox (apply<br>
+                       'strcat<br>
+                       (mapcar<br>
+                         '(lambda (x)<br>
+                            (strcat "\n" x)<br>
+                          )<br>
+                         ui-SelectedList<br>
+                       )<br>
+                     )<br>
+                     "Result of ui-SelectedList"<br>
+     )<br>
+    )<br>
+    (t<br>
+     ;;for clean up later<br>
+     (princ)<br>
+    )<br>
+  )<br>
+  (setq ui-SelectedList nil)<br>
+  (princ)<br>
+)<br>
+;;----------------------------------------<br>
+<br>
+<br>
+(defun c:kdub-ListBox/Form#OnInitialize (/)<br>
+  (if ui-captionString<br>
+    (dcl-control-setcaption<br>
+      kdub-ListBox/Form/xrefName<br>
+      ui-captionString<br>
+    )<br>
+  )<br>
+  (if ui-promptString<br>
+    (dcl-control-setcaption kdub-ListBox/Form/prompt ui-promptstring)<br>
+  )<br>
+  (dcl-listbox-clear kdub-ListBox/Form/ListBox)<br>
+  (dcl-listbox-addlist<br>
+    kdub-ListBox/Form/ListBox<br>
+    ui-listContent<br>
+  )<br>
+)<br>
+;;----------------------------------------<br>
+(defun c:kdub-ListBox/Form/OK#OnClicked (/)<br>
+  (setq ui-SelectedList (dcl-listbox-getselecteditems<br>
+                          kdub-ListBox/Form/ListBox<br>
+                        )<br>
+  )<br>
+  (dcl-form-close kdub-ListBox/Form 100)<br>
+)<br>
+;;----------------------------------------<br>
+(defun c:kdub-ListBox/Form/Cancel#OnClicked (/)<br>
+  ;; do nothing here at the moment<br>
+  (dcl-form-close kdub-ListBox/Form 99)<br>
+  (princ)<br>
+)<br>
+<br>
+;;;--------------------------------------------------------------------------------<br>
+(if (not (vl-bb-ref 'kdubListBoxUI))<br>
+  (vl-bb-set<br>
+    'kdubListBoxUI<br>
+    (dcl_project_import<br>
+      '("Refer the attached file for dialog code .. "<br>
+         "The message exceeds the maximum allowed length (20000 characters)"<br>
+       )<br>
+    )<br>
+  )<br>
+)<br>
+(princ<br>
+  "\n kdub-ListBox Build 2014.12.10-v0.1\nTo run App enter: DOIT at the command line\n"<br>
+)<br>
+<br>
+(princ)<br>
+<br>
+<br>
+<br>
+BTW:<br>
+It would be nice if the <strong>dcl-MessageBox</strong> was re-sizable.<br>
+<br>
+Added : and even nicer if it could AutoSize for long display strings     ;) ;D<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2094/kdub-ListBox.odcl">kdub-ListBox.odcl</a> <span class="muted">(21399 bytes)</span></li><li><a href="../attachments/2092/ListBox works for me 2014-12-10_16-07-31.png">ListBox works for me 2014-12-10_16-07-31.png</a> <span class="muted">(50253 bytes)</span></li><li><a href="../attachments/2093/kdub-ListBoxSource.lsp">kdub-ListBoxSource.lsp</a> <span class="muted">(35447 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

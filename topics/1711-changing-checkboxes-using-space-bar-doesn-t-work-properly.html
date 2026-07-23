@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Changing checkboxes using space bar doesn't work properly? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1711</p>
+    <h1>Changing checkboxes using space bar doesn't work properly?</h1>
+    <p class="meta">Started by roy_043 ·
+      2011-10-24 10:16 UTC ·
+      3 replies · SMF topic #1711</p>
+<article class="post" id="msg8432">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-10-24 10:16 UTC</span>
+  </div>
+  <div class="post-body">Bricscad 12.1.2<br>
+OpenDCL  7.0.0.1 (also in 6.0.2.5)<br>
+Win XP<br>
+<br>
+In a 'normal' Windows dialog you can change the value of a checkbox by using the space bar. In a OpenDCL dialog this doesn't seem to work properly:<br>
+1. Use the TAB key to set the focus on a checkbox.<br>
+2. Press the SPACE bar: the value changes and background turns grey (?).<br>
+3. Use TAB again: the checkbox reverts to its original value.<br>
+<br>
+This does work:<br>
+1. See above.<br>
+2. See above.<br>
+3. Press the SHIFT key.<br>
+4. Use TAB again.<br>
+<br>
+Is this a bug or am I missing some sort of setting?</div>
+</article>
+<article class="post" id="msg8437">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-10-24 21:37 UTC</span>
+  </div>
+  <div class="post-body">Can you upload a simple example?</div>
+</article>
+<article class="post" id="msg8439">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-10-25 10:02 UTC</span>
+  </div>
+  <div class="post-body">See attached zip file.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1682/TestCheckBox.zip">TestCheckBox.zip</a> <span class="muted">(904 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8442">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-10-25 17:18 UTC</span>
+  </div>
+  <div class="post-body">Thanks, that is a bug. It looks like the problem is due to some leftover code that was designed to handle the space bar because the control was ignoring it; but as best I can tell, the control is now handling the space bar just fine on its own. I've removed the leftover code for the next build.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

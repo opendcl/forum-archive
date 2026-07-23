@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problems with dcl-control-getproperty from forms · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2466</p>
+    <h1>Problems with dcl-control-getproperty from forms</h1>
+    <p class="meta">Started by Peter2 ·
+      2017-01-04 17:32 UTC ·
+      2 replies · SMF topic #2466</p>
+<article class="post" id="msg12319">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2017-01-04 17:32 UTC</span>
+  </div>
+  <div class="post-body">I have a lisp which calls a project, loops through all forms in the project and displays them. It works fine, but it crashes when it finds the tabs of a tab-strip. Any ideas to avoid it?<br>
+<br>
+<br>
+(defun c:odcl_printscr ()<br>
+    (if projektdatei<br>
+        (setq projektdatei (getfiled "ODCL-Datei wählen" (strcat (vl-filename-directory projektdatei) "\\") "odcl" 0))<br>
+        (setq projektdatei (getfiled "ODCL-Datei wählen" "c:\\" "odcl" 0))<br>
+    )<br>
+    (setq projekt (dcl-project-load projektdatei T (vl-filename-base projektdatei)))<br>
+<br>
+    ; Titelzeilen<br>
+    (setq inhalte nil inhalte (dcl-Project-GetForms projekt))<br>
+    (if (and inhalte (dos_dirp outputpfad2))<br>
+        (progn<br>
+            (foreach form inhalte<br>
+                (if (dcl-Control-GetProperty form "(Name)") ;; --&gt;&gt; this line will crashes when the form is a tab-strip<br>
+                    (progn<br>
+                        (setq name (dcl-Control-GetProperty form "(Name)"))<br>
+                        (dcl-form-show (eval (read (strcat projekt "/" name))))<br>
+                        (princ (strcat name ))<br>
+                    )<br>
+                )<br>
+            )<br>
+        )<br>
+    )<br>
+    (princ)<br>
+)<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg12320">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2017-01-04 21:18 UTC</span>
+  </div>
+  <div class="post-body">Maybe the <a href="http://www.opendcl.com/forum/index.php?topic=2084.msg10309#msg10309" rel="nofollow noopener">{2}</a> will help?</div>
+</article>
+<article class="post" id="msg12326">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2017-01-09 16:31 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen, I will take a look.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

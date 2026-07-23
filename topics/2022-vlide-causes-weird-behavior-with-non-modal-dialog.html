@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VLIDE causes weird behavior with non-modal dialog · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2022</p>
+    <h1>VLIDE causes weird behavior with non-modal dialog</h1>
+    <p class="meta">Started by npcdarkeldar666 ·
+      2013-08-29 14:18 UTC ·
+      3 replies · SMF topic #2022</p>
+<article class="post" id="msg9970">
+  <div class="post-head">
+    <span class="post-author">npcdarkeldar666</span>
+    <span class="post-date muted">2013-08-29 14:18 UTC</span>
+  </div>
+  <div class="post-body">Hi <br>
+<br>
+I am working on a little tool, that causes some weird reactions in AutoCAD during development (While VLIDE is opened).<br>
+<br>
+The tool itself is a screenmenu replacement (I wrote about it last year) and is working fine on AutoCAD and BricsCAD.<br>
+<br>
+If only AutoCAD is active everything is fine. The MouseMovedOff event is triggered correctly.<br>
+<br>
+When VLIDE is active I cannot activate AutoCAD without the Button from VLIDE. Usually I need to press it 3-5 times to return to AutoCAD<br>
+<br>
+What I can see is, that, if I move the mouse from AutoCAD to VLIDE over my form, the MouseMove events are fired correctly (they cause highlighting of lines of the screenmenu) but the MouseMovedOff event is not executed (it removes all highlighting) which causes the last highlighted line to stay that way.<br>
+<br>
+If VLIDE is closed and another application is activated all the events are fired fine and there are no problems.<br>
+<br>
+<br>
+Has anybody got an idea how to work around this?<br>
+<br>
+I tried hooking a command-reactor to "_VLIDE"  but it is not called if I switch to VLIDE by just switching windows (I run AutoCAD and VLIDE on different monitors) because AutoCAD doen't call the command-reactor.<br>
+<br>
+I don't care if a sollution is clean or dirty since the problem only occurs during development and not during productive work, so I would be fine if someone had an idea how to react to "AuoCAD lost focus" and "AutoCAD got focus" to close the form and open it again on entering AutoCAD.<br>
+<br>
+I hope someone has an idea how to solve this problem.<br>
+<br>
+Kind regards<br>
+<br>
+Ingo P</div>
+</article>
+<article class="post" id="msg9973">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-08-29 15:14 UTC</span>
+  </div>
+  <div class="post-body">Can you provide a very simple demo project that logs the mouse events to a listbox, along with instructions for how to reproduce the problem?</div>
+</article>
+<article class="post" id="msg9974">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-08-29 17:04 UTC</span>
+  </div>
+  <div class="post-body">Hi, I cannot give you any solution for this but I can tell you that this behaviour  is well-known and not caused by OpenDCL. I can reproduce this also when working with non-modal forms from c#. I also have this behaviour after several times of debugging and aborting debug in cause of any error.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9975">
+  <div class="post-head">
+    <span class="post-author">npcdarkeldar666</span>
+    <span class="post-date muted">2013-08-30 09:13 UTC</span>
+  </div>
+  <div class="post-body">@owenwengerd<br>
+I've build a small test (see attachment)<br>
+Just run "ODCL_VLIDE_ERROR"<br>
+The box catches "MouseIn" and "MouseOut" while the list catches "MouseMoved"<br>
+In and Out immediately print a message to the list while Moved prints one message per second maximum.<br>
+While AutoCAD is active everything works fine.<br>
+While the VLIDE is active (code is editable) only the List.MouseMoved event is triggered, while the dialog's In and Out events are ignored.<br>
+<br>
+@Fred Tomke<br>
+What you say makes me sad because it indicates that the problem might not be a bug in the OpenDCL-Runtime but in AutoCADs implementation of the VLIDE, which would require Autodesk to fix it and we all know how motivated they are in supporting third party developers...<br>
+<br>
+[UPDATE 2013-08-30 12:32]<br>
+We found a workaround for our case after realizing that VLIDE is not a command but the Lisp-function (C:VLIDE)<br>
+so we added this code to our project:<br>
+<br>
+<code><br>
+(defun p:vlr-lispwillstart (a b)<br>
+  (if (wcmatch (car b) "(C:VLIDE)")<br>
+    (p:dcl_project_unload "screenmenu"))<br>
+)<br>
+(vlr-lisp-reactor 'nil (list (cons :vlr-lispwillstart 'p:vlr-lispwillstart)))<br>
+</code><br>
+(p:dcl_project_unload p) is a function we wrote to manage our projects better. it takes wildcards, ignores string cases and closes all opened dialogs of that project. But all this just on the projects that have been loaded by our tools. <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1913/VLIDE_odcl.zip">VLIDE_odcl.zip</a> <span class="muted">(1671 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

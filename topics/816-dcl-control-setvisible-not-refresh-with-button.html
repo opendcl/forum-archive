@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_Control_SetVisible not refresh with button . · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 816</p>
+    <h1>dcl_Control_SetVisible not refresh with button .</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-06-16 10:45 UTC ·
+      6 replies · SMF topic #816</p>
+<article class="post" id="msg4016">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-06-16 10:45 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Hello,<br>
+<br>
+I encountered a display problem with the command: "dcl_Control_SetVisible" with the control buttons.<br>
+<br>
+Indeed it does not update displayed instantly! I must change the window to return to autocad to become current.<br>
+<br>
+I tried the command: "dcl_Control_SetKeepFocus".<br>
+<br>
+I did the same tests with the command: "dcl_Control_SetEnabled" that it works wonderfully.<br>
+<br>
+Maybe do I have omitted a parameter?<br>
+<br>
+I have a tree control in my box.<br>
+<br>
+Best regards</div>
+</article>
+<article class="post" id="msg4022">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-16 15:43 UTC</span>
+  </div>
+  <div class="post-body">Hi stephan_35,<br>
+<br>
+have you also tried (dcl_Control_Redraw Test_Form1_Bildschaltfläche1)?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4041">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-06-16 19:13 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=816.msg4022#msg4022 date=1245167022 wrote:</cite><br>
+Hi stephan_35,<br>
+<br>
+have you also tried (dcl_Control_Redraw Test_Form1_Bildschaltfläche1)?<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+Thanks for reply fred  ;)<br>
+<br>
+Previously using version 4 everything works perfectly!<br>
+<br>
+This passage in version 5, which has shown throughout this series of problems ...<br>
+<br>
+'dcl_Control_Redraw' does not work, and I have reproduced this bug on two different boxes, until I use "enabled", maybe this will be corrected in the next version.<br>
+<br>
+Best regards<br>
+</div>
+</article>
+<article class="post" id="msg4043">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-06-16 19:41 UTC</span>
+  </div>
+  <div class="post-body">Good evening,<br>
+<br>
+In fact, to be more precise, the syntax does not work:<br>
+<br>
+(dcl_Control_SetVisible (@dcl_ '( @$Dcl:P @$Dcl:D "button")) nil)<br>
+<br>
+<br>
+It works perfectly:<br>
+<br>
+(dcl_Control_SetVisible (@dcl_ '( @$Dcl:P @$Dcl:D "button")) T)<br>
+<br>
+Very strange!<br>
+<br>
+<br>
+Best regards</div>
+</article>
+<article class="post" id="msg4048">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-17 03:12 UTC</span>
+  </div>
+  <div class="post-body">I did a quick test with a text box on a modeless form, and I could not reproduce the problem. Can you attache a simple project that demonstrates the problem?</div>
+</article>
+<article class="post" id="msg4053">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-06-17 12:56 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=816.msg4048#msg4048 date=1245208378 wrote:</cite><br>
+I did a quick test with a text box on a modeless form, and I could not reproduce the problem. Can you attache a simple project that demonstrates the problem?<br>
+</blockquote><br>
+<br>
+Reproduce only with "Control bar" !<br>
+<br>
+I'll try to prepare an example to show you !<br>
+<br>
+Could you have a see about my suggest (isfloating) thanks.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/808/test.lsp">test.lsp</a> <span class="muted">(321 bytes)</span></li><li><a href="../attachments/809/Test.odcl">Test.odcl</a> <span class="muted">(3480 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4054">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-17 16:04 UTC</span>
+  </div>
+  <div class="post-body">This repainting issue is now fixed for Beta 7. I did see your other post, but I haven't had time to look into your suggestion.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

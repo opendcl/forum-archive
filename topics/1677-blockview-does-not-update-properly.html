@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BlockView does not update properly · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1677</p>
+    <h1>BlockView does not update properly</h1>
+    <p class="meta">Started by fred_tomke ·
+      2011-09-14 10:25 UTC ·
+      3 replies · SMF topic #1677</p>
+<article class="post" id="msg8312">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-09-14 10:25 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I have a blockview with a block as a preview in a modal form in 6.0.2.5. When I change a line in the blockdefinition at runtime of the form I call dcl_blockview_refresh after that. On Civil 2010 x86 the cahnges will be displayed correctly.<br>
+<br>
+But when I do completely the same on Map 2011 x64 or 2012 x64 the display of the lines won't be updated in the blockview. When I insert the changed blockdefinition in the drawing my changes are visible, that means my code works correctly. When I replace the line (which has to be changed) with a new line, the new line will be visible and the old one is removed from the blockview after blockview_refresh.<br>
+<br>
+That means: on x64 systems dcl_blockview_refresh does not show the changes of existing objects but shows new objects and leaves deleted objects. On x86 systems dcl_blockview_refresh works correctly and shows also the changings of existing objects.<br>
+<br>
+Can anybody reproduce that?<br>
+<br>
+Regards,<br>
+Fred</div>
+</article>
+<article class="post" id="msg8322">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-09-16 21:17 UTC</span>
+  </div>
+  <div class="post-body">I tested both AutoCAD 2010 64-bit and AutoCAD 2011 64-bit, and in both cases calling RefreshBlock updated the displayed block preview after changes were made.</div>
+</article>
+<article class="post" id="msg8479">
+  <div class="post-head">
+    <span class="post-author">prashant.gholap</span>
+    <span class="post-date muted">2011-11-06 14:11 UTC</span>
+  </div>
+  <div class="post-body">I am also facing same issue, after redefining block. Its updated view is not getting updated on Blockview. Tried all combinations &amp; tested in AutoCAD 2008 &amp; AutoCAD 2010 versions.<br>
+<br>
+(DCL_BLOCKVIEW_CLEAR BeamReinforcement_frmBeamRein_PrvSpan)<br>
+(princ)<br>
+(DCL_CONTROL_SETBLOCKNAME BeamReinforcement_frmBeamRein_PrvSpan<br>
+                                     blockname<br>
+ )<br>
+(DCL_BLOCKVIEW_REFRESHBLOCK BeamReinforcement_frmBeamRein_PrvSpan)<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1687/blockview.png">blockview.png</a> <span class="muted">(41596 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8480">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-11-06 19:34 UTC</span>
+  </div>
+  <div class="post-body">Would it be possible to upload a simple set of sample files that I can use to reproduce the problem?</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

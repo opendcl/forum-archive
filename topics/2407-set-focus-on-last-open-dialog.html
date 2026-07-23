@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Set focus on last open dialog · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2407</p>
+    <h1>Set focus on last open dialog</h1>
+    <p class="meta">Started by cadplayer ·
+      2016-08-10 17:28 UTC ·
+      7 replies · SMF topic #2407</p>
+<article class="post" id="msg12016">
+  <div class="post-head">
+    <span class="post-author">cadplayer</span>
+    <span class="post-date muted">2016-08-10 17:28 UTC</span>
+  </div>
+  <div class="post-body">Hello!<br>
+Have somebody an explanation how I can get or stand last open (viewed) dialog in front not behind first open dialog ("Layout tab manager...").<br>
+Se picture!<br>
+-&gt; dialog "Find and Replace" should be in front as long as not pressed button Done<br>
+<br>
+Thanx for help! /D<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2214/dcl-Control-SetFocus.png">dcl-Control-SetFocus.png</a> <span class="muted">(46977 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12017">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-08-10 17:54 UTC</span>
+  </div>
+  <div class="post-body">Are the dialogs modal?</div>
+</article>
+<article class="post" id="msg12019">
+  <div class="post-head">
+    <span class="post-author">cadplayer</span>
+    <span class="post-date muted">2016-08-10 18:41 UTC</span>
+  </div>
+  <div class="post-body">no unmodal</div>
+</article>
+<article class="post" id="msg12020">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-08-11 08:18 UTC</span>
+  </div>
+  <div class="post-body">To achieve the behavior you want the dialogs must be modal.</div>
+</article>
+<article class="post" id="msg12021">
+  <div class="post-head">
+    <span class="post-author">cadplayer</span>
+    <span class="post-date muted">2016-08-11 08:40 UTC</span>
+  </div>
+  <div class="post-body">Hi Roy!<br>
+I see not change after your reason, sending dialog as attachment.<br>
+<br>
+unmodal Dialog_Option is main-dialog wherefrom can open it modal-dialogs Dialog_Rename and Dialog_RenSimple<br>
+<br>
+Thank you<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2216/Form1.odcl">Form1.odcl</a> <span class="muted">(3028 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12022">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-08-11 12:56 UTC</span>
+  </div>
+  <div class="post-body">A test shows that even calling a modal dialog from a modeless one, as in your example, works as expected. Maybe you were changing the .odcl file during a CAD session and forgot to supply the ForceReload argument of the dcl-Project-Load function?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2217/ModalCalledFromModeless.zip">ModalCalledFromModeless.zip</a> <span class="muted">(1460 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12023">
+  <div class="post-head">
+    <span class="post-author">cadplayer</span>
+    <span class="post-date muted">2016-08-11 18:45 UTC</span>
+  </div>
+  <div class="post-body">Thank you so much - yes you´re right I get it. The next problem I get: suddenly it don´t work some subroutines when start Rename_Dialog and push all 3 button (se movy <a href="https://dl.dropboxusercontent.com/u/174474939/PICTURE/ModalDialogButtonNotWorking.mp4" rel="nofollow noopener">{2}</a> <br>
+<br>
+<br>
+(defun c:xx ()<br>
+<br>
+  (setq cmdecho (getvar "CMDECHO"))<br>
+  (setvar "CMDECHO" 0)<br>
+  (command "_OPENDCL")<br>
+  (setvar "CMDECHO" cmdecho)<br>
+<br>
+  (if (= (atoi (substr (getvar "acadver") 1 2)) 20)<br>
+    (setvar "EPDFSHX" 0)) ; Acad2016 take off textframes in pdf-file<br>
+<br>
+  (cd:Subroutines)<br>
+  (cd:OpenDCLfuntions)<br>
+<br>
+  (setq acdoc (vla-get-activedocument (vlax-get-acad-object))<br>
+        aclay (vla-get-layouts acdoc)<br>
+  )<br>
+  (setq dclst  (mapcar 'vla-get-Name (cd:GetLayouts aclay))<br>
+        resLst dclst<br>
+  )<br>
+<br>
+  (setq result nil error nil)<br>
+  (setq form (dcl-project-load "H:\\Dropbox\\2014\\AF-Infrastructure-Tools\\ViewportManager\\Form1.odcl"))<br>
+  (setq returnResult (dcl-Form-Show Form1/Dialog_Option))<br>
+<br>
+  )<br>
+<br>
+<br>
+(cd:Subroutines) there are all my subroutines which loaded by start command with xx<br>
+The program is doing so here:<br>
+Type command xx <br>
+1) Dialog "Layout Tab Manager 1.0" showing <br>
+2) Push "Find" button -&gt;Dialog "Find and Replace" starts <br>
+3) 3 Button "Find" - "Replace" - "Replace all"  there pushevents are working, but subroutines (cd:Subroutines) are not found definition <br>
+<br>
+Do I run command xx second one it suddenly works, why<br>
+Do you have an answer to this behaviour ?!<br>
+</div>
+</article>
+<article class="post" id="msg12024">
+  <div class="post-head">
+    <span class="post-author">cadplayer</span>
+    <span class="post-date muted">2016-08-11 18:53 UTC</span>
+  </div>
+  <div class="post-body">Sorry my misstake, I found it - it´s working now</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

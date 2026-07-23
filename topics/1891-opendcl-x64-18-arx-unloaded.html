@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenDCL.x64.18.arx unloaded. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1891</p>
+    <h1>OpenDCL.x64.18.arx unloaded.</h1>
+    <p class="meta">Started by velasquez ·
+      2012-09-11 13:21 UTC ·
+      12 replies · SMF topic #1891</p>
+<article class="post" id="msg9296">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2012-09-11 13:21 UTC</span>
+  </div>
+  <div class="post-body">The problem happened during a test below with "opendcl.x64.18.arx" version 7.0.0.7 with AutoCAD 2010 and 2011.<br>
+If for some reason the arx file is unloaded.<br>
+The command OpenDCL emits an error message.<br>
+And so will work on another section of the AutoCAD.<br>
+<br>
+I reported the problem because it can happen at any time.<br>
+<br>
+Regards, velasquez<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1820/reload.png">reload.png</a> <span class="muted">(49074 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9297">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-09-11 21:01 UTC</span>
+  </div>
+  <div class="post-body">I was not able to reproduce the problem in AutoCAD 2010 on Windows 7 64 bit. Can you provide detailed steps to reproduce it?</div>
+</article>
+<article class="post" id="msg9298">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2012-09-12 21:36 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1891.msg9297#msg9297 date=1347397316 wrote:</cite><br>
+I was not able to reproduce the problem in AutoCAD 2010 on Windows 7 64 bit. Can you provide detailed steps to reproduce it?<br>
+</blockquote><br>
+<br>
+Hi Owen<br>
+In my test I used:<br>
+1 - (arxunload "OpenDCL.x64.18.arx") version "7.0.0.5"<br>
+<br>
+2 - (arxload "OpenDCL.x64.18.arx") version "7.0.0.7"<br>
+<br>
+Thanks<br>
+velasquez</div>
+</article>
+<article class="post" id="msg9299">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-09-13 03:57 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I don't understand. Here it looks like you are implying that you have manually loaded a different version, then manually unloaded that version and manually loaded the latest version. In your first post you said that the OPENDCL command fails.</div>
+</article>
+<article class="post" id="msg9304">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2012-09-13 17:28 UTC</span>
+  </div>
+  <div class="post-body">This was the best way I've found to show the error.<br>
+I always check the version of OpenDCL on the computer that will run my application.<br>
+And I load OpenDCL manually.<br>
+This worked well until OpenDCL 6.0.2.5.<br>
+<br>
+<br>
+(cond<br>
+  ((null dcl_GetVersionEx)<br>
+   (arxload (strcat JoyArxPath JoyArxName) 'nil)<br>
+  )<br>
+;;;<br>
+  ((and dcl_GetVersionEx (/= (dcl_GetVersionEx) "7.0.0.7"))<br>
+   (if (arxunload JoyArxName 'nil)<br>
+     (arxload (strcat JoyArxPath JoyArxName) 'nil)<br>
+   ) ;_ fim de if<br>
+  )<br>
+  (T)<br>
+) ;_ fim de cond<br>
+</div>
+</article>
+<article class="post" id="msg9340">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2012-09-29 12:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=1891.msg9304#msg9304 date=1347557323 wrote:</cite><br>
+This was the best way I've found to show the error.<br>
+I always check the version of OpenDCL on the computer that will run my application.<br>
+And I load OpenDCL manually.<br>
+This worked well until OpenDCL 6.0.2.5.<br>
+<br>
+<br>
+(cond<br>
+  ((null dcl_GetVersionEx)<br>
+   (arxload (strcat JoyArxPath JoyArxName) 'nil)<br>
+  )<br>
+;;;<br>
+  ((and dcl_GetVersionEx (/= (dcl_GetVersionEx) "7.0.0.7"))<br>
+   (if (arxunload JoyArxName 'nil)<br>
+     (arxload (strcat JoyArxPath JoyArxName) 'nil)<br>
+   ) ;_ fim de if<br>
+  )<br>
+  (T)<br>
+) ;_ fim de cond<br>
+<br>
+</blockquote><br>
+<br>
+Hi<br>
+Some people worked with similar functions.<br>
+Nobody noticed the same problem?<br>
+<br>
+Thanks, velasquez<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg9347">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-10-01 02:25 UTC</span>
+  </div>
+  <div class="post-body">I was not able to reproduce the problem with some simple testing. What you are doing is very dangerous, because it can break another application. If others are doing this, it is a recipe for disaster.</div>
+</article>
+<article class="post" id="msg9350">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2012-10-01 13:12 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1891.msg9347#msg9347 date=1349058325 wrote:</cite><br>
+I was not able to reproduce the problem with some simple testing. What you are doing is very dangerous, because it can break another application. If others are doing this, it is a recipe for disaster.<br>
+</blockquote><br>
+<br>
+Please I have reason to work this way.<br>
+I've had problems with different versions of OpenDCL on one computer.<br>
+I can not change what is already installed.<br>
+All my apalicativo does is ensure that the correct version is being load.<br>
+I make no alreração in that already installed.<br>
+In another section of the AutoCAD nothing will change.<br>
+<br>
+The problem is that it always worked well.</div>
+</article>
+<article class="post" id="msg9351">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-10-01 17:31 UTC</span>
+  </div>
+  <div class="post-body">If you unload a runtime .arx module that is being used by another application, then you are potentially breaking the other application. Better would be to alert the user and exit your application without causing further problems. In any case, I hope you can find a way for me to reproduce the problem here so I can fix it.</div>
+</article>
+<article class="post" id="msg9352">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2012-10-01 21:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1891.msg9351#msg9351 date=1349112700 wrote:</cite><br>
+If you unload a runtime .arx module that is being used by another application, then you are potentially breaking the other application. Better would be to alert the user and exit your application without causing further problems. In any case, I hope you can find a way for me to reproduce the problem here so I can fix it.<br>
+</blockquote><br>
+<br>
+My test application works with OpenDCL "<strong>7.0.0.6</strong>"<br>
+Please download and install on your computer to test.<br>
+<br>
+AutoCAD 32 bit<br>
+http://www.easycad.com.br/projeto-saint-gobain/DuctilCAD_2D.1308.130912.0.x32.exe<br>
+AutoCAD 64 bit<br>
+http://www.easycad.com.br/projeto-saint-gobain/DuctilCAD_2D.1308.130912.0.x64.exe<br>
+<br>
+1 - After installation open AutoCAD and has a version loaded OpenDCL different.<br>
+2 – Type PAM on the command line.<br>
+<br>
+Thank you for your attention Owen<br>
+</div>
+</article>
+<article class="post" id="msg9353">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-10-01 21:56 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I cannot reproduce the problem.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1824/pam.png">pam.png</a> <span class="muted">(110282 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9354">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2012-10-02 14:29 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1891.msg9353#msg9353 date=1349128581 wrote:</cite><br>
+Sorry, I cannot reproduce the problem.<br>
+</blockquote><br>
+<br>
+Thanks Owen,<br>
+I did the tests again on Windows 7 64 bit.<br>
+<br>
+The problem did not appear with AutoCAD 2013.<br>
+But look what happens when I test with AutoCAD 2010 and 2011.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1825/test.gif">test.gif</a> <span class="muted">(198842 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9355">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-10-02 15:33 UTC</span>
+  </div>
+  <div class="post-body">I think you need to recreate the problem with the simplest possible test file, then it will be easier to guess what might be going on.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

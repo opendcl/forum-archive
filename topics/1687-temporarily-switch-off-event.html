@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Temporarily switch off event? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1687</p>
+    <h1>Temporarily switch off event?</h1>
+    <p class="meta">Started by roy_043 ·
+      2011-10-04 10:18 UTC ·
+      2 replies · SMF topic #1687</p>
+<article class="post" id="msg8350">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-10-04 10:18 UTC</span>
+  </div>
+  <div class="post-body">Is there a way to temporarily switch off an event apart from using a nested dummy function (see code)?<br>
+<br>
+<br>
+;;; KG_ODCL_Tree_FolderTree_Menu_PutCurrent expands the tree and selects an item in the tree<br>
+(defun KG_ODCL_Tree_FolderTree_Menu_PutCurrent<br>
+  (<br>
+    ; code removed<br>
+  /<br>
+    ; code removed<br>
+    KG_ODCL_Tree_FolderTree_Menu_OnItemExpanded ; dummy nested function to replace global fuction<br>
+    KG_ODCL_Tree_FolderTree_Menu_OnSelChanged   ; dummy nested function to replace global fuction<br>
+  )<br>
+  (defun KG_ODCL_Tree_FolderTree_Menu_OnItemExpanded (inputList label key) nil)<br>
+  (defun KG_ODCL_Tree_FolderTree_Menu_OnSelChanged (inputList label key) nil)<br>
+  ; code removed<br>
+)<br>
+<br>
+(defun c:FolderTreeTest_Main_Tree_OnSelChanged (label key / tmp)<br>
+  ;; KG_ODCL_Tree_FolderTree_Menu_OnSelChanged is sometimes replaced by a nested dummy function that returns nil!!<br>
+  (if (setq tmp (KG_ODCL_Tree_FolderTree_Menu_OnSelChanged FolderTreeMenuData key))<br>
+    (setq FolderTreeMenuData tmp)<br>
+  )<br>
+  'T ; returning an inputList will cause a crash in BC 11.4.6<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg8355">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-10-05 11:25 UTC</span>
+  </div>
+  <div class="post-body">Hi, there are two ways to do:<br>
+<br>
+1: use a variable to suppress the execution of an event.<br>
+Example:<br>
+(defun c:myproj_myform_OnInitialize()<br>
+  [...]<br>
+  (setq doInit nil)<br>
+);  c:myproj_myform_OnInitialize<br>
+<br>
+(defun c:myproj_myform_OnSize(intNewWidth intNewHeight)<br>
+  (if (not doInit)<br>
+    [...]<br>
+  ); if<br>
+);  c:myproj_myform_OnSize<br>
+<br>
+(setq doInit T)<br>
+(dcl_form_show myproj_myform)<br>
+<br>
+2. Attach an event name to the event property at runtime.<br>
+Example:<br>
+(dcl_control_setproperty myproj_myform_edtName "EditChanged" "") ;; turn off the event<br>
+(dcl_control_setproperty myproj_myform_edtName "EditChanged" "c:myproj_myform_edtName_OnEditChanged") ;; turn on the event<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8363">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-10-06 16:00 UTC</span>
+  </div>
+  <div class="post-body">Your solution #2 is what I was looking for. Many thanks for your help!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

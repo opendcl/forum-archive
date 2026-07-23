@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ausnahmefehler ListBox (GERMAN) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 393</p>
+    <h1>Ausnahmefehler ListBox (GERMAN)</h1>
+    <p class="meta">Started by WolfgangGutke ·
+      2008-08-05 08:23 UTC ·
+      6 replies · SMF topic #393</p>
+<article class="post" id="msg1771">
+  <div class="post-head">
+    <span class="post-author">WolfgangGutke</span>
+    <span class="post-date muted">2008-08-05 08:23 UTC</span>
+  </div>
+  <div class="post-body">Hallo,<br>
+wenn ich in einer ListBox kein Listenelement gewählt habe, gibt die Methode "dcl_ListBox_GetSelectedItems" einen Ausnahmefehler zurück.<br>
+Schön wäre es, wenn sie ein nil zurückgeben würde!<br>
+Somit könnte man sich viel Tipparbeit ersparen  ;D<br>
+<br>
+Gruß<br>
+Wolfgang</div>
+</article>
+<article class="post" id="msg1774">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-08-05 21:40 UTC</span>
+  </div>
+  <div class="post-body">Hallo Wolfgang,<br>
+<br>
+bin grad in Vaterstetten. Eigentlich sollte die Funktion in diesem Fall -1 zurückgeben. Kannst Du ein kleines Beispiel erstellen, bitte?<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg1777">
+  <div class="post-head">
+    <span class="post-author">WolfgangGutke</span>
+    <span class="post-date muted">2008-08-06 07:54 UTC</span>
+  </div>
+  <div class="post-body">Hallo,<br>
+habe mal ein kleines Beispiel erstellt (<strong>Quick and Dirty  ;D</strong>) und in einer zip verpackt. Die ARX habe ich auch beigelegt.<br>
+<br>
+Gruß<br>
+Wolfgang<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/455/Test.zip">Test.zip</a> <span class="muted">(581378 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1793">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-08-07 06:44 UTC</span>
+  </div>
+  <div class="post-body">Hello Wolfgang,<br>
+<br>
+it's me again.  ;)<br>
+<br>
+Have a look at your source: there is written (dcl_ListBox_<strong>GetSelectedItems</strong> Test_test_Listenfeld1).<br>
+Now have a look at your project file. The listbox has a <strong>single selection style</strong>.<br>
+At least have a look at the intelligent help for the <strong>GetSelectedItems</strong> method. There is written: Diese Methode gibt eine Liste der Namen aller markierten Elemente zurück. Die Methode ist nur bei DWG-Listen mit <strong>Mehrfachauswahl </strong> sinnvoll.  (ENU: This method will return a list of all selected items in the ListBox. This method is useful only for ListBoxes with <strong>multiple selection</strong>.)<br>
+<br>
+So your workaround is not a workaround but the only right way to do for listboxes in single selection style.  ;)<br>
+Or you change the listbox from single to multiple selection style.<br>
+<br>
+Have fun!<br>
+<br>
+Fred :D</div>
+</article>
+<article class="post" id="msg1794">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-08-07 06:50 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+an addition:<br>
+<br>
+You can do this in single selection style: <br>
+<pre class="code"><code>(if (&gt;= (setq intSel (dcl_ListBox_GetCurSel test_Test_Listenfeld1)) 0)<br>
+  (setq strName (dcl_ListBox_GetText test_Test_Listenfeld1 intSel))<br>
+  (setq strName nil)<br>
+); if</code></pre><br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1795">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-08-08 11:06 UTC</span>
+  </div>
+  <div class="post-body">wow - maybe I could actually learn german on this board!  ;D</div>
+</article>
+<article class="post" id="msg1796">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-08-08 11:59 UTC</span>
+  </div>
+  <div class="post-body">Hi, jb, I moved two topics to this board and added some notes to allow others to take part when I'm out of office.<br>
+But of course we can improve your German together like I hope to improve my English here  ;D<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

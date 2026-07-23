@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>anyway to get the dwg list to display just the filenames? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1082</p>
+    <h1>anyway to get the dwg list to display just the filenames?</h1>
+    <p class="meta">Started by andrew ·
+      2009-12-14 15:38 UTC ·
+      29 replies · SMF topic #1082</p>
+<article class="post" id="msg5680">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-14 15:38 UTC</span>
+  </div>
+  <div class="post-body">is it possible to get the dwg list function to display only the file names and not the thumbnails?<br>
+<br>
+reason i ask is because i have a few directories with more then 200 dwgs in them and when i select anyone of those directories via my project, the dialog box closes.<br>
+<br>
+i tried using the listbox to avoid the thumbnail views but it doesnt work the same.<br>
+<br>
+any suggestions or possible work around welcomed</div>
+</article>
+<article class="post" id="msg5681">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-14 15:41 UTC</span>
+  </div>
+  <div class="post-body">Hi, andrew,<br>
+<br>
+<blockquote class="quote"><cite> author=andrew link=topic=1082.msg5680#msg5680 date=1260805088 wrote:</cite><br>
+i tried using the listbox to avoid the thumbnail views but it doesnt work the same.<br>
+</blockquote><br>
+<br>
+Why did it not work?<br>
+I just wanted to recommend you to do it like Windows Explorer: toggle between DWG-List and listbox or listview.<br>
+Why shouldn't it work?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5682">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-14 16:32 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1082.msg5681#msg5681 date=1260805273 wrote:</cite><br>
+Hi, andrew,<br>
+<br>
+[quote author=andrew link=topic=1082.msg5680#msg5680 date=1260805088]<br>
+i tried using the listbox to avoid the thumbnail views but it doesnt work the same.<br>
+</blockquote><br>
+<br>
+Why did it not work?<br>
+I just wanted to recommend you to do it like Windows Explorer: toggle between DWG-List and listbox or listview.<br>
+Why shouldn't it work?<br>
+<br>
+Fred<br>
+<br>
+<br>
+Hi Fred,<br>
+<br>
+I have it working like that, sorta, instead of showing the filename in the dwglist, it shows the filename AND thumbnail.<br>
+after testing it further, it appears that the dialog and acad will crash if the directory your are displaying in the dwg list window has more then 1000 dwgs, even then it gives you a "no responding" warning then it comes out of it and displays the dwgs.<br>
+<br>
+when i made a test project using a listbox instead of a dwglist, it was able to diplay the filenames of more then 1000 dwgs and not crash but i just couldnt get the "up a directory" to work.<br>
+<br>
+here are my project files if you want to see how i have it<br>
+i know the code is a mess but it works i just wont display more then 1000 dwgs.<br>
+<br>
+<br>
+critiquing welcomed<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1151/od-toolbox.odcl">od-toolbox.odcl</a> <span class="muted">(12153 bytes)</span></li><li><a href="../attachments/1152/od-toolbox.lsp">od-toolbox.lsp</a> <span class="muted">(6658 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5685">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-14 17:57 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=andrew link=topic=1082.msg5682#msg5682 date=1260808344 wrote:</cite><br>
+when i made a test project using a listbox instead of a dwglist, it was able to diplay the filenames of more then 1000 dwgs and not crash but i just couldnt get the "up a directory" to work.<br>
+</blockquote><br>
+<br>
+Unfortunately, you have not send the version with the listbox - as far as I can see it.<br>
+Note: you will have to fill the list by your own.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5686">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-14 18:03 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1082.msg5685#msg5685 date=1260813467 wrote:</cite><br>
+[quote author=andrew link=topic=1082.msg5682#msg5682 date=1260808344]<br>
+when i made a test project using a listbox instead of a dwglist, it was able to diplay the filenames of more then 1000 dwgs and not crash but i just couldnt get the "up a directory" to work.<br>
+</blockquote><br>
+<br>
+Unfortunately, you have not send the version with the listbox - as far as I can see it.<br>
+Note: you will have to fill the list by your own.<br>
+<br>
+Fred<br>
+<br>
+<br>
+no i didnt Fred.<br>
+I wasnt having much luck with getting it to work so i just abandoned it and went back to my working project and just put in some code to stop the selection of this specific directory from being selected<br>
+<br>
+however if anyone wishes to check out my working project and critique it i welcome all. i would love to improve upon it.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5719">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-15 15:54 UTC</span>
+  </div>
+  <div class="post-body">Hi andrew,<br>
+<br>
+have a look with the attached sample, it should work (note: refreshing the dwgpreview may not work in the current alpha release, but in the stable release).<br>
+<br>
+Fred<br>
+<br>
+EDIT: Replace the function <strong>dwgbrowser_fillpreview</strong> with the version below to update the preview in the current Alpha release:<br>
+If you make the scrollbar working, you wil have a similar way to navigate between the dwg-files.<br>
+<br>
+<br>
+(defun dwgbrowser_fillpreview (intItem / strPath intRow strCompleteFile)<br>
+  (setq strPath (dwgbrowser_check_path (dcl_ComboBox_GetDir dwgbrowser_browser_dir)))<br>
+  (setq intLen (dcl_ListView_GetCount dwgbrowser_browser_lst))<br>
+  (foreach intRow '(0 1 2 3 4 5 6 7 8)<br>
+    (if (&gt;= (+ intItem (1+ intRow)) intLen)<br>
+      (dwgbrowser_invisible (eval (read (strcat "dwgbrowser_browser_dwg" (itoa (1+ intRow))))))<br>
+      (progn<br>
+        (setq oControl (eval (read (strcat "dwgbrowser_browser_dwg" (itoa (1+ intRow))))))<br>
+        (dwgbrowser_visible oControl)<br>
+        (if (setq strCompleteFile (findfile (strcat strPath (dcl_ListView_GetItemText dwgbrowser_browser_lst intRow 0) ".dwg")))<br>
+          (progn<br>
+            (dcl_DWGPreview_LoadDwg oControl strCompleteFile)<br>
+            (dcl_Control_Redraw oControl)<br>
+          ); progn<br>
+          (dcl_DwgPreview_Clear oControl)<br>
+        ); if<br>
+      ); progn<br>
+    ); if<br>
+  ); foreach<br>
+); dwgbrowser_fillpreview<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1159/dwgbrowser.odcl">dwgbrowser.odcl</a> <span class="muted">(3029 bytes)</span></li><li><a href="../attachments/1160/dwgbrowser.LSP">dwgbrowser.LSP</a> <span class="muted">(8567 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5760">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-16 15:17 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred for the sample files.<br>
+I ran them as a test to see how it works, and even your coding "hangs" while trying to access a directory with more then 1000 files<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5767">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-16 20:17 UTC</span>
+  </div>
+  <div class="post-body">Fred,<br>
+After overlooking your code<br>
+im a bit confused on a list view function as i tried to duplicated it from scratch and just get errors maybe you or anyone else thats reading can clarify for me what it is that im not understanding.<br>
+<br>
+(dcl_ListView_FillList od-test_Form1_ListView1<span style="color:red"> as List of Lists </span> as ((ItemLabel [as String] {ItemImageIndex [as Integer]} {Column1Label [as String]} {Column1ImageIndex [as Integer]} ...) ...))<br>
+<br>
+a list of lists...<br>
+what exactly is a list of lists?<br>
+<br>
+example:<br>
+if my lsp code reads a file and puts the contents of that file in a list<br>
+the function code i have reads<br>
+(dcl_ListView_FillList od-test_Form1_ListView1 <br>
+		(list filelist)<br>
+<br>
+ )<br>
+<br>
+with it this way it only shows the first item of the list and not the others<br>
+how do you go about getting the other items to display?<br>
+<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5768">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-12-16 20:40 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=andrew link=topic=1082.msg5767#msg5767 date=1260994650 wrote:</cite><br>
+<br>
+(dcl_ListView_FillList od-test_Form1_ListView1<span style="color:red"> as List of Lists </span> as ((ItemLabel [as String] {ItemImageIndex [as Integer]} {Column1Label [as String]} {Column1ImageIndex [as Integer]} ...) ...))<br>
+<br>
+a list of lists...<br>
+what exactly is a list of lists?<br>
+<br>
+<br>
+</blockquote><br>
+<br>
+<br>
+(list<br>
+  (list "Item 1" 1 1 1)<br>
+  (list "Item 2" 2 2 2)<br>
+  (list "Item 3" 3 3 3)<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg5769">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-16 21:00 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Andrew,<br>
+Do you just want to feed the fileList to the ListView ?<br>
+ie what do you want the listView to look like ?</div>
+</article>
+<article class="post" id="msg5770">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-16 21:17 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=1082.msg5769#msg5769 date=1260997244 wrote:</cite><br>
+<br>
+Andrew,<br>
+Do you just want to feed the fileList to the ListView ?<br>
+ie what do you want the listView to look like ?<br>
+</blockquote><br>
+<br>
+yes<br>
+thats what i was trying to do but i get errors<br>
+example of what i tried:<br>
+<br>
+<pre class="code"><code><br>
+  (setq dfile "C:\\test.txt")<br>
+  (setq fil (open dfile "r"))  <br>
+   (while (setq curline (read-line fil))  <br>
+      (setq filelist (cons curline filelist))  <br>
+  )  <br>
+  (close fil)  <br>
+<br>
+  (setq filelist (reverse filelist)) <br>
+<br>
+(dcl_ListView_FillList od-test_Form1_ListView1<br>
+ (list filelist)<br>
+)<br>
+</code></pre><br>
+this list only displays the first item of the list.<br>
+<br>
+using :<br>
+(dcl_ListView_FillList od-test_Form1_ListView1<br>
+ (list <br>
+   (list filelist)<br>
+ )<br>
+)<br>
+doesnt work<br>
+</div>
+</article>
+<article class="post" id="msg5771">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-16 21:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=1082.msg5768#msg5768 date=1260996003 wrote:</cite><br>
+[quote author=andrew link=topic=1082.msg5767#msg5767 date=1260994650]<br>
+<br>
+(dcl_ListView_FillList od-test_Form1_ListView1<span style="color:red"> as List of Lists </span> as ((ItemLabel [as String] {ItemImageIndex [as Integer]} {Column1Label [as String]} {Column1ImageIndex [as Integer]} ...) ...))<br>
+<br>
+a list of lists...<br>
+what exactly is a list of lists?<br>
+<br>
+<br>
+</blockquote><br>
+<br>
+<br>
+(list<br>
+  (list "Item 1" 1 1 1)<br>
+  (list "Item 2" 2 2 2)<br>
+  (list "Item 3" 3 3 3)<br>
+)<br>
+<br>
+<br>
+<br>
+thats what i thought it was but i get errors when i do that<br>
+just wanted to make sure i understood it correctly</div>
+</article>
+<article class="post" id="msg5773">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-16 22:09 UTC</span>
+  </div>
+  <div class="post-body">Andrew ,<br>
+The trick is in how you translate the fileList into a list of lists.<br>
+If you JUST want the list in column 1 try something like this :<br>
+<br>
+(setq populatelist1 (mapcar '(lambda (x) (list x)) layernamelist))<br>
+<br>
+<br>
+<br>
+(vl-load-com)<br>
+(command "_OPENDCL")<br>
+<br>
+(defun c:doit (/ layernamelist dialogreturn)<br>
+  (setq layernamelist '("0"          "Layer1"     "Layer2"<br>
+                        "Layer3"     "Layer4"     "Layer5"<br>
+                        "Layer6"     "Layer7"     "Layer8"<br>
+                        "Layer9"     "Layer10"    "Layer11"<br>
+                        "Layer12"<br>
+                       )<br>
+  )<br>
+  (dcl_project_load "kdub_ListView_11.odcl" t)<br>
+  ;; Show the main form<br>
+  (setq dialogreturn (dcl_form_show kdub_listview_11_main))<br>
+  ;;------<br>
+  (princ)<br>
+)<br>
+<br>
+ ;|&lt;&gt;|;<br>
+(defun c:kdub_listview_11_main_oninitialize (/)<br>
+  (dcl_listview_addcolumns<br>
+    kdub_listview_11_main_listview1<br>
+    '(("Layer Name" 0 100) ("Col 2" 0 50) ("Col 3" 0 50))<br>
+  )<br>
+  (dcl_listview_addstring kdub_listview_11_main_listview1<br>
+                          "Item 1\tItem 1-2\tItem 1-3"<br>
+  )<br>
+)<br>
+(defun c:kdub_listview_11_main_textbutton1_onclicked (/)<br>
+  (setq populatelist1 (mapcar '(lambda (x) (list x)) layernamelist))<br>
+  (dcl_listview_filllist kdub_listview_11_main_listview1<br>
+                         populatelist1<br>
+  )<br>
+)<br>
+(princ " &lt;&lt; Enter DOIT to run &gt;&gt; \n")<br>
+(princ)<br>
+<br>
+<br>
+<br>
+if you want more than this, you'll have to start explaining what you want.<br>
+<br>
+Refer the Attachments:<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1171/kdub_ListView_11.lsp">kdub_ListView_11.lsp</a> <span class="muted">(1267 bytes)</span></li><li><a href="../attachments/1172/kdub_ListView_11.odcl">kdub_ListView_11.odcl</a> <span class="muted">(749 bytes)</span></li><li><a href="../attachments/1173/kdub_ListView_11.png">kdub_ListView_11.png</a> <span class="muted">(13633 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5774">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-16 23:53 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=andrew link=topic=1082.msg5760#msg5760 date=1260976635 wrote:</cite><br>
+Thanks Fred for the sample files.<br>
+I ran them as a test to see how it works, and even your coding "hangs" while trying to access a directory with more then 1000 files</blockquote><br>
+<br>
+H andrew, I recommend you a closer look to your drawings.<br>
+<br>
+1. Of course it take a while until the files were read out. But you should have noted a text within the listview (see loading.png). Have you seen it?<br>
+<br>
+2. As you can see in my screenshot listing.png that I could list 5705 dwg files. I had to wait 5 seconds for the first time. But i other cases I had to wait 30 seconds (depending on the harddrive speed). <br>
+<br>
+I think that maybe one of your drawings may be corrupt? Can you compress them and send them as email attachment to me?<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1174/loading.png">loading.png</a> <span class="muted">(7290 bytes)</span></li><li><a href="../attachments/1175/listing.png">listing.png</a> <span class="muted">(25275 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5775">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-16 23:57 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+ I think, somehow, we are all talking about different things :)<br>
+<br>
+I may have missed something.</div>
+</article>
+<article class="post" id="msg5780">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-17 13:56 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=1082.msg5775#msg5775 date=1261007868 wrote:</cite><br>
+<br>
+<br>
+ I think, somehow, we are all talking about different things :)<br>
+<br>
+I may have missed something.<br>
+</blockquote><br>
+<br>
+Kerry,<br>
+Thanks for your help<br>
+yes we are talking about 2 different things but they are related<br>
+i tried your method and it didnt work for me.<br>
+im essentially trying to read a test file and file the list with the contents of that text file (i listed the code in a previous post)<br>
+the trick is as you said is changing the list into a list of lists<br>
+<br>
+Fred,<br>
+Sorry i cannot zip the files and send them.<br>
+i was mistaken with the program hanging, i noticed that it does not hang when i select a sub directory, it just doesnt load it because i get this error<br>
+<br>
+Command: ; error: bad argument type: stringp nil<br>
+</div>
+</article>
+<article class="post" id="msg5781">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-17 14:48 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=andrew link=topic=1082.msg5780#msg5780 date=1261058214 wrote:</cite><br>
+[...]i noticed that it does not hang when i select a sub directory, it just doesnt load it because i get this error<br>
+<br>
+Command: ; error: bad argument type: stringp nil<br>
+<br>
+</blockquote><br>
+<br>
+Then there must be a bug. Can you find out the place where this error occurs?<br>
+Maybe the error does not occure with the attached files...<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1179/091216.zip">091216.zip</a> <span class="muted">(5331 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5784">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-17 16:17 UTC</span>
+  </div>
+  <div class="post-body">Fred, ill check it out<br>
+<br>
+appreciate your help<br>
+<br>
+also i got the list of lists working<br>
+now i just have to figure out how to get the dwgs and subdirectories to show up in that list <br>
+<br>
+thanks again for all of y'alls help<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5789">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-17 22:07 UTC</span>
+  </div>
+  <div class="post-body"><br>
+andrew,<br>
+The list translator I posted was modified from one I use t build compound lists ...<br>
+<br>
+This may be better suited and easier to understand for simple lists.<br>
+<br>
+<br>
+(setq layernamelist '("0"          "Layer1"     "Layer2"<br>
+                      "Layer3"     "Layer4"     "Layer5"<br>
+                      "Layer6"     "Layer7"     "Layer8"<br>
+                      "Layer9"     "Layer10"    "Layer11"<br>
+                      "Layer12"<br>
+                     )<br>
+)<br>
+<br>
+(setq ListViewList (mapcar 'list layernamelist) )<br>
+<br>
+<br>
+<br>
+returns<br>
+(("0") ("Layer1")<br>
+       ("Layer2")<br>
+       ("Layer3")<br>
+       ("Layer4")<br>
+       ("Layer5")<br>
+       ("Layer6")<br>
+       ("Layer7")<br>
+       ("Layer8")<br>
+       ("Layer9")<br>
+       ("Layer10")<br>
+       ("Layer11")<br>
+       ("Layer12")<br>
+)</div>
+</article>
+<article class="post" id="msg5793">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-18 07:05 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=andrew link=topic=1082.msg5784#msg5784 date=1261066627 wrote:</cite><br>
+now i just have to figure out how to get the dwgs and subdirectories to show up in that list <br>
+</blockquote><br>
+<br>
+That should be found in the code :)<br>
+<br>
+<br>
+(setq lstDir (vl-directory-files strPath "*" -1)) ;; directories only<br>
+(setq lstDwg (vl-directory-files strPath "*.dwg" 1))<br>
+<br>
+<br>
+Have a look at the OpenDCL dwglist sample. The function for the directory-up-button is much better than mine.<br>
+<br>
+Fred<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5799">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2009-12-18 14:54 UTC</span>
+  </div>
+  <div class="post-body">your help is appreciated however i think im just gonna have to put this on the back burner for now, what im trying to get it to do, i think is a little more advanced then my current understanding of this odcl coding.<br>
+<br>
+hope everyone has a happy and safe holiday<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5870">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-01-04 14:42 UTC</span>
+  </div>
+  <div class="post-body">Fred, I have a strange question to ask you about your code in your dwgbrowser program.<br>
+<br>
+when i run it, if i select a directory that has a dwg opened from that directory, i get an error<br>
+<br>
+Command: ; error: bad argument type: stringp nil<br>
+<br>
+ive tested and retested, and as long as there isnt a dwg opened from that directory, it works.<br>
+<br>
+would you have any clue as to why this happens?<br>
+its not just this directory, its any directory that has a dwg opened, it yields an error.<br>
+<br>
+any light you can shed on this is appreciated<br>
+<br>
+running it thru vlide it stops on error on this part<br>
+(cadddr (cdr lstDate))<br>
+<br>
+the function is:<br>
+(defun dwgbrowser_file_date (strFile / lstDate)<br>
+  (setq lstDate (mapcar 'dwgbrowser_check_digit (mapcar 'itoa (vl-file-systime strFile))))<br>
+  (strcat (car lstDate) "-" (cadr lstDate) "-" (caddr lstDate) " " (cadddr lstDate) ":" (cadddr (cdr lstDate)))<br>
+); dwgbrowser_file_date<br>
+<br>
+i narrowed it down further to this function:<br>
+(vl-file-systime strFile)<br>
+if the file is open, then this returns nil.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5871">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-04 19:58 UTC</span>
+  </div>
+  <div class="post-body">Hi, that's bad. (vl-file-size ...) is working properly instead!<br>
+<br>
+Have a try with the FileSystem object:<br>
+<br>
+<br>
+(defun file_getdate (strFile / lstRet oFSObject oFile reaDate intYear intDay is2902 lstMonths intMonth<br>
+                               intDay reaTime reaHour intHour reaMinutes intMinutes reaSeconds intSeconds)<br>
+  (setq oFSObject (vlax-create-object "Scripting.FileSystemObject"))<br>
+  (if (or (null (setq oFile (vl-catch-all-apply 'vlax-invoke-method (list oFSObject "GetFile" strFile))))<br>
+	  (vl-catch-all-error-p oFile))<br>
+    (setq oFile nil<br>
+          lstRet '(1900 01 01 00 00 00))<br>
+    (progn<br>
+      (setq reaDate (vlax-get oFile 'DateLastModified))<br>
+      (setq intYear (+ 1900 (fix (/ reaDate 365.25))))<br>
+      (setq intDay (fix (- reaDate (* (fix (/ reaDate 365.25)) 365.25))))<br>
+      (setq is2902 (= (* 365.25 (fix (/ reaDate 365.25)))<br>
+                      (fix (* 365.25 (fix (/ reaDate 365.25))))))<br>
+<br>
+      (setq lstMonths (list (cons 1 31) (cons 2 (if is2902 29 28)) (cons 3 31) (cons 4 30) (cons 5 31) (cons 6 30)<br>
+                            (cons 7 31) (cons 8 31) (cons 9 30) (cons 10 31) (cons 11 30) (cons 12 31)))<br>
+      (setq intMonth (caar lstMonths))<br>
+<br>
+      (while (and lstMonths (&gt; (- intDay (cdar lstMonths)) 0.0))<br>
+        (setq intDay (- intDay (cdar lstMonths))<br>
+              intMonth (caadr lstMonths)<br>
+              lstMonths (cdr lstMonths))<br>
+      ); while<br>
+<br>
+      (setq reaTime (- reaDate (fix reaDate)))<br>
+      (setq reaHour (* 24 reaTime))<br>
+      (setq intHour (fix reaHour))<br>
+      (setq reaMinutes (* 60 (- reaHour intHour)))<br>
+      (setq intMinutes (fix reaMinutes))<br>
+      (setq reaSeconds (* 60 (- reaMinutes intMinutes)))<br>
+      (setq intSeconds (fix reaSeconds))<br>
+      (setq lstRet (list intYear intMonth intDay intHour intMinutes intSeconds))<br>
+      <br>
+      (vlax-release-object oFile)<br>
+    ); progn<br>
+  ); if<br>
+  (vlax-release-object oFSObject)<br>
+  lstRet<br>
+); file_getdate<br>
+<br>
+<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5872">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-05 08:12 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I've changed the code a bit. Because there is still a bug with the leapyear and with milliseconds. Maybe others may have a look at both.<br>
+<br>
+<br>
+(defun file_getdate (strFile / lstRet oFSObject oFile reaDate intYear intDay is2902<br>
+                                   lstMonths intMonth reaWeek intWeek intDay reaTime<br>
+                                   reaHour intHour reaMinutes intMinutes reaSeconds<br>
+                                   intSeconds reaMSec intMSec)<br>
+  (cond<br>
+    ((not (findfile strFile)) (setq lstRet '(1900 01 0 01 00 00 00 00)))<br>
+    ((setq lstRet (vl-file-systime strFile)) nil)<br>
+    ((not (and (setq oFSObject (vlax-create-object "Scripting.FileSystemObject"))<br>
+               (setq oFile (vl-catch-all-apply 'vlax-invoke-method (list oFSObject "GetFile" strFile)))<br>
+               (not (vl-catch-all-error-p oFile))))<br>
+     (setq lstRet '(1900 01 0 01 00 00 00 00)<br>
+           oFile nil))<br>
+    (oFile<br>
+     (setq reaDate (1- (vlax-get oFile 'DateLastModified)))<br>
+     (setq reaWeek (/ (fix reaDate) 7.0))<br>
+     (setq intWeek (atoi (rtos (* 7.0 (- reaWeek (fix reaWeek))) 2 0)))<br>
+     (setq intYear (+ 1900 (fix (/ reaDate 365.25))))<br>
+     (setq intDay (fix (- reaDate (* (fix (/ reaDate 365.25)) 365.25))))<br>
+     (setq is2902 (= (* 365.25 (fix (/ reaDate 365.25)))<br>
+                     (fix (* 365.25 (fix (/ reaDate 365.25))))))<br>
+<br>
+     (setq lstMonths (list (cons 1 31) (cons 2 (if is2902 29 28)) (cons 3 31) (cons 4 30) (cons 5 31) (cons 6 30)<br>
+                           (cons 7 31) (cons 8 31) (cons 9 30) (cons 10 31) (cons 11 30) (cons 12 31)))<br>
+     (setq intMonth (caar lstMonths))<br>
+<br>
+     (while (and lstMonths (&gt; (- intDay (cdar lstMonths)) 0.0))<br>
+       (setq intDay (- intDay (cdar lstMonths))<br>
+             intMonth (caadr lstMonths)<br>
+             lstMonths (cdr lstMonths))<br>
+     ); while<br>
+<br>
+     (setq reaTime (- reaDate (fix reaDate)))<br>
+     (setq reaHour (* 24.0 reaTime))<br>
+     (setq intHour (fix reaHour))<br>
+     (setq reaMinutes (* 60.0 (- reaHour intHour)))<br>
+     (setq intMinutes (fix reaMinutes))<br>
+     (setq reaSeconds (* 60.0 (- reaMinutes intMinutes)))<br>
+     (setq intSeconds (fix reaSeconds))<br>
+     (setq reaMSec (* 1000.0 (- reaSeconds intSeconds)))<br>
+     (setq intMSec (fix reaMSec))<br>
+     (setq lstRet (list intYear intMonth intWeek intDay intHour intMinutes intSeconds intMSec)))<br>
+  ); cond<br>
+  (mapcar 'vlax-release-object (vl-remove nil (list oFSObject oFile)))<br>
+  lstRet<br>
+); file_getdate<br>
+<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5888">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-01-06 16:19 UTC</span>
+  </div>
+  <div class="post-body">Fred, thanks for the reply.<br>
+<br>
+works good now.<br>
+<br>
+thanks<br>
+<br>
+also.<br>
+how did you get the file and directory icons to show up in that list?<br>
+</div>
+</article>
+<article class="post" id="msg5892">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-06 16:40 UTC</span>
+  </div>
+  <div class="post-body">Hi, andrew,<br>
+<br>
+doubleclick the listview control in the Z/Tab order pane. There is the imagelist for this control.<br>
+An these icons are used in the list for dcl_listview_filllist method.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5893">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-01-06 17:15 UTC</span>
+  </div>
+  <div class="post-body">Fred,<br>
+Thanks for your help again<br>
+here is my simple test code.<br>
+<br>
+is there something i need to turn on?<br>
+i added my image to the image list however the icon doesnt display<br>
+<br>
+<br>
+<pre class="code"><code><br>
+(defun c:dwgbrowser_Form3_OnInitialize (/)<br>
+(dcl_ListView_AddColumns dwgbrowser_Form3_ListView1 (list (list "1" 0 100) (list "2" 0 100) ))<br>
+(dcl_ListView_FillList <br>
+ dwgbrowser_Form3_ListView1 <br>
+  (list <br>
+   (list "hello 0 "world" 0) <br>
+  )<br>
+)<br>
+)<br>
+</code></pre><br>
+<br>
+i got it working, i dont know what i did to get it working most likely something stupid i missed but i got it working<br>
+thanks<br>
+<br>
+p.s. where do you get your icons from?<br>
+</div>
+</article>
+<article class="post" id="msg5896">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-06 18:46 UTC</span>
+  </div>
+  <div class="post-body">andrew,<br>
+<br>
+<blockquote class="quote">(list "hello 0 "world" 0)</blockquote><br>
+<br>
+Count the number of "-chars in the line above.  ;)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7126">
+  <div class="post-head">
+    <span class="post-author">sachindkini</span>
+    <span class="post-date muted">2010-08-20 05:50 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1082.msg5719#msg5719 date=1260892499 wrote:</cite><br>
+Hi andrew,<br>
+<br>
+have a look with the attached sample, it should work (note: refreshing the dwgpreview may not work in the current alpha release, but in the stable release).<br>
+<br>
+Fred<br>
+<br>
+EDIT: Replace the function <strong>dwgbrowser_fillpreview</strong> with the version below to update the preview in the current Alpha release:<br>
+If you make the scrollbar working, you wil have a similar way to navigate between the dwg-files.<br>
+<br>
+<br>
+(defun dwgbrowser_fillpreview (intItem / strPath intRow strCompleteFile)<br>
+  (setq strPath (dwgbrowser_check_path (dcl_ComboBox_GetDir dwgbrowser_browser_dir)))<br>
+  (setq intLen (dcl_ListView_GetCount dwgbrowser_browser_lst))<br>
+  (foreach intRow '(0 1 2 3 4 5 6 7 8)<br>
+    (if (&gt;= (+ intItem (1+ intRow)) intLen)<br>
+      (dwgbrowser_invisible (eval (read (strcat "dwgbrowser_browser_dwg" (itoa (1+ intRow))))))<br>
+      (progn<br>
+        (setq oControl (eval (read (strcat "dwgbrowser_browser_dwg" (itoa (1+ intRow))))))<br>
+        (dwgbrowser_visible oControl)<br>
+        (if (setq strCompleteFile (findfile (strcat strPath (dcl_ListView_GetItemText dwgbrowser_browser_lst intRow 0) ".dwg")))<br>
+          (progn<br>
+            (dcl_DWGPreview_LoadDwg oControl strCompleteFile)<br>
+            (dcl_Control_Redraw oControl)<br>
+          ); progn<br>
+          (dcl_DwgPreview_Clear oControl)<br>
+        ); if<br>
+      ); progn<br>
+    ); if<br>
+  ); foreach<br>
+); dwgbrowser_fillpreview<br>
+</blockquote><br>
+dear sir<br>
+some error on program se attched file<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1436/err.JPG">err.JPG</a> <span class="muted">(113826 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7127">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-08-23 11:57 UTC</span>
+  </div>
+  <div class="post-body">Hi, sachindkini, have you already tried to debug to catch the line, where this error occurs?<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

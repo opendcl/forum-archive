@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_Grid_SetCurCell frage. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/11-german.html">GERMAN</a> /
+      Topic 962</p>
+    <h1>dcl_Grid_SetCurCell frage.</h1>
+    <p class="meta">Started by SpEEDY ·
+      2009-10-09 09:01 UTC ·
+      22 replies · SMF topic #962</p>
+<article class="post" id="msg4830">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2009-10-09 09:01 UTC</span>
+  </div>
+  <div class="post-body">Hallo Forum.<br>
+Habe einen lange zeit nicht mit Open DCL gearbeitet.<br>
+Sitze jetzt an einem Projekt mit Grip Bearbeitung.<br>
+Komme da nicht mehr weiter, vielleicht kann mir jemand von euch helfen.<br>
+Und zwar fühle ich die Zeilen einer Grip mit den Befehl.<br>
+<br>
+(defun listefuehlen ()<br>
+<br>
+  (setq listezeile (nth 0 zeile))<br>
+  (dcl_Grid_Insertrow BGR-Tool_FB_BGR_ERSTELLEN_Liste listeldfnrzaehler (rtos listeldfnrzaehler 2 0) listezeile)<br>
+  (setq listeldfnrzaehler (+ listeldfnrzaehler 1))<br>
+  <br>
+)<br>
+<br>
+Dies funktioniert auch.<br>
+Was ich jetzt aber möchte ist. <br>
+Das wenn ich irgend wo auf einen Zeile klicke. Diese mit OnSelChanged ausgelöst wird.<br>
+Habe das Problem, wenn ich auch die erste Zeile klicke wird der Befehl OnSelChanged zweimal ausführt. Weil er jede Zeile durchgeht. <br>
+Wie kann ich das machen das der Befehl sich nur einmal ausführt.<br>
+<br>
+Habe in der Demo Datei geschaut und den Befehl dcl_Grid_SetCurCell gefunden.<br>
+Mit dem komme ich aber nicht ganz zurecht.<br>
+Wo muss ich den hinein schreiben. In den OnSelChanged oder Insertrow Befehl?<br>
+<br>
+Hoffe man kann das Problem verstehen und mir jemand helfen.<br>
+<br>
+Danke im voraus.<br>
+<br>
+Speedy<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4831">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-09 10:10 UTC</span>
+  </div>
+  <div class="post-body">Hi, SpEEDY,<br>
+<br>
+hm, ich hoffe ich habs verstanden. Vielleicht würde ich folgendes probieren:<br>
+<br>
+(defun c:BGR-Tool_FB_BGR_ERSTELLEN_Liste_OnSelChanged (intRow intCol)<br>
+  (if (or (not intLastRow) (/= intLastRow intRow))  ; intLastRow ist global zu diesem Event<br>
+    (progn<br>
+      (setq intLastRow intRow)<br>
+      (machwat)<br>
+    ); progn<br>
+  ); if<br>
+); BGR-Tool_FB_BGR_ERSTELLEN_Liste<br>
+<br>
+Ansonsten könnte ein kleines Beispiel Deinerseits helfen.  ;)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4832">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2009-10-09 11:26 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred,<br>
+danke für die Schnelle Hilfe.<br>
+Leider habe ich das Problem schlecht erklärt.<br>
+Der Code den du mir geschickt hast geht leider nicht. :P<br>
+<br>
+Habe dir ein Video gemacht. <br>
+Da sieht man es besser.<br>
+Man sieht das wenn ich auf die zweite Spalte klicke der OnSelChanged befehl sich einmal auslöst. Wenn ich aber auf die erste Spalte klicke löst sich der Befehl zwei mal aus.<br>
+Dies möchte ich gerne verhindern. Aber weiß nicht wie ich das machen kann.<br>
+<br>
+Danke noch mal für die mühe.<br>
+<br>
+<br>
+SpEEDY<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/951/Problem.zip">Problem.zip</a> <span class="muted">(515744 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4833">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-09 12:07 UTC</span>
+  </div>
+  <div class="post-body">Hm, da kom es vielleicht auch darauf an, was im Event so passiert bzw. welche weiteren Events ausgelöst werden und was darin passiert. Für den Fall, dass andere Events aktiv sind, deaktiviere alle Events des Grid (bis auf OnSelChanged), speichere die ODCL und lade die ODCL erneut (dcl_project_load MyProj T). Bleibt es dabei, könnte es ein Bug sein. Welche Runtime-Version verwendest Du?<br>
+<br>
+Bestünde die Möglichkeit, sich per Fernwartung zuzuschalten und gemeinsam in den Code zu schauen?<br>
+<br>
+Wir nutzen den TeamViewer (www.teamviewer.de[url=http://]).<br>
+<br>
+VG, <br>
+Fred</div>
+</article>
+<article class="post" id="msg4834">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2009-10-09 12:57 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred,<br>
+habe mir gerade das neue Open DCL Studio [6.0.0.7] runtergeladen.<br>
+Da mein Projekt recht groß ist und auch schlecht geschrieben will ich dir das nich antun.<br>
+Daher habe ich auf die schnelle ein Testprojekt gemacht. <br>
+Dort passiert leider das gleiche.  :-\<br>
+<br>
+Mit freundlichen Grüßen<br>
+<br>
+SpEEDY<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/952/Test.zip">Test.zip</a> <span class="muted">(167694 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4835">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-09 15:17 UTC</span>
+  </div>
+  <div class="post-body">Hi, ich hau mir das heute abend an. Ich will noch schnell etwas abschließen.<br>
+<br>
+<blockquote class="quote">Da mein Projekt recht groß ist und auch schlecht geschrieben will ich dir das nich antun.</blockquote><br>
+Für solche Fälle und für Fälle, wo besondere Lizenzen und Systemumgebungen dahinterliegen, biete ich dann Unterstützung via TeamViewer an.<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg4844">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-09 21:52 UTC</span>
+  </div>
+  <div class="post-body">Hi, das ist vielleicht ein Bug. Aber es gibt einen Workaround: setze die Eigenschaft RowHeader auf False. Dann wirds nur einmal ausgelöst.<br>
+Ich werde das mal erfragen und als Bug-Report anlegen.<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg4845">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-09 22:03 UTC</span>
+  </div>
+  <div class="post-body">Hi ein weiterer Workaround wäre dennoch, abzufangen, ob sich Spalten- und/oder Zeilennummer geändert hat. Ist beides gleich, dann soll er nichts tun.<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg4861">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-12 13:47 UTC</span>
+  </div>
+  <div class="post-body">Hallo,<br>
+<br>
+das war ein Bug. Ist in Alpha 8 behoben.<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg4864">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2009-10-12 14:19 UTC</span>
+  </div>
+  <div class="post-body">Fred, danke für die Antworten.<br>
+Die Alpha 8 kann ich die schon runterladen oder muss ich noch warten?<br>
+<br>
+mfg<br>
+<br>
+SpEEDY</div>
+</article>
+<article class="post" id="msg4867">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-12 18:59 UTC</span>
+  </div>
+  <div class="post-body">Hi Speedy,<br>
+<br>
+bitte beobachte einfach diese Seite: https://sourceforge.net/projects/opendcl/files/<br>
+<br>
+Meistens stehen zum Wochenbeginn neue Versionen zum Testen bereit. Bitte beachte: Alpha-Versionen dienen zum Testen und sind nicht für die Produktivumgebung gedacht. Bitte zunächst in Kopien deiner ODCL-Dateien testen.<br>
+<br>
+Alpha 8 steht zum Download bereit.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4871">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2009-10-13 13:52 UTC</span>
+  </div>
+  <div class="post-body">Hi, Fred.<br>
+Kannst du mir vielleicht noch mal helfen.<br>
+Sitze zur zeit an einem anderen Rechner. <br>
+Wollte mein Projekt weiter machen. Aber habe irgendwas falsch gemacht.<br>
+Wenn ich jetzt ein Opendcl projekt starte kommt der Fehler.<br>
+<br>
+Nicht behandelter Ausnahmefehler 7CFF627 (Accress Violation Reading Oxc7adc2f) bei Adresse 7C947453h<br>
+<br>
+Was kann ich da machen?<br>
+<br>
+Habe jetzt die alpha 8 bei meinem alten Rechner getestet.<br>
+Musste leider feststellen, dass sich meine Projekte nicht mehr öffnen lassen.<br>
+Suche da noch nach dem Fehler. Oder liegt das an der alpha?<br>
+<br>
+Muss vielleicht noch auf die neue Alpha warten.  :P<br>
+<br>
+Mit freundlichen Grüßen<br>
+<br>
+SpEEDY<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4872">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-13 17:52 UTC</span>
+  </div>
+  <div class="post-body">Hm, ich habe Alpha 8 noch nicht getestet. Der Ausnahmefehler könnte aber auftreten, wenn Du eine Projektdatei, die Du in einer jüngeren ODCL-Version gespeichert hat (z.B. auf Rechner 1 mit Alpha 8) auf einem anderen Rechner lädst, auf dem eine ältere Runtime (z.B. auf Rechner 2 mit Alpha 7) installiert ist. Eine in Alpha 8 gespeicherte ODCL kann u.U. in einer älteren Studio-Version z.B. Alpha 7 nicht geöffnet werden.<br>
+<br>
+VG, Fred<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4874">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2009-10-14 08:00 UTC</span>
+  </div>
+  <div class="post-body">Guten Morgen Fred,<br>
+ich hoffe ich gehe dir nicht auf die Nerven mit der ganzen Fragerei.<br>
+<br>
+Also habe folgendes herausgefunden. Du hattest recht mit den unterschiedlichen Versionen.<br>
+Nur war es bei mir so das ich das Projekt in einer alten Version gespeichert habe. Und dieses nicht mit der Neuen Version öffnen konnte.  Nach dem ich das Projekt in der alpha 8 gespeichert habe. Kamm der Fehler nicht mehr. Dafür öffnet sich das Projekt nicht in ACAD. Man für den Befehl aus. Aber es geschieht nicht. Weder einen Fehler Meldung noch was. Habe es mit einem ganz neuen Projekt probiert. Leider das selbe Spiel.<br>
+Gibt es vielleicht einen neuen Befehl für das Öffnen des Projekt?<br>
+<br>
+Das war Kurz  8) die Beschreibung was ich herausgefunden habe. <br>
+Wollte dich fragen ob du vielleicht noch eine Stabile Version 6 hast.<br>
+<br>
+Wollte nicht auf die 5er Version zurück gehen.<br>
+<br>
+Mit freundlichen Grüßen<br>
+<br>
+SpEEDY<br>
+<br>
+:Edit<br>
+<br>
+Ich musste grade feststellen das auch die Samples nicht gehen. Ich vermute mal es ist die version. <br>
+Na, egal werde mit einer alten 5 Version weiter arbeiten. Bis die neue apha da ist.<br>
+<br>
+mfg</div>
+</article>
+<article class="post" id="msg4876">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-14 10:01 UTC</span>
+  </div>
+  <div class="post-body">Hi, SpEEDY,<br>
+<br>
+hm, was mich irritiert, dass bisher noch kein anderer das Problem hatte. Und auch ich kann meine alten ODCL5-Projekte im ODCL6 öffnen. Kannst Du eine ODCL-Datei hochladen oder an f.tomke@opendcl.de senden, bitte? Hast Du da ein ActiveX-Control drin (also ein nicht OpenDCL-internes Control).<br>
+<br>
+Ich bin grad in München und düse heute nachmittag zurück nach Berlin. Bin dann wieder im Büro.<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg4879">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2009-10-14 11:06 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred,<br>
+<br>
+danke noch mal für die Antwort.<br>
+Habe dir mal wider ein Testprojekt mit Video gemacht. <br>
+Dort siechst du was ich meine. Nach ausführen des Befehls passiert nicht.<br>
+Habe jetzt die 5er Version getestet. Und siehe da es alles geht wieder.<br>
+<br>
+Ich hoffe ich mache euch nicht zu viel Arbeit.<br>
+<br>
+Fall das Projekt nicht ausreicht. Bin ich auch bereit dir, dass neue ODCL Projekt zuschicken.<br>
+Ich hoffe nur du lachst mich dann nicht aus bin noch nicht so gut in LSP.  :P<br>
+<br>
+Man liest sich wieder und viel Spaß bei der Reise.  :P<br>
+<br>
+Mit freundlichen Grüßen<br>
+<br>
+SpEEDY<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/954/TEST_NEU.zip">TEST_NEU.zip</a> <span class="muted">(158725 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4880">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-14 16:26 UTC</span>
+  </div>
+  <div class="post-body">Danke, ich guck mir das und melde mich dann.<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg4893">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-16 07:13 UTC</span>
+  </div>
+  <div class="post-body">Hi, speedy,<br>
+<br>
+das ist ein interessantes Phänomen:<br>
+<br>
+<ul><br>
+Owen kann es <strong>nicht</strong> auf einem Windows 7 mit AutoCAD 2008 und AutoCAD 2010 reproduzieren<br>
+Ich kann es <strong>nicht </strong> auf einem Windows XP mit AutoCAD 2008 reproduzieren.<br>
+Ich kann es sehrwohl auf einem Rechner mit Windows Vista 32-Bit und Map 2010 32-Bit reproduzieren.<br>
+Ich kann es sehrwohl auf einem Rechner mit Windows Vista 64-Bit und Map 2010 64-Bit reproduzieren.<br>
+</ul><br>
+<br>
+Das hat mich derart verunsichert, dass ich meine eigenen Dialoge auf den Vista-Rechnern probiert habe. Ergebnis: mit der Runtime 5.1.2.3 kann ich sie anzeigen, mit der Runtime 6.0.0.8 jedoch nicht.<br>
+<br>
+Das muss ein Bug sein.<br>
+<br>
+Du kannst den Weg hier verfolgen: <a href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=2879018&amp;group_id=187950&amp;atid=923363" rel="nofollow noopener">{2}</a>.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4896">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2009-10-16 09:51 UTC</span>
+  </div>
+  <div class="post-body">Hi, Fred.<br>
+Habe mir schon gedacht das, dass ein Bug ist.<br>
+<br>
+Durch Zufall findet mal doch die meisten Fehler in Programmen.<br>
+Werde auf die neue Version warten in der Zwischenzeit arbeite ich mit der 5er Version weiter.<br>
+<br>
+Wenn ich so weiter so fleißig Bug finde. Ist Opendcl beilt fehlerfrei.    ;D  ;D<br>
+<br>
+Mit freundlichen Grüßen<br>
+<br>
+SpEEDY<br>
+</div>
+</article>
+<article class="post" id="msg4898">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-16 09:56 UTC</span>
+  </div>
+  <div class="post-body">Naja, eben deshalb ist es eine alpha.<br>
+<br>
+Für den problemloseren Einstieg und die Entwicklung von Applikationen empfehle ich Dir zunächst bei 5.1.2.3 zu bleiben. So machen wir das auch. Ich versuche die Runtime parallel immer wieder zu testen und bei Schulungen an meinem Rechner zu verwenden (wenn was bei mir nicht geht, kann ich immer sagen, es sei ein Entwicklerrechner. Das erklärt dann immer alles  :) ).<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg4901">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2009-10-16 14:23 UTC</span>
+  </div>
+  <div class="post-body">Hi, Fred noch mal eine Frage vor dem Wochenende.  :P<br>
+<br>
+Will dafür kein neues Thema aufmachen hoffe das geht so.<br>
+<br>
+Habe Probleme mit dem Befehl OnInitialize.<br>
+<br>
+Wollte ein paar Bezeichnung nach dem Aufruf einer Form ändern.<br>
+Dies mach ich ja mit dem Befehl dcl_Control_SetCaption. <br>
+Dies löst aber einen Fehler aus. Andere Befehle wie Messende gehen.<br>
+Arbeite mir der 5er Version. Mache ich einen Fehler. Oder vertragen sich die Befehle nicht?.<br>
+<br>
+Code:<br>
+<br>
+; einlesen der Daten<br>
+(defun c:BGR-Tool_FB_LINIE_OnInitialize (/)<br>
+  (dcl_Control_SetCaption BGR-Tool_FB_LINIE_vor.pk1.rechts (rtos (nth 0 (nth 2 (nth ZeileNR TXKO))) 2 4))<br>
+)<br>
+<br>
+Mit freundlichen Grüßen<br>
+<br>
+SpEEDY<br>
+</div>
+</article>
+<article class="post" id="msg4911">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-16 22:29 UTC</span>
+  </div>
+  <div class="post-body">Hi, kannst Du mal versuchen, ob es bei dem Control auch ohne Punkte im Variablennamen geht. Punkte im Variablennamen sind im AutoLisp ziemlich problamtisch. Grundlegend ist die Syntax korrekt.<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg4979">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2009-10-19 09:12 UTC</span>
+  </div>
+  <div class="post-body">Danke für die antwort hat geklappt.<br>
+<br>
+Habe gerade die 9er Version getestet. Läuft super. <br>
+Der fehler ist behoben. ^^<br>
+<br>
+mfg<br>
+<br>
+SpEEDY</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

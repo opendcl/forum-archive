@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>New Member - Help needed! · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1577</p>
+    <h1>New Member - Help needed!</h1>
+    <p class="meta">Started by cadplan ·
+      2011-01-26 16:13 UTC ·
+      3 replies · SMF topic #1577</p>
+<article class="post" id="msg7719">
+  <div class="post-head">
+    <span class="post-author">cadplan</span>
+    <span class="post-date muted">2011-01-26 16:13 UTC</span>
+  </div>
+  <div class="post-body">I am a new user to OPENDCL, having used Lisp for over 15 years I've finally got fed up with trying to write my own dialog boxes in Lisp and looking for an easier alternative found OPENDCL. Also converted to Bricscad from Autocad recently so glad to see support for this great program. <br>
+<br>
+All has gone well in designing the new dialog box but having difficulty in the next stage and need some pointers if possible. (see attached for design of DB)<br>
+<br>
+The dialog box I am creating is for aligning a survey instrument in a room and asks for positions of up to 4 alignments in the room. The process of each alignment is not important as I have already written the lisp routine for this but it is the workings of the dialog box which I am getting stuck with an not even sure I can get a dialog box to do what I want it to do! Each alignment produces a position in the room and you can have up to 4 alignments. When there are more than two alignments there will be an error between each alignment (again this will be calculated within the lisp routine) which I want to add to the DB when you press calculate. There are tick boxes on each alignment also to either use this position or not in the calculation. Once the user is happy with the error then they press the USE button to start another procees in Autocad.<br>
+<br>
+What I need is some advice on firstly whether this will work and some pointers on what functions to use to hide/unhide the DB (to get each alignment within Autocad), whether you can reload the error into the dialog box from the lisp routine for the user to see and also how I would go about using the tick boxes for using or not using each alignment.<br>
+<br>
+Apologies for the long message and hope I haven't confused anyone who can possibly help!<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1536/Align2.odcl">Align2.odcl</a> <span class="muted">(1340 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7721">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2011-01-26 18:03 UTC</span>
+  </div>
+  <div class="post-body">Hi cadplan, welcome to the club.<br>
+<br>
+It sounds like everything you want to do is possible.<br>
+<br>
+First off, have you gone through the "Beginners Tutorial"? <a href="http://opendcl.com/wordpress/?page_id=10" rel="nofollow noopener">{2}</a><br>
+This should help get you started.<br>
+<br>
+Also, for the hide, pick a point, &amp; reshow, have a look at this FAQ:<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=1080.0" rel="nofollow noopener">{2}</a><br>
+<br>
+For the check boxes, just check it's value, to see if you should excited code for it or not:<br>
+<br>
+<br>
+(if (= 1 (dcl_Control_GetValue Untitled_Form1_CheckBox1))<br>
+  (DoStuff)<br>
+)<br>
+<br>
+<br>
+Hope this helps,<br>
+Barry<br>
+</div>
+</article>
+<article class="post" id="msg7722">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-01-26 20:02 UTC</span>
+  </div>
+  <div class="post-body">Your .odcl file contains a modeless dialog, but from your description of how you want it to work, it sounds like a modal dialog would be more appropriate. A modeless dialog normally remains open.</div>
+</article>
+<article class="post" id="msg7724">
+  <div class="post-head">
+    <span class="post-author">cadplan</span>
+    <span class="post-date muted">2011-01-27 09:04 UTC</span>
+  </div>
+  <div class="post-body">Many thanks Barry, I had gone through the tutorial but maybe not in as much detail as I should have! I will look at the links you sent and see what I can find.<br>
+<br>
+Gareth</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

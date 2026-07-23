@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trouble with 2017 command functionality · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2471</p>
+    <h1>Trouble with 2017 command functionality</h1>
+    <p class="meta">Started by JEdwardL ·
+      2017-01-26 18:30 UTC ·
+      3 replies · SMF topic #2471</p>
+<article class="post" id="msg12343">
+  <div class="post-head">
+    <span class="post-author">JEdwardL</span>
+    <span class="post-date muted">2017-01-26 18:30 UTC</span>
+  </div>
+  <div class="post-body">Is there a reason that the functionality of ListBox_GetItemText was changed?<br>
+<br>
+In previous versions a NIL value for this command was allowed and my routines were coded accordingly.  Previous to version 8.1 a NIL value passed to this command was allowed, but 8.1 throws an error message:  Error: NIL value not allowed<br>
+<br>
+This causes a major problem because we're involved in a migration to AutoCAD 2017 which needs OpenDCL version 8.1 in order to run.  Unfortunately all of my code was written for version 8.0 which allowed the null value.  My code accepts NIL as a valid value and processes data accordingly.  <br>
+<br>
+I'm not even sure that this is the only command that will throw a new error.  What other surprises are awaiting me?  Nobody is going to pay me to re-write all my code so it looks like we're stuck on AutoCAD 2014 until you guys fix this.<br>
+<br>
+Thank you for your efforts.</div>
+</article>
+<article class="post" id="msg12346">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2017-01-28 18:07 UTC</span>
+  </div>
+  <div class="post-body">That function never accepted a NIL argument as far as I know. You've probably made some mistake in your testing.</div>
+</article>
+<article class="post" id="msg12362">
+  <div class="post-head">
+    <span class="post-author">JEdwardL</span>
+    <span class="post-date muted">2017-01-31 21:46 UTC</span>
+  </div>
+  <div class="post-body">I don't know if it was designed to accept nil or not...all I know is that my code ran properly before with a nil value and it doesn't now.  I've commented out all references to ListBox_GetItemText and the code runs fine, but without some of the data that I was hoping to collect.<br>
+<br>
+I've got another problem with Form_Close.  I noticed that you've changed the command to Form-Close, but the old syntax appears to still work.  I'm having trouble with the status code of Form-Close not being returned to Form-Show properly.  The status is returned properly for all of the controls except for the OK button which, after storing all of the desired values, closes the form and provide the proper code to Form-Show in order to terminate the WHILE loop I'm operating in.  I close the form with DCL-FORM-CLOSE INTERSECT_MAIN 1, which used returned status 1 to DCL_FORM_SHOW which set a flag to terminate the loop and iunload the project...everything was great it was one of my most-used routines.  But now I find that the status that is returned by the Form-Close command is the same status that was returned for closing the form for the previous control.<br>
+<br>
+Something's screwy here or I'm missing something.  What could it be?</div>
+</article>
+<article class="post" id="msg12369">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2017-02-02 17:56 UTC</span>
+  </div>
+  <div class="post-body">It is easier to understand your problem if you post some code-snippets which show the behaviour.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

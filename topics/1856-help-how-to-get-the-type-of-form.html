@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help,How to get the type of form ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1856</p>
+    <h1>Help,How to get the type of form ?</h1>
+    <p class="meta">Started by XDCAD ·
+      2012-08-13 05:54 UTC ·
+      3 replies · SMF topic #1856</p>
+<article class="post" id="msg9119">
+  <div class="post-head">
+    <span class="post-author">XDCAD</span>
+    <span class="post-date muted">2012-08-13 05:54 UTC</span>
+  </div>
+  <div class="post-body">HI,ALL.<br>
+<br>
+  (setq _forms (vl-remove-if-not 'dcl_form_isactive (apply<br>
+						      'append<br>
+						      (mapcar<br>
+							'dcl_project_getforms<br>
+							(dcl_getprojects)<br>
+						      )<br>
+						    )<br>
+	       )<br>
+  )<br>
+<br>
+<br>
+<br>
+Through the above code get form variables, how to further the type of form?<br>
+exp:  Modeless ? Control Bar? .....<br>
+<br>
+Thanks...</div>
+</article>
+<article class="post" id="msg9121">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-08-13 06:53 UTC</span>
+  </div>
+  <div class="post-body">Perhaps this is what you are looking for?:<br>
+(dcl_Control_Dump  {Deep [as Boolean]})</div>
+</article>
+<article class="post" id="msg9122">
+  <div class="post-head">
+    <span class="post-author">XDCAD</span>
+    <span class="post-date muted">2012-08-13 10:03 UTC</span>
+  </div>
+  <div class="post-body">Thanks roy_043.<br>
+<br>
+<blockquote class="quote">命令: (setq d (dcl_Control_Dump (cadar a) t))<br>
+CDclControlobject [_CtlForm: XDOB_LayerAssistant_图层上停靠Bar (DlgControl: <br>
+XDOB_LayerAssistant_图层上停靠Bar)]<br>
+  #   0: Property [              (Name)] =  "图层上停靠Bar"<br>
+  #   1: Property [               Close] (hidden) =  <br>
+c:LayerTopBar_OnClose<br>
+  #   2: Property [        DocActivated] (hidden) =  <br>
+c:LayerTopBar_OnDocActivated<br>
+  #   3: Property [  EnteringNoDocState] (hidden) =  <br>
+c:LayerTopBar_OnEnteringNoDocState<br>
+  #   4: Property [                Help] (hidden) = <br>
+  #   5: Property [          Initialize] (hidden) =  <br>
+c:LayerTopBar_OnInitialize<br>
+  #   6: Property [        MouseEntered] (hidden) = <br>
+  #   7: Property [       MouseMovedOff] (hidden) = <br>
+  #   8: Property [                Move] (hidden) = <br>
+  #   9: Property [                Size] (hidden) = <br>
+  #  10: Property [    (ControlBrowser)] = [PropActiveXMethods/0/""] {Prop: <br>
+, PropGet: , PropPut: , PropPutRef: , Event: , <br>
+Methods: {}}<br>
+  #  11: Property [       AllowResizing] =  False<br>
+  #  12: Property [           BackColor] =  -24<br>
+  #  13: Property [       DockableSides] =  1<br>
+  #  14: Property [         EventInvoke] =  1<br>
+  #  15: Property [              Height] =  32<br>
+  #  16: Property [           KeepFocus] =  False<br>
+  #  17: Property [           MaxHeight] =  30<br>
+  #  18: Property [            MaxWidth] =  0<br>
+  #  19: Property [           MinHeight] =  30<br>
+  #  20: Property [            MinWidth] =  0<br>
+  #  21: Property [        TitleBarText] =  "图层助手TopBar"<br>
+  #  22: Property [             VarName] =  "LayerTopBar"<br>
+  #  23: Property [               Width] =  1080<br>
+T</blockquote><br>
+<br>
+The return value is T, how to identify which types of form?<br>
+<br>
+<br>
+Thanks again...<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg9127">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-08-14 13:01 UTC</span>
+  </div>
+  <div class="post-body">Hi, there's no direct way but you can compare the returning values of (dcl_Control_GetProperties form) of each form type. There are some special properties and events of each form type. You only have to search for the relevant ones...<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

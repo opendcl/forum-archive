@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Error calling a dll from odcl · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1756</p>
+    <h1>Error calling a dll from odcl</h1>
+    <p class="meta">Started by krunch ·
+      2012-02-18 13:59 UTC ·
+      3 replies · SMF topic #1756</p>
+<article class="post" id="msg8622">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-02-18 13:59 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+I use a dll assembly that provides a new Lisp function <a href="http://"http://forums.autodesk.com/t5/Visual-LISP-AutoLISP-and-General/How-to-set-layer-properties-per-viewport-solution/td-p/2077834"" rel="nofollow noopener">{2}</a> (it allows to write layers overrides)<br>
+<br>
+The problem is that the dll retrieves a "eLockViolation" error if it's triggered by a odcl control, and only in this case. <br>
+<br>
+The error occurence is not systematic, and it seems to depend on the previous user interraction with ACad interface. <br>
+For example it doesn't occurs :<br>
+- if I place (entsel) just before the function call and if I select an object (my problem is that I don't want to ..)<br>
+- if I place (vla-regen doc acActiveViewport) before (same)<br>
+(dcl_SetCmdBarFocus) doesn't prevent this error<br>
+<br>
+Any idea ?<br>
+</div>
+</article>
+<article class="post" id="msg8623">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2012-02-18 22:27 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Should that be:<br>
+<a href="http://forums.autodesk.com/t5/Visual-LISP-AutoLISP-and-General/How-to-set-layer-properties-per-viewport-solution/td-p/2077834" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg8624">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2012-02-18 22:41 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Without seeing your code, I'd guess ;<br>
+<br>
+Your .NET code needs a Documentlock statement <br>
+something like<br>
+<br>
+using (DocumentLock m_doclock= Application.DocumentManager.MdiActiveDocument.Lock​Document()) <br>
+ {<br>
+   // Do your mojo here to modify drawing<br>
+ }<br>
+<br>
+I'm imagining that the code is being executed in the application context (which requires document locking) from the control, while it runs in a document context from the commandline.<br>
+<br>
+It may be worth a try anyway.<br>
+<br>
+Regards, Kerry</div>
+</article>
+<article class="post" id="msg8625">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-02-19 21:56 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+You're right twice :<br>
+-that was the page that I meant ..<br>
+-the dll has been updated with your tip, there's no more error<br>
+<br>
+Dll has been made by (gile) on cadxp : <a href="http://cadxp.com/index.php?/topic/34232-proprietes-de-remplacement-des-calques/" rel="nofollow noopener">{2}</a>  (POST#3 - in french)<br>
+<br>
+Thanks a lot<br>
+<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

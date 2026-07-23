@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Background Color Label · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2145</p>
+    <h1>Background Color Label</h1>
+    <p class="meta">Started by Emiliano ·
+      2014-05-28 08:39 UTC ·
+      7 replies · SMF topic #2145</p>
+<article class="post" id="msg10730">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2014-05-28 08:39 UTC</span>
+  </div>
+  <div class="post-body">Hello, <br>
+I noticed that in some PCs (not all, maybe with different OS) the same project OpenDCL, displays the label disabled with dark gray background. <br>
+This makes the dialogue very bad. <br>
+<br>
+I note that the setting 'background', all of the controls, is -24 <br>
+<br>
+See attached image. <br>
+How can I fix this annoying problem?<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2021/Cattura.PNG">Cattura.PNG</a> <span class="muted">(5611 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10733">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-28 14:39 UTC</span>
+  </div>
+  <div class="post-body">Handling control backgrounds is very complicated, so it's possible this is a bug. It's also possible you're seeing the use of visual styles, which override the Windows default behaviors. Try setting the Use Visual Styles property to False for each control.</div>
+</article>
+<article class="post" id="msg10736">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2014-05-29 06:57 UTC</span>
+  </div>
+  <div class="post-body">I remember seeing in the past, the property "visual styles", but now I can not find it in any control:-[<br>
+<br>
+I noticed that the problem of background is very evident in the "palette", while in the Control Bar is almost acceptable. <br>
+See the attached images. <br>
+<br>
+PS. Another thing that can be useful for certain the bug: I noticed that the difference in background is much more evident with the Windows theme (color scheme: light gray) compared with the standard theme; so it seems that the controls are not transparent<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2022/ControlBar.PNG">ControlBar.PNG</a> <span class="muted">(42987 bytes)</span></li><li><a href="../attachments/2023/Palette.PNG">Palette.PNG</a> <span class="muted">(42394 bytes)</span></li><li><a href="../attachments/2024/Windows.PNG">Windows.PNG</a> <span class="muted">(51323 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10737">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2014-05-29 08:07 UTC</span>
+  </div>
+  <div class="post-body">IMPORTANT: <br>
+I noticed that the problem of the background of the label in the Control Bar will only occur if set with Openstudio, <br>
+If in Openstudio the 'Enable' is True, and set it to False from code, the background is correct!</div>
+</article>
+<article class="post" id="msg10743">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-29 10:37 UTC</span>
+  </div>
+  <div class="post-body">Your observation is correct that the "transparent" background is not transparent in the optics sense. Instead, transparent background means "match the parent control's background".</div>
+</article>
+<article class="post" id="msg10745">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2014-05-29 10:55 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2145.msg10743#msg10743 date=1401359843 wrote:</cite><br>
+Your observation is correct that the "transparent" background is not transparent in the optics sense. Instead, transparent background means "match the parent control's background".<br>
+</blockquote><br>
+<br>
+Ok, but the control does not assume the background color of the control's parent; then this is a bug ?</div>
+</article>
+<article class="post" id="msg10746">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-29 11:53 UTC</span>
+  </div>
+  <div class="post-body">As I mentioned earlier, your visual styles overrides the background color. You haven't said whether you have Use Visual Style enabled, so I'm not sure whether it's a bug.</div>
+</article>
+<article class="post" id="msg10747">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2014-05-29 12:08 UTC</span>
+  </div>
+  <div class="post-body">I think this is a bug because if I set the property Enabled = False from code, the background of the label does not change, and this is correct! <br>
+Instead, if I change the same property from Openstudio the background of the label becomes darker. <br>
+<br>
+I have not activated the property "Use Visual Style" because it is not available for the Label. <br>
+<br>
+I look forward to hearing from you about. <br>
+Thank you for your help.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

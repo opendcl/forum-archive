@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Localizing ODCL event AutoLisp  function names. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2221</p>
+    <h1>Localizing ODCL event AutoLisp  function names.</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2014-12-16 22:31 UTC ·
+      2 replies · SMF topic #2221</p>
+<article class="post" id="msg11157">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2014-12-16 22:31 UTC</span>
+  </div>
+  <div class="post-body">[search comment]  localize = localise<br>
+<br>
+<br>
+Should/can Autolisp Event function names be localized ?<br>
+Is there a definitive article somewhere regarding this.<br>
+ie:<br>
+<br>
+<br>
+(defun c:doit( / <br>
+                     *error*<br>
+                      c:3D-Plate/F#OnInitialize <br>
+                       ;; variables<br>
+                       local-varThingy<br>
+<br>
+                     )<br>
+   (defun c:3D-Plate/F#OnInitialize (/)<br>
+     (dcl-MessageBox "To Do: code must be added to event handler\r\nc:3D-Plate/F#OnInitialize" "To do")<br>
+   )<br>
+<br>
+   (princ)<br>
+)<br>
+(princ)<br>
+<br>
+<br>
+Any specific recommendations, warnings, best practice<br>
+<br>
+Regards,<br>
+</div>
+</article>
+<article class="post" id="msg11159">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-12-16 23:04 UTC</span>
+  </div>
+  <div class="post-body">See the <a href="http://www.opendcl.com/HelpFiles/index.php?page=Usage/AutoLISP.htm" rel="nofollow noopener">{2}</a> section in the documentation. The samples are intended to demonstrate the best practice. They *can* be localized as long as you're certain that they will be defined when they are fired, but I don't recommend it. For one, it causes a performance hit. Second, it's easy for newbies to get tripped up and end up with events firing after the handler has already gone out of scope.</div>
+</article>
+<article class="post" id="msg11162">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2014-12-17 02:58 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Thanks Owen. I'll have a read tonight.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

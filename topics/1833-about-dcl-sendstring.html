@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Dcl_SendString.... · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1833</p>
+    <h1>About Dcl_SendString....</h1>
+    <p class="meta">Started by XDCAD ·
+      2012-07-15 17:44 UTC ·
+      3 replies · SMF topic #1833</p>
+<article class="post" id="msg9006">
+  <div class="post-head">
+    <span class="post-author">XDCAD</span>
+    <span class="post-date muted">2012-07-15 17:44 UTC</span>
+  </div>
+  <div class="post-body">My English is very poor, Try to explain the problem<br>
+<br>
+<br>
+(defun test2()<br>
+    (setq a "OpenDcl is too powerful!!")<br>
+)<br>
+(defun c:test1()<br>
+    (dcl_SendString "(test2)\n")<br>
+    (setq a "OpenDcl is powerful!!")<br>
+)<br>
+<br>
+<br>
+Why after the completion of the c:test1,<br>
+<br>
+variable a is "OpenDcl is too powerful!!" and not "OpenDcl is powerful!!".<br>
+<br>
+How to let the variables A =  "OpenDcl is powerful!!", According to order execution of c:test1.<br>
+<br>
+Thanks..<br>
+<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg9008">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-07-15 17:56 UTC</span>
+  </div>
+  <div class="post-body">If you want the function to be executed synchronously, you can just evaluate it directly:<br>
+<br>
+(defun test2()<br>
+    (setq a "OpenDcl is too powerful!!")<br>
+)<br>
+(defun c:test1()<br>
+    (test2)<br>
+    (setq a "OpenDcl is powerful!!")<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg9010">
+  <div class="post-head">
+    <span class="post-author">XDCAD</span>
+    <span class="post-date muted">2012-07-15 19:17 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1833.msg9008#msg9008 date=1342375001 wrote:</cite><br>
+If you want the function to be executed synchronously, you can just evaluate it directly:<br>
+<br>
+(defun test2()<br>
+    (setq a "OpenDcl is too powerful!!")<br>
+)<br>
+(defun c:test1()<br>
+    (test2)<br>
+    (setq a "OpenDcl is powerful!!")<br>
+)<br>
+<br>
+</blockquote><br>
+<br>
+thanks,owen.<br>
+<br>
+I know you Idea. But sometimes I must use DCL_SENDSTRING to Solve some things. <br>
+For example,When my Modal Form is running and I want to write AUTOCAD Objet Database, Throw an exception of AUTOCAD.<br>
+<br>
+eg.  In Modal Form is Running<br>
+<br>
+(defun c:MyTree_OnEndLabelEdit(NewValue Key)<br>
+   ....<br>
+   (setq MyXRecordData '((12 34)(3 4)))<br>
+   (if (setq e (xdrx_object_get "layer" "0"))   ; Get Layer 0 Object and Set Extend Record.<br>
+      (xdrx_object_set_xrecord e MyXrecordData)   ;Throw an exception <br>
+   )<br>
+   ....<br>
+)<br>
+<br>
+<br>
+however. <br>
+<br>
+<br>
+(defun WriteXrecord(val)<br>
+   (if (setq e (xdrx_object_get "layer" "0"))   ; Get Layer 0 Object and Set Extend Record.<br>
+      (xdrx_object_set_xrecord e val)   ;OK, not Throw an exception <br>
+   )<br>
+)<br>
+(defun c:MyTree_OnEndLabelEdit(NewValue Key)<br>
+   ....<br>
+   (setq MyXRecordData '((12 34)(3 4)))<br>
+   (dcl_SendString "(WriteXrecord  MyXRecordData)\n") ; Ok<br>
+   ....<br>
+)<br>
+<br>
+<br>
+<br>
+My English is very poor, But I think you could understand I want to express meaning.and I Just use OPENDCL soon, Perhaps there is a better way? Please advice, thanks....<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg9015">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-07-15 22:23 UTC</span>
+  </div>
+  <div class="post-body">You must choose either synchronous or asynchronous execution. In your case, both should work if you implement your functions correctly. If you can post a complete example of your failing code, perhaps someone can help you resolve the problem.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

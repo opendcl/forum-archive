@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>(dcl_ComboBox_FindLineWeight psCreateNewLayer_cmbbxLayerLineweight -3) = nil · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 824</p>
+    <h1>(dcl_ComboBox_FindLineWeight psCreateNewLayer_cmbbxLayerLineweight -3) = nil</h1>
+    <p class="meta">Started by zeeboy ·
+      2009-06-19 19:07 UTC ·
+      5 replies · SMF topic #824</p>
+<article class="post" id="msg4084">
+  <div class="post-head">
+    <span class="post-author">zeeboy</span>
+    <span class="post-date muted">2009-06-19 19:07 UTC</span>
+  </div>
+  <div class="post-body">(dcl_ComboBox_FindLineWeight psCreateNewLayer_cmbbxLayerLineweight -3) is returning nil for me.  It should return the Default LineWeight according to the help file.<br>
+<br>
+Any suggestions?<br>
+<br>
+Thanks!<br>
+</div>
+</article>
+<article class="post" id="msg4085">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-20 02:50 UTC</span>
+  </div>
+  <div class="post-body">That's a documentation error. The "Default" lineweight has a value equal to whatever the default lineweight is, so a value of -3 will never be found in the list. I will correct the documentation by removing -3 from the table.</div>
+</article>
+<article class="post" id="msg4086">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-20 09:17 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=824.msg4085#msg4085 date=1245466204 wrote:</cite><br>
+I will correct the documentation by removing -3 from the table.<br>
+</blockquote><br>
+<br>
+That would be bad. Why shouldn't it be possible to select the value -3 for Default as it could be selected from the dropdown in the layer properties manager?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4087">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-20 19:20 UTC</span>
+  </div>
+  <div class="post-body">Fred, the Default value is still there, and it can still be selected either by the user or by SetCurSel.</div>
+</article>
+<article class="post" id="msg4088">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-21 11:38 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=824.msg4087#msg4087 date=1245525622 wrote:</cite><br>
+Fred, the Default value is still there, and it can still be selected either by the user or by SetCurSel.<br>
+</blockquote><br>
+<br>
+Ok, then I must have misunderstood you.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4089">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-21 11:50 UTC</span>
+  </div>
+  <div class="post-body">It may help to understand what is going on behind the scenes.  Each item in the color and lineweight combo boxes automatically gets item data assigned that represents the actual color or lineweight for that item.  In the case of "Default" lineweight, the item data is the actual default lineweight (as set by the LWDEFAULT system variable).  FindColor and FindLineWeight just scan through the list searching for item data that matches the target value.  Therefore, FindLineWeight will not find any item data with a value of -3, however if LWDEFAULT is 25, then (FindLineWeight 25) will find the Default item because it appears earlier in the list than the "0.25 mm" lineweight.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_PictureBox_LoadPictureFile  no longer shows images · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1922</p>
+    <h1>dcl_PictureBox_LoadPictureFile  no longer shows images</h1>
+    <p class="meta">Started by npcdarkeldar666 ·
+      2012-11-27 17:22 UTC ·
+      6 replies · SMF topic #1922</p>
+<article class="post" id="msg9424">
+  <div class="post-head">
+    <span class="post-author">npcdarkeldar666</span>
+    <span class="post-date muted">2012-11-27 17:22 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+I'm having trouble with a little application i wrote.<br>
+It's a small dialog, that lets you browse by images a return a value to lisp associated with that image.<br>
+After a few calls to the dialog and each time paging through the images the dialog stops showing the images. <br>
+<br>
+However the browsing itself still works (Return-Value and Tooltip are shown)<br>
+<br>
+Does anybody have an idea to solve this issue?<br>
+<br>
+Edit 1:<br>
+ODCL-Runtime in use is 7.0.0.9 an AutoCAD 2012 Architecture (D A CH)<br>
+Other CAD-Systems will be tested tomorrow, but testing an older runtime is not possible/desired since the application has to run on AutoCAD 2013 and BricsCAD V13.<br>
+<br>
+<br>
+Paging-function:<br>
+(defun p:BitmapAuswahl_BitmapBrowser_update (/ p-3 p-2 p-1 p0 p+1 p+2 p+3 s-3 s-2 s-1 s0 s+1 s+2 s+3 )<br>
+  (dcl_Control_SetValue BitmapAuswahl_BitmapBrowser_sliderBitmapBrowse x:bitmapwahl_selected)<br>
+  (setq p-3 (car (nth (p:rem+ (- x:bitmapwahl_selected 3) (length x:bitmapwahl_kv_pairs)) x:bitmapwahl_kv_pairs))<br>
+	p-2 (car (nth (p:rem+ (- x:bitmapwahl_selected 2) (length x:bitmapwahl_kv_pairs)) x:bitmapwahl_kv_pairs))<br>
+	p-1 (car (nth (p:rem+ (- x:bitmapwahl_selected 1) (length x:bitmapwahl_kv_pairs)) x:bitmapwahl_kv_pairs))<br>
+	p0  (car (nth (p:rem+ (+ x:bitmapwahl_selected 0) (length x:bitmapwahl_kv_pairs)) x:bitmapwahl_kv_pairs))<br>
+	p+1 (car (nth (p:rem+ (+ x:bitmapwahl_selected 1) (length x:bitmapwahl_kv_pairs)) x:bitmapwahl_kv_pairs))<br>
+	p+2 (car (nth (p:rem+ (+ x:bitmapwahl_selected 2) (length x:bitmapwahl_kv_pairs)) x:bitmapwahl_kv_pairs))<br>
+	p+3 (car (nth (p:rem+ (+ x:bitmapwahl_selected 3) (length x:bitmapwahl_kv_pairs)) x:bitmapwahl_kv_pairs)))<br>
+  (setq s-3 (cadddr (nth (p:rem+ (- x:bitmapwahl_selected 3) (length x:bitmapwahl_kv_pairs)) x:bitmapwahl_kv_pairs))<br>
+	s-2 (cadddr (nth (p:rem+ (- x:bitmapwahl_selected 2) (length x:bitmapwahl_kv_pairs)) x:bitmapwahl_kv_pairs))<br>
+	s-1 (cadddr (nth (p:rem+ (- x:bitmapwahl_selected 1) (length x:bitmapwahl_kv_pairs)) x:bitmapwahl_kv_pairs))<br>
+	s0  (cadddr (nth (p:rem+ (+ x:bitmapwahl_selected 0) (length x:bitmapwahl_kv_pairs)) x:bitmapwahl_kv_pairs))<br>
+	s+1 (cadddr (nth (p:rem+ (+ x:bitmapwahl_selected 1) (length x:bitmapwahl_kv_pairs)) x:bitmapwahl_kv_pairs))<br>
+	s+2 (cadddr (nth (p:rem+ (+ x:bitmapwahl_selected 2) (length x:bitmapwahl_kv_pairs)) x:bitmapwahl_kv_pairs))<br>
+	s+3 (cadddr (nth (p:rem+ (+ x:bitmapwahl_selected 3) (length x:bitmapwahl_kv_pairs)) x:bitmapwahl_kv_pairs)))<br>
+  (dcl_PictureBox_LoadPictureFile BitmapAuswahl_BitmapBrowser_imgMainImage p0 'T)<br>
+  (cond (s0<br>
+	 (dcl_Control_SetToolTipTitle BitmapAuswahl_BitmapBrowser_imgMainImage (car s0))<br>
+	 (dcl_Control_SetToolTipMainText BitmapAuswahl_BitmapBrowser_imgMainImage (cadr s0)))<br>
+	('T<br>
+	 (dcl_Control_SetToolTipTitle BitmapAuswahl_BitmapBrowser_imgMainImage "")<br>
+	 (dcl_Control_SetToolTipMainText BitmapAuswahl_BitmapBrowser_imgMainImage "")<br>
+	 ))<br>
+  (dcl_PictureBox_LoadPictureFile BitmapAuswahl_BitmapBrowser_img-2 p-2 'T)<br>
+  (cond (s-2<br>
+	 (dcl_Control_SetToolTipTitle BitmapAuswahl_BitmapBrowser_img-2 (car s-2))<br>
+	 (dcl_Control_SetToolTipMainText BitmapAuswahl_BitmapBrowser_img-2 (cadr s-2)))<br>
+	('T<br>
+	 (dcl_Control_SetToolTipTitle BitmapAuswahl_BitmapBrowser_img-2 "")<br>
+	 (dcl_Control_SetToolTipMainText BitmapAuswahl_BitmapBrowser_img-2 "")<br>
+	 ))<br>
+  (dcl_PictureBox_LoadPictureFile BitmapAuswahl_BitmapBrowser_img-1 p-1 'T)<br>
+  (cond (s-1<br>
+	 (dcl_Control_SetToolTipTitle BitmapAuswahl_BitmapBrowser_img-1 (car s-1))<br>
+	 (dcl_Control_SetToolTipMainText BitmapAuswahl_BitmapBrowser_img-1 (cadr s-1)))<br>
+	('T<br>
+	 (dcl_Control_SetToolTipTitle BitmapAuswahl_BitmapBrowser_img-1 "")<br>
+	 (dcl_Control_SetToolTipMainText BitmapAuswahl_BitmapBrowser_img-1 "")<br>
+	 ))<br>
+  (dcl_PictureBox_LoadPictureFile BitmapAuswahl_BitmapBrowser_imgSelected p0 'T)<br>
+  (cond (s0<br>
+	 (dcl_Control_SetToolTipTitle BitmapAuswahl_BitmapBrowser_imgSelected (car s0))<br>
+	 (dcl_Control_SetToolTipMainText BitmapAuswahl_BitmapBrowser_imgSelected (cadr s0)))<br>
+	('T<br>
+	 (dcl_Control_SetToolTipTitle BitmapAuswahl_BitmapBrowser_imgSelected "")<br>
+	 (dcl_Control_SetToolTipMainText BitmapAuswahl_BitmapBrowser_imgSelected "")<br>
+	 ))<br>
+  (dcl_PictureBox_LoadPictureFile BitmapAuswahl_BitmapBrowser_img+1 p+1 'T)<br>
+  (cond (s+1<br>
+	 (dcl_Control_SetToolTipTitle BitmapAuswahl_BitmapBrowser_img+1 (car s+1))<br>
+	 (dcl_Control_SetToolTipMainText BitmapAuswahl_BitmapBrowser_img+1 (cadr s+1)))<br>
+	('T<br>
+	 (dcl_Control_SetToolTipTitle BitmapAuswahl_BitmapBrowser_img+1 "")<br>
+	 (dcl_Control_SetToolTipMainText BitmapAuswahl_BitmapBrowser_img+1 "")<br>
+	 ))<br>
+  (dcl_PictureBox_LoadPictureFile BitmapAuswahl_BitmapBrowser_img+2 p+2 'T)<br>
+  (cond (s+2<br>
+	 (dcl_Control_SetToolTipTitle BitmapAuswahl_BitmapBrowser_img+2 (car s+2))<br>
+	 (dcl_Control_SetToolTipMainText BitmapAuswahl_BitmapBrowser_img+2 (cadr s+2)))<br>
+	('T<br>
+	 (dcl_Control_SetToolTipTitle BitmapAuswahl_BitmapBrowser_img+2 "")<br>
+	 (dcl_Control_SetToolTipMainText BitmapAuswahl_BitmapBrowser_img+2 "")<br>
+	 ))<br>
+  )<br>
+x:bitmapwahl_selected is a list of lists containig the image file name, return value, help string (for use in help calls) and a list of strings containig the tooltip headline and text<br>
+(list<br>
+(list "01.png" "01" "hlp_01" (list "Typ 1" "")) <br>
+(list "02.png" "02" "hlp_02" (list "Typ 2" "")) <br>
+(list "03.png" "03" "hlp_03" (list "Typ 3" "")) <br>
+(list "04.png" "04" "hlp_04" (list "Typ 4" "")) <br>
+(list "05.png" "05" "hlp_05" (list "Typ 5" "")) <br>
+)<br>
+<br>
+Functions not included in source<br>
+<br>
+(defun p:dcl_Project_Load (pname / s)<br>
+  (if (setq s (findfile (strcat pname ".odcl")))<br>
+    (dcl_Project_Load s); 'T)<br>
+    'nil)<br>
+)<br>
+<br>
+(defun p:zei (s / ) (princ)) ; opens application help file on selected topic<br>
+<br>
+(DEFUN p:GET-ACAD-WINDOW (Pos / app w h x y) ; Based on http://www.opendcl.com/forum/index.php?topic=952.msg4779#msg4779<br>
+   (COND ((MEMBER Pos '(0 1 2 3 4 5 6 7 8 9)) ; achk<br>
+          (SETQ app (VLAX-GET-ACAD-OBJECT)<br>
+                w   (VLA-GET-WIDTH app)<br>
+                h   (VLA-GET-HEIGHT app)<br>
+                x   (VLA-GET-WINDOWLEFT app)<br>
+                y   (VLA-GET-WINDOWTOP app)<br>
+          )<br>
+          (COND ((= Pos 0) (LIST w h))<br>
+                ((= Pos 1) (LIST x y))<br>
+                ((= Pos 2) (LIST x (+ y (/ h 2))))<br>
+                ((= Pos 3) (LIST x (+ y h)))<br>
+                ((= Pos 4) (LIST (+ x (/ w 2)) y))<br>
+                ((= Pos 5) (LIST (+ x (/ w 2)) (+ y (/ h 2))))<br>
+                ((= Pos 6) (LIST (+ x (/ w 2)) (+ y h)))<br>
+                ((= Pos 7) (LIST (+ x w) y))<br>
+                ((= Pos 8) (LIST (+ x w) (+ y (/ h 2))))<br>
+                ((= Pos 9) (LIST (+ x w) (+ y h)))<br>
+                ('T 'NIL)<br>
+          )<br>
+         )<br>
+   )<br>
+)<br>
+;**********************************************************<br>
+(defun p:dcl_Form_Center (form / p x y)<br>
+  (cond (form<br>
+         (setq x (dcl_control_getwidth form)<br>
+               y (dcl_control_getheight form)<br>
+               p (p:GET-ACAD-WINDOW 5)<br>
+               x (- (car  p) (* 0.5 x))<br>
+               y (- (cadr p) (* 0.5 y)))<br>
+         (dcl_Control_SetPos form x y)<br>
+         ))<br>
+)<br>
+<br>
+<br>
+Attached: <br>
+Dialog working<br>
+Dialog broken<br>
+Full code (missing functions should all be in code above)<br>
+odcl-file<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1830/Clean.png">Clean.png</a> <span class="muted">(364177 bytes)</span></li><li><a href="../attachments/1831/Error.png">Error.png</a> <span class="muted">(38629 bytes)</span></li><li><a href="../attachments/1832/BitmapAuswahl.lsp">BitmapAuswahl.lsp</a> <span class="muted">(10533 bytes)</span></li><li><a href="../attachments/1833/BitmapAuswahl.odcl">BitmapAuswahl.odcl</a> <span class="muted">(1424 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9427">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-11-29 09:48 UTC</span>
+  </div>
+  <div class="post-body">Dear Ingo,<br>
+<br>
+Your example is a bit complex, some functions are still missing and you haven't supplied any images. This makes it hard for others to test and debug your problem. I have gone ahead and created a much smaller example. I haven't been able to reproduce your problem, but I am not using AC...<br>
+<br>
+Try if you have the same issues with my example.<br>
+<br>
+Regards, Roy.<br>
+<br>
+My configuration:<br>
+Windows XP<br>
+Bricscad 13.1.11<br>
+ODCL 7.0.0.9<br>
+<br>
+Instructions:<br>
+- Put all files from the zip in a single folder.<br>
+- Open a dwg in that folder.<br>
+- Load the lsp.<br>
+- Type BITMAPTEST to run the test function.<br>
+- Use the Next button to cycle through the images.<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1834/BitmapTest.zip">BitmapTest.zip</a> <span class="muted">(2556 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9428">
+  <div class="post-head">
+    <span class="post-author">npcdarkeldar666</span>
+    <span class="post-date muted">2012-11-29 11:44 UTC</span>
+  </div>
+  <div class="post-body">My brain near end of working hours...<br>
+<br>
+I have tried your sample and it works fine.<br>
+Mine however still does have its bogus.<br>
+<br>
+Attached is a reduced and semi-automated version<br>
+Just like yours there just has to be a drawing in the folder and the program "BitmapTest" must be called.<br>
+<br>
+After several full rotations only white image fields are shown.<br>
+<br>
+Regards Ingo<br>
+<br>
+Configuration used to test:<br>
+Windows 7 32bit<br>
+OpenDCL 7.0.0.9<br>
+AutoCAD 2012 Architecture (D A CH)   &amp;    BricsCAD 13.1.11<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1835/BitmapAuswahl.zip">BitmapAuswahl.zip</a> <span class="muted">(754801 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9431">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-11-30 12:16 UTC</span>
+  </div>
+  <div class="post-body">Ingo, if I use my code with some of your images I can reproduce your problem. This suggests that the problem is perhaps caused by the image files. I've tried reducing the color depth of your images, but that does not solve the problem.<br>
+<br>
+Instructions:<br>
+- Put all files from the zip in a single folder.<br>
+- Open a dwg in that folder.<br>
+- Load the lsp.<br>
+- Type BITMAPTEST1, BITMAPTEST2 or BITMAPTEST3 to run one of the test functions.<br>
+- Use the Auto button to cycle through the images (100 times a different image will be shown).<br>
+<br>
+Results:<br>
+<br>
+Note: restart the CAD-program before each test!<br>
+<br>
+BITMAPTEST1<br>
+- Uses my very small png files.<br>
+- Memory consumption before loading the lsp: 120.000kB<br>
+- The sequence is shown correctly.<br>
+- Memory consumption after running the lsp: 137.000kB<br>
+<br>
+BITMAPTEST2<br>
+- Uses Ingo's large png files.<br>
+- Memory consumption before loading the lsp: 120.000kB<br>
+- The sequence stops displaying when the counter hits ca. 40.<br>
+- Memory consumption after running the lsp: 144.000kB<br>
+<br>
+BITMAPTEST3<br>
+- Uses Ingo's png files with a reduced color depth.<br>
+- Memory consumption before loading the lsp: 120.000kB<br>
+- The sequence stops displaying when the counter hits ca. 40.<br>
+- Memory consumption after running the lsp: 139.000kB<br>
+<br>
+Edit: removed attachment. Use BitmapTest3.zip from my next post.</div>
+</article>
+<article class="post" id="msg9432">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-11-30 14:43 UTC</span>
+  </div>
+  <div class="post-body">If I turn your png-files into bmp-files the problem does not occur. This supports my assumption that the png-files cause the problem. The disadvantage of bmp-files is that there is no compression. This means that one of your 70kB png-files will become a 2404kB bmp-file unless you reduce the color depth. ODCL does not support the JPEG-format, I don't know if any of the other supported image formats has a form of compression.<br>
+<br>
+BITMAPTEST2A<br>
+- Uses Ingo's large png-files converted to bmp-files.<br>
+- Memory consumption before loading the lsp: 112.000kB<br>
+- The sequence is shown correctly, but there appears to be a gradual slowing down.<br>
+- Memory consumption after running the lsp: 52.000kB<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1837/BitmapTest3.zip">BitmapTest3.zip</a> <span class="muted">(517724 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9433">
+  <div class="post-head">
+    <span class="post-author">npcdarkeldar666</span>
+    <span class="post-date muted">2012-12-03 10:04 UTC</span>
+  </div>
+  <div class="post-body">I don't know how to thank you roy.<br>
+<br>
+I tried nearly every change of the images but not converting them back to BMP.<br>
+<br>
+For now we will change all the images to BMP and switch the search order from PNG&gt;BMP to BMP&gt;PNG.<br>
+The size is quite an issue, but not that big because we deliver as ZIP and BMP becomes nearly as small as PNG in ZIP.<br>
+<br>
+I think I will open a ticket for bugfix/feature to officially report this bug.<br>
+<br>
+If you should come to the area Frankfurt/Heidelberg in Germany give me a note and i will invite you to a coffee or so.<br>
+<br>
+Regards <br>
+Ingo</div>
+</article>
+<article class="post" id="msg9445">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-12-06 01:56 UTC</span>
+  </div>
+  <div class="post-body">I am not able to reproduce the problem. I've added a comment to your <a href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=3592055&amp;group_id=187950&amp;atid=923363" rel="nofollow noopener">{2}</a> with additional information and followups.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

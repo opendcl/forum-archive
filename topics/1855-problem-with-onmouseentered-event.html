@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with &quot;OnMouseEntered&quot; event · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1855</p>
+    <h1>Problem with &quot;OnMouseEntered&quot; event</h1>
+    <p class="meta">Started by Emiliano ·
+      2012-08-12 07:57 UTC ·
+      3 replies · SMF topic #1855</p>
+<article class="post" id="msg9116">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-08-12 07:57 UTC</span>
+  </div>
+  <div class="post-body">Hello everyone,<br>
+I have a problem with the event "OnMouseEntered" placed on "Control Bars".<br>
+<br>
+I have refined some native AutoCAD commands, eg. the command "copy".<br>
+Unfortunately when I start a command redefined, if the mouse stepped on the form is initiated the event "OnMouseEntered" causing the following error:<br>
+<strong><em>can not return to LISP.<br>
+Point is not valid.</em></strong><br>
+<br>
+and other possible side effects.  :'(<br>
+<br>
+How do I prevent this?<br>
+Do you have any suggestions?<br>
+thanks</div>
+</article>
+<article class="post" id="msg9117">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-08-12 09:38 UTC</span>
+  </div>
+  <div class="post-body">Try adding a (princ) statement to suppress the return value from the event handler.</div>
+</article>
+<article class="post" id="msg9118">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-08-12 11:40 UTC</span>
+  </div>
+  <div class="post-body">Maybe it will help to set your form's Event Invoke property to Asynchronous.</div>
+</article>
+<article class="post" id="msg9124">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-08-14 07:57 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1855.msg9118#msg9118 date=1344771615 wrote:</cite><br>
+Maybe it will help to set your form's Event Invoke property to Asynchronous.<br>
+</blockquote><br>
+<br>
+Ok, this is the right solution!<br>
+I hope, however, does not affect other parts of my application ... :'(</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

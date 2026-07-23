@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Opening and closing Modal Dialogs from Modal Dialog problem · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2854</p>
+    <h1>Opening and closing Modal Dialogs from Modal Dialog problem</h1>
+    <p class="meta">Started by LogicTools ·
+      2023-04-24 17:12 UTC ·
+      2 replies · SMF topic #2854</p>
+<article class="post" id="msg13810">
+  <div class="post-head">
+    <span class="post-author">LogicTools</span>
+    <span class="post-date muted">2023-04-24 17:12 UTC</span>
+  </div>
+  <div class="post-body">I am trying to combine two modal dialogs.<br>
+Clicking on the TextButtons of the first modal dialog should close the current second modal dialog, if any, and open a new one with different options.<br>
+It does the task, but after a limited number of times, it closes de current second modal dialog but does not open the new one.<br>
+Here is the code, 'my_odcl_dir' should be substituted by the directory where you have downloaded 'FormTest.odcl'.<br>
+<pre class="code"><code>(defun c:FormTest (/ g_form project)<br>
+ (dcl_Project_Load (strcat my_odcl_dir "\\FormTest") T)<br>
+ (dcl_form_show FormTest_Form1)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form1#OnInitialize (/ TextButton11)<br>
+ (setq<br>
+  TextButton11 (mt_pmp_dlg "Close")<br>
+  )<br>
+ (dcl-Control-SetCaption FormTest/Form1/TextButton11 TextButton11)<br>
+ (princ)<br>
+ )<br>
+<br>
+<br>
+(defun mt_show_pict_form (form2show / form1_pos)<br>
+ (setq<br>
+  form1_pos (dcl-Control-GetPos "FormTest" "Form1")<br>
+  )<br>
+ (dcl-Form-Show "FormTest" form2show (car form1_pos) (+ (cadr form1_pos) (last form1_pos)))<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form1/TextButton0#OnClicked (/)<br>
+ (if g_form<br>
+  (dcl-Form-Close "FormTest" g_form)<br>
+  )<br>
+ (setq<br>
+  g_form "Form02"<br>
+  )<br>
+ (mt_show_pict_form g_form)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form1/TextButton1#OnClicked (/)<br>
+ (if g_form<br>
+  (dcl-Form-Close "FormTest" g_form)<br>
+  )<br>
+ (setq<br>
+  g_form "Form06"<br>
+  )<br>
+ (mt_show_pict_form g_form)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form1/TextButton2#OnClicked (/)<br>
+ (if g_form<br>
+  (dcl-Form-Close "FormTest" g_form)<br>
+  )<br>
+ (setq<br>
+  g_form "Form02"<br>
+  )<br>
+ (mt_show_pict_form g_form)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form1/TextButton3#OnClicked (/)<br>
+ (if g_form<br>
+  (dcl-Form-Close "FormTest" g_form)<br>
+  )<br>
+ (setq<br>
+  g_form "Form04"<br>
+  )<br>
+ (mt_show_pict_form g_form)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form1/TextButton4#OnClicked (/)<br>
+ (if g_form<br>
+  (dcl-Form-Close "FormTest" g_form)<br>
+  )<br>
+ (setq<br>
+  g_form "Form04"<br>
+  )<br>
+ (mt_show_pict_form g_form)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form1/TextButton5#OnClicked (/)<br>
+ (if g_form<br>
+  (dcl-Form-Close "FormTest" g_form)<br>
+  )<br>
+ (setq<br>
+  g_form "Form03"<br>
+  )<br>
+ (mt_show_pict_form g_form)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form1/TextButton6#OnClicked (/)<br>
+ (if g_form<br>
+  (dcl-Form-Close "FormTest" g_form)<br>
+  )<br>
+ (setq<br>
+  g_form "Form05"<br>
+  )<br>
+ (mt_show_pict_form g_form)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form1/TextButton11#OnClicked (/)<br>
+ (if (and g_form (dcl-Form-IsActive "FormTest" g_form))<br>
+  (dcl-Form-Close "FormTest" g_form)<br>
+  )<br>
+ (dcl-Form-Close FormTest/Form1)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form02#OnInitialize ()<br>
+ (dcl-Form-Enable FormTest/Form1 'T)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form03#OnInitialize ()<br>
+ (dcl-Form-Enable FormTest/Form1 'T)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form04#OnInitialize ()<br>
+ (dcl-Form-Enable FormTest/Form1 'T)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form05#OnInitialize ()<br>
+ (dcl-Form-Enable FormTest/Form1 'T)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form06#OnInitialize ()<br>
+ (dcl-Form-Enable FormTest/Form1 'T)<br>
+ )<br>
+<br>
+<br>
+<br>
+Any ideas why this happens?<br>
+<br>
+<br>
+<br>
+</code></pre><div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2564/FormTest.odcl">FormTest.odcl</a> <span class="muted">(2699 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13812">
+  <div class="post-head">
+    <span class="post-author">LogicTools</span>
+    <span class="post-date muted">2023-04-26 15:29 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Basically the problem was,<br>
+(dcl-Form-Close "FormTest" g_form)<br>
+That had to be changed to,<br>
+(dcl-Form-Hide "FormTest" g_form)<br>
+on all of the TextButton#OnClicked actions.<br>
+It is also important to make sure that all the secondary forms are close at the time that Form1 is for the action to be returned to  AutoCad.<br>
+Here is the modified code, 'my_odcl_dir' should be substituted by the directory where 'FormTest.odcl' was downloaded.<br>
+<pre class="code"><code><br>
+<br>
+(defun c:FormTest (/ g_form project)<br>
+ (dcl_Project_Load (strcat my_odcl_dir "\\FormTest") T)<br>
+ (dcl_form_show FormTest_Form1)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form1#OnInitialize (/ TextButton11)<br>
+ (setq<br>
+  TextButton11 (mt_pmp_dlg "Close")<br>
+  )<br>
+ (dcl-Control-SetCaption FormTest/Form1/TextButton11 TextButton11)<br>
+ (princ)<br>
+ )<br>
+<br>
+<br>
+(defun mt_show_pict_form (form2show / form1_pos return)<br>
+ (setq<br>
+  form1_pos (dcl-Control-GetPos "FormTest" "Form1")<br>
+  )<br>
+ (setq<br>
+  return (dcl-Form-Show "FormTest" form2show (car form1_pos) (+ (cadr form1_pos) (last form1_pos)))<br>
+  )<br>
+ (print return)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form1/TextButton0#OnClicked (/)<br>
+ (if (and g_form (dcl-Form-IsActive "FormTest" g_form))<br>
+  (dcl-Form-Hide "FormTest" g_form)<br>
+  )<br>
+ (setq<br>
+  g_form "Form02"<br>
+  )<br>
+ (mt_show_pict_form g_form)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form1/TextButton1#OnClicked (/)<br>
+ (if (and g_form (dcl-Form-IsActive "FormTest" g_form))<br>
+  (dcl-Form-Hide "FormTest" g_form)<br>
+  )<br>
+ (setq<br>
+  g_form "Form06"<br>
+  )<br>
+ (mt_show_pict_form g_form)<br>
+ )<br>
+<br>
+<br>
+<br>
+<br>
+(defun c:FormTest/Form1/TextButton2#OnClicked (/)<br>
+ (if (and g_form (dcl-Form-IsActive "FormTest" g_form))<br>
+  (dcl-Form-Hide "FormTest" g_form)<br>
+  )<br>
+ (setq<br>
+  g_form "Form02"<br>
+  )<br>
+ (mt_show_pict_form g_form)<br>
+ )<br>
+<br>
+<br>
+<br>
+<br>
+(defun c:FormTest/Form1/TextButton3#OnClicked (/)<br>
+ (if (and g_form (dcl-Form-IsActive "FormTest" g_form))<br>
+  (dcl-Form-Hide "FormTest" g_form)<br>
+  )<br>
+ (setq<br>
+  g_form "Form04"<br>
+  )<br>
+ (mt_show_pict_form g_form)<br>
+ )<br>
+<br>
+<br>
+<br>
+<br>
+(defun c:FormTest/Form1/TextButton4#OnClicked (/)<br>
+ (if (and g_form (dcl-Form-IsActive "FormTest" g_form))<br>
+  (dcl-Form-Hide "FormTest" g_form)<br>
+  )<br>
+ (setq<br>
+  g_form "Form04"<br>
+  )<br>
+ (mt_show_pict_form g_form)<br>
+ )<br>
+<br>
+<br>
+<br>
+<br>
+(defun c:FormTest/Form1/TextButton5#OnClicked (/)<br>
+ (if (and g_form (dcl-Form-IsActive "FormTest" g_form))<br>
+  (dcl-Form-Hide "FormTest" g_form)<br>
+  )<br>
+ (setq<br>
+  g_form "Form03"<br>
+  )<br>
+ (mt_show_pict_form g_form)<br>
+ )<br>
+<br>
+<br>
+<br>
+<br>
+(defun c:FormTest/Form1/TextButton6#OnClicked (/)<br>
+ (if (and g_form (dcl-Form-IsActive "FormTest" g_form))<br>
+  (dcl-Form-Hide "FormTest" g_form)<br>
+  )<br>
+ (setq<br>
+  g_form "Form05"<br>
+  )<br>
+ (mt_show_pict_form g_form)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form1/TextButton11#OnClicked (/)<br>
+ (if (and g_form (dcl-Form-IsActive "FormTest" g_form))<br>
+  (dcl-Form-Close "FormTest" g_form)<br>
+  )<br>
+ (c:FormTest/Form1#OnCancelClose 3)<br>
+ (dcl-Form-Close FormTest/Form1)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form1#OnCancelClose (Reason /)<br>
+ (if (dcl-Form-IsActive FormTest/Form02)<br>
+  (dcl-Form-Close FormTest/Form02)<br>
+  )<br>
+ (if (dcl-Form-IsActive FormTest/Form03)<br>
+  (dcl-Form-Close FormTest/Form03)<br>
+  )<br>
+ (if (dcl-Form-IsActive FormTest/Form04)<br>
+  (dcl-Form-Close FormTest/Form04)<br>
+  )<br>
+ (if (dcl-Form-IsActive FormTest/Form05)<br>
+  (dcl-Form-Close FormTest/Form05)<br>
+  )<br>
+ (if (dcl-Form-IsActive FormTest/Form06)<br>
+  (dcl-Form-Close FormTest/Form06)<br>
+  )<br>
+ (princ)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form02#OnInitialize ()<br>
+ (dcl-Form-Enable FormTest/Form1 'T)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form03#OnInitialize ()<br>
+ (dcl-Form-Enable FormTest/Form1 'T)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form04#OnInitialize ()<br>
+ (dcl-Form-Enable FormTest/Form1 'T)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form05#OnInitialize ()<br>
+ (dcl-Form-Enable FormTest/Form1 'T)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form06#OnInitialize ()<br>
+ (dcl-Form-Enable FormTest/Form1 'T)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form02#OnCancelClose (Reason /)<br>
+ (c:FormTest/Form1#OnCancelClose 2)<br>
+ (dcl-Form-Close FormTest/Form1)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form03#OnCancelClose (Reason /)<br>
+ (c:FormTest/Form1#OnCancelClose 2)<br>
+ (dcl-Form-Close FormTest/Form1)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form04#OnCancelClose (Reason /)<br>
+ (c:FormTest/Form1#OnCancelClose 2)<br>
+ (dcl-Form-Close FormTest/Form1)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form05#OnCancelClose (Reason /)<br>
+ (c:FormTest/Form1#OnCancelClose 2)<br>
+ (dcl-Form-Close FormTest/Form1)<br>
+ )<br>
+<br>
+<br>
+(defun c:FormTest/Form06#OnCancelClose (Reason /)<br>
+ (c:FormTest/Form1#OnCancelClose 2)<br>
+ (dcl-Form-Close FormTest/Form1)<br>
+ )<br>
+</code></pre></div>
+</article>
+<article class="post" id="msg13818">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2023-05-07 17:34 UTC</span>
+  </div>
+  <div class="post-body">Hm, thanks for sharing. I had no test, but in my experiences modal forms give no control to AutoCAD for picking points or entities after dcl-form-hide. You have to dcl-form-close before and reopen the form by dcl-form-show again. dcl-form-hide my work with modeless forms, but, as I said, I have no experiencee with that workflow.<br>
+Regards, Fred Tomke</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>drag drop in listview · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1236</p>
+    <h1>drag drop in listview</h1>
+    <p class="meta">Started by fred_tomke ·
+      2010-03-25 22:38 UTC ·
+      5 replies · SMF topic #1236</p>
+<article class="post" id="msg6620">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-25 22:38 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I attached a small sample. It is the goal to setup a description.<br>
+When the checkbox if off, you can add or remove properties from the description by double clicking the desired items from the left list or the not desired items from the right list.<br>
+Unfortunately, double click does not work when AllowDrag is set. I hope there would be any chance to make it work again.<br>
+<br>
+When the checkbox is set, the desired property can be moved from the left list to the right. The preview shall be updated automatically. That's why OnDragnDropFromControl is active.<br>
+Removing and adding properties work properly using Drag&amp;Drop.<br>
+But changing the order within the right list does not work properly: after finishing the event OnDragnDropFromControl OpenDCL removes the moved item. I would agree this if the moved item would appear at the destination. But it does not so.<br>
+<br>
+How can I solve this?<br>
+<br>
+Thanks for testing.<br>
+Fred<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1353/lvdrag.gif">lvdrag.gif</a> <span class="muted">(781941 bytes)</span></li><li><a href="../attachments/1354/lvdrag.LSP">lvdrag.LSP</a> <span class="muted">(10761 bytes)</span></li><li><a href="../attachments/1355/lvdrag.odcl">lvdrag.odcl</a> <span class="muted">(1434 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6623">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-26 01:28 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1236.msg6620#msg6620 date=1269556703 wrote:</cite><br>
+But changing the order within the right list does not work properly: after finishing the event OnDragnDropFromControl OpenDCL removes the moved item. I would agree this if the moved item would appear at the destination. But it does not so.<br>
+</blockquote><br>
+<br>
+Your OnDragnDropFromControl must insert the item being dropped. It looks like your code is completely replacing the entire list during the handler, which means the drop handler is erasing the source item. Try simplifying your code so that it only inserts the dropped item and nothing else; it should then work as you expect.</div>
+</article>
+<article class="post" id="msg6626">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-26 04:53 UTC</span>
+  </div>
+  <div class="post-body">The problem with being unable to double click when drag is enabled is due to an odd design of the MFC drag/drop implementation. I have now written a custom implementation for the next build that fixes the problem. I am concerned that there may be a very good reason for the MFC behavior, but in my brief testing, my custom code seems to be working fine, so we will see.</div>
+</article>
+<article class="post" id="msg6629">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-26 06:06 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1236.msg6623#msg6623 date=1269566903 wrote:</cite><br>
+Try simplifying your code so that it only inserts the dropped item and nothing else; it should then work as you expect.<br>
+</blockquote><br>
+<br>
+Yes I tried and sometimes it will remove the DropItem.<br>
+I attached a new sample.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1357/lvdrag.LSP">lvdrag.LSP</a> <span class="muted">(12548 bytes)</span></li><li><a href="../attachments/1358/lvdrag.odcl">lvdrag.odcl</a> <span class="muted">(1275 bytes)</span></li><li><a href="../attachments/1359/lvdrag_new.gif">lvdrag_new.gif</a> <span class="muted">(80181 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6631">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-26 14:47 UTC</span>
+  </div>
+  <div class="post-body">You are correct, it is removing the wrong item after the new item is inserted before the source item. I have fixed this now for the next build.</div>
+</article>
+<article class="post" id="msg6633">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-26 15:20 UTC</span>
+  </div>
+  <div class="post-body">Great, thank you.<br>
+Have a nice weekend!<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

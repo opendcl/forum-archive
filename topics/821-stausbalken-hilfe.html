@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stausbalken hilfe. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/11-german.html">GERMAN</a> /
+      Topic 821</p>
+    <h1>Stausbalken hilfe.</h1>
+    <p class="meta">Started by SpEEDY ·
+      2009-06-18 08:27 UTC ·
+      1 replies · SMF topic #821</p>
+<article class="post" id="msg4061">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2009-06-18 08:27 UTC</span>
+  </div>
+  <div class="post-body">Hallo Forum,<br>
+<br>
+Hab beim basteln mit Opendcl. <br>
+Den Statusbalken gefunden. <br>
+Jetzt ist mir aber die frage gekommen wie arbeitet so einen Balken ein.<br>
+Habe in den Samplers geguckt bin aber nicht schlauer geworden.<br>
+Könnte wir vielleicht jemand erklären wie das funktioniert.<br>
+<br>
+Muss einen Variable vielleicht auf 100 hoch gezählt werden oder so?<br>
+Bin leider noch Anfänger.   ;D<br>
+<br>
+Danke schon mal.<br>
+<br>
+SpEEDY<br>
+</div>
+</article>
+<article class="post" id="msg4062">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-18 09:50 UTC</span>
+  </div>
+  <div class="post-body">Hallo SpEEDY, das ist ganz einfach. Dafür gibt's zwei Ansätze, den relativen und den absoluten.<br>
+<br>
+<strong>Relativer Ansatz:</strong><br>
+Der geht immer von 100 % als Ziel aus. D.h. Du setzt MinValue im Studio auf 0 und MaxValue auf 100. Speicherst das Projekt, dann läuft der Rest im Quellcode.<br>
+<br>
+<br>
+(if (setq ssAusw (ssget "X"))<br>
+  (progn<br>
+    (dcl_control_setvalue MyProj_MyForm_MyControl 0) ;; mache ich beim Beginn immer so<br>
+    (setq intCnt -1)<br>
+    (repeat (setq intGes (sslength ssAusw))<br>
+      (setq entObj (ssname ssAusw (setq intCnt (1+ intCnt))))<br>
+      (dcl_control_setvalue MyProj_MyForm_MyControl (fix (* (/ (float intCnt) intGes) 100.0)))<br>
+      (do_something_senseful)<br>
+    ); repeat<br>
+    (dcl_control_setvalue MyProj_MyForm_MyControl 0) ;; mache ich beim Ende immer so<br>
+  ); progn<br>
+); if<br>
+<br>
+<br>
+<strong>Absoluter Ansatz</strong><br>
+In diesem Falle weist Du dem Verlaufsbalken den Maximalwert deiner Schleife zu und änderst bei jedem Durchlauf den Wert. Du setzt MinValue im Studio auf 0. Speicherst das Projekt, dann läuft der Rest im Quellcode.<br>
+<br>
+<br>
+(if (setq ssAusw (ssget "X"))<br>
+  (progn<br>
+    (setq intCnt -1)<br>
+    (setq intGes (sslength ssAusw))<br>
+    (dcl_control_setvalue MyProj_MyForm_MyControl 0) ;; mache ich beim Beginn immer so<br>
+    (dcl_Control_SetMaxValue MyProj_MyForm_MyControl intGes)<br>
+    (repeat <br>
+      (setq entObj (ssname ssAusw (setq intCnt (1+ intCnt))))<br>
+      (dcl_control_setvalue MyProj_MyForm_MyControl intCnt)<br>
+      (do_something_senseful)<br>
+    ); repeat<br>
+    (dcl_control_setvalue MyProj_MyForm_MyControl 0) ;; mache ich beim Ende immer so<br>
+  ); progn<br>
+); if<br>
+<br>
+<br>
+Erfahrungswert:<br>
+Wir hatten einmal den Fall, dass jemand über 10.000 zu prüfende Objekte in der Zeichnung hatte. Die Prüfroutine zeigte einen Verlaufsbalken an und jedes mal wurde Value gesetzt. Bei irgendeinem Wert über 10.000 erschien eine Zugriffsverletzung. Wir ließen den Verlaufsbalken weg und siehe da - keine Zugriffsverletzung. Wenn man jetzt bedenkt, dass jeder Zugriff auf die Dialogbox Zeit kostet und der visuelle Unterschied eines Einzelwertes zwischen 0 und 100 eher marginal ist, empfehle ich den optimierten relativen Ansatz.<br>
+<br>
+<strong>Optimierter relativer Ansatz</strong><br>
+<br>
+<br>
+(if (setq ssAusw (ssget "X"))<br>
+  (progn<br>
+    (setq intGes (sslength ssAusw))<br>
+    (setq reaGes (float intGes))<br>
+    (setq intCnt -1)<br>
+    (setq intCur 0)<br>
+    (dcl_control_setvalue MyProj_MyForm_MyControl intCur)<br>
+    (repeat intGes<br>
+      (setq intCnt (1+ intCnt))<br>
+      (setq entObj (ssname ssAusw intCnt))<br>
+      (if (&gt; (setq intNum (fix (* (/ intCnt reaGes) 100.0))) intCur)<br>
+        (dcl_control_setvalue MyProj_MyForm_MyControl (setq intCur intNum))<br>
+      ); if<br>
+      (do_something_senseful)<br>
+    ); repeat<br>
+    (dcl_control_setvalue MyProj_MyForm_MyControl 0)<br>
+  ); progn<br>
+); if<br>
+<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

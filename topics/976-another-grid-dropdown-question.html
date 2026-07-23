@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Another Grid dropdown Question · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 976</p>
+    <h1>Another Grid dropdown Question</h1>
+    <p class="meta">Started by johnM ·
+      2009-10-17 21:23 UTC ·
+      1 replies · SMF topic #976</p>
+<article class="post" id="msg4945">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2009-10-17 21:23 UTC</span>
+  </div>
+  <div class="post-body">Runtime 6.0.0.8<br>
+<br>
+A Grid with 2 columns both dropdown 40<br>
+For conversation sake there is 1 row <br>
+When an item is picked in column 1 a corresponding list is loaded into column 2<br>
+When a different item is picked in column 1 the list for column 2 is cleared and the text in the cell is cleared then the new corresponding list is loaded into column 2.<br>
+<br>
+Issue: if there is text in cell2 and you click on it directly after picking a new item in cell1 the text in cell2 is not cleared. The dropdown box in cell2 appears with the old text in it.<br>
+<br>
+The list is loaded via the endlabeledit event. The dropdown box appears in cell2 before the endlabeledit event for cell1 is finished executing.<br>
+</div>
+</article>
+<article class="post" id="msg4946">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-17 23:36 UTC</span>
+  </div>
+  <div class="post-body">The OnEndLabelEdit event for the first cell should be fired before the edit control for the second cell is created. Are you saying that is not the case? What is the Event Invoke property set to for the grid control? If it's set to Asynchronous, that would explain the behavior you're seeing.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>sample of (dcl_form_show) with variable · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 754</p>
+    <h1>sample of (dcl_form_show) with variable</h1>
+    <p class="meta">Started by khann ·
+      2009-05-12 04:57 UTC ·
+      4 replies · SMF topic #754</p>
+<article class="post" id="msg3691">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2009-05-12 04:57 UTC</span>
+  </div>
+  <div class="post-body">Hi. <br>
+I've just start to learn ODCL.<br>
+ODCL seems great to me.<br>
+I have a question.<br>
+When using (dcl_form_show) can I use the form name with variable?<br>
+<br>
+<br>
+example : <br>
+...<br>
+(<span style="color:blue">setq</span> *myForm <span style="color:purple">"ODCL_Form1"</span>)<br>
+(<span style="color:blue">dcl_form_show</span> *myForm )<br>
+...<br>
+<br>
+<br>
+Thanks.<br>
+</div>
+</article>
+<article class="post" id="msg3692">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-05-12 05:25 UTC</span>
+  </div>
+  <div class="post-body">Yes.<br>
+<br>
+<br>
+<br>
+<br>
+Did you know that ODCL has variable names for each of your forms and Controls ?<br>
+ie<br>
+<strong>MyProject_MyForm<br>
+MyProject_MyForm_Label1</strong><br>
+<br>
+(defun C:MyCommand (/ Result)<br>
+  (command "_OPENDCL") ; Load OpenDCL Runtime<br>
+  (if (dcl_Project_Load "MyProject") ; Load project data from MyProject.odcl<br>
+    (progn<br>
+      (setq Result (dcl_Form_Show MyProject_MyForm))<br>
+      ; Note that this code does not execute until *after* the dialog is closed!<br>
+      (if (= Result 1) (DoSomething))<br>
+    )<br>
+  )<br>
+  (princ)<br>
+)<br>
+(defun c:MyProject_MyForm_OnInitialize (/)<br>
+  (dcl_Control_SetCaption MyProject_MyForm_Label1 "Hello World!")<br>
+)<br>
+(defun c:MyProject_MyForm_CloseButton_OnClicked (/)<br>
+  (dcl_Form_Close MyProject_MyForm)<br>
+)<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3696">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2009-05-12 07:30 UTC</span>
+  </div>
+  <div class="post-body">Yes. I've read that in the Help and tutorial.<br>
+So I want to make the Form name with (<span style="color:blue">strcat</span>) Fun.<br>
+<br>
+Like this :<br>
+<br>
+(<span style="color:blue">setq</span> *form_name <span style="color:purple">"Form1"</span>)<br>
+(<span style="color:blue">setq</span> *myForm (<span style="color:blue">strcat</span> <span style="color:purple">"ODCL"</span> *form_name ))<br>
+<br>
+(<span style="color:blue">dcl_form_show </span> *myForm )<br>
+<br>
+Can this be possible?</div>
+</article>
+<article class="post" id="msg3697">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-12 08:48 UTC</span>
+  </div>
+  <div class="post-body">Sure. There are several samples in my mind:<br>
+<br>
+1. Depending on which form should be shown you put the form object into a variable. I do it so with controls doing similiar the same. In this sample you have to know the forms which may be shown.<br>
+Sample:<br>
+<br>
+<br>
+(cond<br>
+  ((= intCondition 1) (setq oForm MyProj_Form1))<br>
+  ((= intCondition 2) (setq oForm MyProj_Form2))<br>
+  ((= intCondition 3) (setq oForm MyProj_Form3))<br>
+  ((= intCondition 4) (setq oForm MyProj_Form4))<br>
+); cond<br>
+<br>
+(if oForm (dcl_form_show oForm))<br>
+<br>
+<br>
+2. If you don't know the form exactly or you want to run a loop there are two different ways<br>
+<br>
+a) with strings<br>
+<br>
+<br>
+(defun form_show (strForm)<br>
+  (if (member strForm (dcl_project_getforms "MyProject"))<br>
+    (dcl_form_show "MyProject" strForm)<br>
+  ); if<br>
+); form_show<br>
+<br>
+(form_show "MyForm1")<br>
+<br>
+<br>
+b) with objects<br>
+<br>
+<br>
+(defun form_show (strForm / oForm)<br>
+  (if (setq oForm (eval (read (strcat "MyProject_" strForm))))<br>
+    (dcl_form_show oForm)<br>
+  ); if<br>
+); form_show<br>
+<br>
+(form_show "MyForm1")<br>
+<br>
+<br>
+Hope that helps.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3698">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2009-05-12 12:53 UTC</span>
+  </div>
+  <div class="post-body"> :D Thanks Fred!<br>
+That's just what I want.<br>
+I didn't place the (<span style="color:blue">eval</span>) at proper position.<br>
+<br>
+It saves me from making of hundreds variables.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

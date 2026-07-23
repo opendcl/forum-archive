@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Composit Forms · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 403</p>
+    <h1>Composit Forms</h1>
+    <p class="meta">Started by jb ·
+      2008-08-11 14:13 UTC ·
+      2 replies · SMF topic #403</p>
+<article class="post" id="msg1813">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-08-11 14:13 UTC</span>
+  </div>
+  <div class="post-body">I posted this over at theSwamp.org and thought I might post here:<br>
+<br>
+Composit Forms, what the heck is that you ask.  Well, unlike DCL, OpenDCL forms can be displayed anywhere on the monitor.  Now this is nice when you have "floating" modeless forms: you can show them at a specific location.  What I've done in the following example is use that ability to "transform" a floating modeless form to a toolbar like form.  I got the idea on one of my larger projects.  The idea came about when I realized that once a user "learns" the intricacies of a program, some of the more informative controls are no longer needed.  Or, if a program is used intermittently, it would be nice to switch back and forth between a tool bar like form to one with more information.<br>
+<br>
+The too projects of mine that I switched over to take advantage of this ability are too large and focused to make good examples.  But what did make a perfect example is Tim Spangler's BrickWorx program that CAB and I collaborated on:<br>
+<br>
+<a href="http://www.theswamp.org/index.php?topic=23425.0" rel="nofollow noopener">{2}</a><br>
+<br>
+I realized that once you got to know what the heck a JackArch with a Keystone was, you really didn't need the big floating Palette:<br>
+<br>
+<img src="http://i283.photobucket.com/albums/kk302/bothetraveler/BWdown.jpg?t=1218460945" alt="" loading="lazy"><br>
+<br>
+So really all you need is a nifty toolbar with a drop-down control that lists the different BrickWorx options.  So hit the "Roll-up" button on the form above and instead of just a lifeless bar you get this: (or you can call it with the command "BrickWorxTB")<br>
+<br>
+<img src="http://i283.photobucket.com/albums/kk302/bothetraveler/BWTB.jpg?t=1218460982" alt="" loading="lazy"><br>
+<br>
+The "Roll-down" button on the far left will show the larger floating form with the tree control and preview.  The drop-down lists the different options and to the right is the draw button.  Now if your unsure about that jackarch because you haven't used BrickWorx in a while, just hit the preview button to the right of the draw button.<br>
+<br>
+<img src="http://i283.photobucket.com/albums/kk302/bothetraveler/BWTBpreview.jpg?t=1218461009" alt="" loading="lazy"><br>
+<br>
+The slim gray bar to the right of the preview button is the close button for the toolbar.<br>
+<br>
+Now, these forms will all follow each other as you move them around the screen (except the tool bar's preview - but it will follow once it's closed and then reopened.)  Use the space to the left of the "roll-up" button to move the tool bar form around.<br>
+<br>
+The drop-down control has an event enabled: OnSelectionChanged:<br>
+<br>
+<pre class="code"><code>(defun c:BW001_01_ComboBox_OnSelChanged (nSelection sSelText /)<br>
+  (bw:ToolBarDraw) 		;&lt;-- option 1: run the draw command<br>
+  ;(bw:Preview)				;&lt;-- option 2: show the preview<br>
+  ;(princ (strcat "\n" sSelText))	;&lt;-- option 3: print to the command line<br>
+  (princ)<br>
+)</code></pre><br>
+<br>
+I have it set to draw the brick when a selection is changed.  Option 2 is to show the preview, and 3 do nothing but echo the brick option to the command line.<br>
+<br>
+Well, have a look and use this example to play around with OpenDCL - the possibilities are really astounding!<br>
+<br>
+ :wink:<br>
+<br>
+jb</div>
+</article>
+<article class="post" id="msg1817">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-08-12 18:32 UTC</span>
+  </div>
+  <div class="post-body">Very nice work, as always JB.<br>
+</div>
+</article>
+<article class="post" id="msg1818">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-08-13 00:28 UTC</span>
+  </div>
+  <div class="post-body">Thanks Barry, just trying to get this thing "out there"!<br>
+<br>
+Owen has done such a fantastic job - to think that a program this profound could go open source.  I hope this year see's Chad in a better place.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

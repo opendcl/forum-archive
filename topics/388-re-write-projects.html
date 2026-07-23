@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>re-write projects? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 388</p>
+    <h1>re-write projects?</h1>
+    <p class="meta">Started by jb ·
+      2008-07-31 13:26 UTC ·
+      12 replies · SMF topic #388</p>
+<article class="post" id="msg1735">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-07-31 13:26 UTC</span>
+  </div>
+  <div class="post-body">You guy's who are using 5.0.0.20, are you having to re-write your projects from 4 or just opening them up in the editor and saving?  I've just been playing around - just opening up an old 4 project and was having some pretty bad problems.  So I decided to do a simple project to post for Owen, started it from scratch in a 5, and guess what? Yep, worked flawlessly!<br>
+<br>
+So, am I going to need to start from scratch?<br>
+<br>
+How about cutting and pasting controls from 4 to 5??<br>
+<br>
+thanks for your input!!</div>
+</article>
+<article class="post" id="msg1736">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-07-31 14:34 UTC</span>
+  </div>
+  <div class="post-body">Hello, I had such a problem, too.<br>
+I solved that saving the old project step by step in <br>
+- OpenDCL.Studio.4.0.2.4<br>
+- OpenDCL.Studio.ENU.4.1.2.2<br>
+- OpenDCL.Studio.ENU.5.0.0.x<br>
+<br>
+That should work.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1737">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-07-31 15:34 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=388.msg1735#msg1735 date=1217510805 wrote:</cite><br>
+So, am I going to need to start from scratch?<br>
+How about cutting and pasting controls from 4 to 5??<br>
+</blockquote><br>
+<br>
+If you have old projects that don't open correctly, please email them so I can have a look.  Copying and pasting definitely won't work from 4 to 5.</div>
+</article>
+<article class="post" id="msg1739">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-07-31 19:08 UTC</span>
+  </div>
+  <div class="post-body">thanks for the input Owen.<br>
+<br>
+The projects I have are pretty big - do you just want the .odcl file to look at or something you can pull up in AutoCAD??</div>
+</article>
+<article class="post" id="msg1740">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-07-31 19:26 UTC</span>
+  </div>
+  <div class="post-body">James, I just need enough to see the problem. You didn't say what the problem was, but I assume they fail to open int he editor, or are not correct after the open. In that case, all I need is the .odcl file and a description of what is wrong.</div>
+</article>
+<article class="post" id="msg1741">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-07-31 21:06 UTC</span>
+  </div>
+  <div class="post-body">Sorry, no - they open fine in the editor.<br>
+<br>
+The two problems I had were a splitter nowhere on the form thus mucking up the associated controls and a very weird problem with a listbox: the double click event fires a routine that uses 2009's Mleader command.  it's almost like the info gets sent asynchronously.<br>
+<br>
+But the really interesting part is when I started a project from scratch non of the above happened.<br>
+<br>
+Let me see if I can par down the project and still get it to mess up.  I'll post it when I can.<br>
+<br>
+Thanks.<br>
+<br>
+Great job!!</div>
+</article>
+<article class="post" id="msg1747">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-08-01 13:46 UTC</span>
+  </div>
+  <div class="post-body">AUTOCAD 2009<br>
+OpenDCL 5.0.0.20<br>
+<br>
+Ok - here's my problem project.  Sorry it's so big.<br>
+<br>
+Problems:<br>
+Painting (thinking it's due to the splitter)<br>
+asynchronous command call (once I re-wrote the entire odcl project in the new 5.0.0.20 editor this problem went away.  now I'd like to note have to do that on every project, so maybe there is a fix.)<br>
+<br>
+kb002-odcl.lsp has all the routines to control the form.<br>
+kb002-form.lsp has the compiled info from kb002.lsp and uses dcl_project_import.<br>
+kb002.lsp / kb002.odcl are the project definition files edited by the studio editor.<br>
+<br>
+the rest are support files.<br>
+<br>
+what this beast does;<br>
+Make sure Project.key is in AutoCAD's search path.  This is a simple tab delimited text file that contains Keys and Notes.  The program uses this file to insert notes and keynotes into the drawing.  Now I use AutoCAD Architecture 2009 utilizing the Project Navigator so everything is Project specific.  I should have all the search defaulting to the search path if the Project path's not there.  Let me know if there are any problems.<br>
+<br>
+After loading all the .lsp files call KBKEYNOTES at the command line.  This should appear:<br>
+<br>
+<img src="http://i283.photobucket.com/albums/kk302/bothetraveler/RolledDown.jpg" alt="" loading="lazy"><br>
+<br>
+If I caught all my search defaults then the form should be populated with keynotes.  Double click on the keynote listBox to ad a keynote.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/454/kb002.zip">kb002.zip</a> <span class="muted">(25670 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1750">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-08-01 15:56 UTC</span>
+  </div>
+  <div class="post-body">I loaded your .lsp files in AutoCAD 2009 on Vista and ran KBKEYNOTES. I received some argument exceptions, but after dismissing those, the form displayed and I didn't notice any painting problems. The splitter appears to be working correctly. It would help if you describe exactly what the problems are, and the exact steps to reproduce them.</div>
+</article>
+<article class="post" id="msg1751">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-08-02 14:29 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+<br>
+Ah, got the splitter working.  I think it may have been an error in the registry?  I set the height programatically and it's working nicely.<br>
+<br>
+However,<br>
+<br>
+Did you try to add a keynote?  Double clicking on the keynote list box??  It's as if autocad is ignoring the pauses in the following:<br>
+<br>
+<pre class="code"><code>(command ".mleader" "_O" "_C" "_M" "_X" pause pause "." "")</code></pre><br>
+<br>
+the pauses are to allow the user to pick the 2 points for the mleader.<br>
+<br>
+This is echoed to the command line:<br>
+<br>
+<blockquote class="quote">Command: kbPlaceNote .mleader<br>
+Specify leader arrowhead location or [leader Landing first/Content <br>
+first/Options] : _O<br>
+Enter an option [Leader type/leader lAnding/Content type/Maxpoints/First <br>
+angle/Second angle/eXit options] : _C<br>
+Select a content type  : _M<br>
+Enter an option [Leader type/leader lAnding/Content type/Maxpoints/First <br>
+angle/Second angle/eXit options] : _X<br>
+Specify leader arrowhead location or [leader Landing first/Content <br>
+first/Options] :<br>
+Invalid Input. <strong>&lt;== first pause</strong><br>
+Specify leader arrowhead location or [leader Landing first/Content <br>
+first/Options] :<br>
+Specify leader landing location: .<br>
+Invalid Input. <strong>&lt;== second pause</strong><br>
+Specify leader landing location:<br>
+Enter text: *Cancel*<br>
+</blockquote><br>
+<br>
+ ???<br>
+<br>
+Interesting.<br>
+<br>
+When I go back to the old 4.1.2.2 project, using the 5.0.0.20 arx file, everything works fine.  So it must be something with the OnMouseMovedOff event.<br>
+<br>
+Thanks for any help.</div>
+</article>
+<article class="post" id="msg1752">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-08-03 15:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=388.msg1751#msg1751 date=1217687363 wrote:</cite><br>
+Ah, got the splitter working.  I think it may have been an error in the registry?<br>
+Did you try to add a keynote?  Double clicking on the keynote list box??  It's as if autocad is ignoring the pauses in the following:<br>
+</blockquote><br>
+<br>
+It's very possible that the splitter problem was due to a saved registry setting. The MLEADER command is workjing as expected for me, pausing until I select two points, then placing the leader at the picked points.</div>
+</article>
+<article class="post" id="msg1753">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-08-03 19:30 UTC</span>
+  </div>
+  <div class="post-body">Hi, jb, maybe my remembering is wrong, but it sounds similiar to an existing question of yours I (and Owen) answered here: http://www.opendcl.com/forum/index.php?topic=356.msg1560#msg1560.<br>
+<br>
+Am I wrong?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1767">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-08-04 12:12 UTC</span>
+  </div>
+  <div class="post-body">Wow, your right Fred - had forgotten that.  :-[   That's a shame really.<br>
+<br>
+Owen, any thoughts of a workaround??</div>
+</article>
+<article class="post" id="msg1768">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-08-04 15:34 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=388.msg1767#msg1767 date=1217851977 wrote:</cite><br>
+Owen, any thoughts of a workaround??<br>
+</blockquote><br>
+<br>
+The only solution I can see is to disable the form while a command is active.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

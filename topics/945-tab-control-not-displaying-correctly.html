@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tab Control Not Displaying Correctly · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 945</p>
+    <h1>Tab Control Not Displaying Correctly</h1>
+    <p class="meta">Started by eptownie1988 ·
+      2009-09-29 02:42 UTC ·
+      8 replies · SMF topic #945</p>
+<article class="post" id="msg4749">
+  <div class="post-head">
+    <span class="post-author">eptownie1988</span>
+    <span class="post-date muted">2009-09-29 02:42 UTC</span>
+  </div>
+  <div class="post-body">I have a Form that contains a tab control.  The first (3) three tab backgrounds are the correct size.  The (5) five other tab backgrounds do not display the correct size.  I have attached a zip file that contains a Word 2003 document that has (2) two screen shots showing what I have just explained.  Please note the smaller one has a control partially showing.  This does show properly when I open the dialog box in AutoCAD.  I am just unable to see the controls completely.  Is there a way to correct this issue.  Thank you.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/924/Tab Control.zip">Tab Control.zip</a> <span class="muted">(155942 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4750">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-09-29 09:01 UTC</span>
+  </div>
+  <div class="post-body">Hello, normally it should be solved by saving and closing the OpenDCL project file and reopen it. If it couldn't be solved this way please upload your odcl-project file to give us the chance to have a look.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4752">
+  <div class="post-head">
+    <span class="post-author">eptownie1988</span>
+    <span class="post-date muted">2009-09-29 13:11 UTC</span>
+  </div>
+  <div class="post-body">Fred:<br>
+<br>
+I tried that thinking it would update but it only updated one more but not the others.  I have attached a copy of the file for review.  Any help would be appreciated.  Thank you.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/925/ITEXT.odcl">ITEXT.odcl</a> <span class="muted">(20111 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4753">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-09-29 13:18 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I've got it:<br>
+<ul><br>
+Open your project file<br>
+Do NOT doubleclick Form1<br>
+doubleclick every tab (SLC, IDC, ...) one after each other<br>
+Now doubleclick Form1<br>
+Resize it to the right, so that all of the tabcontrol is visible<br>
+doubleclick NAC again<br>
+it should look like this now<br>
+</ul><div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/926/pic.png">pic.png</a> <span class="muted">(7896 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4754">
+  <div class="post-head">
+    <span class="post-author">eptownie1988</span>
+    <span class="post-date muted">2009-09-29 13:53 UTC</span>
+  </div>
+  <div class="post-body">Fred:<br>
+<br>
+That worked perfectly.  Thanks for getting this resolved for me.</div>
+</article>
+<article class="post" id="msg4782">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-02 17:04 UTC</span>
+  </div>
+  <div class="post-body">Sounds like a bug...</div>
+</article>
+<article class="post" id="msg4783">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-02 17:40 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+I didn't suggest to report it as a bug because resizing the form and its client controls normally works perfect. Only in this case I got unexpected results. But maybe it is actually a bug, indeed.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4794">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-02 20:27 UTC</span>
+  </div>
+  <div class="post-body">There is a bug involved here. Any time the tab strip control is resized, Studio should update the sizes of all its tab pages. The bug is that it is only resizing tab pages that are currently open in the editor. I've fixed this now so it updates tab page sizes regardless whether they are open or not.<br>
+<br>
+There is an issue with tab pages, however, that the bug fix does not address. The tab page size is saved when the project is saved. If the saved size is wrong (due to this bug -- or, if its an old project, due to a lot of old bugs in the original code), it does not get automatically corrected until the tab strip control is resized.<br>
+<br>
+Ideally, I would just add code to correct the tab page size when the project is loaded. Unfortunately, that doesn't work. The reason is because the tab page size is calculated by querying the tab strip control for it's "useable" area (i.e. the tab strip control window minus the area taken up by its tabs) -- but that can only be done if there is an instance of the tab strip control to query.<br>
+<br>
+So, if you have projects with incorrectly sized tab pages, the correct approach to fix them is to open the parent form and resize the tab strip control. Unfortunately this bug caused that solution to fail as well, unless all the tab pages happened to already be open. It will work again in Alpha 7.</div>
+</article>
+<article class="post" id="msg4810">
+  <div class="post-head">
+    <span class="post-author">eptownie1988</span>
+    <span class="post-date muted">2009-10-03 15:24 UTC</span>
+  </div>
+  <div class="post-body">Wow, talk about stumbling on a bug.  I gotta say it feels good to find something even if it was by mistake.  LOL  Everyone keep up the great work.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

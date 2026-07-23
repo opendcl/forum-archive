@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Opening ver.4.0.3.1 form crashes ver.5.1.2.3 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1340</p>
+    <h1>Opening ver.4.0.3.1 form crashes ver.5.1.2.3</h1>
+    <p class="meta">Started by dmadsen ·
+      2010-09-10 17:42 UTC ·
+      5 replies · SMF topic #1340</p>
+<article class="post" id="msg7159">
+  <div class="post-head">
+    <span class="post-author">dmadsen</span>
+    <span class="post-date muted">2010-09-10 17:42 UTC</span>
+  </div>
+  <div class="post-body">I am in the process of converting all of our AutoLisp and OpenDCL files to work with AutoCAD2011 and have come across a problem with 2 of my .ODCL files. The .ODCL file loads into the OpenDCL interface, but trying to open and edit one of the forms causes the program to crash. Other forms in the same project are fine.<br>
+<br>
+The .ODCL file opens fine in version 4.0.3.1, and runs great in AutoCAD2008. The .ODCL files were probably originally created in ObjectDCL v2.??, converted to OpenDCL v4.0.3.1, and now we're converting to v5.1.2.3 (or higher), in order to run with AutoCAD 2011 and Win7.<br>
+<br>
+Any ideas or help are greatly appreciated. I am having to open the .ODCL on another computer with v4.0.3.1 installed and re-create the form in v5.1.2.3... rather cumbersome!<br>
+<br>
+Thanks,<br>
+<br>
+Dave</div>
+</article>
+<article class="post" id="msg7160">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-09-10 17:54 UTC</span>
+  </div>
+  <div class="post-body">You'll probably need to post the project file for Owen to take a look at if it's crashing the Studio.<br>
+However you'll need to use version 6+ (currently 6.0.0.29) if you want to run on Acad2011. Version 5 wasn't built to run on Acad2011.<br>
+</div>
+</article>
+<article class="post" id="msg7161">
+  <div class="post-head">
+    <span class="post-author">dmadsen</span>
+    <span class="post-date muted">2010-09-10 21:52 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the quick reply. I have been using the v5.1.2.3 runtime with Acad2011 for debugging with no problems. I installed the latest build of Studio and it still crashes. I am uploading the project file with this post. The file name is 'Mcam_Leadin.odcl' and the modal form that is giving me problems is named ''Leadin_Main'. In the meantime, I am going to re-create the form from scratch... I still have Studio v4.0.3.1 installed on another laptop.<br>
+<br>
+Thanks!<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1442/Mcam_Leadin.odcl">Mcam_Leadin.odcl</a> <span class="muted">(5478 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7162">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-09-11 02:51 UTC</span>
+  </div>
+  <div class="post-body">I've attached a cleaned up version that should open without crashing. The problem was caused by a mismatch in the lengths of the List and ItemData properties of the listbox control. The next build of OpenDCL Studio has been fixed so it will handle such a case without error.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1443/Mcam_Leadin.odcl">Mcam_Leadin.odcl</a> <span class="muted">(5633 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7169">
+  <div class="post-head">
+    <span class="post-author">dmadsen</span>
+    <span class="post-date muted">2010-09-14 19:10 UTC</span>
+  </div>
+  <div class="post-body">Hi Guys! I've got another .ODCL file that is crashing Studio! Probably the same issue that was causing the last file to crash. I am attaching it to this post. The modal form that is causing problems is 'Milling_Main'.<br>
+<br>
+Thanks again!<br>
+<br>
+p.s.<br>
+Is there any way I can fix these files myself without having to bother you guys? I am guessing I will probably have a couple more with the same or similar issues. I can always re-create the form, but that is a royal pain!<br>
+<br>
+Thanks,<br>
+<br>
+DM<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1445/Mcam_Milling.odcl">Mcam_Milling.odcl</a> <span class="muted">(6141 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7170">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-09-14 19:48 UTC</span>
+  </div>
+  <div class="post-body">I'll get a new build uploaded either tonight or tomorrow, then these files won't cause crashes any more.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

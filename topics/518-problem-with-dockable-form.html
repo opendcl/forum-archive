@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with Dockable Form. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 518</p>
+    <h1>Problem with Dockable Form.</h1>
+    <p class="meta">Started by velasquez ·
+      2009-01-04 11:34 UTC ·
+      5 replies · SMF topic #518</p>
+<article class="post" id="msg2336">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-01-04 11:34 UTC</span>
+  </div>
+  <div class="post-body">HI  javascript:void(0);<br>
+The code that I posted doesn't work with <strong>Dockable Form</strong>.  <br>
+That is normal?<br>
+<br>
+<pre class="code"><code>(defun c:DclForm1_OK_OnClicked ()<br>
+    (dcl_Form_Close diatest_DclForm1)<br>
+    (setq nextDlg 2)<br>
+)<br>
+<br>
+(defun c:DclForm2_OK_OnClicked ()<br>
+    (dcl_Form_Close diatest_DclForm2)<br>
+    (setq nextDlg 1)<br>
+)<br>
+;;;<br>
+(defun c:test (/ nextDlg)<br>
+  (setq nextDlg 1)<br>
+  (while (/= nextDlg NIL)<br>
+    (cond<br>
+      ((= nextDlg 1)<br>
+       (setq nextDlg Nil)<br>
+       (dcl_Form_Show diatest_DclForm1)<br>
+      )<br>
+      ((= nextDlg 2)<br>
+       (setq nextDlg nil)<br>
+       (dcl_Form_Show diatest_DclForm2)<br>
+      )<br>
+    ) ;_ fim de cond<br>
+  ) ;_ fim de while<br>
+) ;_ fim de defun<br>
+</code></pre><br>
+<br>
+</div>
+</article>
+<article class="post" id="msg2337">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-01-04 15:10 UTC</span>
+  </div>
+  <div class="post-body">Did you expect the while loop to continue while the dialogs are displayed?  If that was your intention, it will not continue because you set nextDlg to NIL inside the loop.  Just change your OnClicked handlers to open the appropriate "next" dialog.</div>
+</article>
+<article class="post" id="msg2338">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-01-05 12:42 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen,  <br>
+I didn't understand your answer well.  <br>
+I posted the files.lsp and odcl.  <br>
+This code works well with Modal Form.<br>
+<br>
+I thank if you can me to show how it works with Dockable.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/550/Project-2-Dockable.odcl">Project-2-Dockable.odcl</a> <span class="muted">(695 bytes)</span></li><li><a href="../attachments/551/Teste-2-Dockable.LSP">Teste-2-Dockable.LSP</a> <span class="muted">(898 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2342">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-01-08 10:44 UTC</span>
+  </div>
+  <div class="post-body">Hi,  <br>
+Could anybody test the files that I posted and to tell me which my mistake?  <br>
+Thanks  <br>
+</div>
+</article>
+<article class="post" id="msg2343">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-01-09 22:05 UTC</span>
+  </div>
+  <div class="post-body">Try this....<br>
+But wouldn't it be easier to just use a Palette...<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/552/Project-2-Dockable.odcl">Project-2-Dockable.odcl</a> <span class="muted">(777 bytes)</span></li><li><a href="../attachments/553/Teste-2-Dockable.LSP">Teste-2-Dockable.LSP</a> <span class="muted">(822 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2344">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-01-10 11:54 UTC</span>
+  </div>
+  <div class="post-body">Hi Barry  <br>
+Your code worked perfectly.  <br>
+I am using this to simulate a Palette in OpenDcl 4.1.2.2  <br>
+Thank you very much for your help.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

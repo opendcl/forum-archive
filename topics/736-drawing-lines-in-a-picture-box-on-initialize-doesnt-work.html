@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Drawing Lines in a picture box on initialize doesnt work ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 736</p>
+    <h1>Drawing Lines in a picture box on initialize doesnt work ?</h1>
+    <p class="meta">Started by copter ·
+      2009-04-29 19:26 UTC ·
+      8 replies · SMF topic #736</p>
+<article class="post" id="msg3579">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-04-29 19:26 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+<br>
+Is there a way to use the function dcl_PictureBox_DrawLine on initialize.<br>
+This function works fine well called from a button but returns nil when used on initialize.<br>
+How could I do ?<br>
+<br>
+Thanks for your help<br>
+<br>
+copter</div>
+</article>
+<article class="post" id="msg3581">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-29 20:48 UTC</span>
+  </div>
+  <div class="post-body">I'm not familiar with drawing vectors on PictureBoxes but did you save the image within OnInitialize using <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/PictureBox/StoreImage.htm" rel="nofollow noopener">{2}</a>?<br>
+<br>
+(dcl_PictureBox_StoreImage Unbenannt_Dialog1_Bild1)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3583">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-04-29 21:10 UTC</span>
+  </div>
+  <div class="post-body">I tried. Same thing.<br>
+I attached an example.<br>
+Copter<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/695/Test.zip">Test.zip</a> <span class="muted">(6715 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3584">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-04-29 21:15 UTC</span>
+  </div>
+  <div class="post-body">Hi  <br>
+Call dcl_PictureBox_DrawLine inside the property of OnPaint.  <br>
+(defun c:Project1_Form1_PictureBox1_OnPaint (nHasFocus /)  <br>
+   (dcl_PictureBox_DrawLine.....  <br>
+)  <br>
+Attention this should be out of OnInitialize.</div>
+</article>
+<article class="post" id="msg3585">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-04-29 21:56 UTC</span>
+  </div>
+  <div class="post-body">I tried Onpaint (Sample is attached) but without success.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/696/Test.zip">Test.zip</a> <span class="muted">(6760 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3586">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-04-29 22:30 UTC</span>
+  </div>
+  <div class="post-body">Try now.  <br>
+You should have removed -&gt;  of the function OnPaint.  <br>
+Stop using dcl_PictureBox_DrawLine in OnInitialize.  <br>
+  <br>
+Why you this using vl-doc-ref?<br>
+<br>
+<br>
+(dcl_project_load "d:/test")<br>
+<br>
+;;;(defun c:Test_Form1_OnInitialize (/)<br>
+;;;  (dcl_PictureBox_DrawLine (vl-doc-ref 'test_Form1_PictureBox1) '((10 10 230 10 248)))<br>
+;;;)<br>
+<br>
+<br>
+(defun c:test_Form1_TextButton1_OnClicked (/)<br>
+  (dcl_PictureBox_DrawLine (vl-doc-ref 'test_Form1_PictureBox1) '((10 10 230 10 248)))<br>
+)<br>
+<br>
+(defun c:test_Form1_PictureBox1_OnPaint (HasFocus /)<br>
+  (dcl_PictureBox_DrawLine (vl-doc-ref 'test_Form1_PictureBox1) '((10 10 230 10 248)))<br>
+)<br>
+<br>
+(dcl_form_show (vl-doc-ref 'test_Form1))</div>
+</article>
+<article class="post" id="msg3591">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-04-30 02:05 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=736.msg3586#msg3586 date=1241044205 wrote:</cite><br>
+&lt; .. &gt; <br>
+  <br>
+Why you this using vl-doc-ref?<br>
+<br>
+&lt; .. &gt; </blockquote><br>
+<br>
+he's likely to be compiling a  separate-namespace VLX ... </div>
+</article>
+<article class="post" id="msg3594">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-30 03:12 UTC</span>
+  </div>
+  <div class="post-body">This issue is due to the fact that the picture box Draw methods paint directly to the screen, so they do not work unless the picture box is visible. During OnInitialize, the controls are created, but not yet visible, so any direct painting fails. The suggested solution to use OnPaint is probably the best approach.</div>
+</article>
+<article class="post" id="msg3595">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-04-30 06:05 UTC</span>
+  </div>
+  <div class="post-body">Thanks everybody !<br>
+<br>
+It works now ! <br>
+<br>
+The reason for vl-doc-ref is that I always compile in separate namespace my vlx files.<br>
+<br>
+Copter.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

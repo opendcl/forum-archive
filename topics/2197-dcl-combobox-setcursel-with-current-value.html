@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_ComboBox_SetCurSel with current value · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2197</p>
+    <h1>dcl_ComboBox_SetCurSel with current value</h1>
+    <p class="meta">Started by Peter2 ·
+      2014-11-17 07:47 UTC ·
+      3 replies · SMF topic #2197</p>
+<article class="post" id="msg11020">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-17 07:47 UTC</span>
+  </div>
+  <div class="post-body">I'm sure there is an existing, obvious function in OpenDCL, but at the moment I'm blind to see it ...<br>
+<br>
+- I have a ComboBox with some entries: (list "Jim" "John "Sue "Anne")<br>
+- Somewhere in Lisp there is: (setq myvalue "Sue")<br>
+<br>
+-&gt; How to use "dcl_ComboBox_SetCurSel" with "Sue"?<br>
+<br>
+I use "vl-position", but I'm sure there is a better way:<br>
+(dcl_ComboBox_SetCurSel haupt_cbxModus (vl-position selMode (dcl_Control_GetList haupt_cbxModus)))<br>
+<br>
+Have a  fine week!</div>
+</article>
+<article class="post" id="msg11029">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-17 15:59 UTC</span>
+  </div>
+  <div class="post-body">The normal pattern is to either call (dcl-ComboBox-SelectString) to select the first item with matching prefix, or else (dcl-ComboBox-FindStringExact) plus (dcl-ComboBox-SetCurSel) if you need to ensure an exact match.</div>
+</article>
+<article class="post" id="msg11036">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-17 20:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2197.msg11029#msg11029 date=1416239981 wrote:</cite><br>
+The normal pattern is to ...</blockquote><br>
+Thanks. I was sure there is a simple solution  :)</div>
+</article>
+<article class="post" id="msg11037">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-17 20:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Peter2 link=topic=2197.msg11020#msg11020 date=1416210470 wrote:</cite><br>
+I'm sure there is an existing, obvious function in OpenDCL, but at the moment I'm blind to see it ...<br>
+<br>
+- I have a ComboBox with some entries: (list "Jim" "John "Sue "Anne")<br>
+- Somewhere in Lisp there is: (setq myvalue "Sue")<br>
+<br>
+-&gt; How to use "dcl_ComboBox_SetCurSel" with "Sue"?<br>
+<br>
+I use "vl-position", but I'm sure there is a better way:<br>
+(dcl_ComboBox_SetCurSel haupt_cbxModus (vl-position selMode (dcl_Control_GetList haupt_cbxModus)))<br>
+<br>
+Have a  fine week!<br>
+</blockquote></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alignment of 1st column in Grid without Row Header · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2141</p>
+    <h1>Alignment of 1st column in Grid without Row Header</h1>
+    <p class="meta">Started by roy_043 ·
+      2014-05-22 06:47 UTC ·
+      3 replies · SMF topic #2141</p>
+<article class="post" id="msg10716">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-05-22 06:47 UTC</span>
+  </div>
+  <div class="post-body">I am trying to create a 'neutral' grid without row headers. But somehow the alignment of the first column differs from that of the other columns. There is more left margin. Is there a way to remove this extra margin?<br>
+<br>
+I have tried using dcl-Control-SetColumnAlignmentList but that does not solve it.<br>
+Note: If dcl-Control-SetColumnAlignmentList is used on a filled grid all columns except the first lose their content. To test this uncomment line 23 in the .lsp file.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2015/SQLite_Viewer.lsp">SQLite_Viewer.lsp</a> <span class="muted">(1454 bytes)</span></li><li><a href="../attachments/2016/SQLite_Viewer.odcl">SQLite_Viewer.odcl</a> <span class="muted">(1201 bytes)</span></li><li><a href="../attachments/2017/SQLite_Viewer.png">SQLite_Viewer.png</a> <span class="muted">(1637 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10717">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-22 13:46 UTC</span>
+  </div>
+  <div class="post-body">The grid control is based on the ListView control in report view mode, and that control is structured as rows of items, with each item containing subitems. The first column represents the "item", the other columns represent subitems. As such, the first column is treated differently in various respects, apparently including spacing. I believe I recall someone working around this by setting the first column width to zero, and making column 1 the first visible column.<br>
+<br>
+I will have a look at (dcl-SetColumnAlignmentList).</div>
+</article>
+<article class="post" id="msg10720">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-22 21:07 UTC</span>
+  </div>
+  <div class="post-body">The next build of OpenDCL 8 should now preserve grid cell contents when calling (dcl-SetColumnAlignmentList).</div>
+</article>
+<article class="post" id="msg10722">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-05-23 08:10 UTC</span>
+  </div>
+  <div class="post-body">Thank you Owen.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ListView and Alignment · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2654</p>
+    <h1>ListView and Alignment</h1>
+    <p class="meta">Started by velasquez ·
+      2019-03-05 14:16 UTC ·
+      4 replies · SMF topic #2654</p>
+<article class="post" id="msg13132">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2019-03-05 14:16 UTC</span>
+  </div>
+  <div class="post-body">I've worked with the ListView.lsp and ListView.odcl files from the OpenDCL Studio samples to test the alignment of the images in ListView.<br>
+<br>
+The problem is that I could not "CENTRALIZE" the images in a column, I used column 1 to test.<br>
+Here is the part of the .lsp file I modified and an image showing the problem.<br>
+Can someone please help me with this?<br>
+<br>
+<br>
+;|<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2452/listview_AddColumns.png">listview_AddColumns.png</a> <span class="muted">(77229 bytes)</span></li><li><a href="../attachments/2451/listview.PNG">listview.PNG</a> <span class="muted">(9556 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13136">
+  <div class="post-head">
+    <span class="post-author">Nima2018</span>
+    <span class="post-date muted">2019-03-05 16:46 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Hi  velasquez,<br>
+<br>
+I have not used ListView in OPENDCL control so far,But in the grid control I've used the following code repeatedly :<br>
+<br>
+<pre class="code"><code><br>
+<br>
+; use this in OnInitialize method<br>
+<br>
+(DCL-GRID-ADDCOLUMNS<br>
+    My_Project/Form1/Grid1<br>
+    (LIST (LIST "  NO  " 1 20)<br>
+	  (LIST "  X  " 1 70)<br>
+	  (LIST "  Y  " 1 80)<br>
+	  (LIST "  Z  " 1 40)<br>
+	  (LIST "  L  " 1 40)<br>
+	  (LIST "  CODE  " 1 20)<br>
+	  (LIST "  XX  " 1 70)<br>
+	  (LIST "  YY  " 1 80)<br>
+    ) ;_ end of list<br>
+  ) ;_ end of dcl-Grid-AddColumns<br>
+  (DCL-CONTROL-SETCOLUMNALIGNMENTLIST<br>
+    My_Project/Form1/Grid1<br>
+    (LIST 1 1 1 1 1 1 1 1)<br>
+  ) ;_ end of dcl-Control-SetColumnAlignmentList<br>
+<br>
+</code></pre><br>
+<br>
+Try, maybe it will help !<br>
+</div>
+</article>
+<article class="post" id="msg13137">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2019-03-05 20:19 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Nima2018 link=topic=2654.msg13136#msg13136 date=1551804369 wrote:</cite><br>
+<br>
+Hi  velasquez,<br>
+<br>
+I have not used ListView in OPENDCL control so far,But in the grid control I've used the following code repeatedly :<br>
+<br>
+<pre class="code"><code><br>
+<br>
+; use this in OnInitialize method<br>
+<br>
+(DCL-GRID-ADDCOLUMNS<br>
+    My_Project/Form1/Grid1<br>
+    (LIST (LIST "  NO  " 1 20)<br>
+	  (LIST "  X  " 1 70)<br>
+	  (LIST "  Y  " 1 80)<br>
+	  (LIST "  Z  " 1 40)<br>
+	  (LIST "  L  " 1 40)<br>
+	  (LIST "  CODE  " 1 20)<br>
+	  (LIST "  XX  " 1 70)<br>
+	  (LIST "  YY  " 1 80)<br>
+    ) ;_ end of list<br>
+  ) ;_ end of dcl-Grid-AddColumns<br>
+  (DCL-CONTROL-SETCOLUMNALIGNMENTLIST<br>
+    My_Project/Form1/Grid1<br>
+    (LIST 1 1 1 1 1 1 1 1)<br>
+  ) ;_ end of dcl-Control-SetColumnAlignmentList<br>
+<br>
+</code></pre><br>
+<br>
+Try, maybe it will help !<br>
+</blockquote><br>
+<br>
+Thanks Nima, with Grid Control works fine, I did not understand the ListView control.<br>
+</div>
+</article>
+<article class="post" id="msg13138">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2019-03-06 16:35 UTC</span>
+  </div>
+  <div class="post-body">As far as I can tell the alignment is only applied to the text.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2457/ListView.png">ListView.png</a> <span class="muted">(7302 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13139">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2019-03-06 18:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2654.msg13138#msg13138 date=1551890123 wrote:</cite><br>
+As far as I can tell the alignment is only applied to the text.<br>
+</blockquote><br>
+<br>
+Thanks Roy<br>
+I believed that the alignment was for the entire contents of the cell.<br>
+For me the effect of this separation is very strange.<br>
+I'll try to work with Grid Control</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

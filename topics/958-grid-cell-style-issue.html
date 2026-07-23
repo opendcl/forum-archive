@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid cell style issue · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 958</p>
+    <h1>Grid cell style issue</h1>
+    <p class="meta">Started by johnM ·
+      2009-10-08 06:11 UTC ·
+      5 replies · SMF topic #958</p>
+<article class="post" id="msg4817">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2009-10-08 06:11 UTC</span>
+  </div>
+  <div class="post-body">Runtime 5.1.1.8<br>
+Using cell style 40 dropdown upper case text combo list automatically sorts the list A-Z<br>
+Using 36 dropdown combo list will not<br>
+I like the uppercase aspect but don’t like the sorting<br>
+Is this a bug or just the way it is<br>
+<br>
+Thanks<br>
+</div>
+</article>
+<article class="post" id="msg4826">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-08 13:25 UTC</span>
+  </div>
+  <div class="post-body">It looks like this was an oversight, not by design (grid cell combos are sorted by default). I've changed this now for Alpha 8 so they are *not* sorted.</div>
+</article>
+<article class="post" id="msg4828">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2009-10-08 19:10 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the info<br>
+<br>
+Another issue with style 40 <br>
+<br>
+I have a grid with 7 columns created at runtime column 0 as row header.<br>
+I commented out all my code so the only thing is the on initialize to create the columns<br>
+<br>
+I pasted  (dcl_Grid_SetCellDropList QD_FIN_QD_FIN_Grid1 0 1 (LIST "WHITE" "RED" "BLUE" "GREEN")) in the command line to populate the dropdown list changing the column number each time to populate all dropdowns with the same list.<br>
+<br>
+The issue is when you go to a cell and select WHITE then click on another cell then click back on the previous cell the cell will cycle to the next text in the list so now it displays RED <br>
+I have no events coded or any other code running<br>
+I have tried everything I could think of but the change occurs when you click on the cell before any event is fired <br>
+</div>
+</article>
+<article class="post" id="msg4858">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-12 09:24 UTC</span>
+  </div>
+  <div class="post-body">I think this is a side effect of the same bug. At least I can't reproduce the problem in the current code.</div>
+</article>
+<article class="post" id="msg4933">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2009-10-17 17:32 UTC</span>
+  </div>
+  <div class="post-body">I found that if you sort your list  A-Z before loading it into the dropdown it will not cycle through the list every time you click on the cell. </div>
+</article>
+<article class="post" id="msg4935">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-17 17:37 UTC</span>
+  </div>
+  <div class="post-body">I recommend to test the current OpenDCL 6 development build to verify that the problem is fixed.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

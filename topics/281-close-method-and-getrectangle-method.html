@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Close method and GetRectangle method · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 281</p>
+    <h1>Close method and GetRectangle method</h1>
+    <p class="meta">Started by fred_tomke ·
+      2008-04-10 14:58 UTC ·
+      2 replies · SMF topic #281</p>
+<article class="post" id="msg1246">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-04-10 14:58 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+is there anybody who can reproduce that the left and top coordinates of close method are not the same as the left and top coordinates returned by GetRectangle method (I do not mean GetControlArea method)?<br>
+<br>
+Using Vista Business OEM<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1270">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-04-11 00:18 UTC</span>
+  </div>
+  <div class="post-body">GetRectangle returns coordinates in the parent window's client coordinate system, and Close returns coordinates in the screen coordinate system. If the AutoCAD main window is maximized, this would mean the coordinate systems are identical for e.g. modal dialogs, but if the AutoCAD main window is not maximized, the coordinate systems would be different.</div>
+</article>
+<article class="post" id="msg1271">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-04-11 05:20 UTC</span>
+  </div>
+  <div class="post-body">Ah, good to know. We should describe this in the intelligent help.<br>
+<br>
+Thanks.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Legend Generator · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 739</p>
+    <h1>Legend Generator</h1>
+    <p class="meta">Started by scottcd ·
+      2009-04-30 15:13 UTC ·
+      4 replies · SMF topic #739</p>
+<article class="post" id="msg3608">
+  <div class="post-head">
+    <span class="post-author">scottcd</span>
+    <span class="post-date muted">2009-04-30 15:13 UTC</span>
+  </div>
+  <div class="post-body">Legend Generator<br>
+Created using Version 5.1.0.3<br>
+<br>
+Still a bit rough around the edges with my programming, but thought I would share this anyway.<br>
+<br>
+Error checking is fairly minimal, so use at your own risk.<br>
+<br>
+Let me know what you think, and any improvements needed.<br>
+<br>
+I have included a sample drawing with our standard layers and blocks - rename sample.txt to sample.dwg<br>
+<br>
+Cheers<br>
+Scott   ;D<br>
+<br>
+Edit: Updated lisp file - now ignores XREF layers<br>
+Edit: Sample DWG now attached<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/711/Sample.dwg">Sample.dwg</a> <span class="muted">(214066 bytes)</span></li><li><a href="../attachments/707/legend.LSP">legend.LSP</a> <span class="muted">(10208 bytes)</span></li><li><a href="../attachments/710/Legend.odcl">Legend.odcl</a> <span class="muted">(1768 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3609">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-04-30 16:42 UTC</span>
+  </div>
+  <div class="post-body">Nice work.<br>
+I've added .dwg to the allowed file formats, so you can remove the txt and upload the dwg if you like..</div>
+</article>
+<article class="post" id="msg3611">
+  <div class="post-head">
+    <span class="post-author">scottcd</span>
+    <span class="post-date muted">2009-04-30 18:20 UTC</span>
+  </div>
+  <div class="post-body">I will add the drawing in the morning<br>
+<br>
+Thanks for the complement... I know I still have a lot to learn, but am pleased with this result.<br>
+<br>
+Cheers<br>
+<br>
+Scott<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3637">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2009-05-06 08:41 UTC</span>
+  </div>
+  <div class="post-body">good work.<br>
+<br>
+<br>
+I was take one look on your code, so i will give you few tips <br>
+important for your future programing.<br>
+(while I'm waiting someone and must kill some time  :))<br>
+<br>
+<strong>1. in <em>defun </em>you are not using arguments (arguments / variables)</strong><br>
+<br>
+Never setq vars to nil on start defun (no need): <br>
+<br>
+(defun c:legend	()<br>
+  (setq	bb nil											    ; clear vars<br>
+	cc nil<br>
+	block_text nil<br>
+	tSize 1<br>
+	legend_exit nil<br>
+	noncont_layer_list<br>
+	 nil<br>
+	lylst nil<br>
+  )<br>
+...<br>
+<br>
+<br>
+! put your localSymbols (variables) in defun args. <strong>after /backslash</strong> (declare them only for running function):<br>
+<br>
+(defun myfunction (expectedarg1 expectedarg2 ... / myvar1 myvar2 ...):<br>
+<br>
+in your case:<br>
+<br>
+(defun c:legend	(/ bb cc block_test legend_exit noncont_layer_list lylst tSize)<br>
+(setq tSize 1)<br>
+...<br>
+<br>
+in that case this is what is happening<br>
+<strong> - on start function all that vars are nil </strong><br>
+   (if some of the varnames already used &amp; have some values (globally), don't worry <br>
+    they are only temporary suppressed, and they are reassigned after function ends)<br>
+<strong>- on end function all variables are recycled or restored to previous state</strong><br>
+<br>
+<strong>2. About arguments in defun </strong><br>
+<br>
+Predict <u>expected data</u> (arguments) when making defun.<br>
+<strong>example of function that expect 2 arguments named x &amp; y: </strong><br>
+(defun plus (x y / res)<br>
+  (setq res (+ x y))<br>
+)<br>
+to call that function you MUST pass 2 expected values<br>
+(note that <strong>return value</strong> of (defun function .....) expression is always <br>
+value of the LAST evaluated EXPRESSION in that function)<br>
+<br>
+(setq result ; remember result returned by you function<br>
+   (plus 2 4); call function with 2 &amp; 4 as arguments<br>
+)<br>
+;; more ways to call function same function:<br>
+(setq result <br>
+   (plus (+ 2 65) (- 35 45))<br>
+)<br>
+(setq<br>
+  a 15 b 16<br>
+  result (plus a b)<br>
+)<br>
+;; .... practicly every LISPABLE way<br>
+<br>
+For example this is one of myf - get enames from sset.<br>
+<br>
+(DEFUN $F|SS|SSET&gt;ELIST| (@sset / elist)<br>
+ (IF @sset<br>
+  (SETQ elist (VL-REMOVE-IF 'LISTP (MAPCAR 'CADR (SSNAMEX @sset))))<br>
+ )<br>
+ elist              ; (you can put variable on end to return list enames (last exp in function is return value of function))<br>
+)<br>
+;; but in this case u can do only this :<br>
+<br>
+(DEFUN $F|SS|SSET&gt;ELIST| (@sset)<br>
+  (VL-REMOVE-IF 'LISTP (MAPCAR 'CADR (SSNAMEX @sset)))<br>
+)<br>
+<br>
+<br>
+<br>
+;; iex. call like this<br>
+(setq alselents<br>
+  ($F|SS|SSET&gt;ELIST| (ssget))<br>
+)<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3641">
+  <div class="post-head">
+    <span class="post-author">scottcd</span>
+    <span class="post-date muted">2009-05-07 04:31 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the heads up.<br>
+<br>
+I must admit that I have been guitly of not declaring variable local since I first started coding  ;D<br>
+<br>
+I think it was because as I was learning I was looking at all the vars to see what they were returning and I just never got around to declaring them  ::)<br>
+<br>
+I know it is good practice, but in the long run I have never noticed any impact on my programs.<br>
+<br>
+Mind you all my programs are relatively simple.<br>
+<br>
+Cheers<br>
+<br>
+Scott<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

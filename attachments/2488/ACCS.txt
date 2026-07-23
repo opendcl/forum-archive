@@ -1,0 +1,194 @@
+(defun c:ACCS ()
+(command "OPENDCL")
+(dcl_Project_Load "TEE");;; Tee es nombre de nombre del archivo ODCL
+(dcl_Form_Show TEE_formulariote)
+(princ)
+)
+
+(defun c:Tee/Formulariote/BotondeTexto1#OnAccionado (/)
+  (dcl_Form_Close TEE_Formulariote)
+)
+
+(defun c:TEE/Formulariote/BotónGráfico1#OnAccionado (/)
+  (CJT43)
+)
+
+(DEFUN CJT43 ()
+(SETVAR "MEASUREMENT" 1)
+(SETVAR "INSUNITS" 6)
+          (progn
+            (if (not (tblsearch "STYLE" "labels"))
+                (entmake
+                    (list
+                        (cons 0 "STYLE")
+                        (cons 100 "AcDbSymbolTableRecord")
+                        (cons 100 "AcDbTextStyleTableRecord")
+                        (cons 2 "labels")
+                        (cons 70 0)
+                        (cons 40 3.6)
+                        (cons 3 "Cambria.ttf")
+                    )
+                )
+            )
+	  
+   (entmake
+      (list
+         '(0 . "LAYER") 
+         '(5 . "28") 
+         '(100 . "AcDbSymbolTableRecord") 
+         '(100 . "AcDbLayerTableRecord") 
+         (cons 2 "TXT TEE") 
+         '(70 . 64) 
+         '(62 . 6) 
+         '(6 . "CONTINUOUS")
+      )
+   )                                         
+) ;;;HASTA AQUI FUE LA CREACION DEL ESTIlO Y CAPA  PARA LA TEE, EL CUAL GENERA EL CONFLICTO CON ODCL
+;;;INSERTANDO EL ACCESORIO :
+(SETQ Modos (GETVAR "osmode"))
+(SETVAR "osmode" 0) 
+(setq bqte (entget (ssname (ssget "X" '((0 . "INSERT") (2 . "TEE"))) 0))) 
+(SETQ ENT(ENTSEL "SELECCIONE UNA TUBERIA: \n"))
+(SETQ ENTI (ENTGET ( CAR ENT)))
+(SETQ TIPOENT (CDR (ASSOC 0 ENTI))) 
+(SETVAR "osmode" 1)	
+( COND ((= TIPOENT "LWPOLYLINE") 
+(SETQ TUBERIAS (SSGET "x" (LIST (CONS 0 "LWPOLYLINE")
+)
+))  
+(SETQ CANT (SSLENGTH TUBERIAS)) 
+(SETQ POLIN (- CANT 1))
+(WHILE (> POLIN -1)
+(COMMAND "EXPLODE" (SSNAME TUBERIAS POLIN))
+(SETQ POLIN (- POLIN 1))
+) ;;;hasta aqui fue para desagregar las polilineas en lineas de la respecriva capa de tuberias
+;;;-------------------------------------------------------------------------------------------
+(WHILE
+(setq pu (getpoint "PUNTO DE INSERCIÓN (ENTER para terminar): "))(TERPRI)
+;;--------------
+(setq puni (cons 10 pu))
+(setq punf (cons 11 pu))
+(setq treslineas  
+(SSGET "X" (list (cons -4 "<OR")
+(cons -4 "<AND")(cons 0 "line") puni (cons -4 "AND>")
+(cons -4 "<AND")(cons 0 "line") punf (cons -4 "AND>")
+(cons -4 "OR>"))))
+(setq lin1 (entget (ssname treslineas 0)))
+(setq lin2 (entget (ssname treslineas 1)))
+(setq lin3 (entget (ssname treslineas 2)))
+(setq puorigen (list (nth 0 pu) (nth 1 pu)))
+
+(setq puf1 (CDR (assoc 11 lin1)))
+(if (equal pu puf1) (setq puf1 (cdr (assoc 10 lin1))) ())
+(setq pufin1 (list (nth 0 puf1) (nth 1 puf1)))
+(setq an1 (angle puorigen pufin1))
+(setq bqte (SUBST (CONS 10 pu) (ASSOC 10 bqte) bqte))
+(setq bqte (SUBST (CONS 50 an1) (ASSOC 50 bqte) bqte))
+(entmake bqte)
+
+(setq puf2 (CDR (assoc 11 lin2)))
+(if (equal pu puf2) (setq puf2 (cdr (assoc 10 lin2))) ())
+(setq pufin2 (list (nth 0 puf2) (nth 1 puf2)))
+(setq an2 (angle puorigen pufin2))
+(setq bqte (SUBST (CONS 10 pu) (ASSOC 10 bqte) bqte))
+(setq bqte (SUBST (CONS 50 an2) (ASSOC 50 bqte) bqte))
+(entmake bqte)
+
+
+(setq puf3 (CDR (assoc 11 lin3)))
+(if (equal pu puf3) (setq puf3 (cdr (assoc 10 lin3))) ())
+(setq pufin3 (list (nth 0 puf3) (nth 1 puf3)))
+(setq an3 (angle puorigen pufin3))
+(setq bqte (SUBST (CONS 10 pu) (ASSOC 10 bqte) bqte))
+(setq bqte (SUBST (CONS 50 an3) (ASSOC 50 bqte) bqte))
+(entmake bqte)   
+
+;;---------
+(setq xpu (car pu))
+(setq ypu (cadr pu))
+(setq Zpu (cadr(cdr pu)))
+(setq pref "TEE-")
+(SETQ codi (ITOA (+ 1 (GETVAR "USERI1"))))
+(entmake 
+	          (list 
+	            (cons 0 "text") 
+	            (cons 1 (STRCAT pref codi)) 
+	            (cons 7 "labels") 
+	            (cons 8 "TXT TEE")
+	            (cons 10 (list (+ xpu 12) (+ ypu 5) zpu))
+	            (cons 11 (list (+ xpu 12) (+ ypu 5) zpu)) 
+	            (cons 40 3.6) 
+	            (cons 50 0.0) (cons 72 4)
+	          )
+	        );entmake
+(SETVAR "USERI1" (+ 1 (GETVAR "USERI1")))
+;;;------------------------------------------------------------------------------------------- 
+))
+       ((= TIPOENT "LINE") 
+(WHILE
+;;;--------------------------------------------------------------------------------------
+(setq pu (getpoint "PUNTO DE INSERCIÓN (ENTER para terminar): "))(TERPRI)
+;-----------
+(setq puni (cons 10 pu))
+(setq punf (cons 11 pu))
+(setq treslineas  
+(SSGET "X" (list (cons -4 "<OR")
+(cons -4 "<AND")(cons 0 "line") puni (cons -4 "AND>")
+(cons -4 "<AND")(cons 0 "line") punf (cons -4 "AND>")
+(cons -4 "OR>"))))
+(setq lin1 (entget (ssname treslineas 0)))
+(setq lin2 (entget (ssname treslineas 1)))
+(setq lin3 (entget (ssname treslineas 2)))
+(setq puorigen (list (nth 0 pu) (nth 1 pu)))
+
+(setq puf1 (CDR (assoc 11 lin1)))
+(if (equal pu puf1) (setq puf1 (cdr (assoc 10 lin1))) ())
+(setq pufin1 (list (nth 0 puf1) (nth 1 puf1)))
+(setq an1 (angle puorigen pufin1))
+(setq bqte (SUBST (CONS 10 pu) (ASSOC 10 bqte) bqte))
+(setq bqte (SUBST (CONS 50 an1) (ASSOC 50 bqte) bqte))
+(entmake bqte)
+
+
+(setq puf2 (CDR (assoc 11 lin2)))
+(if (equal pu puf2) (setq puf2 (cdr (assoc 10 lin2))) ())
+(setq pufin2 (list (nth 0 puf2) (nth 1 puf2)))
+(setq an2 (angle puorigen pufin2))
+(setq bqte (SUBST (CONS 10 pu) (ASSOC 10 bqte) bqte))
+(setq bqte (SUBST (CONS 50 an2) (ASSOC 50 bqte) bqte))
+(entmake bqte)
+
+(setq puf3 (CDR (assoc 11 lin3)))
+(if (equal pu puf3) (setq puf3 (cdr (assoc 10 lin3))) ())
+(setq pufin3 (list (nth 0 puf3) (nth 1 puf3)))
+(setq an3 (angle puorigen pufin3))
+(setq bqte (SUBST (CONS 10 pu) (ASSOC 10 bqte) bqte))
+(setq bqte (SUBST (CONS 50 an3) (ASSOC 50 bqte) bqte))
+(entmake bqte)  
+  
+;-----------
+(setq xpu (car pu))
+(setq ypu (cadr pu))
+(setq Zpu (cadr(cdr pu)))
+(setq pref "TEE-")
+(SETQ codi (ITOA (+ 1 (GETVAR "USERI1"))))
+(entmake 
+	          (list 
+	            (cons 0 "text") 
+	            (cons 1 (STRCAT pref codi)) 
+	            (cons 7 "labels") 
+	            (cons 8 "TXT TEE")
+	            (cons 10 (list (+ xpu 12) (+ ypu 5) zpu))
+	            (cons 11 (list (+ xpu 12) (+ ypu 5) zpu)) 
+	            (cons 40 3.6) 
+	            (cons 50 0.0) (cons 72 4)
+	          )
+	        );entmake
+(SETVAR "USERI1" (+ 1 (GETVAR "USERI1")))
+;;;---------------------------------------------------------------------------------------
+)) 
+(T (ALERT "NO SELECCIONO UNA TUBERIA, INTENETELO DE NUEVO")) 
+)
+(PRIN1)
+(SETVAR "osmode" Modos)
+);defun

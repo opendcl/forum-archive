@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>INTERNAL ERROR: !scandr.cpp@2232: eLockViolation · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1232</p>
+    <h1>INTERNAL ERROR: !scandr.cpp@2232: eLockViolation</h1>
+    <p class="meta">Started by dgpuertas ·
+      2010-03-24 12:09 UTC ·
+      8 replies · SMF topic #1232</p>
+<article class="post" id="msg6580">
+  <div class="post-head">
+    <span class="post-author">dgpuertas</span>
+    <span class="post-date muted">2010-03-24 12:09 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+When I use a function to create entities via entmake with a button in a Modeless dialog AutoCAD crash.<br>
+Appear "INTERNAL ERROR: !scandr.cpp@2232: eLockViolation" and close AutoCAD.<br>
+<br>
+¿Does anyone know what happens?<br>
+<br>
+I use AutoCAD 2010 Spanish and OpenDCL 6.0.23 (last version)<br>
+Sorry about my English<br>
+</div>
+</article>
+<article class="post" id="msg6583">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-24 13:06 UTC</span>
+  </div>
+  <div class="post-body">You'll either need to lock the document first, or execute your event handler with EventInvoke set to Asynchronous.</div>
+</article>
+<article class="post" id="msg6608">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-25 06:13 UTC</span>
+  </div>
+  <div class="post-body">Hi, dgpuertas,<br>
+<br>
+another chance would be to create new entities using ActiveX methods instead.<br>
+I made the bad experience that AutoCAD crashes if I tried to create a new entity using entmake outside the visible area of the current viewport.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6612">
+  <div class="post-head">
+    <span class="post-author">dgpuertas</span>
+    <span class="post-date muted">2010-03-25 13:00 UTC</span>
+  </div>
+  <div class="post-body">How I can lock the document?<br>
+its the .odcl document?<br>
+Neither I know how to use EventInvoke,<br>
+I use a button with the Event Clicked inside the modeless dialog.<br>
+<br>
+Thanks<br>
+Sorry about my English.<br>
+</div>
+</article>
+<article class="post" id="msg6613">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-25 13:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=dgpuertas link=topic=1232.msg6612#msg6612 date=1269522002 wrote:</cite><br>
+Neither I know how to use EventInvoke,<br>
+</blockquote><br>
+<br>
+Hi, dgpuertas,<br>
+<br>
+<ul><br>
+Open your odcl file in OpenDCL Studio<br>
+select you button<br>
+activate the property panel<br>
+searach for the property EventInvoke<br>
+Set the value to 1=AllowCommand<br>
+turn to Autocad<br>
+call the line (dcl_project_load "MyProject" <strong><span style="color:red">T</span></strong>)<br>
+restart your command<br>
+</ul><br>
+<br>
+Should work now.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6614">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-25 16:13 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=dgpuertas link=topic=1232.msg6612#msg6612 date=1269522002 wrote:</cite><br>
+How I can lock the document?<br>
+its the .odcl document?</blockquote><br>
+<br>
+No, the AutoCAD document.</div>
+</article>
+<article class="post" id="msg6617">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-25 16:38 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1232.msg6614#msg6614 date=1269533623 wrote:</cite><br>
+No, the AutoCAD document.<br>
+</blockquote><br>
+<br>
+That's also interesting for me: how do you lock the document with lisp?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6618">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-25 18:37 UTC</span>
+  </div>
+  <div class="post-body">I don't think there are any built in functions to directly lock and unlock a document via lisp, so you have to do it indirectly through ActiveX or by sending a command to the command line.</div>
+</article>
+<article class="post" id="msg6630">
+  <div class="post-head">
+    <span class="post-author">dgpuertas</span>
+    <span class="post-date muted">2010-03-26 10:02 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred,<br>
+EventInvoke works fine.<br>
+I don´t know how to lock de autocad document but EventInvoke is valid for me.<br>
+<br>
+Thanks a lot at Fred and owen,<br>
+Ciao<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

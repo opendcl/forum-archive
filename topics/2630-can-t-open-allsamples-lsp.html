@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Can't open @AllSamples.lsp · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2630</p>
+    <h1>Can't open @AllSamples.lsp</h1>
+    <p class="meta">Started by zz ·
+      2018-09-06 08:25 UTC ·
+      9 replies · SMF topic #2630</p>
+<article class="post" id="msg12989">
+  <div class="post-head">
+    <span class="post-author">zz</span>
+    <span class="post-date muted">2018-09-06 08:25 UTC</span>
+  </div>
+  <div class="post-body">When I run @AllSamples.lsp, it just returns a nil, showing no forms.</div>
+</article>
+<article class="post" id="msg12990">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2018-09-06 15:32 UTC</span>
+  </div>
+  <div class="post-body">Have you installed OpenDCL? What happens if you enter OPENDCLDEMO at the command line?</div>
+</article>
+<article class="post" id="msg12991">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2018-09-07 03:37 UTC</span>
+  </div>
+  <div class="post-body">Hi.<br>
+Owen, I had asked you this a long time ago.<br>
+at that time I could not find out the cause.<br>
+<br>
+But after many times testing load the @AllSample.lsp file<br>
+I found that there's something wrong in the local language system.<br>
+<br>
+At the posted image, there is unreadable characters in the comment line.<br>
+This is just a comment line, <br>
+but it seems that the local language (non english) Acad system cannot interpret the comment line.<br>
+<br>
+Only after deleting all the collapsed character's comments<br>
+I could load the @Allsample.lsp file.<br>
+<br>
+May this be helpful.  8)<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2420/odcl-_49368_54540_-_54028_51068_-_47196_46300_50504_46104_45716_ _47928_51228_.png">odcl-&amp;#49368;&amp;#54540;-&amp;#54028;&amp;#51068;-&amp;#47196;&amp;#46300;&amp;#50504;&amp;#46104;&amp;#45716; &amp;#47928;&amp;#51228;.png</a> <span class="muted">(28288 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12992">
+  <div class="post-head">
+    <span class="post-author">zz</span>
+    <span class="post-date muted">2018-09-07 03:40 UTC</span>
+  </div>
+  <div class="post-body">I have installed opendcl 9.0.1.5 and loaded opendcl runtime. It won't return any information when I type "opendcldemo" in the command line.<br>
+<br>
+Command: (LOAD "D:/Program Files (x86)/OpenDCL Studio/ENU/Samples/@AllSamples.lsp") nil<br>
+Command: OPENDCLDEMO<br>
+Command:<br>
+ </div>
+</article>
+<article class="post" id="msg12993">
+  <div class="post-head">
+    <span class="post-author">zz</span>
+    <span class="post-date muted">2018-09-07 03:51 UTC</span>
+  </div>
+  <div class="post-body">It works when I delete all the unreadable characters in the comment line, thank you 8)</div>
+</article>
+<article class="post" id="msg12994">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2018-09-07 03:54 UTC</span>
+  </div>
+  <div class="post-body">I found out this visual format option makes the collapsed comment line .<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2421/visual - format.png">visual - format.png</a> <span class="muted">(6646 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12995">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2018-09-07 18:11 UTC</span>
+  </div>
+  <div class="post-body">Interesting. Can you confirm that even the VLIDE-added formatting info comment causes a subsequent load failure? Or is it only the OpenDCL code comments that cause the load failure?</div>
+</article>
+<article class="post" id="msg12996">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2018-09-08 07:12 UTC</span>
+  </div>
+  <div class="post-body">Hi, Owen.<br>
+<br>
+mmm...<br>
+in my experience, <br>
+<br>
+The VLIDE "Save format" option makes a special and automatic comments line<br>
+and if the user Acad system is non english based (just in my thought), <br>
+it makes something wrong characters.<br>
+<br>
+In my Acad system, when saving .lsp file with this option,<br>
+it makes automatically something wrong charactors similar with the image but not the same.<br>
+After I found this, I never used the "Save format" option, maybe since 2005 ~~.<br>
+<br>
+But I have not tested other languages Acad system.<br>
+That's all what I know till now.<br>
+<br>
+Thanks.<br>
+</div>
+</article>
+<article class="post" id="msg12997">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2018-09-09 21:48 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the feedback. For the next build of OpenDCL I have removed the problematic comments from the samples files.</div>
+</article>
+<article class="post" id="msg13000">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2018-09-10 11:15 UTC</span>
+  </div>
+  <div class="post-body">What a kindness  :).<br>
+Thank you, Owen</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

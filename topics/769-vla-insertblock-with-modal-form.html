@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>vla-insertBlock with MODAL form. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 769</p>
+    <h1>vla-insertBlock with MODAL form.</h1>
+    <p class="meta">Started by velasquez ·
+      2009-05-25 23:31 UTC ·
+      6 replies · SMF topic #769</p>
+<article class="post" id="msg3776">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-05-25 23:31 UTC</span>
+  </div>
+  <div class="post-body">I close the MODAL form.  <br>
+I ask for an insert point for a block.  <br>
+I indicate a point in the screen.  <br>
+The form is shown again.  <br>
+The block appears in the screen.  <br>
+The form should appear after the block.  <br>
+Am I making some wrong thing?<br>
+<br>
+<br>
+(vla-insertBlock (JoyGetActiveSpace) ;_Pega o espaco ativo<br>
+				(vlax-3d-point JoyInsPt)<br>
+				"BlockName"<br>
+				1 ;_xscalefactor<br>
+				1 ;_ yscalefactor ent)<br>
+				1 ;_ zscalefactor<br>
+				0 ;_rotation)<br>
+</div>
+</article>
+<article class="post" id="msg3777">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-26 05:46 UTC</span>
+  </div>
+  <div class="post-body">Hi, velasquez, I don't know enough about your code but make sure that your form is showing within a loop.<br>
+<br>
+<br>
+(defun c:MyProj_MyForm_pb_Cancel_OnClicked ()<br>
+  (dcl_form_close MyProj_MyForm 2)<br>
+); c:MyProj_MyForm_pb_Cancel_OnClicked<br>
+<br>
+(defun c:MyProj_MyForm_pb_BlockInsert_OnClicked ()<br>
+  (dcl_form_close MyProj_MyForm 3)<br>
+); c:MyProj_MyForm_pb_BlockInsert_OnClicked<br>
+<br>
+(setq doCont T)<br>
+(while doCont<br>
+  (setq doCont nil)<br>
+  (setq intForm (dcl_form_show MyProj_MyForm))<br>
+  (cond<br>
+    ((= intForm 2) (setq doCont nil)) ;; Cancelling the form via ESC or c:MyProj_MyForm_pb_Cancel_OnClicked<br>
+    ((= intForm 3)<br>
+     (if (and (setq JoyInsPt (vl-catch-all-apply 'getpoint (list "\nPick a point to insert block: ")))<br>
+              (not (vl-catch-all-error-p JoyInsPt)))<br>
+       (setq oBlock (vla-insertBlock (JoyGetActiveSpace) ;_Pega o espaco ativo  <br>
+                (vlax-3d-point JoyInsPt)  <br>
+                "BlockName"  <br>
+                1 ;_xscalefactor  <br>
+                1 ;_ yscalefactor ent<br>
+                1 ;_ zscalefactor  <br>
+                0 ;_rotation<br>
+            ))<br>
+     ))<br>
+  ); cond<br>
+); while<br>
+<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3779">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-05-26 11:15 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred,  <br>
+My form this working within the loop.  <br>
+Your work seems better.  <br>
+Don't I want to take your time but do you have an example working?  <br>
+Does it can me to show?  <br>
+Thank you very much.</div>
+</article>
+<article class="post" id="msg3781">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-05-26 12:46 UTC</span>
+  </div>
+  <div class="post-body">Hi, velasquez,<br>
+Have you had a look at the Selections.LSP and .ODCL in the samples folder.<br>
+<br>
+Regards<br>
+Kerry<br>
+</div>
+</article>
+<article class="post" id="msg3782">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-05-26 13:09 UTC</span>
+  </div>
+  <div class="post-body">I posted my complete code.  <br>
+I need to insert the block and to show the form again.  <br>
+This should happen after the insert of the block and not before.  <br>
+I don't know what am doing wrong.<br>
+<br>
+Regards<br>
+Velasquez<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/739/BlockInsert.LSP">BlockInsert.LSP</a> <span class="muted">(2159 bytes)</span></li><li><a href="../attachments/740/MyProj.odcl">MyProj.odcl</a> <span class="muted">(603 bytes)</span></li><li><a href="../attachments/741/BlockInsert.dwg">BlockInsert.dwg</a> <span class="muted">(35253 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3786">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-26 15:10 UTC</span>
+  </div>
+  <div class="post-body">Sorry, was my mistake, I've forgotten the line (setq doCont T) after inserting the block.<br>
+Please forgive me!<br>
+<br>
+I've removed some comments to highlight the new comments<br>
+<br>
+<br>
+(defun c:Blki (/ intform oBlock strFileName strBlockName)<br>
+  (dcl_Project_Load "MyProj")<br>
+<br>
+  (defun c:MyProj_MyForm_pb_Cancel_OnClicked ()<br>
+    (dcl_form_close MyProj_MyForm 2)<br>
+  ); c:MyProj_MyForm_pb_Cancel_OnClicked<br>
+  <br>
+  (defun c:MyProj_MyForm_pb_BlockInsert_OnClicked ()<br>
+    (dcl_form_close MyProj_MyForm 3)<br>
+  ); c:MyProj_MyForm_pb_BlockInsert_OnClicked<br>
+<br>
+  (setq doCont T)<br>
+  (setq strBlockName "BOLA") ;; whatever was selected<br>
+  (while doCont<br>
+    (setq doCont nil)<br>
+    (setq intForm (dcl_form_show MyProj_MyForm))<br>
+    (cond<br>
+      ((= intForm 2) (setq doCont nil)) ; Cancelling<br>
+      ((= intForm 3) ; Selecting<br>
+       (if (and (or (tblsearch "Block" strBlockName)<br>
+                    (setq strFileName (findfile (strcat strBlockName ".dwg"))))<br>
+                (setq JoyInsPt (vl-catch-all-apply 'getpoint (list "\nPick a point to insert block: ")))<br>
+                (not (vl-catch-all-error-p JoyInsPt))<br>
+                (setq oBlock (vl-catch-all-apply 'vla-insertBlock<br>
+                                 (list (JoyGetActiveSpace) (vlax-3d-point JoyInsPt)<br>
+                                       (if (tblsearch "Block" strBlockName) strBlockName strFileName)<br>
+                                       1 1 1 0)))<br>
+                (not (vl-catch-all-error-p oBlock)))<br>
+	 <br>
+           (vla-update (vlax-get-acad-object)) ;; otherwise you only see the new block after finishing the program<br>
+<br>
+       ); if<br>
+       (setq doCont T)) ; I've forgotten this line<br>
+<br>
+    ); cond<br>
+  ); while<br>
+); Blki<br>
+<br>
+<br>
+Fred<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3787">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-05-26 16:36 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred,  <br>
+I remembered after (setq doCont T).  <br>
+But I didn't work with (vla-update (vlax-get-acad-object)).  <br>
+Therefore I didn't see the block.  <br>
+Your code worked very well now.  <br>
+<br>
+Thank you very much.<br>
+Vleasquez</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

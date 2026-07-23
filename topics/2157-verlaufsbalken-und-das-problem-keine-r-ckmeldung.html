@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Verlaufsbalken und das Problem &quot;keine Rückmeldung&quot; · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2157</p>
+    <h1>Verlaufsbalken und das Problem &quot;keine Rückmeldung&quot;</h1>
+    <p class="meta">Started by Rainer Bous ·
+      2014-07-14 12:05 UTC ·
+      1 replies · SMF topic #2157</p>
+<article class="post" id="msg10786">
+  <div class="post-head">
+    <span class="post-author">Rainer Bous</span>
+    <span class="post-date muted">2014-07-14 12:05 UTC</span>
+  </div>
+  <div class="post-body">Gibt es eine Möglichkeit, die Steuerung eines Verlaufsbalken so anzupassen, dass nicht die Meldung "keine Rückmeldung" den Dialog übernimmt?<br>
+<br>
+Das Einbauen von (princ "\rString ....")(princ) hat leider nicht die gewünschte Verbesserung gebracht.<br>
+<br>
+Hier meine Unter-Routine zu diesem Thema:<br>
+<br>
+(defun SUB:xIsDoneOf (IstWert EndWert)<br>
+  (if (not (dcl_Form_IsActive 2014-07-14-1020-10_D1))<br>
+    (progn (dcl_project_load (strcat (set-cbaCAD-Dialog-Path "Tools") "2014-07-14-1020-10"))<br>
+	   (dcl_form_show 2014-07-14-1020-10_D1)<br>
+    )<br>
+  )<br>
+  (dcl-Control-SetMaxValue 2014-07-14-1020-10/D1/IsDone EndWert)<br>
+  (dcl-Control-SetMinValue 2014-07-14-1020-10/D1/IsDone 1)<br>
+  (dcl-Control-SetValue 2014-07-14-1020-10/D1/IsDone IstWert)<br>
+  (princ (strcat "\rvon " (itoa EndWert) " sind " (itoa IstWert) " bereits bearbeitet."))<br>
+  (princ)  <br>
+  (if (&gt;= IstWert EndWert)<br>
+    (progn (dcl_Form_close 2014-07-14-1020-10_D1) (dcl_project_unload "2014-07-14-1020-10"))<br>
+  )<br>
+  (princ)<br>
+;;; Ende SUB:xIsDoneOf<br>
+)</div>
+</article>
+<article class="post" id="msg10787">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-07-15 15:15 UTC</span>
+  </div>
+  <div class="post-body">Hi, ohne den Code getestet zu haben: das wird in AutoCAD nicht funktionieren.<br>
+Warum? AutoCAD läuft für Dich in einem einzigen Thread ab: alles schööön nacheinander. Man spricht hier von synchroner Arbeitsweise (im Vergleich zur ereignisgesteuerten asynchronen Arbeitsweise bspw. mit parallelen Threads). Du wünschtest Dir einen parallelen Thread, in dem parallel zur zeichnungsinternen Bearbeitung genügend Ressourcen für den Zugriff auf die Steuerelemente bleiben. Das wünsche ich mir auch seit Jahren. Ein einfaches Beispiel, was in Lisp nicht zu lösen ist, ist das Abbrechen komplexer Vorgänge (Beispiel <a href="http://www.opendcl.com/forum/index.php?topic=2075.msg10231#msg10231" rel="nofollow noopener">{2}</a>). Ich habe sogar festgestellt, dass AutoCAD Abläufe für sich derart optimiert, dass bestimmte Aktualisierungen in komplexen Operationen unterdrückt werden, um sie erst später auszuführen. Ein Beispiel in meinem Fall waren Satusmeldungen in der Befehlszeile. <br>
+<br>
+Kurz gesagt: Solange man mit Lisp arbeitet und nicht bestimmte Operationen in einem separaten Thread auslagern kann, damit das AutoCAD in Ruhe gelassen wird, wird man immer Gefahr laufen, dass "keine Rückmeldung" erscheint.<br>
+<br>
+Ich weiß, es ist keine Lösung - aber vielleicht eine Erklärung für ein besseres Verständnis.<br>
+<br>
+Im Übrigen musste ich feststellen, dass der Programmablauf um Vieles schneller ist, wenn man als MaxValue maximal 100 eingibt und nur noch im Intervall von 5 oder 10 % den Verlaufsbalken aktualisiert.<br>
+<br>
+VG, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

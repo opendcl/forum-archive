@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Image tree control · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 523</p>
+    <h1>Image tree control</h1>
+    <p class="meta">Started by Holon ·
+      2009-01-16 08:30 UTC ·
+      4 replies · SMF topic #523</p>
+<article class="post" id="msg2371">
+  <div class="post-head">
+    <span class="post-author">Holon</span>
+    <span class="post-date muted">2009-01-16 08:30 UTC</span>
+  </div>
+  <div class="post-body">I have new dialog tree.odcl with modal dialogs Form into Form I have Image tree control  name "tree".<br>
+For an example I start LISP<br>
+<br>
+<pre class="code"><code>(command "OPENDCL")<br>
+(DEFUN c:mytree (/ nCount)<br>
+  (dcl_Project_Load "tree" T)<br>
+  (dcl_FORM_SHOW tree_Form)<br>
+                 (dcl_TREE_ADDPARENT tree_Form_tree "slide1" "t1")<br>
+                 (dcl_TREE_ADDPARENT tree_Form_tree<br>
+                                      "slide library"<br>
+                                      "t2"<br>
+                 )<br>
+                 (dcl_TREE_ADDPARENT tree_Form_tree "slide3" "t3")<br>
+                 (dcl_TREE_ADDCHILD tree_Form_tree<br>
+                                     '(("t2" "Child1" "C1")<br>
+                                       ("t2" "Child2" "C2")<br>
+                                       ("t2" "Child3" "C3")<br>
+                                      )<br>
+                 )<br>
+                 (dcl_TREE_SELECTITEM tree_Form_tree "t1")<br>
+                 (dcl_TREE_COUNTITEMS tree_Form_tree)<br>
+        )</code></pre><br>
+After start mytree on the screen of AutoCAD I see Form with Image tree control<br>
+but Image tree control empty, after closings form i have alert :<br>
+"An OpenDCL function argument processing exception has occurred!<br>
+ Error: NIL value not allowed<br>
+Function: dcl_Tree_AddParent<br>
+Argument: 0 "<br>
+What do I do incorrectly?</div>
+</article>
+<article class="post" id="msg2372">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-01-16 15:50 UTC</span>
+  </div>
+  <div class="post-body">you need to add an "Initialize" event to you form to populate the tree...<br>
+<br>
+(defun c:tree_Form_OnInitialize (/)<br>
+                 (dcl_TREE_ADDPARENT tree_Form_tree "slide1" "t1")<br>
+                 (dcl_TREE_ADDPARENT tree_Form_tree<br>
+                                      "slide library"<br>
+                                      "t2"<br>
+                 )<br>
+                 (dcl_TREE_ADDPARENT tree_Form_tree "slide3" "t3")<br>
+                 (dcl_TREE_ADDCHILD tree_Form_tree<br>
+                                     '(("t2" "Child1" "C1")<br>
+                                       ("t2" "Child2" "C2")<br>
+                                       ("t2" "Child3" "C3")<br>
+                                      )<br>
+                 )<br>
+                 (dcl_TREE_SELECTITEM tree_Form_tree "t1")<br>
+                 (dcl_TREE_COUNTITEMS tree_Form_tree)<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg2375">
+  <div class="post-head">
+    <span class="post-author">Holon</span>
+    <span class="post-date muted">2009-01-18 07:02 UTC</span>
+  </div>
+  <div class="post-body">Thanks! Now this code works<br>
+<pre class="code"><code>(command "OPENDCL")<br>
+(DEFUN c:mytree (/ )<br>
+  (dcl_Project_Load "tree" T)<br>
+  (dcl_FORM_SHOW tree_Form)<br>
+  (c:tree_Form_OnInitialize)<br>
+)<br>
+    <br>
+(defun c:tree_Form_OnInitialize (/)<br>
+                 (dcl_TREE_ADDPARENT tree_Form_tree "slide1" "t1")<br>
+                 (dcl_TREE_ADDPARENT tree_Form_tree<br>
+                                      "slide library"<br>
+                                      "t2"<br>
+                 )<br>
+                 (dcl_TREE_ADDPARENT tree_Form_tree "slide3" "t3")<br>
+                 (dcl_TREE_ADDCHILD tree_Form_tree<br>
+                                     '(("t2" "Child1" "C1")<br>
+                                       ("t2" "Child2" "C2")<br>
+                                       ("t2" "Child3" "C3")<br>
+                                      )<br>
+                 )<br>
+                 (dcl_TREE_SELECTITEM tree_Form_tree "t1")<br>
+                 (dcl_TREE_COUNTITEMS tree_Form_tree)<br>
+)<br>
+<br>
+(defun c:tree_Form_tree_OnClicked (/)<br>
+  (dcl_MessageBox "MyTree: code must be added to event handler\r\nc:tree_Form_tree_OnClicked" "MyTree")<br>
+)</code></pre><br>
+<br>
+But there was a question how to receive correct inquiry after Click on a tree controle.<br>
+Now I have only one function <strong>c:tree_Form_tree_OnClicked</strong>, for all <strong>CHILDS</strong>, and it would be necessary to me that at concrete to a clique concrete function was caused. How it to make?<br>
+</div>
+</article>
+<article class="post" id="msg2433">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-16 18:50 UTC</span>
+  </div>
+  <div class="post-body">Hi, Holon, if I understood you right, you want to get the item you clicked on. If so, then do:<br>
+<br>
+<pre class="code"><code><br>
+(defun c:tree_Form_tree_OnClicked (/)<br>
+  (if (and (setq strKey (dcl_Tree_GetSelectedItem tree_Form_tree))<br>
+           (= (type strKey) 'STR)) ;; make sure that the result is a key (only if you use strings as keys)<br>
+    (princ (strcat "\nYou've selected " (dcl_tree_getitemtext tree_Form_tree strKey) "\r"))<br>
+  ); if<br>
+); c:tree_Form_tree_OnClicked <br>
+</code></pre><br>
+<br>
+Hope, that helps.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2548">
+  <div class="post-head">
+    <span class="post-author">Holon</span>
+    <span class="post-date muted">2009-02-19 14:17 UTC</span>
+  </div>
+  <div class="post-body">Thank you Fred  ;)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

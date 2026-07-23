@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OnKillFocus bug? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2350</p>
+    <h1>OnKillFocus bug?</h1>
+    <p class="meta">Started by Syncmas ·
+      2016-02-03 20:43 UTC ·
+      4 replies · SMF topic #2350</p>
+<article class="post" id="msg11788">
+  <div class="post-head">
+    <span class="post-author">Syncmas</span>
+    <span class="post-date muted">2016-02-03 20:43 UTC</span>
+  </div>
+  <div class="post-body">Attached I have created a simple modal dialog with 2 text boxes and have an OnKillFocus event on both. The problem I am running into is when I leave TextBox1 and click into TextBox2, the OnKillFocus event fires for TextBox2 and then the OnKillFocus fires for TextBox1.<br>
+<br>
+I have downloaded the latest as of today to see if maybe it was a bug and was fixed but it still persists in 8.0.4.0.<br>
+<br>
+Has anyone else encountered this? If so, is there some way around this? I have a calculation being done based on several text boxes and with the pre-mature firing it is creating errors in the output. <br>
+<br>
+Any help is appreciated.<br>
+<br>
+Thank you <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2195/OdclExample.zip">OdclExample.zip</a> <span class="muted">(1158 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11789">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-02-04 15:43 UTC</span>
+  </div>
+  <div class="post-body">Hm, quite interesting: I started the project and had the same feeling as you described.<br>
+Corrected your lisp and saved the odcl anew - now it does not appear.<br>
+Please have a test with my attachment.<br>
+<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2196/OdclExample.zip">OdclExample.zip</a> <span class="muted">(1149 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11790">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-02-05 06:00 UTC</span>
+  </div>
+  <div class="post-body">I think your example demonstrates that the events fire in the expected order. TextBox2#OnKillFocus fires in response to a message box taking focus. The message box is displayed from TextBox1#OnKillFocus. Therefore TextBox1#OnKillFocus must have been entered first. The fact that you see the message boxes in reverse order is not a consequence of the events firing incorrectly, but the fact that the message box from TextBox2#OnKillFocus is displayed before the first message box has yet been displayed. I think the sample is working as expected.</div>
+</article>
+<article class="post" id="msg11791">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-02-05 14:28 UTC</span>
+  </div>
+  <div class="post-body">Hi, I guess that you want to show an error, when the user types in a bad value.<br>
+In that case I recommend you to use an error icon beside the textbox and disabling ok-button until the value is being corrected.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11792">
+  <div class="post-head">
+    <span class="post-author">Syncmas</span>
+    <span class="post-date muted">2016-02-05 14:48 UTC</span>
+  </div>
+  <div class="post-body">Thank you guys, your answers and examples have lead me to a solution.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

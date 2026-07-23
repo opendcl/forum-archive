@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>combo box OnEditChanged · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1668</p>
+    <h1>combo box OnEditChanged</h1>
+    <p class="meta">Started by johnM ·
+      2011-08-08 04:31 UTC ·
+      4 replies · SMF topic #1668</p>
+<article class="post" id="msg8270">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2011-08-08 04:31 UTC</span>
+  </div>
+  <div class="post-body">using the combo box style 0<br>
+the OnEditChanged fires after each letter is entered into the text box<br>
+is it possible to type a new line of text into the text box and have it added to the list?<br>
+dcl version 6.0.2.5</div>
+</article>
+<article class="post" id="msg8272">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-08-10 14:31 UTC</span>
+  </div>
+  <div class="post-body">Maybe during OnKillFocus or OnDropdown if the input field was changed?</div>
+</article>
+<article class="post" id="msg8274">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2011-08-10 17:12 UTC</span>
+  </div>
+  <div class="post-body">Thanks, I’ll look into it.<br>
+For now I just added add/delete buttons<br>
+Could someone explain the use of the oneditchange function?<br>
+Is it supposed to fire each time a letter is typed into the combo text box?<br>
+</div>
+</article>
+<article class="post" id="msg8275">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-08-10 17:52 UTC</span>
+  </div>
+  <div class="post-body">Documentation for OnEditChanged:<br>
+<a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Event/EditChanged.htm" rel="nofollow noopener">{2}</a><br>
+<br>
+This event enables you to set a flag to signal that the user typed something in the edit box.<br>
+</div>
+</article>
+<article class="post" id="msg8276">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2011-08-10 19:04 UTC</span>
+  </div>
+  <div class="post-body">I understand now<br>
+I was interpreting the description to mean when the user finishes typing in the text box<br>
+So if you type the word “hello” the event is fired for each letter, this is just to let the program that something is going on.<br>
+Then you can set a flag to be used by another function to write the text to the list if necessary.<br>
+Thank you very much for the help<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

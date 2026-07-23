@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_Tree · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 149</p>
+    <h1>dcl_Tree</h1>
+    <p class="meta">Started by Zibster ·
+      2008-02-01 09:54 UTC ·
+      11 replies · SMF topic #149</p>
+<article class="post" id="msg645">
+  <div class="post-head">
+    <span class="post-author">Zibster</span>
+    <span class="post-date muted">2008-02-01 09:54 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I have problem with Lisp code, maybe someone can to help me...<br>
+In OnInitialize I have:<br>
+<br>
+(dcl_Tree_Clear bik_Bloki_frmBloki_TreeControl11)<br>
+(dcl_Tree_AddParent  bik_Bloki_frmBloki_TreeControl11<br>
+  (list (list "Cars" "C1")<br>
+	(list "Animals" "A1")<br>
+	(list "Plants" "P1"))<br>
+  );<br>
+  (dcl_Tree_AddChild  bik_Bloki_frmBloki_TreeControl11<br>
+    (list (list "C1" "Os" "C1.1")<br>
+	  (list "C1" "Tr" "C1.2")<br>
+	  (list "C1" "Cm" "C1.3"))<br>
+  );<br>
+<br>
+etc. etc.<br>
+<br>
+But I need this TreeControl to fill up folders with automatically (μ-recursive function)<br>
+For example: <br>
+1. start folder:  Location  = "c:/Bloki/"<br>
+2. function code:<br>
+<br>
+<pre class="code"><code><br>
+(defun MakeFTree (Location / DirList Path AllPath LstTL)<br>
+  <br>
+  (defun MakeDirList (Arg / TmpList)<br>
+    <br>
+    (cond<br>
+      (<br>
+       (setq TmpList (cddr (vl-directory-files Arg nil -1)))<br>
+       (setq DirList (append DirList (mapcar '(lambda (z) (strcat Arg "/" z)) TmpList)))<br>
+       (foreach Item TmpList (MakeDirList (strcat Arg "/" Item)))<br>
+       (setq LstTL (cons TmpList LstTL))<br>
+      )<br>
+    );end cond<br>
+  );end MakeDirList<br>
+<br>
+  (cond<br>
+   ((= (type Location) 'STR)<br>
+    (if (member (substr Location (strlen Location) 1) (list "/" "\\"))<br>
+      (setq Location (substr Location 1 (1- (strlen Location))))<br>
+    );end if<br>
+    (MakeDirList Location)<br>
+  ))<br>
+);end MakeFTree<br>
+</code></pre><br>
+<br>
+3. where I shoud to add this: (dcl_Tree_AddParent ...) and (dcl_Tree_AddChild ...) in the code?<br>
+In my disk the folder trees look like:<br>
+c:\Bloki\Cars\<br>
+c:\Bloki\Cars\Os<br>
+c:\Bloki\Cars\Os\S1<br>
+c:\Bloki\Cars\Os\S1\S1.1<br>
+c:\Bloki\Cars\Os\S1\S1.2<br>
+c:\Bloki\Cars\Os\S1\S1.1\...  deep and deep<br>
+c:\Bloki\Cars\Os\S2<br>
+c:\Bloki\Cars\Os\S3<br>
+c:\Bloki\Cars\Tr<br>
+c:\Bloki\Cars\Tr\T1<br>
+c:\Bloki\Cars\Tr\T2<br>
+c:\Bloki\Cars\Tr\T2\T2.2\....  deep and deep<br>
+c:\Bloki\Cars\Cm<br>
+....<br>
+etc.<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg647">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-02-01 22:50 UTC</span>
+  </div>
+  <div class="post-body">It's pretty difficult to populate the whole directory structure in one shot.<br>
+And if you try to do it on your forms "OnInitialize" and have lots of sub-folders, it can take a long time &amp; cause your form not to show for a few seconds.<br>
+It's better to use the "OnItemExpanding" event and look at the next level down then add the children to that item.<br>
+Just like Win. Explorer does. Notice how it always has the "+" next to all the folder even when there's nothing in that folder.<br>
+Then when you click the "+" it goes away, since it now knows there's nothing under it....<br>
+I'll try to put an example together of this, since it's been asked a few times before.</div>
+</article>
+<article class="post" id="msg650">
+  <div class="post-head">
+    <span class="post-author">JMack</span>
+    <span class="post-date muted">2008-02-01 23:49 UTC</span>
+  </div>
+  <div class="post-body">I totally agree with Bazza.<br>
+<br>
+I really like the tree control.  A neat thing I've done with the tree control is create string keys that are actually functions.  When a user double clicks, exxpands, selects or does anything the string key is converted into a function and executes.  If there is no function nothing happens.<br>
+For example;<br>
+<br>
+An item has a string key called "MyTitleBlockInitials".  When the user double clicks that item the this function executes (MyTitleBlockInitials_OnDblClicked TreeControl).  The tree control is also passd to the function so the function can manipulate the control if required. <br>
+<br>
+Hopefully the below code is readable enough and can give a sense of what i've done.<br>
+<br>
+<pre class="code"><code><br>
+;;Double Click Event<br>
+(defun c:HDResidential_frmHD_TreeControlSettings_OnDblClicked (/ strKey)<br>
+  (if<br>
+    (setq strKey (DCL_Tree_GetSelectedItem HDResidential_frmHD_TreeControlSettings))<br>
+    (HDF_ODCLTreeView_ExecuteKey (vl-princ-to-string strKey) "OnDblClicked" HDResidential_frmHD_TreeControlSettings)<br>
+  )<br>
+  nil<br>
+)<br>
+;;Item Expanding  Event<br>
+(defun c:HDResidential_frmHD_TreeControlSettings_OnItemExpanding (strtext strKey /)<br>
+  (HDF_ODCLTreeView_ExecuteKey (vl-princ-to-string strKey) "OnItemExpanding" HDResidential_frmHD_TreeControlSettings)<br>
+  nil<br>
+)<br>
+;;Helper function to execute the function related to the key<br>
+(defun HDF_ODCLTreeView_ExecuteKey (strTreeKey strFunctionType eTreeControl / fun strFunction varReturn)<br>
+  (setq strFunction (strcat strTreeKey "_" strFunctionType))<br>
+  (if<br>
+    (setq fun (eval (read strFunction)))<br>
+    (setq varReturn (eval (fun eTreeControl)))<br>
+  )<br>
+  varReturn<br>
+)<br>
+<br>
+;;;sample function of a double click function<br>
+;;;when the user double clicked the tree item with the string key named "HDC_Update_SettingsAutoUpdateP" this function executes and changes the icon to checked or unchecked.<br>
+;;;There is a lot more to it but hopefully you can get an idea how to manage complex trees with string keys as functions.<br>
+(defun HDC_Update_SettingsAutoUpdateP_OnDblClicked (eTreeControl / varReturn)<br>
+  (if<br>
+    (HDC_Reg_GetSettingsKey "AutoUpdate")<br>
+    (HDC_Reg_PutSettingsKey "AutoUpdate" nil)<br>
+    (HDC_Reg_PutSettingsKey "AutoUpdate" 1)<br>
+  )<br>
+  (setq varReturn (HDC_Reg_GetSettingsKey "AutoUpdate"))<br>
+  (if<br>
+    eTreeControl<br>
+    (HDC_Settings_SetCheckMark eTreeControl "HDC_Update_SettingsAutoUpdateP" varReturn)<br>
+  )<br>
+  varReturn<br>
+)<br>
+</code></pre><br>
+<br>
+Cheers</div>
+</article>
+<article class="post" id="msg652">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-01 23:53 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Zibster link=topic=149.msg645#msg645 date=1201859693 wrote:</cite><br>
+But I need this TreeControl to fill up folders with automatically (μ-recursive function)</blockquote><br>
+<br>
+Have you considered using a file dialog form instead? That way you can let Windows do the work for you. :)</div>
+</article>
+<article class="post" id="msg658">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-02-02 01:34 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=149.msg652#msg652 date=1201909999 wrote:</cite><br>
+[quote author=Zibster link=topic=149.msg645#msg645 date=1201859693]<br>
+But I need this TreeControl to fill up folders with automatically (μ-recursive function)</blockquote><br>
+<br>
+Have you considered using a file dialog form instead? That way you can let Windows do the work for you. :)<br>
+<br>
+<br>
+Because it can't do cool stuff like this...<br>
+<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg659">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-02 02:47 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=149.msg658#msg658 date=1201916087 wrote:</cite><br>
+Because it can't do cool stuff like this...</blockquote><br>
+<br>
+Wanna bet? ;)</div>
+</article>
+<article class="post" id="msg660">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-02-02 05:17 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=149.msg659#msg659 date=1201920454 wrote:</cite><br>
+Wanna bet? ;)<br>
+</blockquote><br>
+<br>
+Really can it? In it's current state?</div>
+</article>
+<article class="post" id="msg661">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-02 06:21 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=149.msg660#msg660 date=1201929460 wrote:</cite><br>
+Really can it? In it's current state?<br>
+</blockquote><br>
+<br>
+It can, but you have to cheat and install a shell extension that creates the effect you're going for in Windows Explorer as well as all file dialogs.</div>
+</article>
+<article class="post" id="msg666">
+  <div class="post-head">
+    <span class="post-author">DeanMc</span>
+    <span class="post-date muted">2008-02-05 13:58 UTC</span>
+  </div>
+  <div class="post-body">I use to have the same problem (both with deep folder structures and with load times) BUT about a year ago I began using DOSLIB for almost all my file/folder tools (as well as some other functions).  Know I load an entire directory structure into the tree using mapcar and it's very fast.  In fairness to everyone I do "throttle" the loading of sub-folders (e.g. it only loads 5 folder deep) on the initial loading of the form.  I also have a general progress dialog that I use anytime one of my dialogs needs to indicate to the user it's "doing something".<br>
+<br>
+Just some benchmarks for ya - I tested this method using DOSLIB in conjunction with the tree control to load the root of one of my terrabox external drives with approx. 560 GB stored and it took about 45 seconds (with the throttle turned on - 1.25 minutes with it off).<br>
+<br>
+Also, I tested the shell extension mentioned before (cool idea by the way) the only draw back to it is if the drive is not indexed then it can take a little time for explorer to populate the files/folders (but that only depends on the capacity and performance of the workstation/network connection).<br>
+<br>
+So, it's half a dozen in one hand, six in the other.  I prefer not using a shell extension because it's another loader I have to deal with during deployment and normalization.  DOSLIB is an ARX I can demand load and code against.  I also dont have to worry about users deleting or farting around with it.<br>
+<br>
+Cheers</div>
+</article>
+<article class="post" id="msg721">
+  <div class="post-head">
+    <span class="post-author">Zibster</span>
+    <span class="post-date muted">2008-02-13 13:30 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen,<br>
+<br>
+can you show me example lisp and odcl code, how to use ActiveX "Microsoft Tree View Control 6.0 (SP4)" or others TreeView control?<br>
+What I should to write in here:  <br>
+<span style="color:blue">(dcl_RegisterActiveXCtrl  <br>
+  ActiveXFileName [as String])</span>    ??<br>
+<br>
+and this:<br>
+<span style="color:blue">(dcl_AxObject_Release  <br>
+	OleObject [as List]) </span>  ??<br>
+<br>
+because I have error message... "no function definition: <span style="color:blue">DCL_AXOBJECT_RELEASE</span>" ...<br>
+<br>
+I will be really thankful...<br>
+Zbyszek</div>
+</article>
+<article class="post" id="msg826">
+  <div class="post-head">
+    <span class="post-author">Zibster</span>
+    <span class="post-date muted">2008-02-18 14:52 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+I still try to use ActiveX "mscomctl.ocx"  :-\<br>
+<br>
+<pre class="code"><code><br>
+...<br>
+(dcl_RegisterActiveXCtrl "c:/windows/system32/mscomctl.ocx")<br>
+(dcl_AxControl_DoMethod bik_Bloki_frmBloki_TreeCtrl10 "c:/windows/system32/mscomctl.ocx")<br>
+(setq OleObject (dcl_AxControl_GetProperty bik_Bloki_frmBloki_TreeCtrl10 "Nodes"))(print OleObject)  ;return: <br>
+(dcl_AxControl_SetProperty bik_Bloki_frmBloki_TreeCtrl10 "Nodes" "TEST")<br>
+<br>
+(dcl_AxObject_Close)<br>
+...<br>
+</code></pre><br>
+<br>
+after this line: <span style="color:blue">(dcl_AxControl_SetProperty bik_Bloki_frmBloki_TreeCtrl10 "Nodes" "TEST")</span> AutoCAD show message (attach). Can someone to explain me what I do wrong? Why in "Intelligent help":<br>
+<span style="color:green">AutoLISP Set Property Syntax:<br>
+(dcl_AxControl_SetProperty bik_Bloki_frmBloki_TreeCtrl10 "Nodes" NewValue [as INodes]) </span><br>
+is nothing about VT_FONT and VT_BSTR, and what is it?<br>
+<br>
+I was looking for this here: http://msdn2.microsoft.com/en-us/library/ms688421(VS.85).aspx<br>
+and http://msdn2.microsoft.com/en-us/library/aa443492(VS.60).aspx<br>
+but don't uderstand...<br>
+<br>
+Zbyszek<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg829">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-18 15:50 UTC</span>
+  </div>
+  <div class="post-body">I am currently in the middle of making some changes to the way that intelligent help displays information about ActiveX controls. In Alpha 5, this change is not yet completed, and as a result you do not see the "INodes" interface listed in the intelligent help browser. In any case, the Nodes property is a type of ACtiveX interface called "INodes" (which is a collection of "INode" interfaces).<br>
+<br>
+If you want to work with ActiveX objects, it would probably be useful for you to use a "type library browser" to view the type library of the object you're working with. Intelligent help attempts to display a minimal reference based on the type library, but viewing it in a type library browser will provide much more information (such as description text and help text where it is provided).<br>
+<br>
+I'm not sure why the error message you received mentions the VT_FONT variant type, because that is not correct. VT_FONT is one of several dozen "variant types" in COM.<br>
+<br>
+In the case of the tree control, I have no experience with it, however I'll try to provide some tips so you can experiment with it. I looked at the type library with a type library browser, and it shows me that the INodes interface has an 'Add' method that returns a new INode as follows:<br>
+<br>
+(dcl_AxControl_DoMethod  "Add"      )<br>
+<br>
+The arguments are more fully described at:<br>
+http://msdn2.microsoft.com/en-us/library/aa443386(VS.60).aspx<br>
+<br>
+To test the tree control, I tried the following:<br>
+<br>
+(setq Nodes (dcl_AxControl_GetProperty  "Nodes"))<br>
+; now Nodes is an OLE Object, and we use (dcl_AxObject_*) syntax<br>
+(Setq NewNode (dcl_AxObject_DoMethod Nodes "Add"))<br>
+; NewNode is also an OLE Object<br>
+(dcl_AxObject_SetProperty NewNode "Text" "MyNewTreeItem")<br>
+; this should work, but the call into the tree control fails with a COM error<br>
+(setq text (dcl_AxObject_GetProperty Node "Text")) ;this works fine<br>
+(dcl_AxObject_Close NewNode) ;release the node<br>
+(dcl_AxObject-Close Nodes) ;release the nodes collection<br>
+<br>
+I'm not sure why the call to set the 'Text' property fails, but I will investigate this. The code above should work, and at least it can demonstrate the basic steps.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

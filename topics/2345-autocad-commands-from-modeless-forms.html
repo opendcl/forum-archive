@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AutoCAD commands from modeless forms · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2345</p>
+    <h1>AutoCAD commands from modeless forms</h1>
+    <p class="meta">Started by ScottBolton ·
+      2015-12-31 16:59 UTC ·
+      3 replies · SMF topic #2345</p>
+<article class="post" id="msg11754">
+  <div class="post-head">
+    <span class="post-author">ScottBolton</span>
+    <span class="post-date muted">2015-12-31 16:59 UTC</span>
+  </div>
+  <div class="post-body">Hello, and Happy New Year to those east of me!<br>
+<br>
+I have a modeless form with an OptionList. As each option is pressed I want to insert different blocks into the drawing.<br>
+<br>
+Using Modeless.lsp as a guide I used this code:<br>
+<br>
+(defun c:bTscore/Form1/key#OnSelChanged (ItemIndexOrCount Value /)<br>
+  (dcl-Form-Enable bTscore/Form1 nil)<br>
+  (c:test)<br>
+  (dcl-Form-Enable bTscore/Form1 T)<br>
+  )<br>
+<br>
+If I use,<br>
+<br>
+(defun c:test ()<br>
+  (command "_insert" "block1" '(0 0 0) 1 1 0)<br>
+  )<br>
+<br>
+I get the following error: <strong>; error: invalid AutoCAD command: nil</strong><br>
+<br>
+And if I use,<br>
+<br>
+(defun c:test ()<br>
+  (entmake '((0 . "INSERT") (100 . "AcDbEntity") (8 . "0") (62 . 250) (100 . "AcDbBlockReference") (2 . "block1") (10 0.0 0.0 0.0) (41 . 1.0) (42 . 1.0) (43 . 1.0) (50 . 0.0) (70 . 0) (71 . 0) (44 . 0.0) (45 . 0.0) (210 0.0 0.0 1.0)))<br>
+  )<br>
+<br>
+AutoCAD crashes with a fatal error.<br>
+<br>
+What am I doing wrong?</div>
+</article>
+<article class="post" id="msg11755">
+  <div class="post-head">
+    <span class="post-author">Tharwat</span>
+    <span class="post-date muted">2015-12-31 18:07 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+Close AutoCAd then change the property of EventInvoke to 1-Asynchronous to the button or the tool you use to insert the block.<br>
+I hope this would work.<br>
+</div>
+</article>
+<article class="post" id="msg11756">
+  <div class="post-head">
+    <span class="post-author">ScottBolton</span>
+    <span class="post-date muted">2015-12-31 19:27 UTC</span>
+  </div>
+  <div class="post-body">Worked like a charm, thanks!</div>
+</article>
+<article class="post" id="msg11757">
+  <div class="post-head">
+    <span class="post-author">Tharwat</span>
+    <span class="post-date muted">2015-12-31 19:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=ScottBolton link=topic=2345.msg11756#msg11756 date=1451590032 wrote:</cite><br>
+Worked like a charm, thanks!<br>
+</blockquote><br>
+<br>
+Nice, you are welcome.<br>
+<br>
+Happy to help for sure.  :)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

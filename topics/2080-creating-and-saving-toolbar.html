@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>creating and saving toolbar · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2080</p>
+    <h1>creating and saving toolbar</h1>
+    <p class="meta">Started by potencjalek ·
+      2013-12-20 13:35 UTC ·
+      2 replies · SMF topic #2080</p>
+<article class="post" id="msg10268">
+  <div class="post-head">
+    <span class="post-author">potencjalek</span>
+    <span class="post-date muted">2013-12-20 13:35 UTC</span>
+  </div>
+  <div class="post-body">Hi Guys <br>
+i have two function first one creates manu group and it works fine<br>
+(defun createToolbarGroup (tgname toolbarlist / fn flag) ;(createToolbarGroup "DanielJaros" '("Narzędzia" "Aplikacje"))<br>
+(setq flag nil)<br>
+(if (not (findfile (strcat tgname ".mns")))<br>
+	(progn<br>
+	  (setq fn (open (strcat main_cad_folder tgname ".mns") "w"))<br>
+	  (close fn)<br>
+	)<br>
+)<br>
+(vlax-for n (vla-get-menuGroups (vlax-get-acad-object))<br>
+	(if (= (vla-get-name n) tgname)<br>
+	  (setq flag T)<br>
+	)<br>
+	(terpri)<br>
+	(princ (vla-get-name n))<br>
+)<br>
+(if (null flag)<br>
+	(vla-load (vla-get-menuGroups (vlax-get-acad-object)) (strcat tgname ".mns"))<br>
+)<br>
+(foreach tb toolbarlist<br>
+	(vla-add (vla-get-toolbars (vla-item (vla-get-menuGroups (vlax-get-acad-object)) tgname)) tb)<br>
+)<br>
+)<br>
+and second adds toolbars and buttons<br>
+(defun AddButtons (tgname button_lst / Toolbar newToolbarButton) ; tgname - toolbar group name button_lst - list of buttons<br>
+(setq Toolbar nil)<br>
+(vlax-for n (vla-get-toolbars (vla-item (vla-get-menuGroups (vlax-get-acad-object)) tgname))<br>
+	(if (= (vla-get-name n) (car button_lst))<br>
+		(setq Toolbar n)<br>
+	)<br>
+)<br>
+(if (not Toolbar)(setq Toolbar (vla-add (vla-get-toolbars (vla-item (vla-get-menuGroups (vlax-get-acad-object)) tgname)) (car button_lst)))) ; tworzy nowy toolbar<br>
+(foreach button (nth 1 button_lst)<br>
+	(progn<br>
+		(print (nth 0 button))<br>
+		(setq newToolbarButton<br>
+			(vla-addToolbarButton<br>
+				Toolbar<br>
+				(1+ (vla-get-count Toolbar))<br>
+				(nth 0 button) (nth 0 button) (nth 1 button)	; name and command<br>
+			)<br>
+		)<br>
+		(setq SmallBitmapName (nth 2 button))		; path to icon<br>
+		(setq LargeBitmapName (nth 2 button))  <br>
+		(vla-setBitmaps newToolbarButton SmallBitmapName LargeBitmapName)<br>
+		(vla-put-helpString newToolbarButton (nth 3 button)) ; help<br>
+	)<br>
+)<br>
+)<br>
+which also works fine, the problem is that after restart bricscad i cant see created toolbars anymore<br>
+should I save it somehow?</div>
+</article>
+<article class="post" id="msg10269">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-20 14:10 UTC</span>
+  </div>
+  <div class="post-body">Please limit your questions here to OpenDCL questions. There are <a href="http://www.theswamp.org" rel="nofollow noopener">{2}</a> for general programming and lisp questions.</div>
+</article>
+<article class="post" id="msg10270">
+  <div class="post-head">
+    <span class="post-author">potencjalek</span>
+    <span class="post-date muted">2013-12-20 15:16 UTC</span>
+  </div>
+  <div class="post-body">ok, sorry<br>
+i will use it only for odcl<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

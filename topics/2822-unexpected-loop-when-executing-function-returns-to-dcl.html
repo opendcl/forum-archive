@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unexpected loop when executing function (returns to DCL) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2822</p>
+    <h1>Unexpected loop when executing function (returns to DCL)</h1>
+    <p class="meta">Started by LauReis ·
+      2022-05-21 13:52 UTC ·
+      4 replies · SMF topic #2822</p>
+<article class="post" id="msg13684">
+  <div class="post-head">
+    <span class="post-author">LauReis</span>
+    <span class="post-date muted">2022-05-21 13:52 UTC</span>
+  </div>
+  <div class="post-body"> :(<br>
+Good morning everyone<br>
+I'm new here, and I have a problem, when using a DCL and clicking [Done...], this button Loads the '#Quadrados_Filas' function, when it finds a command in the code lines (vl-cmdf "xxx") the routine automatically returns to the dialog box (DCL ).<br>
+The fact is that she is interrupted, returning to the DCL<br>
+I don't understand why this happens, I would like some help.<br>
+I made a video showing when the command "QF" is used it works perfectly, but when used in DCL "OQF", it goes back to the DCL. ???<br>
+I'm waiting for help, thank you<br>
+<br>
+QF = Keyboard command<br>
+OQF = OpenDCL Command<br>
+.Both run the same function (#Quadrados_filas), but when used the OQF is interrupted.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2546/cur.zip">cur.zip</a> <span class="muted">(1981911 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13686">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2022-05-31 00:21 UTC</span>
+  </div>
+  <div class="post-body">While you are showing a modal dialog it is not possible to send commands because the command throat is suspended waiting for the dialog to close. Functions like (command) and (cl-cmdf) will fail from inside a modal dialog event handler. If you cannot avoid executing commands, you will need to make your form modeless. I hope that helps.</div>
+</article>
+<article class="post" id="msg13688">
+  <div class="post-head">
+    <span class="post-author">LauReis</span>
+    <span class="post-date muted">2022-05-31 15:32 UTC</span>
+  </div>
+  <div class="post-body">Thank you owenwengerd<br>
+<br>
+But I still don't understand how to solve my case.<br>
+but on line 35 and loaded the closing function of the DCL, this should inhibit the error ?<br>
+check the .lsp inside the .zip file<br>
+Sorry I can't put a part of the COD here, even copying and pasting at the end it erases everything and appears: ; BOT<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2548/cur.zip">cur.zip</a> <span class="muted">(1981897 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13689">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2022-06-02 20:40 UTC</span>
+  </div>
+  <div class="post-body">A form cannot close while a handler is executing, so your (dcl_form_close CUR_form1) does *not* close the form. Not until (dcl_form_show) returns is your form closed. Try putting the (#Quadrados_Filas) immediately after (dcl_form_show), then the form will be closed and it will be possible to run commands again.</div>
+</article>
+<article class="post" id="msg13690">
+  <div class="post-head">
+    <span class="post-author">LauReis</span>
+    <span class="post-date muted">2022-06-03 13:41 UTC</span>
+  </div>
+  <div class="post-body">Thanks it worked perfectly.<br>
+But I was confused.<br>
+it's like a break, only the later lines are played.... after [done...]<br>
+<br>
+<pre class="code"><code><br>
+<br>
+; CARREGA A CAIXA DE DIGALOGO BOX   PELO OPEN.DCL.<br>
+(defun c:OQF()<br>
+  (IF (= #SISTM-CF NIL) (PROGN (#CF_#Confg_System_Metrico)    (SETQ #SISTM-CF T) ))<br>
+  (command "_OPENDCL")                      ; CARREGA O DCL .ARX <br>
+  (dcl_project_load "Y:\\OPEN.DCL\\CUR" t)  ; CARREGA O ARQUIVO CUR.DCL <br>
+  (dcl_form_show CUR_form1)(PRINC)          ; ATIVA O DCL<br>
+  (#Quadrados_Filas)                        ; (this Line is only executed after clicking  )<br>
+)<br>
+</code></pre></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

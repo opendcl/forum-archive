@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid control issue with column click · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 937</p>
+    <h1>Grid control issue with column click</h1>
+    <p class="meta">Started by johnM ·
+      2009-09-24 05:00 UTC ·
+      13 replies · SMF topic #937</p>
+<article class="post" id="msg4711">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2009-09-24 05:00 UTC</span>
+  </div>
+  <div class="post-body">autocad 2004 : opendcl runtime arx 5.1.1.8<br>
+I have a grid and I have a modal box that will display at the mouse coordinates when a column header is clicked. I’m using the modal box as a menu to insert clm’s before/after the clicked column.<br>
+When I click the column grid header the modal box shows but the grid still has focus until you click anywhere again, on screen on the main form or the modal form. Then you can single click the buttons on the modal form or you have to click the buttons on the modal form twice.<br>
+<br>
+Any suggestions<br>
+</div>
+</article>
+<article class="post" id="msg4723">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-24 16:12 UTC</span>
+  </div>
+  <div class="post-body">This is now fixed for Alpha 6. To work around the problem in 5.1, try this:<br>
+<br>
+(defun showmenu () (dcl_Form_Show MyProject_MyForm))<br>
+<br>
+(defun c:MyProject_MyForm_MyGrid_OnColumnClick (Column /)<br>
+  (dcl_DelayedInvoke 0 "showmenu")<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg4726">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2009-09-24 17:53 UTC</span>
+  </div>
+  <div class="post-body">thanks that worked great<br>
+you just needed to make the showmenu defun with a C:showmenu otherwise you get an error "no function found"<br>
+<br>
+thanks for the quick reply</div>
+</article>
+<article class="post" id="msg8535">
+  <div class="post-head">
+    <span class="post-author">mjacak</span>
+    <span class="post-date muted">2011-12-22 09:31 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+This problem still ocurres with OpenDCL 7.0.0.2 for modal forms. When grid is in modal form and I show menu form (modal as well) column keep focus. In this case I can't use workaround with dcl_DelayedInvoke.  <br>
+<br>
+Is any other solution ?<br>
+<br>
+Mateusz</div>
+</article>
+<article class="post" id="msg8539">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-12-22 13:10 UTC</span>
+  </div>
+  <div class="post-body">I'll have a look. Did the problem exist in Alpha 1 or was it was introduced in Alpha 2?</div>
+</article>
+<article class="post" id="msg8540">
+  <div class="post-head">
+    <span class="post-author">mjacak</span>
+    <span class="post-date muted">2011-12-22 14:11 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen.<br>
+<br>
+I noticed this problem for 6.0.2.5, 7.0.0.1 and 7.0.0.2, but could exist before as well.<br>
+<br>
+Thanks<br>
+Mateusz</div>
+</article>
+<article class="post" id="msg8573">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-01-26 22:53 UTC</span>
+  </div>
+  <div class="post-body">This should now be fixed in the next alpha build.</div>
+</article>
+<article class="post" id="msg8644">
+  <div class="post-head">
+    <span class="post-author">mjacak</span>
+    <span class="post-date muted">2012-02-28 07:48 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen.<br>
+<br>
+The problem still ocurres with OpenDCL 7.0.0.3. I hope you can find solution  :).<br>
+<br>
+Mateusz</div>
+</article>
+<article class="post" id="msg8645">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-02-28 16:30 UTC</span>
+  </div>
+  <div class="post-body">Please try to create a very simple .odcl and .lsp that demonstrates the problem so I can be sure what you are experiencing.</div>
+</article>
+<article class="post" id="msg8649">
+  <div class="post-head">
+    <span class="post-author">mjacak</span>
+    <span class="post-date muted">2012-02-29 12:36 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen.<br>
+<br>
+I attached an example and short video to show the problem. <br>
+<br>
+Thanks<br>
+Mateusz<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1708/onColumnClick.zip">onColumnClick.zip</a> <span class="muted">(153835 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8653">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-02-29 18:41 UTC</span>
+  </div>
+  <div class="post-body">I've added a bit more code to address the problem, so hopefully the next build will resolve this for you. There is still some potential for problems due to the fact that the column button never gets the "mouse up" event that it is waiting for, but at least the secondary dialog works as expected.</div>
+</article>
+<article class="post" id="msg8657">
+  <div class="post-head">
+    <span class="post-author">mjacak</span>
+    <span class="post-date muted">2012-03-01 07:59 UTC</span>
+  </div>
+  <div class="post-body">The point is to act on second form without additional click. I'm waiting for next build to test it.<br>
+<br>
+Thanks a lot Owen. <br>
+<br>
+Mateusz</div>
+</article>
+<article class="post" id="msg8672">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-03-03 01:37 UTC</span>
+  </div>
+  <div class="post-body">I had to upload new MSI files to correct a problem with inclusion of system DLLs, so I snuck in this fix as well. The version didn't change, so you must uninstall the original 7.0.0.3 before installing the new one.</div>
+</article>
+<article class="post" id="msg8673">
+  <div class="post-head">
+    <span class="post-author">mjacak</span>
+    <span class="post-date muted">2012-03-03 08:02 UTC</span>
+  </div>
+  <div class="post-body">Problem solved. :-). Works as expected.<br>
+<br>
+Thanks again.<br>
+Mateusz<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

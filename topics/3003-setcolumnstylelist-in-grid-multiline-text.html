@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SetColumnStyleList in Grid - multiline text · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 3003</p>
+    <h1>SetColumnStyleList in Grid - multiline text</h1>
+    <p class="meta">Started by Peter2 ·
+      2026-06-02 12:46 UTC ·
+      1 replies · SMF topic #3003</p>
+<article class="post" id="msg14341">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2026-06-02 12:46 UTC</span>
+  </div>
+  <div class="post-body">I have a grid where I want to use "multiline text" with "cellstyle 13".<br>
+I create the columns, set them to "13", check them with result 13, check the cell with result -1 (which says cellstyle comes from column).<br>
+<br>
+Everything looks fine, but the result is still a "one - line -text". What could be wrong?<br>
+<br>
+<pre class="code"><code>    (dcl-Grid-Clear htp/palette/Datenblatt)<br>
+<br>
+    (dcl-Grid-AddColumns htp/palette/Datenblatt '(("Titel" 0 150) ("Beschreibung" 0 500) ("Steuerelement" 0 150)))<br>
+    (dcl-Control-SetColumnStyleList htp/palette/Datenblatt 13 13 13)<br>
+<br>
+    (dcl-Control-GetColumnStyleList htp/palette/Datenblatt)<br>
+    (13 13 13)<br>
+<br>
+    (dcl-Grid-GetCellStyle htp/palette/Datenblatt 2 2)<br>
+    -1</code></pre><br>
+<br>
+---</div>
+</article>
+<article class="post" id="msg14342">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2026-06-03 07:55 UTC</span>
+  </div>
+  <div class="post-body">Solved.<br>
+<br>
+I expected that the row height would expand automatically, but I have to set it separately (and all rows have the same height in a grid):<br>
+<br>
+<pre class="code"><code>(dcl-Control-SetRowHeight htp/palette/Datenblatt 30)</code></pre><br>
+--</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

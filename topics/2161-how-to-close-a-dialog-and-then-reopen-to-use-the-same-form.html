@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>how to close a dialog and then reopen to use the same form · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2161</p>
+    <h1>how to close a dialog and then reopen to use the same form</h1>
+    <p class="meta">Started by andrew.nao1 ·
+      2014-08-15 18:29 UTC ·
+      7 replies · SMF topic #2161</p>
+<article class="post" id="msg10807">
+  <div class="post-head">
+    <span class="post-author">andrew.nao1</span>
+    <span class="post-date muted">2014-08-15 18:29 UTC</span>
+  </div>
+  <div class="post-body">maybe someone can provide a little guidance<br>
+im wanting to close a form when pressing a button<br>
+set my vars and do my thing<br>
+then close the dialog and reopen the same dialog, clear the content for use in another application within the same program.<br>
+i can get the dialog to close... but getting it to reopen is where im going wrong.<br>
+<br>
+<br>
+any help is appreciated<br>
+<pre class="code"><code><br>
+(defun c:newt/Form3/TextButton1#OnClicked (/)<br>
+	<br>
+(if (&gt; (length _list) 1)<br>
+"do my thing"<br>
+<br>
+;close dialog<br>
+(dcl-Form-Close newt/Form3)<br>
+<br>
+;clear info<br>
+<br>
+;reopen the same dialog for another use<br>
+(dcl-Form-Show newt/Form3)<br>
+)<br>
+)<br>
+</code></pre></div>
+</article>
+<article class="post" id="msg10808">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-08-15 21:35 UTC</span>
+  </div>
+  <div class="post-body">Put your initial call to (dcl-Form-Show) in a loop that continues to call (dcl-Form-Show) until whatever conditions are satisfied to stop re-displaying the form. I don't have a sample reference handy, but this is a frequent question, so you shouldn't have much trouble finding samples.</div>
+</article>
+<article class="post" id="msg10809">
+  <div class="post-head">
+    <span class="post-author">andrew.nao1</span>
+    <span class="post-date muted">2014-08-18 14:14 UTC</span>
+  </div>
+  <div class="post-body"><pre class="code"><code><br>
+(defun c:newt/Form3/TextButton1#OnClicked (/)<br>
+  (setq descrepancy (cons (dcl-Control-GetText newt/Form3/TextBox1) descrepancy))<br>
+  (setq change (cons (dcl-Control-GetText newt/Form3/TextBox2) change))<br>
+	(dcl-Form-Close newt/Form3)<br>
+	<br>
+	(if (&gt; (length release_list) 1)<br>
+	(progn <br>
+(dcl-Form-Show newt/Form3)<br>
+(dcl_MessageBox"DO MY THING")<br>
+<br>
+(setq release_list (remitem release_list 0))<br>
+<br>
+)<br>
+)<br>
+(dcl-Control-SetEnabled newt/Form2/release_selection T)<br>
+)<br>
+</code></pre><br>
+<br>
+this is what i tried.<br>
+when pressing the button it closes the box and the alert pops up but the dialog doesnt reopen.<br>
+</div>
+</article>
+<article class="post" id="msg10810">
+  <div class="post-head">
+    <span class="post-author">andrew.nao1</span>
+    <span class="post-date muted">2014-08-18 15:05 UTC</span>
+  </div>
+  <div class="post-body">maybe you can explain something..<br>
+i found this post from Fred<br>
+http://www.opendcl.com/forum/index.php?topic=890.msg4418#msg4418<br>
+<br>
+he mentions he got his snippet from the german help<br>
+so i clicked it to see and i saw the code snippet from there<br>
+and in this code<br>
+<pre class="code"><code><br>
+	(if (dcl-Project-Load "MyProject") ; Load project data from MyProject.odcl<br>
+		(progn<br>
+			(setq Result (dcl-Form-Show MyProject/MyForm))<br>
+			; Note that this code does not execute until *after* the<br>
+				dialog is closed!<br>
+			(if (= Result 1) (DoSomething))<br>
+		); progn<br>
+</code></pre><br>
+when i try this on my project, "result" returns coordinates<br>
+its never 1, so "do something" would never execute because "result" will never be 1<br>
+<br>
+am i missing something?</div>
+</article>
+<article class="post" id="msg10811">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-08-18 15:59 UTC</span>
+  </div>
+  <div class="post-body">In your failing code, you still have the call to (dcl-Form-Show) in your button event handler. This will not work. The call to (dcl-Form-Show) has to be in the same function context as the initial call to (dcl-Form-Show) as demonstrated in Fred's sample. The return value from (dcl-Form-Show) depends on the form type. Fred's sample presumes a modal dialog. For a modal dialog, the return value is whatever integer value you pass to (dcl-Form-Close). If you want to use the value 1 to trigger the dialog to redisplay, then you call (dcl-Form-Close MyProject/MyForm 1). Does that help?</div>
+</article>
+<article class="post" id="msg10812">
+  <div class="post-head">
+    <span class="post-author">andrew.nao1</span>
+    <span class="post-date muted">2014-08-18 18:19 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2161.msg10811#msg10811 date=1408377550 wrote:</cite><br>
+In your failing code, you still have the call to (dcl-Form-Show) in your button event handler. This will not work. The call to (dcl-Form-Show) has to be in the same function context as the initial call to (dcl-Form-Show) as demonstrated in Fred's sample.<br>
+</blockquote><br>
+<br>
+the initial call to my form3 is from a button from form2.<br>
+<br>
+so you are saying that the inital call to show form3 should be in the function context within form2?<br>
+<br>
+im confused now  :o<br>
+<br>
+i think i got it.<br>
+let me play around with this ill post back</div>
+</article>
+<article class="post" id="msg10813">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-08-18 19:11 UTC</span>
+  </div>
+  <div class="post-body">This is not entirely correct in all cases, but maybe it will be less confusing if you just take the position that (dcl-Form-Show) should never be used within an event handler. If you still have trouble, let me know more details about your forms and what you're trying to accomplish.</div>
+</article>
+<article class="post" id="msg10816">
+  <div class="post-head">
+    <span class="post-author">andrew.nao1</span>
+    <span class="post-date muted">2014-08-19 15:16 UTC</span>
+  </div>
+  <div class="post-body">below is the code snippet.<br>
+there is no way for me to strip my project down to attach the files so i hope you can bare with me on the explaination.<br>
+<br>
+i commented on where my loops is to help<br>
+this works with a little glitch.<br>
+(_lst = my list of strings)<br>
+<br>
+my test list has 4 items in it<br>
+when the button is pressed, my code does what its supposed to however the form is supposed to pop back up as many times as the items i have in my list (in my test case it would be 4) however my form pops back up 8 times.<br>
+now my form has 2 text boxes in it, if that has anything to do with it<br>
+<br>
+if i used fred's example snippet (posted below mine) no matter how many items in my list<br>
+my form only pops up 2 times.<br>
+<br>
+i believe im in the right church, wrong pew<br>
+<br>
+<pre class="code"><code><br>
+(defun c:newt/Form2/CheckBox1#OnClicked	(Value /)<br>
+  (if (= Value 1)<br>
+    (progn<br>
+      (dcl-Control-SetEnabled newt/Form2/release_selection nil)<br>
+      (if (&gt; (length release_list) 1)<br>
+	(progn<br>
+		(setq _lst release_list)<br>
+	  (while _lst                                        ;; loop<br>
+	    (setq intresult (dcl-Form-Show newt/Form3))<br>
+	    (if	(= intresult 0)<br>
+             (dcl-MessageBox "test")   <br>
+	     (dcl-Form-Show newt/Form3)<br>
+	    )<br>
+			(setq _lst (remitem _lst 0))  ;remove item from list till loop is nil<br>
+	  )<br>
+<br>
+	)<br>
+	(progn<br>
+	  (dcl-Form-Show newt/Form3)<br>
+	  (dcl-Control-SetEnabled newt/Form2/release_selection T)<br>
+	)<br>
+      )					;end if release_list<br>
+    )<br>
+    (progn<br>
+      (dcl-Control-SetEnabled newt/Form2/release_selection T)<br>
+    )<br>
+  )<br>
+)<br>
+</code></pre><br>
+<br>
+<br>
+<span style="color:red">fred example:</span><br>
+<pre class="code"><code><br>
+      (if (&gt; (length release_list) 1)<br>
+	(progn<br>
+	  (setq isloop T)<br>
+	  (while isloop<br>
+	    (setq isloop nil) ;; to avoid infinite loop when ESC<br>
+	    (setq intresult (dcl-Form-Show newt/Form3))<br>
+	    (if (= intresult 0)<br>
+			(dcl-Form-Show newt/Form3)<br>
+					;((= intresult 1) (ALERT "Here an object or point is elected.") (setq isloop T))<br>
+					;((= intresult 2) (ALERT "Here nothing happens"))<br>
+	    )				; cond<br>
+	  )				; while<br>
+		)<br>
+	) ;end if release_lis<br>
+</code></pre><br>
+<br>
+edit: if i comment out the form show and leave the dcl message box alone everything works perfectly<br>
+if i comment out the dcl message box and leave the form show i get undesired results<br>
+namely the form show pops up double the amount of time as there are items in my list<br>
+<br>
+edit2:<br>
+i got it working. i dont need the  (if (= intresult 0)... code<br>
+thats what was causing the double repeat<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

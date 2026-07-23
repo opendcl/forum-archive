@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Drag&amp;Drop ListView · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 740</p>
+    <h1>Drag&amp;Drop ListView</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-04-30 19:37 UTC ·
+      2 replies · SMF topic #740</p>
+<article class="post" id="msg3613">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-30 19:37 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I want to change the order within a listview, but not using automatic drag&amp;drop functionality but by customized OnDragBegin and OnDrop events because I change XRecordData at the same time.<br>
+<br>
+I move the items by deleting and inserting the items. But in the end of OnDrop event the inserted items shall be selected. And although I select them another item seems to be selected instead (afterwards).<br>
+<br>
+Because OnClicked will be fired after OnDrop event has been finished, I still cannot select the newly inserted (moved) items. Do I call the select function afterwards on the commandline it works fine.<br>
+<br>
+<br>
+(defun c:layer_sc_ltm_lst_prop_OnClicked (intRow intColumn / oGroup isGroup)<br>
+  (princ "\nlst_prop_OnClicked\r")<br>
+  (if ***ltm_list_sel*** (LTM_MANAGER_SELECTITEMS ***ltm_list_sel***))<br>
+  (setq ***ltm_list_sel*** nil)<br>
+  (setq isGroup (and (setq oGroup (LTM_MANAGER_ITEMS))<br>
+	 (= (length oGroup) 1)<br>
+	 (setq oGroup (cdar oGroup))<br>
+	 (LTM_OBJ_ISXREC oGroup)))<br>
+  (dcl_Control_SetVisible layer_sc_ltm_pb_lg_edit isGroup)<br>
+  (dcl_Control_SetVisible layer_sc_ltm_pb_lg_del isGroup)<br>
+); c:layer_sc_ltm_lst_prop_OnClicked<br>
+<br>
+(defun c:layer_sc_ltm_lst_prop_OnDragnDropBegin (/)<br>
+  (princ "\nlst_prop_OnDragnDropBegin\r")<br>
+  (setq ***ltm_list_drag*** (LTM_MANAGER_ITEMS))<br>
+  (dcl_Control_SetDragnDropAllowDrop layer_sc_ltm_lst_prop T) ;; it was set nil when an item of the tree is going to be dragged<br>
+); c:layer_sc_ltm_lst_prop_OnDragnDropBegin<br>
+<br>
+(defun c:layer_sc_ltm_lst_prop_OnDragnDropFromControl (strProjectName strFormName strControlName uDropPoint / lstObj lstItem oItem)<br>
+  (princ "\nlst_prop_OnDragnDropFromControl\r")<br>
+  (if (and (setq lstObj ***ltm_list_drag***)<br>
+	   (setq lstItem (dcl_ListView_HitPointTest layer_sc_ltm_lst_prop (car uDropPoint) (cadr uDropPoint)))<br>
+	   (setq oItem (LTM_MANAGER_ITEMID (car lstItem)))<br>
+	   (not (member oItem (mapcar 'cdr lstObj))))<br>
+    (progn<br>
+      (princ (strcat "\rlst_prop_OnDragnDropFromControl: " (itoa (length lstObj)) " Objekte\r"))<br>
+      (LTM_MANAGER_DELETEITEMS (mapcar 'car lstObj))<br>
+      ;; a list of inserted items as integer is given back<br>
+      (if (setq ***ltm_list_sel*** (LTM_MANAGER_INSERTITEMS (mapcar 'cdr lstObj) (LTM_MANAGER_GETITEMPOS oItem)))<br>
+        (LTM_MANAGER_SELECTITEMS ***ltm_list_sel***)<br>
+      ); if<br>
+    ); progn<br>
+  ); if<br>
+  (setq ***ltm_list_drag*** nil)<br>
+); c:layer_sc_ltm_lst_prop_OnDragnDropFromControl<br>
+<br>
+<br>
+Is there a chance to control that?<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/709/dragdrop2.gif">dragdrop2.gif</a> <span class="muted">(192526 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3614">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-30 19:58 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I removed a small bug of LTM_MANAGER_INSERTITEMS and it works now if I select items from the OnClicked event that is automatically called after OnDrop event.<br>
+<br>
+But shouldn't it also work if I change the selection within the OnDrop event?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3621">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-01 15:42 UTC</span>
+  </div>
+  <div class="post-body">I've made a change to the code so that SetCurSel works inside OnDragDropFromControl. I also noticed that the automatic drag/drop handling is not yet completed for the list view control; I think I was waiting to complete that until I had it working without any problems in the list control.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>problem about dropdown cell in grid control · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 139</p>
+    <h1>problem about dropdown cell in grid control</h1>
+    <p class="meta">Started by dayange ·
+      2008-01-20 13:33 UTC ·
+      2 replies · SMF topic #139</p>
+<article class="post" id="msg587">
+  <div class="post-head">
+    <span class="post-author">dayange</span>
+    <span class="post-date muted">2008-01-20 13:33 UTC</span>
+  </div>
+  <div class="post-body">I set cell style as dropdown in grid control:<br>
+<br>
+1. When I select a item in droplist, it seems that the OnEndLabelEdit Event dosen't happen until I click other cell.<br>
+How can I get the changed value immediately?<br>
+<br>
+2. If I do not click other cell, (dcl_Grid_SetItemText) cannot return the new value in dropdown cell.<br>
+<br>
+What should I do?<br>
+</div>
+</article>
+<article class="post" id="msg601">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-01-22 03:51 UTC</span>
+  </div>
+  <div class="post-body">Before you call (dcl_Grid_GetItemtext), call (dcl_Grid_CancelItemEdit) to close the edit control and apply the new selection.</div>
+</article>
+<article class="post" id="msg602">
+  <div class="post-head">
+    <span class="post-author">dayange</span>
+    <span class="post-date muted">2008-01-22 06:35 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen. Your suggestion is very helpful.<br>
+<br>
+BTW, I found a slip of pen: in grid control intelligent help, the CancelItemEdit function is written as(dcl_ListView_CancelItemEdit), the right function should be (dcl_Grid_CancelItemEdit).</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

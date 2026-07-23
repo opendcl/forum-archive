@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to work with Colour Lists (ComboBox, Style 4)? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2444</p>
+    <h1>How to work with Colour Lists (ComboBox, Style 4)?</h1>
+    <p class="meta">Started by Peter2 ·
+      2016-10-31 10:24 UTC ·
+      4 replies · SMF topic #2444</p>
+<article class="post" id="msg12185">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-10-31 10:24 UTC</span>
+  </div>
+  <div class="post-body">For me, it is a little bit confusing to work with colour list?<br>
+<br>
+The basic problem is the communication between the (return values) of the combobox and the usage in AutoCAD.<br>
+<br>
+Examples:<br>
+a) The German version returns "VonLayer" and "VonBlock" - how to use it in international version?<br>
+b) For color seven is returns "Schwarz" (Black), but "Cecolor" only accepts "Weiss" (White)<br>
+c) For higher values, it returns "Farbe 56", but Cecolor only accepts "56"<br>
+d) If I have higher values, "dcl-ComboBox-SelectString" does not find an entry for "Farbe 56" (because it is taken from the color-table and not from the list ...)<br>
+<br>
+<br>
+Are there any panaceas to handle it in a simple way? (first prio for point d)<br>
+<br>
+Peter</div>
+</article>
+<article class="post" id="msg12186">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-10-31 16:00 UTC</span>
+  </div>
+  <div class="post-body">a: VonLayer/ByLayer=256, VonBlock/ByBlock=0.<br>
+Using the ENU version:<br>
+b: Color 7 is  "White".<br>
+c: Only the color number is displayed "56".<br>
+d: (dcl-ComboBox-SelectString) works with "56".</div>
+</article>
+<article class="post" id="msg12233">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-11-17 21:31 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+I want to continue the topic.<br>
+<br>
+I have a combo-box with "style 4 / Colors"; this is my defun<br>
+<br>
+(defun c:markierung/mpark_SN/Farbwahl#OnSelChanged (ItemIndexOrCount Value /)<br>
+    (princ "\nValue: ")<br>
+    (princ (setq mrk_parkplatz_sn_farbe value))<br>
+    (princ "\nItemindexorcount: ")<br>
+    (princ (setq mrk_parkplatz_sn_farbe_ind ItemIndexOrCount))<br>
+)<br>
+<br>
+<br>
+And this is my result, clicking through the list and the ACAD-Colordialogue:<br>
+Value: VonLayer<br>
+Itemindexorcount: 0<br>
+<br>
+Value: VonBlock<br>
+Itemindexorcount: 1<br>
+<br>
+Value: Rot<br>
+Itemindexorcount: 2<br>
+<br>
+Value: Gelb<br>
+Itemindexorcount: 3<br>
+<br>
+Value: Grün<br>
+Itemindexorcount: 4<br>
+<br>
+Value: Cyan<br>
+Itemindexorcount: 5<br>
+<br>
+Value: Blau<br>
+Itemindexorcount: 6<br>
+<br>
+Value: Magenta<br>
+Itemindexorcount: 7<br>
+<br>
+Value: Weiß<br>
+Itemindexorcount: 8<br>
+<br>
+Value: Farbe 50<br>
+Itemindexorcount: 0<br>
+<br>
+Value: Farbe 9<br>
+Itemindexorcount: 0<br>
+<br>
+Value: VonLayer<br>
+Itemindexorcount: 2<br>
+<br>
+Value: Farbe 221<br>
+Itemindexorcount: 0<br>
+<br>
+So if I want to set "cecolor" with<br>
+<ul><br>
+usage of the standard colors, I could use the "values" (strings) in German version, but have to translate it for other languages<br>
+the Indexnumber have to be changed from "2 to 1" (red), "3 to 2" for yellow ... Higher color-numbers don't return an index<br>
+the "values" (strings) of higher numbers contain the string "Farbe ", which have to be removed before passed to cecolor<br>
+VonLayer (Bylayer) returns index 0 when selected in the combo-box, but returns Index 2 when selected from the Acad-ACI-Colrtable<br>
+</ul><br>
+I suppose that I'm on the wrong way and it is more easier to handle - but how?</div>
+</article>
+<article class="post" id="msg12234">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2016-11-18 06:39 UTC</span>
+  </div>
+  <div class="post-body">hello peter,<br>
+try the following<br>
+(dcl-ComboBox-GetItemData  intItemIndex [als Long])<br>
+or<br>
+(dcl-ComboBox-GetItemData  (dcl-ComboBox-GetCurSel   ))<br>
+<br>
+best regards<br>
+marco</div>
+</article>
+<article class="post" id="msg12256">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-11-20 11:14 UTC</span>
+  </div>
+  <div class="post-body">(Strange, I got no notification for your reply)<br>
+<br>
+Thanks, I will try.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

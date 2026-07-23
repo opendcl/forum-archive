@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with TAB STRIP lsp code · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 752</p>
+    <h1>Problem with TAB STRIP lsp code</h1>
+    <p class="meta">Started by kruuger ·
+      2009-05-11 19:04 UTC ·
+      2 replies · SMF topic #752</p>
+<article class="post" id="msg3679">
+  <div class="post-head">
+    <span class="post-author">kruuger</span>
+    <span class="post-date muted">2009-05-11 19:04 UTC</span>
+  </div>
+  <div class="post-body">Hello Everyone<br>
+<br>
+I work a little with standard autocad DCL. Now i want learn OpenDCl. It is more powerfull then standard DCL<br>
+<br>
+I try to make 3 Tab Strips with CHANGE event. I wrote lisp code but something is wrong. When i changing tabs, defined list ONE TWO THREE doesn't load to ListBox.<br>
+What is wrong?<br>
+Also OK and CANCEL button are not working.<br>
+<br>
+Here is lisp code:<br>
+(DEFUN c:TTT ()<br>
+  (or LoadRunTime (load "_OpenDclUtils.lsp") (exit))<br>
+  (LoadRunTime)<br>
+  (LoadODCLProj "Test.odcl")<br>
+  (dcl_FORM_SHOW Test_LISP_FORM)<br>
+  (setq ONE (list "1" "2" "3"))<br>
+  (setq TWO (list "4" "5" "6"))<br>
+  (setq THR (list "7" "8" "9"))<br>
+  (princ)<br>
+);LISP<br>
+<br>
+(defun c:Test_LISP_FORM_OK_OnClicked ()<br>
+  (dcl_Form_Close Test_LISP_FORM)<br>
+)<br>
+<br>
+(defun c:Test_LISP_FORM_CANCEL_OnClicked ()<br>
+  (dcl_Form_Close Test_LISP_FORM)<br>
+)<br>
+<br>
+(defun c:Test_LISP_FORM_TABS_OnChanged (ItemIndex)<br>
+  (cond<br>
+    ((= ItemIndex 0) (dcl_ListBox_AddList Test_LISP_FORM_ListBox1 ONE)<br>
+    )<br>
+    ((= ItemIndex 1) (dcl_ListBox_AddList Test_LISP_FORM_ListBox2 TWO)<br>
+    )<br>
+    ((= ItemIndex 2) (dcl_ListBox_AddList Test_LISP_FORM_ListBox3 THR)<br>
+    )<br>
+  );cond<br>
+)<br>
+<br>
+And here .odcl file<br>
+<a href="http://home.autocom.pl/kruuger/FTP/Lisp.odcl" rel="nofollow noopener">{2}</a><br>
+<br>
+Thx<br>
+Best regards<br>
+Kruuger<br>
+</div>
+</article>
+<article class="post" id="msg3682">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-11 20:27 UTC</span>
+  </div>
+  <div class="post-body">I see several problems.<br>
+<br>
+1) You are not setting ONE, TWO, and THR until after the form is dismissed. Since tyhese are used by the form's event handlers, they should be set before the call to (dcl_form_show).<br>
+<br>
+2) The event handler function names do not match the function names in the .odcl file. With the .odcl file open in studio, highlight each event in the events tab, then copy and paste the event handler name from the field below the events list into your lisp code.<br>
+<br>
+3) The symbol used as the firsta rgument to (dcl_ListBox_AddList) is not correct. Change that to Lisp_LISP_FORM_ListBox1. This likely happened because you renamed the .odcl file.</div>
+</article>
+<article class="post" id="msg3684">
+  <div class="post-head">
+    <span class="post-author">kruuger</span>
+    <span class="post-date muted">2009-05-11 21:49 UTC</span>
+  </div>
+  <div class="post-body">Thanks for quick answer.<br>
+<br>
+You are right with point 2. It was the main problem. I knew that it i would a problem with DCL component naming.<br>
+I need to be VERY VERY careful with that next time. <br>
+<br>
+THX<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

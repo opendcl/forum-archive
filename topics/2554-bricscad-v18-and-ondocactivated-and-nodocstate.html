@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bricscad V18 and ONDOCACTIVATED and NODOCSTATE · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2554</p>
+    <h1>Bricscad V18 and ONDOCACTIVATED and NODOCSTATE</h1>
+    <p class="meta">Started by Peter2 ·
+      2018-01-08 12:08 UTC ·
+      2 replies · SMF topic #2554</p>
+<article class="post" id="msg12663">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-01-08 12:08 UTC</span>
+  </div>
+  <div class="post-body">ODCL 8.2.1.2, Bricscad V18.1.08<br>
+<br>
+I had some strange issue with ONDOCACTIVATED and NODOCSTATE, something like this:<br>
+<pre class="code"><code>---------- [ BricsCAD - Mon Jan 08 13:37:55 2018] ----------<br>
+: _qnew<br>
+: <br>
+; ----- Error around expression -----<br>
+(C:SIA_BAUM/STRUKTUR#ONDOCACTIVATED)<br>
+;<br>
+; error : no function definition  ; expected FUNCTION at <br>
+: _WCLOSE<br>
+: <br>
+; ----- Error around expression -----<br>
+(C:SIA_BAUM/STRUKTUR#ONDOCACTIVATED)<br>
+;<br>
+; error : no function definition  ; expected FUNCTION at <br>
+: <br>
+Abbrechen<br>
+: <br>
+: <br>
+: <br>
+: _WCLOSE<br>
+; ----- Error around expression -----<br>
+(PRINC)<br>
+;<br>
+; error : bad argument type &lt;#&lt; #x3b @1000448976&gt;&gt; ; expected  at <br>
+;<br>
+; error : during LISP function [c:sia_baum/struktur#OnEnteringNoDocState] invoke from BRX/SDS interface,<br>
+          please check Lisp function definition and call arguments.</code></pre><br>
+<br>
+<br>
+Maybe I made a bad code, so I tested with "OpenDCLDEMO" - start a drawing, close a drawing, create new drawing, and got this:<br>
+<br>
+<br>
+<pre class="code"><code>---------- [ BricsCAD - Mon Jan 08 13:59:16 2018] ----------<br>
+: _qnew<br>
+; ----- Error around expression -----<br>
+(DEFUN DCL_CONTROL_SETTIMER REST (AL_LEAVEDEFUN (AL_ENTERDEFUN 'DCL_CONTROL_SETTIMER NIL) (AL_EXECUTEADSDEFUN "DCL_CONTROL_SETTIMER" REST)))<br>
+;<br>
+; error : bad argument type &lt;#&lt; #x3b @100025c6b6&gt;&gt; ; expected  at <br>
+<br>
+;<br>
+; error : during LISP function [c:AllSamples/Main#OnSize] invoke from BRX/SDS interface,<br>
+          please check Lisp function definition and call arguments.<br>
+<br>
+; ----- Error around expression -----<br>
+(DEFUN DCL_CONTROL_SETTIMER REST (AL_LEAVEDEFUN (AL_ENTERDEFUN 'DCL_CONTROL_SETTIMER NIL) (AL_EXECUTEADSDEFUN DCL_CONTROL_SETTIMER REST)))<br>
+;<br>
+; error : bad argument type &lt;#&lt; #x3b @100025c6b6&gt;&gt; ; expected  at <br>
+<br>
+;<br>
+; error : during LISP function [c:AllSamples/Main#OnSize] invoke from BRX/SDS interface,<br>
+          please check Lisp function definition and call arguments.<br>
+: <br>
+; ----- Error around expression -----<br>
+(C:ALLSAMPLES/MAIN#ONDOCACTIVATED)<br>
+;<br>
+; error : no function definition  ; expected FUNCTION at <br>
+: <br>
+</code></pre><br>
+<br>
+Can someone confirm or explain or solve it?</div>
+</article>
+<article class="post" id="msg12671">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2018-01-08 13:41 UTC</span>
+  </div>
+  <div class="post-body">Your ODCL is calling functions that do not exist in the newly opened document.<br>
+<br>
+To avoid this you can do three things:<br>
+1.<br>
+Make sure to autoload your code in every drawing.<br>
+2.<br>
+Changing the LISPINIT setting may work?<br>
+3.<br>
+Disable the dialog before the new document becomes active.<br>
+And when (and if) your application code loads in the new drawing re-activate it.<br>
+In my <a href="http://www.b-k-g.nl/bkg_browser.html" rel="nofollow noopener">{2}</a> I am using two reactors to achieve this:<br>
+A vlr-docmanager-reactor reactor (:vlr-documentbecamecurrent and :vlr-documenttobedeactivated).<br>
+And a vlr-command-reactor reactor (:vlr-commandcancelled, :vlr-commandfailed and :vlr-commandwillstart).<br>
+The command reactor is required for the "OPEN" and "QNEW" commands in which cases the docmanager reactor events do not fire.</div>
+</article>
+<article class="post" id="msg12673">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-01-08 17:34 UTC</span>
+  </div>
+  <div class="post-body">Thanks roy_043<br>
+I thought that the events would handle this by themselves ...</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

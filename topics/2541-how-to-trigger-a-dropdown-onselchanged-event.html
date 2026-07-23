@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to trigger a dropdown OnSelChanged event? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2541</p>
+    <h1>How to trigger a dropdown OnSelChanged event?</h1>
+    <p class="meta">Started by A. van Dalen ·
+      2017-11-13 15:04 UTC ·
+      2 replies · SMF topic #2541</p>
+<article class="post" id="msg12607">
+  <div class="post-head">
+    <span class="post-author">A. van Dalen</span>
+    <span class="post-date muted">2017-11-13 15:04 UTC</span>
+  </div>
+  <div class="post-body">Beste Member OpenDCL,<br>
+<br>
+Can you help me with my code? Im starting to learn coding lisp/opendcl i have an issue with updating my value of Textbox1. I made a presset for my combobox but didn't work fine. See the code bellow. When the checkbox is checked the dcl-ComboBox-SetCurSel set my preset to the combox it works. The combobox update my textbox also without a probleme. But when thecombobox is preset by checkbox it  doesn't update my textbox?<br>
+How can i trigger the OnSelChanged event witout duplicate function dcl-Control-SetText? <br>
+<br>
+Thank you help and time,<br>
+<br>
+Alwin<br>
+<br>
+<pre class="code"><code><br>
+(defun c:HelloWorld/Form1/ComboBox1#OnSelChanged (ItemIndexOrCount Value /)<br>
+   (cond<br>
+     ((= ItemIndexOrCount 0)<br>
+(dcl-Control-SetText HelloWorld/Form1/Textbox1 "test1")<br>
+     )<br>
+     ((= ItemIndexOrCount 1)<br>
+(dcl-Control-SetText HelloWorld/Form1/layername "test2")<br>
+     )<br>
+)<br>
+(defun c:HelloWorld/Form1/chkKeuze1#OnClicked (1/)<br>
+(dcl-ComboBox-SetCurSel HelloWorld/Form2/status2 1)<br>
+)<br>
+</code></pre><br>
+</div>
+</article>
+<article class="post" id="msg12608">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-11-13 20:40 UTC</span>
+  </div>
+  <div class="post-body">Welcome to the forum.<br>
+<br>
+Sorry to disappoint you but what you want is not possible:<br>
+<blockquote class="quote"><cite>http://www.opendcl.com/HelpFiles/ENU/Reference/Event/SelChanged-ItemValue.htm wrote:</cite>Note that OnSelChanged is triggered only when the selection is changed by user interaction; it is not called when the selection is changed programmatically.</blockquote></div>
+</article>
+<article class="post" id="msg12701">
+  <div class="post-head">
+    <span class="post-author">ScottBolton</span>
+    <span class="post-date muted">2018-01-17 11:27 UTC</span>
+  </div>
+  <div class="post-body">Alwin,<br>
+<br>
+I solved a similar problem this morning. I have a drop-down ComboBox and I want a TextBox to change as the drop-down changes. This works fine during runtime, but OnInitialize the TextBox is blank. My workaround was to get the Index of the ComboBox then set the TextBox based on the Index of a list. Eh? My ComboBox will contain achternamen and the TextBox will contain the associated voornaam. I have a global variable list like this:<br>
+<br>
+(setq *Names* '(("Bolton" . "Scott") ("Jones" . "Davy") ("Smith" . "Sam")))<br>
+<br>
+If the ComboBox starts on "Jones" then we can determine that this is the Index of "1" (lists start at "0"), therefore the contents of the TextBox could be set using either (cdr (nth 1 *Names*)) or (cdr (assoc "Jones" *Names*)).<br>
+<br>
+Hopefully this helps a little.<br>
+<br>
+mvg,<br>
+<br>
+Scott</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

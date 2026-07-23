@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenDCL beginner - referencing to form item · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1561</p>
+    <h1>OpenDCL beginner - referencing to form item</h1>
+    <p class="meta">Started by svranic ·
+      2010-12-22 04:43 UTC ·
+      4 replies · SMF topic #1561</p>
+<article class="post" id="msg7634">
+  <div class="post-head">
+    <span class="post-author">svranic</span>
+    <span class="post-date muted">2010-12-22 04:43 UTC</span>
+  </div>
+  <div class="post-body">Hello everyone. I'm beginner in OpenDCL and for a few days I'm having trouble with creating a smiple form. I downloaded OpenDCL tutorial and loaded level 1 example into AutoCAD 2007 and it worked. After that I tried to add new button which will open a new dcl message box with different message. When I loaded that file in AutoCAD it didn't open a new dcl messagebox but the same as I clicked on button1. I have a feeling like I'm not referencing to right name of object in form. I noticed that in all examples varNames of form items are empty. Why is that. Anyway I attached files I have been working on so I hope someone will have solution for me.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1520/HelloWorld.odcl">HelloWorld.odcl</a> <span class="muted">(869 bytes)</span></li><li><a href="../attachments/1521/HelloWorld_Final.LSP">HelloWorld_Final.LSP</a> <span class="muted">(1227 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7635">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-12-22 11:04 UTC</span>
+  </div>
+  <div class="post-body">In the ODCL file,<br>
+The On_Clicked Event Function for BOTH buttons is the same<br>
+ie: c:HelloWorld_Form1_TextButton1_OnClicked<br>
+<br>
+From the Menu select Tools-&gt;ResetEventNames<br>
+<br>
+or in Button2 Event Tab, deselect and re-select the Clicked Event.<br>
+<br>
+The first Option may be best.<br>
+<br>
+This probably happened because you copied the button2 from button1 .... and the event function name came with the copy :)<br>
+<br>
+added:<br>
+I haven't looked at your lisp code, so if the problem remains after the changes I mention please post back.<br>
+ <br>
+</div>
+</article>
+<article class="post" id="msg7636">
+  <div class="post-head">
+    <span class="post-author">svranic</span>
+    <span class="post-date muted">2010-12-22 12:14 UTC</span>
+  </div>
+  <div class="post-body">Ok. I got it working. Thank you very much. I didn't know that it is necessary to click on the checkbox in Events tab for every event that we want to handle. If I'm correct by checking certain event we are enabling usage of that event in autolisp file. Right?<br>
+Is it VarName mandatory or optional attribute? In what cases can we get an element through his VarName or we can get an element through his Name?</div>
+</article>
+<article class="post" id="msg7637">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-12-22 13:10 UTC</span>
+  </div>
+  <div class="post-body">Hi, svranic,<br>
+<br>
+at first, welcome on board, svranic!<br>
+<br>
+It is not necessary to uncheck and to re-check the toggle for a certain event in the events tab. Unchecking and rechecking is only needed if you copy a control. All properties of this control are copied, too. And since events are handled like properties, the event names which were set by checking the event toggle, they are copied, too. If the control shall do something different to the other control, you can either rename the functionname of the event by hand (I do that very seldom), or you uncheck and re-check the toggle or - like Kerry wrote - you use the ResetEventNames command from the menue. But the ResetEventNames command does it for all the controls of the active form (dialog or active tab!).<br>
+<br>
+You can avoid that if you do not copy controls but draw them anew each time. Then you have only to check the needed event(s). And that is necessary because some controls support many events and they can influence the control's behavior and other events. So it is recommended to activate only the events you really need.<br>
+<br>
+There are sereval ways to get the function names in your code: <br>
+<ul><br>
+either you copy the functionname and the needed functions into clipboard and paste it manually into your code (see image)<br>
+or you copy the selected event to clipboard by using the Copy button<br>
+or you add a lsp file to the current project and copy the selected event directly into your lisp file by pressing the AutoLisp button. Please have a look at the <a href="http://www.opendcl.com/HelpFiles/index.php?page=Usage/AutoLISP.htm" rel="nofollow noopener">{2}</a>.<br>
+</ul><br>
+<br>
+The VarName is internally set automatically. We recommend you not to add a custom value to avoid problems addressing the controls. In principal you have both possibilities:<br>
+<ul><br>
+Either you control each varname by your own. Then it is your task to make sure that no VarName occurs more than once. Otherwise it will cause unwanted effects. After renaming a control name you also have to change the VarName by yourself.<br>
+Leave the VarName property empty. Then you have no problem when you are going to rename control names. This is the best way!<br>
+</ul><br>
+<br>
+You can address controls via name and via VarName. We recommend you to use the VarName property. So you can test if the VarName myproject_myform_mycontrol is nil in lisp - then the form is either not loaded yet or you just have deleted the control or the control was newly added and you haven't reloaded the project yet. If you try to address a control only by name, then you have no control. It is also said that using the VarName property is faster for addressing controls because the variable already contains the control object. When using the name the control must be found at first.<br>
+<br>
+Sample using adressing by name:<br>
+(foreach strControl '("pb_Cancel" "pb_Accept" "pb_Help")<br>
+  (dcl_control_setvisible "MyProj" "MyForm" strControl nil)<br>
+); foreach<br>
+<br>
+Sample using adressing by VarName:<br>
+(foreach oControl (list MyProj_MyForm_pb_Cancel MyProj_MyForm_pb_Accept MyProj_MyForm_pb_Help)<br>
+  (dcl_control_setvisible oControl nil)<br>
+); foreach<br>
+<br>
+But also can combine the use of names with the speed of VarName:<br>
+<br>
+(defun control (strControl) (eval (read (strcat "MyProj_MyForm_" strControl))))<br>
+(defun invisible (oControl) (dcl_control_setvisible oControl nil))<br>
+(mapcar 'invisible '("pb_Cancel" "pb_Accept" "pb_Help"))<br>
+<br>
+<br>
+Hope that helps.<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1522/copy1.png">copy1.png</a> <span class="muted">(7600 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7638">
+  <div class="post-head">
+    <span class="post-author">svranic</span>
+    <span class="post-date muted">2010-12-22 16:08 UTC</span>
+  </div>
+  <div class="post-body">Thank you Fred for this extensive answer. I will continue to learn OpenDCL because I'm thrilled with it.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

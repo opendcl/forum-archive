@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[SOLVED] OnClicked &amp; OnDeleteItem not called with DragnDropBegin [6.0.0.2] · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 896</p>
+    <h1>[SOLVED] OnClicked &amp; OnDeleteItem not called with DragnDropBegin [6.0.0.2]</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-09-01 11:10 UTC ·
+      4 replies · SMF topic #896</p>
+<article class="post" id="msg4447">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-01 11:10 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+Again me !, these event are also not call with DragnDropBegin.<br>
+<br>
+OnClicked is call only the fisrt time ???<br>
+<br>
+Best regards.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/872/Test.odcl">Test.odcl</a> <span class="muted">(909 bytes)</span></li><li><a href="../attachments/873/test.lsp">test.lsp</a> <span class="muted">(2999 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4450">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-01 14:42 UTC</span>
+  </div>
+  <div class="post-body">AutoCAD has a fixed length buffer to queue asynchronous events, and it looks like your test is overflowing the buffer, causing some events to be ignored. Try it with Event Invoke set to 'Synchronous' to see if you have better results.</div>
+</article>
+<article class="post" id="msg4457">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-01 16:05 UTC</span>
+  </div>
+  <div class="post-body">Hello owen, <br>
+<br>
+First step : bring the treeControl Event invoke to synchronous.<br>
+<br>
+You've got it right, now all event seem to be launch .... <br>
+The first time, GetSelectItem return nil, maybe no value or because of synchronous ???<br>
+<br>
+Second step : bring back to asynchronous .... <br>
+failed !!!<br>
+<br>
+Third step : Bring back to asynchronous, and keep only :OnClicked, OnDragnDropBegin, OnDragnDropFromControl<br>
+It Seem to work fine !<br>
+<br>
+Oops, OnDragnFropBegin cannot catch the good item !<br>
+<br>
+Fouth Step : Bring back to synchronous, and verify OnDragnDropBegin.<br>
+On a click action :<br>
+OnClicked event return last selected item.<br>
+OnDragnDropBegin return the selected item.<br>
+On a DragnDrop action (move action):<br>
+<strong>OnDragNdropBegin return the selected item (GOOD !)<br>
+OnDragnDropFromControl return the dropitem (GOOD !)</strong><br>
+<br>
+<br>
+I must verify now, if i can use this TreeControl for the other action i need in my dialog box !<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4458">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-01 16:12 UTC</span>
+  </div>
+  <div class="post-body">Keep in mind that an item is not selected until you *release* the mouse button, however OnClicked is called when you *press* the button. Therefore, the first OnClicked will occur before anything is selected.</div>
+</article>
+<article class="post" id="msg4471">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-01 19:49 UTC</span>
+  </div>
+  <div class="post-body">Hello owen.<br>
+<br>
+With new arx, all event invoke set to asynchronous seems have been called now !<br>
+<br>
+Thanks<br>
+<br>
+Best regards.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

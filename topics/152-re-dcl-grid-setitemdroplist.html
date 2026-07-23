@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Re:dcl_Grid_SetItemDropList · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 152</p>
+    <h1>Re:dcl_Grid_SetItemDropList</h1>
+    <p class="meta">Started by hgcad ·
+      2008-02-05 16:15 UTC ·
+      4 replies · SMF topic #152</p>
+<article class="post" id="msg669">
+  <div class="post-head">
+    <span class="post-author">hgcad</span>
+    <span class="post-date muted">2008-02-05 16:15 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+<u>The dcl_Grid_SetItemDropList</u><br>
+<br>
+Testing in OpenDCL Alpha 5.0.0.3<br>
+<br>
+; set the new grid cell style.<br>
+(dcl_Grid_SetItemStyle UpDateGrid_Form9_Grid3 nRow 1 29);0<br>
+; set the drop list<br>
+(dcl_Grid_SetItemDropList UpDateGrid_Form9_Grid3 nRow 1 (list "A-Elev"   "A-Sect" ));Works for strings<br>
+<br>
+(dcl_Grid_SetItemDropList UpDateGrid_Form9_Grid3 nRow 1 (list "A-Elev" 2  "A-Sect" 2 ));Icon nor strings are displayed<br>
+<br>
+<br>
+Can someone help please<br>
+<br>
+hgcad</div>
+</article>
+<article class="post" id="msg672">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-06 04:42 UTC</span>
+  </div>
+  <div class="post-body">Double click on a grid control in OpenDCL Studio and look at the entry for SetItemDropList. That function expects two lists, which I think is a change from OpenDCL 4.</div>
+</article>
+<article class="post" id="msg676">
+  <div class="post-head">
+    <span class="post-author">hgcad</span>
+    <span class="post-date muted">2008-02-07 22:36 UTC</span>
+  </div>
+  <div class="post-body">Owen I followed your advise and  it worked pretty good except in one case as below:<br>
+<br>
+(dcl_Grid_SetItemDropList odcl-nam nRow 1 (mapcar 'strcat List1)  iList1);this worked for the most part<br>
+<br>
+(dcl_Grid_SetItemDropList odcl-nam nRow 1 (mapcar 'strcat List1)  0 0 0 1);I had to do this in one case to get it to work<br>
+<br>
+Seem to be an inconsistancy, please check and confirm.<br>
+<br>
+BTW I like the enhansments to the Editor , good Work keep it up.<br>
+<br>
+Thanks,<br>
+<br>
+Hgcad<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg677">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-08 03:51 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=hgcad link=topic=152.msg676#msg676 date=1202423775 wrote:</cite><br>
+Seem to be an inconsistancy, please check and confirm.</blockquote><br>
+<br>
+In the examples you show, (mapcar 'strcat ...) is not producing a list of strings, so it will only be adding a single item to the list. There was a problem where a list of two or three integers for the image list could result in an argument exception because it was passed as a point instead of a list, but I've fixed that for Alpha 4.<br>
+<br>
+I should also mention that the argument processing code will accept either a list of integers or strings, or a series of integers or strings. That is, (dcl_grid_setitemdropdownlist    "Item1" "Item2" "Item 3" "Item 4" 1 2 3 4) is interpreted the same way as (dcl_grid_setitemdropdownlist    '("Item1" "Item2" "Item3" "Item4") '(1 2 3 4)).<br>
+<br>
+I suspect that you encountered the problem with three integers being passed as a point, and your second example solved the problem because the integers were no longer in a separate list.<br>
+<br>
+If this is not the case, please post an example that fails.</div>
+</article>
+<article class="post" id="msg679">
+  <div class="post-head">
+    <span class="post-author">hgcad</span>
+    <span class="post-date muted">2008-02-08 16:03 UTC</span>
+  </div>
+  <div class="post-body">There was a problem where a list of two or three integers for the image list could result in an argument exception because it was passed as a point instead of a list:<br>
+<br>
+Tested your examples, they both work.<br>
+<br>
+It was a case where I used 2 and 3 images that were the same causing the error.<br>
+<br>
+Solved this one for me.<br>
+<br>
+Thanks,<br>
+<br>
+Hgcad</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Beginner Question about FileDialog · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 535</p>
+    <h1>Beginner Question about FileDialog</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-02-16 16:51 UTC ·
+      9 replies · SMF topic #535</p>
+<article class="post" id="msg2424">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-16 16:51 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+maybe I'm silly but I have a little question. Take the project file I attached. Load it into AutoCAD using <br>
+<br>
+<pre class="code"><code>(dcl_project_load "lvman")</code></pre><br>
+<br>
+Let the form show:<br>
+<br>
+<pre class="code"><code>(dcl_form_show lvman_sc_gaeb_export (getvar "DWGPREFIX") (strcat (vl-filename-base (getvar "DWGNAME")) ".d82") "Kostenschätzung D82")</code></pre><br>
+<br>
+As you can see, directory is correct, filename is correct, fileextension is <strong>not </strong> correctly selected.<br>
+<br>
+In my opinion the D82-filetype must be selected in this case (the second file extenion). But it won't!  ??? What am I doing wrong?<br>
+Is something wrong with the filter "Leistungsbeschreibung D81|*.d81|Kostenschätzung D82|*.d82 ?<br>
+<br>
+Thanks for you attention!<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/564/lvman.odcl">lvman.odcl</a> <span class="muted">(12651 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2430">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-02-16 17:46 UTC</span>
+  </div>
+  <div class="post-body">The correct filter string should be "Leistungsbeschreibung D81|.d81|Kostenschätzung D82|.d82". However, it still does not select the file extension of the default file name that you send to it. I checked the code, and it appears to be setting everything up correctly, so this might be a quirk of the common file dialog. I will do some more investigation.</div>
+</article>
+<article class="post" id="msg2432">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-16 18:36 UTC</span>
+  </div>
+  <div class="post-body">Hi, Owen, in this case there is a bug in the ressource file (*.rc) of German OpenDCL Studio. There is written "AutoCAD Zeichnung|*.dwg;*.dxf|AutoLISP Datei (*.lsp,*.fas;*.vlx)|*.lsp;*.fas;*.vlx|" as standard filter. It must be wrong, too. Don't know how it looks like in the ENU release.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2438">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-02-16 19:51 UTC</span>
+  </div>
+  <div class="post-body">I stand corrected. The filter works correctly with or without the * character.</div>
+</article>
+<article class="post" id="msg2439">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-16 20:05 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+unfortunately there must be wrong something:<br>
+<br>
+If I use the filter "Leistungsbeschreibung D81|*.d81|Kostenschätzung D82|*.d82" all existing d82-files will be shown in the existing folder, when I switch between d81 and d82. But noone of the existing d82-files of the current folder will be shown if I use the filter "Leistungsbeschreibung D81|.d81|Kostenschätzung D82|.d82". Are really all dwg-file shown if you use "AutoCAD drawings|.dwg|" as filter string?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2440">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-02-16 20:41 UTC</span>
+  </div>
+  <div class="post-body">Fred, you're right, the * must be present. I didn't check whether it listed files, I only noticed that omitting the asterisk still put the correct extension on the filename when you select a different filter.<br>
+<br>
+I did some research, and I found that you have to specify which should be the initial file type. Therefore, I've added code for Beta 8 to scan through the specified filter list and find the first filter that matches the specified filename, then set that file type as the initial file type. This results in the following code working as expected:<br>
+<pre class="code"><code>(dcl_form_show lvman_sc_gaeb_export (getvar "DWGPREFIX") (strcat (vl-filename-base (getvar "DWGNAME")) ".d82") "d82")</code></pre><br>
+<br>
+Note that the third argument to (dcl_Form_Show) has nothing to do with the file type dropdown; it only tells Windows what extension to use if the user types in a filename with no extension.</div>
+</article>
+<article class="post" id="msg2441">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-16 21:24 UTC</span>
+  </div>
+  <div class="post-body">Thank you, Owen, that sounds good. Owen, is it difficult to add a method SelectFileType with the argument intFilter as integer which must be one of the filterlist (0 for the first, 1 for the second, ...)?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2694">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-26 01:05 UTC</span>
+  </div>
+  <div class="post-body">Yes it works now in Beta 8. But there's another question. When I resize the form the controls are not goodlooking anymore. Invoking the ForceUpdate-methode to the controls in an OnSize-event has no effect. How can I force the repainting of the form? I attach the sample file for testing.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/593/filedialog.zip">filedialog.zip</a> <span class="muted">(66888 bytes)</span></li><li><a href="../attachments/594/filedialog.png">filedialog.png</a> <span class="muted">(54290 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2703">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-02-26 02:48 UTC</span>
+  </div>
+  <div class="post-body">Fred, please report the painting issue as a bug. I've taken a quick look, and I don't see any easy solution. The file dialog does some funky tricks to resize smoothly, and the transparent frame control just doesn't play nice under those circumstances. I'm afraid the only immediate solution is to not use a frame control.</div>
+</article>
+<article class="post" id="msg2710">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-26 06:53 UTC</span>
+  </div>
+  <div class="post-body">Ok, I'll do. Thanks!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

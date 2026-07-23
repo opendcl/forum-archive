@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Events OnChanged and OnPaint and OnInitialize · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 534</p>
+    <h1>Events OnChanged and OnPaint and OnInitialize</h1>
+    <p class="meta">Started by velasquez ·
+      2009-02-14 21:14 UTC ·
+      2 replies · SMF topic #534</p>
+<article class="post" id="msg2417">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-02-14 21:14 UTC</span>
+  </div>
+  <div class="post-body">OpenDCL 4.1.2.2  <br>
+  <br>
+The event OnChanged of TabControl works before the event OnInitialize.  <br>
+Should not it be later?  <br>
+This doesn't happen with the event OnPaint of PictureBox.  <br>
+That is normal.</div>
+</article>
+<article class="post" id="msg2418">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-02-16 05:24 UTC</span>
+  </div>
+  <div class="post-body">The form's OnInitialize event does not get called until all controls are created. In the case of the tab control, its OnChanged event gets fired during creation when the first tab is set current. It could probably be argued that OnChanged should not be fired at that point, but a case could also be made that this behavior is useful (e.g. when OnChanged needs to initialize the tab page before it is displayed).<br>
+<br>
+OnPaint is a different animal altogether, because painting is always deferred until other Windows messages are processed. The bottom line is that there is no guarantee that some control events will not occur before the form's OnInitialize event.</div>
+</article>
+<article class="post" id="msg2420">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-16 16:18 UTC</span>
+  </div>
+  <div class="post-body">Hi, there are orther controls and events which will also be fired at creation, so that's why I solve it this way.<br>
+It is a bit more code but it works:<br>
+<br>
+<pre class="code"><code><br>
+(defun c:proj_form_OnInitialize ()<br>
+  (do_something_here)<br>
+  (dcl_tab_setcursel proj_form_tab intTabToSel)<br>
+  (setq isInit nil)<br>
+); c:proj_form_OnInitialize<br>
+<br>
+(defun c:dcl_tab_setcursel_OnSelChanged (intTab)<br>
+  (if (not isInit)<br>
+    (tab_was_changed)<br>
+  ); if<br>
+); c:dcl_tab_setcursel_OnSelChanged <br>
+<br>
+(setq isInit T)<br>
+(setq intTabToSel 2)<br>
+(dcl_form_show proj_form)<br>
+</code></pre> <br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

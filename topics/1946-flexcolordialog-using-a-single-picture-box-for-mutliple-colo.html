@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FlexColorDialog: Using a single Picture Box for mutliple color swatches · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 1946</p>
+    <h1>FlexColorDialog: Using a single Picture Box for mutliple color swatches</h1>
+    <p class="meta">Started by roy_043 ·
+      2013-02-11 11:59 UTC ·
+      6 replies · SMF topic #1946</p>
+<article class="post" id="msg9549">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-02-11 11:59 UTC</span>
+  </div>
+  <div class="post-body">When I started using ODCL I was playing around with color dialogs. I was trying to create a flexible color dialog where the color swatches are configurable and ACI and true colors can be mixed in the same dialog. I have named the result 'FlexColorDialog'. The FlexColorDialog can be a replacement for the default AutoCAD/BricsCAD color dialog if, for example, you want to offer a limited choice of colors.<br>
+<br>
+The ODCL dialog uses a single control (a Picture Box). The Lisp code may be of interest for other projects where the clicked coordinates of a Picture Box need to be analysed.<br>
+<br>
+Note: I use BricsCAD 13.<br>
+<br>
+Edit 1:<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=1945.msg9551#msg9551" rel="nofollow noopener">{2}</a> has stumbled upon an error. The error may be caused by the fact (?) that the function (dcl_GetOLEColorValue) does not accept an RGB-list in AC 2013. In BricsCAD 13 this is not a problem. I have updated the Lisp file.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1854/FlexColorDialog.png">FlexColorDialog.png</a> <span class="muted">(856 bytes)</span></li><li><a href="../attachments/1856/FlexColorDialog.odcl">FlexColorDialog.odcl</a> <span class="muted">(606 bytes)</span></li><li><a href="../attachments/1858/FlexColorDialog_20130211B.lsp">FlexColorDialog_20130211B.lsp</a> <span class="muted">(8228 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9554">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-02-11 15:04 UTC</span>
+  </div>
+  <div class="post-body">Convert the first (dcl_GetOLEColorValue) argument to a (float) in order to avoid the DXF code problem.</div>
+</article>
+<article class="post" id="msg9555">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-02-11 16:20 UTC</span>
+  </div>
+  <div class="post-body">Owen do you mean this?<br>
+(dcl_GetOLEColorValue (list (float (car rgbList)) (cadr rgbList) (caddr rgbList)))</div>
+</article>
+<article class="post" id="msg9556">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-02-11 17:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=1946.msg9555#msg9555 date=1360599634 wrote:</cite><br>
+Owen do you mean this?</blockquote><br>
+<br>
+Yes. This ensures that the list can't be interpreted as a DXF list.</div>
+</article>
+<article class="post" id="msg9557">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-02-11 18:50 UTC</span>
+  </div>
+  <div class="post-body">Is this is a known bug of AC 2013?</div>
+</article>
+<article class="post" id="msg9558">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-02-11 21:50 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=1946.msg9557#msg9557 date=1360608632 wrote:</cite><br>
+Is this is a known bug of AC 2013?<br>
+</blockquote><br>
+<br>
+Yes, and all other versions of AutoCAD.</div>
+</article>
+<article class="post" id="msg9567">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-02-16 10:40 UTC</span>
+  </div>
+  <div class="post-body">To show the flexibility of FlexColorDialog here is a sample that will display all ACI colors.<br>
+<br>
+(defun FlexColorDialog_FullAci ()<br>
+  (FlexColorDialog<br>
+    '(<br>
+      ( 18  28  38  48  58  68  78  88  98 108 118 128 138 148 158 168 178 188 198 208 218 228 238 248)<br>
+      ( 16  26  36  46  56  66  76  86  96 106 116 126 136 146 156 166 176 186 196 206 216 226 236 246)<br>
+      ( 14  24  34  44  54  64  74  84  94 104 114 124 134 144 154 164 174 184 194 204 214 224 234 244)<br>
+      ( 12  22  32  42  52  62  72  82  92 102 112 122 132 142 152 162 172 182 192 202 212 222 232 242)<br>
+      ( 10  20  30  40  50  60  70  80  90 100 110 120 130 140 150 160 170 180 190 200 210 220 230 240)<br>
+      ( 11  21  31  41  51  61  71  81  91 101 111 121 131 141 151 161 171 181 191 201 211 221 231 241)<br>
+      ( 13  23  33  43  53  63  73  83  90 103 113 123 133 143 153 163 173 183 193 203 213 223 233 243)<br>
+      ( 15  25  35  45  55  65  75  85  95 105 115 125 135 145 155 165 175 185 195 205 215 225 234 245)<br>
+      ( 17  27  37  47  57  67  77  87  97 107 117 127 137 147 157 167 177 187 197 207 217 227 237 247)<br>
+      ( 19  29  39  49  59  69  79  89  99 109 119 129 139 149 159 169 179 189 199 209 219 229 239 249)<br>
+      (  1   2   3   4   5   6   7   8   9 nil 250 251 252 253 254 255 nil nil nil nil nil nil   0 256)<br>
+    )<br>
+    nil<br>
+    T<br>
+  )<br>
+)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1863/FlexColorDialog_FullAci.png">FlexColorDialog_FullAci.png</a> <span class="muted">(2515 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

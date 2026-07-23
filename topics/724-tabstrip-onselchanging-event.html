@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TabStrip OnSelChanging event · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 724</p>
+    <h1>TabStrip OnSelChanging event</h1>
+    <p class="meta">Started by Jim ·
+      2009-04-20 00:21 UTC ·
+      5 replies · SMF topic #724</p>
+<article class="post" id="msg3527">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2009-04-20 00:21 UTC</span>
+  </div>
+  <div class="post-body">To the best of my knowledge, the OnSelChanging event only fires when the user selects a new tab on the TabStrip. Also the OnChanged  event fires on form show, preselecting first tab. Placing dcl_TabStrip_SetCurSel in OnIntialize allows a different tab to show on form show. The result being OnChanged event is fired twice.<br>
+<br>
+It makes sense to call OnSelChanging when a user tries to pick a new tab; forcing some action be done before the change, and perhaps permanently saving the control data somewhere else. <br>
+<br>
+I was thinking that to be consistent the OnSelChanging  event should always fire if defined regardless of how the tab is changed, since dcl_TabStrip_SetCurSel accomplishes the same as picking a tab. But now I am thinking that would mean an unnecessary event call when the programmer already has control of the tab. <br>
+<br>
+Comments encouraged.<br>
+Jim <br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3530">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-20 14:07 UTC</span>
+  </div>
+  <div class="post-body">Hello, I'm not sure if I understood you right but you can use the event SelChanging to prevent the user from changing the current tab until the right values are set.<br>
+<br>
+See the API for <a href="http://www.opendcl.com/HelpFiles/?page=Reference/Event/SelChanging-Item.htm" rel="nofollow noopener">{2}</a> and the posting from <a href="http://www.opendcl.com/forum/index.php?topic=440.msg2050#msg2050" rel="nofollow noopener">{2}</a>.<br>
+<br>
+It may happen that OnChanged event is fired twice because it will fired at the point of calling Form_Show (tab will be created) and when you change the currently selected tab within OnInitialize. To avoid that code will be executed you will have to set a certain variable:<br>
+<br>
+<br>
+(defun c:MyProg ()<br>
+  (defun c:MyProj_MyForm_OnInitialize ()<br>
+    (dcl_tab_setcursel MyProj_MyForm_TabControl intTab)<br>
+    (setq isInit nil)<br>
+  ); c:MyProj_MyForm_OnInitialize <br>
+<br>
+  (defun c:MyProj_MyForm_TabControl_OnChanged (intItemIndex)<br>
+    (if (not isInit)<br>
+      (progn<br>
+        (setq intTab intItemIndex)<br>
+        (do_something)<br>
+      ); progn<br>
+    ); if<br>
+  ); c:MyProj_MyForm_TabControl_OnChanged <br>
+<br>
+  (setq isInit T)<br>
+  (if (not (setq intTab (vl-registry-read strProgPath "LastTab")))<br>
+    (setq intTab 3)<br>
+  ); if<br>
+  (dcl_form_show MyProj_MyForm)<br>
+  (vl-registry-write strProgPath "LastTab" intTab)<br>
+  (princ)<br>
+); MyProg<br>
+<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3538">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2009-04-21 12:56 UTC</span>
+  </div>
+  <div class="post-body">Fred,<br>
+<br>
+The tabs on my TabStrip are hidden and being changed by SetCurSel. <br>
+<br>
+OnSelChanging only works if a tab is picked by the user. I was thinking that this event should fire because the tab was about to change regardless of how the tab was caused to change.<br>
+<br>
+Jim</div>
+</article>
+<article class="post" id="msg8771">
+  <div class="post-head">
+    <span class="post-author">mtiongson45</span>
+    <span class="post-date muted">2012-04-11 16:28 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=724.msg3530#msg3530 date=1240236431 wrote:</cite><br>
+<br>
+  (setq isInit T)<br>
+  (if (not (setq intTab (vl-registry-read strProgPath "LastTab")))<br>
+    (setq intTab 3)<br>
+  ); if<br>
+  (dcl_form_show MyProj_MyForm)<br>
+  (vl-registry-write strProgPath "LastTab" intTab)<br>
+  (princ)<br>
+<br>
+</blockquote><br>
+<br>
+I know this is a really old topic, but could someone explain to me what the "3" represents on the line (setq intTab 3)? I've been working on a dialog box with tabs. Thanks in advance.</div>
+</article>
+<article class="post" id="msg8774">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-04-11 19:42 UTC</span>
+  </div>
+  <div class="post-body">The 3 is the index of the fourth tab in the tab strip. If no index is stored in the registry Fred's example uses this index as the default.</div>
+</article>
+<article class="post" id="msg8776">
+  <div class="post-head">
+    <span class="post-author">mtiongson45</span>
+    <span class="post-date muted">2012-04-11 23:41 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the reply. That's what I thought, but figured asking couldn't hurt.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DWG thumbnail · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 649</p>
+    <h1>DWG thumbnail</h1>
+    <p class="meta">Started by aslani ·
+      2009-03-12 22:42 UTC ·
+      2 replies · SMF topic #649</p>
+<article class="post" id="msg3113">
+  <div class="post-head">
+    <span class="post-author">aslani</span>
+    <span class="post-date muted">2009-03-12 22:42 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+I have a problem with this part of my code:<br>
+<br>
+<pre class="code"><code>  (if Parent<br>
+    (progn<br>
+      (setq Dwgname (strcat path2 "\\" Parent "\\" Child "\\" Value ".dwg"))<br>
+      (if (/= Dwgname nil)<br>
+	(dcl_DwgPreview_LoadDwg diaDwgPrev Dwgname)<br>
+      )<br>
+    )<br>
+    (progn<br>
+      (setq Dwgname (strcat path2 "\\" Child "\\" Value ".dwg"))<br>
+      (if (/= Dwgname nil)<br>
+	(dcl_DwgPreview_LoadDwg diaDwgPrev Dwgname)<br>
+      )<br>
+    )</code></pre><br>
+<br>
+The tree and list boxes are working beautifully, but when dcl_DwgPreview_LoadDwg, it gives me this error:<br>
+<blockquote class="quote"><br>
+An OpenDCL function argument processing exception has occured!<br>
+<br>
+Error: NIL value not allowed<br>
+Function: dcl_DwgPreview_LoadDwg<br>
+Argument: 0</blockquote><br>
+<br>
+But obviously, if you look at my codes, it won't even call this command if "Dwgname" is nil. I even used "BLKLIBoDCL_frmBlkLib_diaDwgPrev" just to make sure that it calls the right control, but I still get the same error. What buffles me is that the ViewDWG sample code works just fine using the same "Dwgname" variable.<br>
+<br>
+The AutoCAD command line displays "ADS request error".<br>
+<br>
+Am I missing something?<br>
+<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg3114">
+  <div class="post-head">
+    <span class="post-author">aslani</span>
+    <span class="post-date muted">2009-03-12 22:49 UTC</span>
+  </div>
+  <div class="post-body">Ok nevermind. I simply moved the control on top of the Ztab order list and it works.<br>
+<br>
+Any information about how the order in ztab affects the whole project?  :-\</div>
+</article>
+<article class="post" id="msg3115">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-03-12 22:55 UTC</span>
+  </div>
+  <div class="post-body">Hmm the Z/Tab should have an effect that I know of.<br>
+But you should definitely be calling:<br>
+(dcl_DwgPreview_LoadDwg BLKLIBoDCL_frmBlkLib_diaDwgPrev Dwgname)<br>
+<br>
+It's hard to tell without seeing how the path is working...<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

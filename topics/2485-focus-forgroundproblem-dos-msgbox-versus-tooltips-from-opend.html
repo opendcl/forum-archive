@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Focus-/Forgroundproblem: dos_msgbox versus Tooltips from OpenDCL · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2485</p>
+    <h1>Focus-/Forgroundproblem: dos_msgbox versus Tooltips from OpenDCL</h1>
+    <p class="meta">Started by Peter2 ·
+      2017-02-16 12:57 UTC ·
+      3 replies · SMF topic #2485</p>
+<article class="post" id="msg12410">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2017-02-16 12:57 UTC</span>
+  </div>
+  <div class="post-body">I don't think that it an error, and I don't see /expect a solution, but I want just to report it.<br>
+<br>
+I have an OpenDCL dialog with a large Grid and a tooltip. Some commands invoke the messagebox (dos_msgbox) from DOSLib which appears in the foreground.<br>
+<br>
+Everything is fine, until you move the mouse over the large grid which surrounds the messagebox. Then the tooltip of the grid is displayed and brings ODCL in foreground, while dos_msgbox is hidden behind ODCL. And you can not continue, because the messagebox waits for a mouseclick.<br>
+<br>
+Solution 1:<br>
+Move ODCL away to click on the messagebox.<br>
+<br>
+Solution 2:<br>
+Is there a solution 2?</div>
+</article>
+<article class="post" id="msg12411">
+  <div class="post-head">
+    <span class="post-author">marcoheuer</span>
+    <span class="post-date muted">2017-02-17 07:24 UTC</span>
+  </div>
+  <div class="post-body">hello peter,<br>
+to solution 2:<br>
+i use dcl-MessageBox from odcl and i have no problems with such situations.<br>
+<br>
+best regards<br>
+marco </div>
+</article>
+<article class="post" id="msg12413">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2017-02-17 11:52 UTC</span>
+  </div>
+  <div class="post-body">Hi, do you mean automatic tooltips for cell contents which contains mor data than it could be shown in the cell or do you mean your OpenDCL tooltip? If last point, then try to use an info part at the bottom of the form. I used a rectangle and a read-only textbox for that. Whenever a control was entered by the mouse, the info field showed new information.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg12422">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2017-03-05 19:57 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+sorry for my late reply. <br>
+I followed Marcos recommendation and changed to dcl-MessageBox - no problem now.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

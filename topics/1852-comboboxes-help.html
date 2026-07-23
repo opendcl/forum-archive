@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ComboBoxes help. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1852</p>
+    <h1>ComboBoxes help.</h1>
+    <p class="meta">Started by vladgothe ·
+      2012-08-07 12:19 UTC ·
+      6 replies · SMF topic #1852</p>
+<article class="post" id="msg9095">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2012-08-07 12:19 UTC</span>
+  </div>
+  <div class="post-body">I have a csv file, from which I add values in my comboboxes. In the lisp file, I use a function to parse the csv file in a list of lists. Each list contains all the strings from a line (ex. in the csv file the line is: "1026,1017,9,Alba Iulia,1" and after parsing the file will result a list like this '("1026" "1017" "9" "Alba Iulia" "1"). In the end will result a list like this '( (list1) (list2) (list3)...(listn) where n is the maximum number of lines from the csv file.<br>
+So, for example if I want to use the value "1017" from that list, the variable will be like this: (setq var (cadr (nth posf lst))), where lst is the list with all the lists, and posf is the position of the list in the big list.<br>
+In my odcl file I have 2 forms: Form1 and Form2. In Form1 I have ComboBox4, ComboBox5 and ComboBox6 (the ones from upleft).<br>
+ComboBox4 has a predefined list and an OnSelChanged event. In the csv file, the last value from each line (in this case "1") has the value of (1+ ItemIndexOrCount from that OnSelChanged event.) So, when you select ALBA, for instance, which has the value of ItemIndexOrCount of 0, in the csv file it will have the value "1", when you select ARAD which has the value of ItemIndexOrCount of 1, in the csv file will have the value "2" etc. The last value from each line is stored in a variable called jn2.<br>
+The second value from each line in the csv file is stored in a variable called sirsup. So, when I select a value from ComboBox4, I read the csv file and if (1+ ItemIndexOrCount) is equal with jn2, and if sirsup has less than 4 letters, the fourth value from each line in the csv file is added in ComboBox5 and is stored in a variable called string1.<br>
+For example, when i select ALBA in ComboBox4, the ComboBox 5 will have the values: "Mun Alba Iulia|Mun.Blaj|Mun. Aiud etc."<br>
+The first value from each line in the csv value is stored in a variable called siruta. You can observe that in the next line sirsup has more than three letters and is identical with siruta from the previous line.<br>
+What I want is:<br>
+-when I select a value from ComboBox5, I want ComboBox6 to be filled only with the variables string1 from that lines in the csv file which have sirsup value identical with siruta value of the string from ComboBox5.<br>
+So, I give an example to be understood:<br>
+-In ComboBox4 I select ALBA (which is the first value).<br>
+-In ComboBox5 I select Mun. Alba Iulia<br>
+-So, I want in ComboBox6 to appear the following values: "Alba Iulia|Barabant|Micesti|Oarda|Paclisa" and then stop because the next line has a string1 which was added in ComboBox5.<br>
+I attach here the csv file, the lisp file and the odcl file. I mention that the comments from the lisp file and the forms interface are in romanian language. The lisp file is not complete, but is working.<br>
+I apologise for my poor english and I hope my post will be understood. <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1775/Documentatii.odcl">Documentatii.odcl</a> <span class="muted">(8074 bytes)</span></li><li><a href="../attachments/1776/Documentatii.lsp">Documentatii.lsp</a> <span class="muted">(21132 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9097">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-08-07 15:50 UTC</span>
+  </div>
+  <div class="post-body">Hi, your zip file is empty.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9098">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-08-07 16:03 UTC</span>
+  </div>
+  <div class="post-body">Hi, I'm not sure if I understood right but I'd try to get the right list items using vl-remove-if or vl-remove-if-not.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9103">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2012-08-08 04:51 UTC</span>
+  </div>
+  <div class="post-body">After I attach the zip file, It shows me that it has 0 KB, but it has 147 KB. The zip file contains the csv file. I changed the extension in txt.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1779/Siruta.txt">Siruta.txt</a> <span class="muted">(462705 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9107">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-08-08 07:26 UTC</span>
+  </div>
+  <div class="post-body">Hi, my (and your) question is how to filter Alba Iulia,Barabant,Micesti,Oarda,Paclisa from the csv list. Do these items have a foreign key to the selected item of combobox5?<br>
+<br>
+Have you ever thought about using a database (SQLite, dBase, MS Access, ...) and accessing it by Lisp?<br>
+<br>
+I'd prefer to do it this way:<br>
+<br>
+Table JUDET<br>
+~~~~~~~~<br>
+ID | NAME | other fields<br>
+<br>
+Table UAT<br>
+~~~~~~<br>
+ID | ID_JUDET | NAME | other fields<br>
+<br>
+for 1:n relations<br>
+Table SAT_ORAS<br>
+~~~~~~~~~~<br>
+ID | ID_UAT | NAME | other fields<br>
+<br>
+for n:m relations<br>
+Table SAT_ORAS<br>
+~~~~~~~~~~<br>
+ID | NAME | other fields<br>
+<br>
+Table REF_SAT_ORAS<br>
+~~~~~~~~~~~~~<br>
+ID | ID_SAT_ORAS | ID_UAT<br>
+<br>
+Using SQL-Statements you can get all the items you need:<br>
+(for 1:n-relations)<br>
+<pre class="code"><code>select ID,NAME from SAT_ORAS where ID_UAT = 1764</code></pre><br>
+<br>
+If you HAVE to use the csv, you can do the things using vl-remove-if-not:<br>
+<br>
+(setq lstItems (vl-remove-if-not '(lambda (lstCSVItem) (= (nth 3 lstCSVItem) 1764)) lstCSV))<br>
+(dcl_combobox_clear Documentatii_Form1_ComboBox6)<br>
+(dcl_ComboBox_AddList Documentatii_Form1_ComboBox6 lstItems)<br>
+<br>
+<br>
+Hope that helps!<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg9108">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-08-08 08:21 UTC</span>
+  </div>
+  <div class="post-body">@ vladgothe:<br>
+Your question is actually Lisp-related and not ODCL-related.<br>
+<br>
+There are some basic problems with your code:<br>
+1. You use too many global variables.<br>
+2. You are merging functions that are better kept separated.<br>
+<br>
+Keeping the csv-file approach, there is nothing wrong with that, I would suggest this basic structure to address your problem:<br>
+<br>
+(princ "\nLoading ODCL ... ")<br>
+(command "OPENDCL")<br>
+<br>
+(defun c:DOC ( / allDataList FilteredForCombo5DataList FilteredForCombo6DataList)<br>
+  (princ "\nLoading data ... ")<br>
+  (setq allDataList (ReadCSV (findfile "Siruta.csv")))<br>
+  (dcl_Project_Load "Documentatii" T)<br>
+  (dcl_Form_Show Documentatii_Form1)<br>
+  (princ)<br>
+)<br>
+<br>
+(defun ReadCSV ( filename / _replacequotes _csv-&gt;lst file line lst)<br>
+;; ... = Code left out<br>
+;; ...<br>
+;; ... End the ReadCSV function here:<br>
+;;Aceasta este lista cu toate liniile din fisierul "Siruta.csv"<br>
+(reverse lst)<br>
+)<br>
+<br>
+(defun c:Documentatii_Form1_ComboBox4_OnSelChanged (ItemIndexOrCount Value / jnr)<br>
+  ; ...<br>
+  ; ...<br>
+  (setq jnr "1")<br>
+  ; ...<br>
+  ; ...<br>
+  (setq FilteredForCombo5DataList<br>
+    (vl-remove-if-not<br>
+      '(lambda (a)<br>
+        (and<br>
+          (= (last a) jnr)<br>
+          (&lt;= (strlen (cadr a)) 3)<br>
+        )<br>
+      )<br>
+      allDataList<br>
+    )<br>
+  )<br>
+  ; ...<br>
+  ; ...<br>
+  (FunctionToFillCombo5 FilteredForCombo5DataList) ; Create a separate function to fill the combo.<br>
+  ; ...<br>
+  ; ...<br>
+)<br>
+  <br>
+(defun c:Documentatii_Form1_ComboBox5_OnSelChanged (ItemIndexOrCount Value / pickedItemData sirsup)<br>
+  (setq pickedItemData (nth ItemIndexOrCount FilteredForCombo5DataList))<br>
+  (setq sirsup (car pickedItemData))<br>
+  (setq FilteredForCombo6DataList<br>
+    (vl-remove-if-not<br>
+      '(lambda (a)<br>
+        (= (cadr a) sirsup)<br>
+      )<br>
+      allDataList<br>
+    )<br>
+  )<br>
+  ; ...<br>
+  ; ...<br>
+  (FunctionToFillCombo6 FilteredForCombo6DataList) ; Create a separate function to fill the combo.<br>
+  ; ...<br>
+  ; ...<br>
+)<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg9111">
+  <div class="post-head">
+    <span class="post-author">vladgothe</span>
+    <span class="post-date muted">2012-08-08 13:02 UTC</span>
+  </div>
+  <div class="post-body">Thank you very much roy_043. Your code snippet does exactly what I want and made my application much faster and reliable. I am not a programmer, I am a drafter, but I have some basic knowledge in Lisp, and I started to use OpenDCL because I am too lazy to learn simple DCL. And now it's compatible with AutoCAD 2013, which is a great plus.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

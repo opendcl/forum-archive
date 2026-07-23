@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SpinButton questions: Flip buttons? Partial disable? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1686</p>
+    <h1>SpinButton questions: Flip buttons? Partial disable?</h1>
+    <p class="meta">Started by roy_043 ·
+      2011-10-04 10:13 UTC ·
+      3 replies · SMF topic #1686</p>
+<article class="post" id="msg8349">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-10-04 10:13 UTC</span>
+  </div>
+  <div class="post-body">Flip buttons?<br>
+I would like to flip the buttons of a vertical SpinButton. The Up button should count down instead of up. Not a big problem, I'll just use <code>(- delta)</code> in my code, but it would be an interesting feature.<br>
+<br>
+Partial disable?<br>
+Is it possible to disable only one of the two button?</div>
+</article>
+<article class="post" id="msg8354">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-10-05 11:18 UTC</span>
+  </div>
+  <div class="post-body">Hello, not it is not possible. You have to draw two image buttons instead or you create a generic spin button using picturebox (see <a href="http://www.opendcl.com/forum/index.php?topic=995.0" rel="nofollow noopener">{2}</a> for a sample).<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8362">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-10-06 15:56 UTC</span>
+  </div>
+  <div class="post-body">Many thanks for that sample. Your RangeSelector looks great.<br>
+But the SpinButton has a special OnChanged event which will fire multiple times if you keep pushing down on one of its buttons. I don't see an event for a normal button or a PictureBox with this behaviour. So emulating a SpinButton seems difficult.</div>
+</article>
+<article class="post" id="msg8369">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-10-07 07:19 UTC</span>
+  </div>
+  <div class="post-body">Hm, you are right. Unfortunately, OpenDCL doesn't provide a Timer control. In that case you could start the timer at OnMouseDown and stop it at OnMouseUp or OnMouseOff. In the time between the timer is elapsing and changes the control's value.<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

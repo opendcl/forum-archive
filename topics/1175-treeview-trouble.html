@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TreeView trouble · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1175</p>
+    <h1>TreeView trouble</h1>
+    <p class="meta">Started by jb ·
+      2010-02-11 22:14 UTC ·
+      10 replies · SMF topic #1175</p>
+<article class="post" id="msg6240">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2010-02-11 22:14 UTC</span>
+  </div>
+  <div class="post-body">I'm trying to populate a treeview with a series of folders and subfolders.  I want the key to be the folders actual path, like "c://test//folder01".  When I use this string as the key only the "parent" (or first round) of folders are added.  If I use the same string as the lable "folder01" there are no probelms, but now I can't get the full path to that folder.  Am I making any sense?<br>
+<br>
+Have a look at this and see if something jumps out: i is the full path<br>
+<br>
+;(dcl_tree_clear BlockManager_PaletteManager_NavTreeControl)<br>
+;;;	Populate Tree View			;<br>
+;;;(setq dir "c:\\test\\")			;<br>
+;;;(setq i "c:\\test\\Folder 01\\Folder01a\\Folder01aa\\")	;<br>
+;;;(bm:AddFolders "c:\\test\\")<br>
+(defun bm:AddFolders (dir /)<br>
+  (setq folderList (bm:GetSubFolders dir))<br>
+  (if folderList<br>
+    (foreach<br>
+           i folderList<br>
+      (if (not (= (setq temp (vl-string-left-trim dir i)) ""))<br>
+        (progn (setq folder (bm:strParse temp "\\"))<br>
+               (cond ((= (length folder) 1)<br>
+                      (dcl_Tree_AddParent<br>
+                        BlockManager_PaletteManager_NavTreeControl<br>
+                        (car folder) i 0 0 1<br>
+                        )<br>
+                      )<br>
+                     ((&gt; (length folder) 1)<br>
+                      (dcl_Tree_AddChild<br>
+                        BlockManager_PaletteManager_NavTreeControl<br>
+                        (cadr folder)(car folder) i 0 0 1<br>
+                        )<br>
+                      )<br>
+                     )<br>
+               )<br>
+        )<br>
+      )<br>
+    )<br>
+  )<br>
+<br>
+Thanks<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1288/SwampBlockMananger.zip">SwampBlockMananger.zip</a> <span class="muted">(9465 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6241">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-02-11 23:37 UTC</span>
+  </div>
+  <div class="post-body"><br>
+James,<br>
+<br>
+If you have a look at my code at theSwamp you'll see I populated the tree as required instead of in one pass.<br>
+<br>
+I did this early in my investigation of trees and haven't made time to revisit the code,<br>
+ but ...<br>
+<br>
+I think populating in one pass will cause unacceptable time delays<br>
+<br>
+and ..<br>
+particularly as yours is a palette, any changes to the hosting server file structure and additional documents will not be registered in your tree. <br>
+<br>
+My solution used a modal form so the design considerations are a little different. <br>
+<br>
+I can't make time to look at your code at the moment, but should have some time tomorrow(weekend).<br>
+</div>
+</article>
+<article class="post" id="msg6242">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-02-11 23:59 UTC</span>
+  </div>
+  <div class="post-body">Ya I do the same thing, add the sub-folders as they're clicked on.<br>
+Doing it all at once took way too long...</div>
+</article>
+<article class="post" id="msg6243">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2010-02-12 00:02 UTC</span>
+  </div>
+  <div class="post-body">Thanks Kerry.<br>
+<br>
+I see that as one of the big drawbacks to OpenDCL: dynamic information updating.  I usuallly use a "refresh" buuton, but that's a kludge I  know.  I wish the OpenDCL team (Owen) could introduce some dynamic functionalty for modeless forms . . ..<br>
+<br>
+Barry, I wasn't noticing any time delay with my simple test.  If you guys have some code I could review that could be helpful: thanks.<br>
+<br>
+jb</div>
+</article>
+<article class="post" id="msg6244">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-02-12 00:23 UTC</span>
+  </div>
+  <div class="post-body"><br>
+For anyone not familiar with the project code I was referring to :<br>
+<a href="http://www.theswamp.org/index.php?topic=32058.msg375766#msg375766" rel="nofollow noopener">{2}</a><br>
+<br>
+James,<br>
+my process was :<br>
+<br>
+read the 'Current' folder<br>
+  add Child folder names to the tree<br>
+  add documents in the 'Current' folder to the list<br>
+  display the bitmap from the first document.<br>
+<br>
+rince and repeat as the user selects folders.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6245">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-12 02:53 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=1175.msg6243#msg6243 date=1265932957 wrote:</cite><br>
+I wish the OpenDCL team (Owen) could introduce some dynamic functionalty for modeless forms . . ..</blockquote><br>
+<br>
+I'm listening, but I'm not sure what you mean by "dynamic functionality".</div>
+</article>
+<article class="post" id="msg6248">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2010-02-12 12:26 UTC</span>
+  </div>
+  <div class="post-body">Owen, lets save that for another time.  What I need right now is the ability to get the path of a folder in a tree control.  So far I can't see how to do that.  I've tried using the path as the key, but the population routine stops at the first row of parents.  If I use the same string for both key and label all folders and subfolders (any depth) are added.<br>
+<br>
+Works:<br>
+(dcl_treeview_addchild "root folder" "folder01" "folder01" . . .)<br>
+<br>
+Doesn't work:<br>
+(dcl_treeview_addchild "root folder" "folder01" "c://root folder//folder01" . . .)<br>
+<br>
+Is there a method to return the path of a child item in a tree control?<br>
+<br>
+thanks.</div>
+</article>
+<article class="post" id="msg6250">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2010-02-12 14:55 UTC</span>
+  </div>
+  <div class="post-body">Nevermind, found it here <a href="http://www.opendcl.com/forum/index.php?topic=657.0" rel="nofollow noopener">{2}</a><br>
+<br>
+Thanks Jim!  I converted it to look back up the tree using parent instead of sibling: workd great!  :)</div>
+</article>
+<article class="post" id="msg6251">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-12 16:25 UTC</span>
+  </div>
+  <div class="post-body">I tested and had no problems adding child nodes with keys such as the one in your example.</div>
+</article>
+<article class="post" id="msg6258">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2010-02-12 19:34 UTC</span>
+  </div>
+  <div class="post-body">Really?  Could you add nodes more than one level deep?  I can add the first level with the key being the path, but adding children to those nodes proved impossible.</div>
+</article>
+<article class="post" id="msg6267">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-13 02:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=1175.msg6258#msg6258 date=1266003264 wrote:</cite><br>
+Really?  Could you add nodes more than one level deep?  I can add the first level with the key being the path, but adding children to those nodes proved impossible.<br>
+</blockquote><br>
+<br>
+I tried it again, and had no problems going three levels deep.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

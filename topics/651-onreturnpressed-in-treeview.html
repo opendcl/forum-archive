@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OnReturnPressed .. in TreeView · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/21-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 651</p>
+    <h1>OnReturnPressed .. in TreeView</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2009-03-13 04:07 UTC ·
+      10 replies · SMF topic #651</p>
+<article class="post" id="msg3123">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-03-13 04:07 UTC</span>
+  </div>
+  <div class="post-body"><br>
+I need some help here ... going round in circles :) <br>
+<br>
+In a Tree View Control, If the user Presses Enter on any Child, how do I stop the dialog closing.<br>
+... I'm sure I've been down this path before but can't find the breadcrumbs ..  ???<br>
+<br>
+Regards<br>
+Kerry</div>
+</article>
+<article class="post" id="msg3124">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-03-13 04:10 UTC</span>
+  </div>
+  <div class="post-body"><br>
+... If the user presses Enter, He expects the action to be the same as if he selected (clicked on) the child with the mouse.</div>
+</article>
+<article class="post" id="msg3126">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-13 04:54 UTC</span>
+  </div>
+  <div class="post-body">In the current build, I don't think the ReturnPressed event gets called under any circumstances, because the control never processed the enter key. In the next build, there will be a change in that the ReturnPressed event handler will be called if the user presses enter either while editing a cell or if any one of the ReturnPressed, KeyDown, or KeyUp event handlers are defined.</div>
+</article>
+<article class="post" id="msg3127">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-03-13 05:09 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Brilliant !!<br>
+<br>
+I'll probably need some help when it comes to it (cause I'm technologically challenged, and also basically lazy) :)<br>
+<br>
+In the mean time, I'll just be carefull with the Enter key <br>
+<br>
+<br>
+This Tree control is very nice Owen .. a lot better behaved than it used to be.<br>
+<br>
+This is what I'n working on ..<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/630/The way I_m heading.png">The way I'm heading.png</a> <span class="muted">(52272 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3129">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-03-13 05:29 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+How about OnReturnPressed with the ListBox ?<br>
+<br>
+Can the Enter be trapped and handled as if it were a mouse press .. ??<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3142">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-13 18:51 UTC</span>
+  </div>
+  <div class="post-body">It looks like there was an attempt to fire the OnDblClicked event when Enter was pressed, but it wasn't working. I've fixed the code now so the List Box fires OnDblClicked when Return is pressed <em>and</em> there is an event handler for OnDblClicked; otherwise it behaves like before, closing the dialog.</div>
+</article>
+<article class="post" id="msg3143">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-03-13 20:22 UTC</span>
+  </div>
+  <div class="post-body">Looks like a really cool app Kerry, but I'm not too sure about the forms title.<br>
+BOM = "Bill of Materials", right?<br>
+So you form is titled:<br>
+"Bill of Materials Material Lister"<br>
+Is that what you where going for?  ;D</div>
+</article>
+<article class="post" id="msg3146">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-03-13 22:23 UTC</span>
+  </div>
+  <div class="post-body">Semantics !<br>
+<br>
+<br>
+It's a Material Lister used for PRODUCING a BOM. <br>
+<br>
+Thats my story, and I'm sticking to it.  ;D</div>
+</article>
+<article class="post" id="msg3147">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-03-13 22:27 UTC</span>
+  </div>
+  <div class="post-body"><br>
+You May like this one too Barry,<br>
+<br>
+I'll offer a prize for a suitable Name .. :)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/635/Folder Viewer 2009-03-11.png">Folder Viewer 2009-03-11.png</a> <span class="muted">(25921 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3148">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-03-13 22:39 UTC</span>
+  </div>
+  <div class="post-body">How about Iconless Folder Viewer... :)</div>
+</article>
+<article class="post" id="msg3149">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-03-13 22:42 UTC</span>
+  </div>
+  <div class="post-body">Build  A0.3 has the Icons' but I don't have it here at home .. <br>
+... and there are a few other changes ... <br>
+<br>
+See, I have excuses for everything  ::)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

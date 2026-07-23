@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About &quot;date&quot; input  of grid · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 252</p>
+    <h1>About &quot;date&quot; input  of grid</h1>
+    <p class="meta">Started by hicoffee ·
+      2008-03-17 05:03 UTC ·
+      14 replies · SMF topic #252</p>
+<article class="post" id="msg1109">
+  <div class="post-head">
+    <span class="post-author">hicoffee</span>
+    <span class="post-date muted">2008-03-17 05:03 UTC</span>
+  </div>
+  <div class="post-body">I use form of Grid to input DATE as follows:<br>
+(dcl_Grid_SetItemStyle Frame_me_Info 2 2 15) <br>
+When MonthPicker appear ,I click a day , but MonthPicker don’t shut off, when focus move away ,inputbox is nothing,<br>
+   How can I use it ?<br>
+   Help me !!!<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/348/nothing.JPG">nothing.JPG</a> <span class="muted">(16503 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1113">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-03-17 13:28 UTC</span>
+  </div>
+  <div class="post-body">Which version of OpenDCL are you using?</div>
+</article>
+<article class="post" id="msg1123">
+  <div class="post-head">
+    <span class="post-author">hicoffee</span>
+    <span class="post-date muted">2008-03-18 00:14 UTC</span>
+  </div>
+  <div class="post-body">first, I use Opendcl 4.1.2.1,because it's a Stable Version.<br>
+<br>
+and now I use 5.0.0.9 to try it , no change.</div>
+</article>
+<article class="post" id="msg1124">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-03-18 01:54 UTC</span>
+  </div>
+  <div class="post-body">This was a bug in an earlier version, but it is working for me in 5.0.0.9.  Are you sure the correct version was loaded in your test?</div>
+</article>
+<article class="post" id="msg1125">
+  <div class="post-head">
+    <span class="post-author">hicoffee</span>
+    <span class="post-date muted">2008-03-18 05:30 UTC</span>
+  </div>
+  <div class="post-body">yes , 5.0.0.9 was loaded,but i don't know why it can't be loaded auto ?<br>
+if it is loaded ,i must click "today" immediately. if I first click another day and then click "today" ,it will be no response<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/351/grid.gif">grid.gif</a> <span class="muted">(88289 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1133">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-03-18 18:52 UTC</span>
+  </div>
+  <div class="post-body">I cannot reproduce this problem. Can you upload a small sample project that fails for you? Which version of Windows are you using?</div>
+</article>
+<article class="post" id="msg1136">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-03-18 19:43 UTC</span>
+  </div>
+  <div class="post-body">I have fixed a common controls Unicode issue that might have something to do with this problem. Please test again in Alpha 10 next week and let me know whether you see any change.</div>
+</article>
+<article class="post" id="msg1139">
+  <div class="post-head">
+    <span class="post-author">hicoffee</span>
+    <span class="post-date muted">2008-03-19 02:02 UTC</span>
+  </div>
+  <div class="post-body">I found: vertion for ENU can be loaded auto, but CHS cannot,I changed to use ENU now.<br>
+here is LISP and ODCL program <br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/352/gridtime.lsp">gridtime.lsp</a> <span class="muted">(2760 bytes)</span></li><li><a href="../attachments/353/GRIDtime.odcl">GRIDtime.odcl</a> <span class="muted">(742 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1141">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-03-19 03:26 UTC</span>
+  </div>
+  <div class="post-body">What exactly do you mean by "can be loaded auto"?</div>
+</article>
+<article class="post" id="msg1142">
+  <div class="post-head">
+    <span class="post-author">hicoffee</span>
+    <span class="post-date muted">2008-03-19 04:35 UTC</span>
+  </div>
+  <div class="post-body">after I have installed "OpenDCL.Runtime.CHS.5.0.0.9",On commandLine, I type "OpenDcl" ,error message(Undefined command) will be appeared,I must use "appload" to load "OpenDCL.16.arx" from "C:\Program Files\Common Files\OpenDCL" ,but "OpenDCL.Runtime.ENU.5.0.0.9" not like this.</div>
+</article>
+<article class="post" id="msg1336">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2008-04-22 17:39 UTC</span>
+  </div>
+  <div class="post-body">I have exactly the same problem. <br>
+Version 5, 0, 0, 12 ENU <br>
+Does nothing to change the date on the calendar ..</div>
+</article>
+<article class="post" id="msg1350">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-04-28 01:30 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=garcigj link=topic=252.msg1336#msg1336 date=1208885951 wrote:</cite><br>
+I have exactly the same problem. <br>
+Version 5, 0, 0, 12 ENU <br>
+Does nothing to change the date on the calendar ..<br>
+</blockquote><br>
+<br>
+I cannot reproduce the problem here.  Are you sure that 5.0.0.12 is loaded?  Which language and version of Windows?</div>
+</article>
+<article class="post" id="msg1356">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2008-04-28 18:28 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen, <br>
+The problem also makes it to version 5, 0, 0, 13 <br>
+We apologize for my bad English. <br>
+<br>
+Data: <br>
+OpenDCL Studio 5, 0, 0, 13 ENU <br>
+OpenDCL Runtime 5, 0, 0, 13 ENU <br>
+AutoCAD Spanish v2008</div>
+</article>
+<article class="post" id="msg1357">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-04-28 18:43 UTC</span>
+  </div>
+  <div class="post-body">Which language and version of Windows?</div>
+</article>
+<article class="post" id="msg1358">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2008-04-28 18:48 UTC</span>
+  </div>
+  <div class="post-body">Windows XP profesional Spanish...<br>
+<br>
+I could not send a GIF image .. error causes: Upload Folder Full ...</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

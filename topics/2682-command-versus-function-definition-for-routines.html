@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Command versus Function definition for routines · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2682</p>
+    <h1>Command versus Function definition for routines</h1>
+    <p class="meta">Started by JBerns ·
+      2019-06-05 14:32 UTC ·
+      3 replies · SMF topic #2682</p>
+<article class="post" id="msg13257">
+  <div class="post-head">
+    <span class="post-author">JBerns</span>
+    <span class="post-date muted">2019-06-05 14:32 UTC</span>
+  </div>
+  <div class="post-body">Community,<br>
+<br>
+I am a new user to OpenDCL, but a 30-year developer of AutoLISP code.<br>
+<br>
+I noticed that when creating events for forms, boxes, buttons etc., the routines are defined as Command functions. For example:<br>
+<pre class="code"><code>(defun c:Sample_01/Form1#OnInitialize (/) ...<br>
+(defun c:Sample_01/Form1/Label1#OnClicked (/) ...<br>
+(defun c:Sample_01/Form1/TextButton1#OnClicked (/) ...<br>
+</code></pre><br>
+<br>
+Is it necessary to define these routines as Command (C:) functions? Users who prefer to type commands will see a lot of extra commands, which may be confusing.<br>
+<em>See attached image.</em><br>
+<br>
+I would have expected supporting routines to be defined as functions. In other words, without the "C:". This would be less confusing for typed commands.<br>
+<br>
+I would welcome an explanation as to why all the routines are defined as Commands instead of mostly as Functions.<br>
+<br>
+<br>
+Kind regards,<br>
+<br>
+Jerry<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2489/2019-06-05_9-16-36.png">2019-06-05_9-16-36.png</a> <span class="muted">(8247 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13258">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2019-06-05 19:23 UTC</span>
+  </div>
+  <div class="post-body">See here:<br>
+http://opendcl.com/forum/index.php?topic=2539.msg12604#msg12604</div>
+</article>
+<article class="post" id="msg13260">
+  <div class="post-head">
+    <span class="post-author">JBerns</span>
+    <span class="post-date muted">2019-06-13 13:31 UTC</span>
+  </div>
+  <div class="post-body">Localizing the supporting functions (OnClick, OnReturnPressed, etc.) inside the main function worked great!<br>
+<br>
+I have used this nesting method before for functions, but never command functions. I should have thought of that solution myself.  ::)<br>
+<br>
+Thanks for the assistance.<br>
+<br>
+<br>
+Regards,<br>
+Jerry</div>
+</article>
+<article class="post" id="msg13261">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2019-06-13 13:46 UTC</span>
+  </div>
+  <div class="post-body">Your experience then differs from dan113's in the linked topic. Are the functions still 'hidden' in AutoCAD after calling the parent function?</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

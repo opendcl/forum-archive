@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>select a position in a list box · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2164</p>
+    <h1>select a position in a list box</h1>
+    <p class="meta">Started by TopoWAR ·
+      2014-08-27 19:56 UTC ·
+      4 replies · SMF topic #2164</p>
+<article class="post" id="msg10832">
+  <div class="post-head">
+    <span class="post-author">TopoWAR</span>
+    <span class="post-date muted">2014-08-27 19:56 UTC</span>
+  </div>
+  <div class="post-body">Hi, I have a question, in a list box you want to select a position x, in this case "Número  YX" but I select "Número  YXZ" how do I select the position you want on the list?<br>
+<br>
+(list "Número X Y Z Descripción"<br>
+      "Número Y X Z Descripción"<br>
+      "Número X Y Z"<br>
+      "Número Y X Z"<br>
+      "Número X Y Descripción"<br>
+      "Número Y X Descripción"<br>
+      "Número X Y"<br>
+      "Número Y X"<br>
+      "X Y Z Descripción"<br>
+      "Y X Z Descripción"<br>
+      "X Y Z"<br>
+      "Y X Z"<br>
+      "X Y Descripción"<br>
+      "Y X Descripción"<br>
+      "X Y"<br>
+      "Y X")<br>
+<br>
+I have dealt with these you run but do not give me the result I want <br>
+<br>
+thank you<br>
+ (dcl-ListBox-SelectString TopoWAR/form_exp/formato "Número Y X")<br>
+ (dcl-ListBox-SelectItem TopoWAR/form_exp/formato 7 t)<br>
+<br>
+<strong>for now I solved using a loop to find the position I seek</strong><br>
+(setq cont -1)<br>
+    (while (/= (dcl-ListBox-SelectString TopoWAR/form_exp/formato (setq formato_t (nth formato_n formato)) cont) formato_n)<br>
+      (setq cont (1+ cont))<br>
+    )</div>
+</article>
+<article class="post" id="msg10833">
+  <div class="post-head">
+    <span class="post-author">DW</span>
+    <span class="post-date muted">2014-08-28 02:35 UTC</span>
+  </div>
+  <div class="post-body">I ran into the same problem before - how about...<br>
+<br>
+(dcl_ListBox_SelectItem TopoWAR/form_exp/formato (dcl_ListBox_FindStringExact TopoWAR/form_exp/formato  "Número  YX" ) t )</div>
+</article>
+<article class="post" id="msg10834">
+  <div class="post-head">
+    <span class="post-author">TopoWAR</span>
+    <span class="post-date muted">2014-08-28 02:47 UTC</span>
+  </div>
+  <div class="post-body">what I need is to select an item in the list, I mark it in the list, the previous loop I fixed that,</div>
+</article>
+<article class="post" id="msg10835">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-08-28 04:22 UTC</span>
+  </div>
+  <div class="post-body">You didn't say whether this is a single-selection or multiple-selection style listbox. Are you perhaps looking for <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/ListBox/SetCurSel.htm" rel="nofollow noopener">{2}</a>?</div>
+</article>
+<article class="post" id="msg10836">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-08-28 04:53 UTC</span>
+  </div>
+  <div class="post-body">Hi, the right function depends on the listbox selection type. Use SetCurSel in SingleSelection ListBox, SelectItem in MultiSelection typed listboxes.<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

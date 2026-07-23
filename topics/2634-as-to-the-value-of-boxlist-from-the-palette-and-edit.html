@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>As to the value of Boxlist from the palette and edit · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2634</p>
+    <h1>As to the value of Boxlist from the palette and edit</h1>
+    <p class="meta">Started by tujn08 ·
+      2018-10-03 11:06 UTC ·
+      18 replies · SMF topic #2634</p>
+<article class="post" id="msg13012">
+  <div class="post-head">
+    <span class="post-author">tujn08</span>
+    <span class="post-date muted">2018-10-03 11:06 UTC</span>
+  </div>
+  <div class="post-body">Hi! I just started learning Open DCL and I have problems with palette. Created a palette, loaded it. Now we need to fill in the box list.<br>
+<br>
+<br>
+<br>
+<pre class="code"><code><br>
+(progn<br>
+   (setq cmdecho (getvar "CMDECHO"))<br>
+   (setvar "CMDECHO" 0)<br>
+   (command "_OPENDCL")<br>
+   (setvar "CMDECHO" cmdecho) <br>
+   (if (dcl-Project-Load "C:\\Users\\USER\\Desktop\\тесты на трассировку\\проект.odcl")<br>
+      (progn<br>
+         (dcl-Form-Show проект/Property_obj)<br>
+         (princ)<br>
+            (DEFUN c:Dinfo#OnClicked (/)<br>
+               (progn<br>
+                  ;(dcl-ListBox-CLEAR boxlist1)<br>
+                  :(dcl-Control-SetProperty "проект/Property_obj" "boxlist1" '("13"))<br>
+                  :(dcl-Control-SetProperty проект/Property_obj/boxlist1 '("13"))<br>
+                  (setq  blk (_GetName iObj))<br>
+                  (IF (NOT (WCMATCH blk "`*U*,`*D*,`*X*,`*T*,_*,*|*,A$*"))<br>
+                     (SETQ BlkLst (APPEND BlkLst (LIST blk)))<br>
+                  )<br>
+                  (IF (NULL BlkLst)<br>
+                     (dcl-Control-SETVISIBLE проект/boxlist1 T)<br>
+                     (dcl-Control-SETVISIBLE проект/boxlist1 nil)<br>
+                  )<br>
+                  (dcl-ListBox-ADDLIST проект/boxlist1 BlkLst)<br>
+                  (PRINC)<br>
+               )<br>
+            )<br>
+           <br>
+         (if (= Result 1) (DoSomething))<br>
+      )<br>
+   )<br>
+   (princ)<br>
+)</code></pre></div>
+</article>
+<article class="post" id="msg13013">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-10-04 01:34 UTC</span>
+  </div>
+  <div class="post-body">Hi, welcome!<br>
+Without knowing your project in detail, I'd say, that everything is fine but the last line.<br>
+<pre class="code"><code>(if (= Result 1) (DoSomething))</code></pre><br>
+<br>
+Against modal forms, the program will not stop at dcl-form-show in modeless forms and palettes.<br>
+So you need some events to catch ButtonClick or ListSelectionChanged.<br>
+<br>
+I recommend you to have a closer look to the tutorial and the samples.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg13014">
+  <div class="post-head">
+    <span class="post-author">tujn08</span>
+    <span class="post-date muted">2018-10-04 04:27 UTC</span>
+  </div>
+  <div class="post-body">this code is almost all of the example. In the opendcl examples, there is no explicit example for the palette - only visual design. Maybe there are other examples or ready-made solutions in the palette? The task is simple for me right now: select an object and show and change its properties in the palette (I mean extended data).</div>
+</article>
+<article class="post" id="msg13015">
+  <div class="post-head">
+    <span class="post-author">tujn08</span>
+    <span class="post-date muted">2018-10-04 04:32 UTC</span>
+  </div>
+  <div class="post-body">Here is a project-please show me how to use "dsl-Control-SetProperty" and "dll-Control-GetProperty" - by putting them in "boxlist1" .For example, a simple list '("1" "2" "3")<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2426/1087_1088_1086_1077_1082_1090_.zip">&amp;#1087;&amp;#1088;&amp;#1086;&amp;#1077;&amp;#1082;&amp;#1090;.zip</a> <span class="muted">(1604 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13016">
+  <div class="post-head">
+    <span class="post-author">tujn08</span>
+    <span class="post-date muted">2018-10-04 05:10 UTC</span>
+  </div>
+  <div class="post-body">(dcl-Control-GetProperties проект/Property_obj/boxlist1)<br>
+I figured out seems to me to be able...<br>
+<br>
+(dcl-Control-SetProperty проект/Property_obj/boxlist1 "List" '("1" "2"))</div>
+</article>
+<article class="post" id="msg13017">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2018-10-04 07:44 UTC</span>
+  </div>
+  <div class="post-body">You can use the Control Browser to find the properties and methods that are available for a control.<br>
+<pre class="code"><code>(dcl-Control-SetList проект/Property_obj/boxlist1 NewValue [as List of Strings])</code></pre><br>
+Looking at the ComboBoxLab.lsp sample may be helpful as well.</div>
+</article>
+<article class="post" id="msg13018">
+  <div class="post-head">
+    <span class="post-author">tujn08</span>
+    <span class="post-date muted">2018-10-04 07:48 UTC</span>
+  </div>
+  <div class="post-body">I figured it out.<br>
+<pre class="code"><code>(progn ; распечататься все значения свойств объекта<br>
+							(setq lst_sampl (dcl-Control-GetProperties проект/Property_obj/obj))<br>
+							(foreach x lst_sampl<br>
+								(terpri)<br>
+								(princ (dcl-Control-GetProperty проект/Property_obj/obj x))<br>
+								(princ "___")<br>
+								(princ x)<br>
+							)<br>
+						)</code></pre><br>
+<br>
+</div>
+</article>
+<article class="post" id="msg13019">
+  <div class="post-head">
+    <span class="post-author">tujn08</span>
+    <span class="post-date muted">2018-10-04 07:51 UTC</span>
+  </div>
+  <div class="post-body">"проект/Property_obj/obj" - how can this be written to a variable?<br>
+<pre class="code"><code>(set f (read (strcat "проект/Property_obj/obj")))</code></pre>  -in this case, it does not work</div>
+</article>
+<article class="post" id="msg13020">
+  <div class="post-head">
+    <span class="post-author">tujn08</span>
+    <span class="post-date muted">2018-10-04 09:16 UTC</span>
+  </div>
+  <div class="post-body">how to intercept the selected primitive? In the same way as the properties palette</div>
+</article>
+<article class="post" id="msg13021">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-10-04 10:52 UTC</span>
+  </div>
+  <div class="post-body">Hi, <br>
+<br>
+<blockquote class="quote">"проект/Property_obj/obj" - how can this be written to a variable?</blockquote><br>
+<br>
+I should mention that there are two ways to call controls:<br>
+1. Using the automatically defined variable when a project or form is loaded.<br>
+(dcl-Control-GetProperty project/form/control "Visible")<br>
+<br>
+2. Using keywords as string<br>
+(dcl-Control-GetProperty "project" "form" "control" "Visible")<br>
+<br>
+You can override the variable name when you set a value into the (VarName) property of a selected control in the property pane.<br>
+You can get the symbol-value by calling (vl-symbol-value (read "project/form/control")) or (vl-symbol-value (read 'project/form/control))<br>
+You can get all properties of a form or control using (mapcar '(lambda (x) (cons x (dcl-control-getproperty project/form/control x))) (dcl-control-getproperties project/form/control))<br>
+<br>
+Hope that helps,<br>
+Fred</div>
+</article>
+<article class="post" id="msg13022">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-10-04 11:57 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+<blockquote class="quote"><cite> author=tujn08 link=topic=2634.msg13014#msg13014 date=1538627229 wrote:</cite><br>
+this code is almost all of the example. In the opendcl examples, there is no explicit example for the palette - only visual design. Maybe there are other examples or ready-made solutions in the palette? The task is simple for me right now: select an object and show and change its properties in the palette (I mean extended data).<br>
+</blockquote><br>
+<br>
+when I understood it in the right way you want to get noticed when an object gets selected in the current space to display/modify xdata of an entity. <br>
+Then I'd prefer a grid or listview instead of a listbox. When I had built OpenDCL projects in the past I never used listbox because I always needed much mor information.<br>
+<br>
+There are only a few things different between model and non-modal forms (modeless form, toolbar, palette):<br>
+In palettes...<br>
+<ul><br>
+the program does not stop at dcl-form-show<br>
+all events have to be public<br>
+you have to consider the events of changing active document and closing autocad<br>
+the controls that invoke modifications to the drawing database should be set to EventInvoke=AllowCommand to execute code asynchronously<br>
+</ul><br>
+<br>
+I cannot go more into detail as long I do not know where you need help.<br>
+Regards, Fred<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg13023">
+  <div class="post-head">
+    <span class="post-author">tujn08</span>
+    <span class="post-date muted">2018-10-05 05:06 UTC</span>
+  </div>
+  <div class="post-body">so. the first answer is very useful. and with the second not know that to do. I am sure that I am doing something wrong, but the form starts and the program works - it satisfies me.<br>
+<br>
+I want to achieve a certain SPDS-without proxy-graphics.That is: clicked on the object (without calling functions) and in the palette got properties that can be changed.<br>
+While I do not know how - trying to implement as Lee Mac. <a href="http://www.lee-mac.com/dinfo.html" rel="nofollow noopener">{2}</a><br>
+<br>
+I change the circle to a square, point to the object-get the properties.<br>
+<pre class="code"><code>(progn<br>
+	(setq <br>
+		prn 'Coordinates<br>
+		prn1 'InsertionPoint<br>
+		prn2 'Layer<br>
+		ofg 0.0 ; сдвиг оси<br>
+		ofv 0.0 ; сдвиг оси<br>
+		x T<br>
+		lyr "слой_АК"<br>
+		rect nil<br>
+	)<br>
+	(while x<br>
+		(progn <br>
+		(setq gr (grread t 15 0) ; получение координат <br>
+			gr2 (cadr gr) ; Y<br>
+			gr1 (car  gr) ; X<br>
+			code (car gr) ; X<br>
+			data (cadr gr) ; Y<br>
+			vs (/ (getvar 'VIEWSIZE) 100) ; масштаб окна<br>
+			r 0.5<br>
+<br>
+		)<br>
+	;	(command "_rectang" (list X1 Y1 0) (list X2 Y2 0))<br>
+		)<br>
+		(setq <br>
+			X (nth 0 data)<br>
+			Y (nth 1 data)<br>
+			X1 (- X (* vs r))<br>
+			Y1 (- Y (* vs r))<br>
+			X2 (+ X (* vs r))<br>
+			Y2 (+ Y (* vs r))<br>
+						<br>
+		)<br>
+		(if rect<br>
+			(progn)<br>
+			(progn <br>
+				(command "_rectang" (list X1 Y1 0) (list X2 Y2 0))<br>
+				(setq <br>
+					rect (vlax-ename-&gt;vla-object (entlast))<br>
+					crd (vlax-get rect prn)<br>
+				)<br>
+				(vlax-put rect "color" 1)<br>
+			)<br>
+		)<br>
+				(cond <br>
+					( (= 3 gr1) ; команды от мыши<br>
+ 						(setq x nil)<br>
+						(vla-delete rect)<br>
+ 					)<br>
+					( (or (= 5 gr1) (= 3 gr1))<br>
+							(setq <br>
+								pt1 (nth 0 gr2) ; координаты курсота X<br>
+								pt2 (nth 1 gr2) ; координаты курсота Y (vlax-curve-getclosestpointto ent pt2)<br>
+							)<br>
+						;	(setq n_pt (list (+ pt1 ofg) (+ pt2 ofv) 0.0)) ; точка курсора<br>
+						;	(setq cord (vlax-curve-getClosestPointTo vla_line n_pt nil))<br>
+						(setq crd <br>
+							(list<br>
+								X1 Y1 X2 Y1 X2 Y2 X1 Y2<br>
+							)<br>
+						)<br>
+							(vlax-put rect prn crd)<br>
+					)<br>
+					( (= 2 gr1) ; команды от клавиатуры<br>
+						(cond<br>
+							(	(member gr2 '(013 032 069 101 32 69 13))	; (chr 003) "\003" (chr 032)" " (chr 069)"E" (chr 101)"e"<br>
+										(setq x nil) ; выход из цикла<br>
+									;	(*error* nil) ; прерывание<br>
+									;	(princ gr2)(terpri)<br>
+										(terpri)(terpri)<br>
+								(vla-delete rect)<br>
+							)<br>
+						)<br>
+					)<br>
+				)<br>
+				<br>
+	)<br>
+	)</code></pre><br>
+<br>
+In the properties and record their data from the database or by yourself.<br>
+<br>
+<pre class="code"><code>(progn<br>
+		(vl-load-com)<br>
+		(setq a (vlax-ename-&gt;vla-object(car (entsel "выбрать")))) ; выбрали объект и превратили в vla<br>
+		(vlax-ldata-put a "связь" '("с прибором КХ1")) ; записали в объект данные<br>
+		(vlax-ldata-put "RISE_pr" "пересечения" '("с линией 4654")) ; создали словарь с именем пересечения и данными ()<br>
+		(vlax-ldata-get "RISE_pr" "связь") ; прочитать значение из словаря RISE_pr под именем связь<br>
+<br>
+		(vlax-ldata-list "RISE_pr") ; весь список данных в словаре<br>
+		(vlax-ldata-delete "RISE_pr" "связь") ; удаляет данные с именем<br>
+	)</code></pre><br>
+<br>
+In the properties and record their data from the database or by yourself. From closest, that is similar : <a href="http://ventsoft.ru/content/magicad-eliektrosnabzhieniie" rel="nofollow noopener">{2}</a> or EPLAN.<br>
+<br>
+I want to build a track, arrange the equipment as a result of getting the length, quantity, schemes and reports, as well as simultaneously select the cable channel and other equipment.<br>
+<br>
+A big problem in 2D and 3D . Expect to work in 2D. <br>
+Why: <br>
+-not everyone knows how to work in 3D-can not be trained.  <br>
+-Eventually need a 2D plan. <br>
+-3D plan is not always possible to perform-say an existing oil plant, where it is necessary to pave the track.<br>
+- No 3D database equipment and no one wants to create it<br>
+<br>
+in General 2D is easier for designers today. I judge only by small companies. Large companies can also buy EPLAN</div>
+</article>
+<article class="post" id="msg13024">
+  <div class="post-head">
+    <span class="post-author">tujn08</span>
+    <span class="post-date muted">2018-10-05 05:10 UTC</span>
+  </div>
+  <div class="post-body">Here are my test attempts:<br>
+<a href="https://www.youtube.com/channel/UClvU-jcsbJ1DS3bNqJx65XQ" rel="nofollow noopener">{2}</a><br>
+And thanks for the answers!</div>
+</article>
+<article class="post" id="msg13025">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-10-05 06:14 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+the desired task is well-known to me. I built some construction and analyzing tools for a long-term partner who is developing and supporting lightning/illumination planning for ships for transportation. Meanwhile all the construction is done in AutoCAD and all the management is done in a webframe based on MySQL. All the equipment (switches, lamps, sleeves, conductors, ducts) is managed by team A, team B is construction in AutoCAD using the allowed equipment for the certain project and team A and C can summarize and analyze the network, creating reports and offers. Team A and C need no AutoCAD.<br>
+<br>
+At my day job I'm an AE supporting and consulting energy providers to document and visualize the networks of gas, water, waste water, heating and electricity. For that we're using AutoCAD Map 3D and its former TOPOBASE technology. All the stuff is stored in an Oracle or MS SQL Database. It is completey drawn in 2D (in opposite to the first sample).<br>
+<br>
+Just wanted to mention, that it is known to me.<br>
+For your desires, I recommend you to build a palette with a grid or a listview, but grid seems to be much more comfortable to the customer.<br>
+Whenever an element is selected you can read the properties and fill the grid with the data you stored.<br>
+<br>
+Your challange would be to get noticed by LISP that selection has changed or your mouse is moving over a an element.<br>
+That's why I'd consider it a two "projects": (1) visualizing and managing data in the palette and (2) getting the selected element. <br>
+Because for (2) there are different ways to achieve this, I'd place a simple button on the palette to select an element in the drawing to fill the grid.<br>
+<br>
+Once that works, we can think about alternatives to the button.<br>
+Hope that is a vision you can deal with.<br>
+<br>
+Regards, Fred<br>
+</div>
+</article>
+<article class="post" id="msg13026">
+  <div class="post-head">
+    <span class="post-author">tujn08</span>
+    <span class="post-date muted">2018-10-05 07:28 UTC</span>
+  </div>
+  <div class="post-body">Yes, "button" is implemented. The truth is not in this code. This code scans objects under the cursor-with no explicit selection. Also useful to me. And in (defun _Display) where (princ (vlax-get vla_line pro 3)) - just will fill the palette.<br>
+<br>
+<pre class="code"><code>(defun q (/)<br>
+	(defun _Display (ss / vla_line)<br>
+		(cond<br>
+			((or (not ss) (= (sslength ss) 0))<br>
+			 	(if en_line (progn (redraw en_line 4) (setq en_line nil)))<br>
+			)<br>
+			((&gt; (sslength ss) 0)<br>
+				(setq en_line (ssname ss 0) vla_line (vlax-ename-&gt;vla-object en_line))<br>
+				(redraw en_line 3)<br>
+				(if (eq en_line en_x)<br>
+				  	(progn)<br>
+					(progn (princ (vlax-get vla_line prn3)) (terpri))<br>
+				)<br>
+				(setq en_x en_line)<br>
+			)<br>
+		)<br>
+	)<br>
+	(setq <br>
+		prn 'Coordinates<br>
+		prn1 'InsertionPoint<br>
+		prn2 'Layer<br>
+		prn3 'Length<br>
+		x T<br>
+		lyr "слой_АК"<br>
+		rect nil<br>
+		ss nil <br>
+	)<br>
+	(while x<br>
+		(setq gr (grread t 15 0) ; получение координат <br>
+			gr2 (cadr gr)<br>
+			code (car gr) ; X<br>
+			data (cadr gr) ; Y<br>
+			vs (/ (getvar 'VIEWSIZE) 100) ; масштаб окна<br>
+			r 0.5<br>
+			X (nth 0 data)<br>
+			Y (nth 1 data)<br>
+			X1 (- X (* vs r))<br>
+			Y1 (- Y (* vs r))<br>
+			X2 (+ X (* vs r))<br>
+			Y2 (+ Y (* vs r))<br>
+		)<br>
+		(if rect<br>
+			(progn)<br>
+			(progn <br>
+				(command "_rectang" (list X1 Y1 0) (list X2 Y2 0))<br>
+				(setq <br>
+					rect (vlax-ename-&gt;vla-object (entlast))<br>
+					crd (vlax-get rect prn)<br>
+				)<br>
+				(vlax-put rect "color" 1)<br>
+			)<br>
+		)<br>
+		(cond <br>
+			( (= 3 code) ; команды от мыши<br>
+ 				(setq x nil)<br>
+				(vla-delete rect)<br>
+				(if en_line (progn (redraw en_line 4) (setq en_line nil)) )<br>
+ 			)<br>
+			( (or (= 5 code) (= 3 code))<br>
+				;	(setq n_pt (list (+ pt1 ofg) (+ pt2 ofv) 0.0)) ; точка курсора<br>
+				;	(setq cord (vlax-curve-getClosestPointTo vla_line n_pt nil))<br>
+				(setq crd (list X1 Y1 X2 Y1 X2 Y2 X1 Y2) pt1 (list (nth 0 crd) (nth 1 crd)) pt2 (list (nth 4 crd) (nth 5 crd)))<br>
+				(vlax-put rect prn crd)<br>
+				(if (setq ss (ssget "_C" pt1 pt2 (list (cons 0 "lwpolyline") (cons 8 lyr))))<br>
+					(progn<br>
+						(ssdel (vlax-vla-object-&gt;ename rect) ss)<br>
+						(_Display ss)<br>
+					  	(setq ss nil)<br>
+						<br>
+					)<br>
+					(if en_line (progn (redraw en_line 4) (setq en_line nil)))<br>
+				)<br>
+			)<br>
+			( (= 2 code) ; команды от клавиатуры<br>
+				(cond<br>
+					((member code '(013 032 069 101 32 69 13))	; (chr 003) "\003" (chr 032)" " (chr 069)"E" (chr 101)"e"<br>
+						(setq x nil) ; выход из цикла<br>
+						(vla-delete rect)<br>
+					 	(if en_line (progn (redraw en_line 4) (setq en_line nil)) )<br>
+					)<br>
+				)<br>
+			)<br>
+		)			<br>
+	)<br>
+)</code></pre><br>
+<br>
+I work in a CAD Department, a small firm. I'm trying to get engineers to give me a task to develop a program (visual and practical interaction). To make can't - saying it's impossible - just that they are lazy. I have already worked out the search for connections between the equipment, right now I want to write a new version correcting the shortcomings of the previous one. We do not have so many specialists that would fill the database - even the engineers themselves will not do it, though they need such a program. Lazy - what can I add.</div>
+</article>
+<article class="post" id="msg13029">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-10-05 11:04 UTC</span>
+  </div>
+  <div class="post-body">Hi, I have some stomach ache with the multiple command "_rectangle".<br>
+I recommend you to create a polyline just before running while loop and just change the coordinates during while loop. Maybe its much mor performant.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg13030">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-10-05 11:05 UTC</span>
+  </div>
+  <div class="post-body">... and reduce the amount of calling command. You won't have fun with it in a palette in my experiences.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg13036">
+  <div class="post-head">
+    <span class="post-author">tujn08</span>
+    <span class="post-date muted">2018-10-17 12:51 UTC</span>
+  </div>
+  <div class="post-body">Hi! I was busy<br>
+<br>
+1. <blockquote class="quote"><cite> author=Fred Tomke link=topic=2634.msg13030#msg13030 date=1538737542 wrote:</cite><br>
+... and reduce the amount of calling command. You won't have fun with it in a palette in my experiences.<br>
+Regards, Fred<br>
+</blockquote><br>
+- about this I do not understand<br>
+<br>
+2. with square Yes - it is possible for a series make, but it is not drawn if drawn in a loop.</div>
+</article>
+<article class="post" id="msg13075">
+  <div class="post-head">
+    <span class="post-author">tujn08</span>
+    <span class="post-date muted">2018-12-07 18:08 UTC</span>
+  </div>
+  <div class="post-body">Hi! I've returned. <br>
+<br>
+Really need method: <strong>chose a primitive is received the properties (of course: from the dictionary inside the primitive). Can this be implemented without resorting to an additional button <em>"select"</em>?</strong></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Working with different runtime versions. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 971</p>
+    <h1>Working with different runtime versions.</h1>
+    <p class="meta">Started by johnM ·
+      2009-10-16 20:13 UTC ·
+      30 replies · SMF topic #971</p>
+<article class="post" id="msg4907">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2009-10-16 20:13 UTC</span>
+  </div>
+  <div class="post-body">I just came across a situation that I wanted to share.<br>
+If you distribute your programs there could be issues with other programs that are using different runtime versions.<br>
+<br>
+I have always used the load runtime example supplied with the sample files called manualload.lsp and it works great until there is another program that is loaded with different runtime versions.<br>
+<br>
+What I have done is to write a version checker that is called before the ARX load routine<br>
+<br>
+(defun opdc_arx_ck (/ arxnamex proc_arch)<br>
+  	(setq arxnamex		   <br>
+        (strcat "opendcl"<br>
+        (if<br>
+        (and<br>
+        (setq proc_arch (getenv "PROCESSOR_ARCHITECTURE"))<br>
+        (&lt; 1 (strlen proc_arch))<br>
+        (eq "64" (substr proc_arch (1- (strlen proc_arch))))<br>
+        )<br>
+         ".x64."<br>
+         "."<br>
+        )<br>
+        (substr (getvar "acadver") 1 2)<br>
+       ".arx"<br>
+        )		  <br>
+        )<br>
+	(if (member arxnamex (arx));_see if a ARX is already loaded<br>
+        (progn<br>
+	(if (/= (dcl_GETVERSIONEX) "6.0.0.7");_check it with my version<br>
+        (progn<br>
+	(if (member arxnamex (arx)) (arxunload arxnamex 'nil));_if not my version unload it<br>
+        );_progn<br>
+        );_if<br>
+        );_progn<br>
+        );_if<br>
+	(princ)<br>
+  );_defun<br>
+<br>
+If there is a better idea please post it.<br>
+Also if the sample file could be updated to cover this issue it would be extremely helpful to those of use who distribute our programs.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4908">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-16 20:19 UTC</span>
+  </div>
+  <div class="post-body">If you install the runtime with the runtime.msi &amp; use (command "OPENDCL")<br>
+You wont have any issues &amp; wont need to jump through all these hoops.<br>
+That's why the samples are setup this way &amp; not with the manual loading technique.<br>
+I guess we should add some type of disclaimer and the beginning of the "manualload.lsp" file explaining that it's not the recommended technique to avid confusion.<br>
+</div>
+</article>
+<article class="post" id="msg4909">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-16 21:25 UTC</span>
+  </div>
+  <div class="post-body">The current samples are very poor examples of best practice, and they really need to be fixed.  As Barry said, you should distribute and install the runtime via the runtime MSI (or include the MSM into your own application's MSI) and let Windows Installer take care of installing it on the target system, then use (command "OPENDCL") to load the runtime.  If you do this, your application will not conflict with other OpenDCL applications.  If everyone else does this, their application won't conflict with yours.</div>
+</article>
+<article class="post" id="msg4913">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-16 22:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=971.msg4909#msg4909 date=1255728358 wrote:</cite><br>
+The current samples are very poor examples of best practice, and they really need to be fixed.<br>
+</blockquote><br>
+<br>
+Hi Owen,<br>
+I know the samples need some help, but the loading section seams ok to me.<br>
+Each sample calls (LoadRunTime) &amp; (LoadRunTime) calls (command "OPENDCL") &amp; ensures demand loading is enabled.<br>
+<br>
+So do you think we should remove (LoadRunTime) in each sample and replace it with (command "OPENDCL")?<br>
+</div>
+</article>
+<article class="post" id="msg4914">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-10-16 23:20 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Most of the hoop jumping code was written before demand loading was available.<br>
+<br>
+Personally I now don't rely on any external lisp files.<br>
+<br>
+I simply put (command "OpenDcl") as the first line of the file so it gets evaluated when the file loads. <br>
+<br>
+and use something like this to load the project<br>
+  (or (dcl_project_load "KDUB_BlaBla" )<br>
+      (prompt "\n Unable to load KDUB_BlaBla Dialog")<br>
+      (exit)<br>
+  )<br>
+<br>
+... but that's just me</div>
+</article>
+<article class="post" id="msg4915">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-16 23:41 UTC</span>
+  </div>
+  <div class="post-body">That sounds good to me, my only concern is what if they have demand loading disabled...<br>
+Then they get "unknown command OPENDCL"</div>
+</article>
+<article class="post" id="msg4916">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2009-10-17 01:30 UTC</span>
+  </div>
+  <div class="post-body">Please correct me if I am wrong, but I think I’m lost<br>
+<br>
+You can query the system variable “Demandload” to see if it is on or off<br>
+<br>
+Runtime MSI will install the runtime files located at c:\program files\common files\openDCL\.<br>
+Runtime MSM will install the runtime files located at c:\program files\common files\\.<br>
+<br>
+Now if demand load is enabled and from my program I call (command “opendcl”)<br>
+My program will be linked to those runtime arx files installed from the MSM  and even if someone else has a programmed that loaded a ARX file into AutoCAD that arx file will not be linked.<br>
+<br>
+Also if the above is correct I assume the demand load knows which runtime arx to load<br>
+(.Arx.16-arx.17-arx.18 ect….) for the correct acad version<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4917">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-17 02:35 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=971.msg4915#msg4915 date=1255736513 wrote:</cite><br>
+That sounds good to me, my only concern is what if they have demand loading disabled...<br>
+Then they get "unknown command OPENDCL"<br>
+</blockquote><br>
+<br>
+My opinion is that if DEMANDLOAD is set to zero, then software should assume it was set that way purposely to prevent stuff from loading (i.e. while testing someting, or debugging a problem).  If a developer wants to do that sort of checking in their own code, fine, but such code shouldn't be in the samples.</div>
+</article>
+<article class="post" id="msg4918">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-17 02:38 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=johnM link=topic=971.msg4916#msg4916 date=1255743044 wrote:</cite><br>
+Runtime MSM will install the runtime files located at c:\program files\common files\\.</blockquote><br>
+<br>
+If it does, it's a bug.  The MSM should install the runtime files in the Common Files folder same as the MSI.  You're correct about filenames; the installer writes everything into the registry to set up the demand loading for every supported AutoCAD and Bricscad installation on the system so that application code does not need to worry about it.</div>
+</article>
+<article class="post" id="msg4920">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-17 02:54 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=971.msg4917#msg4917 date=1255746933 wrote:</cite><br>
+[quote author=BazzaCAD link=topic=971.msg4915#msg4915 date=1255736513]<br>
+That sounds good to me, my only concern is what if they have demand loading disabled...<br>
+Then they get "unknown command OPENDCL"<br>
+</blockquote><br>
+<br>
+My opinion is that if DEMANDLOAD is set to zero, then software should assume it was set that way purposely to prevent stuff from loading (i.e. while testing someting, or debugging a problem).  If a developer wants to do that sort of checking in their own code, fine, but such code shouldn't be in the samples.<br>
+<br>
+<br>
+OK then I try to start updating the samples when I get some time.<br>
+</div>
+</article>
+<article class="post" id="msg4922">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-10-17 07:15 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=971.msg4915#msg4915 date=1255736513 wrote:</cite><br>
+That sounds good to me, my only concern is what if they have demand loading disabled...<br>
+Then they get "unknown command OPENDCL"<br>
+</blockquote><br>
+<br>
+Perhaps that could be covered by a section in the help " ERROR Messages , and what they mean" <br>
+<br>
+Barry I can spare a couple of hours in the morning so I'll start the sample updates if you like. </div>
+</article>
+<article class="post" id="msg4924">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-17 15:07 UTC</span>
+  </div>
+  <div class="post-body">ok sounds good</div>
+</article>
+<article class="post" id="msg4930">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2009-10-17 17:03 UTC</span>
+  </div>
+  <div class="post-body">I believe there should be a section on runtime conflicts and how to avoid them.<br>
+There should be a standard set and a good sample on how to implement the load.<br>
+A lot of the users like myself learn by example and if we are started off in the right direction it is better for all. Of course there always be exceptions.<br>
+I would be happy to contribute to the writing of this topic but I don’t know what the hell I’m talking about at this stage, but I will figure it out soon. <br>
+For now could someone explain or show an examples of:<br>
+How does the MSM work?<br>
+<br>
+I use INNO setup: what files should I include MSI , MSM <br>
+Are there any parameter switches?<br>
+<br>
+I’m just trying to wrap my brain around this so please bear with me.<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4932">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-17 17:30 UTC</span>
+  </div>
+  <div class="post-body">There is an Inno Setup tutorial here:<br>
+<a href="http://opendcl.com/wordpress/?page_id=10" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg4936">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2009-10-17 17:51 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the link<br>
+I read through it and it covers the MSI install but nothing about MSM<br>
+<br>
+The MSI install will install the runtime files at C:\Program Files\Common Files\OpenDCL<br>
+<br>
+Unless I missed something this doesn’t solve any problems. What a user installs my program that uses runtime 4.1.1.x and then a week later installs a different program containing runtime 6.0.0.8. that install would overwrite the files in C:\Program Files\Common Files\OpenDCL and now my program will have issues.<br>
+Is this correct?<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4937">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-17 17:59 UTC</span>
+  </div>
+  <div class="post-body">The runtime versions are backward compatible, so if another program installs a newer version of the runtime, your program will still work (at least in theory -- there could of course be cases where your code takes advantage of some undocumented or unintended behavior that changes in a newer version).</div>
+</article>
+<article class="post" id="msg4940">
+  <div class="post-head">
+    <span class="post-author">johnM</span>
+    <span class="post-date muted">2009-10-17 18:59 UTC</span>
+  </div>
+  <div class="post-body">That’s what I’m getting at.<br>
+I have a package that works great with runtime 4.1.1.2 but it has errors with 6.0.0.8<br>
+I don’t want to repackage and submit updates to everybody using it every time there is a change in new runtimes that causes errors in older runtimes.<br>
+<br>
+I personally can work around this issue with the code in my original post but I will have to fix my 4.1.1.2 package with the code and updated my users one time. I was just thinking about my learning curve and how could I make life easer for others like me.<br>
+Please don’t get me wrong I really appreciate all the help and advice here<br>
+</div>
+</article>
+<article class="post" id="msg4941">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-17 19:10 UTC</span>
+  </div>
+  <div class="post-body">There were breaking changes from OpenDCL 4 to 5, but that was a special case because OpenDCL 4 applications could not safely coexist with other OpenDCL applications in any case.</div>
+</article>
+<article class="post" id="msg4948">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-10-18 01:20 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Regarding updating samples:<br>
+<br>
+I've had a fresh look at the samples.<br>
+Unfortunately they are all designed to be run with the "_MasterDemo.lsp" loaded and with the "_OpendclUtils.LSP" loaded.<br>
+<br>
+If any of the samples are loaded and run independently the <strong>LoadODCLProj</strong> function is not available.<br>
+As you know, the <strong>LoadODCLProj</strong> function's primary purpose is to ensure the  .ODCL files can be found in the  ..\SamplesFolder.<br>
+<br>
+In this regard, the Samples are not really completely simple generic samples.<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4949">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-18 02:09 UTC</span>
+  </div>
+  <div class="post-body">If the samples folder is in the acad support path they should run on there own.<br>
+We should try to get them to run from masterdemo &amp; on there own as much as possable.</div>
+</article>
+<article class="post" id="msg4950">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-18 02:26 UTC</span>
+  </div>
+  <div class="post-body">I envision adding a prolog like the following (for e.g. the TreeView sample):<br>
+<br>
+;;;######################################################################<br>
+;;;######################################################################<br>
+;;;######################################################################<br>
+;;; <br>
+;;; OpenDCL Sample<br>
+;;;<br>
+;;; The code in this prolog is designed to allow this sample project<br>
+;;; to work with the other sample projects that are installed with<br>
+;;; OpenDCL Studio, and is not intended for nor needed in your own<br>
+;;; OpenDCL projects.<br>
+;;;<br>
+(or<br>
+  OpenDCL::Samples::#Prefix<br>
+  (setq OpenDCL::Samples::#Prefix (vl-registry-read "HKEY_CURRENT_USER\\SOFTWARE\\OpenDCL" "SamplesFolder"))<br>
+  (setq OpenDCL::Samples::#Prefix (vl-registry-read "HKEY_LOCAL_MACHINE\\SOFTWARE\\OpenDCL" "SamplesFolder"))<br>
+  (setq OpenDCL::Samples::#Prefix (vl-registry-read "HKEY_CURRENT_USER\\SOFTWARE\\Wow6432Node\\OpenDCL" "SamplesFolder"))<br>
+  (setq OpenDCL::Samples::#Prefix (vl-registry-read "HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\OpenDCL" "SamplesFolder"))<br>
+)<br>
+(and (not OpenDCL::Samples::#findfile)<br>
+  (setq OpenDCL::Samples::#findfile findfile)<br>
+  (defun findfile (file / path)<br>
+    (if OpenDCL::Samples::#Prefix<br>
+      (setq path (OpenDCL::Samples::#findfile (strcat OpenDCL::Samples::#Prefix file)))<br>
+    )<br>
+    (if path path (OpenDCL::Samples::#findfile file))<br>
+  )<br>
+)<br>
+(and (not OpenDCL::Samples::#dcl_project_load)<br>
+  (command "_OPENDCL")<br>
+  (setq OpenDCL::Samples::#dcl_project_load dcl_project_load)<br>
+  (defun dcl_project_load (file)<br>
+    (OpenDCL::Samples::#dcl_project_load (findfile file))<br>
+  )<br>
+)<br>
+(if (not *MasterDemo*) ;; print a banner, unless masterdemo is active<br>
+  (princ "\nOpenDCL sample loaded. Enter \"TREE\" to run the sample.\n")<br>
+)<br>
+;;;<br>
+;;;<br>
+;;;######################################################################<br>
+;;;######################################################################<br>
+;;;######################################################################<br>
+;;;######################################################################<br>
+;;;<br>
+;;;<br>
+;;; TREE Sample<br>
+;;;<br>
+;;; This sample demonstrates the tree control and all its events.<br>
+;;;<br>
+<br>
+<br>
+;; this function loads the project &amp; shows the form<br>
+(defun c:TREE (/)<br>
+  (command "_OPENDCL") ;; ensure OpenDCL Runtime is loaded<br>
+  (dcl_Project_Load "TreeView.odcl")<br>
+  (dcl_Form_Show TreeView_Main)<br>
+  ;; The event handlers manage the form until it is dismissed<br>
+  (PRINC)<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg4951">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-10-18 02:41 UTC</span>
+  </div>
+  <div class="post-body">Redefining <strong>findfile</strong> is probably not ideal ...<br>
+<br>
+added : ditto redefining <strong>dcl_project_load</strong><br>
+ <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/964/Findfile Redefinition 2009-10-18 12-39-00.png">Findfile Redefinition 2009-10-18 12-39-00.png</a> <span class="muted">(20851 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4952">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-18 03:19 UTC</span>
+  </div>
+  <div class="post-body">The goal of course was to be able to make the sample code work with or without the prolog. The (findfile) redefinition doesn't bother me, but (dcl_project_load) is a problem because it can accept optional arguments (and being in lisp, the replacement can't). Another idea is to use a hybrid approach that requires a call to a custom findfile function for loading sample files. This isn't so bad; it means the sample code can't be used exactly as-is, but it's reasonable to expect most end user applications to require something exactly like the custom findfile function anyway, so here they just have to plug in their version of the function:<br>
+<br>
+<br>
+;;;######################################################################<br>
+;;;######################################################################<br>
+;;;######################################################################<br>
+;;; <br>
+;;; OpenDCL Sample<br>
+;;;<br>
+;;; This function retrieves the full path to files in the samples<br>
+;;; folder by prefixing the filename with the path prefix that was<br>
+;;; saved in the registry by the OpenDCL Studio installer.<br>
+;;;<br>
+(defun ODCL::Samples::FindFile (file / prefix path)<br>
+  (setq prefix<br>
+		(cond<br>
+			((vl-registry-read "HKEY_CURRENT_USER\\SOFTWARE\\OpenDCL" "SamplesFolder"))<br>
+			((vl-registry-read "HKEY_LOCAL_MACHINE\\SOFTWARE\\OpenDCL" "SamplesFolder"))<br>
+			((vl-registry-read "HKEY_CURRENT_USER\\SOFTWARE\\Wow6432Node\\OpenDCL" "SamplesFolder"))<br>
+			((vl-registry-read "HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\OpenDCL" "SamplesFolder"))<br>
+		)<br>
+  )<br>
+  (if prefix (setq path (findfile (strcat prefix file))))<br>
+  (if path path (findfile file))<br>
+)<br>
+(if (not *MasterDemo*) ;; print a banner, unless masterdemo is active<br>
+  (princ "\nOpenDCL sample loaded. Enter \"TREE\" to run the sample.\n")<br>
+)<br>
+;;;<br>
+;;;<br>
+;;;######################################################################<br>
+;;;######################################################################<br>
+;;;######################################################################<br>
+;;;######################################################################<br>
+;;;<br>
+;;;<br>
+;;; TREE Sample<br>
+;;;<br>
+;;; This sample demonstrates the tree control and all its events.<br>
+;;;<br>
+<br>
+<br>
+;; this function loads the project &amp; shows the form<br>
+(defun c:TREE (/)<br>
+  (command "_OPENDCL") ;; ensure OpenDCL Runtime is loaded<br>
+  (dcl_Project_Load (ODCL::Samples::FindFile "TreeView.odcl"))<br>
+  (dcl_Form_Show TreeView_Main)<br>
+  ;; The event handlers manage the form until it is dismissed<br>
+  (PRINC)<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg4953">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-10-18 03:20 UTC</span>
+  </div>
+  <div class="post-body">Would an option be to code the <strong>dcl_project_load </strong> to look in the Samples if the file is not on the path. ?<br>
+<br>
+oops we posted at the same time ... I'll have a look at your post.<br>
+</div>
+</article>
+<article class="post" id="msg4954">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-10-18 03:26 UTC</span>
+  </div>
+  <div class="post-body"><br>
+That should work Owen I think.<br>
+I'm comfortable with it because I do a similar thing in some of my production code.<br>
+<br>
+... and as you indicate, it's only one function call to change to become 'conventional' code.  </div>
+</article>
+<article class="post" id="msg4955">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-18 03:40 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=971.msg4953#msg4953 date=1255836015 wrote:</cite><br>
+Would an option be to code the <strong>dcl_project_load </strong> to look in the Samples if the file is not on the path. ?</blockquote><br>
+<br>
+That occurred to me, but I think it can be ruled out. The first problem with that approach is that it only works with (dcl_project_load). There are several samples that need to load other kinds of dependent files from the samples folder. The second problem is that such a "ghost" path could cause someone a lot of frustration in certain cases (imagine copying an OpenDCL sample into a folder that is incorrectly thought to be in the support path, editing the copy, and being mystified at why the changes aren't effective when the project is reloaded).</div>
+</article>
+<article class="post" id="msg4956">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-10-18 03:46 UTC</span>
+  </div>
+  <div class="post-body">I came to a similar conclusion when rethinking the option. :)<br>
+<br>
+Should I wait for a consensus or just plough ahead and make the changes to the samples ?<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4957">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-18 03:58 UTC</span>
+  </div>
+  <div class="post-body">I'm all for shooting first and asking questions later. If you're in the mood, have at it.<br>
+<br>
+I'd like to create a set of guidelines for a best practice, then go through each sample line by line and control by control and get everything conforming to the guideline. For now, though, just make identical changes to each sample, in such a way that your changes can easily be revised en masse with the magic of search and replace.<br>
+<br>
+One thought I did have is that the new stuff could go to the end of the file instead of the beginning, thereby giving it less prominence. As a bonus, you could precede the existing event handlers with the "magic" comment (;|«OpenDCL Event Handlers») that signifies where Studio should insert new event handlers.</div>
+</article>
+<article class="post" id="msg4958">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-10-18 04:32 UTC</span>
+  </div>
+  <div class="post-body">Conforming to a guideLine (and creating a guideline) may be difficult.<br>
+<br>
+for instance :<br>
+<br>
+For modal development I prefer to declare my event handlers local to the main.<br>
+<br>
+This means that my files tend to take this form :<br>
+<br>
+<br>
+(vl-load-com)<br>
+(command "_OPENDCL")             ; ensure OpenDCL Runtime is loaded<br>
+<br>
+(defun c:test (/<br>
+               ;; vars<br>
+               local1 local2 local3<br>
+               ;; methods<br>
+               *error* _fun1 _fun2 _fun3<br>
+               c:event1 c:event2 c:event3)<br>
+;;; -------------<br>
+;;; LOCAL FUNCTIONS<br>
+;;; -------------<br>
+  (defun *error* ()<br>
+                 ;; error trap stuff here<br>
+  )<br>
+  ;; ------------- <br>
+  (defun _fun1 ()<br>
+               ;; stuff here<br>
+  )<br>
+  ;; -------------<br>
+  (defun _fun2 ()<br>
+               ;; stuff here<br>
+  )<br>
+  ;; -------------<br>
+  (defun _fun3 ()<br>
+               ;; stuff here<br>
+  )<br>
+;;; -------------<br>
+;;; EVENT HANDLERS<br>
+;;; -------------<br>
+  (defun c:event1 ()<br>
+                  ;; stuff here<br>
+  )<br>
+  ;; -------------<br>
+  (defun c:event2 ()<br>
+                  ;; stuff here<br>
+  )<br>
+  ;; -------------<br>
+  (defun c:event3 ()<br>
+                  ;; stuff here<br>
+  )<br>
+;;; -------------<br>
+;;; MAIN<br>
+;;; -------------<br>
+  (dcl_project_load "MySuperDuperSpecial.odcl")<br>
+  (setq DialogReturn (dcl_form_show MySuperDuperSpecial_Main))<br>
+  ;; The event handlers manage the form until it is dismissed<br>
+  ;; Run any post closure routines here<br>
+  (error* nil)<br>
+  (princ)<br>
+)<br>
+<br>
+<br>
+<br>
+<br>
+... but again, this is just me</div>
+</article>
+<article class="post" id="msg4960">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-18 04:54 UTC</span>
+  </div>
+  <div class="post-body">I think it's best to leave event handlers global in the samples (for consistency).</div>
+</article>
+<article class="post" id="msg4962">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-10-18 07:34 UTC</span>
+  </div>
+  <div class="post-body">Yep :)<br>
+Have done.<br>
+<br>
+<br>
+edit<br>
+Continuing the topic here :<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=977.msg4963#msg4963" rel="nofollow noopener">{2}</a></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

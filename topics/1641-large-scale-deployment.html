@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Large scale deployment · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/19-deployment.html">Deployment</a> /
+      Topic 1641</p>
+    <h1>Large scale deployment</h1>
+    <p class="meta">Started by kenkrupa ·
+      2011-06-24 16:27 UTC ·
+      22 replies · SMF topic #1641</p>
+<article class="post" id="msg8106">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2011-06-24 16:27 UTC</span>
+  </div>
+  <div class="post-body">So far I have the Runtime .msi file being installed along with my new app by Innosetup, per the tutorial. However, I'm thinking that this won't play well with company-wide customers. I'm not well versed in this subject, but I understand that they will typically install my current app (which does not use any ODCL yet) on one system and then just push it out to all others. They do not want to have to go install my app on each system. I don't think just pushing out the \Common Files\OpenDCL folder would make it happen, would it?<br>
+<br>
+I'm wondering, what if, instead of installing the .msi and using (command "_OPENDCL"), I were to include the .arx files along with my stuff, determine the correct one for the current version and platform, and just load it? </div>
+</article>
+<article class="post" id="msg8107">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-24 16:44 UTC</span>
+  </div>
+  <div class="post-body">kenkrupa, I recommend you to deploy the runtime with the installer as you wrote in your first sentence. It's the best way.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8108">
+  <div class="post-head">
+    <span class="post-author">jbuzbee</span>
+    <span class="post-date muted">2011-06-24 17:04 UTC</span>
+  </div>
+  <div class="post-body">When I was supporting a large Arch firm I included the arx on the server (along with my apps).  Local machines got a mns file and the paths to the server only needed to be set up once (I actually used innosetup for a local and server install)  Worked like a charm.</div>
+</article>
+<article class="post" id="msg8110">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-06-24 17:26 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=kenkrupa link=topic=1641.msg8106#msg8106 date=1308932832 wrote:</cite><br>
+I'm wondering, what if, instead of installing the .msi and using (command "_OPENDCL"), I were to include the .arx files along with my stuff, determine the correct one for the current version and platform, and just load it? <br>
+</blockquote><br>
+<br>
+If you do that, you will perpetrate the very crime you were worried about in the first place. It's self defeating logic to think that your application is more important than every other application; if you follow that path, your application will eventually get trumped and lose the tug of war. Just build an MSI with a merge module, then your corporate customers will love you, your app will never break, and other developers will never cuss you.</div>
+</article>
+<article class="post" id="msg8112">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2011-06-24 18:15 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1641.msg8110#msg8110 date=1308936392 wrote:</cite><br>
+[quote author=kenkrupa link=topic=1641.msg8106#msg8106 date=1308932832]<br>
+I'm wondering, what if, instead of installing the .msi and using (command "_OPENDCL"), I were to include the .arx files along with my stuff, determine the correct one for the current version and platform, and just load it? <br>
+</blockquote><br>
+<br>
+If you do that, you will perpetrate the very crime you were worried about in the first place. It's self defeating logic to think that your application is more important than every other application; if you follow that path, your application will eventually get trumped and lose the tug of war. <br>
+<br>
+<br>
+Owen - I don't understand why any of this would happen. Maybe you didn't understand that in my proposal I would include the .arx files <u>in with my stuf</u>f, not in the Common Files\OpenDCL folder. I certainly do not think my app is more important. I just thought that if I provided these files in my own folder, it would make it easier for distribution within a company, and NOT interfere with what others might do.<br>
+<br>
+Fred - I still don't see why the .msi is the best way. Doesn't that mean my app would need to be installed on each system to install the .msi? That's what I'm trying to avoid making my customers do. (Otherwise they would just copy my stuff onto other systems.) It sounds like jbuzbee is saying he did something similar, with success. And I believe this is still the way to load DosLib.</div>
+</article>
+<article class="post" id="msg8114">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-24 18:33 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=kenkrupa link=topic=1641.msg8112#msg8112 date=1308939316 wrote:</cite><br>
+... I would include the .arx files <u>in with my stuf</u>f, not in the Common Files\OpenDCL folder.</blockquote><br>
+<br>
+That is exactly the reason Owen mentioned!<br>
+If any product comes with its own OpenDCL runtime stuff, it is going to collision course to each other.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8115">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-24 18:43 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=kenkrupa link=topic=1641.msg8112#msg8112 date=1308939316 wrote:</cite><br>
+Doesn't that mean my app would need to be installed on each system to install the .msi?</blockquote><br>
+That's correct. It has to be installed on each workstation to make your app running.<br>
+<br>
+<blockquote class="quote"><cite> author=kenkrupa link=topic=1641.msg8112#msg8112 date=1308939316 wrote:</cite><br>
+That's what I'm trying to avoid making my customers do. (Otherwise they would just copy my stuff onto other systems.)<br>
+</blockquote><br>
+<br>
+There's absolutely no difference to the installation: in both cases files are copied to the worksation. The only difference of using the MSI (or MSM :) ) is that there is only one runtime for all OpenDCL based applications.<br>
+<br>
+<blockquote class="quote"><cite> author=kenkrupa link=topic=1641.msg8112#msg8112 date=1308939316 wrote:</cite><br>
+It sounds like jbuzbee is saying he did something similar, with success.</blockquote><br>
+<br>
+Sure, it will work as long yout app is the only OpenDCL based application on the workstations.<br>
+And, can you be sure? ;)<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8116">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2011-06-24 18:47 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1641.msg8114#msg8114 date=1308940428 wrote:</cite><br>
+If any product comes with its own OpenDCL runtime stuff, it is going to collision course to each other.<br>
+</blockquote><br>
+Sorry - I don't understand. If I have a separate folder of .arx files, how would a collision occur?</div>
+</article>
+<article class="post" id="msg8117">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2011-06-24 19:04 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1641.msg8115#msg8115 date=1308941019 wrote:</cite><br>
+There's absolutely no difference to the installation: in both cases files are copied to the worksation. The only difference of using the MSI (or MSM :) ) is that there is only one runtime for all OpenDCL based applications.<br>
+</blockquote><br>
+The difference I see is that without any odcl my stuff can be copied to stations and will work. You can't just copy the Common Files\OpenDCL folder. And you can't just copy the .msi file - it need to be run.<br>
+<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=1641.msg8115#msg8115 date=1308941019 wrote:</cite><br>
+Sure, it will work as long yout app is the only OpenDCL based application on the workstations.<br>
+</blockquote><br>
+I'm still not seeing any problem. I just loaded OpenDCL.x64.18.arx manually (simulating what I would do), then did _OPENDCL (simulating another app doing this the standard way). No problem that I can see. Maybe I'm being dense, but it seems like you are telling me it would be a problem but not really explaining why.  ???</div>
+</article>
+<article class="post" id="msg8118">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-24 19:05 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=kenkrupa link=topic=1641.msg8116#msg8116 date=1308941251 wrote:</cite><br>
+If I have a separate folder of .arx files, how would a collision occur?<br>
+</blockquote><br>
+<br>
+Because each app will try to load its OpenDCL runtime release. Just imagine: the user is working with different apps which uses OpenDCL runtime. Each app comes with its own OpenDCL runtime files. How will you avoid that application 1 which uses OpenDCL 5 is loaded before your application will be loaded and you will need OpenDCL 6? If you give your app to the user you have no influence anymore to the time when the app is going to be loaded and whether there is any other OpenDCL runtime which was already loaded before or not. That's why the runtime should be installed to CommonFiles folder. And please note: if the runtime was installed correctly, the language is automatically selected and the correct runtime file will be automatically (demand)loaded into AutoCAD and you don't have to figure out yourself which AutoCAD on which plattform is loaded and which matching ARX has to be loaded now.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8119">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-24 19:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=kenkrupa link=topic=1641.msg8117#msg8117 date=1308942281 wrote:</cite><br>
+And you can't just copy the .msi file - it need to be run.</blockquote><br>
+<br>
+You're right.<br>
+<br>
+Using MSI means: one runtime for all apps.<br>
+<br>
+Copying runtime files by yourself means: each app will come with its runtime files and you cannot be sure when your app and the runtime files of your app will be loaded.<br>
+<br>
+Hope its more clear. ;)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg8120">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2011-06-24 19:11 UTC</span>
+  </div>
+  <div class="post-body">OK - that's starting to make sense to me now. Thank you.<br>
+<br>
+But now that still leaves the unanswered question of how can my app get distributed company wide without doing an install on each system? I fear that might be a deal breaker for some customers.</div>
+</article>
+<article class="post" id="msg8121">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-24 19:32 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=kenkrupa link=topic=1641.msg8120#msg8120 date=1308942690 wrote:</cite><br>
+OK - that's starting to make sense to me now. Thank you.<br>
+</blockquote><br>
+<br>
+Phooo! That was hard! :)<br>
+<br>
+<blockquote class="quote"><cite> author=kenkrupa link=topic=1641.msg8120#msg8120 date=1308942690 wrote:</cite><br>
+I fear that might be a deal breaker for some customers.<br>
+</blockquote><br>
+<br>
+That sound's to me that it is not allowed for the customers to install software. Unfortunately, I know that very well: You have to send a written request to the agency of information and communication technology of the customer's company and three weeks later an administrator is strolling around and tells the customer that it couldn't be installed because there must be an internally research before if your software could be a malware. Meanwhile the customer has forgotten why he needed your app so urgently... Why do I know this so well?<br>
+Copy the needed runtime along with your vlx and keep all we said in mind.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8125">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2011-06-24 21:12 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1641.msg8121#msg8121 date=1308943920 wrote:</cite><br>
+That sound's to me that it is not allowed for the customers to install software. <br>
+</blockquote><br>
+No, that's not it. It's that the IT dept. doesn't want to go to each of dozens of machines to do the install. But if they install my app on the server, will that solve the problem? Will _OPENDCL called on other systems know what to do? I don't think so - am I wrong?   (Like I said, my knowledge in this area is very limited.)<br>
+<br>
+For those who do want to copy it to each machine, I see one way that would work (with the .msi included in my stuff). I could do this if (vl-cmdf "_OPENDCL") fails:<br>
+(setq msi (kcs_prog "OpenDCL.Runtime.6.0.2.3.msi")) ; finds the file in my folder<br>
+(startapp "msiexec.exe" (strcat "/i \"" msi "\" /qn"))<br>
+Unfortunately, the above line does not work with the /qn switch - don't know why. It does work without it, but not "quietly". <br>
+(startapp "msiexec.exe" (strcat "/i \"" msi "\""))<br>
+<br>
+Still hoping to find a better solution.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8126">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-06-24 21:13 UTC</span>
+  </div>
+  <div class="post-body">Ken, maybe it would help settle your concern about installing software if you consider that installing software <strong>is</strong> just copying files. The MSI just packages the files nicely into a single file along with information and identifiers that allows Windows to keep track of the files, and do things like automatically repair the files, magically apply updates if, and only if, they are needed, etc. Large customers can push the MSI files to all their network machines easily, whereas manually copying files is hard work and results in orphaned installations that have to be managed manually.<br>
+<br>
+Here's a news flash: if your customer is allowed to copy files, they are allowed to install your MSI. If they are not allowed to install your MSI, then they aren't allowed to copy files either. I'm not saying they wouldn't find it easier to break the rules via copying files - I'm just saying, it's not a valid excuse to claim that one is allowed, but not the other.</div>
+</article>
+<article class="post" id="msg8127">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-06-24 21:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=kenkrupa link=topic=1641.msg8125#msg8125 date=1308949955 wrote:</cite><br>
+But if they install my app on the server, will that solve the problem?</blockquote><br>
+<br>
+Ah, that is a slightly different issue, and I didn't realize that this is what you were after. You're on the right track re. automatically kicking off the MSI at runtime, and since you're already using AutoLISP, I suppose a lisp based solution is just as good as using a more common group policy or startup script approach. Sorry, I'm not sure why your '/qn' switch isn't working.</div>
+</article>
+<article class="post" id="msg8129">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-24 22:13 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=kenkrupa link=topic=1641.msg8125#msg8125 date=1308949955 wrote:</cite><br>
+(startapp "msiexec.exe" (strcat "/i \"" msi "\" /qn"))<br>
+Unfortunately, the above line does not work with the /qn switch - don't know why. It does work without it, but not "quietly". <br>
+</blockquote><br>
+<br>
+kenkrupa, just create a batch file in Temp folder with the desired line to call and startup the batch file from AutoCAD.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg8134">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2011-06-25 14:19 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1641.msg8129#msg8129 date=1308953627 wrote:</cite><br>
+[quote author=kenkrupa link=topic=1641.msg8125#msg8125 date=1308949955]<br>
+(startapp "msiexec.exe" (strcat "/i \"" msi "\" /qn"))<br>
+Unfortunately, the above line does not work with the /qn switch - don't know why. It does work without it, but not "quietly". <br>
+</blockquote><br>
+<br>
+kenkrupa, just create a batch file in Temp folder with the desired line to call and startup the batch file from AutoCAD.<br>
+<br>
+<br>
+I don't have time to do this today, but it sounds perfect! Thank you :)<br>
+<br>
+Owen - being that this is the same thing Innosetup would do, with the same .msi file, if my stuff were installed by Innosetup instead of copied to a system, would even you give your OK to this?  ;)  (I would continue to install it with the Innosetup, but only have this procedure as an alternate method for if/when my app gets copied to systems.)<br>
+<br>
+Thanks <br>
+Ken</div>
+</article>
+<article class="post" id="msg8135">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-06-25 14:40 UTC</span>
+  </div>
+  <div class="post-body">Yep, the crucial step is to call msiexec so it can properly register the runtime installation in Windows. Whether that happens via your initial app installer or at runtime doesn't matter, as long as it happens. If you haven't seen it yet, check out <a href="http://www.opendcl.com/forum/index.php?topic=1142.0" rel="nofollow noopener">{2}</a>.</div>
+</article>
+<article class="post" id="msg8136">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2011-06-25 15:58 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1641.msg8135#msg8135 date=1309012805 wrote:</cite><br>
+Yep, the crucial step is to call msiexec so it can properly register the runtime installation in Windows. Whether that happens via your initial app installer or at runtime doesn't matter, as long as it happens. If you haven't seen it yet, check out <a href="http://www.opendcl.com/forum/index.php?topic=1142.0" rel="nofollow noopener">{2}</a>.<br>
+</blockquote><br>
+<br>
+OK - I believe I'm all set now. Thank you Owen and Fred.   :)</div>
+</article>
+<article class="post" id="msg8144">
+  <div class="post-head">
+    <span class="post-author">kenkrupa</span>
+    <span class="post-date muted">2011-06-27 20:05 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=kenkrupa link=topic=1641.msg8136#msg8136 date=1309017490 wrote:</cite><br>
+OK - I believe I'm all set now.<br>
+</blockquote><br>
+<br>
+Well, not quite as good as hoped. The /qn doesn't work in a .bat file either - it does nothing with it included. My guess is that the UAC won't allow it. I think that when done in Innosetup the UAC has already gotten your permission to alter the system. So startapp works just as well as the .bat. To avoid timing problems, on failure to load I'll advise to run a special command that I'll provide to install it. Good enough.<br>
+</div>
+</article>
+<article class="post" id="msg8145">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-06-28 02:11 UTC</span>
+  </div>
+  <div class="post-body">Hmm, I guess you could wrap this into an .exe that includes a manifest requiring Administrator/AsInvoker privileges, but I would think just startapp-ing the MSI would have the same effect.<br>
+<br>
+Bottom line, I think there's room for improvement in the deployment possibilities for OpenDCL Runtime, but I'm not sure how it could be improved.</div>
+</article>
+<article class="post" id="msg8147">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-28 06:35 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=kenkrupa link=topic=1641.msg8144#msg8144 date=1309205119 wrote:</cite><br>
+My guess is that the UAC won't allow it.</blockquote><br>
+<br>
+Hi, as far as I remember my test, I was asked by UAC to confirm the installation.<br>
+Maybe it will help to call the batch file with runas?<br>
+<br>
+runas    /user:loginname program<br>
+<br>
+Regards,<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

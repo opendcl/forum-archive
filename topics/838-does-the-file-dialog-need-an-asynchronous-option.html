@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Does the File Dialog need an &quot;Asynchronous&quot; option · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 838</p>
+    <h1>Does the File Dialog need an &quot;Asynchronous&quot; option</h1>
+    <p class="meta">Started by bazzacad ·
+      2009-07-02 18:51 UTC ·
+      2 replies · SMF topic #838</p>
+<article class="post" id="msg4158">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-07-02 18:51 UTC</span>
+  </div>
+  <div class="post-body">I'm trying to run this code:<br>
+<br>
+<br>
+(defun c:AddCalcLink_opnLink_cmdOK_OnClicked (/ row)<br>
+  (setq FileLink (dcl_FileExplorer_GetPathName AddCalcLink_opnLink_FileExplorer))<br>
+  (dcl_Form_Close AddCalcLink_opnLink)<br>
+  (setq PT (getpoint "\nPick point: "))<br>
+)<br>
+<br>
+<br>
+And the code is hanging on the getpoint.... I'm I missing something?<br>
+</div>
+</article>
+<article class="post" id="msg4159">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-07-02 19:17 UTC</span>
+  </div>
+  <div class="post-body">You need to call (getpoint) *after* (dcl_Form_Show) returns.</div>
+</article>
+<article class="post" id="msg4160">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-07-02 19:32 UTC</span>
+  </div>
+  <div class="post-body">Cool thx. I know I was doing something easy/stupid wrong.. :)<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

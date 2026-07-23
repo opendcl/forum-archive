@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Button click on modeless form higlights geometry (BricsCAD) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2454</p>
+    <h1>Button click on modeless form higlights geometry (BricsCAD)</h1>
+    <p class="meta">Started by roy_043 ·
+      2016-11-16 15:16 UTC ·
+      6 replies · SMF topic #2454</p>
+<article class="post" id="msg12227">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-11-16 15:16 UTC</span>
+  </div>
+  <div class="post-body">While testing my first modeless form, I notice that clicking on a button will highlight geometry under the dialog. This occurs in BricsCAD V16 and V17 (I have not tried other versions). In BricsCAD V16 the Quad will even display. Is this a known issue?<br>
+<br>
+Project:<br>
+See here: http://www.opendcl.com/forum/index.php?topic=2446.msg12212#msg12212<br>
+<br>
+Program versions:<br>
+OpenDCL.Studio.ENU.8.1.1.1<br>
+BricsCAD-V17.1.04-2-en_US(x64)</div>
+</article>
+<article class="post" id="msg12249">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-11-20 05:06 UTC</span>
+  </div>
+  <div class="post-body">It looks like the event handler causes focus to revert to the drawing window, so that the button-up event gets sent there instead of the modeless form. I'll investigate.<br>
+<br>
+P.S. A form with only buttons should almost always have KeepFocus=False. It doesn't have any effect on the bug, just a usability issue.</div>
+</article>
+<article class="post" id="msg12251">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-11-20 09:23 UTC</span>
+  </div>
+  <div class="post-body">Thank you Owen.<br>
+Your tip makes sense. I'll change the KeepFocus property in the sample project.</div>
+</article>
+<article class="post" id="msg12257">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-11-20 15:44 UTC</span>
+  </div>
+  <div class="post-body">This turns out to be a BricsCAD bug. I've submitted a bug report. From what I can tell it doesn't cause any major problems, just a bit disconcerting.</div>
+</article>
+<article class="post" id="msg12288">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-11-28 20:31 UTC</span>
+  </div>
+  <div class="post-body">Thanks.<br>
+I have meanwhile changed the KeepFocus property of the form to False. But there seems to be no effect. If I hover over the dialog after pressing a button and enter a letter (let's say "L") it is not sent to the BricsCAD Command Line as I would have expected. Perhaps this is related to the aforementioned bug?</div>
+</article>
+<article class="post" id="msg12290">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-11-29 01:09 UTC</span>
+  </div>
+  <div class="post-body">KeepFocus doesn't come into play until the mouse moves back over the drawing window. At that time, the drawing window steals focus back unless KeepFocus=true.</div>
+</article>
+<article class="post" id="msg12291">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-11-29 09:24 UTC</span>
+  </div>
+  <div class="post-body">Thank you for your explanation. In BricsCAD the drawing window also 'steals the focus' if KeepFocus is True. I assume that this is because the bug switches the focus.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inserting ActiveX control for &quot;Adobe PDF Reader&quot; is ignored · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2225</p>
+    <h1>Inserting ActiveX control for &quot;Adobe PDF Reader&quot; is ignored</h1>
+    <p class="meta">Started by Carsten ·
+      2015-01-02 14:00 UTC ·
+      5 replies · SMF topic #2225</p>
+<article class="post" id="msg11176">
+  <div class="post-head">
+    <span class="post-author">Carsten</span>
+    <span class="post-date muted">2015-01-02 14:00 UTC</span>
+  </div>
+  <div class="post-body">Happy New Year,<br>
+<br>
+I am trying to add a control for viewing PDF files to a Modalform by inserting ActiveX control, but after selecting the "Adobe PDF Reader" from the list, and inserting (with the "cross" point) nothing happens. There is no visual indication of the control and it is not added to the list of controls in the lower right side of the Studio. <br>
+<br>
+I am probably missing something obvious, but can't figure out what. <br>
+Can anybody help?<br>
+<br>
+BR<br>
+Carsten</div>
+</article>
+<article class="post" id="msg11177">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-01-02 15:54 UTC</span>
+  </div>
+  <div class="post-body">Hi, unfortunately, I cannot reproduce this, because Acrobat Reader is not my favorite choice.<br>
+I tried PDF XChange Viewer control instead and I get a default preview of the control.<br>
+I recommend you to reinstall or register Acrobat Reader anew, restart OpenDCL Studio and try again.<br>
+Maybe - but only maybe - you could get more success to use Web control with a html with nested pdf-file.<br>
+Then you are undependend of the installed ActiveX control.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11178">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-01-02 22:09 UTC</span>
+  </div>
+  <div class="post-body">I was able to reproduce this. The result indicates that the control creation fails for some reason. Some controls simply don't allow creation in a "foreign" process, and that may well be the reason for the failure in this case, but I really don't know. Unfortunately there is probably not much that can be done about it, short of contacting Adobe and asking them for assistance.</div>
+</article>
+<article class="post" id="msg11179">
+  <div class="post-head">
+    <span class="post-author">Carsten</span>
+    <span class="post-date muted">2015-01-02 23:10 UTC</span>
+  </div>
+  <div class="post-body">Fred and Owen, thanks very much for your feed-back. <br>
+I took Fred's advice and gave up on the ActiveX, seems to be too unpredictable when it comes to find an ActiveX which can display pdf's. <br>
+<br>
+I tried to experiment with the HTML control instead, but being an illiterate when it comes to the basic terminologi and syntax, I don't think I can find a way to embed a pdf into the URL/HTML control.<br>
+<br>
+The closest I got to was this: <br>
+(dcl-Html-Navigate BOMTree/Form/Html1 "file:///c:/temp/35641.pdf")<br>
+which opened the Adobe reader in a separate window and displayed the file. <br>
+<br>
+But anyway,  this feature was just the "topping" to be combined with a Tree-control which shows exported data (part numbers, BOQ's etc. from our main database. And the rest of this all works brilliant. <br>
+<br>
+Thanks for your help<br>
+Carsten<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg11180">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-01-03 01:12 UTC</span>
+  </div>
+  <div class="post-body">Hi, have you tried this: http://pdfobject.com/markup/index.php?<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11181">
+  <div class="post-head">
+    <span class="post-author">Carsten</span>
+    <span class="post-date muted">2015-01-03 08:12 UTC</span>
+  </div>
+  <div class="post-body">Yes, in my "Google-Safari" of yesterday, I was around this and also another "Embed pdf file in HTML scripting method"<br>
+ <br>
+When I created some small "Test.HTML's" based on both of these it appears that they will Work in Google Chrome but not in IE. <br>
+Since IE is my default browser, this is the one which the OpenDCL will use for it's HTML-control. <br>
+<br>
+I have come to the conclusion, that this is over my head and just continue without a "pdf-preview" in my OpenDCL form, I can still have a hyperlink to the actual pdf. <br>
+<br>
+Thanks for taking the time to help in this.<br>
+<br>
+Carsten </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

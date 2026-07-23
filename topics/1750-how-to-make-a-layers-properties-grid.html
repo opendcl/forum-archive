@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to make a Layers properties grid ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1750</p>
+    <h1>How to make a Layers properties grid ?</h1>
+    <p class="meta">Started by krunch ·
+      2012-02-05 20:39 UTC ·
+      10 replies · SMF topic #1750</p>
+<article class="post" id="msg8592">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-02-05 20:39 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Hi<br>
+<br>
+I wondered if I could make a grid that would be the same as LayerState-Edit : <a href="http://exchange.autodesk.com/autocad/enu/online-help/search#WS73099cc142f4875513fb5cd10c4aa30d6b2cff.htm" rel="nofollow noopener">{2}</a> <br>
+<br>
+But is it possible to make columns of 'color' 'lynetype' .. comboboxes (with style 43 ?) or cells must be buttons ?<br>
+Do i have to use SetColumnStyleList or Grid_SetCellStyle ?<br>
+<br>
+Indeed I've never made grid .. can someone show me a similar example ?<br>
+<br>
+Thanks in advance</div>
+</article>
+<article class="post" id="msg8594">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-02-06 09:44 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+just have a look at the grid's SetStyle method. <br>
+There you can find the styles you can set to the grid's styles.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8596">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-02-06 19:27 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+Thanks, but you meant Set<strong>Cell</strong>Style ?<br>
+<br>
+And may be you see an approaching example ?</div>
+</article>
+<article class="post" id="msg8597">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-02-06 21:23 UTC</span>
+  </div>
+  <div class="post-body">Yes, I meant SetCellStyle.<br>
+There is a sample in the OpenDCL samples which demonstrates the grid.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8598">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-02-08 19:59 UTC</span>
+  </div>
+  <div class="post-body">Good entry, thanks !</div>
+</article>
+<article class="post" id="msg8601">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-02-12 11:08 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+Something I can't understand (samples are using deprecated method) is how to manage a '3 - Switchable Image' column style.<br>
+I mean how do you set and toggle images : <br>
+- can't assign pictures from the picture folder using dcl_Grid_SetCellImages ?<br>
+- Alt. cell icon disabled ..<br>
+<br>
+<br>
+Is it possible to disable (greyed) 1 column ?<br>
+<br>
+Is it possible to set a column (6-String) to read only ?<br>
+<br>
+Another detail but I suppose it can't be changed : style 33 (LineType) doesn't provides a 'Other ...' option to open the LineType manager ?<br>
+</div>
+</article>
+<article class="post" id="msg8602">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-02-12 20:57 UTC</span>
+  </div>
+  <div class="post-body">Hi, you can't grey out any item. But you can set the cellstyle to 0.<br>
+The linetype droplist style only shows the list of loaded linetypes of the current drawing. <br>
+But you can add items to the list and call the (dcl_selectlinetype) function by your own if they're selected.<br>
+<br>
+You can preset the images by calling<br>
+(dcl_Grid_SetCellStyle  intRow [als Long] intColumn [als Long] intStyle [als Integer] intData as integer)<br>
+intData is the imageindex for default<br>
+<br>
+With using<br>
+(dcl_Grid_SetCellImages  intRow [als Long] intColumn [als Long] intImageIndex [als Integer] {intAltImageIndex [als Integer]}) you can change the images afterwards.<br>
+<br>
+Using (dcl_Grid_GetCellCheckState  intRow [als Long] intColumn [als Long]) you can get the current state, using (dcl_Grid_SetCellCheckState  intRow [als Long] intColumn [als Long] intState [als Integer]) you can set the current state.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8603">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-02-12 22:00 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+<blockquote class="quote">But you can add items to the list and call the (dcl_selectlinetype) function by your own if they're selected.</blockquote><br>
+<br>
+Good! but how can I add an item to a list (don't see any 'additem method) ? With SetCellDropList ?<br>
+<br>
+About the style 3 column .. image doesn't come<br>
+I've just tried to get my 1st image (100), but the cell stays empty ...<br>
+<br>
+(defun c:Project_Form_OnInitialize (/)<br>
+    (dcl_Grid_SetCellStyle Project_Form_Grid 0 2 3 100) ; nrow 0<br>
+)<br>
+(defun c:Project_Form_Grid_OnBeginLabelEdit (Row Column /)<br>
+  (if (= Column 2) (dcl_Grid_SetCellImages Project_Form_Grid Row Column 100))<br>
+)<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8612">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-02-13 22:43 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+I've understood something important : images must be loaded in the grid's Image list (not in the picture folder) ... so now I can toggle the 2 images with the following trigger (I don't understand why but it toggles with '0')<br>
+<br>
+(defun c:Project_Form_Grid_OnBeginLabelEdit (Row Column /)<br>
+  (if (= Column 2) (dcl_Grid_SetCellImages Project_Form_Grid Row Column 0))<br>
+)<br>
+<br>
+But no way to display the image in the cell' on the form Initialize .. I've tried the following lines, with the column style set to 3, nothing works ..<br>
+<br>
+        (dcl_Grid_SetCellCheckState Project_Form_Grid line 2 0) <br>
+        (dcl_Grid_SetCellImages Project_Form_Grid line 2 0)<br>
+<br>
+        (dcl_Grid_SetCellStyle Project_Form_Grid line 2 3 0)<br>
+<br>
+I think I miss something, where is the problem please ?<br>
+Thanks by advance<br>
+</div>
+</article>
+<article class="post" id="msg8613">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-02-14 21:06 UTC</span>
+  </div>
+  <div class="post-body">Ok ! so basically, a switchable images column (style 3) just requires :<br>
+- to load images in the grid's Image list (not in the picture folder)<br>
+- to set the initial picture with dcl_Grid_SetCellCheckState<br>
+<br>
+it took me hours to find it, if it can serve to someone ..</div>
+</article>
+<article class="post" id="msg8614">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-02-14 21:35 UTC</span>
+  </div>
+  <div class="post-body">Hi, good to know that it works now.<br>
+<blockquote class="quote"><cite> author=krunch link=topic=1750.msg8613#msg8613 date=1329253588 wrote:</cite><br>
+- to load images in the grid's Image list (not in the picture folder)<br>
+</blockquote><br>
+That´is mentioned in the help.<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

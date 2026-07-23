@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenDCL Document Events · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 327</p>
+    <h1>OpenDCL Document Events</h1>
+    <p class="meta">Started by jb ·
+      2008-05-15 18:15 UTC ·
+      5 replies · SMF topic #327</p>
+<article class="post" id="msg1435">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-05-15 18:15 UTC</span>
+  </div>
+  <div class="post-body">The VLR reactors are pretty limited when going from document -&gt; lisp interpreter -&gt; OpenDCL.arx.  I guess it's because of the interpreter, objects don't get released during CommandEnded, AttachEnded, and DataBase call-backs.  Or maybe it's because dcl_Functions are commands?<br>
+<br>
+In any event, it would be nice if OpenDCL had some built-in event handlers.  The ones I've had the most trouble with are when Objects are added or removed from the Drawing Database.  Most of the others work fine: CommandEnded works for most Object Table update functions.  Obviously, this would be for Modeless, Dockable and Palette forms.  These forms need to react to the Documant environment real-time.  Right now I have refresh buttons when reactors aren't working.<br>
+<br>
+Maybe:<br>
+dcl_objectAppended<br>
+dcl_objectUnAppended                <br>
+dcl_objectReAppended<br>
+dcl_objectErased<br>
+dcl_objectUnErased<br>
+<br>
+Any thoughts?  Any others?</div>
+</article>
+<article class="post" id="msg1962">
+  <div class="post-head">
+    <span class="post-author">hermanm</span>
+    <span class="post-date muted">2008-09-27 04:09 UTC</span>
+  </div>
+  <div class="post-body">Events related to switching documents would be on my list.<br>
+<br>
+I haven't yet tried using<br>
+<br>
+ :vlr-documentBecameCurrent<br>
+:vlr-documentToBeActivated<br>
+<br>
+although I may try it this weekend.<br>
+<br>
+Scenario:<br>
+<br>
+Modeless form which needs to use a document-specific variable (either a LISP global or a dictionary variable) to update the value displayed by a control.<br>
+<br>
+Anyone have any experience to share on this topic?</div>
+</article>
+<article class="post" id="msg1963">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-09-27 05:30 UTC</span>
+  </div>
+  <div class="post-body">The modeless forms have an "OnDocActivated" event for that.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg1964">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-09-27 12:05 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=327.msg1435#msg1435 date=1210875306 wrote:</cite><br>
+The VLR reactors are pretty limited...</blockquote><br>
+<br>
+It would be helpful if you could post some sample code that demonstrates the problem.</div>
+</article>
+<article class="post" id="msg1965">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-09-27 14:06 UTC</span>
+  </div>
+  <div class="post-body">I'll put an example together.</div>
+</article>
+<article class="post" id="msg1966">
+  <div class="post-head">
+    <span class="post-author">hermanm</span>
+    <span class="post-date muted">2008-09-27 17:58 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=327.msg1963#msg1963 date=1222493433 wrote:</cite><br>
+The modeless forms have an "OnDocActivated" event for that.<br>
+</blockquote><br>
+<br>
+Ah! cool.:)<br>
+<br>
+Thanks, Barry</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

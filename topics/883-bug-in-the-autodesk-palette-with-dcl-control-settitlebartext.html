@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bug in the Autodesk palette with dcl_Control_SetTitleBarText · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 883</p>
+    <h1>Bug in the Autodesk palette with dcl_Control_SetTitleBarText</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-08-25 08:19 UTC ·
+      4 replies · SMF topic #883</p>
+<article class="post" id="msg4387">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-08-25 08:19 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I tried to set TitleBarText on Palette, it doesn't work , do nothing  ;D<br>
+<br>
+But return T  .... <br>
+<br>
+Redraw do nothing ...<br>
+<br>
+Thanks ;)<br>
+</div>
+</article>
+<article class="post" id="msg4392">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-08-25 13:08 UTC</span>
+  </div>
+  <div class="post-body">This is a bug in the Autodesk palette implementation that causes it to ignore any changes after the palette is initially created. The only solution is to close and redisplay the palette after the title bar text is changed.</div>
+</article>
+<article class="post" id="msg4395">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-08-25 14:26 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=883.msg4392#msg4392 date=1251205722 wrote:</cite><br>
+This is a bug in the Autodesk palette implementation that causes it to ignore any changes after the palette is initially created. The only solution is to close and redisplay the palette after the title bar text is changed.<br>
+</blockquote><br>
+<br>
+So, i will change the title of my post ;)<br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg4529">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-09-09 09:41 UTC</span>
+  </div>
+  <div class="post-body">I have a solution for anyone who knows the new titlebar text already before showing the palette. Since the VarName already exist after loading the project file you can set the new titlebartext before (dcl_form_show ...). For me it's important because we use the same palette for different products. In this main palette the product name shall be added in the titlebar of the palette. Setting the titlebar text before showing the form can solve this.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4530">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-09 10:04 UTC</span>
+  </div>
+  <div class="post-body">Thanks for your post !, it's work fine.<br>
+<br>
+But i let this post to unsolved , because cannot change title after displayed palette.<br>
+<br>
+Best regards.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

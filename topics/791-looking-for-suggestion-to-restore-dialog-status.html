@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>looking for suggestion to restore dialog status · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 791</p>
+    <h1>looking for suggestion to restore dialog status</h1>
+    <p class="meta">Started by Kelie ·
+      2009-06-06 10:54 UTC ·
+      2 replies · SMF topic #791</p>
+<article class="post" id="msg3904">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2009-06-06 10:54 UTC</span>
+  </div>
+  <div class="post-body">wow, it has been almost a year since i wrote something with OpenDCL... but it sure looks great. hats off to all those involved in the development, particularly Owen.<br>
+<br>
+the image below is a little program i'm writing to search for xdata from selected objects. i first tried using a modeless dialog, and it wasn't stable, probably because i did something wrong. so i decided to use a modal dialog. but within the same autocad session, same drawing, i'd like to restore the dialog to its previous state when used multiple times. i mean settings such as the dialog position on the screen, the status of a check box, the current selection of a combo box, etc.. what i'm doing now is saving such settings to global variables when the dialog is closed, and restore these setting when the dialog is initialized again. it seems to be labor intensive. is this the correct way of doing it?<br>
+<br>
+thanks for your comment/suggestion.<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/776/ODCL0012.jpg">ODCL0012.jpg</a> <span class="muted">(39346 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3905">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-06 11:11 UTC</span>
+  </div>
+  <div class="post-body">Hi, Kelie,<br>
+<br>
+normally, OpenDCL saves the dialog state within an AutoCAD session. That means if you close the form and reopens it, then it should be shown at the same place in the same size - but only if you do not call (dcl_project_load "MyProject" T) before.<br>
+<br>
+The most dialog content should also be saved within an AutoCAD session (textbox content, listbox content ...). But I must say that I prefer to collect the data within a function which calls a modal form or I keep all data in global variables or in the blackboard (via vl-bb-set) if I use modeless forms. Then I will set all the data within OnInitialize to its controls.<br>
+<br>
+If you like, I can help you create this tool with a palette.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3906">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2009-06-06 20:14 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred.<br>
+<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=791.msg3905#msg3905 date=1244286694 wrote:</cite><br>
+but only if you do not call (dcl_project_load "MyProject" T) before.<br>
+</blockquote><br>
+<br>
+That must be it. I'll try (dcl_project_load "MyProject" nil) later.<br>
+<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=791.msg3905#msg3905 date=1244286694 wrote:</cite><br>
+If you like, I can help you create this tool with a palette.<br>
+</blockquote><br>
+<br>
+Learning to use palette (not particularly for this program) is definitely on my to do list. Thanks for offering your help. I'll post questions here when I have.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

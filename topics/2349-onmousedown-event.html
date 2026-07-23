@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OnMouseDown event · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2349</p>
+    <h1>OnMouseDown event</h1>
+    <p class="meta">Started by velasquez ·
+      2016-01-28 16:30 UTC ·
+      7 replies · SMF topic #2349</p>
+<article class="post" id="msg11774">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2016-01-28 16:30 UTC</span>
+  </div>
+  <div class="post-body">The OnMouseDown event is not working as is described in OpenDCL 8.0.1.0.<br>
+"This event is triggered When one of the mouse buttons is pressed on the control."<br>
+After the first call he continues to work out of control. This does not happen or other events over the control.<br>
+Is this a bug or need to implement something to work around?<br>
+I attached an example.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2192/Test_OnMouseDown.LSP">Test_OnMouseDown.LSP</a> <span class="muted">(601 bytes)</span></li><li><a href="../attachments/2193/Test_OnMouseDown.odcl">Test_OnMouseDown.odcl</a> <span class="muted">(594 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11775">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2016-01-28 16:35 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=2349.msg11774#msg11774 date=1453998608 wrote:</cite><br>
+The OnMouseDown event is not working as is described in OpenDCL 8.0.1.0.<br>
+"This event is triggered When one of the mouse buttons is pressed on the control."<br>
+After the first call he continues to work out of control. This does not happen or other events over the control.<br>
+Is this a bug or need to implement something to work around?<br>
+I attached an example.<br>
+</blockquote><br>
+<br>
+The picture shows the result of a click out of control and form.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2194/Test_OnMouse.png">Test_OnMouse.png</a> <span class="muted">(9532 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11776">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2016-01-28 21:10 UTC</span>
+  </div>
+  <div class="post-body">Seems to be a focus issue.<br>
+I think you can compare the X and the Y arguments against the width and height of the control to create a workaround.</div>
+</article>
+<article class="post" id="msg11777">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2016-01-28 22:03 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2349.msg11776#msg11776 date=1454015452 wrote:</cite><br>
+Seems to be a focus issue.<br>
+I think you can compare the X and the Y arguments against the width and height of the control to create a workaround.<br>
+</blockquote><br>
+<br>
+Thank you roy<br>
+I also believe that the problem is the focus but I tried to shift the focus of control after the click, and could not.<br>
+A comparison of the X and Y values with the control works well.<br>
+Now take the case:<br>
+A function closes the form after a click and do something, if the user clicks again starting before the return of the form control will respond again.</div>
+</article>
+<article class="post" id="msg11780">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-01-30 23:55 UTC</span>
+  </div>
+  <div class="post-body">Is this on Windows 10? Your sample seems fine on Windows 7, but I have heard that Windows 10 does some funky things with focus.</div>
+</article>
+<article class="post" id="msg11781">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-01-31 00:04 UTC</span>
+  </div>
+  <div class="post-body">Ah, now I see the problem. The behavior is from the button not releasing the mouse capture. Normally button-down captures the mouse, then capture is released during button-up. In this case a modal popup is interrupting the process and capture never gets released.<br>
+<br>
+Note that it's generally more dangerous to perform actions with side effects during button-down. This is why Windows buttons normally act on button-up instead of button-down. Maybe you can use button-up instead of button-down?</div>
+</article>
+<article class="post" id="msg11782">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2016-01-31 11:03 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2349.msg11781#msg11781 date=1454198642 wrote:</cite><br>
+Ah, now I see the problem. The behavior is from the button not releasing the mouse capture. Normally button-down captures the mouse, then capture is released during button-up. In this case a modal popup is interrupting the process and capture never gets released.<br>
+<br>
+Note that it's generally more dangerous to perform actions with side effects during button-down. This is why Windows buttons normally act on button-up instead of button-down. Maybe you can use button-up instead of button-down?<br>
+</blockquote><br>
+<br>
+Thank you Owen,<br>
+Yes I am working with Windows 10.<br>
+I will try your suggestion.</div>
+</article>
+<article class="post" id="msg11783">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2016-01-31 11:37 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=2349.msg11782#msg11782 date=1454238215 wrote:</cite><br>
+[quote author=owenwengerd link=topic=2349.msg11781#msg11781 date=1454198642]<br>
+Ah, now I see the problem. The behavior is from the button not releasing the mouse capture. Normally button-down captures the mouse, then capture is released during button-up. In this case a modal popup is interrupting the process and capture never gets released.<br>
+<br>
+Note that it's generally more dangerous to perform actions with side effects during button-down. This is why Windows buttons normally act on button-up instead of button-down. Maybe you can use button-up instead of button-down?<br>
+</blockquote><br>
+<br>
+Thank you Owen,<br>
+Yes I am working with Windows 10.<br>
+I will try your suggestion.<br>
+<br>
+<br>
+The OnMouseUp event worked fine.<br>
+Thanks.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

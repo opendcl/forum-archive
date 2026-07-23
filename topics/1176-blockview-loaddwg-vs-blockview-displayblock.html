@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BlockView_LoadDWG vs BlockView_DisplayBlock · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1176</p>
+    <h1>BlockView_LoadDWG vs BlockView_DisplayBlock</h1>
+    <p class="meta">Started by fred_tomke ·
+      2010-02-12 07:42 UTC ·
+      12 replies · SMF topic #1176</p>
+<article class="post" id="msg6246">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-12 07:42 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I've extracted a small function of mine for you to ask for a little help:<br>
+<br>
+In the attachment you can find a project, a lisp, and two drawings.<br>
+<ul><br>
+open up the file drawing.dwg<br>
+load the lisp and make sure that the project is in one of your supportpaths<br>
+start command test_block<br>
+in the upper middle you can see a pull down, which increases at mouseover<br>
+select an other view<br>
+you cann see the "toolbar" keeps open after clicking<br>
+close the form<br>
+start command test_dwg and select the tree.dwg of the archive<br>
+you see the same tree<br>
+do as before and select an other view<br>
+suddenly it seems that the toolbar has closed, but it is certainly behind the blockview<br>
+when you have the same test with the toolbars at left or right they still keep open after clicking<br>
+</ul><br>
+<br>
+I've also tried to make invisible and visible again, I also used ZOrder and so on. But I cannot keep the middle toolbar open after a new LoadDWG. Maybe there is another way I still don't to change the view without loading the file agein. Maybe you have an idea.<br>
+<br>
+Thanks for watching.<br>
+<br>
+P.S. Just before you begin: let's bet how many controls does this form contain?  :)<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1289/blockview.zip">blockview.zip</a> <span class="muted">(130974 bytes)</span></li><li><a href="../attachments/1290/test_block.gif">test_block.gif</a> <span class="muted">(144462 bytes)</span></li><li><a href="../attachments/1291/test_dwg.gif">test_dwg.gif</a> <span class="muted">(190231 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6247">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2010-02-12 08:13 UTC</span>
+  </div>
+  <div class="post-body">wow that's a really cool dropdown toolbar.<br>
+</div>
+</article>
+<article class="post" id="msg6253">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-12 16:44 UTC</span>
+  </div>
+  <div class="post-body">I can't reproduce the problem here, but it sounds like the typical problem with overlapping sibling controls redrawing in a "random" order. I do notice that when the toolbar closes, the invalidated part of the blockview is redrawn with a focus rectangle, while the rest of the blockview is still drawn without one.  Also, when the dialog is small and the toolbars overlap, the middle toolbar covers the "open" arrow of the right toolbar.<br>
+<br>
+That's a cool toolbar and I admire your creativity. I think in the end it will need to be implemented as a separate modeless form, but it will be interesting to see how far you can go with this approach.</div>
+</article>
+<article class="post" id="msg6257">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2010-02-12 18:24 UTC</span>
+  </div>
+  <div class="post-body">wow Fred that is a cool toolbar<br>
+maybe when you have free time you can explain how you made that<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6260">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-02-12 20:39 UTC</span>
+  </div>
+  <div class="post-body">Hello Fred,  <br>
+Very good your work.  <br>
+Did you already think about isolating the control of BlockView?  <br>
+You can place controls of empty PicutreBox and with the same color around him.  <br>
+I know that that is a mending but it can work.<br>
+<br>
+Velasquez</div>
+</article>
+<article class="post" id="msg6261">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-12 21:13 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=andrew link=topic=1176.msg6257#msg6257 date=1265999073 wrote:</cite><br>
+maybe when you have free time you can explain how you made that<br>
+</blockquote><br>
+<br>
+andrew, it's hard to explain. the most work I had to do is to paint and to draw all the single items of the toolbar by myself. In the end there are only 4 controls on this form: each complete toolbar is a picture, each button is assembled by a drawn edge (drawn by DrawEdge method) and a painted picture (using PaintPicture method). The most important thing you have to have in mind is the OnPaint method, which is called whenever the PictureBox has to be redrawn. In the event the function to paint the complete picture will be executed.<br>
+<br>
+andrew, I invite you to have a look at the code and the project I've attached in my initial post. So you can follow what I've done.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6262">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-12 21:16 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=1176.msg6247#msg6247 date=1265962382 wrote:</cite><br>
+wow that's a really cool dropdown toolbar.<br>
+</blockquote><br>
+<br>
+Thank you. Yes, and it would be still better if I could slow down the opening and closing a bit using dcl_delayedinvoke in this modal form   ;D . I don't want to use the AutoCAD command _delay as it was used <a href="http://www.theswamp.org/index.php?topic=31381.msg369559#msg369559" rel="nofollow noopener">{2}</a>.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6263">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-12 21:19 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=1176.msg6260#msg6260 date=1266007166 wrote:</cite><br>
+Did you already think about isolating the control of BlockView?  <br>
+</blockquote><br>
+<br>
+Hi velasquez,<br>
+<br>
+I'm not sure what you mean with this. Can you give me support to do this? Would it solve my problem mentioned on top?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6264">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-12 21:36 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen, thank you for your reply.<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1176.msg6253#msg6253 date=1265993077 wrote:</cite><br>
+I can't reproduce the problem here, but it sounds like the typical problem with overlapping sibling controls redrawing in a "random" order. <br>
+</blockquote><br>
+<br>
+Yes, this will be the case. The thing, I really don't understand, is why the behaviour is different using LoadDWG to the case using DisplayBlock. That's why I'm looking for a way to change the view without loading the file anew.<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1176.msg6253#msg6253 date=1265993077 wrote:</cite><br>
+Also, when the dialog is small and the toolbars overlap, the middle toolbar covers the "open" arrow of the right toolbar.<br>
+</blockquote><br>
+<br>
+Yes, that's a bad interface design by me. I thought about a quick and easy solution. Normally, the sum of the widths of all picture boxes is the result of the whole form's width. But when it is too small there were only two ways: either I make two lines of buttons - but then my generic function to "open" the pulldown must be changed, and that I didn't want to do. Or I also increase the width of the toolbar when opening the toolbar. That's why the middle toolbar is the first one in the Z/TAB order  ;) . I think, it would be better to increase the toolbar's width equal to both sides...<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1176.msg6253#msg6253 date=1265993077 wrote:</cite><br>
+I think in the end it will need to be implemented as a separate modeless form<br>
+</blockquote><br>
+<br>
+I must honestly say, it will stay in a modal form. This funtion it is a part of our huge product to have a closer look to the block before inserting it... (see the video below). In this case I close the toolbar after changing the view to avoid the issue...  ;D<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1293/signothek_sc11.gif">signothek_sc11.gif</a> <span class="muted">(368422 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6265">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-02-12 23:27 UTC</span>
+  </div>
+  <div class="post-body">Fred,  <br>
+I am working a lot in the delivery of a project,  <br>
+It will be very good to try to solve this problem.  <br>
+I will make some work as soon as possible.  <br>
+  <br>
+Regards.</div>
+</article>
+<article class="post" id="msg6266">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-13 00:30 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=1176.msg6265#msg6265 date=1266017260 wrote:</cite><br>
+I am working a lot in the delivery of a project,  <br>
+</blockquote><br>
+<br>
+velasquez, it doesn't hurry. Take as much time as you need. I will keep the result now as it is. I'm also working hard on many building sites at the time. You can deduce it by the number of my questions I start to post in the forum  ;) .<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6268">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-13 02:52 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1176.msg6264#msg6264 date=1266010581 wrote:</cite><br>
+I must honestly say, it will stay in a modal form.</blockquote><br>
+<br>
+I was referring only to the toolbars. I think you should try the approach of making them separate modeless forms that you show and hide as needed.</div>
+</article>
+<article class="post" id="msg6269">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-13 11:58 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1176.msg6268#msg6268 date=1266029530 wrote:</cite><br>
+I was referring only to the toolbars. I think you should try the approach of making them separate modeless forms that you show and hide as needed.<br>
+</blockquote><br>
+<br>
+Aaah, now I got you. Hm, I'm just thinking about it. I hope the toolbar forms won't be shown behind the parent form. I'm always frightend about it, because I often (not always, but often) reproduce this when I call a modal or a modeless form from a modeless form or a palette. Then the newly created form will be shown on top at first and then the focus seems try turning back to the parent from with the result that the new form is shown behind the parent (I hope I explained a bit understandable). But I have to try it at first...<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

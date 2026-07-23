@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OK-Button working on second call only · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2409</p>
+    <h1>OK-Button working on second call only</h1>
+    <p class="meta">Started by tedicad ·
+      2016-08-16 12:52 UTC ·
+      2 replies · SMF topic #2409</p>
+<article class="post" id="msg12038">
+  <div class="post-head">
+    <span class="post-author">tedicad</span>
+    <span class="post-date muted">2016-08-16 12:52 UTC</span>
+  </div>
+  <div class="post-body">Hello friends,<br>
+<br>
+my question probably is a dumb one, but I have not managed to solve the problem in quite some time now (everything else is working perfectly): <br>
+<br>
+Upon calling my lisp-file, the dcl dialogue pops up as desired. I can fill out everything, but the moment I click on the OK-button to proceed, nothing happens. Close the dialogue, restart the lsp-file, dcl-dialogue reappears, and now (and in all following recalls) miracolously the OK-button works perfectly.<br>
+<br>
+Something vital seems to be loaded only after I have closed the dialogue, something the OK-button or the entire dcl-dialogue desperately needs to be able to procede. <br>
+<br>
+OpenDCL is installed as prescriped.<br>
+<br>
+I initialize it and recall my dialogue with these lines:<br>
+<br>
+  (command "_OPENDCL")<br>
+  (dcl_Project_Load "s203N.odcl" T)<br>
+<br>
+ <br>
+(defun c:s203N_Form1_OnInitialize (/)<br>
+  (dcl_ListBox_AddList s203N_Form1_ListBox_s203typ s203Typ)<br>
+  ...<br>
+  )<br>
+  <br>
+  <br>
+ <br>
+; call the method to show the s:203 dialog box<br>
+(dcl_Form_Show s203N_Form1)<br>
+<br>
+(defun c:s203N_Form1_OK_Button_OnClicked (/)<br>
+  (setq Val_s203Typ (dcl_ListBox_GetSelectedItems s203N_Form1_ListBox_s203typ))<br>
+  ...<br>
+<br>
+  (dcl_Form_Close s203N_Form1)<br>
+<br>
+<br>
+Something must be wrong, but I have not been able to figure out what in three years, so I would be extremly grateful for some advice.<br>
+<br>
+Thanks a lot in advance,<br>
+<br>
+Holger<br>
+<br>
+    </div>
+</article>
+<article class="post" id="msg12042">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-08-16 14:05 UTC</span>
+  </div>
+  <div class="post-body">Hi, very simple: re-order your code! See the last paragraph of http://www.opendcl.com/HelpFiles/index.php?page=Usage/AutoLISP.htm.<br>
+<br>
+[list type=decimal]<br>
+define events<br>
+call dcl_form_show<br>
+</ul><br>
+<br>
+Unfortunately, the event of ok was defined after dcl_form_show.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg12054">
+  <div class="post-head">
+    <span class="post-author">tedicad</span>
+    <span class="post-date muted">2016-08-19 07:59 UTC</span>
+  </div>
+  <div class="post-body">Thank you!!! And sorry it took so long to respond, I have been working on a different projekt and only checked back now... <br>
+Thanks again, Holger<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

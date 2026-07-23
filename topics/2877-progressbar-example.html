@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ProgressBar example · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2877</p>
+    <h1>ProgressBar example</h1>
+    <p class="meta">Started by domenicomaria ·
+      2023-06-16 10:40 UTC ·
+      3 replies · SMF topic #2877</p>
+<article class="post" id="msg13864">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2023-06-16 10:40 UTC</span>
+  </div>
+  <div class="post-body">Is there anyone who uses the ProgressBar control and can show me an example of how to use it ?</div>
+</article>
+<article class="post" id="msg13866">
+  <div class="post-head">
+    <span class="post-author">JustCurious</span>
+    <span class="post-date muted">2023-06-27 11:56 UTC</span>
+  </div>
+  <div class="post-body">It is too bad this forum seems near dead, too bad for everyone. In my case I abondoned OpenDCL and took a few steps back, just vanilla CAD now for me.</div>
+</article>
+<article class="post" id="msg13867">
+  <div class="post-head">
+    <span class="post-author">blacsteel</span>
+    <span class="post-date muted">2023-06-29 10:07 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=domenicomaria link=topic=2877.msg13864#msg13864 date=1686912048 wrote:</cite><br>
+Is there anyone who uses the ProgressBar control and can show me an example of how to use it ?<br>
+</blockquote><br>
+<br>
+You have an example in Misc odcl sample.<br>
+<br>
+But I'll try to explain a little. I'm using it in a while loop. First you set min (0) and max (length of selection for example) value of progress bar. And then through loop it sets each new value as it goes and redraws it. Here is some simple code:<br>
+<pre class="code"><code> (DCL-CONTROL-SETMINVALUE TEST/Palette1/ProgressBar1 0)<br>
+ (DCL-CONTROL-SETMAXVALUE TEST/Palette1/ProgressBar1 length)<br>
+ (while (&lt; n length)<br>
+  (DCL-CONTROL-SETVALUE TEST/Palette1/ProgressBar1 n)<br>
+  (DCL-CONTROL-REDRAW TEST/Palette1/ProgressBar1)<br>
+  ...<br>
+  (setq n (+ n 1))<br>
+  );while</code></pre></div>
+</article>
+<article class="post" id="msg13869">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2023-07-01 15:52 UTC</span>
+  </div>
+  <div class="post-body">Thank you. <br>
+<br>
+I'll take a look at it<br>
+<br>
+ciao</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help with error. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2052</p>
+    <h1>Help with error.</h1>
+    <p class="meta">Started by MiD-AwE ·
+      2013-10-31 15:10 UTC ·
+      5 replies · SMF topic #2052</p>
+<article class="post" id="msg10132">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-10-31 15:10 UTC</span>
+  </div>
+  <div class="post-body">Hi all,<br>
+Can anyone tell me what this error is referring to?<br>
+<br>
+error: ads_defun fails: : C:CNTRL-PNL_CPL-CAD_LANDSCAPESUPERINTENDENTTEXTBOX_ONRETURNPRESSED 3971 3<br>
+<br>
+OR, where can I look up this error?<br>
+<br>
+Thank you.</div>
+</article>
+<article class="post" id="msg10133">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-10-31 15:26 UTC</span>
+  </div>
+  <div class="post-body">I have no idea. Which application is this?</div>
+</article>
+<article class="post" id="msg10134">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-10-31 16:13 UTC</span>
+  </div>
+  <div class="post-body">OpenDCL Studio 7.0.1.1<br>
+On<br>
+AutoCAD 2013<br>
+Windows 7 64bit<br>
+<br>
+------<br>
+I reduced the command length from:<br>
+LandscapeSuperintendentTextBox<br>
+to:<br>
+LSuperintendentTextBox<br>
+<br>
+It seems to be working without error now. Is there a known limit to control names?<br>
+<br>
+Thank you</div>
+</article>
+<article class="post" id="msg10135">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-10-31 16:47 UTC</span>
+  </div>
+  <div class="post-body">There is a 250-ish character limit on the command line buffer, and asynchronous events get sent through the command line buffer. There are some checks in OpenDCL to detect that case, though, so I'm still curious how you managed to get that error.<br>
+<br>
+You can override the function name without changing the control name, but changing the control name is one way to shorten things up. In some cases, you may be able to change EventInvoke to synchronous; if so, that should also solve the problem.</div>
+</article>
+<article class="post" id="msg10137">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-10-31 19:09 UTC</span>
+  </div>
+  <div class="post-body">Thank you Owen, that is very useful.  :)<br>
+<br>
+The name change is sufficient since I use the shortened version many places in my code, but I'll keep in mind that I'll need to keep it synchronous if I use the longer version in other places.<br>
+<br>
+Again, thank you.</div>
+</article>
+<article class="post" id="msg12709">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-01-19 16:53 UTC</span>
+  </div>
+  <div class="post-body">I just stumbled over the same error. It seem to be a problem of the length of the name of "defun", not of the controls. If the value of defun has more then 63 chars, the problem occurs:<br>
+<br>
+<pre class="code"><code><br>
+Befehl: (defun  ; 54 chars<br>
+c:abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz (intRow intColumn /)<br>
+    (alert "hallo")<br>
+)<br>
+C:ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+<br>
+Befehl: (defun  ; 64 chars<br>
+c:abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz1234567890 (intRow intColumn /)<br>
+    (alert "hallo")<br>
+)<br>
+; Fehler: ads_defun misslungen: : C:ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 2899 3<br>
+<br>
+Befehl: (defun  ; 62 chars<br>
+abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz1234567890 (intRow intColumn /)<br>
+    (alert "hallo")<br>
+)<br>
+ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890<br>
+<br>
+<br>
+Befehl: (defun  ; 63 chars<br>
+c:abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz123456789 (intRow intColumn /)<br>
+    (alert "hallo")<br>
+)<br>
+C:ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ123456789<br>
+<br>
+</code></pre></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Palette Questions · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1064</p>
+    <h1>Palette Questions</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2009-12-08 04:07 UTC ·
+      15 replies · SMF topic #1064</p>
+<article class="post" id="msg5542">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-08 04:07 UTC</span>
+  </div>
+  <div class="post-body">With Build 6.0.0.15<br>
+with Ac2010<br>
+<br>
+The Palette is described as<br>
+<blockquote class="quote">The palette form displays a modeless dialog that can either remain floating or be docked to the AutoCAD window. Palettes have a vertical title bar, and feature the ability to collapse and expand automatically in response to cursor movement.</blockquote><br>
+<br>
+How do I get the palette to collapse and '<em>expand automatically in response to cursor movement.</em>'<br>
+ie how do I hide the Palette when the mouse is not on it?<br>
+<br>
+With the  Palette NOT docked :<br>
+Then when I select the Auto-Hide icon on the vertical bar, the palette will close and show manually.<br>
+The Auti-Hide toggle accessed from right click on the Vertical bar seems to have no affect<br>
+<br>
+<br>
+With the  Palette  docked :<br>
+Then when I select the Auto-Hide icon on the vertical bar, the palette become Un-docked.<br>
+<br>
+<br>
+<br>
+(vl-load-com)<br>
+(command "OPENDCL")<br>
+<br>
+;;(if (not (vl-symbol-value 'kglobal:librarybuild))<br>
+;;  (load "KDUB_LIBRARY.VLX")<br>
+;;)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;; (findfile "Pal.ODCL")<br>
+<br>
+;|&lt;&gt;|; <br>
+<br>
+(defun c:pal (/ dialogreturn)<br>
+  ;; (dcl_project_load "Pal.ODCL" t)<br>
+  (dcl_project_load "Pal.ODCL")<br>
+  ;; Show the main form  <br>
+  (setq dialogreturn (dcl_form_show Pal_main))<br>
+  ;;------  <br>
+  (princ)<br>
+)<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;|&lt;&gt;|;<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;|&lt;&gt;|;<br>
+<br>
+;;;-------------------------------------------<br>
+;|<br>
+This event is triggered immediately before the dialog is closed.<br>
+UpperLeftX, UpperLeftY is the coordinate of the upper left corner of the dialog.<br>
+|;<br>
+(defun c:Pal_Main_OnClose (UpperLeftX UpperLeftY /)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:Pal_Main_OnClose" "To do")<br>
+)<br>
+;;;-------------------------------------------<br>
+;|<br>
+The OnInitialize event is called immediately before a form is shown on the screen.<br>
+This event handler can initialize the form and its controls before they are displayed.<br>
+|;<br>
+(defun c:Pal_Main_OnInitialize (/)<br>
+  ;; (dcl_MessageBox "To Do: code must be added to event handler\r\nc:Pal_Main_OnInitialize" "To do")<br>
+  (dcl_Control_SetCaption Pal_Main_Label1 (getvar "DWGNAME"))<br>
+  (princ)<br>
+)<br>
+;;;-------------------------------------------<br>
+;|<br>
+This event is triggered when the user closes the last open AutoCAD drawing.<br>
+If any of the modeless dialog's controls are dependent on the state or contents of the current drawing file,<br>
+they should be cleared at this time. Once the drawing is closed, no AutoLISP code can execute since there<br>
+is no document context for it to execute in.<br>
+This event handler will be the last opportunity to execute code until a new document is opened.<br>
+|;<br>
+(defun c:Pal_Main_OnEnteringNoDocState (/)<br>
+  (if (dcl_Form_IsActive Pap)<br>
+    (dcl_form_close Pal)<br>
+  )<br>
+)<br>
+<br>
+;;;-------------------------------------------<br>
+;|<br>
+This event is triggered when the user switches to a different open AutoCAD drawing.<br>
+Note that opening a new drawing will not trigger any event. An application that uses modeless dialogs<br>
+must be installed so that its code is loaded into each newly created drawing document,<br>
+and the application's initialization code must check for already active dialogs that it must manage.<br>
+|;<br>
+(defun c:Pal_Main_OnDocActivated (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:Pal_Main_OnDocActivated" "To do")<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;Attached is the ODCL I'm using:<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1121/Pal.odcl">Pal.odcl</a> <span class="muted">(986 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5546">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-08 13:02 UTC</span>
+  </div>
+  <div class="post-body">Hi, Kerry, a very interesting question and a very easy answer:<br>
+The palette has a property KeepFocus. It must be set to false. Otherwise autocollapse won't work (because the form keeps always the focus).<br>
+I solved this by using OnMouseEntered and OnMouseOff events from the palette form to Change the KeepFocus value.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5547">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-08 13:55 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Thanks fred,<br>
+I had a scribble note to try that in the morning ... great to know I have a workable option.<br>
+<br>
+I'll bookmark this for a possible series of tutorials on palettes (when I make time)<br>
+<br>
+Regards<br>
+Kerry<br>
+ </div>
+</article>
+<article class="post" id="msg5552">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-12-08 18:23 UTC</span>
+  </div>
+  <div class="post-body">Hi, Fred,  <br>
+Can you post an example of how this works?<br>
+<br>
+Regards<br>
+Velasquez</div>
+</article>
+<article class="post" id="msg5553">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-08 20:23 UTC</span>
+  </div>
+  <div class="post-body">Fred, in what way is your solution different than just leaving KeepFocus set to false?</div>
+</article>
+<article class="post" id="msg5556">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-09 00:06 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Owen,<br>
+If <em>KeepFocus</em> set to false, we are unable to enter text into the TextBox ... the keystrokes are diverted to the commandLine.<br>
+</div>
+</article>
+<article class="post" id="msg5557">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-09 00:43 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=1064.msg5556#msg5556 date=1260317182 wrote:</cite><br>
+If <em>KeepFocus</em> set to false, we are unable to enter text into the TextBox ... the keystrokes are diverted to the commandLine.</blockquote><br>
+<br>
+That should only be the case if the mouse leaves the palette.  If I understand Fred's solution, it would have the same problem.</div>
+</article>
+<article class="post" id="msg5558">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-09 00:54 UTC</span>
+  </div>
+  <div class="post-body">no, not the case. the docs are correct<br>
+<blockquote class="quote">If this property is False, controls on the form do not keep the keyboard input focus; all keyboard input is sent to the AutoCAD command line instead. Set this property to True when a form contains controls that accept keyboard input.</blockquote><br>
+</div>
+</article>
+<article class="post" id="msg5559">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-09 01:01 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=1064.msg5552#msg5552 date=1260296633 wrote:</cite><br>
+&lt; .. &gt;<br>
+Can you post an example of how this works?<br>
+<br>
+Regards<br>
+Velasquez<br>
+</blockquote><br>
+<br>
+Velasquez,<br>
+This is VERY basic <br>
+<br>
+manually set the Auto-hide property at Right-Click on the Palette Vertical TitleBar<br>
+<br>
+Kerry<br>
+<br>
+code attached:<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1123/Palette-Demo.LSP">Palette-Demo.LSP</a> <span class="muted">(3486 bytes)</span></li><li><a href="../attachments/1124/Pal.odcl">Pal.odcl</a> <span class="muted">(1016 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5561">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-12-09 09:28 UTC</span>
+  </div>
+  <div class="post-body">Thanks, Kerry<br>
+<br>
+<br>
+Regards<br>
+Velasquez</div>
+</article>
+<article class="post" id="msg5692">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-14 21:54 UTC</span>
+  </div>
+  <div class="post-body">Kerry, did you get this resolved?  Should there be a change made to the way the keepfocus property works so that the workaround isn't necessary? Or said another way, is there any good reason *not* to change it?</div>
+</article>
+<article class="post" id="msg5697">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-14 22:58 UTC</span>
+  </div>
+  <div class="post-body"><br>
+The OnMouseEntered and OnMouseOff events fire a lot .. very busy .<br>
+I'm happy with the current method ... but I'll have a think about any changes.<br>
+I imagine any changes will have ramifications elsewhere and to existing code, ... thats a good reason not to change I 'spose :)<br>
+</div>
+</article>
+<article class="post" id="msg5881">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-01-06 08:51 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Owen<br>
+I've been testing some Palettes .. build 6.0.0.18<br>
+The MouseEntered MouseMovedOff Events don't seem to be needed to let the Palette AutoHide .. Has this changed recently ??  :)<br>
+Works great !!!<br>
+<br>
+<br>
+Fred's FAQ sample may need to be changed.</div>
+</article>
+<article class="post" id="msg5883">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-06 10:00 UTC</span>
+  </div>
+  <div class="post-body">Hi, haven't tested yet.<br>
+<br>
+<blockquote class="quote"><cite> author=Kerry Brown link=topic=1064.msg5881#msg5881 date=1262767876 wrote:</cite><br>
+Fred's FAQ sample may need to be changed.<br>
+</blockquote><br>
+<br>
+In that case I'd rather delete this FAQ unless it is needed for other cases...<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5889">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-06 16:20 UTC</span>
+  </div>
+  <div class="post-body">Hmm, I don't recall intentionally changing anything.</div>
+</article>
+<article class="post" id="msg5890">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-06 16:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1064.msg5889#msg5889 date=1262794813 wrote:</cite><br>
+Hmm, I don't recall intentionally changing anything.<br>
+</blockquote><br>
+<br>
+Ok, in that case I don't delete the FAQ.  :D<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

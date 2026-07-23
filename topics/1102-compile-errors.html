@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compile Errors · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/4-source-code.html">Source Code</a> /
+      Topic 1102</p>
+    <h1>Compile Errors</h1>
+    <p class="meta">Started by Danielm103 ·
+      2009-12-23 03:01 UTC ·
+      8 replies · SMF topic #1102</p>
+<article class="post" id="msg5827">
+  <div class="post-head">
+    <span class="post-author">Danielm103</span>
+    <span class="post-date muted">2009-12-23 03:01 UTC</span>
+  </div>
+  <div class="post-body">Hi ,<br>
+<br>
+I'm getting tons of errors when trying to build from the source in the SVN. I realize that these files are always being change, updated etc.  Where can I get the source for the last successful build or last stable build <br>
+<br>
+Thanks a ton!<br>
+</div>
+</article>
+<article class="post" id="msg5828">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-23 03:19 UTC</span>
+  </div>
+  <div class="post-body">All SVN revisions are buildable, but you need to have the correct compilers (Visual Studio 2008, Visual Studio 2005 and Visual Studio .NET installed, with the project open in Visual Studio 2008), VC Build Hook must be installed, and several system variables must be set to point to the ObjectARX SDK and BRX SDK files. I think Fred has been working on documenting the exact steps to build successfully, so he may be able to add to my reply. In any case, what are your errors?</div>
+</article>
+<article class="post" id="msg5830">
+  <div class="post-head">
+    <span class="post-author">Danielm103</span>
+    <span class="post-date muted">2009-12-23 04:55 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen <br>
+<br>
+I do have all the needed goodies installed and have been able to compile previous versions. <br>
+Before I list off the errors I will get a fresh copy and try again. <br>
+<br>
+Thanks a ton!<br>
+</div>
+</article>
+<article class="post" id="msg5831">
+  <div class="post-head">
+    <span class="post-author">Danielm103</span>
+    <span class="post-date muted">2009-12-23 08:22 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen,<br>
+<br>
+I have attached the buildlog from ARX.16 that has most of the errors. <br>
+The other errors are regarding missing lisp samples etc. <br>
+<br>
+Thank you<br>
+<br>
+<br>
+edit: removed log<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5832">
+  <div class="post-head">
+    <span class="post-author">Danielm103</span>
+    <span class="post-date muted">2009-12-23 09:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Danielm103 link=topic=1102.msg5831#msg5831 date=1261556550 wrote:</cite><br>
+I have attached the buildlog from ARX.16 that has most of the errors. <br>
+</blockquote><br>
+<br>
+This must be something with my virtual  machine setup... sorry for the false alarm  :o</div>
+</article>
+<article class="post" id="msg5833">
+  <div class="post-head">
+    <span class="post-author">Danielm103</span>
+    <span class="post-date muted">2009-12-23 10:05 UTC</span>
+  </div>
+  <div class="post-body">Ok, the problem was that Visual Studio under Windows 7 XP mode, maps an additional drive to the host, which caused the compiler to see duplicate headers. I moved the OpenDCL project to a USB drive and I was able to build.<br>
+<br>
+The DEU build failed as its missing a few of the samples for lisp, not a big deal. <br>
+<br>
+Again sorry for any confusion..<br>
+ <br>
+PS this is one giant project!<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1191/Capture.PNG">Capture.PNG</a> <span class="muted">(39779 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5835">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-23 17:32 UTC</span>
+  </div>
+  <div class="post-body">Ah yes, Fred has made some changes to the DEU samples and I have not yet updated the deployment project file to reflect the changes.</div>
+</article>
+<article class="post" id="msg5836">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-23 23:18 UTC</span>
+  </div>
+  <div class="post-body">Hello, did I do anything wrong with the DEU samples  :-\ ?<br>
+<br>
+<blockquote class="quote">I have not yet updated the deployment project file</blockquote><br>
+<br>
+What is the deployment project file?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5837">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-24 00:50 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1102.msg5836#msg5836 date=1261610324 wrote:</cite><br>
+Hello, did I do anything wrong with the DEU samples  :-\ ?</blockquote><br>
+<br>
+No, what you did is correct.  I just need to sycnchronize the deployment project.<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=1102.msg5836#msg5836 date=1261610324 wrote:</cite><br>
+What is the deployment project file?</blockquote><br>
+<br>
+The .vdproj file.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

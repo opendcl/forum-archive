@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to fill listview from foreach loop · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2090</p>
+    <h1>How to fill listview from foreach loop</h1>
+    <p class="meta">Started by jrupert ·
+      2014-02-04 16:33 UTC ·
+      3 replies · SMF topic #2090</p>
+<article class="post" id="msg10371">
+  <div class="post-head">
+    <span class="post-author">jrupert</span>
+    <span class="post-date muted">2014-02-04 16:33 UTC</span>
+  </div>
+  <div class="post-body">I have the following code;<br>
+<br>
+(if (&gt; LGTH 1)<br>
+    (progn<br>
+        (setq cntr 0)<br>
+	(foreach N L1<br>
+	    (setq gbspn (rtos (car N) 2 0 ))<br>
+	    (setq custpn (cadr N))<br>
+	    (setq path (caddr N))<br>
+	    (dcl_ListView_FillList GBSCC_FormGBSCC_ListView1<br>
+	        (list<br>
+	            (list gbspn cntr custpn cntr path cntr)<br>
+	        )<br>
+	    )<br>
+                                <br>
+	    (setq cntr (+ cntr 1))<br>
+            )<br>
+<br>
+        )<br>
+)<br>
+<br>
+This works, but, only fills the listview with the last element of the list L1.<br>
+It seems as if the listview items are reset on each iteration.<br>
+<br>
+Any suggestions on HOW to make this work?<br>
+</div>
+</article>
+<article class="post" id="msg10372">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-02-04 17:56 UTC</span>
+  </div>
+  <div class="post-body">Use the <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/ListView/AddItem.htm" rel="nofollow noopener">{2}</a> method instead.</div>
+</article>
+<article class="post" id="msg10373">
+  <div class="post-head">
+    <span class="post-author">jrupert</span>
+    <span class="post-date muted">2014-02-04 19:50 UTC</span>
+  </div>
+  <div class="post-body">Thank You very much sir!<br>
+<br>
+I have been writing code since 1983 (not in AutoLisp obviously)...maybe someday I will learn this languge also!</div>
+</article>
+<article class="post" id="msg10374">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-02-04 20:00 UTC</span>
+  </div>
+  <div class="post-body">You're very welcome! I have no doubt that you will learn this one as well. :)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

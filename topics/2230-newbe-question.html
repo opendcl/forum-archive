@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>newbe question · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/19-deployment.html">Deployment</a> /
+      Topic 2230</p>
+    <h1>newbe question</h1>
+    <p class="meta">Started by MexicanoRS ·
+      2015-02-14 18:16 UTC ·
+      1 replies · SMF topic #2230</p>
+<article class="post" id="msg11195">
+  <div class="post-head">
+    <span class="post-author">MexicanoRS</span>
+    <span class="post-date muted">2015-02-14 18:16 UTC</span>
+  </div>
+  <div class="post-body">Hello i new here :D .<br>
+I am having a problem with a small project . I can not use the command "command" . I am trying in every way but only get the message that the autocad rejected this command. i was using a Palette so i chage to a modal dialog, but now when I click on my button the autocad simply does nothing . (sorry by the english i'm BR)<br>
+<br>
+here is may code:<br>
+<br>
+(defun c:k() (load "C:/Projetos/Autocad/teste1.lsp"))<br>
+(princ)<br>
+<br>
+; the following command will ensure the <br>
+; appropriate OpenDCL ARX file is loaded.<br>
+(command "_OPENDCL")<br>
+<br>
+(defun c:Hello ()<br>
+   (dcl_Project_Load "C:/Projetos/Autocad/teste" T)<br>
+   (dcl_Form_Show teste_Form1)<br>
+   (princ)<br>
+)<br>
+<br>
+(defun c:teste/Form1/TextButtonFazerEscada#OnClicked (/)<br>
+  ;;;(dcl-MessageBox "To Do: code must be added to event handler\r\nc:teste/Form1/TextButtonFazerEscada#OnClicked" "To do")<br>
+   (setq comp1 (dcl_Control_GetText teste_Form1_TextBoxComp1))<br>
+   (setq comp2 (dcl_Control_GetText teste_Form1_TextBoxComp2))<br>
+   (setq esp1 (dcl_Control_GetText teste_Form1_TextBoxEsp1))<br>
+   (setq esp2 (dcl_Control_GetText teste_Form1_TextBoxEsp2))<br>
+   (command "_Line" (list comp1 0 0 ) (list 0 0 0 ) (list 0 esp1 0) (list comp1 esp1 0 ) "c" ) <br>
+   (dcl_Form_Close teste_Form1)<br>
+)<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2096/help.png">help.png</a> <span class="muted">(134217 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11198">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-02-15 03:49 UTC</span>
+  </div>
+  <div class="post-body">Take a look at the last paragraph <a href="http://www.opendcl.com/HelpFiles/index.php?page=Concepts/Modality.htm" rel="nofollow noopener">{2}</a>. This applies to your modeless palette. For a modal dialog, you need to put your calls to (command) in the main (c:Hello) function so they execute after the modal dialog has closed and the command throat has been reactivated.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

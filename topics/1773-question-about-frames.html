@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Question about frames · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1773</p>
+    <h1>Question about frames</h1>
+    <p class="meta">Started by Iulian ·
+      2012-03-13 13:06 UTC ·
+      10 replies · SMF topic #1773</p>
+<article class="post" id="msg8698">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2012-03-13 13:06 UTC</span>
+  </div>
+  <div class="post-body">Hi, I have a question about frames. <br>
+In my project, <strong>on the second form named "NC Program"</strong> I have a list box (from the right in the movie) which contains 2 (two) text lines and 6 (six) frames. One of the frames  (from the right in the movie) contains labels and text boxes. Now, my Lisp file has some lines which sets on INVISIBLE some labels and text boxes (they are commented with "first line" and "last line" in the lisp file, and in the movie bellow <strong>appears in the first 6 seconds</strong>. Lisp file is loaded; between the <strong>0:37-0:45 sec</strong> can be seen the the code effect: when the first line from the right text box is clicked, nothing disappears  from the right frame, and when the second line from the right text box is clicked, some labels and text boxes disappear, <strong>with all the frames</strong>.<br>
+<br>
+My question is: why the frames comes INVISIBLE without  using the corresponding property? The properties are not for the frames?<br>
+<br>
+Further, I used the properties which sets the frames on VISIBLE, but blinks all the frames (<strong>2:30-2:36 sec</strong>), and I need to eliminate this. So, what should I do in order to solve this?<br>
+<br>
+There are three loads:<br>
+ in the first one the labels and text boxes should come invisible without the frames, <br>
+in the second one are hidden the properties in order to demonstrate that the frames comes invisible by their fault, <br>
+and the last one contains the properties which make visible the frames.<br>
+<a href="http://www.youtube.com/watch?v=WBsVL-D5e9I&amp;feature=youtu.be#" rel="nofollow noopener">{2}</a><br>
+Thanks in advance.</div>
+</article>
+<article class="post" id="msg8702">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-03-13 20:39 UTC</span>
+  </div>
+  <div class="post-body">I'm not sure I understand the problem, but it sounds like it could be a case of overlapping transparent controls (which is not supported in Windows). If your frame controls' background color is transparent, try giving them an explicit background color.</div>
+</article>
+<article class="post" id="msg8708">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2012-03-14 11:01 UTC</span>
+  </div>
+  <div class="post-body">I can not find the property that can change the frames background color.<br>
+...finally, I solved my problem moving the LISP lines that make INVISIBLE my labels and text boxes, somewhere on the beginning of my event...<br>
+If it is possible to set a color for frames, how can I do this? I searched the "Background color" property, but it is not in the frame`s properties pane. <br>
+<br>
+Thanks.<br>
+</div>
+</article>
+<article class="post" id="msg8711">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-03-14 12:32 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+try a (mapcar 'dcl_control_redraw (dcl_Form_GetControls gaura_Form4)) at the end of OnClicked event.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8712">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2012-03-14 13:09 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred, doesn't work...in addition, both option lists disappear with the frames if I use (dcl_Form_GetControls gaura_Form4) method.<br>
+I used dcl_MessageBox function in order to see which property triggers my error, and I observed that if I use dcl_MessageBox function exactly before the first property (which makes my first text box INVISIBLE), after I press the OK button from the message box, the error is avoided. <br>
+<br>
+Thank you for your reply.</div>
+</article>
+<article class="post" id="msg8713">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-03-14 21:02 UTC</span>
+  </div>
+  <div class="post-body">Hi, that means that the form has to be redrawn. Windows doesn't anything else than to redraw the form when it comes back to the front.<br>
+Have a try with (dcl_Form_RecalcLayout gaura_Form4) and (dcl_Control_Redraw gaura_Form4) at the end of OnClicked event.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8714">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2012-03-15 10:12 UTC</span>
+  </div>
+  <div class="post-body">Hi, I used both methods... and the result is the same...in the movie below are presented three loads:<br>
+ - in the first one - I used both methods (one after another). When the first line from the right list box were clicked, all the frames an option lists were disappeared. they appeared after the mouse was moved...<br>
+ - in the second one - I used the (dcl_Form_RecalcLayout gaura_Form4) method, and the "error" appeared only after the second line from the list box was clicked. Must be said that at OnClick event is used a COND function with 4 directions (and the lines from the list box follows different directions).<br>
+ - in the last one - I used the (dcl_Control_Redraw gaura_Form4) method; the result is the same with the result obtained in the first case.<br>
+<br>
+thank you for your interest.<br>
+<br>
+<a href="http://www.youtube.com/watch?v=g0wpwRMPQio&amp;feature=youtu.be#" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg8715">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-03-15 15:30 UTC</span>
+  </div>
+  <div class="post-body">Hi, which backgroundcolor does your form using?<br>
+Would it be possible to send me your project?<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8716">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2012-03-15 16:17 UTC</span>
+  </div>
+  <div class="post-body">Hi, I set "-24" backgroundcolor onto my form (transparent...which is the default value...I guess). I changed that value, and nothing changes.<br>
+<br>
+ It is weird the fact that if the lines which trigger my error are moved in front of another lines (responsible with setting text in some text boxes), the error does not appear anymore. <br>
+<br>
+Unfortunately, I can not send you my project, because it is part of my PhD thesis. <br>
+<br>
+Now, considering that somehow I solved my problem (moving some text in another place in my LISP file), remains a curiosity regarding this error...<br>
+<br>
+Thank you again for all your replies.<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8717">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-03-15 17:36 UTC</span>
+  </div>
+  <div class="post-body">All you have said indicates that the problem is due to overlapping transparent controls.</div>
+</article>
+<article class="post" id="msg8718">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2012-03-15 18:47 UTC</span>
+  </div>
+  <div class="post-body">Hi Owenwengerd.<br>
+How could I change the frame`s background color? I look after Backgroundcolor property, but is not in the property pane. Is there another property which can change the frame background color?<br>
+<br>
+Thank you.<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

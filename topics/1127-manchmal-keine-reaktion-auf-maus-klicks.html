@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manchmal keine Reaktion auf Maus-Klicks · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/11-german.html">GERMAN</a> /
+      Topic 1127</p>
+    <h1>Manchmal keine Reaktion auf Maus-Klicks</h1>
+    <p class="meta">Started by Arcuso ·
+      2010-01-12 14:05 UTC ·
+      7 replies · SMF topic #1127</p>
+<article class="post" id="msg5978">
+  <div class="post-head">
+    <span class="post-author">Arcuso</span>
+    <span class="post-date muted">2010-01-12 14:05 UTC</span>
+  </div>
+  <div class="post-body">Gruß aus Bad Ischl !<br>
+Wir fahren im Vermessungsbüro vorläufig noch mit AutoCAD 2005 und planen heuer ein gröberes Upgrade, auch bei unseren selbstgeschnitzten LISP-Tools. Für eine feinere Oberfläche dieser Makros habe ich mir eben OpenDCL 6 heruntergeladen und installiert.<br>
+Der Editor, Support und Übersetzung sind sehr ansprechend, die Muster-Dialoge überzeugend.<br>
+Beim ersten neu erstellten Projekt funktionierte aber die Weiterleitung von Maus-Klicks an die entsprechenden Lisp-Funktionen nicht. Diese selbst sind aber OK (bei statischem Dialog in der Commando-Zeile eingegeben). Bei der Fehlersuche habe ich das Beispiel "Modeless" (das ja korrekt arbeitet) umgebaut und habe den EXIT-Button geklont. Der funktioniert jetzt wie sein Original, obwohl gar keine LIsp-Funktion für ihn existiert. Dafür reagiert aber ein neuer Button samt Funktion überhaupt nicht. Bei den Objekt-Eigenschaften kann ich keine Ursache finden.<br>
+Zur Demo hätte ich 4 Files vorbereitet.<br>
+<br>
+Danke</div>
+</article>
+<article class="post" id="msg5979">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-12 16:04 UTC</span>
+  </div>
+  <div class="post-body">Hallo, Arcuso, <br>
+<br>
+herzlich willkommen im OpenDCL-Forum.<br>
+<br>
+Zunächst was Administratorisches: gehe mal in Dein <strong>Profil</strong>.<br>
+In den <strong>Profil-Einstellungen </strong> findest Du einen Menüpunkt <strong>Benutzerkonto</strong>. Dort gibt es eine Auswahlliste <strong>Sprachdatei</strong>. In der Liste findest Du zweimal German. Bitte wähle das untere German aus, um die Umlaute korrekt anzuzeigen.<br>
+<br>
+Um Dein Problem zu lösen, wäre tatsächlich ein Beispiel sinnvoll - denn mir fallen ad hoc jede Menge Gründe ein, die ein Funktionieren scheinbar unmöglich machen.<br>
+<br>
+<blockquote class="quote">Zur Demo h�tte ich 4 Files vorbereitet.</blockquote><br>
+Dann freue ich mich auf die Demos.  ;)<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg5984">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2010-01-12 20:19 UTC</span>
+  </div>
+  <div class="post-body">Hallo Arcuso und Willkommen im Forum<br>
+Endlich kommt hier ein wenig Leben rein. Aber nur ein wenig.<br>
+<br>
+Wie Fred schon sagt einen Demo wer am besten um dir einen gezielte Lösung zu nennen.<br>
+<br>
+Mir ist aber gerade Langweilig und ich nenne dir schon ein Paar Sachen die du in OpenDCL Studio beachten solltest um zum richtigen Ergebnis zu kommen.<br>
+<br>
+Wenn es um das klicken einer Schaltfläche geht muss folgendes beachtet werden.<br>
+Fred korrigiere mich wenn ich Falsch liege.<br>
+<br>
+1.<br>
+Beim dem Register Karte "Ereignisse". Muss eine haken bei "Clicked" gemacht werden.<br>
+Falls der Button Kopiert ist und schon ein Haken dir ist. Sollte man ihn einmal raus nehmen und wieder rein tun. Den so Aktualisiert sich der Name des Befehls in der Lisp-Routine.<br>
+<br>
+<a href="http://www.imgbox.de/?img=x18008x250.png" rel="nofollow noopener">{2}</a><br>
+<br>
+2.<br>
+Nach dem Haken muss auf jedenfall das ODCL Pojekt gespeichert werden. <br>
+<br>
+3.<br>
+In der Lisp-Routine muss folgender Code ausgeführt werden.<br>
+<br>
+(defun c:Unbenannt_Dialog1_Textschaltfläche1_OnClicked (/);hier muss natürlich der Name deines Form und der Name deine Button stehen. Einfach auf Kopieren in den "Ereignissen" klicken.<br>
+  (dcl_MessageBox "OK");nur zum testen<br>
+)<br>
+<br>
+Wenn du alles richtig gemacht hast sollte es funktionieren.<br>
+Vergiss aber nicht das laden deinen ODCL-Projektes und der ODCL befehle. Am Anfang deiner Routine. <br>
+<br>
+(command "OpenDCL")<br>
+(dcl_Project_Load "name deines Projektes" T)<br>
+(dcl_Form_show Erst eder names des Prokektes dann der Name des Forms)<br>
+<br>
+Hoffe du kannst damit was anfangen. Wenn du die Demo zu Verfügung stellst kann man mehr sagen.<br>
+<br>
+Mfg<br>
+<br>
+SpEEDY </div>
+</article>
+<article class="post" id="msg5985">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-13 06:51 UTC</span>
+  </div>
+  <div class="post-body">Hi SpEEDY, vielen Dank für Deine Unterstützung.<br>
+<br>
+<blockquote class="quote"><cite> author=SpEEDY link=topic=1127.msg5984#msg5984 date=1263327554 wrote:</cite><br>
+Mir ist aber gerade Langweilig [...]<br>
+</blockquote><br>
+<br>
+Da kann ich aber Abhilfe schaffen: schau mal <a href="http://www.opendcl.com/forum/index.php?topic=1092.msg5794#msg5794" rel="nofollow noopener">{2}</a>.  ;D<br>
+<br>
+Hi, Arcuso,<br>
+<br>
+neben der Idee von SpEEDY gäbe es da noch das Detail, dass in nicht-modalen Dialogen Ereignisse synchron oder asynchron ausgeführt werden. Das könnte am Ende zu dem scheinbaren Effekt führen, dass ein Ereignis nicht ausgeführt wird. Eine kleine Erklärung findest Du <a href="http://www.opendcl.com/forum/index.php?topic=1092.msg5866#msg5866" rel="nofollow noopener">{2}</a>.<br>
+<br>
+VG,<br>
+Fred<br>
+</div>
+</article>
+<article class="post" id="msg5986">
+  <div class="post-head">
+    <span class="post-author">SpEEDY</span>
+    <span class="post-date muted">2010-01-13 08:31 UTC</span>
+  </div>
+  <div class="post-body">Morgen Fred.<br>
+<br>
+Ich kann nur sagen du und deinen Samples.  ;D<br>
+Ich weiß nicht um ich zu dem Übersetzen komme.<br>
+Vielleicht ende nächster Woche. Kann ich dir aber nicht an dieser Stelle Versprechen.<br>
+Was wir aber auch noch Übersetzen sollten bzw. neu schreiben. Wäre das Beginner Tutorial auf der Hauptseite.<br>
+<br>
+Aber dazu später mehr.<br>
+<br>
+Erstmal muss Arcuso geholfen werden.  ;D<br>
+<br>
+Mit freundlichen Grüßen<br>
+<br>
+SpEEDY <br>
+</div>
+</article>
+<article class="post" id="msg5989">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-13 09:06 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=SpEEDY link=topic=1127.msg5986#msg5986 date=1263371509 wrote:</cite><br>
+Was wir aber auch noch Übersetzen sollten bzw. neu schreiben. Wäre das Beginner Tutorial auf der Hauptseite.<br>
+</blockquote><br>
+<br>
+Gute Idee!</div>
+</article>
+<article class="post" id="msg5999">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-13 16:24 UTC</span>
+  </div>
+  <div class="post-body">Aaaalso, Arcuso sandte mir zwischenzeitlich seine Demos.<br>
+<br>
+1.: Kopie-von-Schließen-Schaltfläche: entspricht genau dem Problem, das SpEEDY schilderte. Copy&amp;Paste eines Steuerelements kopiert zunächst auch die Ereignisfunktionsnamen. Beim ersten Aktivieren eines Ereignisses wird aus dem Steuerelementvariablennamen und dem Ereignisnamen ein Befehlsname definiert und im Eingabefeld unter der Liste der Ereignisse ergänzt. Es wird also der Funktionsname nicht automatisch verändert, wenn das Steuerelement umbenannt oder kopiert wird, denn es kann gewollt sein, dass verschiedene Auslöser die gleiche Ereignisfunktion auslösen (siehe OnKillFocus oder OnReturnPressed in einem Eingabefeld oder Entf-Taste innerhalb eines ListView und Löschen-Schaltfläche). Lösung von SpEEDY ist demnach anzuwenden.<br>
+<br>
+2. Neuer Knopf-Schaltfläche. Hier hast Du das Ereignis OnClicked noch nicht aktiviert!<br>
+<br>
+Soweit fürs erste.<br>
+<br>
+VG, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1227/ODBTest2.lsp">ODBTest2.lsp</a> <span class="muted">(679 bytes)</span></li><li><a href="../attachments/1228/ODBTest2.odcl">ODBTest2.odcl</a> <span class="muted">(3530 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6002">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-13 20:00 UTC</span>
+  </div>
+  <div class="post-body">Ja und zum zweiten Beispiel, Arcuso, kann ich folgendes sagen:<br>
+<br>
+Du kannst nur Ereignisse verwenden, die auch existieren. Du versuchst beim Doppelklick in ein Eingabefeld die Vordergrundfarbe zu ändern. Das wird nicht so funktionieren, weil es für ein Textfeld kein OnDblClick-Ereignis gibt. Man könnte aber ein OnSetFocus und ein OnKillFocus abfangen.<br>
+<br>
+Es gibt zwar ein onMouseMove, damit aber ein Doppelklick-Ereignis abzufangen, halte ich für aufwändig. Außerdem wird damit sehr viel Traffic generiert.<br>
+<br>
+Ich habe mal ein Beispiel angehangen.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1229/GstNr.lsp">GstNr.lsp</a> <span class="muted">(2508 bytes)</span></li><li><a href="../attachments/1230/GstNr.odcl">GstNr.odcl</a> <span class="muted">(1645 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

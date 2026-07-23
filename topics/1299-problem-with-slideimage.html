@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>problem with slideimage · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1299</p>
+    <h1>problem with slideimage</h1>
+    <p class="meta">Started by honkinberry ·
+      2010-06-24 00:09 UTC ·
+      20 replies · SMF topic #1299</p>
+<article class="post" id="msg6955">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-06-24 00:09 UTC</span>
+  </div>
+  <div class="post-body">I'm having problems with getting the SlideView_SlideImage to work.<br>
+<br>
+I'm currently calling it from the form's OnInitialize event, passing a slide from a slide library to it.<br>
+What am I doing wrong?<br>
+<br>
+<br>
+(setq imgwidth (dcl_Control_GetWidth proj_form_slidex)<br>
+	imgheight (dcl_Control_GetHeight proj_form_slidex)<br>
+	symx "DIM"<br>
+) ; setq<br>
+	(dcl_SlideView_SlideImage proj_form_slidex <br>
+		(list (list 0 0 imgwidth imgheight "myslib.slb" symx))<br>
+	) ; slideimage<br>
+) ; foreach<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6957">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-06-24 00:21 UTC</span>
+  </div>
+  <div class="post-body">Your syntax looks correct. If you can upload a simple sample project that demonstrates the problem, I'll have a look under the debugger. Make sure you describe the steps and any error messages and/or what the problem is.</div>
+</article>
+<article class="post" id="msg6962">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-06-24 16:06 UTC</span>
+  </div>
+  <div class="post-body">Here you go.<br>
+Symptoms pretty obvious, slide not displaying.<br>
+Thanks for looking at this!<br>
+<br>
+--J<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1409/test.zip">test.zip</a> <span class="muted">(4425 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6963">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-06-24 19:53 UTC</span>
+  </div>
+  <div class="post-body">The problem seems to be from calling it from the OnInitialize.<br>
+When I later swap out the slide to a different one when the user clicks a button, that works fine.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg6964">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-06-24 20:19 UTC</span>
+  </div>
+  <div class="post-body">Which version of the runtime are you using?</div>
+</article>
+<article class="post" id="msg6965">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-06-24 20:27 UTC</span>
+  </div>
+  <div class="post-body">I think I see the problem. SlideView_SlideImage paints a slide, which is only possible when the control is visible and there's something to paint on. The control is not yet visible during OnInitialize, so the call fails. See if SlideView_Load works better.</div>
+</article>
+<article class="post" id="msg6966">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-06-24 21:00 UTC</span>
+  </div>
+  <div class="post-body">That did it!  Thank you!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg6997">
+  <div class="post-head">
+    <span class="post-author">DW</span>
+    <span class="post-date muted">2010-07-02 04:59 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+I'm having problems with dcl_SlideView_Load in 6.0.0.28.  It doesn't work as it did in 5.1.2.3 with slide library files but works fine when you load an individual slide.  It doesn't make a difference whether called from within the OnInitialize function or not. <br>
+<br>
+Here is my slide loading function...<br>
+<br>
+(defun update_block-slides (start highlight / ct)<br>
+    (setq ct 0)<br>
+    ;;add slides to slide views<br>
+    (repeat 12<br>
+      (if (nth start blklist) ;if not at the end of the list<br>
+	(if (not (dcl_SlideView_Load<br>
+		   (vl-doc-ref (read (strcat "pm_blkins_s" (itoa ct))))<br>
+		   (strcat p_path "\\plants\\" (vl-filename-base library) ".slb")<br>
+		   (nth start blklist)<br>
+		 )<br>
+	    )<br>
+	  (dcl_SlideView_Load<br>
+	    (vl-doc-ref (read (strcat "pm_blkins_s" (itoa ct))))<br>
+	    (strcat p_path "\\plants\\" (nth start blklist) ".sld")<br>
+	  );;try to load single slide if found<br>
+	)<br>
+	(dcl_SlideView_Clear ;else clear everything painted before<br>
+	  (vl-doc-ref (read (strcat "pm_blkins_s" (itoa ct))))<br>
+	)<br>
+      )<br>
+      ;;remove highlight from every slide<br>
+      (dcl_SlideView_SetHighLight<br>
+	(vl-doc-ref (read (strcat "pm_blkins_s" (itoa ct))))<br>
+	7<br>
+      )<br>
+      (setq ct	  (1+ ct)<br>
+	    start (1+ start)<br>
+      )<br>
+    )<br>
+    ;;highlight selected slide in red<br>
+    (dcl_SlideView_SetHighLight<br>
+      (vl-doc-ref<br>
+	(setq lastclicked (read (strcat "pm_blkins_s" (itoa highlight))))<br>
+      )<br>
+      1<br>
+    )<br>
+  )<br>
+<br>
+Thanks,<br>
+David</div>
+</article>
+<article class="post" id="msg6998">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-07-02 16:28 UTC</span>
+  </div>
+  <div class="post-body">What exactly is not working? Any error messages?</div>
+</article>
+<article class="post" id="msg6999">
+  <div class="post-head">
+    <span class="post-author">DW</span>
+    <span class="post-date muted">2010-07-03 09:57 UTC</span>
+  </div>
+  <div class="post-body">No error messages at all - just a blank control when the dialog is loaded in 6.0.0.28.  <br>
+<br>
+I've attached a cut down version of the code and dialog together with a slidelibrary demonstrating the problem.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1416/slidetest.zip">slidetest.zip</a> <span class="muted">(37614 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7000">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-07-03 15:07 UTC</span>
+  </div>
+  <div class="post-body">The problem is that the .slb file header does not exactly match the specification. How did you create the .slb file? I see that AutoCAD seems to ignore the incorrect file header and display the slides anyway, so I'm inclined to change the OpenDCL code to do the same. On the other hand, it's risky to blithely ignore errors and barge ahead anyway. It would be useful to know how prevalent the problem is.</div>
+</article>
+<article class="post" id="msg7001">
+  <div class="post-head">
+    <span class="post-author">DW</span>
+    <span class="post-date muted">2010-07-04 04:43 UTC</span>
+  </div>
+  <div class="post-body">Thanks for identifying the problem, I've rebuilt the slide library using Slidelib.exe and it now displays in the 6.0.0.28 dialog correctly.  I had earlier used a program called Etecad Slide Manager and also tried a command line app. called Makeslb.exe - which also creates libraries which don't display.  So will stick to the AutoCAD utility in the future.   </div>
+</article>
+<article class="post" id="msg7009">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-07-07 16:04 UTC</span>
+  </div>
+  <div class="post-body">wow, good catch on that Owen.  Slides are nice in that they are vector, so can be zoomed.<br>
+I did a block manager app that makes a slide for every dwg in a folder, much better than thumbnails so thanks for supporting them.</div>
+</article>
+<article class="post" id="msg7029">
+  <div class="post-head">
+    <span class="post-author">Oak3s</span>
+    <span class="post-date muted">2010-07-14 23:07 UTC</span>
+  </div>
+  <div class="post-body">I am having a similar problem. I get a blank control.<br>
+<br>
+(dcl_SlideView_Load SA-Block-Insertion_Form1_SlideView1 "P:/SA-Drafting/Blocks/Slide_images/SA-Anchorbolt.sld")<br>
+<br>
+AutoCAD2011<br>
+OpenDCL Runtime [6.0.0.28]<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg7030">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-07-15 14:28 UTC</span>
+  </div>
+  <div class="post-body">Can you send me files to reproduce the problem?</div>
+</article>
+<article class="post" id="msg7031">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-07-15 17:44 UTC</span>
+  </div>
+  <div class="post-body">Your OnInitialize event handler function names do not match. Reset the event handler function name in OpenDCL Studio so that it matches your lisp code, then I think your slides will display correctly.</div>
+</article>
+<article class="post" id="msg7032">
+  <div class="post-head">
+    <span class="post-author">Oak3s</span>
+    <span class="post-date muted">2010-07-15 17:47 UTC</span>
+  </div>
+  <div class="post-body"> ::) Oh my goodness, wow...thanks Owen.</div>
+</article>
+<article class="post" id="msg7056">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-07-22 00:09 UTC</span>
+  </div>
+  <div class="post-body">Here's an odd one.<br>
+I can display some of the slides in this library, but not all of them.<br>
+No problem with: Bar-Filled, Dash-Filled, DashDot-Filled, Viewpoint<br>
+<br>
+But can't display: Node-01-Filled, Node-10-Filled, Arrow-01-Filled, Arrow-50-Filled<br>
+<br>
+SLB created using slidelib.exe.<br>
+<br>
+Thanks for any thoughts!<br>
+<br>
+--J<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1427/CONCEPTLINES.zip">CONCEPTLINES.zip</a> <span class="muted">(860045 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7062">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-07-22 00:45 UTC</span>
+  </div>
+  <div class="post-body">This is now fixed for the next build. The problem slides contain zero-length vectors that should have been rendered as points.</div>
+</article>
+<article class="post" id="msg7063">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-07-22 00:47 UTC</span>
+  </div>
+  <div class="post-body">You are incredible!<br>
+<br>
+Out of honestly no more than curiosity, when might this next build ship?<br>
+It's my first time waiting for a build, and I feel like a kid on Christmas Eve.<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg7073">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-07-22 15:39 UTC</span>
+  </div>
+  <div class="post-body">Look for a new OpenDCL alpha release this weekend while we wait for the next Bricscad build.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

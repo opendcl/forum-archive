@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CheckBox display problem · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2346</p>
+    <h1>CheckBox display problem</h1>
+    <p class="meta">Started by ScottBolton ·
+      2016-01-13 13:22 UTC ·
+      5 replies · SMF topic #2346</p>
+<article class="post" id="msg11761">
+  <div class="post-head">
+    <span class="post-author">ScottBolton</span>
+    <span class="post-date muted">2016-01-13 13:22 UTC</span>
+  </div>
+  <div class="post-body">I have a form with two buttons and a checkbox in a rectangle. The checkbox is above the rectangle in order. I click button1 and the rectangle and checkbox are made invisible; I click button2 and the rectangle and checkbox are made visible again, only the checkbox is not visible unless I move my mouse over it. Anyone know why?<br>
+<br>
+(defun c:bTframes/Form1/Button1#OnClicked ( / )<br>
+  (dcl-Control-SetVisible bTframes/Form1/Rectangle1 nil)<br>
+  (dcl-Control-SetVisible bTframes/Form1/CheckBox1 nil)<br>
+  )<br>
+(defun c:bTframes/Form1/Button2#OnClicked ( / )<br>
+  (dcl-Control-SetVisible bTframes/Form1/Rectangle1 T)<br>
+  (dcl-Control-SetVisible bTframes/Form1/CheckBox1 T)<br>
+  )<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2189/1.jpg">1.jpg</a> <span class="muted">(11691 bytes)</span></li><li><a href="../attachments/2190/2.jpg">2.jpg</a> <span class="muted">(9963 bytes)</span></li><li><a href="../attachments/2191/3.jpg">3.jpg</a> <span class="muted">(11992 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11762">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-01-13 19:53 UTC</span>
+  </div>
+  <div class="post-body">Tab/Z order does not affect the graphics Z order, at least not reliably. In Windows, the only way to guarantee that one control is painted on top of another is to make the top control transparent. This is because Windows always paints non-transparent child controls before transparent child controls. Therefore, if you make the checkbox transparent (background color = -24), it should always be painted on top of the non-transparent rectangle.<br>
+<br>
+I hope that helps.</div>
+</article>
+<article class="post" id="msg11763">
+  <div class="post-head">
+    <span class="post-author">ScottBolton</span>
+    <span class="post-date muted">2016-01-14 08:45 UTC</span>
+  </div>
+  <div class="post-body">Thanks, Owen, for your reply.<br>
+<br>
+Just checked and the rectangle is already -24.<br>
+<br>
+My form is actually more complex than the example I showed and all other controls - OptionButtons, OptionLists, Labels and TextBoxes - display correctly.<br>
+<br>
+I made the rectangle a TextBox and the buttons behaved as expected so there appears to be a glitch in the relationship between the Rectangle and the Checkbox.</div>
+</article>
+<article class="post" id="msg11764">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-01-14 16:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=ScottBolton link=topic=2346.msg11763#msg11763 date=1452761131 wrote:</cite><br>
+Just checked and the rectangle is already -24.<br>
+</blockquote><br>
+<br>
+It sounds like you think it should be -24. If so, you misunderstood what I said in the previous message. If you want the rectangle "behind" another control, then it must not be -24.</div>
+</article>
+<article class="post" id="msg11765">
+  <div class="post-head">
+    <span class="post-author">ScottBolton</span>
+    <span class="post-date muted">2016-01-14 17:48 UTC</span>
+  </div>
+  <div class="post-body">Owen, I did misunderstand you. Apologies.<br>
+<br>
+I changed the background of the rectangle to not transparent and the GUI displayed correctly. However, in Studio the checkbox is covered by the rectangle despite the order being correct. So I think I'll leave everything transparent until the form is complete then change any rectangle that is underneath a checkbox.</div>
+</article>
+<article class="post" id="msg11766">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-01-14 18:42 UTC</span>
+  </div>
+  <div class="post-body">No problem, I'm glad you got it sorted. In Studio things are more complicated because the OpenDCL control windows are represented by a container window that has the control window embedded as a child, and so the OpenDCL control windows are cousins instead of siblings like they are at runtime.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

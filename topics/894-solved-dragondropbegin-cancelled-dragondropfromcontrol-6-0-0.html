@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[SOLVED] DragOnDropBegin cancelled DragOnDropFromControl [6.0.0.2] · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/21-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 894</p>
+    <h1>[SOLVED] DragOnDropBegin cancelled DragOnDropFromControl [6.0.0.2]</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-09-01 10:44 UTC ·
+      4 replies · SMF topic #894</p>
+<article class="post" id="msg4444">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-01 10:44 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+I saw that you enabled the CTRL and SHIFT Key with DragOnDropBegin event,thanks for this !<br>
+<br>
+But, now DragOnDropFromControl Event is not call  ;D<br>
+<br>
+Best regards<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4454">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-01 15:17 UTC</span>
+  </div>
+  <div class="post-body">I noticed that you defined this event handler twice in your latest test.lsp. Are you sure you're not getting confused by the duplicate definition?</div>
+</article>
+<article class="post" id="msg4459">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-01 16:15 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=894.msg4454#msg4454 date=1251818228 wrote:</cite><br>
+I noticed that you defined this event handler twice in your latest test.lsp. Are you sure you're not getting confused by the duplicate definition?<br>
+</blockquote><br>
+<br>
+Yes, and corrected now.<br>
+<br>
+This exemple is set to synchronous .<br>
+<br>
+Work fine in this way, but if you set TreeControl event invoke to asynchronous, something strange appening :<br>
+<br>
+Only OnDragnDropBegin event is call, then when you try to enter something in autocad command line, this string appear "(_&gt;" ???<br>
+<br>
+Remember multiline in textbox ???<br>
+<br>
+Best regards<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/874/Test.odcl">Test.odcl</a> <span class="muted">(870 bytes)</span></li><li><a href="../attachments/875/test.lsp">test.lsp</a> <span class="muted">(2650 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4460">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-09-01 16:22 UTC</span>
+  </div>
+  <div class="post-body">I think that is due to a bug that I fixed this morning. Alpha 2 unintentionally escaped the quotes when calling an asynchronous event handler with a string argument, which would cause this. That is now fixed for the next build.</div>
+</article>
+<article class="post" id="msg4468">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-09-01 19:16 UTC</span>
+  </div>
+  <div class="post-body">Hello owen,<br>
+<br>
+With new ARX, now, The two events : OnDragnDropBegin &amp; OnDragnDropFromControl are launched with asynchronous event invoke..<br>
+<br>
+Thanks<br>
+<br>
+Best regards.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Check if a form is loaded and visible · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1797</p>
+    <h1>Check if a form is loaded and visible</h1>
+    <p class="meta">Started by Emiliano ·
+      2012-05-04 12:48 UTC ·
+      7 replies · SMF topic #1797</p>
+<article class="post" id="msg8851">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-05-04 12:48 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+how can I check whether a certain form is loaded and visible?<br>
+<br>
+I tried<br>
+<br>
+(dcl_Form_IsVisible NomeApp_FormP)<br>
+<br>
+but does not work if the project is not loaded<br>
+Do you have any suggestions?<br>
+</div>
+</article>
+<article class="post" id="msg8852">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-05-04 14:38 UTC</span>
+  </div>
+  <div class="post-body">Perhaps this:<br>
+(and<br>
+  (dcl_Form_IsActive NomeApp_NomeForm)<br>
+  (dcl_Form_IsVisible NomeApp_NomeForm)<br>
+)<br>
+<br>
+From the explanation in the Help you would expect that just (dcl_Form_IsVisible NomeApp_NomeForm) would be enough. But somehow that is not the case.</div>
+</article>
+<article class="post" id="msg8853">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-05-04 15:08 UTC</span>
+  </div>
+  <div class="post-body">The (dcl_form_IsVisible) function is enough, but you can't pass a NIL argument. This should work though:<br>
+(and NomeApp_NomeForm (dcl_Form_IsVisible NomeApp_NomeForm))</div>
+</article>
+<article class="post" id="msg8854">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-05-04 16:41 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+thanks for the answer.<br>
+Unfortunately now I can not verify.<br>
+But I think your solution does not work when the project Nome.odcl is not loaded in the file.</div>
+</article>
+<article class="post" id="msg8856">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2012-05-05 08:47 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1797.msg8853#msg8853 date=1336144114 wrote:</cite><br>
+The (dcl_form_IsVisible) function is enough, but you can't pass a NIL argument. This should work though:<br>
+(and NomeApp_NomeForm (dcl_Form_IsVisible NomeApp_NomeForm))<br>
+</blockquote><br>
+<br>
+Somehow that does not work.<br>
+<br>
+Test:<br>
+<br>
+Files:<br>
+NomeApp.lsp<br>
+NomeApp.odcl<br>
+From: <a href="http://www.opendcl.com/forum/index.php?topic=1790.msg8820#msg8820" rel="nofollow noopener">{2}</a><br>
+<br>
+1. Load and start the lisp.<br>
+2. Close the form.<br>
+3. !NomeApp_NomeForm =&gt; <br>
+4. (and NomeApp_NomeForm (dcl_Form_IsVisible NomeApp_NomeForm)) =&gt; No object instance error.<br>
+<br>
+Bricscad 12.2.4 Beta + ODCL 7.0.0.4<br>
+Bricscad 11.4.6 + ODCL 7.0.0.4</div>
+</article>
+<article class="post" id="msg8859">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-05-05 18:57 UTC</span>
+  </div>
+  <div class="post-body">You are correct, I forgot that the form symbol has a value as long as the project is loaded.</div>
+</article>
+<article class="post" id="msg8861">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-05-07 07:01 UTC</span>
+  </div>
+  <div class="post-body">Hi, I want to add that dcl_form_isactive will go on returning T if a none-modal form is being hidden by calling dcl_form_hide. That's why dcl_form_isvisible exists.<br>
+You should avoid calling dcl_form_show if dcl_form_isactive is returning T because no form could be shown twice (even one of them is invisible).<br>
+For modeless forms you should check it this way:<br>
+<br>
+<br>
+(cond<br>
+  ((not myproj_mymodeless)<br>
+   (dcl_project_load "myproj")<br>
+   (dcl_form_show myproj_mymodeless))<br>
+  ((not (dcl_form_isactive myproj_mymodeless))<br>
+   (dcl_form_show myproj_mymodeless))<br>
+  ((not (dcl_form_isvisible myproj_mymodeless))<br>
+   (dcl_form_hide myproj_mymodeless nil))<br>
+);cond<br>
+<br>
+<br>
+Regards,<br>
+Fred</div>
+</article>
+<article class="post" id="msg8865">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-05-10 04:36 UTC</span>
+  </div>
+  <div class="post-body">Thanks to all for their valuable advice.<br>
+I solved the problem by modifying the application's workflow.<br>
+But these suggestions will certainly help in the future.<br>
+<br>
+thanks</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

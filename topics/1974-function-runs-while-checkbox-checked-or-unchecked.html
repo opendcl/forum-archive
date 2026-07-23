@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Function runs while Checkbox checked or unchecked. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1974</p>
+    <h1>Function runs while Checkbox checked or unchecked.</h1>
+    <p class="meta">Started by abrusil33 ·
+      2013-06-26 08:58 UTC ·
+      3 replies · SMF topic #1974</p>
+<article class="post" id="msg9747">
+  <div class="post-head">
+    <span class="post-author">abrusil33</span>
+    <span class="post-date muted">2013-06-26 08:58 UTC</span>
+  </div>
+  <div class="post-body">I am frustrating with checkboxes...<br>
+I want to run function on "OK" while checkbox is checked. But I tried to run while checked - it works, and then after I uncheck the box and hit "OK" the program runs again. This dives me insane for 7 hours straight.<br>
+<br>
+(defun c:TIDstd_Form1_CheckBox3D_OnClicked (Value /)<br>
+  (if (&gt; Value 0)<br>
+       (c:3DSTD)<br>
+  )<br>
+)<br>
+<br>
+Please help.</div>
+</article>
+<article class="post" id="msg9748">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-06-26 14:30 UTC</span>
+  </div>
+  <div class="post-body">I'm not sure I understand the problem. Perhaps you should be using the form's OnOK event instead of the check box OnClicked event?</div>
+</article>
+<article class="post" id="msg9749">
+  <div class="post-head">
+    <span class="post-author">abrusil33</span>
+    <span class="post-date muted">2013-06-26 17:06 UTC</span>
+  </div>
+  <div class="post-body">Here is the code:<br>
+<br>
+============<br>
+(defun c:Project ()	<br>
+  (dcl_Project_Load "Q:\\folder\\Project.odcl" T)<br>
+  (dcl_Form_Show Project_Form1)<br>
+  (princ)<br>
+)<br>
+<br>
+(defun c:Project_Form1_TextButtonOK_OnClicked (/)<br>
+  (dcl_Form_Close Project_Form1)<br>
+)<br>
+<br>
+(defun c:Project_Form1_OnOk (/)<br>
+    (dcl_Form_Close Project_Form1)<br>
+  )<br>
+<br>
+(defun c:Project_Form1_CheckBox3D_OnClicked (Value /)<br>
+  (dcl_Control_GetValue Project_Form1_CheckBox3D)<br>
+  	(if (&gt; Value 0)<br>
+       (c:3DSTD)<br>
+  )<br>
+)<br>
+<br>
+(defun c:Project_Form1_TextButton3D_OnClicked (/)<br>
+    (dcl_Control_SetValue Project_Form1_CheckBox3D 1 )<br>
+)<br>
+<br>
+(defun c:Project_Form1_TextButtonCl_OnClicked (/)<br>
+	(dcl_Control_SetValue Project_Form1_CheckBox3D 0)<br>
+)<br>
+============<br>
+<br>
+See pic attached,<br>
+All I want is to click on either Text Button, so checkbox is checked, or just checkbox check and run (c:do) on "OK"-button click.<br>
+<br>
+For now it works only when I first time check checkbox, it did not work when I click on text-button even though the checkbox becomes checked.<br>
+And, what drives me crazy the most is (c:do) runs when I uncheck the checkbox...<br>
+<br>
+I would appreciate any advise.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1880/std-checkbox.png">std-checkbox.png</a> <span class="muted">(16580 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9750">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-06-26 17:47 UTC</span>
+  </div>
+  <div class="post-body">You refer to (c:do), but the code you posted has no mention of (c:do), and instead it includes a (c:3DSTD) function that is not defined. What is (c:d0), and when exactly should it be executing? Your attached image suggests that it should execute when OK is pressed, and I guess probably only if the check box is checked. In that case you need to remove the check box OnClicked handler and either:<br>
+1) Put that code in your OnOk handler:<br>
+<br>
+(defun c:Project_Form1_OnOk (/)<br>
+  (if (&gt; (dcl_Control_GetValue Project_Form1_CheckBox3D) 0) (c:d0))<br>
+  (dcl_Form_Close Project_Form1)<br>
+)<br>
+<br>
+or 2) Return a suitable value and call (c:d0) from your (c:Project) function:<br>
+<br>
+(defun c:Project ()   <br>
+  (dcl_Project_Load "Q:\\folder\\Project.odcl" T)<br>
+  (if (= 4 (dcl_Form_Show Project_Form1)) (c:do))<br>
+  (princ)<br>
+)<br>
+(defun c:Project_Form1_OnOk (/)<br>
+  ; return either 3 (unchecked) or 4 (checked)<br>
+  (dcl_Form_Close Project_Form1 (+ 3 (dcl_Control_GetValue Project_Form1_CheckBox3D)))<br>
+)<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

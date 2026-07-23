@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Methode auf Registerkartenelement (GERMAN) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 395</p>
+    <h1>Methode auf Registerkartenelement (GERMAN)</h1>
+    <p class="meta">Started by WolfgangGutke ·
+      2008-08-06 09:20 UTC ·
+      2 replies · SMF topic #395</p>
+<article class="post" id="msg1778">
+  <div class="post-head">
+    <span class="post-author">WolfgangGutke</span>
+    <span class="post-date muted">2008-08-06 09:20 UTC</span>
+  </div>
+  <div class="post-body">Hallo,<br>
+ich verwende sehr gerne globale Funktionen, um z.B. ListViews zu befüllen. Somit habe ich mir eine Funktion erstellt, der ich nur den Namen der ODCL, Form und dem Element übergeben (Bsp.: (ODCL:ListViewFill ( Odcl Form ListView Kopfzeile ShowList /)<br>
+Diese Funktion geht aber nur dann, wenn das ListView "direkt" auf dem Dialog liegt.<br>
+<br>
+Sobald aber das ListView auf einer "verdeckten" Registerkarte liegt, kann ich mit solchen Funktionen nicht mehr arbeiten und muß somit leider die komplette Methode (dcl_ListView_Clear StromVerteilen_StromVerteilen_Belegung) anwenden - Schade, denn bei der 4er Version ging es noch  :(<br>
+<br>
+Bekomme dabei folgende Fehlermeldung: Fehler bei ADS-Anforderung<br>
+<br>
+Hat jemand zufällig ähnliche Probleme und kann mir hierbei weiterhelfen?<br>
+<br>
+VG<br>
+Wolfgang</div>
+</article>
+<article class="post" id="msg1790">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-08-07 06:26 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+in the moment I have no time to test, but maybe someone else will have the chance to test.<br>
+<br>
+If I understood him right he meant that clearing a listview in a not selected tab does not work when adressing the control with strings ("myproject" "myform" "mycontrol") but it does actually work using the control's variable (myproject_myform_mycontrol). Adressing the listview using strings does only work if the listview is selected.<br>
+<br>
+Is there somebody to reproduce this?<br>
+<br>
+@Wolfgang: Try to use control's variablename in the future  ;). Another idea would be to have a control function to create control's variable. I use this very often in my code (when transforming older ObjectDCL code to OpenDCL code).<br>
+<br>
+<pre class="code"><code>(defun control (strC) (eval (read (strcat "myproject_myform_" strC))))<br>
+...<br>
+;; later in the source<br>
+(dcl_listview_clear (control "mylistview"))</code></pre><br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1791">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-08-07 06:32 UTC</span>
+  </div>
+  <div class="post-body">Hello Wolfgang,<br>
+<br>
+I read your message anew and I ask you to create a small sample because I'm not sure anymore if I understood you right.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

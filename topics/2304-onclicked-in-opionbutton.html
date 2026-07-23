@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OnClicked in OpionButton · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2304</p>
+    <h1>OnClicked in OpionButton</h1>
+    <p class="meta">Started by velasquez ·
+      2015-08-28 20:28 UTC ·
+      4 replies · SMF topic #2304</p>
+<article class="post" id="msg11591">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2015-08-28 20:28 UTC</span>
+  </div>
+  <div class="post-body">Is there a way to know dcl-Control-GetValue an Option Button before completing onClicked event?</div>
+</article>
+<article class="post" id="msg11592">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-08-28 21:00 UTC</span>
+  </div>
+  <div class="post-body">I am not sure what you mean. But you do not need the Option Button's OnClick event to read its value.</div>
+</article>
+<article class="post" id="msg11596">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2015-08-29 11:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2304.msg11592#msg11592 date=1440795638 wrote:</cite><br>
+I am not sure what you mean. But you do not need the Option Button's OnClick event to read its value.<br>
+</blockquote><br>
+<br>
+An OptionButton does a great job when it is selected, yet a user clicks on it again, I want to prevent it do all the work without.</div>
+</article>
+<article class="post" id="msg11597">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-08-29 20:13 UTC</span>
+  </div>
+  <div class="post-body">You can quite easily use a stored value to prevent the execution of code inside an event handler. See the example below. Note: since the code more or less emulates the built-in functionality of an Option List, using that control may be more convenient for you.<br>
+<br>
+(defun c:YourCommand  (<br>
+                        / c:YourProject/Form1#OnInitialize<br>
+                          c:YourProject/Form1/OptionButton1#OnClicked<br>
+                          c:YourProject/Form1/OptionButton2#OnClicked<br>
+                          oldOption<br>
+                      )<br>
+<br>
+  (defun c:YourProject/Form1#OnInitialize ()<br>
+    (setq oldOption<br>
+      (cond<br>
+        ((= 1 (dcl-Control-GetValue YourProject/Form1/OptionButton1))<br>
+          (dcl-Control-GetCaption YourProject/Form1/OptionButton1)<br>
+        )<br>
+        ((= 1 (dcl-Control-GetValue YourProject/Form1/OptionButton2))<br>
+          (dcl-Control-GetCaption YourProject/Form1/OptionButton2)<br>
+        )<br>
+        (T<br>
+          ""<br>
+        )<br>
+      )<br>
+    )<br>
+  )<br>
+<br>
+  (defun c:YourProject/Form1/OptionButton1#OnClicked (value / caption)<br>
+    (setq caption (dcl-Control-GetCaption YourProject/Form1/OptionButton1))<br>
+    (if (/= oldOption caption)<br>
+      (progn<br>
+        (setq oldOption caption)<br>
+        (princ "\nDo your stuff 1 ... ")<br>
+      )<br>
+      (princ "\nDo nothing 1 ")<br>
+    )<br>
+  )<br>
+<br>
+  (defun c:YourProject/Form1/OptionButton2#OnClicked (value / caption)<br>
+    (setq caption (dcl-Control-GetCaption YourProject/Form1/OptionButton2))<br>
+    (if (/= oldOption caption)<br>
+      (progn<br>
+        (setq oldOption caption)<br>
+        (princ "\nDo your stuff 2 ... ")<br>
+      )<br>
+      (princ "\nDo nothing 2 ")<br>
+    )<br>
+  )<br>
+<br>
+  (setvar 'cmdecho 0)<br>
+  (command "_opendcl")<br>
+  (setvar 'cmdecho 1)<br>
+  (dcl-Project-Load "YourProject.odcl" T)<br>
+  (dcl-Form-Show YourProject/Form1)<br>
+  (princ)<br>
+)</div>
+</article>
+<article class="post" id="msg11598">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2015-08-30 10:33 UTC</span>
+  </div>
+  <div class="post-body">[quote author=roy_043 link=topic=2304.msg11597#msg11597 date=1440879214]<br>
+You can quite easily use a stored value to prevent the execution of code inside an event handler. See the example below. Note: since the code more or less emulates the built-in functionality of an Option List, using that control may be more convenient for you.<br>
+<br>
+<br>
+<br>
+<br>
+Thank you roy</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PictureBox StoreImage and Refresh · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2177</p>
+    <h1>PictureBox StoreImage and Refresh</h1>
+    <p class="meta">Started by mike ·
+      2014-10-02 15:39 UTC ·
+      4 replies · SMF topic #2177</p>
+<article class="post" id="msg10926">
+  <div class="post-head">
+    <span class="post-author">mike</span>
+    <span class="post-date muted">2014-10-02 15:39 UTC</span>
+  </div>
+  <div class="post-body">well, I'm using these functions and the result is not expected, because instead of drawing the last stored image only cleans the picture  box...<br>
+my opendcl version is 8.0.0.8 and autocad 2012 32 bits<br>
+<br>
+help me<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg10927">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-10-02 15:56 UTC</span>
+  </div>
+  <div class="post-body">You're more likely to get help if you include a minimal sample that demonstrates the problem, or at least provide sufficient detail for someone to reproduce it.</div>
+</article>
+<article class="post" id="msg10928">
+  <div class="post-head">
+    <span class="post-author">mike</span>
+    <span class="post-date muted">2014-10-02 23:55 UTC</span>
+  </div>
+  <div class="post-body">Well Owen, im drawing in a picture box, i trace some segments of lines and i want to delete a segment, my idea is save an image previous to draw the last segment, and if i wish to delete, restore the last image saved...something as follow:<br>
+<br>
+(defun draw_segment( / )<br>
+ (dcl-PictureBox-StoreImage DefProy/Form1/PictureBox1)<br>
+.<br>
+.<br>
+.<br>
+)<br>
+<br>
+(defun erase_segment( / )<br>
+.<br>
+.<br>
+ (dcl-PictureBox-Refresh DefProy/Form1/PictureBox1)<br>
+)<br>
+<br>
+Hope if that is enough to explain me...<br>
+thanks<br>
+</div>
+</article>
+<article class="post" id="msg10929">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-10-03 06:19 UTC</span>
+  </div>
+  <div class="post-body">I can confirm that the behavior of (dcl-PictureBox-Refresh) does not match the documentation. I'm not sure if there was an intentional design change and the documentation didn't get updated, or the change was made for some other purposes without realizing its side effects. In any case, I have fixed the code for the next build so the function behaves as documented. In the meantime, try using (<a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Control/Redraw.htm" rel="nofollow noopener">{2}</a>) instead. It should have the same effect.</div>
+</article>
+<article class="post" id="msg10931">
+  <div class="post-head">
+    <span class="post-author">mike</span>
+    <span class="post-date muted">2014-10-03 16:28 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+apparently are only invested the concepts of the functions in the help!<br>
+ :)<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

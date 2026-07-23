@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>unexpected OnKillFocus event inside grid · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1734</p>
+    <h1>unexpected OnKillFocus event inside grid</h1>
+    <p class="meta">Started by VovKa ·
+      2011-12-20 17:03 UTC ·
+      5 replies · SMF topic #1734</p>
+<article class="post" id="msg8524">
+  <div class="post-head">
+    <span class="post-author">VovKa</span>
+    <span class="post-date muted">2011-12-20 17:03 UTC</span>
+  </div>
+  <div class="post-body">the attached files are slightly modified versions of sample files<br>
+i've switched on OnKillFocus event and  added<br>
+(defun c:Grid_Dcl-1_grid1_OnKillFocus (/) (princ "OnKillFocus ") (princ))<br>
+OnKillFocus triggers whenever you try to edit grid cells with "drop-down capability" (type 18, 36, 37...), in this example rows 4-5-6-7<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1692/Grid.lsp">Grid.lsp</a> <span class="muted">(13329 bytes)</span></li><li><a href="../attachments/1693/Grid.odcl">Grid.odcl</a> <span class="muted">(3797 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8525">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-12-20 17:41 UTC</span>
+  </div>
+  <div class="post-body">I didn't look at your code, but I would expect the grid control to lose focus when the dropdown control gains focus.</div>
+</article>
+<article class="post" id="msg8526">
+  <div class="post-head">
+    <span class="post-author">VovKa</span>
+    <span class="post-date muted">2011-12-20 20:48 UTC</span>
+  </div>
+  <div class="post-body">dropdown (or combo strings) control being a cell is a part of a grid.<br>
+why should the grid lose focus then?<br>
+<br>
+ps the code attached to the first post is not mine it's a sample from opendcl package.</div>
+</article>
+<article class="post" id="msg8527">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-12-21 07:59 UTC</span>
+  </div>
+  <div class="post-body">Hi, VovKa,<br>
+<br>
+the grid looses the control because any control that is shown when a cell is going to be edited is an other control but not the grid itself.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8528">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-12-21 08:04 UTC</span>
+  </div>
+  <div class="post-body">You can embed the code which shall be executed in the KillFocus event from the GridEditState. Just catch the OnStartCellEdit event and set a variable to T (for example) and set it to nil during OnEndCellEdit. Within OnKillFocus you can ask the state of the variable. That's all.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8532">
+  <div class="post-head">
+    <span class="post-author">VovKa</span>
+    <span class="post-date muted">2011-12-21 16:06 UTC</span>
+  </div>
+  <div class="post-body">i just thought it was a bug<br>
+now i understand<br>
+thank you Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

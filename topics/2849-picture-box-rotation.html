@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Picture Box: Rotation? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2849</p>
+    <h1>Picture Box: Rotation?</h1>
+    <p class="meta">Started by joern bosse ·
+      2023-03-01 16:21 UTC ·
+      3 replies · SMF topic #2849</p>
+<article class="post" id="msg13769">
+  <div class="post-head">
+    <span class="post-author">joern bosse</span>
+    <span class="post-date muted">2023-03-01 16:21 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+in my LISP example there are 2 images, one is squat aligned, one is cross aligned (you can see this in the ScreenShots).<br>
+<strong>How can I make a rotation of the image, for example 90<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2558/JB_PictureBoxRotate.zip">JB_PictureBoxRotate.zip</a> <span class="muted">(7552258 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13770">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2023-03-01 19:14 UTC</span>
+  </div>
+  <div class="post-body">Hello, Joern,<br>
+<br>
+I afraid, it is not possible to rotate an image within the picture box control. You have to rotate it before and then load it into the control.<br>
+Let me know if you need a lisp for that.<br>
+<br>
+With regards, Fred</div>
+</article>
+<article class="post" id="msg13772">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2023-03-01 22:27 UTC</span>
+  </div>
+  <div class="post-body">Hello, Joern, me again,<br>
+do you always know, what is the right rotation? Isn't it neccessary to read out the orientation from the exif data (if stored)?<br>
+We had the same problem with photos made by employees with their mobile phones of damages on the (street) lane, on public trees and playgrounds (periodic checkups). When the photos had to be placed on reports they were wrong orientated or even stretched badly from portrait to landscape format. We solved that that way, that the photos are placed on a server from where a web service (IIS) could read the photos from. The application (report generator, in your case the OpenDCL app) called an aspx with the known image and a desired size, so the image was opened, the orientation was read to rotate the image (from portrait to landscape or reverse) and after that the image is resized to the desired size by remaining the original ratio. If the desired size was a landscape but the image was a portrait after rotation, the missing pixels left and right were added automatically. More words to write then to code. But in the end the result was right. I think, also your solution should be built that way: either by temporary image recalculation into a temp folder to load into a picturebox or by calling a php or aspx to show the result in a html-control.<br>
+<br>
+I hope, you got some ideas.<br>
+Fred</div>
+</article>
+<article class="post" id="msg13774">
+  <div class="post-head">
+    <span class="post-author">joern bosse</span>
+    <span class="post-date muted">2023-03-02 06:43 UTC</span>
+  </div>
+  <div class="post-body">Hello Fred,<br>
+I was afraid that no rotation could be applied in the Picture Box.<br>
+<br>
+Your further descriptions I could understand in something, but am not able at present to convert these ideas into a LISP program.<br>
+<br>
+If you had a LISP example for me I could work my way in. <br>
+I will contact you by phone in any case.<br>
+<br>
+Many greetings<br>
+J</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

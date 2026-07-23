@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenDCL Event Callbacks · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1647</p>
+    <h1>OpenDCL Event Callbacks</h1>
+    <p class="meta">Started by Jim ·
+      2011-07-03 00:51 UTC ·
+      8 replies · SMF topic #1647</p>
+<article class="post" id="msg8173">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2011-07-03 00:51 UTC</span>
+  </div>
+  <div class="post-body">First, I am testing my project in Acad2004, Acad2010, and BricsCADV11P.<br>
+Brics is giving me problems with the continuous firing of a C: kill focus event that I must ESC out of.<br>
+<br>
+The other two apps work fine.<br>
+<br>
+Up arrow, displays previous previous c: callbacks on the command line in Brics and Acad2010.<br>
+Acad2004 does not display the call backs on the command line.<br>
+<br>
+Could Brics problem have something to do with the previous call back function being able to be run again by just pressing enter.<br>
+<br>
+js</div>
+</article>
+<article class="post" id="msg8174">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-07-03 07:42 UTC</span>
+  </div>
+  <div class="post-body">Hi, Jim, it may depend on the type of form you use: modal, modeless or palette? Can you post a small sample to reproduce? The called event functions will be echoed in a modeless or palette if EventInvoke is set to AllowCommand.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8210">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-07-11 13:50 UTC</span>
+  </div>
+  <div class="post-body">I have also stumbled upon Jim's '<em>displays previous c: callbacks'</em> problem:<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=1618.msg7964#msg7964" rel="nofollow noopener">{2}</a><br>
+and I thought it was a Bricscad-only problem. But it seems that this issue also exists in AutoCAD 2010.<br>
+To me this behaviour is undesirable for three reasons:<br>
+1. It confuses the users of your program.<br>
+2. Errors can occur if a user inadvertently fires such a callback in the wrong context.<br>
+3. It makes the program look 'unfinished'.<br>
+<br>
+Is there no way (other than setting EventInvoke to 0) to solve this? Is it perhaps possible to return to the old, AutoCAD 2004, behaviour?</div>
+</article>
+<article class="post" id="msg8212">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-07-11 20:04 UTC</span>
+  </div>
+  <div class="post-body">Hello, roy_043,<br>
+<br>
+<blockquote class="quote">Is it perhaps possible to return to the old, AutoCAD 2004, behaviour?</blockquote><br>
+It's new to me, that it was not so in earlier releases. I remember the ObjectDCL times. There was such a property too. And it's even necessary. In a modal form all the events will be called in a document locked state. To be sure to get access to the drawing, you have to close the form and to finish the close event.<br>
+<br>
+In a modeless form or a palette it is similar: when using KeepFocus, the event will be called in a "locked" mode. To get access to the drawing you have to leave the event at first. That can only be solved using a command (AllowCommand). OpenDCL is using such a thing like SendString so the event will be started as a command.<br>
+<br>
+What can you do? I have a palette, too with a library of signs the user can choose and draw. He can choose a sign by double clicking in a list, in a tree or by pressing a button - as the user prefer. Since I don't like the output of (c:signothek_sc_palette_dwgpreview1_OnDblClicked) or (c:signothek_sc_palette_lsitview_OnDblClicked 1 1), too, I created a command sc_signothek_draw, which is called from the events. In the end the controls are using EventInvoke KeepFocus and within the event functions I use an vla-sendcommand that invokes the start of the command after the event function has been finished. In this way you have to make sure, that the command can be used. Just define a global variable, and only it is set and contains valid data, let your function do the desiered job.<br>
+<br>
+The other thing you can do is to overwrite the event function name and set the EventInvoke to AllowCommand. Then the user can see your command which is more readable.<br>
+<br>
+I used the fact as an advantage: Once the user has selected a sign, he can repeat the command just by hitting Enter to draw the same signe once again. The same way as AutoCAD works.<br>
+<br>
+By the way: You can break the current command by typing ^C^C in front of the command name.<br>
+<br>
+In the end it is this no matter of OpenDCL: it is the same way I have to call events asynchronously from a palette built in C#, for instance.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8218">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-07-12 13:33 UTC</span>
+  </div>
+  <div class="post-body">Vielen Dank Fred!<br>
+<br>
+I have attached a small sample of the first method you describe (or how I understand it). It is a simple dialog with only one button. But something strange happens. If I start the program with DrawMyLineStart the button's OnClicked event automatically fires. Is something wrong with my dialog or is this perhaps a Bricscad bug?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1637/DrawMyLine.lsp">DrawMyLine.lsp</a> <span class="muted">(692 bytes)</span></li><li><a href="../attachments/1638/DrawMyLine.odcl">DrawMyLine.odcl</a> <span class="muted">(533 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8219">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-07-12 13:48 UTC</span>
+  </div>
+  <div class="post-body">Hi, roy,<br>
+<br>
+Unfortunately, I have to tell you, that OnClicked wasn't called when I call DrawLineStart. I've added some notifications. I'm not sure if the behavior you've mentioned is caused by BricsCAD.<br>
+<br>
+BTW, when I'm not sure when an event will be called I add a princ as the first line of the event function.<br>
+<br>
+<br>
+(defun c:DrawMyLineStart ( / )<br>
+  (command "OPENDCL")<br>
+  (dcl_Project_Load "DrawMyLine" T)<br>
+  (princ "\nBefore show\r\n")<br>
+  (dcl_Form_Show DrawMyLine_Form1)<br>
+  (princ "\nAfter show\r\n")<br>
+  (princ)<br>
+)<br>
+<br>
+(defun c:DrawMyLine_Form1_TextButton1_OnClicked (/)<br>
+  (princ "\nButton click\r\n")<br>
+  (setq *globalData* '((0 0 0) (1 1 1)))<br>
+  (vla-sendcommand *activeDocument* "DrawMyLine ")<br>
+  (princ)<br>
+)<br>
+<br>
+(defun c:DrawMyLine ()<br>
+  (princ "\ndraw Line\r\n")<br>
+  (if *globalData*<br>
+    (progn<br>
+      (setvar 'cmdecho 0)<br>
+      (command "_.line" (car *globalData*) (cadr *globalData*) "")<br>
+    )<br>
+    (princ "\nError: data missing ")<br>
+  )<br>
+  (princ)<br>
+)<br>
+<br>
+<pre class="code"><code><br>
+Befehl:<br>
+Button click<br>
+DrawMyLine<br>
+draw Line</code></pre><br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8220">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-07-12 14:00 UTC</span>
+  </div>
+  <div class="post-body">roy_043,<br>
+<br>
+please disable the form's KeepFocus property (I don't mean EventInvoke) in the DrawLine sample.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8221">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-07-12 14:16 UTC</span>
+  </div>
+  <div class="post-body">Thank you Fred for testing this. Setting KeepFocus to False doesn't solve this in Bricscad. I will submit a support request.</div>
+</article>
+<article class="post" id="msg8222">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-07-12 14:43 UTC</span>
+  </div>
+  <div class="post-body">I can reproduce the errant OnClicked event in Bricscad 11.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

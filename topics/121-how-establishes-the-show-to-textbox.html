@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How establishes the show to &quot;textbox&quot; · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 121</p>
+    <h1>How establishes the show to &quot;textbox&quot;</h1>
+    <p class="meta">Started by JTHWAMAN ·
+      2007-12-25 16:18 UTC ·
+      4 replies · SMF topic #121</p>
+<article class="post" id="msg482">
+  <div class="post-head">
+    <span class="post-author">JTHWAMAN</span>
+    <span class="post-date muted">2007-12-25 16:18 UTC</span>
+  </div>
+  <div class="post-body">I want "textbox", may input and pick up text.<br>
+Asked how should establish ?<br>
+Requests master help to answer, thanks ~<br>
+<br>
+<br>
+QTEST.lsp code:<br>
+(DCL_LOADPROJECT "ODLS_006.odcl" T)<br>
+(dcl_FORM_SHOW ODLS_006_TS)<br>
+<br>
+(if (/= sText "")<br>
+(dcl_Control_SetText ODLS_006_TS_TBX sText)<br>
+)<br>
+<br>
+;;;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br>
+(defun GET_TEXT ( / EN EN_TXT)<br>
+(SETQ EN (CAR (ENTSEL "\n SELECT TEXT :")))<br>
+(SETQ EN_TXT (CDR (ASSOC 1 (ENTGET EN))))<br>
+ EN_TXT<br>
+)<br>
+<br>
+;;;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br>
+(defun PUT_TEXT ( EN_TXT / EN OLD_TS)<br>
+(SETQ EN (CAR (ENTSEL "\n SELECT TEXT :")))<br>
+(setq endata  (entget en))<br>
+(setq oldlist (assoc 1 endata))<br>
+(setq newlist (cons 1 EN_TXT))<br>
+(setq endata  (subst newlist oldlist endata))<br>
+(entmod endata)<br>
+)<br>
+<br>
+;;;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br>
+(defun c:ODLS_006_TS_TBN1_OnClicked ( / )<br>
+(SETQ GTX (GET_TEXT))<br>
+)<br>
+<br>
+;;;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br>
+(defun c:ODLS_006_TS_TBN2_OnClicked ( / )<br>
+(PUT_TEXT GTX)<br>
+)<br>
+<br>
+;;;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br>
+(defun c:ODLS_006_TS_TBX_OnUpdate (GTX /)<br>
+ (if (/= GTX "")<br>
+  (progn<br>
+   (setq sText GTX)<br>
+   (setq GTX "")<br>
+   (dcl_control_settext ODLS_006_TS_TBX sText)<br>
+   ) ;_ PROGN<br>
+  ) ;_ if<br>
+ ) ;_ defun<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg483">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-12-25 22:39 UTC</span>
+  </div>
+  <div class="post-body">Welcome to the forum.<br>
+<br>
+Looks like you need an initialize event ..<br>
+and the OnUpdate code doesn't look correct.<br>
+I'll have a look after I have my morning coffee.<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg484">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-12-25 23:08 UTC</span>
+  </div>
+  <div class="post-body">I've made some changes.<br>
+// odcl<br>
+1) removed ALL the Event notification from the Textbox in the ODCL.<br>
+2) added an onInitialize Event to set the initial values when the form loads.<br>
+3) Changed Textbox LimitText property from 1 to 100<br>
+4) Changed Textbox ReturnAsTab property to true.<br>
+<br>
+// lsp<br>
+<br>
+added a command line defun c:qtest (...<br>
+added c:ODLS_006_TS_OnInitialize (...<br>
+changed sText variable name to global:sText<br>
+changed test logic to test for nil global:sText value.<br>
+changed the local function names to _GET_TEXT and _PUT_TEXT ; ( personal preference only)<br>
+forced the local functions to the defined locally, NOT globally.<br>
+<br>
+<code><br>
+(DEFUN c:qtest (/<br>
+                ;;<br>
+                _GET_TEXT _PUT_TEXT<br>
+               )<br>
+;;;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br>
+    (DEFUN _GET_TEXT (/ EN EN_TXT)<br>
+        (IF (SETQ EN (CAR (ENTSEL "\n SELECT TEXT :")))<br>
+            (SETQ EN_TXT (CDR (ASSOC 1 (ENTGET EN))))<br>
+        )<br>
+    )<br>
+;;;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br>
+    (DEFUN _PUT_TEXT (EN_TXT / EN ENDATA NEWLIST OLDLIST)<br>
+        (IF (SETQ EN (CAR (ENTSEL "\n SELECT TEXT :")))<br>
+            (PROGN (SETQ endata  (ENTGET en)<br>
+                         oldlist (ASSOC 1 endata)<br>
+                         newlist (CONS 1 EN_TXT)<br>
+                         endata  (SUBST newlist oldlist endata)<br>
+                   )<br>
+                   (ENTMOD endata)<br>
+            )<br>
+        )<br>
+        (PRINC)<br>
+    )<br>
+;;;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br>
+    (DCL_LOADPROJECT "ODLS_006.odcl" T)<br>
+    (DCL_FORM_SHOW ODLS_006_TS)<br>
+    (PRINC)<br>
+)<br>
+;;;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br>
+;;;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br>
+(DEFUN c:ODLS_006_TS_OnInitialize (/)<br>
+    (IF (AND global:sText (/= global:sText ""))<br>
+        (DCL_CONTROL_SETTEXT ODLS_006_TS_TBX global:sText)<br>
+    )<br>
+    (PRINC)<br>
+)<br>
+<br>
+;;;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br>
+(DEFUN c:ODLS_006_TS_TBN1_OnClicked (/ GTX)<br>
+    (SETQ GTX (_GET_TEXT))<br>
+    (IF (AND GTX (/= GTX ""))<br>
+        (PROGN (SETQ global:sText GTX)<br>
+               (DCL_CONTROL_SETTEXT ODLS_006_TS_TBX global:sText)<br>
+        )<br>
+    )<br>
+    (PRINC)<br>
+)<br>
+<br>
+;;;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<br>
+(DEFUN c:ODLS_006_TS_TBN2_OnClicked (/)<br>
+    (_PUT_TEXT (DCL_CONTROL_GETTEXT ODLS_006_TS_TBX))<br>
+    (PRINC)<br>
+)<br>
+<br>
+;;;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</code><br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg485">
+  <div class="post-head">
+    <span class="post-author">JTHWAMAN</span>
+    <span class="post-date muted">2007-12-26 12:38 UTC</span>
+  </div>
+  <div class="post-body">Thanks You~</div>
+</article>
+<article class="post" id="msg486">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-12-26 18:49 UTC</span>
+  </div>
+  <div class="post-body">You're welcome. I'm happy it worked as required.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

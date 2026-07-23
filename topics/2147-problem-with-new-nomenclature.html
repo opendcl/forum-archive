@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with new nomenclature · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2147</p>
+    <h1>Problem with new nomenclature</h1>
+    <p class="meta">Started by Emiliano ·
+      2014-05-29 09:49 UTC ·
+      1 replies · SMF topic #2147</p>
+<article class="post" id="msg10740">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2014-05-29 09:49 UTC</span>
+  </div>
+  <div class="post-body">The new nomenclature seems to have a problem when the function name is too long: <br>
+<br>
+If I copy-paste the following code in the lisp file:<br>
+c:MappaturaColori/DettaglioMapColori/ChiudiDettMapColori#OnClicked<br>
+<br>
+when I load the lisp in AutoCAD issued the following error:<br>
+<em>Comando: (LOAD "C:/Documents and Settings/Anonimo/Desktop/MappaturaColori.lsp") ; errore: ads_undef failed: : <br>
+C:MAPPATURACOLORI/DETTAGLIOMAPCOLORI/CHIUDIDETTMAPCOLORI#ONCLICKED 2968 22</em><br>
+<br>
+As if I rename the function:<br>
+(defun c:MappaturaColori/DettaglioMapColori/CDMColori#OnClicked (/)<br>
+<br>
+<br>
+the lisp is loaded correctly.<br>
+With the old nomenclature I've never had this problem.<br>
+Can be introduced in Openstudio a check that warns the user when the name of the function is too long?<br>
+It is very annoying to discover this only after trying to load the lisp in AutoCAD  :'(</div>
+</article>
+<article class="post" id="msg10742">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-29 10:33 UTC</span>
+  </div>
+  <div class="post-body">There is a size limit for function name <em>plus arguments</em> when calling an event handler asynchronously, but the naming convention does not affect the length of the function name, so I don't think it would matter. Please attach working vs. non-working samples and detailed steps that I can use to reproduce the problem here.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

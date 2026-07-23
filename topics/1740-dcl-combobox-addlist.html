@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_ComboBox_AddList · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1740</p>
+    <h1>dcl_ComboBox_AddList</h1>
+    <p class="meta">Started by topograph ·
+      2012-01-10 14:05 UTC ·
+      6 replies · SMF topic #1740</p>
+<article class="post" id="msg8548">
+  <div class="post-head">
+    <span class="post-author">topograph</span>
+    <span class="post-date muted">2012-01-10 14:05 UTC</span>
+  </div>
+  <div class="post-body">Hello to all and happy New Year:)<br>
+<br>
+I am OpenDCL rookie and OpenDCL Runtime [7.0.0.2] does not work the way I want :oops:<br>
+What is wrong in my code:<br>
+<br>
+<br>
+(setq lst (list "A" "B" "C"))<br>
+(dcl_ComboBox_AddList MyComboBox lst)<br>
+<br>
+returns an empty ComboBox list (???)<br>
+<br>
+<br>
+(dcl_ComboBox_AddList MyComboBox (list "A" "B" "C"))<br>
+<br>
+works OK.<br>
+<br>
+Who is making a mistake, me or OpenDCL Runtime?<br>
+</div>
+</article>
+<article class="post" id="msg8549">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-01-10 19:04 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=topograph link=topic=1740.msg8548#msg8548 date=1326204348 wrote:</cite><br>
+Who is making a mistake, me or OpenDCL Runtime?</blockquote><br>
+<br>
+The odds are not in your favor, but you'll need to provide more information (such as a simple .odcl file and .lsp) to demonstrate the problem.<br>
+</div>
+</article>
+<article class="post" id="msg8550">
+  <div class="post-head">
+    <span class="post-author">topograph</span>
+    <span class="post-date muted">2012-01-10 22:59 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1740.msg8549#msg8549 date=1326222258 wrote:</cite><br>
+The odds are not in your favor...<br>
+</blockquote><br>
+<br>
+...as usual, when my lisps is not working well:)<br>
+<br>
+I figured, both work well, I'm wrong because I do not know all the events and methods of the ComboBox control.<br>
+<br>
+I tried to do this:<br>
+<br>
+(defun C:test (/ cmdecho)<br>
+  (setq cmdecho (getvar "CMDECHO"))<br>
+  (setvar "CMDECHO" 0)<br>
+  (command "_OPENDCL")<br>
+  (dcl_Project_Load "D:\\MyProject.odcl") <br>
+  (dcl_Form_Show Form1)<br>
+  (setq lst1 (list "1" "2"))<br>
+  (setq lst2 (list "a" "b" "c" "d"))<br>
+  (setq lst3 (list "e" "f" "g" "h" "i"))<br>
+)<br>
+<br>
+<br>
+What is the next step?<br>
+<br>
+Sorry for my bad lisp/OpenDCL, I am not programmer.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1697/Case1.jpg">Case1.jpg</a> <span class="muted">(14561 bytes)</span></li><li><a href="../attachments/1698/Case2.jpg">Case2.jpg</a> <span class="muted">(14441 bytes)</span></li><li><a href="../attachments/1699/MyProject.odcl">MyProject.odcl</a> <span class="muted">(657 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8551">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-01-11 03:30 UTC</span>
+  </div>
+  <div class="post-body">You did a good job of creating a simple example, except I think you forgot to include code that shows the actual problem.</div>
+</article>
+<article class="post" id="msg8552">
+  <div class="post-head">
+    <span class="post-author">topograph</span>
+    <span class="post-date muted">2012-01-11 16:52 UTC</span>
+  </div>
+  <div class="post-body">Yes, I made a good job of simple example with copy/paste/edit method:), but I do not know next steps.<br>
+I tried this code but not working<br>
+<br>
+(defun c:ComboBox1_OnSelChanged (ItemIndexOrCount Value /) <br>
+  (cond<br>
+    ((= (dcl_ComboBox_GetEBText ComboBox1) (car lst1))  ;when I select 1st item<br>
+      (dcl_ComboBox_AddList ComboBox2 lst2)             ;I want to put members of the lst2 as items of ComboBox2<br>
+    )<br>
+    ((= (dcl_ComboBox_GetEBText ComboBox1) (cadr lst1)) ;when I select 2nd item<br>
+      (dcl_ComboBox_AddList ComboBox2 lst3)             ;I want to put members of the lst3 as items of ComboBox2<br>
+    )<br>
+  )<br>
+)<br>
+<br>
+<br>
+I got result from the pictures so I put in the LIST Property of ComboBox2 (in Studio/Dialog Editor) content of lists lst2 and lst3 (with "|" separator") but my wish is to do this from my lisp.<br>
+<br>
+Sorry for my "Google translator English" but I hope you understand me;)</div>
+</article>
+<article class="post" id="msg8553">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-01-11 19:40 UTC</span>
+  </div>
+  <div class="post-body">Your English is fine. First, make sure the event name set in the .odcl matches the function name. Next, set your lst1, lst2, and lst3 variables *before* you call (dcl_Form_Show). Then, I think it will work as you expect.<br>
+<br>
+By the way, I think that you probably want to use 'Value' instead of '(dcl_ComboBox_GetEBText ComboBox1)' in your event handler.<br>
+<br>
+I hope that helps.<br>
+</div>
+</article>
+<article class="post" id="msg8554">
+  <div class="post-head">
+    <span class="post-author">topograph</span>
+    <span class="post-date muted">2012-01-12 17:51 UTC</span>
+  </div>
+  <div class="post-body">Yes, it works (I think I'll have to modify my lisp, but that's it). Thank you for your time Owen.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

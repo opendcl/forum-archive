@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>(command &quot;DELAY&quot;) in button OnClicked callback not working in 5.0.0.13 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 306</p>
+    <h1>(command &quot;DELAY&quot;) in button OnClicked callback not working in 5.0.0.13</h1>
+    <p class="meta">Started by hermanm ·
+      2008-05-04 03:18 UTC ·
+      7 replies · SMF topic #306</p>
+<article class="post" id="msg1369">
+  <div class="post-head">
+    <span class="post-author">hermanm</span>
+    <span class="post-date muted">2008-05-04 03:18 UTC</span>
+  </div>
+  <div class="post-body">I wrote this function<br>
+<br>
+<pre class="code"><code><br>
+<br>
+;;blink an object on/off a specified number of times<br>
+;;accepts an ename or vla-object<br>
+(defun blink (obj times milliseconds / *error* flip-vis oldecho oldvis)<br>
+  (defun *error* (msg / )<br>
+   (vla-put-visible obj oldvis)<br>
+   (setvar "CMDECHO" oldecho)<br>
+  )<br>
+  (defun flip-vis (obj / )<br>
+    (if (eq :vlax-true (vla-get-visible obj))<br>
+      (vla-put-visible obj :vlax-false)<br>
+      (vla-put-visible obj :vlax-true))<br>
+  )<br>
+  (if (eq (type obj) 'ENAME) (setq obj (vlax-ename-&gt;vla-object obj)))<br>
+  (setq oldecho (getvar "CMDECHO")<br>
+        oldvis (vla-get-visible obj))<br>
+  (setvar "CMDECHO" 0)<br>
+  (repeat (* 2 times)<br>
+    (progn<br>
+      (flip-vis obj)<br>
+      (command "delay" milliseconds)<br>
+    )<br>
+  )<br>
+  (setvar "CMDECHO" oldecho)<br>
+  (princ)<br>
+);blink<br>
+<br>
+</code></pre><br>
+<br>
+and used it with success in a button callback on a palette form in 5.0.0.12,<br>
+but no joy with same form in 5.0.0.13<br>
+<br>
+The control is working (verified with an (alert) stub),<br>
+and the callback works if called from the command line<br>
+<br>
+Callback looks like this:<br>
+<br>
+<pre class="code"><code><br>
+<br>
+(defun C:DimensionChecker_Palette_BlinkAll_OnClicked ()<br>
+  ;(alert "Function Called")<br>
+  (and ss<br>
+    (setq i 0)<br>
+    (repeat (sslength ss)<br>
+      (blink (ssname ss i) blink# duration)<br>
+      (setq i (1+ i))<br>
+    );repeat<br>
+  );and<br>
+);defun<br>
+<br>
+</code></pre><br>
+<br>
+I read about the dcl_DelayedInvoke function as a supposed alternative to (command "DELAY"), but I don't see a way to try it in this context, since it requires a string as argument.<br>
+I tried passing a LISP expression as a string to dcl_DelayedInvoke, but that didn't work.<br>
+<br>
+Has anyone else tried a similar callback on a palette control in 5.0.0.13?<br>
+If so, can you confirm my (lack of) results?<br>
+<br>
+Any suggestions?<br>
+<br>
+Project files are attached (W.I.P.)<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/378/DimensionChecker.odcl">DimensionChecker.odcl</a> <span class="muted">(2486 bytes)</span></li><li><a href="../attachments/379/DimensionChecker.lsp">DimensionChecker.lsp</a> <span class="muted">(5171 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1370">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-05-04 03:29 UTC</span>
+  </div>
+  <div class="post-body">Have you had a look at "FormMover.lsp" &amp; "Splash.lsp" for examples on how to use (dcl_DelayedInvoke).<br>
+I have this old example that show how to flash a control on &amp; off,<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=115.0" rel="nofollow noopener">{2}</a><br>
+But I still need to update it to use (dcl_DelayedInvoke) &amp; I haven't tested it on a palette yet either.</div>
+</article>
+<article class="post" id="msg1371">
+  <div class="post-head">
+    <span class="post-author">hermanm</span>
+    <span class="post-date muted">2008-05-04 05:09 UTC</span>
+  </div>
+  <div class="post-body">My callback function blinks entities in the dwg, not a form control.<br>
+<br>
+The examples you cite are thus:<br>
+<br>
+(dcl_DelayedInvoke 50 "C:FormMinMax")<br>
+<br>
+but I need to call a function which has an argument:<br>
+<br>
+Command: (dcl_DelayedInvoke milliseconds "(vla-put-visible obj :vlax-true)")<br>
+; error: ADS request error<br>
+<br>
+Command: (dcl_DelayedInvoke milliseconds "vla-put-visible obj :vlax-true")<br>
+; error: ADS request error<br>
+<br>
+so, if there is a syntax which works, and works in a button callback, I'd be happy to see it.<br>
+</div>
+</article>
+<article class="post" id="msg1372">
+  <div class="post-head">
+    <span class="post-author">hermanm</span>
+    <span class="post-date muted">2008-05-04 05:55 UTC</span>
+  </div>
+  <div class="post-body">It occurred to me to try calling a "dummy" function w/ no arguments,<br>
+<br>
+Thus:<br>
+<pre class="code"><code><br>
+(defun c:dummy ()(princ))<br>
+;;blink an object on/off a specified number of times<br>
+;;accepts an ename or vla-object<br>
+(defun blink_dcl (obj times milliseconds / *error* flip-vis oldvis)<br>
+  (defun *error* (msg / )<br>
+   (vla-put-visible obj oldvis)<br>
+  )<br>
+  (defun flip-vis (obj / )<br>
+    (if (eq :vlax-true (vla-get-visible obj))<br>
+      (vla-put-visible obj :vlax-false)<br>
+      (vla-put-visible obj :vlax-true))<br>
+  )<br>
+  (if (eq (type obj) 'ENAME) (setq obj (vlax-ename-&gt;vla-object obj)))<br>
+  (setq oldvis (vla-get-visible obj))<br>
+  (repeat (* 2 times)<br>
+    (progn<br>
+      (flip-vis obj)<br>
+      (dcl_DelayedInvoke milliseconds "C:dummy")<br>
+    )<br>
+  )<br>
+  (princ)<br>
+);blink_dcl<br>
+<br>
+</code></pre><br>
+<br>
+but his does not work as desired<br>
+<br>
+the result is a sequence of newlines as (princ) is called, but the visibility state remains unchanged<br>
+I tried increasing the delay from 250 to 1000, but no difference.<br>
+It _appears_ to me that the (dcl_DelayedInvoke) executes after the callback returns, which is of no use to me in this case</div>
+</article>
+<article class="post" id="msg1373">
+  <div class="post-head">
+    <span class="post-author">hermanm</span>
+    <span class="post-date muted">2008-05-04 06:57 UTC</span>
+  </div>
+  <div class="post-body">well, that's weird..<br>
+<br>
+I decided to write my own (delay) function<br>
+(doesn't have to be very accurate)<br>
+<br>
+Thus:<br>
+<pre class="code"><code><br>
+(defun delay (ms / base)<br>
+  (setq base (getvar "DATE"))<br>
+  (while (&lt; (* 86400000 (-(getvar "DATE") base)) ms))<br>
+);delay<br>
+</code></pre><br>
+<br>
+forget about ODCL for a moment,<br>
+<br>
+just function call from command line<br>
+<br>
+Command: (flip-vis obj)<br>
+nil<br>
+<br>
+Yep, obj disappears<br>
+<br>
+Command: (flip-vis obj)<br>
+nil<br>
+<br>
+Yep, it comes back<br>
+<br>
+Now try:<br>
+<br>
+(flip-vis obj)(delay 250)(flip-vis obj)<br>
+<br>
+Nothing happens!<br>
+<br>
+Oh, there is a delay, alright, but the object remains always visible <br>
+<br>
+Try a longer delay:<br>
+<br>
+(flip-vis obj)(delay 2000)(flip-vis obj)<br>
+<br>
+same result, w/ longer delay<br>
+<br>
+so, I conclude I don't know how (vla-put-visible) ACTUALLY WORKS<br>
+<br>
+puzzling..., at this point<br>
+<br>
+more tomorrow.(?)<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg1374">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-05-04 17:54 UTC</span>
+  </div>
+  <div class="post-body">What if you call the Update method after you set the visibility?<br>
+I had the same type of issue with the controls not repainting, so I had to force a refresh on them.</div>
+</article>
+<article class="post" id="msg1375">
+  <div class="post-head">
+    <span class="post-author">hermanm</span>
+    <span class="post-date muted">2008-05-04 18:49 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Yes, I had suspected it was exactly that - graphics not updating.<br>
+So, I tried (entupd) after (vla-put-visible)<br>
+Which doesn't work - apparently mixing the "old-style" (entxxx ) functions with Active X is a no-no.<br>
+I was trying to remember how to do an (entupd(entmod)) on a list which doesn't contain the desired DFX code when I read your post..<br>
+Figuring "all old-style" might do the trick (it might).<br>
+<br>
+But, Voila!<br>
+<br>
+This works:<br>
+<br>
+(flip-vis obj)(vla-update obj)(delay 250)(flip-vis obj)<br>
+<br>
+and no command call, either, with my own  delay function, so no need to mess with "CMDECHO"<br>
+<br>
+Thanks, Barry, for pointing out the Update method.<br>
+:)</div>
+</article>
+<article class="post" id="msg1376">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-05-05 01:49 UTC</span>
+  </div>
+  <div class="post-body">Cool glad it work, it was a complete guess :)</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

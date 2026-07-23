@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>problems with AutoCAD command · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 988</p>
+    <h1>problems with AutoCAD command</h1>
+    <p class="meta">Started by Iulian ·
+      2009-10-23 18:30 UTC ·
+      2 replies · SMF topic #988</p>
+<article class="post" id="msg5031">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2009-10-23 18:30 UTC</span>
+  </div>
+  <div class="post-body">Hi, I have a problem with AutoCAD commands. On the TextButton1 OnClicked event I want to get a point from AutoCAD, for using it into a cylinder command. <strong>(setq p1 (getpoint))</strong>. After that I define a new point p2, which has the same X and Y coordinates, and the Z coordinate is with 20.0 smaller than the Z coordinate of p1.  <strong>(setq p2 (list (nth 0 p1) (nth 1 p1)  (- (nth 2 p1) 20.0))) </strong>.  Next, I define a real value for the diameter of cylinder <strong>(setq d_val 10.0)</strong> , and then I write the CYLINDER command, which should generate a cylinder with this defined values and points. <br>
+<br>
+<strong>(defun c:aaa_Form1_TextButton1_OnClicked (/)<br>
+  (setq p1 (getpoint))  <br>
+  (setq p2 (list (nth 0 p1) (nth 1 p1)  (- (nth 2 p1) 20.0))) <br>
+  (setq d_val 10.0)<br>
+  (command "cylinder" "D" d_val "a" p2) <br>
+)</strong><br>
+<br>
+At this moment a problem appears, saying that an AutoCAD command is wrong. If I run this LISP text without OpenDCL tools, it works. <br>
+How can I solve this?<br>
+ Thanks.</div>
+</article>
+<article class="post" id="msg5032">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-23 18:51 UTC</span>
+  </div>
+  <div class="post-body">Set your "Event Invoke" property on your button to = 1-Asynchronous<br>
+<a href="http://www.opendcl.com/HelpFiles/ENU/Reference/Property/EventInvoke.htm" rel="nofollow noopener">{2}</a><br>
+<br>
+Also, check out the "Selections" project in the Samples folder.</div>
+</article>
+<article class="post" id="msg5037">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2009-10-23 21:43 UTC</span>
+  </div>
+  <div class="post-body">Thanks Barry.now it works.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

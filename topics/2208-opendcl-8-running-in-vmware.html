@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenDCL 8 running in VMware · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2208</p>
+    <h1>OpenDCL 8 running in VMware</h1>
+    <p class="meta">Started by Edward ·
+      2014-11-25 07:28 UTC ·
+      4 replies · SMF topic #2208</p>
+<article class="post" id="msg11101">
+  <div class="post-head">
+    <span class="post-author">Edward</span>
+    <span class="post-date muted">2014-11-25 07:28 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+When I load my application, built with OpenDCL 8.0.0.6) in AutoCAD (2014/2015) and WIndows 7 or 8 under VMware I get messages like:<br>
+ "An OpenDCL function argument processing exception has occured!" "Error: NIL value not allowed Function: dcl-Control-SetTextLimit Argument: 0".<br>
+These sounds familiar when OpenDCL is not loaded into the system and you maken calls to the OpenDCL functions.<br>
+But when I run it on a non virtual system my application runs without any messages.<br>
+<br>
+I can not debug this because the VMware runs on a test machine at Autodesk.<br>
+<br>
+Any clues where to look for?<br>
+<br>
+Thanks,<br>
+<br>
+Kind regards<br>
+<br>
+Edward<br>
+<br>
+I use OpenDCL runtime 8.0.0.6 under Windows 7 x64 and AutoCAD 2014/2015.<br>
+</div>
+</article>
+<article class="post" id="msg11102">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-11-25 13:29 UTC</span>
+  </div>
+  <div class="post-body">I think it's likely that there are bugs in your code that may only manifest in specific cases. I would add some diagnostic code to pin down when (or if) the culprit symbol is set to the expected value, and when it gets reset to NIL so you can compare to a working case on your development machine. If my theory is correct, there will be some difference in timing or conditional program flow on the VM that exposes a flaw in your code.</div>
+</article>
+<article class="post" id="msg11104">
+  <div class="post-head">
+    <span class="post-author">Edward</span>
+    <span class="post-date muted">2014-11-25 19:34 UTC</span>
+  </div>
+  <div class="post-body">You'r pointing me in the right direction.<br>
+Because the error happens during initialization it seems to do with some system settings I retrieve from the system. The USERPROFILE environement for example or a registry key which I create during installation. If those settings are not correctly set the return value will be NIL. So I could error trap these settings.<br>
+<br>
+The bigger problem I have though is that I don't have access to the VMware system Autodesk is using to debug my application.<br>
+Because I have created a VMware environment of my own and tested this and also under a Hyper-V environment. Both virtual systems give me no errors at all. <br>
+Also Autodesk shows to me that my application is working when installed on a non virtual system: on a 'normal' system my application runs well.<br>
+But they want my application to run under their virtual systems as well... :-(</div>
+</article>
+<article class="post" id="msg11108">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-11-25 22:45 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+I can not give you a special advice, but I use Acad 2014 + ODCL 8 under Win 7 x64 under VMWare Workstation 10 - and have no problems (except of common graphics issue on the entire system ...). So maybe that's an indication that there is maybe no common problem.</div>
+</article>
+<article class="post" id="msg11111">
+  <div class="post-head">
+    <span class="post-author">Edward</span>
+    <span class="post-date muted">2014-11-27 13:15 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the information about your VMware setup. <br>
+Always good to know.<br>
+<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

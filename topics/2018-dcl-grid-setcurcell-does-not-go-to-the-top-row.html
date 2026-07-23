@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_Grid_SetCurCell does not go to the Top row · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2018</p>
+    <h1>dcl_Grid_SetCurCell does not go to the Top row</h1>
+    <p class="meta">Started by khann ·
+      2013-08-23 06:53 UTC ·
+      3 replies · SMF topic #2018</p>
+<article class="post" id="msg9952">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2013-08-23 06:53 UTC</span>
+  </div>
+  <div class="post-body">Hi, all.<br>
+<span style="color:blue">dcl_Grid_SetCurCell </span> does not go to Top of the Grid.<br>
+<br>
+(<span style="color:blue">dcl_Grid_SetCurCell</span> 0 1) scroll stop at the just second row and does not go to Top.<br>
+<br>
+Anybody knows about this?<br>
+(Tested Win 7 / 64 bit, acad2014 , ODCL 7.0.0.12 )<br>
+<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg9955">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-08-23 15:03 UTC</span>
+  </div>
+  <div class="post-body">Can you attach a very simple sample that demonstrates the problem?</div>
+</article>
+<article class="post" id="msg9957">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2013-08-24 03:09 UTC</span>
+  </div>
+  <div class="post-body">Hi, Owen.<br>
+<br>
+This is a sample. <br>
+<br>
+On initialize Grid and ComboBox load values.<br>
+When select an item in ComboBox, <span style="color:blue">SetCurCell</span> on Grid works.<br>
+<br>
+You can also test the <span style="color:blue">dcl_form_hide</span> button.<br>
+<br>
+Thanks.<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1907/gridSetCurCellTEST.LSP">gridSetCurCellTEST.LSP</a> <span class="muted">(5307 bytes)</span></li><li><a href="../attachments/1908/gridTEST.odcl">gridTEST.odcl</a> <span class="muted">(1011 bytes)</span></li><li><a href="../attachments/1909/gridTEST.jpg">gridTEST.jpg</a> <span class="muted">(117216 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9959">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-08-24 04:24 UTC</span>
+  </div>
+  <div class="post-body">Good catch. This is now fixed for the next build.<br>
+<br>
+I am pretty sure that the (dcl_Form_Hide) behavior is by design. Control bars are hosted inside a control bar frame, and the frame is managed by the host application. A single frame can host multiple control bars. I know that some frameworks "hide" a control bar by actually closing it, but OpenDCL does not. In this case, hiding the form is working as designed, but the host app is not closing the frame as you expect. The solution is to close the form instead of hiding it.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

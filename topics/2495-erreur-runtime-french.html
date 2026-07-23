@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Erreur runtime (french) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2495</p>
+    <h1>Erreur runtime (french)</h1>
+    <p class="meta">Started by arnaudalp ·
+      2017-03-23 15:29 UTC ·
+      3 replies · SMF topic #2495</p>
+<article class="post" id="msg12455">
+  <div class="post-head">
+    <span class="post-author">arnaudalp</span>
+    <span class="post-date muted">2017-03-23 15:29 UTC</span>
+  </div>
+  <div class="post-body">Bonjour<br>
+<br>
+Je suis français au mauvais anglais.<br>
+<br>
+J'ai un problème de runtime avec opendcl et autocad 2017.<br>
+<br>
+Voici mon code :<br>
+<br>
+<br>
+(defun charge_opendcl (/ nomodcl)<br>
+  ;; modification 2010 pour choix arx 32 ou 64 bit<br>
+  (if (wcmatch (getvar "PLATFORM") "*64*")<br>
+    (progn ;; le cas 64 bit<br>
+	   (setq nomodcl<br>
+		  (strcat "Opendcl.x64." (substr (getvar "ACADVER") 1 2))<br>
+	   )<br>
+	   (if (not (member nomodcl (arx)))<br>
+	     (arxload (findfile (strcat nomodcl ".arx"))<br>
+		      "OpenDCL Introuvable"<br>
+	     )<br>
+	   )<br>
+    )<br>
+    (progn ;; le cas 32 bit<br>
+	   (setq nomodcl (strcat "Opendcl." (substr (getvar "ACADVER") 1 2)))<br>
+	   (if (not (member nomodcl (arx)))<br>
+	     (arxload (findfile (strcat nomodcl ".arx"))<br>
+		      "OpenDCL Introuvable"<br>
+	     )<br>
+	   )<br>
+    )<br>
+  )<br>
+)<br>
+<br>
+;;lance la boite de dialogue<br>
+(defun c:aep (/)<br>
+  (charge_opendcl)<br>
+  (dcl-loadproject (findfile "choix_res_aep.odcl"))<br>
+  (dcl-form-show choix_res_aep/traceaep)<br>
+  )<br>
+<br>
+(defun c:choix_res_aep/traceaep#OnInitialize (/)<br>
+(princ)<br>
+)<br>
+<br>
+(defun c:choix_res_aep/traceaep/aepf60#OnClicked (/)<br>
+(aep_fonte60)<br>
+(dcl-form-close choix_res_aep/traceaep)<br>
+)<br>
+<br>
+(defun aep_fonte60 (/)<br>
+(command "-calque" "e" "AE_1_AEP_FONTE" "co" "bleu" "" "") <br>
+(command "polylign")<br>
+)<br>
+<br>
+<br>
+Mon problème : je n'arrive pas à fermer la fenêtre, voici le message d'erreur que j'obtiens :<br>
+<br>
+https://www.dropbox.com/s/muun7tmppfbvluy/2017-03-23%2016_19_26-Autodesk%20AutoCAD%20Map%203D%202017%20-%20%5BDessin1.dwg%5D.png?dl=0<br>
+<br>
+Pouvez vous m'aider ? <br>
+<br>
+En pièce jointe le fichier odcl<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2323/2017-03-23 16_19_26-Autodesk AutoCAD Map 3D 2017 - _Dessin1.dwg_.png">2017-03-23 16_19_26-Autodesk AutoCAD Map 3D 2017 - [Dessin1.dwg].png</a> <span class="muted">(6873 bytes)</span></li><li><a href="../attachments/2324/choix_res_aep.odcl">choix_res_aep.odcl</a> <span class="muted">(3093 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12456">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-03-23 19:00 UTC</span>
+  </div>
+  <div class="post-body">You are using command calls inside an event handler for a modal form. This is not possible.<br>
+(defun c:aep ( / action)<br>
+  (command "_opendcl")<br>
+  (dcl-loadproject "choix_res_aep.odcl")<br>
+  (setq action (dcl-form-show choix_res_aep/traceaep))<br>
+  (cond<br>
+    ((= 1 action)<br>
+      ; Predefined meaning see Help.<br>
+    )<br>
+    ((= 2 action)<br>
+      ; Predefined meaning see Help.<br>
+    )<br>
+    ; ...<br>
+    ; ...<br>
+    ((= 11 action)<br>
+      (aep_fonte60)<br>
+    )<br>
+    ; ...<br>
+    ; ...<br>
+  )<br>
+  (princ)<br>
+)<br>
+<br>
+(defun c:choix_res_aep/traceaep#OnInitialize (/)<br>
+  (princ)<br>
+)<br>
+<br>
+(defun c:choix_res_aep/traceaep/aepf60#OnClicked (/)<br>
+  (dcl-form-close choix_res_aep/traceaep 11)<br>
+)<br>
+<br>
+(defun aep_fonte60 (/)<br>
+  (command "_.-layer" "_make" "AE_1_AEP_FONTE" "_color" "5" "" "")<br>
+  (command "_.polyline")<br>
+  (while (/= (logand (getvar 'cmdactive) 3) 0)<br>
+    (command pause)<br>
+  )<br>
+)</div>
+</article>
+<article class="post" id="msg12457">
+  <div class="post-head">
+    <span class="post-author">arnaudalp</span>
+    <span class="post-date muted">2017-03-23 20:50 UTC</span>
+  </div>
+  <div class="post-body">Thank you for your reply.<br>
+What amazes me is that I have taken over the structure of a program that I have already done and that works very well.<br>
+I do not understand the assignment of the "action" variable of dcl-from-show, nor the "cond"</div>
+</article>
+<article class="post" id="msg12458">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-03-24 15:51 UTC</span>
+  </div>
+  <div class="post-body">You can find more information in the Help (look at both the <a href="http://www.opendcl.com/HelpFiles/ENU/Reference/Method/Form/Show.htm" rel="nofollow noopener">{2}</a> and <a href="http://www.opendcl.com/HelpFiles/ENU/Reference/Method/Form/Close.htm" rel="nofollow noopener">{2}</a> functions).<br>
+<br>
+If you are not familiar with the cond function this may be useful:<br>
+http://www.afralisp.net/autolisp/tutorials/cond-vs-if.php</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

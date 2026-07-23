@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_Messagebox · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 679</p>
+    <h1>dcl_Messagebox</h1>
+    <p class="meta">Started by WolfgangGutke ·
+      2009-03-25 12:20 UTC ·
+      3 replies · SMF topic #679</p>
+<article class="post" id="msg3295">
+  <div class="post-head">
+    <span class="post-author">WolfgangGutke</span>
+    <span class="post-date muted">2009-03-25 12:20 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+how I agree from the string "FM-B8FB4EA26B3B\000" "\" out (with vl-string ... it does not go!)??<br>
+<br>
+Reason:<br>
+If I hand over a string to the message box which the string "\000" contain, the remaining string will not hand over after "\000" to the message box.<br>
+<br>
+Example:<br>
+(dcl_Messagebox "Here is my\000 dialog" "Hello World" 2 3)<br>
+(dcl_Messagebox "Here is my dialog" "Hello World" 2 3)<br>
+<br>
+Thank you<br>
+Wolfgang Gutke</div>
+</article>
+<article class="post" id="msg3296">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-25 17:39 UTC</span>
+  </div>
+  <div class="post-body">In AutoLISP, the string "\000" is a hard-coded NULL character, which acts as a string terminator.  If you want a backslash character in a literal string, you must escape it, like so:<br>
+"FM-B8FB4EA26B3B\\000"</div>
+</article>
+<article class="post" id="msg3297">
+  <div class="post-head">
+    <span class="post-author">WolfgangGutke</span>
+    <span class="post-date muted">2009-03-25 18:04 UTC</span>
+  </div>
+  <div class="post-body">Many thanks!<br>
+<br>
+The only chance is (VL-PRINC-TO-STRING "FM-B8FB4EA26B3B\000") -&gt; "FM-B8FB4EA26B3B" !<br>
+(text comes from an microsoft-access-ldb file)</div>
+</article>
+<article class="post" id="msg3298">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-25 18:25 UTC</span>
+  </div>
+  <div class="post-body">If the database contains strings with embedded null characters, you'll have to preprocess the strings before using them, either by replacing null characters with something else, or splitting the data into multiple strings.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

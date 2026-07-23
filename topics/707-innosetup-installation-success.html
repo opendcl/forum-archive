@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>InnoSetup installation success! · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/19-deployment.html">Deployment</a> /
+      Topic 707</p>
+    <h1>InnoSetup installation success!</h1>
+    <p class="meta">Started by LanceG ·
+      2009-04-09 19:45 UTC ·
+      11 replies · SMF topic #707</p>
+<article class="post" id="msg3450">
+  <div class="post-head">
+    <span class="post-author">LanceG</span>
+    <span class="post-date muted">2009-04-09 19:45 UTC</span>
+  </div>
+  <div class="post-body">Back in 2007, velasquez said:<br>
+<blockquote class="quote"><cite> author=velasquez link=topic=47.msg221#msg221 date=1188654154 wrote:</cite><br>
+Hi Owen,  <br>
+I posted my installation program working with the file msi.  <br>
+See the file in <a href="http://www.easycad.com.br/opendcl/MyRunTime.zip" rel="nofollow noopener">{2}</a>  <br>
+I used the command line I only lower to test.  <br>
+msiexec.exe /passive /i OpenDCL.Runtime.ENU.4.0.3.1.msi  <br>
+After the installation I didn't get to see different in the windows registry.  <br>
+I work with Windows XP.  <br>
+Please tell me what am doing wrong.<br>
+</blockquote><br>
+He apparently was not able to get his InnoSetup install script working.<br>
+<br>
+I built one yesterday, and it works pretty well.<br>
+<br>
+I was able to install the runtime using the MSI file with MSIEXEC.  A big improvement over velasquez's attempt is that the Uninstall process also removes the MSI.<br>
+<br>
+For those interested, the syntax for the MSIEXEC call is sort of convoluted:<br>
+<br>
+<strong></strong><br>
+Filename: misexec.exe; Parameters: "/i ""{app}\OpenDCL.Runtime.5.1.0.2.msi"""<br>
+<strong></strong><br>
+Filename: misexec.exe; Parameters: "/x ""{app}\OpenDCL.Runtime.5.1.0.2.msi"""<br>
+<br>
+So far I have not been able to get the "/passive" switch to work.  The main thing that this does is to eliminate the "Preparing to install..." prompt.  I'm guessing that the quotes will also be an obscure structure like the above.<br>
+<br>
+The reason I used the {app} directory for the above is that if you use a {tmp} directory like velasquez did, the uninstall process won't be able to find the uninstall file, and the uninstall of the MSI will fail.  The use of {tmp} means that InnoSetup will create its own temporary directory during installation and then delete it, making it unavailable at uninstall time.<br>
+<br>
+During the uninstall, you see the usual "Are you sure you want to remove XXX and its components?", followed immediately by a Windows Installer dialog that says "Are you sure you want to uninstall the product?".  The second one of course refers to the MSI uninstall.  Other than this, the uninstall works like a champ.<br>
+<br>
+The only thing I'm not crazy about with this process is that you must install to a directory on the support path, or else add your install directory to the path after installing.  This has nothing to do with the MSI, of course (it works great!), but I suspect that if you supply a VLX containing your odcl file and LSP, this problem probably will go away.  I'm a newbie and haven't tried it yet.<br>
+<br>
+I posted this because though Barry's tutorial is excellent, about the only thing it's missing is a description of the use of an installer.  InnoSetup is free, and not terribly difficult to learn (just what you need, yet another scripting language!).  The CADWERX AutoCAD add-on for InnoSetup (I think I got the name right...) takes care of issues relating to AutoCAD versions and support paths, but I chose to write my own with individual selections for different AutoCADs on the same computer.  Fortunately this is not needed for a simple OpenDCL installation, though if your AutoLISP is version-specific you might need to deal with it.<br>
+<br>
+If there's any interest, I'll post back with further InnoSetup adventures.  Meanwhile, here's my first attempt at an InnoSetup script.  You can read it with Notepad.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/670/DictList.txt">DictList.txt</a> <span class="muted">(1447 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3451">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-04-09 19:59 UTC</span>
+  </div>
+  <div class="post-body">Great work LanceG.<br>
+Yes I skimmed over this in the tutorial as I have no experience with installers. :)<br>
+Please keep your InnoSetup adventures coming, we definitely need someone on the team with installers experience.<br>
+If you'd like to write up some type of short tutorial on how to setup InnoSetup &amp; incorporate a ODCL project &amp; the runtime, we could put it in with the samples and\or the tutorial sections of the web site.<br>
+<br>
+thx,<br>
+Barry<br>
+</div>
+</article>
+<article class="post" id="msg3452">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-09 20:05 UTC</span>
+  </div>
+  <div class="post-body">Lance, the /q switch eliminates the UI during install and uninstall.  Also, there is no need to install the MSI file. Windows Installer caches this file automatically. The trick is to use the cached version to uninstall. You can do this by specifying the "product code" GUID instead of the MSI filename. The product code GUID changes with each build of OpenDCL, so you have to either extract it when you're building your installation script, or look it up at uninstall time by searching the Windows Installer cache.</div>
+</article>
+<article class="post" id="msg3457">
+  <div class="post-head">
+    <span class="post-author">LanceG</span>
+    <span class="post-date muted">2009-04-09 20:39 UTC</span>
+  </div>
+  <div class="post-body">Wow, guys -- I'm happy to help out.  The OpenDCL package is so cool that it just seemed logical to create an install routine that works with it.  I'll write up a tutorial in between my efforts to create a "perfect" install.<br>
+<br>
+Owen, I'm afraid I'm a little bit confused about the "no need to install the MSI file" business.  I thought that the best way to propagate OpenDCL to customers was by sending them the Runtime MSI.  I don't get how "Windows Installer caches this file automatically".  It seems as though MSIEXEC would not know what MSI to run if you didn't provide it.  Do you mean that somehow Windows Installer (MSIEXEC) caches the Runtime's GUID on my (development) computer when I installed it, and that's what I need to use?  I also am not sure how to extract that GUID.  If you don't mind, could you give me a hint?  I mean, I know a lot about InnoSetup, but have never worked with MSIEXEC before other than as an end user.  I do plan to mess with the switches some more after I figure out how to deal with three pass parameters.<br>
+<br>
+Thanks for your enthusiasm.  I do like this product!<br>
+<br>
+Lance</div>
+</article>
+<article class="post" id="msg3459">
+  <div class="post-head">
+    <span class="post-author">LanceG</span>
+    <span class="post-date muted">2009-04-09 21:53 UTC</span>
+  </div>
+  <div class="post-body">OK, I was able to quiet the MSIEXEC by adding the third parameter, and figured out the quotes business.  The reason for the double quotes around ""{app}\OpenDCL.Runtime.5.1.0.2.msi"" is that Inno Setup requires them whenever a file name or directory contains a SPACE.  The whole line then becomes <br>
+<strong></strong><br>
+Filename: misexec.exe; Parameters: "/i ""{app}\OpenDCL.Runtime.5.1.0.2.msi"" /qn"<br>
+<br>
+The /qn switch removes the UI, much like Owen said -- the "n" means "no UI"<br>
+<br>
+Now the MSIEXEC part is completely invisible during installation.  Unfortunately the same switch doesn't work during the uninstall process.<br>
+<br>
+BTW if you're working on running MSIEXEC from the command line, you soon learn that if you do it wrong, a dialog pops up with the command syntax info -- i think of it as the "YOU DUMMY" dialog.<br>
+<br>
+As for Owen's info about using GUIDs rather than MSI files, I just downloaded the Windows Installer SDK to try to learn the intricacies of MSIEXEC.  We'll see what I glean from it.<br>
+<br>
+Lance<br>
+</div>
+</article>
+<article class="post" id="msg3460">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-10 00:55 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=LanceG link=topic=707.msg3457#msg3457 date=1239309592 wrote:</cite><br>
+Owen, I'm afraid I'm a little bit confused about the "no need to install the MSI file" business.</blockquote><br>
+<br>
+What I meant is that you don't have to "install" the MSI file on the end user's system. You do have to include it in your distribution, and "run" it via MSIEXEC. When you run MSIEXEC, Windows caches the MSI file in the installer cache for you. Your uninstall can then use the cached MSI file.</div>
+</article>
+<article class="post" id="msg3461">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-04-10 10:13 UTC</span>
+  </div>
+  <div class="post-body">Hi LanceG,  <br>
+Great work with InnoSetup.  <br>
+Do you have a Script for selection of the versions of AutoCAD in an only computer?  <br>
+Does it can me to supply a sample?  <br>
+I didn't still get to work with this.  <br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg3463">
+  <div class="post-head">
+    <span class="post-author">LanceG</span>
+    <span class="post-date muted">2009-04-10 13:51 UTC</span>
+  </div>
+  <div class="post-body">velasquez -- Thanks for dropping by here.  I'll see if I can prune my huge install script to demonstrate the selection of AutoCAD version and will write back with an example.<br>
+<br>
+Owen -- Thank you for clarifying about the uninstall of the cached version.  I'll look into how to use it rather than running MSIEXEC on the MSI itself, though the main thing I'd like to gain is a cleaner looking uninstall, and not necessarily a decrease in files stored on the computer.  Let's see how it works.  It will be an interesting Inno Setup exercise at least.<br>
+<br>
+I'm working on a tutorial, trying to decide what to include and what to leave out.  Barry's tutorial is a pretty good model (though I'd put in a little more detail in the OpenDCL sample project...).<br>
+<br>
+Lance</div>
+</article>
+<article class="post" id="msg3487">
+  <div class="post-head">
+    <span class="post-author">LanceG</span>
+    <span class="post-date muted">2009-04-14 20:18 UTC</span>
+  </div>
+  <div class="post-body">velasquez -- Here is an Inno Setup subroutine I use to detect AutoCADs from 2006 to 2010:<br>
+<br>
+AC2006, AC2007, AC2008, AC2009, AC2010 are booleans that get set true if those versions are installed.<br>
+NumVersions is the number of versions installed between 2006 and 2010<br>
+<br>
+Obviously you could extend the versions to detect by searching the registry for strings prior to 'R16.2'.<br>
+...<br>
+// Get AutoCAD versions -- saved as Versions through  (2006 through 2010)<br>
+function GetVersions():Integer;<br>
+var<br>
+	I: Integer;<br>
+begin<br>
+	if RegGetSubkeyNames(HKEY_LOCAL_MACHINE, 'Software\Autodesk\AutoCAD\',Versions) then<br>
+	begin<br>
+		NumVersions := GetArrayLength(Versions);<br>
+		for I := 1 to GetArrayLength(Versions) do<br>
+			case Versions of<br>
+			  'R16.2': begin<br>
+			   AC2006 := True;<br>
+			  end;<br>
+			  'R17.0': begin<br>
+			   AC2007 := True;<br>
+			  end;<br>
+			  'R17.1': begin<br>
+			   AC2008 := True;<br>
+			  end;<br>
+			  'R17.2': begin<br>
+			   AC2009 := True;<br>
+			  end;<br>
+			  'R18.0': begin<br>
+			   AC2010 := True;<br>
+			  end;<br>
+			end;<br>
+		Result := NumVersions;<br>
+	end else begin<br>
+		MsgBox('Cannot locate AutoCAD.',mbCriticalError, MB_OK);<br>
+		Result := NumVersions;<br>
+	end;<br>
+end;<br>
+...<br>
+</div>
+</article>
+<article class="post" id="msg3488">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-04-14 20:50 UTC</span>
+  </div>
+  <div class="post-body">Thank you very much Lance  <br>
+Very good your work.  <br>
+Did you already create some thing where the user selects a version?</div>
+</article>
+<article class="post" id="msg3489">
+  <div class="post-head">
+    <span class="post-author">LanceG</span>
+    <span class="post-date muted">2009-04-14 22:22 UTC</span>
+  </div>
+  <div class="post-body">Yes.  There's a custom Inno Setup page in the installation of my AutoCAD add-on where all installed versions of all installed verticals are displayed with check boxes.  The user selects the version(s) for which he/she wants the installation and the install program places it there.  The program is quite complex but it works well.  I don't want to post it all because it involves MANY MANY hours of work, but I'll be glad to help with OpenDCL installation issues.<br>
+<br>
+Lance</div>
+</article>
+<article class="post" id="msg6062">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-01-20 14:05 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=LanceG link=topic=707.msg3487#msg3487 date=1239740306 wrote:</cite><br>
+velasquez -- Here is an Inno Setup subroutine I use to detect AutoCADs from 2006 to 2010:<br>
+<br>
+AC2006, AC2007, AC2008, AC2009, AC2010 are booleans that get set true if those versions are installed.<br>
+NumVersions is the number of versions installed between 2006 and 2010<br>
+<br>
+Obviously you could extend the versions to detect by searching the registry for strings prior to 'R16.2'.<br>
+...<br>
+// Get AutoCAD versions -- saved as Versions through  (2006 through 2010)<br>
+function GetVersions():Integer;<br>
+var<br>
+	I: Integer;<br>
+begin<br>
+	if RegGetSubkeyNames(HKEY_LOCAL_MACHINE, 'Software\Autodesk\AutoCAD\',Versions) then<br>
+	begin<br>
+		NumVersions := GetArrayLength(Versions);<br>
+		for I := 1 to GetArrayLength(Versions) do<br>
+			case Versions of<br>
+			  'R16.2': begin<br>
+			   AC2006 := True;<br>
+			  end;<br>
+			  'R17.0': begin<br>
+			   AC2007 := True;<br>
+			  end;<br>
+			  'R17.1': begin<br>
+			   AC2008 := True;<br>
+			  end;<br>
+			  'R17.2': begin<br>
+			   AC2009 := True;<br>
+			  end;<br>
+			  'R18.0': begin<br>
+			   AC2010 := True;<br>
+			  end;<br>
+			end;<br>
+		Result := NumVersions;<br>
+	end else begin<br>
+		MsgBox('Cannot locate AutoCAD.',mbCriticalError, MB_OK);<br>
+		Result := NumVersions;<br>
+	end;<br>
+end;<br>
+...<br>
+<br>
+</blockquote><br>
+<br>
+Hi Lance,<br>
+  <br>
+I have little experience with the language used in InnoSetup.  <br>
+Can you happen an example of this code working?  <br>
+<br>
+Thank you very much.  <br>
+Velasquez<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

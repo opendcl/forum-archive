@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tab Strip in OpenDCL 6.0.0.20 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1161</p>
+    <h1>Tab Strip in OpenDCL 6.0.0.20</h1>
+    <p class="meta">Started by velasquez ·
+      2010-02-03 12:23 UTC ·
+      4 replies · SMF topic #1161</p>
+<article class="post" id="msg6179">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-02-03 12:23 UTC</span>
+  </div>
+  <div class="post-body">Hi  <br>
+I used Methods.odcl to show the problems with c:Methods_Main_TabControl_OnChanged and c:Methods_Main_TabControl_OnSelChanging in Tab Strip.  <br>
+Did anybody already see this?<br>
+<br>
+;;;**********************************************************************************************************************<br>
+(defun c:Methods_Main_TabControl_OnChanged (ItemIndex       /<br>
+                                            BottomFromBottom<br>
+                                            RightFromRight  TopFromBottom<br>
+                                            LeftFromRight   nLeft<br>
+                                            nTop            nWidth<br>
+                                            nHeight<br>
+                                           )<br>
+    (if (= ItemIndex 1) ;_ Sliders Tab<br>
+        (progn<br>
+;;;**********************************************************************************************************************<br>
+;;;My changes<br>
+            (dcl_Control_SetCaption<br>
+                Methods_Main_Label2<br>
+                "I incapacitated Label with c:Methods_Main_TabControl_OnChanged"<br>
+            )<br>
+            (dcl_Control_SetEnabled Methods_Main_Label2 NIL)<br>
+;;;**********************************************************************************************************************<br>
+            (dcl_Control_SetValue<br>
+                Methods_Main_AngleSlider1<br>
+                (atoi (dcl_Control_GetText Methods_Main_AngleBox))<br>
+            )<br>
+            (dcl_Control_SetValue<br>
+                Methods_Main_ScrollBar1<br>
+                (atoi (dcl_Control_GetText Methods_Main_VScrollLabel))<br>
+            )<br>
+            (dcl_Control_SetValue<br>
+                Methods_Main_SliderBar1<br>
+                (atoi (dcl_Control_GetText Methods_Main_VSliderLabel))<br>
+            )<br>
+            (dcl_Control_SetValue<br>
+                Methods_Main_ScrollBar2<br>
+                (atoi (dcl_Control_GetText Methods_Main_HScrollLabel))<br>
+            )<br>
+            (dcl_Control_SetValue<br>
+                Methods_Main_SliderBar2<br>
+                (atoi (dcl_Control_GetText Methods_Main_HSliderLabel))<br>
+            )<br>
+            (dcl_Control_SetText<br>
+                Methods_Main_SpinnedBox<br>
+                (itoa (dcl_Control_GetValue Methods_Main_SpinButton1))<br>
+            )<br>
+        )<br>
+    ) ;_ if<br>
+    (if (= ItemIndex 2) ;_ Manipulation Tab<br>
+        (PopulateManipulationTabFields)<br>
+    ) ;_ if<br>
+)<br>
+;;;**********************************************************************************************************************<br>
+;;;I ADDED THIS EVENT<br>
+(defun c:Methods_Main_TabControl_OnSelChanging (ItemIndex /)<br>
+    (if (= ItemIndex 0) ;_ Sliders Tab<br>
+        (progn<br>
+            (dcl_Control_SetCaption<br>
+                Methods_Main_Label2<br>
+                "I incapacitated Label with c:Methods_Main_TabControl_OnSelChanging"<br>
+            ) ;_ end of dcl_Control_SetCaption<br>
+            (dcl_Control_SetEnabled Methods_Main_Label2 NIL)<br>
+        ) ;_ end of progn<br>
+        (progn ;_ Others<br>
+            (dcl_Control_SetEnabled Methods_Main_Label2 T)<br>
+            (dcl_Control_SetCaption<br>
+                Methods_Main_Label2<br>
+                "I enabled Label with c:Methods_Main_TabControl_OnSelChanging"<br>
+            ) ;_ end of dcl_Control_SetCaption<br>
+        ) ;_ end of progn<br>
+    ) ;_ end of if<br>
+) ;_ end of defun<br>
+;;;**********************************************************************************************************************<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1268/Methods.odcl">Methods.odcl</a> <span class="muted">(7034 bytes)</span></li><li><a href="../attachments/1269/Methods.lsp">Methods.lsp</a> <span class="muted">(18482 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6181">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-04 01:03 UTC</span>
+  </div>
+  <div class="post-body">If OnSelChanging returns T, the change is cancelled. Anything else, the change is allowed.</div>
+</article>
+<article class="post" id="msg6183">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-02-04 11:56 UTC</span>
+  </div>
+  <div class="post-body">Thank you Owen  <br>
+I worked with dcl_TabStrip_SetCurSel to force the selection of a tab at the end of my changes.  <br>
+Did this work well I can continue with this?<br>
+<br>
+;;;I ADDED THIS EVENT<br>
+(defun c:Methods_Main_TabControl_OnSelChanging (ItemIndex /)<br>
+  (if (= ItemIndex 0) ;_ Sliders Tab<br>
+    (progn<br>
+      (dcl_Control_SetCaption<br>
+	Methods_Main_Label2<br>
+	"I incapacitated Label with c:Methods_Main_TabControl_OnSelChanging"<br>
+      ) ;_ end of dcl_Control_SetCaption<br>
+      (dcl_Control_SetEnabled Methods_Main_Label2 NIL)<br>
+      (dcl_TabStrip_SetCurSel Methods_Main_TabControl 0)<br>
+    ) ;_ end of progn<br>
+  ) ;_ end of if<br>
+) ;_ end of defun<br>
+</div>
+</article>
+<article class="post" id="msg6197">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-04 20:43 UTC</span>
+  </div>
+  <div class="post-body">I'm not sure I understand the purpose of this. You can simply return NIL (or anything except T) and the change will be allowed.</div>
+</article>
+<article class="post" id="msg6203">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-04 23:06 UTC</span>
+  </div>
+  <div class="post-body">Vela,<br>
+<br>
+do not call Tab_SetCurSel within a SelChanging event handler. This will end up in an endless loop - just right from the logic.<br>
+I'm not sure if I've matched what you want because in your sample you've sent me by mail the tab control had no activated event.<br>
+<br>
+Try the attched sample.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

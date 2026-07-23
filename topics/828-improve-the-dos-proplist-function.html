@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>improve the dos_proplist function? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 828</p>
+    <h1>improve the dos_proplist function?</h1>
+    <p class="meta">Started by Kelie ·
+      2009-06-25 07:26 UTC ·
+      3 replies · SMF topic #828</p>
+<article class="post" id="msg4109">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2009-06-25 07:26 UTC</span>
+  </div>
+  <div class="post-body">have you used the dos_proplist function? i've been using it for years to get simple user input. see pic below. <br>
+<br>
+but i hope the input can be something other than text string, i.e., listbox, combobox, checklist,etc. and the syntax of the function would be something like <br>
+<br>
+(dcl_proplist title prompt lists) where each list contains, say 4 members:<br>
+<br>
+1. rowHeader (str)<br>
+2. ctrlType (int)<br>
+3. values ("" or nil for TextBox)<br>
+4. default (default value for the control)<br>
+<br>
+for the argument ctrlType, maybe the valid numbers can be:<br>
+0 - TextBox<br>
+1 - ListBox<br>
+2 - ComboBox<br>
+3 - CheckBox<br>
+4 - CheckList<br>
+<br>
+would it be a lot of work to implement it as a standard function for OpenDCL? anyone else thinks this will be useful? if not, i'll tackle this myself. i guess need to start with using a grid?<br>
+<br>
+thanks.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/824/GetInput.jpg">GetInput.jpg</a> <span class="muted">(41304 bytes)</span></li><li><a href="../attachments/825/checklist.jpg">checklist.jpg</a> <span class="muted">(52014 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4110">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-25 08:13 UTC</span>
+  </div>
+  <div class="post-body">Hi, Kelie,<br>
+<br>
+Of course it is possible to create such a form with OpenDCL. But I wouldn't implement it in the Runtime as a function. OpenDCL is a developer tool for designing forms. But what you want is a library with typical standard forms to avoid multiple developments for nearly the same work. But I think it's not a task of OpenDCL itself.<br>
+<br>
+Indeed, it could be an idea to create a library with standard forms and tasks created in OpenDCL studio and offer it as a free component to implement in your product. Then you could call again (cdcl_proplist title prompt lists) again  :)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4111">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-06-25 14:23 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+As a good news, Doslib.brx is now (since last week) fully implemented with Bricscad (V9.3.5 beta pro only)<br>
+And maybe opendcl very soon ?  ;)<br>
+Copter</div>
+</article>
+<article class="post" id="msg4122">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2009-06-28 08:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=828.msg4110#msg4110 date=1245917592 wrote:</cite><br>
+Hi, Kelie,<br>
+<br>
+Of course it is possible to create such a form with OpenDCL. But I wouldn't implement it in the Runtime as a function. OpenDCL is a developer tool for designing forms. But what you want is a library with typical standard forms to avoid multiple developments for nearly the same work. But I think it's not a task of OpenDCL itself.<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+Fred, Thanks for your comment. Aside from the reason that IMHO such a function would be a nice addition, I asked this also because I noticed OpenDCL provides functions like dcl_BinFile_Read, dcl_BinFile_Write, etc. which doesn't seem to have much to do with GUI. Plus, a lot of lisp commands require input from user. Rather than using command line, having a generic grid to gather simple input would be really convenient. A couple of engineering software that i'm familiar with use this kind of grid.<br>
+<br>
+I'm going to mess with it myself. Should be a good opportunity to learn using grid. Thanks again.<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

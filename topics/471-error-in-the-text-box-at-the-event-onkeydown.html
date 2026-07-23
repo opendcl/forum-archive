@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Error in the text box at the event OnKeyDown · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 471</p>
+    <h1>Error in the text box at the event OnKeyDown</h1>
+    <p class="meta">Started by hildevasco ·
+      2008-11-19 12:17 UTC ·
+      3 replies · SMF topic #471</p>
+<article class="post" id="msg2113">
+  <div class="post-head">
+    <span class="post-author">hildevasco</span>
+    <span class="post-date muted">2008-11-19 12:17 UTC</span>
+  </div>
+  <div class="post-body">The event OnKeyDown in Textbox uses the character parameters which does not represent the key press</div>
+</article>
+<article class="post" id="msg2115">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-11-19 13:25 UTC</span>
+  </div>
+  <div class="post-body">Hello, welcome to this forum.<br>
+Can you give us a little example of that what you mean and what you expected to get from OnKeyDown?<br>
+<br>
+If you want to get the current input, try OnEditChanged. I use this very often.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2116">
+  <div class="post-head">
+    <span class="post-author">hildevasco</span>
+    <span class="post-date muted">2008-11-19 13:38 UTC</span>
+  </div>
+  <div class="post-body">I wish monitor the entry of values in a text box. The only characters allowed <br>
+are between 47 and 57 Asc codes for different values the caracater should be zero. I gather that the error in the language of the keyboard configuration of the system do not correctly interpret the characters on the keyboard<br>
+<br>
+Sample code<br>
+(defun c:txtData_OnKeyDown (Character RepeatCount Flags /)<br>
+  (if (or (&lt; (ascii Character) 47) (&gt; (ascii Character) 57))<br>
+    (setq Character "")<br>
+  )<br>
+)</div>
+</article>
+<article class="post" id="msg2118">
+  <div class="post-head">
+    <span class="post-author">hildevasco</span>
+    <span class="post-date muted">2008-11-19 14:39 UTC</span>
+  </div>
+  <div class="post-body">I need to monitor the entry of data into the text box and a numerical values double or integer values and another date formatted as mm/dd/yyyy <br>
+<br>
+Thank you</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

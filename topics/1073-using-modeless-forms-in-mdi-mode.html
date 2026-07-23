@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Using modeless forms in MDI mode · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/20-faqs.html">FAQs</a> /
+      Topic 1073</p>
+    <h1>Using modeless forms in MDI mode</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-12-11 14:00 UTC ·
+      0 replies · SMF topic #1073</p>
+<article class="post" id="msg5637">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-11 14:00 UTC</span>
+  </div>
+  <div class="post-body">The advantage of a modeless form, a dockable form and a palette is to allow the user to work in the drawing as well as in the active form at the same time. If the multiple document interface is active (SDI=0), the user can also switch between drawings. In that case your task is to make sure that all events of the form and all the functions, which can be called by the events, and finally the variables, which are used by the events and functions, are defined in all drawings, even in the newly created or opened drawings.<br>
+You’ll need a concept to divide the variables which can only be used in the current drawing (lists of layernames, for instance) from those which are needed in all drawings (control settings or states). Variables with values, which are needed in all drawings can be addressed by the AutoCAD blackboard using the functions vl-bb-set and vl-bb-ref.<br>
+<br>
+<strong>Change the dialog contents in case of switching between drawings</strong><br>
+For the case the form shows document-related information, it is necessary to update the form after switching from one drawing to another. This can be solved by using the event OnDocActivated. Activate the form in the OpenDCL Studio and activate the event DocActivated in the events tab. Copy the function definition in your code and define the tasks AutoCAD has to do after switching.<br>
+In this sample the blockview control has to be cleaned up because the last selected block is not defined in the currently activated drawing. To avoid that the returning value of the Clear-method is given back to the command line, set a (princ) into the last line.<br>
+(defun c:blocklist_blocklist_OnDocActivated (/)<br>
+  (dcl_BlockView_Clear blocklist_blocklist_prv_block)<br>
+  (princ)<br>
+); c:blocklist_blocklist_OnDocActivated<br>
+<br>
+<strong>Change the dialog contents in case of opening a new drawing</strong><br>
+The OnDocActivated event will not released after creating a new drawing or opening an existing drawing. If it would be released, maybe the AutoLisp context does still not exist for the drawing until the opening progress has been finished. That’s why it has to be managed manually. Since the AutoLisp-file has to be loaded in every document, it is very easy to add a line in the end of the lisp file to check whether the form is open or not, and if so then you can call the OnDocActivated event manually.<br>
+In the end of the attached sample file there you can find the line<br>
+(blocklist_execute blocklist_blocklist 'c:blocklist_blocklist_OnDocActivated nil)<br>
+The blocklist_execute function checks if the form blocklist_blocklist is active. If so, then the OnDocActivated event function will be called manually.<br>
+(defun blocklist_execute (oControl symFunc lstArg / uErg)<br>
+  (if (and oControl (dcl_Form_IsActive oControl))<br>
+    (if (dcl_Form_IsVisible oControl)<br>
+      (if symFunc (setq uErg (vl-catch-all-apply symFunc lstArg)))<br>
+      (dcl_Form_close oControl)<br>
+    ); if<br>
+  ); if<br>
+  uErg<br>
+); blocklist_execute<br>
+<br>
+<strong>Handle the zero document state</strong><br>
+It's up to the implementer of a modeless form to decide how it should behave when entering zero document state. The safest way to handle it is to just close the form. Otherwise, you have to ensure that the needed code and variables load again when a drawing is opened. Note that no events fire while there is no document open.<br>
+In the following example the form would be closed if the last drawing is going to be closed.<br>
+(defun c:blocklist_blocklist_OnEnteringNoDocState (/)<br>
+  (if (and blocklist_blocklist (dcl_form_IsActive blocklist_blocklist))<br>
+    (dcl_form_close blocklist_blocklist)<br>
+  ); if<br>
+); c:blocklist_blocklist_OnEnteringNoDocState<br>
+<br>
+<strong>Loading the code in all drawings</strong><br>
+The most important thing in using a modeless form is to make sure that all the events and functions are already loaded when the drawing is going to be activated. There are many ways to solve. I can give you a small list of ways to solve. Your choise depends on your application and your goals.<br>
+<br>
+<strong>Loading AutoCAD using an external application</strong><br>
+In the case you start AutoCAD from an external application, you have to make sure that after starting AutoCAD you have to send a command line string to the current drawing. It is recommended to use the VisualLisp-function vl-load-all to make sure, that the Lisp-file will be loaded in all currently and newly opened drawings.<br>
+<pre class="code"><code>Public Sub AcadStart()<br>
+  Dim oAcad As AcadApplication<br>
+  <br>
+  ' Is AutoCAD already loaded<br>
+  Set oAcad = GetObject(, "AutoCAD.Application")<br>
+<br>
+  ' If not it shall be started<br>
+  If TypeName(oAcad) = "Empty" Then<br>
+    Set oAcad = CreateObject("AutoCAD.Application")<br>
+  End If<br>
+<br>
+  oAcad.Visible = True<br>
+  <br>
+  oAcad.ActiveDocument.SendCommand ("(vl-load-com")<br>
+  oAcad.ActiveDocument.SendCommand ("(vl-load-all " &amp; Chr(34) &amp; "blocklist.lsp" &amp; Chr(34) &amp; ") ")<br>
+End Sub</code></pre><br>
+<br>
+<strong>Loading Lisp-File using acad.lsp</strong><br>
+If AutoCAD starts it checks all the support paths for an existing acad.lsp. It will be loaded only into the first drawing if the value for the system variable ACADLSPASDOC is 0. If the value for ACADLSPASDOC is 1, the lisp file will be loaded into every single drawing.<br>
+If you want to load your application using acad.lsp you should add your application path to the AutoCAD support path. In your application path you have to create an ASCII file named “ACAD.LSP” with the following contents:<br>
+(vl-load-com)<br>
+(if (findfile "blocklist.lsp") (vl-load-all "blocklist.lsp"))<br>
+<br>
+<strong>Loading Lisp-File using acaddoc.lsp</strong><br>
+If a new drawing is being opened, AutoCAD checks all the support paths and the folder of the current drawing for an existing acaddoc.lsp and loads it for the current AutoLisp-context. Since a acaddoc.lsp will be loaded into each drawing there is no need to use vl-load-all so the following line does it for you.<br>
+(if (findfile "blocklist.lsp") (load "blocklist.lsp"))<br>
+<br>
+<strong>Loading Lisp-File using *.mnl-file</strong><br>
+If your application loads a menu files into AutoCAD, you can also load your AutoLisp-file from a mnl-file. When AutoCAD loads your menu (mns, mnu, cui, cuix) then it searches also for a mnl-file with the same name: Having a menu file named tools.cuix, the tools.mnl will be loaded. The mnl-file has the same structure as the acad.lsp file. It will be loaded only once at the point when AutoCAD is loading your menu. That’s why you have to use vl-load-all, to load it in all drawings.<br>
+<br>
+<strong>Loading Lisp-File using APPLOAD startup folder</strong><br>
+An AutoLisp-file which was added to the APPLOAD startup folder will be loaded into all drawings when they are opened or created. You can add you lisp-file by hand or by creating the registry key<br>
+<pre class="code"><code>HKEY_CURRENT_USER\Software\Autodesk\AutoCAD\\\Profiles\\Dialogs\Appload\Startup<br>
+"1Startup"="D:\\blocklist\\blocklist.LSP"</code></pre><br>
+<br>
+This is not the final state of this topic. Let's complete it. Send me notes for improving and extending.<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1140/blocklist.LSP">blocklist.LSP</a> <span class="muted">(12845 bytes)</span></li><li><a href="../attachments/1141/blocklist.odcl">blocklist.odcl</a> <span class="muted">(2380 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Issues with combobox in grid · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1368</p>
+    <h1>Issues with combobox in grid</h1>
+    <p class="meta">Started by honkinberry ·
+      2010-11-02 18:43 UTC ·
+      6 replies · SMF topic #1368</p>
+<article class="post" id="msg7273">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-11-02 18:43 UTC</span>
+  </div>
+  <div class="post-body">I've got a Grid, composed entirely of Comboboxes (cell style 36).<br>
+There's a few complaints from users.  First, when typing in a new value, users must widen the column in order to enter lengthy text -- once the text fills the visible width of the combobox, it will not accept any more input.<br>
+Second, the popup list does not have an ability to scroll, so only about 30 values are shown, with the need to type a few letters in order to get it to display values at the bottom of the list.<br>
+And lastly, getting some Cx000005 errors at times.  There is a Grid LabelEdit event, which adds the current value to the Cell DropList, not sure if that could be to blame.  So far this behavior has only been reported and replicated on AutoCAD 2007 and 2008.<br>
+<br>
+So with all that, is there a better way to accomplish what I'm after, then using the built-in Grid control with a Type 36 Combobox, or should I be using some ActiveX control?<br>
+Many, many thanks for any help!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg7275">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-11-03 06:25 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+the Cx000005 may caused by your code as you've already noted.<br>
+Can you create a small sample to demonstrate?<br>
+Maybe we could find a way together to solve or to point detailled things which can be added as a change request on SourceForge. And the small sample could help.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7279">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-11-03 15:38 UTC</span>
+  </div>
+  <div class="post-body">Attached is the sample code.<br>
+You can see that when typing a value into the combobox, you can only enter a certain number of characters, and then you have to resize the column in order to enter more characters.<br>
+<br>
+The Cx05 error does seem to be related to my code, fired from Grid.EndLabelEdit.<br>
+Notice that it seems rather benign code to me, the memory leak would seem to be in the control:<br>
+<br>
+(defun c:dclGridLabelEdit (Row Column / valx listx)<br>
+	(setq valx (dcl_Grid_GetCellText (eval (read (strcat dclform "_Grid1"))) Row Column)<br>
+		listx (car (dcl_Grid_GetCellDropList (eval (read (strcat dclform "_Grid1"))) Row Column))<br>
+		listx (if (not (member valx listx)) (append listx (list valx)) listx)<br>
+	) ; setq<br>
+	(dcl_Grid_SetCellDropList (eval (read (strcat dclform "_Grid1"))) Row Column listx)<br>
+) ; GridLabelEdit<br>
+<br>
+--J<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1465/gridtest.zip">gridtest.zip</a> <span class="muted">(983 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7282">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-11-03 17:15 UTC</span>
+  </div>
+  <div class="post-body">The text length issue turned out to be an easy fix: I just needed to add the CBS_AUTOHSCROLL combo style.  This is now fixed for the next build.  I'd like to see a reproducible case of the EndLabelEdit exception.</div>
+</article>
+<article class="post" id="msg7283">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-11-03 17:37 UTC</span>
+  </div>
+  <div class="post-body">thanks for the quick fix!<br>
+<br>
+here's an example of the other issues.<br>
+<br>
+Note that only the first 30 items show up in the dropdown list, with no apparent way to select the others.<br>
+<br>
+If you type in some value, any value, then hit Tab.<br>
+Then do that again and again -- it takes about 15 or so tries before I'm able to get it to generate the Cx05.<br>
+<br>
+thanks again for looking at this!<br>
+<br>
+--J<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1466/gridtest2.zip">gridtest2.zip</a> <span class="muted">(1426 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7284">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-11-03 17:59 UTC</span>
+  </div>
+  <div class="post-body">I could not reproduce either problem on Windows 7 / AutoCAD 2011. I noticed that in the normal combo box form OpenDCL uses the WS_VSCROLL style, but this style is missing for the grid edit control version of the combo box control, so I suspect this is the cause of the problem, it just happens that Windows 7 automatically expands the dropdown so it doesn't need the vertical scroll bar.  I've added the WS_VSCROLL style for the next build, so please test this when the next build is released.  Let me know the Windows and AutoCAD versions needed to reproduce the exception, and I'll have another look.</div>
+</article>
+<article class="post" id="msg7288">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2010-11-03 18:59 UTC</span>
+  </div>
+  <div class="post-body">Windows 7.32, AutoCAD 2008 and 2011.<br>
+In 2011, I see only the first 32 entries in the popup list.<br>
+<br>
+Will definitely take a look at next build!<br>
+<br>
+--J<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

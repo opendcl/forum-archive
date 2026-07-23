@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GetBlockSize request · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2688</p>
+    <h1>GetBlockSize request</h1>
+    <p class="meta">Started by honkinberry ·
+      2019-08-02 16:12 UTC ·
+      13 replies · SMF topic #2688</p>
+<article class="post" id="msg13273">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2019-08-02 16:12 UTC</span>
+  </div>
+  <div class="post-body">We really enjoy GetBlockSize, it's been far more reliable and accurate than the non-trivial amount of code we had to accomplish the same purpose.<br>
+However, there's one thing our code had that GetBlockSize doesn't -- the ability to ignore objects on certain layers.<br>
+It would be *amazing* if GetBlockSize could have a second optional parameter added, of LayerFilterExclusion.  For us, we would most commonly pass "*NPLT" to ignore all non-plot layers named as such.  If possible to go even further, there are cases we have multiple layers we want ignored, so being able to pass "*NPLT,*SHAD*" would be the ultimate of ideal for us.<br>
+Any change a future build might have such capability?<br>
+<br>
+--J</div>
+</article>
+<article class="post" id="msg13274">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2019-08-04 10:53 UTC</span>
+  </div>
+  <div class="post-body">I am surprised that this function is part of OpenDCL. IMO it should be removed instead of extended.</div>
+</article>
+<article class="post" id="msg13275">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2019-08-05 12:27 UTC</span>
+  </div>
+  <div class="post-body">I would be interested to know why the ODCL function is more accurate. If your own implementation and the ODCL implementation use the same bounding box function 'under the hood' you would expect the same accuracy.</div>
+</article>
+<article class="post" id="msg13276">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2019-08-05 21:07 UTC</span>
+  </div>
+  <div class="post-body">Roy,<br>
+Because we don't use the same bounding box function.<br>
+--J</div>
+</article>
+<article class="post" id="msg13277">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2019-08-06 12:42 UTC</span>
+  </div>
+  <div class="post-body">Does this mean that vla-getboundingbox is inaccurate? And, if so, can you give an example?<br>
+The only vla-getboundingbox issue I am aware of is that the bounding box of a rotated insert is calculated based on the box around the unrotated insert.</div>
+</article>
+<article class="post" id="msg13278">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2019-08-06 15:32 UTC</span>
+  </div>
+  <div class="post-body">Roy,<br>
+The vla-getboundingbox function requires inserting a block into modelspace.  Further, even if a layer is turned off, it is counted towards the block's extents, so it is quite pointless to use compared to dcl-GetBlockSize.<br>
+The only way we have been able to calculate a block's extents without counting certain layers, is to iterate through all entities in the block definition, and calculate their extremities.  This is what is less accurate than dcl-GetBlockSize.<br>
+So the dilemma, is to update our considerable amount of code, that has to deal with every possible entity type and block nesting, or to hope that dcl-GetBlockSize could be extended with a LayerExcludeFilter.<br>
+I hope that makes sense.<br>
+<br>
+--J</div>
+</article>
+<article class="post" id="msg13279">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2019-08-06 17:42 UTC</span>
+  </div>
+  <div class="post-body">Here is what I would try:<br>
+[list type=decimal]<br>
+Create a temp ODBX document.<br>
+Copy your insert to that document.<br>
+Iterate over the blocks collection and over each block definition in the temp document and delete objects on layers you want to exclude.<br>
+Grab the bounding box of the insert.<br>
+Release the temp document.<br>
+</ul><br>
+All in all a couple of hundred lines of code.<br>
+</div>
+</article>
+<article class="post" id="msg13280">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2019-08-06 17:53 UTC</span>
+  </div>
+  <div class="post-body">Along those lines, why not just make a copy of the block in question, without the undesirable layers, and then use dcl-GetBlockSize on that temp block?  More like 50 lines of code.<br>
+But before doing something like that, I thought I would reach out on here, to see if perhaps other users had similar desires from dcl-GetBlockSize.<br>
+<br>
+--J</div>
+</article>
+<article class="post" id="msg13282">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2019-08-07 10:09 UTC</span>
+  </div>
+  <div class="post-body">Just did a quick test with dcl-GetBlockSize. I don't see improved accuracy. Layers that are off/frozen are not ignored. And rotated nested inserts are handled in the same manner as the vla-getboundingbox function would.<br>
+Note: I use BricsCAD.</div>
+</article>
+<article class="post" id="msg13283">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2019-08-07 13:48 UTC</span>
+  </div>
+  <div class="post-body">Creating a replacement for dcl-GetBlockSize would be relatively simple in BricsCAD. It would be a little harder in AutoCAD, but not much.<br>
+<pre class="code"><code>(defun BlockDefBox (nme)<br>
+  (if (tblobjname "block" nme)<br>
+    (vle-getgeomextents<br>
+      (mapcar<br>
+        'vlax-vla-object-&gt;ename<br>
+        (vle-collection-&gt;list<br>
+          (vla-item (vla-get-blocks (vla-get-activedocument (vlax-get-acad-object))) nme)<br>
+        )<br>
+      )<br>
+    )<br>
+  )<br>
+)<br>
+<br>
+(defun AltGetBlockSize (nme / box)<br>
+  (if (setq box (BlockDefBox nme))<br>
+    (vle-remove-last (apply 'mapcar (cons '- (reverse box))))<br>
+  )<br>
+)<br>
+<br>
+; (equal (dcl-GetBlockSize "MyBlock") (AltGetBlockSize "MyBlock")) =&gt; T</code></pre></div>
+</article>
+<article class="post" id="msg13285">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2019-08-07 15:06 UTC</span>
+  </div>
+  <div class="post-body">Roy,<br>
+Yes, it would a little bit harder in AutoCAD.<br>
+But even the code you posted... why?  I mean, seriously, why?  You literally just proved that dcl-GetBlockSize is an identically capable, cross-platform wrapper.  Which is why we will continue to use it.<br>
+We will make a helper function that makes a copy of a block without the desired layers, and use dcl-GetBlockSize on that copy.  Still just happy to share this wishlist and real-world usage of this highly useful and capable helper function.<br>
+<br>
+--J</div>
+</article>
+<article class="post" id="msg13286">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2019-08-08 08:05 UTC</span>
+  </div>
+  <div class="post-body">You have made two arguments for dcl-GetBlockSize: Higher accuracy and creating your own version requires a non-trivial amount of code. I have demonstrated that both are incorrect. So IMO there is no reason for dcl-GetBlockSize.</div>
+</article>
+<article class="post" id="msg13288">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2019-08-08 16:05 UTC</span>
+  </div>
+  <div class="post-body">hahaha, okay Roy.<br>
+Actually, you're the only one arguing here.<br>
+Oddly, I have to clarify again.  I said that our *previous* version had a non-trivial amount of code, specifically to be able to ignore objects on certain layers.  The code you offered, which is for Bricscad only, does nothing in that regard.  You literally posted nothing but a partial alternative to GetBlockSize.  Which is humorous to me.  The only thing you "proved", is that GetBlockSize is a fantastic little helper function!<br>
+Secondly, I told you that our implementation does not use vla-boundingbox, and here you are again saying I claimed that GetBlockSize was more accurate.  So to clarify that, again, GetBlockSize is more accurate than iterating through all entities in a block, and doing the math on each vertex.<br>
+But no matter how any sensible person shakes its, GetBlockSize is a great little helper function!  And this thread really backs that up!  Go Team GetBlockSize!  Keep on truckin'!<br>
+<br>
+As to the original query of this thread, as I stated, we'll make a quick copy of the block in question, without the undesirable layers, and call GetBlockSize on that.  Yet another fantastic capability of GetBlockSize -- I don't have to insert the block to query its size!  So again, what a helpful tool!<br>
+<br>
+Searching for a meme or gif or something to sum up how I feel about GetBlockSize, but I'll just leave it at this:<br>
+Thanks, Roy, for helping to show what a great helper function GetBlockSize is!<br>
+<br>
+--J</div>
+</article>
+<article class="post" id="msg13289">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2019-08-09 07:16 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=honkinberry link=topic=2688.msg13276#msg13276 date=1565039225 wrote:</cite><br>
+Roy,<br>
+Because we don't use the same bounding box function.<br>
+--J<br>
+</blockquote>I now realize I have misunderstood this message. I concluded that your code would use vla-getboundingbox, and that dcl-GetBlockSize used an enhanced boundingbox function.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

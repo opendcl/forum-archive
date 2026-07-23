@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenDCL Project Fast Dump · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 1011</p>
+    <h1>OpenDCL Project Fast Dump</h1>
+    <p class="meta">Started by Slavko.Ivanovic ·
+      2009-11-14 03:49 UTC ·
+      5 replies · SMF topic #1011</p>
+<article class="post" id="msg5157">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2009-11-14 03:49 UTC</span>
+  </div>
+  <div class="post-body">i needed something like this, so i write it.<br>
+<br>
+dump data peview.<br>
+<a href="http://img21.imageshack.us/i/dumpdatapreview.jpg/" rel="nofollow noopener">{2}</a><br>
+<br>
+<s>initial version</s>.<br>
+<s>List of events is Case Sensitive, and i copied from Opendcl Help, and find 3-4 that are wrong and correct them , but maybe some more.</s><br>
+<br>
+<s>(changed - posted ver. 02)</s><br>
+<br>
+(changed - posted ver. 0.2b)<br>
+<br>
+.lsp is in attachment but here is the code.<br>
+<br>
+<br>
+;;|*****|==================================================================================================================<br>
+;; used (si-xt) library functions (accessories)<br>
+(OR *lastdir* (SETQ *lastdir* ""))<br>
+;;-------------------<br>
+(DEFUN SI-FILE-OPEN (  / ~t)<br>
+ (SETQ ~t (GETFILED  *lastdir*  8))<br>
+ (IF ~t<br>
+  (PROGN (SETQ *lastdir* (STRCAT (VL-STRING-RIGHT-TRIM "\\" (VL-FILENAME-DIRECTORY (SETQ ~t (FINDFILE ~t)))) "\\"))<br>
+  )<br>
+ )<br>
+ ~t<br>
+)<br>
+;;-------------------<br>
+(DEFUN SI-FILE-SAVEAS (  / ~t)<br>
+ (SETQ ~t (GETFILED  *lastdir*  1))<br>
+ (IF ~t<br>
+  (PROGN (SETQ *lastdir* (STRCAT (VL-STRING-RIGHT-TRIM "\\" (VL-FILENAME-DIRECTORY ~t)) "\\")))<br>
+ )<br>
+ ~t<br>
+)<br>
+;;-------------------<br>
+(DEFUN SI-LST-CLEARDUPLICATES ( / ~lst ~t)<br>
+ (FOREACH<br>
+        ~t <br>
+  (IF (NOT (MEMBER ~t ~lst))<br>
+   (SETQ ~lst (CONS ~t ~lst))<br>
+  )<br>
+ )<br>
+ (REVERSE ~lst)<br>
+)<br>
+;;-------------------<br>
+(DEFUN SI-LST-GETSAMEMEMBERS (  / ~lst ~t)<br>
+ (IF (OR  )<br>
+  (PROGN (FOREACH<br>
+                ~t <br>
+          (IF (MEMBER (STRCASE ~t) )<br>
+           (SETQ ~lst (CONS ~t ~lst))<br>
+          )<br>
+         )<br>
+  )<br>
+ )<br>
+ (SETQ ~lst (REVERSE ~lst))<br>
+ (SI-LST-CLEARDUPLICATES ~lst)<br>
+)<br>
+;;-------------------<br>
+(DEFUN SI-UTL-GETSTRING (  / ~t)<br>
+ (PRINC (STRCAT "\n"  " &lt;"  "&gt;: "))<br>
+ (SETQ ~t (VL-CATCH-ALL-APPLY 'GETSTRING (LIST T)))<br>
+ (IF (VL-CATCH-ALL-ERROR-P ~t)<br>
+  (SETQ ~t nil)<br>
+ )<br>
+ (IF (/= ~t "")<br>
+  ~t<br>
+  <br>
+ )<br>
+)<br>
+;;-------------------<br>
+(DEFUN SI-UTL-GETKWORD ( / ~t)<br>
+ (SETQ ~t (VL-CATCH-ALL-APPLY 'GETKWORD (LIST (STRCAT "\n" ))))<br>
+ (IF (VL-CATCH-ALL-ERROR-P ~t)<br>
+  (SETQ ~t nil)<br>
+  ~t<br>
+ )<br>
+)<br>
+;;-------------------<br>
+(DEFUN SI-GET-DATETODAY (/ ~s)<br>
+ (SETQ ~s (RTOS (GETVAR "CDATE") 2))<br>
+ (STRCAT (SUBSTR ~s 7 2) "." (SUBSTR ~s 5 2) "." (SUBSTR ~s 3 2))<br>
+)<br>
+;;-------------------<br>
+(DEFUN SI-GET-TIMENOW (/ ~s)<br>
+ (SETQ ~s (GETVAR "CDATE")<br>
+       ~s (SUBSTR (RTOS (- ~s (FIX ~s)) 2 8) 3)<br>
+ )<br>
+ (STRCAT (SUBSTR ~s 1 2) ":" (SUBSTR ~s 3 2) ":" (STRCAT (SUBSTR ~s 5 2)))<br>
+)<br>
+;;|*****|==================================================================================================================<br>
+<br>
+;;||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+;;|||||||||||| *** OpenDCL Project Fast Dump by Slavko Ivanovic *** ||||||||||||||||||||||||||||||||||||||||||||||<br>
+;;|||||||||||| ver. 0.2b |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+;;|||||||||||| 14. November 09 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+;;||||||||||||  - added option for quick look using write to temp file |||||||||||||||||||||||||||||||||||||||||||<br>
+;;||||||||||||  - added time stamp |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+;;|||||||||||| ver. 0.2 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+;;|||||||||||| 14. November 09 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+;;||||||||||||  - added STR CASE control (by Fred Tomke, -kep-digital.de) ||||||||||||||||||||||||||||||||||||||||<br>
+;;||||||||||||  - added dcl (DCL_PROJECT_LOAD ~pr T) T flag for reloading ||||||||||||||||||||||||||||||||||||||||<br>
+;;||||||||||||  - added two separ. lines in (dump-to-file) better when dumping in same .txt ||||||||||||||||||||||<br>
+;;|||||||||||| ver. 0.1 (initial )||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+;;|||||||||||| 14. November 09 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+;;||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+<br>
+(DEFUN C:OPD (/ ~all-events ~error-prompts ~e ~load ~pr ~project ~password ~allforms ~collectall ~dumpfile ~file)<br>
+ ;;<br>
+ ;;<br>
+ ;;||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+ ;; load shi*t up<br>
+ (SETQ ~all-events<br>
+       (MAPCAR 'STRCASE<br>
+               (LIST                       ;<br>
+                "BeginLabelEdit"    "BeginLabelEdit"    "BeginLabelEdit"    "ButtonClicked"     "Cancel"<br>
+                "CancelClose"       "Changed"           "Clicked"           "Close"             "ColumnClick"<br>
+                "DblClicked"        "DblClicked"        "DblClicked"        "DeleteItem"        "DocActivated"<br>
+                "DragnDropBegin"    "DragnDropFromControl"                  "DragnDropFromOther"<br>
+                "DragnDropToAutoCAD"                    "DropDown"          "EditChanged"       "EndLabelEdit"<br>
+                "EndLabelEdit"      "EndLabelEdit"      "EnteringNoDocState"                    "FolderChanged"<br>
+                "GetDayState"       "Help"              "INITIALIZE"        "ItemExpanded"      "ItemExpanding"<br>
+                "KeyDown"           "KeyUp"             "KillFocus"         "MaxText"           "MouseDblClick"<br>
+                "MouseDown"         "MouseEntered"      "MouseMove"         "MouseMovedOff"     "MouseUp"<br>
+                "MouseWheel"        "NavigationComplete"                    "OK"                "OptionsApply"<br>
+                "OptionsCancel"     "OptionsHelp"       "OptionsOk"         "Paint"             "RightClick"<br>
+                "RightDblClick"     "ReleasedCapture"   "ReturnPressed"     "Scroll"            "Scrolled"<br>
+                "SelChanged"        "SelChanged"        "SelChanged"        "SelChanged"        "SelChanging"<br>
+                "Select"            "SetFocus"          "Show"              "Size"              "SplitterMove"<br>
+                "TypeChanged"       "Update"<br>
+               )<br>
+       )<br>
+       ~error-prompts<br>
+       (LIST "OpenDCL arx not loaded!"               "Project Load canceled!"<br>
+             "OpenDCL project not loaded!"           "Command canceled!"<br>
+             "OpenDCL project password not correct!" "Problem collecting data!"<br>
+             "Dump saving canceled!"<br>
+            )<br>
+       ~funcs<br>
+       (LIST<br>
+        ;;|||||||||||||||||||<br>
+        (DEFUN get-all-forms ()<br>
+         (IF (EQ ~password "ENTER for None")<br>
+          (DCL_PROJECT_GETFORMS ~project)<br>
+          (DCL_PROJECT_GETFORMS ~project ~password)<br>
+         )<br>
+        )<br>
+        ;;|||||||||||||||||||<br>
+        (DEFUN property-available-p (~o ~p) (MEMBER ~p (DCL_CONTROL_GETPROPERTIES ~o)))<br>
+        ;;|||||||||||||||||||<br>
+        (DEFUN filter-named-controls (~ctrlst)<br>
+         (VL-REMOVE<br>
+          nil<br>
+          (MAPCAR '(LAMBDA (x)<br>
+                    (IF (property-available-p x "(Name)")<br>
+                     x<br>
+                    )<br>
+                   )<br>
+                  ~ctrlst<br>
+          )<br>
+         )<br>
+        )<br>
+        ;;|||||||||||||||||||<br>
+        (DEFUN getname (~ctrl) (DCL_CONTROL_GETPROPERTY ~ctrl "(Name)"))<br>
+        ;;|||||||||||||||||||<br>
+        (DEFUN get-events (~f)<br>
+         (VL-REMOVE<br>
+          nil<br>
+          (MAPCAR '(LAMBDA (x)<br>
+                    (LIST (getname x)<br>
+                          (MAPCAR '(LAMBDA (p)<br>
+                                    (IF (= (DCL_CONTROL_GETPROPERTY x p) "")<br>
+                                     nil<br>
+                                     p<br>
+                                    )<br>
+                                   )<br>
+                                  (SI-LST-GETSAMEMEMBERS (DCL_CONTROL_GETPROPERTIES x) ~all-events)<br>
+                          )<br>
+                    )<br>
+                   )<br>
+                  ~f<br>
+          )<br>
+         )<br>
+        )<br>
+        ;;|||||||||||||||||||<br>
+        (DEFUN multitab (~stl)<br>
+         (MAPCAR '(LAMBDA (x)<br>
+                   (IF (= (TYPE x) 'STR)<br>
+                    (STRCAT "\t\t\t\t\t" x)<br>
+                   )<br>
+                  )<br>
+                 ~stl<br>
+         )<br>
+        )<br>
+        ;;|||||||||||||||||||<br>
+        (DEFUN stampgen ()<br>
+         (STRCAT "\nDate: "<br>
+                 (SI-GET-DATETODAY)<br>
+                 " Time: "<br>
+                 (SI-GET-TIMENOW)<br>
+                 "\nProject "<br>
+                 ~pr<br>
+                 "\nOpenDCL ["<br>
+                 (DCL_GETVERSIONEX)<br>
+                 "] on ACAD "<br>
+                 (GETVAR "acadver")<br>
+                 " "<br>
+                 (GETVAR "_vernum")<br>
+         )<br>
+        )<br>
+        ;;|||||||||||||||||||<br>
+        (DEFUN fap (~s / ~f)<br>
+         (SETQ ~f (OPEN ~file "a"))<br>
+         (IF (= (TYPE ~s) 'STR)<br>
+          (WRITE-LINE ~s ~f)<br>
+          (FOREACH<br>
+                 @st ~s<br>
+           (IF (= (TYPE @st) 'STR)<br>
+            (WRITE-LINE @st ~f)<br>
+           )<br>
+          )<br>
+         )<br>
+         (CLOSE ~f)<br>
+         ~s<br>
+        )<br>
+        ;;|||||||||||||||||||<br>
+        (DEFUN dump-to-file ()<br>
+         (fap (LIST "\n**********************************************************************"<br>
+                    "*** OpenDCL Project Fast Dump by Slavko Ivanovic ***	...dump start"<br>
+                    "--------------------------------------------------"<br>
+                    (stampgen)<br>
+                    "=================================================="<br>
+                    "Forms\t\tControls\t\tEvents/On"<br>
+                    "=================================================="<br>
+              )<br>
+         )<br>
+         (MAPCAR '(LAMBDA (x)<br>
+                   (LIST (fap "--------------------------------------------------")<br>
+                         (fap (STRCAT "" (CAAAR x)))<br>
+                         (fap (multitab (CADAAR x)))<br>
+                         (MAPCAR '(LAMBDA (c) (LIST (fap (STRCAT "\t\t" (CAR c))) (fap (multitab (CADR c))))) (CADR x))<br>
+                   )<br>
+                  )<br>
+                 ~collectall<br>
+         )<br>
+         (fap (LIST "\n--------------------------------------------------"<br>
+                    "*** OpenDCL Project Fast Dump by Slavko Ivanovic ***	...dump end"<br>
+                    "**********************************************************************\n"<br>
+              )<br>
+         )<br>
+        )<br>
+        ;;|||||||||||||||||||<br>
+        (DEFUN clearsyms (~symlst)<br>
+         (SETQ ~syl (VL-SYMBOL-VALUE ~symlst))<br>
+         (LENGTH (MAPCAR '(LAMBDA (x) (SET x nil)) (CONS ~symlst ~syl)))<br>
+        )<br>
+       )<br>
+ )<br>
+ ;; load shi*t end<br>
+ ;;||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+ ;;<br>
+ ;;<br>
+ ;;||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+ ;; main start<br>
+ (OR (AND (SETQ ~e    0<br>
+                ~load (VL-CMDF "OpenDCL")<br>
+          )<br>
+          (SETQ ~e  1<br>
+                ~pr (SI-FILE-OPEN "Select OpenDCL Project file" "odcl")<br>
+          )<br>
+          (SETQ ~e 2<br>
+                ~project<br>
+                (DCL_PROJECT_LOAD ~pr T)<br>
+          )<br>
+          (SETQ ~e 3<br>
+                ~password<br>
+                (SI-UTL-GETSTRING "Password?: " "ENTER for None")<br>
+          )<br>
+          (SETQ ~e 4<br>
+                ~allforms<br>
+                (filter-named-controls (get-all-forms))<br>
+          )<br>
+          (SETQ ~e 5<br>
+                ~collectall<br>
+                (MAPCAR '(LAMBDA (x) (LIST (get-events (LIST x)) (get-events (DCL_FORM_GETCONTROLS x)))) ~allforms)<br>
+          )<br>
+          (PROGN (INITGET 1 "Save Temp")<br>
+                 (SETQ ~e    6<br>
+                       ~file (SI-UTL-GETKWORD "Save dump file or temporary? (Save or Temp): ")<br>
+                 )<br>
+          )<br>
+          (SETQ ~file (IF (EQ ~file "Save")<br>
+                       (SI-FILE-SAVEAS "Save OpenDCL Project Dump file" "txt")<br>
+                       (VL-FILENAME-MKTEMP "dump.txt")<br>
+                      )<br>
+          )<br>
+          (PROGN (dump-to-file) (STARTAPP "NOTEPAD.exe" ~file))<br>
+     )<br>
+     (PRINC (STRCAT "\n * Oops, " (NTH ~e ~error-prompts)))<br>
+ )<br>
+ ;; main end<br>
+ ;;||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||<br>
+ ;;<br>
+ ;;<br>
+ ;; kill shi*t &amp; out<br>
+ (clearsyms '~funcs)<br>
+ (PROMPT "\n © Slavko Ivanovic, -SlavkoSolutions.com")<br>
+ (PRINC)<br>
+)<br>
+<br>
+;; note loaded<br>
+(PROMPT "\n*** OpenDCL Project Fast Dump v.0.2b loaded.")<br>
+(PROMPT "\n*** type OPD [&gt;&gt;enter] to try this")<br>
+(PROMPT "\n*** © Slavko Ivanovic, -SlavkoSolutions.com")<br>
+<br>
+ ;|«Visual LISP© Format Options»<br>
+(120 1 43 2 nil "--&gt;" 100 6 2 0 0 nil nil nil T)<br>
+;*** DO NOT add text below the comment! ***|;<br>
+<br>
+just feel like sharing.<br>
+use if u like it<br>
+<br>
+Slavko<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1039/OPD_v0.2_b.LSP">OPD_v0.2_b.LSP</a> <span class="muted">(12102 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5159">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-14 06:17 UTC</span>
+  </div>
+  <div class="post-body">Hi, Slavko, I'm deeply impressed by your code. I added altered code to avoid that event names must be case sensitive (see Initialize in uppercases in the code).<br>
+<br>
+Great job! This should be part of the OpenDCL samples.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1036/OPD.LSP">OPD.LSP</a> <span class="muted">(9725 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5160">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2009-11-14 11:57 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Thanks Fred.<br>
+When this type of comment comes from you, its "strong" for me, cause i was impressed by your code more than once.<br>
+I like your coding style and ideas.<br>
+<br>
+I updated my post above, and change attachment to updated v02.lsp.<br>
+I added two small things too.<br>
+<br>
+comment to code:<br>
+- usualy i use function like (clearsyms ~symlst) only for OpenDCL event functions lists (unique symbols). <br>
+  In this case maybe is better to localize func names, but i leave this to user to do if get in conflict with namspace symbols.<br>
+- usualy i put some kind of error handling, but for this purpose (diagnostic) i don't think is necessary .<br>
+<br>
+Slavko</div>
+</article>
+<article class="post" id="msg5161">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-14 13:02 UTC</span>
+  </div>
+  <div class="post-body">Slavko,<br>
+<br>
+Very nice functionality. Great example.<br>
+<br>
+Thanks<br>
+Regards<br>
+Kerry</div>
+</article>
+<article class="post" id="msg5163">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-15 05:08 UTC</span>
+  </div>
+  <div class="post-body">Another approach to this would be to capture and parse the output of (dcl_project_dump).</div>
+</article>
+<article class="post" id="msg5164">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2009-11-15 12:30 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1011.msg5163#msg5163 date=1258261715 wrote:</cite><br>
+Another approach to this would be to capture and parse the output of (dcl_project_dump).<br>
+</blockquote><br>
+<br>
+That was the first approach that cross my mind when i started to think to write this, but (at least for me),<br>
+this will be far more complicated and probably less precise (i prefer working with lists). <br>
+<br>
+Anyway, this is all i wanted.<br>
+<br>
+Slavko</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

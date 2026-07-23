@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Combobox of style 0, getting text values input by user · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1968</p>
+    <h1>Combobox of style 0, getting text values input by user</h1>
+    <p class="meta">Started by Carsten ·
+      2013-05-24 08:51 UTC ·
+      4 replies · SMF topic #1968</p>
+<article class="post" id="msg9716">
+  <div class="post-head">
+    <span class="post-author">Carsten</span>
+    <span class="post-date muted">2013-05-24 08:51 UTC</span>
+  </div>
+  <div class="post-body">Hello Forum, <br>
+<br>
+I am using a combobox style 0, because I want the user to have both the option of selecting from defined set of values (the list) or alternatively to type any "free input" in the editfield.<br>
+<br>
+For some reason the user input values shows in the editpart, but I can't retrieve it through the "gettext" ? <br>
+<br>
+Can anybody help me with this (maybe I am missing the obvious)?<br>
+<br>
+PS! I can use "settext" during the oninitialize to place a value in the editfield, which is not included in the "list property" but also that can not be changed.<br>
+<br>
+BR Carsten</div>
+</article>
+<article class="post" id="msg9717">
+  <div class="post-head">
+    <span class="post-author">Carsten</span>
+    <span class="post-date muted">2013-05-24 11:41 UTC</span>
+  </div>
+  <div class="post-body">Hello Carsten, <br>
+<br>
+Just use a string variable to hold the value, it can be set both by the "OnEditChanged" &amp; "OnSelectionChanged" events. <br>
+<br>
+BR<br>
+Carsten<br>
+<br>
+PS! and don't post a question until you have fully explored the problem yourself!<br>
+Sorry,  :)</div>
+</article>
+<article class="post" id="msg9718">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-05-24 14:11 UTC</span>
+  </div>
+  <div class="post-body">Just to clarify, do I understand correctly that you called (dcl_Control_GetText), but it returned an unexpected result? If so, from what context did you call that function, and how did you determine that the returned value was incorrect? In any case, the <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/ComboBox/GetEBText.htm" rel="nofollow noopener">{2}</a> function may be more reliable.</div>
+</article>
+<article class="post" id="msg9719">
+  <div class="post-head">
+    <span class="post-author">Carsten</span>
+    <span class="post-date muted">2013-05-24 15:23 UTC</span>
+  </div>
+  <div class="post-body">Owen, thanks for responding.<br>
+<br>
+Yes, I could not get the "dcl_Control_GetText" to return the value changed by typing. <br>
+Here is some additional info: <br>
+- The combobox list property is defined in OpenCDL studio, Fex.:<br>
+      ItemA<br>
+      ItemB<br>
+      ItemC<br>
+<br>
+- The text property is initially set by the dialogs "oninitialize" it could be a value included in the list (but it works ok also to set it at values not included in the list)<br>
+<br>
+- The edit part accepts and displays all typed input ok<br>
+<br>
+- In the "OK button" control / "onclicked" event before closing dialog, when I try to catch the revised (typed in) text value with the gettext, what I got was the initial value not the one displayed. <br>
+<br>
+<br>
+I will also try the GetEBText <br>
+<br>
+Have a good weekend</div>
+</article>
+<article class="post" id="msg9720">
+  <div class="post-head">
+    <span class="post-author">Carsten</span>
+    <span class="post-date muted">2013-05-24 19:10 UTC</span>
+  </div>
+  <div class="post-body">Owen, <br>
+<br>
+The GetEBText Works fine, so I can trim the editchange and currentselection out of my code, and just pick up the text value in that way.<br>
+<br>
+Thanks<br>
+Carsten</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_project_import in Bricscad · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/11-german.html">GERMAN</a> /
+      Topic 1634</p>
+    <h1>dcl_project_import in Bricscad</h1>
+    <p class="meta">Started by CADwiesel ·
+      2011-06-12 07:30 UTC ·
+      3 replies · SMF topic #1634</p>
+<article class="post" id="msg8066">
+  <div class="post-head">
+    <span class="post-author">CADwiesel</span>
+    <span class="post-date muted">2011-06-12 07:30 UTC</span>
+  </div>
+  <div class="post-body">Ich möchte per dcl_project_import ein Project in Bricscad laden, allerdings bekomme  ich da eine Fehlermeldung:<br>
+<br>
+Die Projektdatei kann nicht geladen werden!<br>
+Die Datei kann entweder nicht gefunden werden oder es ist ein Fehler beim Lesen der Datei aufgetreten.<br>
+<br>
+In Autocad funktioniert es aber prima.<br>
+Wenn ich das Ganze mit der *.odcl und mit Load_Projekt mache geht es.<br>
+<br>
+Irgend eine Idee, wo der fehler liegen könnte?<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8067">
+  <div class="post-head">
+    <span class="post-author">CADwiesel</span>
+    <span class="post-date muted">2011-06-12 12:32 UTC</span>
+  </div>
+  <div class="post-body">ok ich konnte es <a href="http://www.opendcl.com/forum/index.php?topic=901.0" rel="nofollow noopener">{2}</a> lösen</div>
+</article>
+<article class="post" id="msg8073">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-06-13 17:49 UTC</span>
+  </div>
+  <div class="post-body">Hallo, gut, dass Du es lösen konntest, denn ich hätte kein BricsCAD zum Testen gehabt.<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg8079">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2011-06-14 09:31 UTC</span>
+  </div>
+  <div class="post-body">Eine andere Lösung:<br>
+<br>
+1.<br>
+Erstelle eine Textdatei:<br>
+(setq file (open "MyProject_OdclBase64.txt" "w"))<br>
+(write-line (dcl_Project_Export MyProject) file)<br>
+(close file)<br>
+<br>
+2.<br>
+Benutze vl-get-resource zum Laden:<br>
+(if<br>
+  (not<br>
+    (or<br>
+      (dcl_Project_Import (vl-get-resource "MyProject_OdclBase64"))<br>
+      (dcl_Project_Load "MyProject" 'T)<br>
+    )<br>
+  )<br>
+  (progn<br>
+    (princ "\nError: odcl dialog not found ")<br>
+    (exit)<br>
+  )<br>
+)<br>
+<br>
+3. Die Textdatei kann in eine Des-datei mit kompiliert werden (Project Mode).</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

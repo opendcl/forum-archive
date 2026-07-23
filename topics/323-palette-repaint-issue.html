@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Palette repaint issue · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 323</p>
+    <h1>Palette repaint issue</h1>
+    <p class="meta">Started by fred_tomke ·
+      2008-05-14 21:09 UTC ·
+      7 replies · SMF topic #323</p>
+<article class="post" id="msg1416">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-14 21:09 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+using ODCL 5.0.0.15 DEU from May, 12.<br>
+I have some troubles with a palette and I have no workaround yet. It so only in the palette (dcl_form_show layer_sc_layorder) when it is shown docked at show-method. It will be shown correctly after resizing or in floating mode.<br>
+<br>
+Here you can see a video: http://www.opendcl.de/videos/palette/palette.html<br>
+And I attached the project.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/387/layer.zip">layer.zip</a> <span class="muted">(13588 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1417">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-05-14 21:13 UTC</span>
+  </div>
+  <div class="post-body">I think that's a 2009 issue....</div>
+</article>
+<article class="post" id="msg1419">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-14 22:22 UTC</span>
+  </div>
+  <div class="post-body">You're right, Barry, I forgot to mention, that this only occurs in 2009. But that's why I put a rectangle in the background, hoping to avoid that. In other palettes it works, but not in this one.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1427">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-14 23:20 UTC</span>
+  </div>
+  <div class="post-body">There is something in my OnInitialize-function that makes me trouble  &gt;:( .<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1428">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-14 23:25 UTC</span>
+  </div>
+  <div class="post-body">Got it: making something invisible in the OnInitialize causes this effect. When I comment only the lines out where the four controls shall be made invisible, suddenly the dark background appears.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1429">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-15 07:05 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+I believe that the changes which are made in the OnInit-function causes this effect.<br>
+I attached an example.<br>
+You can see the difference what happens when controls are changed (command LAF1) and nothing was changed (command LAF2).<br>
+<br>
+Hope that helps.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/388/080515.zip">080515.zip</a> <span class="muted">(14929 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1496">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-05-22 13:30 UTC</span>
+  </div>
+  <div class="post-body">An additional note:<br>
+<br>
+This problem occurs only if any transparant control is on the form AND in the OnInitialize-function changes the visibility states (dcl_control_setvisible) or values (dcl_control_setalue).<br>
+<br>
+Setting backcolor to -16 (instead of -24) to every rectangle, button, optionbutton, checkbox and label solved this.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1512">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-05-24 19:44 UTC</span>
+  </div>
+  <div class="post-body">Fred, can you post this as a bug report on SourceForge? If possible, please include a very simple sample with as few controls as possible.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

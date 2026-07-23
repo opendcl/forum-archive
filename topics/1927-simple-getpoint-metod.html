@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>simple getpoint metod · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1927</p>
+    <h1>simple getpoint metod</h1>
+    <p class="meta">Started by DanielJ ·
+      2012-12-05 15:01 UTC ·
+      7 replies · SMF topic #1927</p>
+<article class="post" id="msg9440">
+  <div class="post-head">
+    <span class="post-author">DanielJ</span>
+    <span class="post-date muted">2012-12-05 15:01 UTC</span>
+  </div>
+  <div class="post-body">Hi, can anyone  tell why simple command doesnt work, i mean i cannot normally close form and show it back<br>
+routine is simple - on button click<br>
+this code closes form, gets point but doesnt show form1 again<br>
+<br>
+(defun c:Programy_Form1_TextButton3_OnClicked (/)<br>
+(dcl_Form_Close Programy_Form1)<br>
+(setq pkt (getpoint))<br>
+(dcl_Form_Show Programy_Form1)  <br>
+)<br>
+I'm beginner, so dont yell at me</div>
+</article>
+<article class="post" id="msg9441">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2012-12-05 15:27 UTC</span>
+  </div>
+  <div class="post-body">No yelling here:<br>
+<br>
+http://www.opendcl.com/forum/index.php?topic=1080.0</div>
+</article>
+<article class="post" id="msg9442">
+  <div class="post-head">
+    <span class="post-author">DanielJ</span>
+    <span class="post-date muted">2012-12-05 16:02 UTC</span>
+  </div>
+  <div class="post-body">yes i saw it, but i don't really get it<br>
+code in link is in main lisp routine and i want to pick point on event "click button"</div>
+</article>
+<article class="post" id="msg9443">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2012-12-05 18:02 UTC</span>
+  </div>
+  <div class="post-body">See the second post in that link &amp; see the "Selection" example on the advanced tab of the MasterDemo.</div>
+</article>
+<article class="post" id="msg9444">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-12-05 21:33 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=DanielJ link=topic=1927.msg9440#msg9440 date=1354719698 wrote:</cite><br>
+this code closes form, gets point but doesnt show form1 again</blockquote><br>
+<br>
+The call to (dcl_Form_Close) closes the form itself, but the form's code is still running until the callback function returns. Instead of calling (dcl_Form_Show) for the second dialog from within the callback, you have to call it <strong>after</strong> the initial (dcl_Form_Show) returns. The samples demonstrate how to do that by returning a dialog result via (dcl_Form_Close) that you can then use in your main function to determine that the second dialog should be shown after the first is closed.</div>
+</article>
+<article class="post" id="msg9448">
+  <div class="post-head">
+    <span class="post-author">DanielJ</span>
+    <span class="post-date muted">2012-12-06 10:46 UTC</span>
+  </div>
+  <div class="post-body">ok guys, <br>
+I apologize, i was so hurry yesterday that i didnt notice that opendcl has samples in main folder<br>
+<br>
+i still have one small problem in code<br>
+(command "OPENDCL")<br>
+(dcl_Project_Load "Programy" T)<br>
+(dcl_Form_Show Programy_Form1)<br>
+(defun drukuj () (setq pkt (getpoint))<br>
+(setq doContinue T)<br>
+)<br>
+(defun c:Programy_Form1_TextButton3_OnClicked (/)<br>
+        (dcl_form_close Programy_Form1 3)<br>
+)<br>
+    (setq doContinue T)<br>
+    (while doContinue<br>
+        (setq doContinue nil)<br>
+        (setq intResult (dcl_form_show Programy_Form1))<br>
+        (cond<br>
+            ((= intResult 1) (setq doContinue nil))<br>
+            ((= intResult 2) (setq doContinue nil))<br>
+            ((= intResult 3) (drukuj))<br>
+        ); cond<br>
+    )<br>
+<br>
+code works as I want but after second click on TextButton3, i mean after load lsp and clicking textbutton3 it closes form and opens it again, till next click works fine (after click first ask to pick point and after that opens form again)<br>
+<br>
+what is wrong with that code?</div>
+</article>
+<article class="post" id="msg9449">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-12-06 18:39 UTC</span>
+  </div>
+  <div class="post-body">You are showing the form before the needed functions are defined. Move the call to (dcl_Form_Show) to a point after the functions are defined, then it should work.</div>
+</article>
+<article class="post" id="msg9451">
+  <div class="post-head">
+    <span class="post-author">DanielJ</span>
+    <span class="post-date muted">2012-12-10 10:13 UTC</span>
+  </div>
+  <div class="post-body">you're right <br>
+works fine now <br>
+thanks</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

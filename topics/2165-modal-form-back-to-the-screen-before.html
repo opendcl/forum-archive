@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modal form back to the screen before ... · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2165</p>
+    <h1>Modal form back to the screen before ...</h1>
+    <p class="meta">Started by velasquez ·
+      2014-08-29 19:09 UTC ·
+      8 replies · SMF topic #2165</p>
+<article class="post" id="msg10837">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-08-29 19:09 UTC</span>
+  </div>
+  <div class="post-body">I have not had this problem.<br>
+<br>
+<br>
+;;;Close the MODAL FORM<br>
+<br>
+;;;The main function starts here<br>
+(defun JoyQuantificar (JoySelectionSet / ...)<br>
+<br>
+  (defun c:DuctilCAD_RelacaoMateriais_BotaoTabela_OnClicked (/ JoyExportFile JoyObjTable)<br>
+;;;<br>
+;;;Close<br>
+    (dcl_form_close DuctilCAD_RelacaoMateriais)<br>
+;;;Close the form and asks the insertion point for the table<br>
+    (if (null (setq JoyTablePt (getpoint "\nIndique o ponto para o canto superior esquerdo da tabela: "))<br>
+        ) ;_ fim de null<br>
+      (progn ;_ if there is no insertion point<br>
+        (setq JoyNext T) ;_ Back to the form -&gt; OK<br>
+        (princ "\n")<br>
+      ) ;_ fim de progn<br>
+;;;Closes the form and asks the insertion point for the table<br>
+      (setq JoyObjTable<br>
+             (JoyTabelaMaior<br>
+               JoyTablePt<br>
+               (dcl_control_gettext DuctilCAD_RelacaoMateriais_TextBoxTitulo)<br>
+             ) ;_ fim de JoyTabelaMaior<br>
+      ) ;_ fim de setq<br>
+    ) ;_ fim de if<br>
+<br>
+    (if JoyObjTable ;_ Table OK<br>
+      (progn (vlax-release-object JoyObjTable)<br>
+             (princ "\nTabela gerada com sucesso!")<br>
+             (setq JoyNext T) ;_ back to the form<br>
+;;;<br>
+;;;At this point the form has been displayed but the table is not yet on the screen. <br>
+;;;It will only appear when the human form is closed.<br>
+      ) ;_ fim de progn<br>
+    ) ;_ fim de if<br>
+  ) ;_ fim de defun<br>
+;;;<br>
+;;;--------------------------------------------------------------------------<br>
+;;;Creates a table with vla-addtable<br>
+(defun JoyTabelaMaior (JoyTablePt JoyTitulo /)<br>
+;....<br>
+  (setq obj<br>
+         (vla-addtable<br>
+           (JoyGetActiveSpace)<br>
+           (vlax-3d-point (trans JoyTablePt 1 0))<br>
+           (+ 3 (length JoyListaBase)) ; acrescentei a linha do subtitulo<br>
+           (length (car JoyListaBase)) ;_ numero de colunas<br>
+           JoyAlturadoTexto<br>
+           (/ (apply '+ JoyListadasLarguras) (float 8)) ;_ media do total das larguras<br>
+         ) ;_ fim de vla-addtable<br>
+  ) ;_ fim de setq<br>
+;;;Table processes<br>
+<br>
+;;;<br>
+<br>
+  (vla-put-regeneratetablesuppressed obj :vlax-false)<br>
+<br>
+  obj ;- If OK returns the vla-object<br>
+) ;_ fim de defun<br>
+;;;--------------------------------------------------------------------------<br>
+;;;<br>
+;;;Tudo trabalha bem aqui<br>
+(defun c:DuctilCAD_RelacaoMateriais_OnInitialize (/ JoyTitulo JoyQuantidade)<br>
+;;;Quantidade de elementos selecionados<br>
+  (setq JoyQuantidade (sslength JoySelectionSet))<br>
+;;;;<br>
+;;;<br>
+;;;Centraliza o quadro<br>
+  (dcl_form_center DuctilCAD_RelacaoMateriais)<br>
+) ;_ fim de defun<br>
+;;;<br>
+<br>
+;;;This is the loop that has always worked well for me. <br>
+;;;but in this case I can always ask several points of insertion and insert blocks and then back to the form<br>
+<br>
+;;;loop of the form<br>
+  (setq JoyNext T)<br>
+  (while JoyNext<br>
+    (setq JoyNext NIL)<br>
+    (dcl_form_show DuctilCAD_RelacaoMateriais)<br>
+  ) ;_ fim de while<br>
+<br>
+;;;<br>
+) ;_ The main function ends here<br>
+<br>
+<br>
+To work around I am using (initget .. <br>
+to ask the user if he wants to return to the frame or not. <br>
+ODCL_MESSAGEBOX also does what I need.<br>
+<br>
+Has anyone experienced this?<br>
+<br>
+Thanks<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2036/modal_form.png">modal_form.png</a> <span class="muted">(8744 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10838">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-08-29 20:44 UTC</span>
+  </div>
+  <div class="post-body">Hi, have a look here:http://www.opendcl.com/forum/index.php?topic=947.msg4759#msg4759<br>
+Greetings Fred</div>
+</article>
+<article class="post" id="msg10840">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-08-29 23:24 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=2165.msg10838#msg10838 date=1409345099 wrote:</cite><br>
+Hi, have a look here:http://www.opendcl.com/forum/index.php?topic=947.msg4759#msg4759<br>
+Greetings Fred<br>
+</blockquote><br>
+<br>
+Hello Fred, <br>
+I'm sorry but I got confused: <br>
+<br>
+Its function sends (dcl_project_load ProjectName) always before returning the form. <br>
+My form is part of a large project. <br>
+The best way is to create a different project just for this form? <br>
+<br>
+I'm only using a form: <br>
+See the steps: <br>
+1 - Closed - form. <br>
+2 - I ask the point. <br>
+3 - If you create the table and then she is ready I go back to the form. <br>
+4 - If the point is NIL I go back to the form.<br>
+ :(</div>
+</article>
+<article class="post" id="msg10841">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-08-30 05:28 UTC</span>
+  </div>
+  <div class="post-body">You need to move all that code from your c:DuctilCAD_RelacaoMateriais_BotaoTabela_OnClicked event handler. The event handler should contain only the call to (dcl-Form-Close). Move the other code to your main function after the (dcl-Form-Show).</div>
+</article>
+<article class="post" id="msg10842">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-08-30 10:11 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2165.msg10841#msg10841 date=1409376492 wrote:</cite><br>
+You need to move all that code from your c:DuctilCAD_RelacaoMateriais_BotaoTabela_OnClicked event handler. The event handler should contain only the call to (dcl-Form-Close). Move the other code to your main function after the (dcl-Form-Show).<br>
+</blockquote><br>
+<br>
+Thanks Owen, <br>
+I'll do it now.</div>
+</article>
+<article class="post" id="msg10843">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-08-30 13:47 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2165.msg10841#msg10841 date=1409376492 wrote:</cite><br>
+You need to move all that code from your c:DuctilCAD_RelacaoMateriais_BotaoTabela_OnClicked event handler. The event handler should contain only the call to (dcl-Form-Close). Move the other code to your main function after the (dcl-Form-Show).<br>
+</blockquote><br>
+<br>
+<br>
+Hello Owen, <br>
+I made the changes but the code did not work. <br>
+After creating the table was not returned to the table. <br>
+Do you have any working example?</div>
+</article>
+<article class="post" id="msg10844">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-08-30 16:12 UTC</span>
+  </div>
+  <div class="post-body">I don't understand the problem.</div>
+</article>
+<article class="post" id="msg10845">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2014-08-30 16:35 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2165.msg10844#msg10844 date=1409415134 wrote:</cite><br>
+I don't understand the problem.<br>
+</blockquote><br>
+<br>
+Sorry I wrote wrong. <br>
+<br>
+I mean that after the form is closed the table is created, but the code does not bring the form back.</div>
+</article>
+<article class="post" id="msg10847">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-08-30 17:58 UTC</span>
+  </div>
+  <div class="post-body">Hi, velasquez, have a look at the faq: http://www.opendcl.com/forum/index.php?topic=1080.0<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

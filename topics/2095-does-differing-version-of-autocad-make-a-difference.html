@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Does differing version of AutoCAD make a difference · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2095</p>
+    <h1>Does differing version of AutoCAD make a difference</h1>
+    <p class="meta">Started by jrupert ·
+      2014-02-13 16:21 UTC ·
+      4 replies · SMF topic #2095</p>
+<article class="post" id="msg10392">
+  <div class="post-head">
+    <span class="post-author">jrupert</span>
+    <span class="post-date muted">2014-02-13 16:21 UTC</span>
+  </div>
+  <div class="post-body">I have the following code..<br>
+<br>
+(VL-LOAD-COM)<br>
+<br>
+;;;---SHOW FORM<br>
+(DEFUN c:GBSCC (/ dcl_id flag)<br>
+    (COMMAND "OPENDCL")<br>
+    (DCL_PROJECT_LOAD "GBSCC")<br>
+    (SETQ dcl_id (DCL_FORM_SHOW GBSCC_FormGBSCC))<br>
+    (PRINC)<br>
+)<br>
+<br>
+This code base is over 1000 lines...this is just the beginning.<br>
+Developed with AutoCAD 2012 on Windows-XP 32-bit PC.<br>
+Runs OK on versions 2009-2012.<br>
+<br>
+Having problem with version 2013 Win-7 64-bit.<br>
+error: no function defintion: dcl_project_load<br>
+<br>
+Any ideas as to why I an getting this error?<br>
+</div>
+</article>
+<article class="post" id="msg10393">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-02-13 16:29 UTC</span>
+  </div>
+  <div class="post-body">It appears that OpenDCL Runtime is not loading. Which version of OpenDCL is installed? Did you perhaps install AutoCAD 2013 after you installed OpenDCL? If so, just perform a Repair and it should hook up AutoCAD 2013 correctly.</div>
+</article>
+<article class="post" id="msg10394">
+  <div class="post-head">
+    <span class="post-author">jrupert</span>
+    <span class="post-date muted">2014-02-13 17:34 UTC</span>
+  </div>
+  <div class="post-body">I agree.  OpenDCL version 6.0.2.5.  <br>
+I have re-installed the runtime on the particular computer with no issues.<br>
+Started AutoCAD 2013, try to run the LISP file, same error.<br>
+</div>
+</article>
+<article class="post" id="msg10395">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-02-13 17:45 UTC</span>
+  </div>
+  <div class="post-body">Ah, you need to upgrade to at least OpenDCL 7.0 for AutoCAD 2013 support.</div>
+</article>
+<article class="post" id="msg10396">
+  <div class="post-head">
+    <span class="post-author">jrupert</span>
+    <span class="post-date muted">2014-02-13 21:19 UTC</span>
+  </div>
+  <div class="post-body">THANK YOU!<br>
+<br>
+Loaded version 7.0.1.4...works like a charm...but still have a few AutoLisp problems.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

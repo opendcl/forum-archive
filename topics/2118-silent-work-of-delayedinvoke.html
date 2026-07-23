@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Silent work of DelayedInvoke? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2118</p>
+    <h1>Silent work of DelayedInvoke?</h1>
+    <p class="meta">Started by Peter2 ·
+      2014-03-31 09:40 UTC ·
+      3 replies · SMF topic #2118</p>
+<article class="post" id="msg10523">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-03-31 09:40 UTC</span>
+  </div>
+  <div class="post-body">I have  a self-recursive loop, based on Freds suggestion:<br>
+<br>
+(defun c:loop_for_jobs ()<br>
+    (to_something_in_this_code)<br>
+    (dcl_DelayedInvoke (* 1000 dwgr_waitseconds) "(c:loop_for_jobs)")<br>
+)<br>
+<br>
+Everything is fine, but every "invoke" returns a <br>
+Command: (c:loop_for_jobs)<br>
+Command: (c:loop_for_jobs)<br>
+Command: (c:loop_for_jobs)<br>
+Command: (c:loop_for_jobs)<br>
+Command: (c:loop_for_jobs)<br>
+...<br>
+<br>
+For a long time loop now I run into a cosmetic problem with a full log-file  ...<br>
+Is there a way to run it in a "silent mode", to suppress the message?<br>
+<br>
+Thanks<br>
+<br>
+Peter</div>
+</article>
+<article class="post" id="msg10524">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-03-31 11:43 UTC</span>
+  </div>
+  <div class="post-body">Hi, Peter, since dcl_DelayedInvoke invokes a sendCommand you will ever see the command in the history and in the protocol.<br>
+I'm not sure if it is possible to use CommandFlags.NoHistory in OpenDCL (@Owen: what's your opinion?).<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10525">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-03-31 14:19 UTC</span>
+  </div>
+  <div class="post-body">For now there is no way to suppress this from the log if you use (dcl-DelayedInvoke). If you're using OpenDCL 8.0, you may work around the problem by using a timer (i.e. dcl-Form-StartTimer) instead.</div>
+</article>
+<article class="post" id="msg10526">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2014-03-31 14:22 UTC</span>
+  </div>
+  <div class="post-body">Thanks to both of you<br>
+<br>
+at the moment I will stay with version 7. As said above, it is not dramatic, more cosmetic ...</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

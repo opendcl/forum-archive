@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Enabled and Visible controls · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 1004</p>
+    <h1>Enabled and Visible controls</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2009-11-07 00:52 UTC ·
+      2 replies · SMF topic #1004</p>
+<article class="post" id="msg5115">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-07 00:52 UTC</span>
+  </div>
+  <div class="post-body">I've been doing some testing for 6.0.0.10 <br>
+(refer <a href="http://www.opendcl.com/forum/index.php?topic=992.0" rel="nofollow noopener">{2}</a> )<br>
+and this grew out of it.<br>
+<br>
+... thought it may be usefull for some.<br>
+ensure the ODCL is somewhere on your search path <br>
+ie: (findfile "kdub60010.odcl") should return the qualified path\file.<br>
+<br>
+<br>
+;; Test   kdub60010.lsp<br>
+;; 20091107 <br>
+;|&lt;&gt;|;<br>
+(defun c:Test60010 (/ DialogReturn)<br>
+  (command "_OPENDCL")<br>
+  (dcl_Project_Load "kdub60010.odcl" T)<br>
+  ;; Show the main form<br>
+  (setq DialogReturn (dcl_Form_Show kdub60010_Main))<br>
+  ;;------<br>
+  (cond<br>
+    ((= DialogReturn 1) (princ "  .... Dialog Closed \n"))<br>
+    ((= DialogReturn 2) (princ "  .... Dialog Cancelled [ ESC] \n"))<br>
+    ((= DialogReturn 102) (princ "  .... Dialog Cancelled From MessageBox \n"))<br>
+    ((= DialogReturn 106) (princ "  .... User Quit to make Coffee \n"))<br>
+  )<br>
+  (princ)<br>
+)<br>
+ ;|&lt;&gt;|;<br>
+<br>
+ ;|&lt;&gt;|;<br>
+(defun c:Untitled_Main_OnInitialize (/)<br>
+  (dcl_Control_SetVisible kdub60010_Main_TextButton1 nil)<br>
+  (dcl_Control_SetEnabled kdub60010_Main_TextBox1 nil)<br>
+)<br>
+;;-----------<br>
+(defun c:kdub60010_Main_VisibleToggle_OnClicked (Value /)<br>
+  (if (= Value 1)                                                ; if ON      <br>
+    (dcl_Control_SetVisible kdub60010_Main_TextButton1 T)        ; Visible<br>
+    ;; else<br>
+    (dcl_Control_SetVisible kdub60010_Main_TextButton1 nil)      ; NOT Visible<br>
+  )<br>
+)<br>
+;;-----------<br>
+(defun c:kdub60010_Main_EnableToggle_OnClicked (Value /)<br>
+  (if (= Value 1)                                                ; if ON<br>
+    (dcl_Control_SetEnabled kdub60010_Main_TextBox1 T)           ; Enabled<br>
+    ;; else<br>
+    (dcl_Control_SetEnabled kdub60010_Main_TextBox1 nil)         ; NOT Enabled<br>
+  )<br>
+)<br>
+;;-----------<br>
+(defun c:kdub60010_Main_TextButton1_OnClicked (/ response)<br>
+  (setq<br>
+    reponse (dcl_MessageBox "To Do: Go and make a coffee." "Stuff To do" 26 3)<br>
+  )<br>
+  (if (or (= reponse 2)                                          ; Cancel<br>
+          (= reponse 6)                                          ; Yes<br>
+      )<br>
+    (dcl_Form_Close kdub60010_Main (+ 100 reponse))<br>
+  )<br>
+)<br>
+;;-----------<br>
+(defun c:kdub60010_Main_Bye_OnClicked (/)<br>
+  (dcl_Form_Close kdub60010_Main  1)<br>
+)<br>
+<br>
+;;-----------<br>
+;;-----------<br>
+(princ " &lt;&lt; Enter 'Test60010' command to run &gt;&gt; \n")<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1021/kdub60010.odcl">kdub60010.odcl</a> <span class="muted">(1006 bytes)</span></li><li><a href="../attachments/1022/kdub60010.lsp">kdub60010.lsp</a> <span class="muted">(2070 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5116">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-07 04:38 UTC</span>
+  </div>
+  <div class="post-body">Did you attach the wrong .lsp file?</div>
+</article>
+<article class="post" id="msg5117">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-07 05:39 UTC</span>
+  </div>
+  <div class="post-body">yes !<br>
+<br>
+sorry :-[<br>
+<br>
+rectified.<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

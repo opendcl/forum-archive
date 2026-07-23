@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OnKillFocus running while starting &quot;Options&quot;? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2028</p>
+    <h1>OnKillFocus running while starting &quot;Options&quot;?</h1>
+    <p class="meta">Started by Peter2 ·
+      2013-09-20 08:32 UTC ·
+      7 replies · SMF topic #2028</p>
+<article class="post" id="msg10001">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-09-20 08:32 UTC</span>
+  </div>
+  <div class="post-body">I'm creating a dialogue "new tab in Options" with text-fields to enter numbers (real). <br>
+<br>
+The selected event should<br>
+- read the entered value (e.g. '3.14') <br>
+- write it to the registry and <br>
+- give a message: (princ "Value " value " was written to registry.")<br>
+<br>
+Now I'm searching the best "event":<br>
+- "OnEditChanged" is not OK, because while typing "3.14" it runs 4 times<br>
+- "OnKillFocus" seemed to be OK, but this event also starts when I start the "Options" (without "oninitialize")<br>
+<br>
+Questions:<br>
+a) Is is right that OnKillFocus also starts when the "AutoCAD-Options" are called?<br>
+b) Is there another event to handle it immediately - or is is better handle it in the entire dialogue with "OptionOK" and "Show"?<br>
+<br>
+Thanks and regards</div>
+</article>
+<article class="post" id="msg10004">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-09-20 20:29 UTC</span>
+  </div>
+  <div class="post-body">It does seem strange that OnKillFocus fires before OnInitialize, but there is no guarantee about that. In your case, I think you should be using OnOptionsApply.</div>
+</article>
+<article class="post" id="msg10005">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-09-20 20:46 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2028.msg10004#msg10004 date=1379708973 wrote:</cite><br>
+It does seem strange that OnKillFocus fires before OnInitialize, ....<br>
+</blockquote><br>
+Yes. For testing the first lini in OnInitialize is an Alert, and while the alert is display I can see in the command-line that OnKillFocus is already done ..<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=2028.msg10004#msg10004 date=1379708973 wrote:</cite><br>
+....In your case, I think you should be using OnOptionsApply.</blockquote><br>
+This is what I tried, but ..<br>
+a) the "Apply" Button is always disabled (did I miss a command to enable it?)<br>
+b) what will happen when the user changes the tabs without "Apply"? Do I need also a "Show" Event?</div>
+</article>
+<article class="post" id="msg10007">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-09-20 21:19 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Peter2 link=topic=2028.msg10005#msg10005 date=1379710018 wrote:</cite><br>
+For testing the first lini in OnInitialize is an Alert, and while the alert is display I can see in the command-line that OnKillFocus is already done ..<br>
+</blockquote><br>
+<br>
+The alert dialog would take input focus from the options tab, so OnKillFocus would be expected in that case.<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=Peter2 link=topic=2028.msg10005#msg10005 date=1379710018 wrote:</cite><br>
+a) the "Apply" Button is always disabled (did I miss a command to enable it?)<br>
+b) what will happen when the user changes the tabs without "Apply"? Do I need also a "Show" Event?<br>
+</blockquote><br>
+<br>
+a) See <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Form/SetApplyEnabled.htm" rel="nofollow noopener">{2}</a>.<br>
+b) The logic depends on what your goal is. Is it a problem if the user changes tabs without applying the changes? If so, then you must use OnKillFocus.</div>
+</article>
+<article class="post" id="msg10008">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-09-21 11:03 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=2028.msg10007#msg10007 date=1379711992 wrote:</cite><br>
+The alert dialog would take input focus from the options tab, so OnKillFocus would be expected in that case....</blockquote><br>
+I reduced all features step by step ..<br>
+a) use "princ" instead of "alert"<br>
+b) removed "princ"<br>
+c) removed the "c:..oninitialize" code from lisp<br>
+d) removed the "onintialize" event from ODCL<br>
+<br>
+Result: "OnKillFocus" was fired all the time.<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=2028.msg10007#msg10007 date=1379711992 wrote:</cite><br>
+...a) See <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method /Form/SetApplyEnabled.htm" rel="nofollow noopener">{2}</a>....<br>
+</blockquote><br>
+Yes, thank you. That's the way ...</div>
+</article>
+<article class="post" id="msg10009">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-09-21 16:29 UTC</span>
+  </div>
+  <div class="post-body">Still fighting with confusion ..<br>
+<br>
+; mache bei OK das gleiche wie bei Apply<br>
+(defun c:Verdrahtung_opt_verdrahtung_OnOK (/)<br>
+    (c:Verdrahtung_opt_verdrahtung_OnApply)<br>
+)<br>
+;;;;;;;######################################################################<br>
+(defun c:Verdrahtung_opt_verdrahtung_OnApply (/)<br>
+  (dcl_MessageBox "Hier sollte etwas Sinnvolles passieren: An dieser Stelle können Sie nun den Quellcode zur Ereignisfunktion hinzufügen\r\nc:Verdrahtung_opt_verdrahtung_OnApply" "Ereignisfunktion")<br>
+  (dcl_Form_SetApplyEnabled Verdrahtung_opt_verdrahtung nil)<br>
+)<br>
+<br>
+<br>
+In my "options" the Apply-Button is enabled, but a click on it does nothing.<br>
+Click on "OK" calls correctly the "apply-function".<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1916/test.zip">test.zip</a> <span class="muted">(2997 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10010">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-09-21 18:02 UTC</span>
+  </div>
+  <div class="post-body">I can reproduce the problem. It looks like a bug. I will investigate and get it fixed for the next build.</div>
+</article>
+<article class="post" id="msg10011">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-09-21 20:04 UTC</span>
+  </div>
+  <div class="post-body">Thank you.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

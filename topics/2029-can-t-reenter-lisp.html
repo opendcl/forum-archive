@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Can't reenter LISP · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/11-german.html">GERMAN</a> /
+      Topic 2029</p>
+    <h1>Can't reenter LISP</h1>
+    <p class="meta">Started by OPLisp ·
+      2013-09-20 12:50 UTC ·
+      4 replies · SMF topic #2029</p>
+<article class="post" id="msg10002">
+  <div class="post-head">
+    <span class="post-author">OPLisp</span>
+    <span class="post-date muted">2013-09-20 12:50 UTC</span>
+  </div>
+  <div class="post-body">Hallo zusammen,<br>
+<br>
+<br>
+untenstehende Lisp routine <strong>prg</strong> führt zur Fehlermeldung:  <strong>Can't reenter LISP</strong>.<br>
+Das Programm ist verkürzt wieder gegeben. Tatsächlich erfolgt das Laden der OPENDCL Umgebung <br>
+nur, wenn diese noch nicht geladen war. <br>
+Der Fehler wird aber damit ausgelöst, daß der Ladevorgang und der Einfüge Befehl sich in einer Lisp routine befinden.<br>
+Ich verwende AutoCAD 2013. Den Fehler habe ich erst ab OpenDCL.Runtime.7.0.0.12 festgestellt.<br>
+In früheren Versionen war er nicht vorhanden.<br>
+Umgehen kann man den Fehler nur, wenn man den Ladevorgang (z.B. in acaddoc.lsp) und den Einfüge Befehl trennt.<br>
+<br>
+<br>
+<br>
+(defun c:prg ()<br>
+<br>
+ (command "_OPENDCL")<br>
+; ..<br>
+; ..<br>
+ (setq einpkt (getpoint "\nInsertion point: "))    <br>
+ (command "_INSERT" "Block" einpkt "" "" "")<br>
+)<br>
+<br>
+<br>
+Command: PRG<br>
+OpenDCL Laufzeitumgebung [7.0.0.14] wurde geladen<br>
+Insertion point:<br>
+Can't reenter LISP.<br>
+Invalid point.<br>
+Insertion point: nil</div>
+</article>
+<article class="post" id="msg10003">
+  <div class="post-head">
+    <span class="post-author">OPLisp</span>
+    <span class="post-date muted">2013-09-20 12:56 UTC</span>
+  </div>
+  <div class="post-body">Hallo nochmal!<br>
+<br>
+Der Fehler wird durch folgende Kombination ausgelöst. Insert spielt keine Rolle.<br>
+<br>
+(defun c:prg ()<br>
+<br>
+  (command "_OPENDCL")<br>
+; ..<br>
+; ..<br>
+  (setq einpkt (getpoint "\nInsertion point: "))<br>
+)<br>
+<br>
+Grüße</div>
+</article>
+<article class="post" id="msg10006">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-09-20 20:53 UTC</span>
+  </div>
+  <div class="post-body">Ich vermute, da ist vielleicht irgendeine Funktion doppelt definiert. Einerseits haben die beiden Zeilen mit OpenDCL nichts zu tun (ausser dem Laden), und ich habe den Code bei mir (Win 7 64 / 2011) problemlos ausgeführt.<br>
+<br>
+Vorschlag:<br>
+a) Nimm einmal (command "_opendcl") aus dem Code und schaue was passiert.<br>
+b) Benenne das Programm um in "c:hallo". "prg" könnte schon belegt sein.<br>
+c) Stelle sicher, das kein anderes Programm offen ist (Wird prg von einem anderen Lisp gestartet? Hängt irgendetwas aus der Startgruppe?)</div>
+</article>
+<article class="post" id="msg10014">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2013-09-22 20:22 UTC</span>
+  </div>
+  <div class="post-body">Hi, die letzte Version, die ich genutzt habe ich Version 7.0.0.9, was durch meine Zuarbeiten für einen früheren Arbeitgeber begründet ist.<br>
+Das könnte ich morgen abend testen, jetzt habe ich grad kein AutoCAD hier.<br>
+<br>
+VG, Fred</div>
+</article>
+<article class="post" id="msg10018">
+  <div class="post-head">
+    <span class="post-author">OPLisp</span>
+    <span class="post-date muted">2013-09-23 07:10 UTC</span>
+  </div>
+  <div class="post-body">Hallo Peter2<br>
+<br>
+b) und c) kann ich ausschliessen.<br>
+Bei a) ist zu sagen, dass der Fehler nur eintritt wenn OpenDCL wirklich<br>
+geladen wird. Also, beim zweiten Aufruf <strong>prg</strong> ist alles in Ordnung.<br>
+Vielleicht laedst du OpenDCL schon vorher irgendwo zentral.<br>
+<br>
+<br>
+Hallo Fred<br>
+<br>
+der Fehler war  in der Version 7.0.0.7 noch nicht vorhanden.<br>
+<br>
+Danke fuer Eure Mitarbeit!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

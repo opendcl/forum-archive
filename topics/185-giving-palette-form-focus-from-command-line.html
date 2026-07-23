@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Giving Palette Form focus from command line · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/21-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 185</p>
+    <h1>Giving Palette Form focus from command line</h1>
+    <p class="meta">Started by hgcad ·
+      2008-02-16 12:00 UTC ·
+      6 replies · SMF topic #185</p>
+<article class="post" id="msg803">
+  <div class="post-head">
+    <span class="post-author">hgcad</span>
+    <span class="post-date muted">2008-02-16 12:00 UTC</span>
+  </div>
+  <div class="post-body">I got the Palette form to work for most things as in a Dockable form<br>
+except that It won't give focus back to the form  from the command line<br>
+even with (dcl_Control_SetEventInvoke form 0)<br>
+<br>
+<u>List of problems</u><br>
+<br>
+1. - Can not enter values in editbox cells/Though I can set listbox cell values<br>
+2. - Error at start of command in (dcl_Control_SetVisible   form  0)<br>
+3. - Error at start of command in (dcl_Control_SetBlockName    form   BName)<br>
+      property  not found<br>
+<br>
+<br>
+<br>
+<br>
+I have converted my Dockable form to a palette and it looks great.<br>
+<br>
+I like the new capablites thanks.<br>
+<br>
+Help please<br>
+<br>
+hgcad<br>
+</div>
+</article>
+<article class="post" id="msg806">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-02-16 18:59 UTC</span>
+  </div>
+  <div class="post-body">Is the forms new "Keep Focus" property checked?<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg811">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-16 20:05 UTC</span>
+  </div>
+  <div class="post-body">1) Set 'Keep Focus' to True.<br>
+2) The 'Visible' property now accepts only T or NIL as values. <br>
+3) This error means that the control does not have a 'BlockName' property. Which type of control is it?</div>
+</article>
+<article class="post" id="msg812">
+  <div class="post-head">
+    <span class="post-author">hgcad</span>
+    <span class="post-date muted">2008-02-16 22:39 UTC</span>
+  </div>
+  <div class="post-body">Owen thanks for reply.<br>
+<br>
+Here is what I found:<br>
+<br>
+1. - You are right 'Keep Focus' was set to false/ I changed it to true but it made no difference,<br>
+      still not able to enter value in cell editbox.<br>
+<br>
+2. - With 'Keep Focus' set to true when to palette is docked, none of my graphicbuttons could be activated<br>
+      But would work only when form is floating.<br>
+<br>
+3. - The (dcl_Control_SetBlockName    form   BName) was used with a BlockView control,<br>
+      I noticed that (dcl_BlockView_DisplayBlock  form   lBName) receive block name,<br>
+      Taking out 'dcl_Control_SetBlockName' solved this one <br>
+</div>
+</article>
+<article class="post" id="msg818">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-02-17 13:53 UTC</span>
+  </div>
+  <div class="post-body">My palettes aren't keeping focus either.  So any control that requires user input - textbox, editable drop-down, won't work.  Other than that everything seems to be working . . . how cool is that!</div>
+</article>
+<article class="post" id="msg821">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-02-18 00:45 UTC</span>
+  </div>
+  <div class="post-body">In Alpha 5, the KeepFocus problem should be fixed.</div>
+</article>
+<article class="post" id="msg825">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-02-18 14:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">In Alpha 5, the KeepFocus problem should be fixed.</blockquote><br>
+<br>
+<br>
+<br>
+<br>
+SWEET.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

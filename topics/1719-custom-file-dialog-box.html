@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Custom File dialog box · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1719</p>
+    <h1>Custom File dialog box</h1>
+    <p class="meta">Started by pcmanojkumar ·
+      2011-10-31 12:28 UTC ·
+      2 replies · SMF topic #1719</p>
+<article class="post" id="msg8463">
+  <div class="post-head">
+    <span class="post-author">pcmanojkumar</span>
+    <span class="post-date muted">2011-10-31 12:28 UTC</span>
+  </div>
+  <div class="post-body">Hi all,<br>
+<br>
+Can you please tell me, how we can give a default path and filename while intailize the custom File dialog box; is there is any 'set' functions?. <br>
+<br>
+Eg. <br>
+<br>
+(defun c:Forms_AccFileDlg_OnInitialize (/)<br>
+  (setq new_dbPath (vl-registry-read "HKEY_CURRENT_USER\\Software\\Autodesk\\DASO" "DasoDBpath"))<br>
+    (if (and new_dbPath (/= "" new_dbPath))<br>
+		 (if (findfile new_dbPath)<br>
+		     (dcl_Control_<span style="color:red"><strong>Set?????? ???????? ??????)</strong></span><br>
+Regards,<br>
+Manoj</div>
+</article>
+<article class="post" id="msg8464">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-10-31 12:56 UTC</span>
+  </div>
+  <div class="post-body">Hello, and welcome to this board. Please have a look at <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Form/Show.htm" rel="nofollow noopener">{2}</a>. The Show-method of CustomFileDialog recognizes the given argument as the starting path.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8465">
+  <div class="post-head">
+    <span class="post-author">pcmanojkumar</span>
+    <span class="post-date muted">2011-10-31 13:06 UTC</span>
+  </div>
+  <div class="post-body">Thanks buddy... I am learning the Open DCL; Its cool....</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

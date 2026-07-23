@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Combobox, Style 1: set value; remove selection on focus · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2353</p>
+    <h1>Combobox, Style 1: set value; remove selection on focus</h1>
+    <p class="meta">Started by Peter2 ·
+      2016-02-24 14:34 UTC ·
+      9 replies · SMF topic #2353</p>
+<article class="post" id="msg11806">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-02-24 14:34 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+I`m searching two answers of maybe simple questions:<br>
+<br>
+a) I have a Combobox which is feeded via a list. But is it possible to set the default value in the edit field independent from the list?<br>
+(setq list ("A" "B" "C"))<br>
+-&gt; display list in Combox<br>
+-&gt; set default value to "hello"<br>
+<br>
+b) If I set the focus to the list, the entire value is "selected". If I press "Backspace", the entire value will be deleted.<br>
+Is it possible to set the focus to the field, but then release the selection? Then the cursor should be blinking at the end of the string, and "Backspace" delets only the last character of the string<br>
+<br>
+Thanks and regards</div>
+</article>
+<article class="post" id="msg11807">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-02-24 16:20 UTC</span>
+  </div>
+  <div class="post-body">Yes to both questions. Set the <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Property/Text.htm" rel="nofollow noopener">{2}</a> property and use <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/ComboBox/SetEditSel.htm" rel="nofollow noopener">{2}</a> to clear the selection and set the caret to the end of the string.<br>
+<br>
+Edit: Actually, a style 1 combo has no edit box, so your question doesn't make sense. Did you mean style 0?</div>
+</article>
+<article class="post" id="msg11808">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-02-24 21:05 UTC</span>
+  </div>
+  <div class="post-body">But I have Style 1 - see screencast here: http://autode.sk/1QyMJFr<br>
+But trying to use <br>
+(dcl-Control-SetProperty attrib_fill_dia_var_eingabe_comb_inh_dyn "Text" "123")<br>
+results in an error: "Argument 0 - value Nil is not allowed"</div>
+</article>
+<article class="post" id="msg11809">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-02-24 21:30 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I mixed up style 1 and style 2. Style 1 should work fine.<br>
+<br>
+&gt; value Nil is not allowed<br>
+<br>
+I suppose it's either a mistyped symbol name or the form is not active at the time.</div>
+</article>
+<article class="post" id="msg11810">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-02-24 21:35 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2353.msg11809#msg11809 date=1456349437 wrote:</cite><br>
+...or the form is not active at the time.</blockquote><br>
+I tried it in"oninitialize", and that's maybe too soon ...<br>
+Will test tomorrow.<br>
+<br>
+Thanks Owen!</div>
+</article>
+<article class="post" id="msg11811">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-02-25 03:11 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Peter2 link=topic=2353.msg11810#msg11810 date=1456349706 wrote:</cite><br>
+I tried it in"oninitialize", and that's maybe too soon ...</blockquote><br>
+<br>
+It should work in OnInitialize, so check your symbol name.</div>
+</article>
+<article class="post" id="msg11812">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-02-25 09:04 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+the writing of the text to the edit field is OK now - I don't know what I messed up yesterday.<br>
+<br>
+But I can not use SetEditSel in the right way. Here is the code - the first routine only calls the dialogue with "dcl_Form_Show". The second routine reads some values and writes them to labels and to the list and sets the focus - everything is fine, but nothing happens with SetEdit Sel.<br>
+<br>
+I tried some combinations: -1 0 / -1 10 / -1 nil / -1.0 0.0 / 1 2 /, but either everything was selected or I got an error.<br>
+<br>
+(defun attf_dynamisch_dialog ( / )<br>
+    (setq attf_result (dcl_Form_Show attrib_fill_dia_var_eingabe))<br>
+<br>
+    ; ESC gibt immer Wert 2 zurück<br>
+    (if (= attf_result 2)<br>
+        (progn<br>
+            (princ "\nDas Programm wurde durch den Anwender abgebrochen.")<br>
+            (exit)<br>
+        )<br>
+    )<br>
+    (princ)<br>
+)<br>
+<br>
+<br>
+(defun c:attrib_fill_dia_var_eingabe_OnInitialize ( / )<br>
+    (dcl_Control_SetCaption attrib_fill_dia_var_eingabe_lbl_attrib_def_inhalt (cdr (assoc 2 attf_elliste)))<br>
+    (dcl_Control_SetCaption attrib_fill_dia_var_eingabe_lbl_attrib_inh_inhalt (cdr (assoc 1 attf_elliste)))<br>
+<br>
+    (if (= (strcase attribtext) "[???]")<br>
+        (dcl_Control_SetCaption attrib_fill_dia_var_eingabe_lbl_attrib_typ_inhalt "eine Abfrage pro Block ")<br>
+        (dcl_Control_SetCaption attrib_fill_dia_var_eingabe_lbl_attrib_typ_inhalt "eine Abfrage pro Durchlauf")<br>
+    )<br>
+    (if attf_eingabeliste<br>
+        (dcl_Control_SetList attrib_fill_dia_var_eingabe_comb_inh_dyn (append attf_eingabeliste attf_musterliste))<br>
+        (dcl_Control_SetList attrib_fill_dia_var_eingabe_comb_inh_dyn attf_musterliste)<br>
+    )<br>
+    (dcl_Control_SetProperty attrib_fill_dia_var_eingabe_comb_inh_dyn "Text" (cdr (assoc 1 attf_elliste)))<br>
+    (dcl_ComboBox_SetEditSel attrib_fill_dia_var_eingabe_comb_inh_dyn -1 0)<br>
+    (princ)<br>
+)</div>
+</article>
+<article class="post" id="msg11813">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-02-25 14:10 UTC</span>
+  </div>
+  <div class="post-body">I suspect you're getting tripped up by a focus change. After playing a bit, I can see that setting focus to a combo automatically selects everything in the edit field. Therefore it would be pointless to change the edit selection unless the combo box _already has focus_, otherwise the selection will be wiped out anyway once focus is set to the combo box.<br>
+<br>
+If my theory is correct, it will be useless then to set the edit selection during OnInitialize because setting focus to the first control happens after OnInitialize returns.<br>
+<br>
+You could try in OnInitialize to first set focus to the combo (using <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Control/SetFocus.htm" rel="nofollow noopener">{2}</a>), then set the edit selection immediately after, just in case this makes the final SetFocus not wipe out the selection. Another idea is to ensure that the combo box is the first control on the form (so it receives initial focus), then from OnInitialize call <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Function/DelayedInvoke.htm" rel="nofollow noopener">{2}</a> to set edit selection after initialization has completed.<br>
+<br>
+In any case, to set the caret at the end of the text with nothing selected, SetEditSel parameters should both be the text length.</div>
+</article>
+<article class="post" id="msg11814">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2016-02-25 16:59 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2353.msg11813#msg11813 date=1456409413 wrote:</cite><br>
+... then from OnInitialize call <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Function/DelayedInvoke.htm" rel="nofollow noopener">{2}</a> to set edit selection after initialization has completed....</blockquote><br>
+Hmmm - the delayed-function starts when the called dialogue is closed - too late.<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=2353.msg11813#msg11813 date=1456409413 wrote:</cite><br>
+In any case, to set the caret at the end of the text with nothing selected, SetEditSel parameters should both be the text length.<br>
+</blockquote><br>
+So this is different from the help file which describes a solution with "-1" for "all or nothing" (but I didn't understand this sentence in help ..)</div>
+</article>
+<article class="post" id="msg11815">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-02-25 21:37 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Peter2 link=topic=2353.msg11814#msg11814 date=1456419594 wrote:</cite><br>
+Hmmm - the delayed-function starts when the called dialogue is closed - too late.</blockquote><br>
+<br>
+Ok, in that case you can use the <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Event/Timer.htm" rel="nofollow noopener">{2}</a> event.<br>
+<br>
+<blockquote class="quote"><cite> author=Peter2 link=topic=2353.msg11814#msg11814 date=1456419594 wrote:</cite><br>
+So this is different from the help file which describes a solution with "-1" for "all or nothing" (but I didn't understand this sentence in help ..)<br>
+</blockquote><br>
+<br>
+I guess selecting "nothing" means the caret position doesn't change, but since you specifically want the caret at the end, I think you have to specify the position explicitly.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_Control_SetTitleBarText &amp; NewProjectKey · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 799</p>
+    <h1>dcl_Control_SetTitleBarText &amp; NewProjectKey</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-06-09 16:19 UTC ·
+      7 replies · SMF topic #799</p>
+<article class="post" id="msg3929">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-06-09 16:19 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I meet this kind of problem with titleBar,<br>
+I use the NewProjectKey when loading OpenDCL project, like this :<br>
+<br>
+<br>
+; #gpe:debug:ReloadOpenDclBoxes is T<br>
+(dcl_Project_Load "boite.projet.odcl" #gpe:debug:ReloadOpenDclBoxes "GPE:LOAD:PRO") <br>
+; Load opendcl project<br>
+; Set Project key to "GPE:LOAD:PRO"<br>
+(dcl_Form_Show "GPE:LOAD:PRO" "GPE:PROJET") ; Show dalog box<br>
+(dcl_Control_SetVisible "GPE:LOAD:PRO" "GPE:PROJET""gpe:nouveau" false) ; some request<br>
+(dcl_Control_SetCaption "GPE:LOAD:PRO" "GPE:PROJET""gpe:ouvrir" "Consulter") ; some request<br>
+(dcl_Control_SetTitleBarText "GPE:LOAD:PRO" "GPE:PROJET" "oooo") ; Does not work !<br>
+<br>
+<br>
+<br>
+<br>
+(dcl_Control_SetTitleBarText "GPE:LOAD:PRO" "GPE:PROJET" "oooo") ; Does not work !<br>
+(dcl_Control_SetTitleBarText GPE:LOAD:PRO_GPE:PROJET "ooo") ; good, but not my way ...<br>
+<br>
+<br>
+Thanks for suggest and reply.</div>
+</article>
+<article class="post" id="msg3931">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-09 16:38 UTC</span>
+  </div>
+  <div class="post-body">Hm, I'm really not familiar with changing projectkeys, just two thoughts:<br>
+<br>
+1. Have you ever thought about using the variables instead of text keys? I worked with text keys in the old ObjectDCL and I'm turning to the variables now.<br>
+<br>
+2. Have you ever tried to test without any special chars like ":" and "."? In the past we had problems with additional "." in filenames...<br>
+<br>
+I do not feel competent enough to answer.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3932">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-06-09 17:12 UTC</span>
+  </div>
+  <div class="post-body">Hello !<br>
+<br>
+I always use "text keys", why should i use variables specially for this dcl_control ???<br>
+<br>
+In fact, that's because i often use same soft for different dialog boxes, so i just have to change my text keys for each box, like this:<br>
+<br>
+<br>
+(dcl_Control_SetTitleBarText $var1 $var2 "My title")<br>
+<br>
+<br>
+and change $var1 and $var2 depending of diplayed boxes !<br>
+<br>
+Using "." instead ":" does not change anything !<br>
+<br>
+Aborting NewProjectKey does not change anything ....  :-[  still displaying this message :<br>
+<br>
+(dcl_Project_Load "boite.projet.odcl")<br>
+<br>
+<br>
+<blockquote class="quote"><br>
+An OpenDCL function argument processing exception has occured !<br>
+Error: no object instance<br>
+Function : dcl_Control_SetTitleBarText<br>
+Argument : 3<br>
+</blockquote><br>
+<br>
+Another thing :<br>
+The older command was <strong>dcl_Form_SetTitleBarText</strong> (not control) but does not work at all ! same error message !<br>
+<br>
+<br>
+Thanks !</div>
+</article>
+<article class="post" id="msg3936">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-06-09 19:28 UTC</span>
+  </div>
+  <div class="post-body">Maybe find a soluce ....<br>
+<br>
+First, i think i must givup calling dcl by ascii value like "project" "box" !<br>
+<br>
+I create a function for translate ascii value to entity name<br>
+<br>
+<br>
+(defun @dcl_Project ( / )<br>
+	(eval(read(strcat @$OpenDcl:Project "_" @$OpenDcl:Dialog)))<br>
+     )<br>
+<br>
+<br>
+and send value by calling function :<br>
+<br>
+<br>
+(defun @GPE:PROJET:CHK (@$OpenDcl:Project @$OpenDcl:Dialog / )<br>
+    ***<br>
+    ***<br>
+    ***<br>
+				       (dcl_Control_SetTitleBarText (@dcl_Project) "Title")<br>
+				       (dcl_Control_SetCaption (@dcl_Project) "Label_1" "Comment :")<br>
+				       (dcl_PictureBox_LoadPictureFile (@dcl_Project) "PictureBox" "mylogo.jpg")<br>
+)<br>
+<br>
+<br>
+and call it like this :<br>
+<br>
+<br>
+(@GPE:PROJET:CHK "MYF:DIAL1" "BOX1")<br>
+<br>
+<br>
+thanks.</div>
+</article>
+<article class="post" id="msg3937">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-09 19:59 UTC</span>
+  </div>
+  <div class="post-body">I have fixed the code for Beta 6 so that it recognizes that the third string is not the control name when calling e.g. (dcl_Control_SetTitleBarText "GPE:LOAD:PRO" "GPE:PROJET" "oooo") and no control with the name "oooo" exists in the specified form. Using the VarName lisp symbols is much more efficient and less error prone, and I recommend changing your code in any case.</div>
+</article>
+<article class="post" id="msg3938">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-06-09 20:11 UTC</span>
+  </div>
+  <div class="post-body">stephan_35,<br>
+<br>
+I know that using string may offer advantages. As I already mentioned, in further times I used string keys, too. Later I had the feeling that using the VarNames the access to controls is much faster, but that may be only my experience.<br>
+<br>
+As you noted, converting strings to symbols is a solution. When converting my old ObjectDCL code to OpenDCL I created the same as you:<br>
+<br>
+(defun control (strC) (eval (read (strcat "signothek_" strForm "_" strC)))) ;; as local function<br>
+(defun visible (strC) (dcl_Control_SetVisible (control strC) T))<br>
+<br>
+And later in the code I do:<br>
+<br>
+<br>
+(if (isUserUsesFlyingForm)<br>
+  (setq strForm "PaletteCatalog")<br>
+  (setq strForm "ModalCatalog")<br>
+); if<br>
+[...]<br>
+(mapcar 'visible '("pb_einz" "pb_lin" "pb_flac"))<br>
+<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3939">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-06-10 07:42 UTC</span>
+  </div>
+  <div class="post-body"><strong>@Fred Tomke</strong><br>
+<br>
+Thanks for your examples, i miss something with my example, like sending variable throw functions not working and change it yesterday night like yours ...   ;)<br>
+<br>
+<br>
+(defun @dcl_ ( @&amp;liste / @$tmp )<br>
+     (foreach $tmp @&amp;liste<br>
+	  (if @$tmp<br>
+	      (setq @$tmp (strcat @$tmp "_" (eval $tmp)))<br>
+	      (setq @$tmp (eval $tmp))<br>
+	      )<br>
+	  )<br>
+	(eval(read @$tmp))<br>
+     )<br>
+....<br>
+(dcl_Control_GetText (@dcl_ '( @$Dcl:P @$Dcl:D "dcl_controle")))<br>
+<br>
+<br>
+Anyway, thanks a lot for your help !!!<br>
+<br>
+<br>
+<strong>@owenwengerd</strong><br>
+<br>
+Thanks for your reply, but am i alone using this kind of calling method  ???<br>
+Because error maybe appear between V4x and V5x ...<br>
+Should be better for you to give up this one (calling with string).<br>
+<br>
+Any way, i use now default varnames !</div>
+</article>
+<article class="post" id="msg3950">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-06-10 13:43 UTC</span>
+  </div>
+  <div class="post-body">Strings are still supported mainly for backward compatibility. Since all the samples use symbols, I imagine that most recent OpenDCL users don't even know that it's possible to use strings.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

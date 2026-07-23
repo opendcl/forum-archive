@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DragDrop move method in tree view · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1204</p>
+    <h1>DragDrop move method in tree view</h1>
+    <p class="meta">Started by fred_tomke ·
+      2010-03-14 17:56 UTC ·
+      21 replies · SMF topic #1204</p>
+<article class="post" id="msg6448">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-14 17:56 UTC</span>
+  </div>
+  <div class="post-body">Hello, today I have two questions:<br>
+<br>
+1. How can I determine that the dragged tree view item has to be moved before the dropped item (as a sibling item) and NOT below the dropped item (as a child item)? I want to move an item between two items within the same parent <strong>using the standard drag&amp;drop move operation</strong>.<br>
+<br>
+2. In the old ObjectDCL the DragDropFromControl event returned -1 as uDropPoint argument in the case the user has dropped the dragged item into empty space below the last item. I used this for the case a dragged child item shall be moved to the top level (root; shall become a parent item). How can I move a child item to the root?<br>
+<br>
+It is very important for me.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6449">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-14 18:18 UTC</span>
+  </div>
+  <div class="post-body">Hi, I've attached a video for better understanding. In this form the user can add favorite LISP Tools and commands for fast implementation. He can also group them into folders. In this case you cannote see folder because the user hasn't created folders yet. Macros and LISP Tools cannot be child of other Macros and LISP Tools. But the dragndrop peration can be used for re-arranging them.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1329/dragdroptree.gif">dragdroptree.gif</a> <span class="muted">(98681 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6450">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-14 21:00 UTC</span>
+  </div>
+  <div class="post-body">From looking at the code, it looks like the DragDropFromControl event should pass an item key of zero when dropping in an empty space.  I could easily change that to -1 if you prefer.  As for building in logic to decide whether to add as a child or a sibling, I'm not sure how that could be done programmatically, but I'm open to ideas.</div>
+</article>
+<article class="post" id="msg6451">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-14 21:14 UTC</span>
+  </div>
+  <div class="post-body">Owen, zero would be ok, too. But now it is not possible to get any value in this case. As you can see in the video a stop sign is shown when moving the mouse over empty space - that's why nothing will be returned in uDropItem.<br>
+<br>
+For the other thing I don't have any idea, too - maybe it can controlled by a returning key of DragBegin event or DragOver event... But it's only a thought....<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6452">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-14 23:00 UTC</span>
+  </div>
+  <div class="post-body">The return value from your OnDragOverFromControl handler function would determine whether a drop is allowed in the blank area. I did a quick test and was able to drop into empty space in the tree sample.<br>
+<br>
+The problem with returning a key for DragBegin or DragOver is that it would need to be designed to still allow the current return values somehow. It would be possible to change the insertion type depending on where on the tree item the drop occurs. For example, it could insert a sibling key if the drop occurs to the left of the icon, or a child otherwise. Unfortunately that would not solve your problem because it would not allow programmatic control. I think the only solution is for you to handle he DragOver and Drop events in your own code.</div>
+</article>
+<article class="post" id="msg6455">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-15 07:22 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1204.msg6452#msg6452 date=1268607631 wrote:</cite><br>
+The return value from your OnDragOverFromControl handler function would determine whether a drop is allowed in the blank area. I did a quick test and was able to drop into empty space in the tree sample.<br>
+</blockquote><br>
+<br>
+I'm wondering, how did you do that. I've changed my code and the OnDragOver event passes an entity for uDropItem argument:<br>
+<br>
+OnDragOverFromControl: <br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6456">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-15 08:08 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1204.msg6452#msg6452 date=1268607631 wrote:</cite><br>
+ I think the only solution is for you to handle he DragOver and Drop events in your own code.<br>
+</blockquote><br>
+<br>
+Owen, I'd like to do that. But unfortunately, the dragged item will be deleted after DragDropFromControl event was left.<br>
+OnDragBegin = active; returns 2<br>
+OnDragOver = active; returns 2<br>
+OnDragDrop = active, does nothing<br>
+After OnDragDrop was finished, the dragged item will get removed. I thing it should not get deleted when OnDragDrop is active and defined. But maybe I'm wrong...<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6459">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-15 15:29 UTC</span>
+  </div>
+  <div class="post-body">I will see if I can change the "null" entity name to NIL, otherwise it isn't very easy to test for that value.<br>
+<br>
+Regarding copy vs. move, I don't understand the problem. To copy instead of move, just return 1 from OnDragOver.</div>
+</article>
+<article class="post" id="msg6462">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-15 16:08 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1204.msg6459#msg6459 date=1268666970 wrote:</cite><br>
+To copy instead of move, just return 1 from OnDragOver.<br>
+</blockquote><br>
+<br>
+I don't want to <strong><s>copy</s></strong>, I want to <strong><u>move</u></strong> the item. I thought when OnDragDropFromControl is active the item will be moved and not deleted.<br>
+I've attached a small sample. The items and subitems shall be re-arranged by the move method. You've told me to do it within OnDragDropFromControl event. I want to do that but although the event is active and defined the dragged item will be removed.<br>
+<br>
+If I deactivate DragDropFromControl event then the dragged item will be moved but I don't have any chance to avoid that an item will get a child of an item (I want to insert it between two items if the dropitem is not a folder).<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1332/tree.LSP">tree.LSP</a> <span class="muted">(1528 bytes)</span></li><li><a href="../attachments/1333/proj.odcl">proj.odcl</a> <span class="muted">(1523 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6463">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-15 16:39 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1204.msg6462#msg6462 date=1268669303 wrote:</cite><br>
+I thought when OnDragDropFromControl is active the item will be moved and not deleted.</blockquote><br>
+<br>
+I don't think it would work to change what happens in the source item based on whether or not an event handler exists for the destination. In theory the only communication between destination and source is the returned integer that determines whether it was a move or a copy. Given that limitation, and the fact that a drag operation can originate from the same control or from a different control, it seems like a risky attempt to guess at what should happen in the source control.<br>
+<br>
+I will have a look at your sample later today to see if I can understand the problem.</div>
+</article>
+<article class="post" id="msg6464">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-15 16:46 UTC</span>
+  </div>
+  <div class="post-body">I just looked at your sample. I expected your OnDragnDropFromControl to insert the source item as a sibling of the target item. What exactly did not work as you expected?</div>
+</article>
+<article class="post" id="msg6465">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-15 17:37 UTC</span>
+  </div>
+  <div class="post-body">I only wanted to show you that the dragged item will be removed after dropping it. And that's what I don't want. Of course I could move the item by myself but it would deleted by OpenDCL after finishing OnDragDropFromControl event.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1334/treedrag.gif">treedrag.gif</a> <span class="muted">(28395 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6466">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-15 17:51 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I am still confused. Let's consider the two possible operations here: a move or a copy. A move operation causes the source item to be deleted, a copy operation causes the source item to remain undisturbed. So which of these two possible operations do you want?</div>
+</article>
+<article class="post" id="msg6467">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-15 18:55 UTC</span>
+  </div>
+  <div class="post-body">Do I understand it right that automatic "moving" (when all DragnDrop events are turned off) does <strong>not mean</strong> that an item will be actually moved, but deleted from the old parent and inserted at the drop point anew?<br>
+<br>
+Depending on my problem let me ask it this way: does it make sense that OpenDCL removes the dragged item after finishing OnDragDropFromControl although the active OnDragDropFromControl event wants to control it by itself (and not by OpenDCL)?<br>
+<br>
+Please, have a look at the project I attached in this post or look at the new video. Maybe it explains my problem a bit better.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1335/treedrag.gif">treedrag.gif</a> <span class="muted">(265515 bytes)</span></li><li><a href="../attachments/1336/proj.odcl">proj.odcl</a> <span class="muted">(1523 bytes)</span></li><li><a href="../attachments/1337/tree.LSP">tree.LSP</a> <span class="muted">(2628 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6468">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-15 19:12 UTC</span>
+  </div>
+  <div class="post-body">It is correct to say that drag and drop does not literally move anything. "Move" is just a way of signalling to the caller that the source should be deleted after the operatio is completed. Perhaps it will help if you see the logic of a drag and drop operation from the perspective of the source object:<br>
+<br>
+1) In the LeftButtonDown handler of e.g. the tree control, call DoDragDrop(). This function does not return until the operation is completed or cancelled.<br>
+2) If the return value is , delete the source item.<br>
+<br>
+Note that the source does not know or care where the drop occurred. In fact, there is some special code that keeps track of any items that are inserted in the same control during the drop so that the correct source item is deleted in the event the drop was a . The important point is that by the time the source object reacts to the operation, the drop is already complete.</div>
+</article>
+<article class="post" id="msg6469">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-15 19:47 UTC</span>
+  </div>
+  <div class="post-body">I tested your latest sample and it works as expected even though you are deleting the source item from within the drop handler. I'm not sure why you get different results.</div>
+</article>
+<article class="post" id="msg6472">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-15 23:41 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1204.msg6469#msg6469 date=1268682447 wrote:</cite><br>
+I tested your latest sample and it works as expected even though you are deleting the source item from within the drop handler. I'm not sure why you get different results.<br>
+</blockquote><br>
+<br>
+Yes, you are right: I've justed this sample on AutoCAD Map 2010 x64 on Win7 x64. There is a significant difference to AutoCAD Civil 3D 2009 on WinXP x86 and Map 2010 x64 on Vista x64: Only on Windows 7 x64 the dragged item will be kept. I would backtrack this topic if the way it works on Win7 x64 it also works on Windows XP and Windows Vista.  ;)<br>
+<br>
+Other question towards this: you wrote<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1204.msg6468#msg6468 date=1268680342 wrote:</cite><br>
+2) If the return value is , delete the source item.<br>
+</blockquote><br>
+<br>
+Would it be possible to extend the if condition for the case the event handler DragDropFromControl ist active?<br>
+= 2) If the return value is  and the eventhandler name &lt;&gt; "", then delete the source item.<br>
+<br>
+Just a thought.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6474">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-16 02:08 UTC</span>
+  </div>
+  <div class="post-body">The AddSibling function should fail when it is called after the target key has already been deleted, but for some reason it works anyway in AutoCAD 2010. I tested in AutoCAD 2004, and the AddSibling function fails there as I would expect. I was going to suggest simply removing the calls to DeleteItem, but this presents a different problem: AddSibling fails in that case because the item key would be a duplicate.<br>
+<br>
+To address the problem, I have made some changes for the next build so that DeleteItem within the drop handler works as you expected, and the source item correctly recognizes that it has already been deleted. I think this will resolve the problem and allow your latest sample to work the way you want.<br>
+<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=1204.msg6472#msg6472 date=1268696509 wrote:</cite><br>
+Would it be possible to extend the if condition for the case the event handler DragDropFromControl ist active?<br>
+= 2) If the return value is  and the eventhandler name &lt;&gt; "", then delete the source item.</blockquote><br>
+<br>
+In addition to the problem that I explained in the previous post, the source object would have no way of knowing where it was dropped, and so it would have no independent way of determining whether the event handler existed at the drop point. In any case, I thinkthe problem is now resolved. </div>
+</article>
+<article class="post" id="msg6480">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-16 06:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1204.msg6474#msg6474 date=1268705282 wrote:</cite><br>
+The AddSibling function should fail when it is called after the target key has already been deleted.<br>
+</blockquote><br>
+<br>
+Hm, I cannot see where I should have deleted the target item. I my code I have deleted the dragged item. Of course, AddSibling must fail if the target item was deleted before.<br>
+<br>
+However, thanks Owen for your patience. I am looking forward to test the new release.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6481">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-16 13:26 UTC</span>
+  </div>
+  <div class="post-body">I should have said "source item" instead of "target key".</div>
+</article>
+<article class="post" id="msg10388">
+  <div class="post-head">
+    <span class="post-author">awybo</span>
+    <span class="post-date muted">2014-02-12 00:01 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen, Hi Fred,<br>
+<br>
+I've followed your dialog here and have gone through the code that has been posted because I am also trying to build a tree where I can re-order, or, 'move' items around without nesting them. Seeing as this thread is quite old, I'm wondering if there is some 'new' way to achieve this behaviour in release 7?<br>
+<br>
+Otherwise, the problem that I am facing right now is that I have a tree of items where the parents have keys but the children do not. The DropPoint variable of OnDragnDropFromControl is useful when the item has a key, but, when it doesn't, instead of getting the item's handle DropPoint becomes an entity name and I'm not sure how to use that information to do anything useful like add a sibling. Is this a bug? I was expecting a handle if the tree item doesn't have a key.<br>
+<br>
+Thanks for taking a look at this entry.</div>
+</article>
+<article class="post" id="msg10391">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-02-12 14:29 UTC</span>
+  </div>
+  <div class="post-body">The "entity name" is not an entity name -- it is the item handle.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

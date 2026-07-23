@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SetColumnCaptionList/SetColumnImage clears grid control · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1936</p>
+    <h1>SetColumnCaptionList/SetColumnImage clears grid control</h1>
+    <p class="meta">Started by Jürg Menzi ·
+      2012-12-28 15:54 UTC ·
+      13 replies · SMF topic #1936</p>
+<article class="post" id="msg9492">
+  <div class="post-head">
+    <span class="post-author">Jürg Menzi</span>
+    <span class="post-date muted">2012-12-28 15:54 UTC</span>
+  </div>
+  <div class="post-body">Hi all<br>
+<br>
+I've a problem with this both methods. If I change a header icon or text the grid will be cleared.<br>
+Is this a known 'feature' or did I miss something?<br>
+<br>
+Thank you<br>
+Cheers</div>
+</article>
+<article class="post" id="msg9493">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-12-28 20:30 UTC</span>
+  </div>
+  <div class="post-body">I took a quick look at the code. It looks like there are some layout features of columns that cannot be changed after the column is created, so setting any of the column list properties is done by first deleting all columns, then recreating them. That results in cell values being cleared. It might be possible to save and restore cell values, but there would be some complexity in dealing with changes in the number of columns. Do you have a compelling case for settings column headers after the grid is populated?</div>
+</article>
+<article class="post" id="msg9494">
+  <div class="post-head">
+    <span class="post-author">Jürg Menzi</span>
+    <span class="post-date muted">2012-12-29 10:12 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1936.msg9493#msg9493 date=1356726637 wrote:</cite><br>
+(...) Do you have a compelling case for settings column headers after the grid is populated?<br>
+</blockquote><br>
+Unfortunately yes:<br>
+I've tried to set a sort symbol by OnColumnClick event to the current column like ▼ or ▲. Used both ways by changing the caption list  to '▼ColTitle' or using the controls picture list.<br>
+Do you think there is a way to do this without rebuild the datagrid? The problem is, I've between 500 and 1000 rows to rebuilt and that's time-consuming.<br>
+<br>
+Thank you<br>
+Cheers<br>
+Jürg<br>
+<br>
+BTW, I used this a time ago successfully in VB's and VBA's grid controls without problems.<br>
+</div>
+</article>
+<article class="post" id="msg9496">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-12-29 18:33 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Jürg Menzi link=topic=1936.msg9494#msg9494 date=1356775924 wrote:</cite><br>
+I've tried to set a sort symbol by OnColumnClick event to the current column like ▼ or ▲.</blockquote><br>
+<br>
+Ah, for that you should use <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Grid/SetColumnImage.htm" rel="nofollow noopener">{2}</a>. Let me know if that works for you.</div>
+</article>
+<article class="post" id="msg9497">
+  <div class="post-head">
+    <span class="post-author">Jürg Menzi</span>
+    <span class="post-date muted">2013-01-02 10:23 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+As I wrote already, both methods SetColumnCaptionList and SetColumnImage clears the grid... :(<br>
+<br>
+I wish you a happy new year!<br>
+Cheers<br>
+Jürg</div>
+</article>
+<article class="post" id="msg9499">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-01-02 15:09 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Jürg Menzi link=topic=1936.msg9497#msg9497 date=1357122228 wrote:</cite><br>
+As I wrote already, both methods SetColumnCaptionList and SetColumnImage clears the grid... :(</blockquote><br>
+<br>
+Hmm, I assumed that you had mixed up SetColumnImage and SetColumnImageList, but I see now there is no SetColumnImageList. I looked at the code, and as best I can tell SetColumnImage should not reset the grid contents as it simply changes the image in the heder control. Please verify your previous results. If you are sure it does reset the grid contents, I will check it here under the debugger to find out why.</div>
+</article>
+<article class="post" id="msg9501">
+  <div class="post-head">
+    <span class="post-author">Jürg Menzi</span>
+    <span class="post-date muted">2013-01-03 08:00 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+You're right, the SetColumnImage method works without clearing the grid but, there is another reason why I've refused this method:<br>
+The icons waste - independend of size - an enormous space in the header (see pic). That looks not professional in an application. Is there a way to resize this space?<br>
+<br>
+Cheers<br>
+Jürg<br>
+<br>
+<a href="http://www.imagebanana.com/view/lx5c5ph8/GridHeaderProblem.jpg" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg9502">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-01-03 14:22 UTC</span>
+  </div>
+  <div class="post-body">When does the extra space get added? Does it increase each time you call SetColumnImage? I recall that the space does not get removed once it is shown, and that was one of the reasons for deleting and recreating columns at runtime, but I would not expect it to continue growing each time you change the image with another of the same size. If it does grow each time, I may need to investigate further.</div>
+</article>
+<article class="post" id="msg9503">
+  <div class="post-head">
+    <span class="post-author">Jürg Menzi</span>
+    <span class="post-date muted">2013-01-03 14:56 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+Thank you for your time.<br>
+My procedure is to set the ColumnImages at designtime to an empty (transparent) icon from the picture list of the control. At runtime I change the image index to the desired value. The used space is always the same but, he is also independent of the size of the icon 8x8, 16x16 or 32x32. After setting ColumnImage to an icon, the space never changes.<br>
+<br>
+Cheers<br>
+Jürg</div>
+</article>
+<article class="post" id="msg9504">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-01-04 02:32 UTC</span>
+  </div>
+  <div class="post-body">I did some research, and I found that there is a function to set the icon margin. It looks like a margin of 1 pixel is the minimum practical. Even then, there is a 5 pixel (approximately) margin between the icon and the label, but it is much smaller than the default margin.<br>
+<br>
+I could set the margin to 1 pixel for listview and grid controls. It seems unlikely, but I'm worried that someone may have relied on the larger default margin. I may try that in the alpha build and see if anybody complains.<br>
+<br>
+Alternatively, you could use the text label suffix instead of an icon to denote sorting. For example, you could use a simple " v" or " ^" suffix, or get fancy and use "up" and "down" symbols.</div>
+</article>
+<article class="post" id="msg9505">
+  <div class="post-head">
+    <span class="post-author">Jürg Menzi</span>
+    <span class="post-date muted">2013-01-04 08:59 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1936.msg9504#msg9504 date=1357266761 wrote:</cite><br>
+I did some research, and I found that there is a function to set the icon margin. It looks like a margin of 1 pixel is the minimum practical. Even then, there is a 5 pixel (approximately) margin between the icon and the label, but it is much smaller than the default margin.<br>
+I could set the margin to 1 pixel for listview and grid controls. It seems unlikely, but I'm worried that someone may have relied on the larger default margin. I may try that in the alpha build and see if anybody complains.</blockquote><br>
+That would be a great option and I'm looking forward to this alpha build.<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1936.msg9504#msg9504 date=1357266761 wrote:</cite><br>
+Alternatively, you could use the text label suffix instead of an icon to denote sorting. For example, you could use a simple " v" or " ^" suffix, or get fancy and use "up" and "down" symbols.</blockquote><br>
+Hmm, do you mean to place a text label over the control to show the sorting symbols? But then I've to calculate all label positions on changing the column widths. Or is there something that I don't know ???<br>
+<br>
+Again, thank you!<br>
+Cheers<br>
+Jürg</div>
+</article>
+<article class="post" id="msg9506">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-01-04 15:49 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Jürg Menzi link=topic=1936.msg9505#msg9505 date=1357289994 wrote:</cite><br>
+Hmm, do you mean to place a text label over the control to show the sorting symbols?</blockquote><br>
+<br>
+I was referring to the column caption.</div>
+</article>
+<article class="post" id="msg9507">
+  <div class="post-head">
+    <span class="post-author">Jürg Menzi</span>
+    <span class="post-date muted">2013-01-04 16:30 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+Probably I can't see the wood for the trees but, the only ColumnCaption access i know is by SetColumnCaptionList. And if I refreshing whose values, the grid is cleared. Is there something else to use?<br>
+<br>
+Cheers<br>
+Jürg</div>
+</article>
+<article class="post" id="msg9508">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-01-04 19:01 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I assumed there was a corresponding SetColumnCaption function, but I see there is not. This would be fairly easy to add, though, so I will put it on the to-do list.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

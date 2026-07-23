@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runtime error: Startup ODCL app + (command &quot;_.open&quot; ...) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2520</p>
+    <h1>Runtime error: Startup ODCL app + (command &quot;_.open&quot; ...)</h1>
+    <p class="meta">Started by roy_043 ·
+      2017-07-21 16:42 UTC ·
+      3 replies · SMF topic #2520</p>
+<article class="post" id="msg12518">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-07-21 16:42 UTC</span>
+  </div>
+  <div class="post-body">I have created an OpenDCL based app that is automatically started whenever a drawing is opened. Things work fine but whenever I use (command "_.open fileName) I get this runtime error:<br>
+<pre class="code"><code>Error: NIL value not allowed.<br>
+Function: dcl-Form-Show</code></pre><br>
+<br>
+Using:<br>
+BricsCAD 16<br>
+OpenDCL 8.1.3.1<br>
+<br>
+To test this you can add:<br>
+<pre class="code"><code>(load "C:\\Program Files (x86)\\OpenDCL Studio\\ENU\\Samples\\@AllSamples.lsp")</code></pre><br>
+to your *doc*.lsp (on_doc_load.lsp if you are a BricsCAD user).<br>
+And then (after restarting the CAD-program of course) copy-paste this in the Command Bar:<br>
+<pre class="code"><code>(command "_.open fileName)</code></pre><br>
+Where fileName must be a valid file name.<br>
+<br>
+My workaround is to use (dcl-SendString) instead of (command).<br>
+<br>
+The application is available here (freeware, for BricsCAD only):<br>
+http://www.b-k-g.nl/bkg_browser.html</div>
+</article>
+<article class="post" id="msg12557">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2017-09-06 08:15 UTC</span>
+  </div>
+  <div class="post-body">I have sent in a Support Request to the Bricsys team regarding this issue.</div>
+</article>
+<article class="post" id="msg12773">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-02-27 12:10 UTC</span>
+  </div>
+  <div class="post-body">Is it solved?<br>
+<br>
+For me seems that Bricscad is awaiting a variable for "dcl-form-show". It should be optional, but I now always use<br>
+<br>
+(setq result (dcl-form-show mydialog))<br>
+<br>
+Maybe that's the problem?</div>
+</article>
+<article class="post" id="msg12776">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2018-02-28 17:16 UTC</span>
+  </div>
+  <div class="post-body">@Peter2:<br>
+Thank you for your answer. When I wrote my SR (SR76961) I was still using BricsCAD V16. According to the response from Bricsys some Lisp related timing issues were fixed in V17. But this has not solved this problem as a test with V18 demonstrates. Assigning the return value from dcl-form-show to a variable also does not fix it.<br>
+<br>
+BricsCad 18.2.04<br>
+OpenDCL 8.2.0.1 (the installer has a different version number: OpenDCL.Studio.ENU.8.2.2.1.msi).</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

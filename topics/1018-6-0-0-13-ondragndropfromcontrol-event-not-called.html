@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[6.0.0.13] OnDragnDropFromControl Event not called · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1018</p>
+    <h1>[6.0.0.13] OnDragnDropFromControl Event not called</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-11-20 11:08 UTC ·
+      62 replies · SMF topic #1018</p>
+<article class="post" id="msg5187">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-20 11:08 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+With 6.0.0.13 OnDragnDropFromControl is not called on event.<br>
+<br>
+Thanks<br>
+Best regards<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1043/ScreenShot051.png">ScreenShot051.png</a> <span class="muted">(19384 bytes)</span></li><li><a href="../attachments/1044/ScreenShot050.png">ScreenShot050.png</a> <span class="muted">(20519 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5197">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-20 16:30 UTC</span>
+  </div>
+  <div class="post-body">I could not reproduce this. Can you attach a saimple example?</div>
+</article>
+<article class="post" id="msg5199">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-20 16:41 UTC</span>
+  </div>
+  <div class="post-body">I needed to set keepFocus on it !<br>
+And all controls are set to asynchronous.<br>
+<br>
+I saw the difference between 6.0.0.3 to 6.0.0.13, because my tools can't work as it should !<br>
+<br>
+Too much trouble with this treeview !  ;)<br>
+<br>
+Thanks for your job.<br>
+Best regards.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1046/test.lsp">test.lsp</a> <span class="muted">(4317 bytes)</span></li><li><a href="../attachments/1047/Test.odcl">Test.odcl</a> <span class="muted">(4752 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5200">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-20 20:17 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1018.msg5197#msg5197 date=1258734655 wrote:</cite><br>
+I could not reproduce this. Can you attach a saimple example?<br>
+</blockquote><br>
+<br>
+Hi Owen,<br>
+<br>
+DragnDropFromControl returns a list instead of a key as string. If it should be a a 2D-point in future there should be a HitPointTest, too.<br>
+<br>
+Fred<br>
+<br>
+ Added as bug report: https://sourceforge.net/tracker/?func=detail&amp;aid=2901395&amp;group_id=187950&amp;atid=923363</div>
+</article>
+<article class="post" id="msg5201">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-20 20:24 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1018.msg5200#msg5200 date=1258748272 wrote:</cite><br>
+DragnDropFromControl returns a list instead of a key as string. If it should be a a 2D-point in future there should be a HitPointTest, too.<br>
+</blockquote><br>
+<br>
+Hi Fred,<br>
+<br>
+Do you have meet this trouble about DragnDropFromCrontrol event not called with 6.0.0.13 in treeview ?<br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg5202">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-20 20:37 UTC</span>
+  </div>
+  <div class="post-body">No, stephan, DragnDropFromCrontrol will be called in my forms. But I have other several problems with it.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5204">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-20 21:54 UTC</span>
+  </div>
+  <div class="post-body">To Owen.<br>
+If it can help you, i can try every runtime and tell you from wich one dragndropfromcontrol event disapear .<br>
+Best regards<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5205">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-22 22:45 UTC</span>
+  </div>
+  <div class="post-body">Stephan, a simple example is most useful in this case. I will take a look at the files you attached.</div>
+</article>
+<article class="post" id="msg5207">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-23 00:01 UTC</span>
+  </div>
+  <div class="post-body">Stephan, your test project seems to be working for me. Please test again in Alpha 14. It's possible that fixing the bug that Fred reported also affected your issue.</div>
+</article>
+<article class="post" id="msg5212">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-23 09:22 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1018.msg5207#msg5207 date=1258934498 wrote:</cite><br>
+Stephan, your test project seems to be working for me. Please test again in Alpha 14. It's possible that fixing the bug that Fred reported also affected your issue.<br>
+</blockquote><br>
+<br>
+Hello Owen,<br>
+<br>
+Yes, with version 6.0.0.14 Event DragnDropFromControl is called.<br>
+<br>
+However a new incident occurs:<br>
+The shift and control keys are not activated during the movement of a node.<br>
+<br>
+If you wish, you can send me corrections by email to validate the tests.<br>
+<br>
+Thank you.<br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg5216">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-23 16:09 UTC</span>
+  </div>
+  <div class="post-body">Stephan, the fix I made for Fred was to force the drag to be a 'copy' when the OnDragnDropBegin event handler is defined. I thought this is what both of you wanted.</div>
+</article>
+<article class="post" id="msg5217">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-23 17:42 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1018.msg5216#msg5216 date=1258992568 wrote:</cite><br>
+Stephan, the fix I made for Fred was to force the drag to be a 'copy' when the OnDragnDropBegin event handler is defined. I thought this is what both of you wanted.<br>
+</blockquote><br>
+<br>
+good evening,<br>
+<br>
+No, not at all, Instead I've never asked for this change!<br>
+it is sad to not be able to move nodes within a treeview.<br>
+This would condemn me to use only the version 6.0.0.3 which is functional.<br>
+<br>
+What was annoying was that he did not master the difference between the two actions<br>
+<br>
+This problem is solved as follows: I am testing on the selected node, so there is that the action is a copy, if it disappears, is that the action is shifting.<br>
+<br>
+All this works through a combination of different events listed in the screenshot above.<br>
+<br>
+<br>
+<br>
+Thank you<br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg5218">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-23 17:57 UTC</span>
+  </div>
+  <div class="post-body">I can easily change it back. Hopefully Fred can describe his needs, or what has changed since earlier versions, so that I can come up with a solution that doesn't affect your code.</div>
+</article>
+<article class="post" id="msg5219">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-23 20:04 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1018.msg5218#msg5218 date=1258999073 wrote:</cite><br>
+I can easily change it back. Hopefully Fred can describe his needs, or what has changed since earlier versions, so that I can come up with a solution that doesn't affect your code.<br>
+</blockquote><br>
+<br>
+Good evening, <br>
+<br>
+I'm glad to hear that this choice is not final! <br>
+<br>
+If I can help Fred by any means I am present, even if only to describe how I adopted. <br>
+<br>
+From my side it must find a way to restart the Shift and Ctrl keys that determine the movement or copying of nodes, not least as an option, which would meet both our cases! <br>
+<br>
+I return in detail the problems encountered to date with the movement of nodes: <br>
+<br>
+Consider KeepFocus. <br>
+Determine the current action: Move or Copy? <br>
+The selected node before DragNDrop. <br>
+Rehabilitate the tree if the action requested by the user is not authorized, is a big problem with moving node. I can detail if you wish. But the best solution is, in my opinion, can intervene in the action during the overflight of nodes (Forbidden / Allowed / Copy / Move). <br>
+For the reconstruction of nodes (tree), I found an interim solution, pending which I do not like. <br>
+<br>
+To conclude it all, I am not able to distribute a demonstration program, but I can make you a video that might be more meaningful than the long text? <br>
+<br>
+Thank you for everything. <br>
+Best regards. <br>
+(hope that google translate all correctly )</div>
+</article>
+<article class="post" id="msg5223">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-24 11:58 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I need it as it was in earlier releases (5.x) and in ObjectDCL: I need full control of the tree when DragDrop begins and when DragDrop ends.<br>
+Until now it was defined that an item was automatically moved when the events are not activated. That is a really pragmatic solution. Owen told me that the Move-method is active if no Ctrl-key is pressed. If the user moves an item by holding Ctrl-key the item will be copied. This is consistent to Windows explorer.<br>
+<br>
+What happens in my code if drag and drop is starting at tree? Most of my code changes databases (Access, MySQL and AcDbDictionaries and AcDbXrecords). Some nodes are not allowed to be moved. Some items are not to be allowed to be a dragdrop destinations. I have to control it by myself to make sure that only legal changes are made. It's the only way to work with Drag&amp;Drop in trees for me.<br>
+<br>
+An example:<br>
+There is a layertheme manager to take control of the drawing order. In the root there are all layer themes listed. Under the layer themes there are all layer groups listed and optional dwg-underlays (xref). The user can move all the layergroups of one layertheme within the layertheme as I want. But the user cannot<br>
+<ul><br>
+move a layergroup in the root between two layerthemes, because a layergroup can only be a child of a layertheme,<br>
+move a layergroup into a xref because no layergroup cannot be part of a xref,<br>
+move a layergroup between layerthemes because a layergroup (with its contained layers) can only be a child of a single layertheme<br>
+</ul><br>
+<br>
+I see no problem if an additional property would be introduced for Drag&amp;Drop control style. But there must be a chance to get full control to avoid unauthorized actions in a tree.<br>
+This is only one example. I could give much more.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5224">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-24 13:05 UTC</span>
+  </div>
+  <div class="post-body">Hello Fred, <br>
+<br>
+If I understood everything, your explanation merges mine on some points: <br>
+It must be able to authorize or prohibit the movement and / or copy certain nodes. <br>
+The most complicated will find the programming method for allowing this kind of action during the course of the program. <br>
+<br>
+From my side of the operation DragNDrop and its control is very annoying, because I use almost five events to make sure the current action, hand over certain other related actions DragNDrop (to autocad) requires that any This can operate in asynchronous mode. <br>
+<br>
+I am very open to a final solution that can satisfy everyone, even to change my existing code! <br>
+<br>
+I hope that the language problem will not be a barrier for me!   ;D<br>
+(Pending google translate is my friend) <br>
+<br>
+All these operations require more explanation, I think, before Owen began to change code or anything, but how? <br>
+<br>
+<br>
+Here's what I found through my  DragNDrop use: <br>
+<br>
+<br>
+1 - Very difficult to locate the selected node before the movement operation . <br>
+2 - Is it possible to establish a precise order of events triggered during movement operations . <br>
+3 - In its current operation, the move action is  performed, regardless of our agreement, would it be possible simply to do nothing and create an action "ConfirmActionDragnDrop" to execute the requested action. <br>
+4 - and in the same vein, create another event independent of what exists, we return all the information necessary as a result of our programming (AskDragnDropAction FromNode (List parent, child) ActionType (Move, Copy) NodeFinal (list parent, child))?<br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg5225">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-24 15:41 UTC</span>
+  </div>
+  <div class="post-body">The pieces are now in place to eventually have much more control over drag and drop operatins, but that will be disruptive and require major changes on the API side. For now, I need to find a way to satsify Fred's requirement while also making it possible to both move and copy, and to do so without changing any API or adding any new properties. So, I need to know what existing conditions/events/properties can be used to distinguish when move should be allowed and when it should not.</div>
+</article>
+<article class="post" id="msg5226">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-24 16:27 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen,<br>
+<br>
+Unfortunately, I do not think the answer is simple, I'll take a concrete example:<br>
+Creating a treeview representing the tree of a disk drive.<br>
+We have directories and files, and travel conditions may be limited in one case the movement of files in directories, but directories in other directories.<br>
+Following is the developer to set its own rules.<br>
+Mine prohibit moving a directory in a file, and prohibit the movement of a file in a file, I authorize a copy of a file in a directory, but I forbid copying a file in a file.<br>
+Things are complicated by the file extension.<br>
+<br>
+That is why I return to my proposal first solution that would initially create a bit allowing the displacement function and / or copy of a general on the treeview.<br>
+For example:<br>
+AllowDragnDropMove True / false<br>
+AllowDragnDropCopy True / False<br>
+<br>
+<br>
+I also understand that the modication of the API may affect the existing operation, but want to write conditions for copying and moving nodes in hard could stifle the development of applications related to the use of OpenDCL...<br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg5228">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-24 20:41 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+in ObjectDCL there was no automatical move or copy method. It was introduced in OpenDCL 5 the first time and I asked Owen to change back because all of our code would break and the OpenDCL internal tree control would be unusable for us. So he changed it that way that the automatical move or copy method works if no drag and drop event is activated.<br>
+<br>
+My desire is very easy: no automatic move or copy method. As it was in ObjectDCL or in OpenDCL 5. As I already mentioned I have no problem with an addition property for drag &amp; drop style. But it would break the current consistency.<br>
+<br>
+<blockquote class="quote"><cite> author=stephan_35 link=topic=1018.msg5224#msg5224 date=1259067923 wrote:</cite><br>
+I use almost five events to make sure the current action, hand over certain other related actions DragNDrop (to autocad) requires that any This can operate in asynchronous mode. <br>
+</blockquote><br>
+<br>
+I must say that I have no problem to activate and to define many events to make drag and drop happen. But there's actually one thing which is improvable: At OnDragBegin I try to find out the dragged item. If I do not select the item (that I want to drag) before dragging it I have no chance to get the dragged item. In the product documentation I force the user to select the item at first (to let the event OnClicked or OnSelChanged release) and then he can start drag and drop operation. <br>
+<br>
+Don't be angry with me!  ;)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5229">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-24 21:37 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred.<br>
+<br>
+First point: No, I'm not angry! (Just afraid)<br>
+<br>
+<blockquote class="quote">My desire is very easy: no automatic move or copy method.</blockquote><br>
+<br>
+Right, i think this could be too hard to define.<br>
+<br>
+<blockquote class="quote">I have no problem with an addition property for drag &amp; drop style.</blockquote><br>
+<br>
+Me too !  ;D<br>
+<br>
+<blockquote class="quote">But it would break the current consistency.</blockquote><br>
+<br>
+If there no choice, why not ???<br>
+<br>
+<blockquote class="quote">I force the user to select the item at first (to let the event OnClicked or OnSelChanged release) and then he can start drag and drop operation.</blockquote><br>
+<br>
+Have a look to my second screenshot, that was also my trouble, and i cannot stand to force the user to select first the item to move ! this look like beginner  ;D<br>
+<br>
+So, to get it right, i use OnSelChanged event, wich will give you the real seleted node  ::)<br>
+But another trouble will appear, so you have to store it ....<br>
+Don't use OnDragnDropBegin, but OnDragnDropFromControl, wich will give you more information about what to what action... This is why i really need it   ;)<br>
+<br>
+As you can see, we have meet the same trouble .<br>
+<br>
+<strong>You need to know selected node ?</strong> (This is what i need)<br>
+<strong>You need to know wich action (move or copy), or you need to define the action authorized ?</strong>(This is what i need)<br>
+<strong>I need to know from wich control the node was dropped , another tree .</strong><br>
+<strong>I need to use asynchronous mode because of drop to autocad drawing, trouble with no asynchronous .</strong><br>
+<br>
+I hope that owen could find an issue for all these feathure  :-[<br>
+<br>
+Thanks<br>
+Best regards</div>
+</article>
+<article class="post" id="msg5233">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-25 08:26 UTC</span>
+  </div>
+  <div class="post-body">Hello Fred,<br>
+<br>
+I just have a question for you :<br>
+<br>
+Do you use Treeview with opendcl control, or do you use activeX ?<br>
+<br>
+I didn't yet try activeX, i ask myself if we can customise activeX treeview as we can do with opendcl control ?<br>
+<br>
+Thanks for help.<br>
+<br>
+Best regards</div>
+</article>
+<article class="post" id="msg5240">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-25 15:10 UTC</span>
+  </div>
+  <div class="post-body">I wonder whether it would solve this problem if I change OnDragnDropBegin so that the return value from the event handler is used to decide whether move is allowed.</div>
+</article>
+<article class="post" id="msg5242">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-25 15:29 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1018.msg5240#msg5240 date=1259161810 wrote:</cite><br>
+I wonder whether it would solve this problem if I change OnDragnDropBegin so that the return value from the event handler is used to decide whether move is allowed.<br>
+</blockquote><br>
+Hello Owen,<br>
+I'll try to answer :<br>
+To decide if move is allowed, i must know first wich item was selected "From node".<br>
+we can do this with OnSelChanged, wich must be alive and called before OnDragnDropBegin<br>
+<strong>Is it right ?</strong><br>
+Then, i didn't really understand what you mean by "return value from the evant handler" ! return True ou False ?<br>
+Then, how would you get to allow or unallow move ?<br>
+Then, i think that we must know wich action was begin, move or copy ? and then with the selected "to" node we can confirm,(or set), move allowed or move unallowed.<br>
+<br>
+Another way:<br>
+Wich is the selected node.<br>
+Wich action is required (copy or move ?)<br>
+Wich is the destination node ?<br>
+Allow or not allow move .<br>
+End of dragndrop<br>
+<br>
+<br>
+Need to be confirmed by fred .<br>
+Best regards</div>
+</article>
+<article class="post" id="msg5243">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-25 15:37 UTC</span>
+  </div>
+  <div class="post-body">The bestest way (as i see it) should be able to set "allow/unallow copy" and "allow/unallow move" during action of DragnDrop !<br>
+<br>
+And this according to the destination node, with changing icon (the best of the best !)  ;D<br>
+<br>
+But, i remember you said me too much modification inside api. (that i completely understand).  :'(<br>
+<br>
+Thanks Owen.<br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg5248">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-25 17:17 UTC</span>
+  </div>
+  <div class="post-body">Adding properties is not practical because it would require a property for every possible action. Eventually I want the events to mirror the internal drag/drop system whereby the OnDragOver event returns an appropriate effect depending on what is beneath the cursor. For now, returning a value (not necessarily a boolean -- I'm inclined to use an integer that matches the built in values) is a way to give you control without requiring any change to the documented API or to old code.</div>
+</article>
+<article class="post" id="msg5250">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-25 17:59 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1018.msg5248#msg5248 date=1259169464 wrote:</cite><br>
+Adding properties is not practical because it would require a property for every possible action. Eventually I want the events to mirror the internal drag/drop system whereby the OnDragOver event returns an appropriate effect depending on what is beneath the cursor. For now, returning a value (not necessarily a boolean -- I'm inclined to use an integer that matches the built in values) is a way to give you control without requiring any change to the documented API or to old code.<br>
+</blockquote><br>
+Hello Owen,<br>
+<br>
+If i correctly understood every things, you mean that it is possible to get with new OnDragOver event what is under the cursor ?<br>
+If right, we should have to take control is selected node could be deleted ! (move)<br>
+And then , we should have to take control of the mouse icon ...  ;D<br>
+All these, depending of first selected node, and during Dragndrop action ? i'm afraid than it's not possible !<br>
+<br>
+Otherwise, i cannot really see what OnDragOver event can bring us .... i need more explain.<br>
+<br>
+Thanks for your job.<br>
+Best regards.<br>
+</div>
+</article>
+<article class="post" id="msg5253">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-25 19:12 UTC</span>
+  </div>
+  <div class="post-body">The way that drag and drop works is that first, OnDragBegin returns an opaque "data" object along with an integer that controls what "effects" are supported on the data. For example, a value of 1 means that the data can be copied; a value of 2 means the data can be moved; a value of 3 means the data can be copied or moved. OnDragOver is then called every time the mouse moves, and its return value determines which "effect" is active. The cursor is chosen based on the active effect, and there is no way to control that via lisp in any case.<br>
+<br>
+To reiterate, I need to know how I can make the code work for both you and Fred without breaking old code. If I change the code to check for an integer returned from OnDragnDropBegin, then use that integer as the "supported effects" value, will that allow both your code and Fred's code to work? If I undo the Alpha 14 change, this means Fred's code would need to return 1 to enable only the copy effect.</div>
+</article>
+<article class="post" id="msg5256">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-25 19:55 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=stephan_35 link=topic=1018.msg5233#msg5233 date=1259137612 wrote:</cite><br>
+Do you use Treeview with opendcl control, or do you use activeX ?<br>
+</blockquote><br>
+<br>
+Hi,<br>
+I've never used ActiveX tree control. There was no need 'cause the internal tree control did everything we need.<br>
+Fred</div>
+</article>
+<article class="post" id="msg5258">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-25 20:00 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1018.msg5256#msg5256 date=1259178936 wrote:</cite><br>
+I've never used ActiveX tree control. There was no need 'cause the internal tree control did everything we need.<br>
+</blockquote><br>
+<br>
+Thanks for reply !<br>
+<br>
+I asked this because i saw some feature about changing mouse icone and SingelSel option.<br>
+<br>
+Best regards</div>
+</article>
+<article class="post" id="msg5259">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-11-25 20:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1018.msg5253#msg5253 date=1259176374 wrote:</cite><br>
+The way that drag and drop works is that first, OnDragBegin returns an opaque "data" object along with an integer that controls what "effects" are supported on the data. For example, a value of 1 means that the data can be copied; a value of 2 means the data can be moved; a value of 3 means the data can be copied or moved. OnDragOver is then called every time the mouse moves, and its return value determines which "effect" is active. The cursor is chosen based on the active effect, and there is no way to control that via lisp in any case.<br>
+<br>
+To reiterate, I need to know how I can make the code work for both you and Fred without breaking old code. If I change the code to check for an integer returned from OnDragnDropBegin, then use that integer as the "supported effects" value, will that allow both your code and Fred's code to work? If I undo the Alpha 14 change, this means Fred's code would need to return 1 to enable only the copy effect.<br>
+</blockquote><br>
+<br>
+Owen, oh oh , I missed something ?<br>
+With Alpha 14, i didn't saw OnDragnDropBegin return value ! ether not any OnDragOver Event ?<br>
+<br>
+I have to spend more time on this alpha version before answer you, or before asking you anything else !<br>
+<strong>Could you confirm me about  OnDragnDropBegin an OnDragOver event ?</strong><br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg5260">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-25 20:27 UTC</span>
+  </div>
+  <div class="post-body">Hi, Owen,<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1018 wrote:</cite>I wonder whether it would solve this problem if I change OnDragnDropBegin so that the return value from the event handler is used to decide whether move is allowed.</blockquote><br>
+<br>
+My English is not as well as to understand completely all your explainations. But I have the strong feeling that drag&amp;drop always can only by Copy or by Move method and not neither by Copy nor Move method?<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1018.msg5253#msg5253 date=1259176374 wrote:</cite><br>
+If I undo the Alpha 14 change, this means Fred's code would need to return 1 to enable only the copy effect.<br>
+</blockquote><br>
+<br>
+I'd do handstandings to make my code working. But there's a doubt in my mind: I have some palette forms. All my events (except OnCancelClose) have a (princ) at the last line to avoid returning values at the commandline. I'd have to see the result then.<br>
+<br>
+I'm out of office until mid of december. But I try to create a sample to show you what I do and to have a sample to test.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5261">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-25 20:36 UTC</span>
+  </div>
+  <div class="post-body">Stephan, the OnDragOver event is not exposed to AutoLISP. I am talking about how drag and drop works in the underlying code.</div>
+</article>
+<article class="post" id="msg5351">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-28 19:36 UTC</span>
+  </div>
+  <div class="post-body">Owen, just a question: as far as I remember in the old ObjectDCL DragBegin started with a timer. The user has to hold the item to be dragged as long enough until DragBegin starts. How do you solve it now? I ask this because in a listview with enabled AllowDragBegin both events are called even at OnClicked (see <a href="http://www.opendcl.com/forum/index.php?topic=1035.msg5340#msg5340" rel="nofollow noopener">{2}</a>).<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5352">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-28 21:36 UTC</span>
+  </div>
+  <div class="post-body">The OpenDCL code uses the MFC drag and drop mechanism for everything. I don't think this has changed, it's just that things are now streamlined so that all controls use the same code to do the work (unless they override it). There is no timer or delay as far as I know, but it is supposed to require a mouse move of at least the number of pixels that your system double click size is set to before the drag is initiated.</div>
+</article>
+<article class="post" id="msg5356">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-29 08:20 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1018.msg5352#msg5352 date=1259444196 wrote:</cite><br>
+[...] the number of pixels that your system double click size is set [...]<br>
+</blockquote><br>
+<br>
+Oha, what is a "double click size"? Can I find it in the mouse settings of control panel?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5360">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-29 16:34 UTC</span>
+  </div>
+  <div class="post-body">Yes, somewhere.  But when I tested your code, the drag and drop occurred even if I don't move the mouse, so there is something causing it to malfunction.  I will investigate later today.</div>
+</article>
+<article class="post" id="msg5564">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-09 11:06 UTC</span>
+  </div>
+  <div class="post-body">Hi everybody.<br>
+<br>
+Thanks owen for OnDragnDropFromControl  Event call with 6.0.0.15.<br>
+<br>
+Now, what can we do for fred and me ,with treeview ?<br>
+<br>
+<strong>First, how can i catch the OnDragnDropBegin return value ?</strong><br>
+<br>
+After this work,  i think that treeview should not delete the selected node !<br>
+<br>
+Why ?<br>
+<br>
+Actually, remeber that DragnDrop move action do not move selected node but delete it !<br>
+<br>
+So if an DragnDrop  move action was forbidden, i have to rebuild the deleted node !<br>
+But, if the DragnDrop  move action was right, i know how to delete or move selected node .<br>
+<br>
+If Fred and Owen are agree with this, i think this could be the better way to solve both trouble.<br>
+<br>
+I forget this: it is also true for a DragnDrop move from another control ....<br>
+<br>
+Thanks everybody !<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg5575">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-09 20:16 UTC</span>
+  </div>
+  <div class="post-body">Stephan, I'm afraid I don't understand.<br>
+<br>
+There is not currently any way to change the drag action depending on the drop point. As of Alpha 15, you can return an integer value from OnDragnDropBegin to determine whether move, copy, or both are allowed. Please try this, maybe it will solve your problem.</div>
+</article>
+<article class="post" id="msg5578">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-09 20:41 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1018.msg5575#msg5575 date=1260389795 wrote:</cite><br>
+Stephan, I'm afraid I don't understand.<br>
+</blockquote><br>
+<br>
+Because of my english  ;D  ?<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1018.msg5575#msg5575 date=1260389795 wrote:</cite><br>
+There is not currently any way to change the drag action depending on the drop point. <br>
+</blockquote><br>
+<br>
+Ok, we will try another way.<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1018.msg5575#msg5575 date=1260389795 wrote:</cite><br>
+You can return an integer value from OnDragnDropBegin to determine whether move, copy, or both are allowed. Please try this, maybe it will solve your problem.<br>
+</blockquote><br>
+<br>
+<strong>I'm ok to try it, but, please give me the way to get the return value !</strong><br>
+<br>
+Best regards</div>
+</article>
+<article class="post" id="msg5581">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-09 21:01 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=stephan_35 link=topic=1018.msg5578#msg5578 date=1260391304 wrote:</cite><br>
+I'm ok to try it, but, please give me the way to get the return value !</blockquote><br>
+<br>
+What exactly do you mean by "return value"?</div>
+</article>
+<article class="post" id="msg5583">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-09 21:43 UTC</span>
+  </div>
+  <div class="post-body">I'm stupid !<br>
+<br>
+I think now i understand :<br>
+<br>
+You asked me to try to return a value at the end of OnDragnDropBegin event ?, like this :<br>
+<br>
+<br>
+(defun c:OnDragnDropBegin_exmple ( / )<br>
+  (if (@do_my_test)<br>
+    1<br>
+    0<br>
+    )<br>
+  )<br>
+<br>
+<br>
+<strong>But in this case, i'm not able to tell you if move,copy or both are allowed .</strong><br>
+<br>
+I must know the droppoint node before ,wich is know at OnDragnDropFromControl Event .<br>
+<br>
+I'm afraid to go round around the trouble ... <br>
+<br>
+I staying beleve that the bestest way could be to do not delete the selected node whatever action was done , and let programmer to delete node as he want depending of action asked by the user.<br>
+<br>
+But for this, i still need to know action asked by the user in DragnDropFromControl Event.<br>
+<br>
+So,<br>
+Could it be possible to you to do not delete the selected node ?<br>
+Could it be possible to send return the asked action in DragnDropFromControl Event ?<br>
+<br>
+If yes to both, that mean the trouble could be solved.<br>
+<br>
+Thanks again.<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg5584">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-09 22:19 UTC</span>
+  </div>
+  <div class="post-body">It would be easy to include the desired action as an argument in the call to the DragnDropFromControl event, but this would break existing code.  Furthermore, this still would not solve the problem of changing the allowed actions depending on the drop point, because changing the allowed actions must be done *before* the drop, not after.</div>
+</article>
+<article class="post" id="msg5587">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-09 22:33 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1018.msg5584#msg5584 date=1260397143 wrote:</cite><br>
+It would be easy to include the desired action as an argument in the call to the DragnDropFromControl event, but this would break existing code.  Furthermore, this still would not solve the problem of changing the allowed actions depending on the drop point, because changing the allowed actions must be done *before* the drop, not after.<br>
+</blockquote><br>
+<br>
+I'm agree with you, but, i'm trying to find an issue ....<br>
+<br>
+Actually, move action, delete the selected node, so no way to come back.<br>
+But,if you change this, and if we know the action asked by the user after the action was done, i think i could be easyer to delete or copy what we want by program , isn't it ?<br>
+<br>
+Another way to explore, could it be possible to return action asked by user in DrognDrapBegin Event ?<br>
+This would also break existing code ....<br>
+<br>
+Best regards</div>
+</article>
+<article class="post" id="msg5590">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-09 22:44 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=stephan_35 link=topic=1018.msg5587#msg5587 date=1260398012 wrote:</cite><br>
+Actually, move action, delete the selected node, so no way to come back.<br>
+But,if you change this, and if we know the action asked by the user after the action was done, i think i could be easyer to delete or copy what we want by program , isn't it ?<br>
+</blockquote><br>
+<br>
+You already can (by returning 1 from OnDragnDrpBegin) prevent the move action so that it always operates as a copy from OpenDCL's perspective. Perhaps it would be enough to do that, then use your own code to decide whether to delete the original based on e.g. whether the  key is pressed.<br>
+<br>
+<blockquote class="quote"><cite> author=stephan_35 link=topic=1018.msg5587#msg5587 date=1260398012 wrote:</cite><br>
+Another way to explore, could it be possible to return action asked by user in DrognDrapBegin Event ?<br>
+</blockquote><br>
+<br>
+The user has not expressed any preference at the point where OnDragnDropBegin fires, so this would not be possible.</div>
+</article>
+<article class="post" id="msg5592">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-09 23:00 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1018.msg5590#msg5590 date=1260398647 wrote:</cite><br>
+The user has not expressed any preference at the point where OnDragnDropBegin fires, so this would not be possible.<br>
+</blockquote><br>
+<br>
+Ok.<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=1018.msg5590#msg5590 date=1260398647 wrote:</cite><br>
+You already can (by returning 1 from OnDragnDrpBegin) prevent the move action so that it always operates as a copy from OpenDCL's perspective. Perhaps it would be enough to do that, then use your own code to decide whether to delete the original based on e.g. whether the  key is pressed.<br>
+</blockquote><br>
+<br>
+I tried these value :<br>
+0 &gt; no action is possible.<br>
+1 &gt; Only copy is possible.<br>
+2 &gt; Only move is possible.<br>
+3 &gt; Copy or Move are possible.<br>
+4 &gt; Strange action , link ?<br>
+5 &gt;  not assigned ?<br>
+<br>
+Is it possible by returning 5 , to enable copy and move, but with no delete the selected node ?<br>
+<br>
+Best regards<br>
+</div>
+</article>
+<article class="post" id="msg5593">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-09 23:03 UTC</span>
+  </div>
+  <div class="post-body">Oops, Sorry, i didn't try the  key with keypressed Event.<br>
+</div>
+</article>
+<article class="post" id="msg5594">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-09 23:11 UTC</span>
+  </div>
+  <div class="post-body">I tried KeyDown Event, but Failed !!!<br>
+<br>
+Is there any dcl order to catch wich key was pressed  or  ???<br>
+<br>
+Best regards</div>
+</article>
+<article class="post" id="msg5596">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-10 02:21 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=stephan_35 link=topic=1018.msg5592#msg5592 date=1260399654 wrote:</cite><br>
+Is it possible by returning 5 , to enable copy and move, but with no delete the selected node ?</blockquote><br>
+<br>
+The return value is a bit field, so 5 would not work. It would probably be possible to invent some value with special meaning, but it seems like a lot of work with a lot of potential for problems.<br>
+<br>
+It doesn't seem logical to <strong>not</strong> delete the original object when the user believes they are moving it. This may be good enough in your specific case, but it's very bad programming in my opinion.</div>
+</article>
+<article class="post" id="msg5599">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-10 07:35 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1018.msg5596#msg5596 date=1260411662 wrote:</cite><br>
+It doesn't seem logical to <strong>not</strong> delete the original object when the user believes they are moving it. This may be good enough in your specific case, but it's very bad programming in my opinion.<br>
+</blockquote><br>
+<br>
+Is it allowed to give an example?<br>
+<br>
+I have a tree control with layerthemes. In each theme there is a layergroup with all containing layers which are not sorted into other layergroups yet (for drawing order) named "not sorted layers". It's like the layer 0 in each drawing. But the user can create own layergroups in each layertheme and move layers from one group into another within a single layertheme. <br>
+<br>
+Since I see all the layerthemes in the tree, my boss asked me how to copy a layergroup from one layertheme to another. So we came to the conclusion:<br>
+- dragging a layergroup within a single layertheme means sorting the moved layergroup to an other position in the drawing order of the layertheme &gt; <strong>move method</strong><br>
+- dragging the layergroup from one layertheme to an other layertheme means to copy the layergroup with its properties and contained layers into the destination layertheme &gt; <strong>copy method</strong><br>
+- it is not allowed to copy the layergroup named "not sorted layers" between different layerthemes.<br>
+<br>
+My problem is: to decide whether copy, move or allowing nothing is only possible in the OnDragnDropFromControl event and not yet in the OnDragBegin (because I still don't know, where the user will the picked item drop at).<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5601">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-10 07:59 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1018.msg5599#msg5599 date=1260430549 wrote:</cite><br>
+My problem is: to decide whether copy, move or allowing nothing is only possible in the OnDragnDropFromControl event and not yet in the OnDragBegin (because I still don't know, where the user will the picked item drop at).<br>
+</blockquote><br>
+<br>
+Yes Fred, That is our both trouble !!!  ;D<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5602">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-10 08:15 UTC</span>
+  </div>
+  <div class="post-body">Deleting node on user action should be forbidden !!!<br>
+<br>
+As soon we can check where the user drop node, we can take decision , yes or no , delete selected node .<br>
+<br>
+<strong>And delete selected node before knowing if action was authorised doesn't seem logical , isn't it ?</strong><br>
+<br>
+Sorry to insist on this point, but it seems to be the center of our troubles.<br>
+<br>
+Especially this is true for all actions DragnDropFromControl from controls wich it is authorised from ...<br>
+<br>
+Thanks .<br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg5618">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-10 16:14 UTC</span>
+  </div>
+  <div class="post-body">Fred, what you describe is exactly as I understand it. The user must be allowed to choose whether to copy or move depending on the response to OnDragnDropBegin, and the developer must be allowed to choose which action(s) are allowed based on the drop point <strong>as the user drags</strong> (not after it is dropped, as Fred suggests).<br>
+<br>
+I understand the problem that Fred describes. I also know how to fix it by breaking existing code. My goal is to make sure that any solution resolves Stephan's need as well (which as I underestand is slightly different than Fred's).<br>
+<br>
+I'm trying to find a solution that solves the problem without breaking existing code, but that may not be entirely possible. If not, I want to be sure to minimize any breaking changes.<br>
+<br>
+At this point, I think the best way to go forward is for me to implement something, then see if it works for both of you.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5621">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-10 16:51 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1018.msg5618#msg5618 date=1260461653 wrote:</cite><br>
+[...] I'm trying to find a solution that solves the problem without breaking existing code [...]<br>
+</blockquote><br>
+Owen, thanks for your efforts and your patience with us, but sometimes new goals cannot be reached without leaving the current position even if some are crying. And I'm sure that it is possible to adjust existing code for everyone who wants to earn the benefits of the new runtime. As you already know, I'd do anything to keep my code working. And I must honestly say, I'd like to play "God of my code" (and anywhere else, of course  ;D ), and the less OpenDCL will do at this point, the less I'd have to manage afterwards. But that is my personal view and so it does not mean anything speacial. But the practice will show that futurely.<br>
+<br>
+Stephan, I'd say, let's wait for the next Build(s) or how long it will take Owen to change and let's create a tutorial for that which also we can follow futurely. This tutorial can be a base to test the new features as well as a sample for adjusting existing code.<br>
+Stephan, when I saw you last remembered that it is an Alpha release? I do only use the Alpha just for testing, not for production, and certainly not for deploying, so there's still much time for testing and tuning up the code. We all need the time. We should spend the time. That's my point of view.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5623">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-10 17:54 UTC</span>
+  </div>
+  <div class="post-body">Hello to everyone.<br>
+<br>
+Of course I also thank Owen for all this dedication and all that time spent on developing OpenDCL.<br>
+<br>
+To date, I assume full use made of my use of an alpha version in production, it complies fully with some of my requirements.<br>
+And to get there, sometimes with a little programming chivalrous. (not translation)<br>
+<br>
+This will involve rewriting some lines of my code if that happens!<br>
+<br>
+I believe in OpenDCL is a great tool!<br>
+<br>
+Now, from my side, I lean on a test tool for future versions of OpenDCL, like a checklist, it will require some work on my side, but I'll be able to validate the next versions.<br>
+<br>
+Best regards.<br>
+Thank you to everyone.</div>
+</article>
+<article class="post" id="msg5624">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-10 18:12 UTC</span>
+  </div>
+  <div class="post-body">Stephan, I'd be glad to invite you for a small tutorial for a drag and drop sample. Not today, but soon.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5664">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-14 01:22 UTC</span>
+  </div>
+  <div class="post-body">In Alpha 16, I've added a new OnDragOverFromControl event for you guys to test. (I haven't tested it, so be warned that it might not work!)</div>
+</article>
+<article class="post" id="msg5665">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-14 06:49 UTC</span>
+  </div>
+  <div class="post-body">BTW, Fred, the following DEU files need to be updated:<br>
+<a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Event/DragOverFromControl.htm" rel="nofollow noopener">{2}</a><br>
+<a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Event/DragnDropBegin.htm" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg5667">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-14 08:34 UTC</span>
+  </div>
+  <div class="post-body">Thanks, Owen, I will do it later this week.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5715">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-15 10:40 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I've got this error message ....<br>
+<br>
+I don't really know if it's come from my computer or from opendcl.<br>
+<br>
+Thanks<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1158/Sans titre.jpg">Sans titre.jpg</a> <span class="muted">(17484 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5716">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-15 10:43 UTC</span>
+  </div>
+  <div class="post-body">Failed with :<br>
+OpenDCL.Studio.ENU.6.0.0.16<br>
+<br>
+Work with :<br>
+OpenDCL.Studio.FRA.6.0.0.16<br>
+<br>
+What is different between them ? (after language  ;D)<br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg5717">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-15 12:08 UTC</span>
+  </div>
+  <div class="post-body">Here is reults of my first try with this new event.<br>
+<br>
+Depending of droppoint node.<br>
+<br>
+<br>
+(defun c:Test_Form1_TREE_OnDragOverFromControl (ProjectName FormName ControlName DropPoint /)<br>
+  (cond<br>
+    (<br>
+     (= (substr DropPoint 1 3) "(0)")<br>
+      0<br>
+      )<br>
+    (<br>
+     (= (substr DropPoint 1 3) "(1)")<br>
+      1<br>
+      )<br>
+    (<br>
+     (= (substr DropPoint 1 3) "(2)")<br>
+      2<br>
+      )<br>
+    (<br>
+     (= (substr DropPoint 1 3) "(3)")<br>
+      3<br>
+      )<br>
+    (<br>
+     (= (substr DropPoint 1 3) "(4)")<br>
+      4<br>
+      )<br>
+    (<br>
+     (= (substr DropPoint 1 3) "(5)")<br>
+      Nil<br>
+      )<br>
+    )<br>
+)<br>
+<br>
+<br>
+Return 0 = None &gt; True<br>
+Return 1 = Copy &gt; True<br>
+Return 2 = Move &gt; True<br>
+Return 3 = <strong>Missing in documentation</strong> &gt; Move or copy, depending of  or  key<br>
+Return 4 = Link &gt; <strong>False , Nothing appening, seem like None , missing link icon ?</strong><br>
+Return Nil (5) = Default &gt; True, depending of Ctrl or Shift KEY !<br>
+<br>
+<strong>Anyway , this is a great job owen !!! Seem to work as expected , maybe just have to correct link icon ?</strong> <br>
+<br>
+Now i have to try DragnDropBegin event ...<br>
+<br>
+Best regards.<br>
+Thanks a lot !  ;)<br>
+Stéphan.<br>
+</div>
+</article>
+<article class="post" id="msg5718">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-12-15 13:46 UTC</span>
+  </div>
+  <div class="post-body">Here is my try with new OnDragnDropBegin Event<br>
+<br>
+Here is my code :<br>
+<br>
+(defun c:Test_Form1_TREE_OnDragnDropBegin (/ DropPoint)<br>
+  (setq DropPoint (dcl_Tree_GetSelectedItem Test_Form1_TREE))<br>
+  (cond<br>
+    (<br>
+     (= (substr DropPoint 1 3) "(0)")<br>
+      0<br>
+      )<br>
+    (<br>
+     (= (substr DropPoint 1 3) "(1)")<br>
+      1<br>
+      )<br>
+    (<br>
+     (= (substr DropPoint 1 3) "(2)")<br>
+      2<br>
+      )<br>
+    (<br>
+     (= (substr DropPoint 1 3) "(3)")<br>
+      3<br>
+      )<br>
+    (<br>
+     (= (substr DropPoint 1 3) "(4)")<br>
+      4<br>
+      )<br>
+    (<br>
+     (= (substr DropPoint 1 3) "(5)")<br>
+      Nil<br>
+      )<br>
+    )<br>
+)<br>
+<br>
+<br>
+Return 0 = None &gt; True !<br>
+Return 1 = Copy &gt; True !<br>
+Return 2 = Move &gt; True !<br>
+Return 3 = <strong>Missing in documentation &gt; Move or Copy, depending of  or  Key</strong><br>
+Return 4 = Link &gt; True !<br>
+Return Nil (5) = Default &gt; True !<br>
+<br>
+<strong>Great job Owen</strong>, working fine, as expected , i ask myself, if we can use twice event together with return value ?<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg5721">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-15 16:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=stephan_35 link=topic=1018.msg5715#msg5715 date=1260873624 wrote:</cite><br>
+I've got this error message ....<br>
+I don't really know if it's come from my computer or from opendcl.</blockquote><br>
+<br>
+The error indicates a corrupted MSI file. Clear your cache and try downloading again.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

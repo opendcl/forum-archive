@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenDCL MEMORY MANAGEMENT ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2926</p>
+    <h1>OpenDCL MEMORY MANAGEMENT ?</h1>
+    <p class="meta">Started by domenicomaria ·
+      2024-05-16 15:21 UTC ·
+      13 replies · SMF topic #2926</p>
+<article class="post" id="msg14018">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2024-05-16 15:21 UTC</span>
+  </div>
+  <div class="post-body">I'm writing a fairly complex lisp (which uses OpenDCL) and the ODCL file is very rich in controls.<br>
+<br>
+And I'm testing this software and so I show and then close the ODCL dialog many times.<br>
+<br>
+<strong>The first few times</strong> everything is fine, i.e. I wait <strong>1 second</strong> from the command until the dialogue is shown.<br>
+<br>
+But by repeating this operation many times, <strong>many dozens of times,</strong> <br>
+<strong>the time between</strong> the command I enter in the Acad command line <br>
+and when the ODCL dialog is shown <strong>ALWAYS INCREASES</strong>.<br>
+<br>
+So much so that sometimes <strong><span style="color:red">I have to wait up to 20 seconds before the dialogue is shown</span></strong>.<br>
+<br>
+Each time the dialogue is reloaded:<br>
+<strong>(dcl-project-load #ddiim-prj t)<br>
+</strong><br>
+And I think it's an <strong>OpenDCL MEMORY MANAGEMENT</strong> problem<br>
+<br>
+<strong>It's possible ?</strong></div>
+</article>
+<article class="post" id="msg14019">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2024-05-17 04:44 UTC</span>
+  </div>
+  <div class="post-body">There is no way to know the cause without creating a simple reproducible case and investigating it. I suggest to test with a simple dialog containing only copies of one type of control. If the problem does not reproduce, try other controls until the particular control (or controls) is identified. If it happens with any control type, then it could be a memory leak, or just heap fragmentation causing Windows to start paging to disk. There is no way to guess, it has to be investigated.</div>
+</article>
+<article class="post" id="msg14022">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2024-05-20 11:33 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+Thanks for your attention.<br>
+<br>
+It seems that the problem is caused by the <strong><span style="color:red">Picture Folder</span></strong>...<br>
+<br>
+Take a look at the <strong>attached test</strong><div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2605/dcl-time-test-06.odcl">dcl-time-test-06.odcl</a> <span class="muted">(22053 bytes)</span></li><li><a href="../attachments/2604/dcl-time-test-06.LSP">dcl-time-test-06.LSP</a> <span class="muted">(1950 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg14023">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2024-05-25 05:34 UTC</span>
+  </div>
+  <div class="post-body">Thanks, I found and fixed a small resource leak during (dcl-Project-Load). I'm not sure this leak is the one you're experiencing, but it was the only one I noticed with your test code. Please test the next development build and let me know if you notice any difference.</div>
+</article>
+<article class="post" id="msg14025">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2024-05-25 13:42 UTC</span>
+  </div>
+  <div class="post-body">I loaded and showed this dialog <strong>100 times</strong> and calculated the average time taken<br>
+<br>
+and I did this <strong>20 times</strong><br>
+<br>
+and the result is this:<br>
+<br>
+ average : 100<br>
+ average : 100<br>
+ average : 99<br>
+ average : 101<br>
+ average : 99<br>
+ average : 101<br>
+ average : 100<br>
+ average : 100<br>
+ average : 100<br>
+ average : 101<br>
+ average : 100<br>
+ average : 99<br>
+ average : 100<br>
+ average : 99<br>
+ average : 99<br>
+ average : 100<br>
+ average : 100<br>
+ average : 99<br>
+ average : 98<br>
+ average : 100<br>
+<br>
+<br>
+and so, it seems that there is <strong>no longer any problem</strong> with the <strong>Picture Folder</strong><br>
+<br>
+but <strong>I agree with you.</strong><br>
+<br>
+<strong>There is more.</strong><br>
+<br>
+And I still don't know what it is.<br>
+<br>
+I have to do more tests with other controls.<br>
+<br>
+And I'll let you know<br>
+<br>
+Thanks for everything<br>
+<br>
+ciao</div>
+</article>
+<article class="post" id="msg14026">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2024-05-25 14:50 UTC</span>
+  </div>
+  <div class="post-body">it seems that there are problems with the <strong>comboboxes too</strong>... <br>
+<br>
+... <strong>try</strong> to run the attached test... <br>
+<br>
+... unfortunately I can't do many tests (2500) <br>
+because after 400 or 500 tests there is a <strong>crash </strong>!<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2610/dcl-time-test-07.odcl">dcl-time-test-07.odcl</a> <span class="muted">(1017 bytes)</span></li><li><a href="../attachments/2611/dcl-time-test-07.LSP">dcl-time-test-07.LSP</a> <span class="muted">(1616 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg14027">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2024-05-25 15:49 UTC</span>
+  </div>
+  <div class="post-body">and I suppose that a <strong>crash </strong>that <br>
+more or less <strong>always happens at the same point</strong> <br>
+could depend on some <strong>memory management problem</strong>...</div>
+</article>
+<article class="post" id="msg14028">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2024-05-25 20:15 UTC</span>
+  </div>
+  <div class="post-body">Thanks, I found and fixed a bigger leak in several combo types. I'll include the fix in the next release.</div>
+</article>
+<article class="post" id="msg14031">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2024-05-26 11:53 UTC</span>
+  </div>
+  <div class="post-body"><strong>TAB STRIP</strong> with IMAGE LIST that does <strong>NOT contain IMAGES</strong> (tt-tab-strip-0)<br>
+<strong>number of repetitions : 5000</strong><br>
+average list MIN : 156<br>
+average list MAX : 180<br>
+AVERAGE of AVERAGES : 170.500<br>
+AVERAGE LIST : (<strong>156 159 158</strong> 160 158 159 160 160 163 165 167 165 166 162 166 166 168 167 169 168 170 169 174 172 172 170 171 172 175 175 172 175 176 175 175 176 178 177 178 178 176 <strong>179 180 178 176 179 179 179 179 178</strong>)<br>
+<br>
+<br>
+<br>
+<br>
+<strong>TAB STRIP </strong>with IMAGE LIST <strong>that contains IMAGES</strong> (tt-tab-strip-1)<br>
+<strong>number of repetitions : 5000</strong><br>
+average list MIN : 207<br>
+average list MAX : 237<br>
+AVERAGE of AVERAGES : 223.100<br>
+AVERAGE LIST : (<strong>209 207 207</strong> 212 208 212 210 211 217 213 213 216 216 216 218 220 221 221 219 226 222 223 226 224 223 226 227 227 226 228 225 228 228 227 231 229 228 228 230 232 229 230 <strong>233 234 234 237 232 234 233 229</strong>)<br>
+<br>
+<br>
+<strong>5000+5000 tests without a crash !</strong><br>
+<br>
+But however <strong>there is a little problem with TAB STRIP </strong>too !<br>
+<br>
+<br>
+(every number of the average list represents the average of elapsed time of 100 tests)<br>
+<br>
+<pre class="code"><code>;   (setq  #tt-prj "tt-text-box")<br>
+(setq  #tt-prj "tt-tab-strip-0")<br>
+;   (setq  #tt-prj "tt-tab-strip-1")<br>
+<br>
+;   (progn (dcl-project-load #tt-prj t) (dcl-form-show  #tt-prj "form") )<br>
+<br>
+(defun :LST-NUM-AVERAGE      (l) (/ (apply '+ l) (float (length l) ) ) )<br>
+<br>
+;         -         -         -         -         -<br>
+(defun :DCL-TIME-TEST ( rep-no / average elapsed-time elapsed-time-lst start )<br>
+   ;         -<br>
+   (defun :DCL-TIME-TEST-SUB ()<br>
+      (defun C:DCL-TIME-TEST/FORM#ONTIMER (/) (dcl-form-close  #tt-prj "form") )<br>
+      (defun C:DCL-TIME-TEST/FORM#ONINITIALIZE (/)   (dcl-Form-StartTimer #tt-prj "form" 10) )<br>
+      (dcl-project-load #tt-prj t)<br>
+      (dcl-form-show  #tt-prj "form")<br>
+   )<br>
+   <br>
+   ;         -<br>
+   (repeat rep-no<br>
+      (setq start (getvar "millisecs") )<br>
+      (:DCL-TIME-TEST-SUB)<br>
+      (setq elapsed-time (- (getvar "millisecs") start) )<br>
+      (setq elapsed-time-lst (append elapsed-time-lst (list elapsed-time ) ) )<br>
+   )<br>
+   (setq average  (/ (apply '+ elapsed-time-lst) (length elapsed-time-lst) ) )<br>
+   (princ (strcat "\n average : " (itoa average) ) ) (princ)   <br>
+   average<br>
+)<br>
+<br>
+<br>
+<br>
+;         -         -         -         -         -<br>
+(defun :DCL-TIME-TEST-100 ()   (:DCL-TIME-TEST 100 ) )<br>
+<br>
+<br>
+<br>
+;         -         -         -         -         -<br>
+(defun C:TT-100 () (:DCL-TIME-TEST-100) )<br>
+<br>
+<br>
+<br>
+;         -         -         -         -         -<br>
+(defun C:TT-5000 ( / average average-lst count)<br>
+   (setq count 0)<br>
+   (repeat 50<br>
+      (setq count (+ 1 count) )<br>
+      (setq average (:DCL-TIME-TEST-100) )<br>
+      (princ (strcat "\nnumber of repetitions so far : " (itoa (* count 100) ) ) ) (princ)<br>
+      (setq average-lst (append average-lst (list average ) ) )<br>
+   )<br>
+   (princ "\nnumber of repetitions : 5000")   (princ)<br>
+   (princ (strcat "\n average list MIN : " (itoa (apply 'min average-lst) ) ) )   (princ)<br>
+   (princ (strcat "\n average list MAX : " (itoa (apply 'max average-lst) ) ) )   (princ)<br>
+   (princ (strcat "\n AVERAGE of AVERAGES : " (rtos (:LST-NUM-AVERAGE average-lst) 2 3) ) )   (princ)<br>
+   (princ (strcat "\n AVERAGE LIST : " (vl-prin1-to-string average-lst) ) )   (princ)<br>
+   <br>
+)<br>
+<br>
+<br>
+</code></pre></div>
+</article>
+<article class="post" id="msg14032">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2024-05-26 14:56 UTC</span>
+  </div>
+  <div class="post-body"><strong>TEXT BOX</strong> (tt-text-box)<br>
+<br>
+<strong>number of repetitions : 5000</strong><br>
+<br>
+average list MIN : 215<br>
+average list MAX : 243<br>
+AVERAGE of AVERAGES : 232.620<br>
+AVERAGE LIST : (<strong>216 215 217</strong> 223 225 224 224 225 225 225 225 228 226 227 227 228 230 228 231 231 232 233 233 234 234 233 234 236 234 236 238 239 238 237 238 237 239 239 238 240 239 239 240 240 <strong>243 240 241 242 242 243</strong>)<br>
+<br>
+(every number of the average list represents the average of elapsed time of 100 tests)<br>
+<br>
+<br>
+so it seems that there is also a problem with the <strong>TEXT BOX</strong> <br>
+(in the various <strong>Filter Styles</strong>)...<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2612/tt-text-box.odcl">tt-text-box.odcl</a> <span class="muted">(1578 bytes)</span></li><li><a href="../attachments/2613/tt-tab-strip-0.odcl">tt-tab-strip-0.odcl</a> <span class="muted">(1218 bytes)</span></li><li><a href="../attachments/2614/tt-tab-strip-1.odcl">tt-tab-strip-1.odcl</a> <span class="muted">(1018924 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg14034">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2024-05-27 18:43 UTC</span>
+  </div>
+  <div class="post-body">I checked tt-text-box.odcl, but I did not notice any leaks. I think the effect in that case is just due to normal and unavoidable memory fragmentation, not actual leaks.</div>
+</article>
+<article class="post" id="msg14035">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2024-05-28 05:29 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=msg=14034 date=1716835395 wrote:</cite><br>
+I checked tt-text-box.odcl, but I did not notice any leaks. I think the effect in that case is just due to normal and unavoidable memory fragmentation, not actual leaks.<br>
+</blockquote><br>
+And what about TAB STRIP ?<br>
+is it the same thing ?<br>
+However I will continue to test other controls, and will report the results ...<br>
+</div>
+</article>
+<article class="post" id="msg14036">
+  <div class="post-head">
+    <span class="post-author">DW</span>
+    <span class="post-date muted">2024-05-30 04:27 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=msg=14028 date=1716668153 wrote:</cite><br>
+Thanks, I found and fixed a bigger leak in several combo types. I'll include the fix in the next release.<br>
+</blockquote><br>
+Interesting... after updating with the latest runtime I'm noticing dialogs with many controls including combos are snappier to open!</div>
+</article>
+<article class="post" id="msg14037">
+  <div class="post-head">
+    <span class="post-author">domenicomaria</span>
+    <span class="post-date muted">2024-05-31 14:20 UTC</span>
+  </div>
+  <div class="post-body"><strong>GRAPHIC BUTTON</strong>  (tt-graphic-button)<br>
+number of repetitions : <strong>5000</strong><br>
+average list MIN : 165<br>
+average list MAX : 169<br>
+AVERAGE of AVERAGES : 167.320<br>
+AVERAGE LIST : (<strong>165 165 165 166 165 166 </strong>167 169 167 165 165 167 166 167 167 167 166 165 167 165 167 168 167 169 166 167 168 169 167 167 169 168 167 169 169 168 169 168 168 169 169 168 168 <strong>168 168 168 169 169 169 169</strong>)<br>
+<br>
+<br>
+<strong>TEXT BUTTON</strong>  (tt-text-button)<br>
+number of repetitions : <strong>5000</strong><br>
+average list MIN : 144<br>
+average list MAX : 151<br>
+AVERAGE of AVERAGES : 146.380<br>
+AVERAGE LIST : (1<strong>44 144 146 145 145 145 146 </strong>145 145 144 145 145 145 145 145 145 145 146 146 144 144 146 147 147 147 147 145 145 147 147 146 147 146 146 147 149 147 149 149 148 147 148 147 <strong>148 148 149 148 149 151 148</strong>)<br>
+<br>
+<br>
+it seems like <strong>TEXT-BUTTON</strong> and <strong>GRAPHIC-BUTTON</strong> don't have any problem...<br>
+<br>
+<blockquote class="quote">interesting... after updating with the latest runtime I'm noticing dialogs with many controls including combos are snappier to open!</blockquote><br>
+<br>
+that's how it is... the problem is not completely solved, but things are certainly better!<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2615/tt-text-button.odcl">tt-text-button.odcl</a> <span class="muted">(1231 bytes)</span></li><li><a href="../attachments/2616/tt-graphic-button.odcl">tt-graphic-button.odcl</a> <span class="muted">(1386 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

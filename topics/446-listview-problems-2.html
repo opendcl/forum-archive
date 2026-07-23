@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ListView Problems (2) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 446</p>
+    <h1>ListView Problems (2)</h1>
+    <p class="meta">Started by garcigj ·
+      2008-10-06 14:13 UTC ·
+      1 replies · SMF topic #446</p>
+<article class="post" id="msg1998">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2008-10-06 14:13 UTC</span>
+  </div>
+  <div class="post-body">OpenDCL Version 5.0.0.25 ENU <br>
+ListView Problems: <br>
+<br>
+dcl_ListView_SortTextItems not ordered the images of the ListView .. <br>
+<br>
+Example: <br>
+ColumnClick event: <br>
+            (defun c:2DrawArch_MemCarp_ListView1_OnColumnClick (nColumn / Fila TextAct Pos)<br>
+	 (if (and (setq Fila (car (dcl_ListView_GetSelectedNths 2DrawArch_MemCarp_ListView1)))<br>
+		  (&gt;= Fila 0))<br>
+	  (Setq TextAct (dcl_ListView_GetItemText 2DrawArch_MemCarp_ListView1 Fila 0))<br>
+	 )<br>
+	 ;$SortColsDat$  (t  = Ascending, nil  = Descending)<br>
+	 (setq $SortColsDat$ (not $SortColsDat$)) <br>
+	 (dcl_ListView_SortTextItems 2DrawArch_MemCarp_ListView1 nColumn $SortColsDat$)<br>
+	 ;;Seleccionar item actual<br>
+	 (if (and TextAct<br>
+		  (Setq Pos (vl-position TextAct<br>
+			     (dcl_ListView_GetColumnItems 2DrawArch_MemCarp_ListView1 0))))<br>
+	  (dcl_ListView_SetCurSel 2DrawArch_MemCarp_ListView1 Pos)<br>
+	 );c.if<br>
+	)<br>
+<br>
+Is this a BUG? <br>
+¿Solution? <br>
+?????????<br>
+</div>
+</article>
+<article class="post" id="msg2002">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-06 14:50 UTC</span>
+  </div>
+  <div class="post-body">Hm, I didn't have a test yet because I hold the data in a list because of having access to all information after OnClick. That's why I sort the list and then I use the FillList method again the make sure that I have the same order.<br>
+<br>
+Maybe Owen can tell us more about the Sort-Methods.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

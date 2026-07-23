@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ComboBox - Arrow Head · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 14</p>
+    <h1>ComboBox - Arrow Head</h1>
+    <p class="meta">Started by dkh007 ·
+      2007-07-13 00:11 UTC ·
+      7 replies · SMF topic #14</p>
+<article class="post" id="msg46">
+  <div class="post-head">
+    <span class="post-author">dkh007</span>
+    <span class="post-date muted">2007-07-13 00:11 UTC</span>
+  </div>
+  <div class="post-body">I'm exploring the Arrow Head drop down for a ComboBox. I can use (dcl_ComboBox_GetTBText) to get the text that is displayed. Is there another GET function that retrieves the BLOCK name used by AutoCAD for the DIMBLK (or DIMLDRBLK)? Example, Select from the ComboBox: Origin indicator (block name is "Origin") or Closed blank (block name "Closedblank"). </div>
+</article>
+<article class="post" id="msg47">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-13 01:19 UTC</span>
+  </div>
+  <div class="post-body">Try these Daniel ..<br>
+....... though you may need to run them through a (strcase ... ) routine ... <br>
+<br>
+"" <br>
+ closed filled<br>
+ <br>
+"_DOT"<br>
+ dot <br>
+ <br>
+"_DOTSMALL" <br>
+ dot small<br>
+ <br>
+"_DOTBLANK"<br>
+ dot blank<br>
+ <br>
+"_ORIGIN" <br>
+ origin indicator<br>
+ <br>
+"_ORIGIN2" <br>
+ origin indicator 2<br>
+ <br>
+"_OPEN"<br>
+ open<br>
+ <br>
+"_OPEN90" <br>
+ right angle<br>
+ <br>
+"_OPEN30" <br>
+ open 30<br>
+ <br>
+"_CLOSED" <br>
+ closed<br>
+ <br>
+"_SMALL"<br>
+ dot small blank<br>
+ <br>
+"_NONE" <br>
+ none<br>
+ <br>
+"_OBLIQUE" <br>
+ oblique<br>
+ <br>
+"_BOXFILLED"<br>
+ box filled<br>
+ <br>
+"_BOXBLANK"<br>
+ box<br>
+ <br>
+"_CLOSEDBLANK"<br>
+ closed blank<br>
+ <br>
+"_DATUMFILLED"<br>
+ datum triangle filled<br>
+ <br>
+"_DATUMBLANK"<br>
+ datum triangle<br>
+ <br>
+"_INTEGRAL"<br>
+ integral<br>
+ <br>
+"_ARCHTICK"<br>
+ architectural tick<br>
+ <br>
+</div>
+</article>
+<article class="post" id="msg49">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-13 01:31 UTC</span>
+  </div>
+  <div class="post-body">Daniel,<br>
+<br>
+I have an old recollection that the blocks are not available until they are configured on a DIM style.<br>
+I seem to recall making a block with all the DIM blocks included when I was setting leader stuff pragmatically ... This functionality MAY have changed<br>
+<br>
+/// kwb</div>
+</article>
+<article class="post" id="msg50">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-13 01:49 UTC</span>
+  </div>
+  <div class="post-body">How about something like  ..<br>
+<br>
+<pre class="code"><code>;;;---------------------------------------------------------------------------<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(SETQ ArrowBlockList '(("CLOSED FILLED" . "")<br>
+                       ("DOT" . "_DOT")<br>
+                       ("DOT SMALL" . "_DOTSMALL")<br>
+                       ("DOT BLANK" . "_DOTBLANK")<br>
+                       ("ORIGIN INDICATOR" . "_ORIGIN")<br>
+                       ("ORIGIN INDICATOR 2" . "_ORIGIN2")<br>
+                       ("OPEN" . "_OPEN")<br>
+                       ("RIGHT ANGLE" . "_OPEN90")<br>
+                       ("OPEN 30" . "_OPEN30")<br>
+                       ("CLOSED" . "_CLOSED")<br>
+                       ("DOT SMALL BLANK" . "_SMALL")<br>
+                       ("NONE" . "_NONE")<br>
+                       ("OBLIQUE" . "_OBLIQUE")<br>
+                       ("BOX FILLED" . "_BOXFILLED")<br>
+                       ("BOX" . "_BOXBLANK")<br>
+                       ("CLOSED BLANK" . "_CLOSEDBLANK")<br>
+                       ("DATUM TRIANGLE FILLED" . "_DATUMFILLED")<br>
+                       ("DATUM TRIANGLE" . "_DATUMBLANK")<br>
+                       ("INTEGRAL" . "_INTEGRAL")<br>
+                       ("ARCHITECTURAL TICK" . "_ARCHTICK")<br>
+                      )<br>
+)<br>
+<br>
+<br>
+(DEFUN c:Test_F_ComboBoxArrows_OnSelChanged (nSelection sSelText /)    <br>
+    (ALERT (CDR (ASSOC (STRCASE sSelText) ArrowBlockList)))<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;---------------------------------------------------------------------------<br>
+;;;</code></pre></div>
+</article>
+<article class="post" id="msg51">
+  <div class="post-head">
+    <span class="post-author">dkh007</span>
+    <span class="post-date muted">2007-07-13 02:34 UTC</span>
+  </div>
+  <div class="post-body">Thanks Kerry! That was going to be my next approach... I know over time Autodesk has change the "Arrow Head" and I was thinking with each change there was some logical way to call the block. For now, I will use this routine it is nice and simple.</div>
+</article>
+<article class="post" id="msg52">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-13 02:52 UTC</span>
+  </div>
+  <div class="post-body">You're welcome Daniel.<br>
+<br>
+I had considered using the nSelection integer<br>
+<br>
+ie ( nth nSelection SimpleBlockList) but it's not as transparent to the coder as the sample posted (in my opinion, anyway)</div>
+</article>
+<article class="post" id="msg53">
+  <div class="post-head">
+    <span class="post-author">dkh007</span>
+    <span class="post-date muted">2007-07-13 03:23 UTC</span>
+  </div>
+  <div class="post-body">I ended up storing the sSelText in the registry and then use the ASSOC to get it from the ArrowBlockList. And then the registry lets the user call the variable at later date. And your right, this method is MUCH easier to see (and add to in future versions of AutoCAD).<br>
+<br>
+<pre class="code"><code><br>
+;;; Set Leader head<br>
+(defun c:Test_F_ComboBoxArrows_OnSelChanged (nSelection sSelText /)<br>
+  (vl-registry-write "HKEY_CURRENT_USER\\Software\\Product\\Version" "Leader Arrow" sSelText)<br>
+)<br>
+<br>
+(setq ArrowBlock (CDR (ASSOC (STRCASE (vl-registry-read "HKEY_CURRENT_USER\\Software\\Product\\Version" "Leader Arrow")) ArrowBlockList)))<br>
+<br>
+(setvar "DIMLDRBLK" ArrowBlock)<br>
+<br>
+</code></pre></div>
+</article>
+<article class="post" id="msg134">
+  <div class="post-head">
+    <span class="post-author">goodonline</span>
+    <span class="post-date muted">2007-08-03 17:17 UTC</span>
+  </div>
+  <div class="post-body">I pilfered what kerry originally created and setup a function to retrieve the block name or the text for the block name.<br>
+<br>
+<br>
+;; function to get the block name of and arrowhead in both directions<br>
+;; supply the text string or the block name and it will give you the<br>
+;; opposing name<br>
+<br>
+(defun c:ArrowNameConv (xname / vArrowBlockList vAns vCount vItem)<br>
+  (setq	vArrowBlockList<br>
+	 '(("CLOSED FILLED" . "")<br>
+	   ("DOT" . "_DOT")<br>
+	   ("DOT SMALL" . "_DOTSMALL")<br>
+	   ("DOT BLANK" . "_DOTBLANK")<br>
+	   ("ORIGIN INDICATOR" . "_ORIGIN")<br>
+	   ("ORIGIN INDICATOR 2" . "_ORIGIN2")<br>
+	   ("OPEN" . "_OPEN")<br>
+	   ("RIGHT ANGLE" . "_OPEN90")<br>
+	   ("OPEN 30" . "_OPEN30")<br>
+	   ("CLOSED" . "_CLOSED")<br>
+	   ("DOT SMALL BLANK" . "_SMALL")<br>
+	   ("NONE" . "_NONE")<br>
+	   ("OBLIQUE" . "_OBLIQUE")<br>
+	   ("BOX FILLED" . "_BOXFILLED")<br>
+	   ("BOX" . "_BOXBLANK")<br>
+	   ("CLOSED BLANK" . "_CLOSEDBLANK")<br>
+	   ("DATUM TRIANGLE FILLED" . "_DATUMFILLED")<br>
+	   ("DATUM TRIANGLE" . "_DATUMBLANK")<br>
+	   ("INTEGRAL" . "_INTEGRAL")<br>
+	   ("ARCHITECTURAL TICK" . "_ARCHTICK")<br>
+	  )<br>
+  ) ;_ end setq<br>
+<br>
+  (setq vCount 0)<br>
+  (setq vAns nil)<br>
+<br>
+  (while (not vAns)<br>
+<br>
+    (setq vItem (nth vCount vArrowBlockList))<br>
+<br>
+    (cond<br>
+      ((= (strcase xname) (car vItem))<br>
+       (setq vAns (cdr vItem))<br>
+      )<br>
+      ((= (strcase xname) (cdr vItem))<br>
+       (setq vAns (car vItem))<br>
+      )<br>
+      (t nil)<br>
+    ) ;_end cond<br>
+<br>
+    (if	(&gt; vCount (length vArrowBlockList))<br>
+      (setq vAns (strcase xName))<br>
+    ) ;_ end of if<br>
+<br>
+<br>
+    (setq vCount (1+ vCount))<br>
+    <br>
+<br>
+  ) ;_while<br>
+<br>
+  vAns<br>
+<br>
+) ;_end defun<br>
+<br>
+<br>
+Robert good<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

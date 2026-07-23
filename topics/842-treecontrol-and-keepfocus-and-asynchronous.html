@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TreeControl and KeepFocus and asynchronous .... · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 842</p>
+    <h1>TreeControl and KeepFocus and asynchronous ....</h1>
+    <p class="meta">Started by stephan_35 ·
+      2009-07-06 10:06 UTC ·
+      8 replies · SMF topic #842</p>
+<article class="post" id="msg4164">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-07-06 10:06 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+<br>
+I return with my problem TreeControl and KeepFocus.<br>
+<br>
+During the TreeControl:<br>
+<br>
+KeepFocus T should be able to make animations on the AutoCAD drawing (Change the scale of a block)<br>
+KeepFocus must be nil to access directly to the buttons of Autocad.<br>
+<br>
+I just discovered a problem with the instruction KeepFocus very strange with the TreeControl:<br>
+<br>
+"SetKeepFocus nil", Autocad recovers hand quickly, in fact one can immediately select a button in the menus.<br>
+<br>
+"SetKeepFocus T" Despite the KeepFocus, Nothing has changed!<br>
+<br>
+Indeed, during the event, checking the status of GetKeepFocus it returns the correct value.<br>
+However, it does not take effect until the next event.<br>
+<br>
+I wonder if the behavior does TreeControl is not unusual, in fact, once inside, you can not access the menus and commands autocad ...<br>
+<br>
+In the meantime, I used more KeepFocus, The only solution I have found is to force the focus to another button of my dialog box to exit TreeControl ....<br>
+<br>
+Best regards</div>
+</article>
+<article class="post" id="msg4165">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-07-06 12:35 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+So, i think i have to change the title of topic ....<br>
+<br>
+I join an example to explain what append : the first right cliq set KeepFocus to T but no change "real" KeepFocus", you have to right cliq again .... <br>
+<br>
+<br>
+Thanks<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/831/Test.odcl">Test.odcl</a> <span class="muted">(3413 bytes)</span></li><li><a href="../attachments/832/test.lsp">test.lsp</a> <span class="muted">(1150 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4174">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-07-09 16:29 UTC</span>
+  </div>
+  <div class="post-body">I cannot reproduce this problem (or maybe I just don't understand it). I'm testing with AutoCAD 2007 on Vista.</div>
+</article>
+<article class="post" id="msg4182">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-07-09 18:34 UTC</span>
+  </div>
+  <div class="post-body">In fact, with KeepFocus T , when you have selected an item inside tree, you can not select directly an autocad menu or button inside menu, you have to set KeepFocus nil !<br>
+<br>
+My example change the keepfocus state with mouse's right ou left button inside tree.<br>
+<br>
+First step , change KeepFocus T to nil take effect immediatly.<br>
+Second step, change KeepFocus nil to T does not take effect immediatly ! but ready for next event !<br>
+<br>
+So, i found why, is asynchronous is change to 0, all work perfectlty, but , because i need to access to autocad drawings command asynchronous is need to be 1.<br>
+<br>
+I can put a video as you wish !<br>
+<br>
+Best regards</div>
+</article>
+<article class="post" id="msg4188">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-07-09 22:55 UTC</span>
+  </div>
+  <div class="post-body">I did not see the behavior you describe, but this is consistent with the asynchronous event handling. Especially on a slow computer, the event may not be handled until long after it is triggered.</div>
+</article>
+<article class="post" id="msg4190">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-07-10 00:38 UTC</span>
+  </div>
+  <div class="post-body">Yes, i hope i understand asynchronous event ....  ;)<br>
+<br>
+But i can not understand why "KeepFocus nil" is apply immediatly and why "KeepFocus T" doesn't !<br>
+<br>
+<a href="http://www.ad-informatique.net/pages/posts/opendcl---treecontrol-and-keepfocus-and-asynchronous26.php?g=7" rel="nofollow noopener">{2}</a><br>
+<br>
+Bests regards<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg4194">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-07-10 04:00 UTC</span>
+  </div>
+  <div class="post-body">I suspect that when KeepFocus = true, the event handler does not execute until the control gives up focus. Clicking outside the form would cause the queued event handler to run. I will investigate more with the sample you provided to see if I can reproduce the problem when the form is floating. In my first test, it was docked.<br>
+<br>
+In the meantime, you mentioned before that everything works when handling events synchronously. As a workaround, you can change Event Invoke to Synchronous, and just put your (command) calls in a secondary function that get invoked from your event handler via (dcl_SendString). If that doesn't work, you might try calling (dcl_SetCmdBarFocus) in the form's OnMouseMovedOff event handler.</div>
+</article>
+<article class="post" id="msg4196">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-07-10 12:54 UTC</span>
+  </div>
+  <div class="post-body">To reproduce the problem, if I understand correctly:<br>
+<br>
+1) Load the test app.<br>
+2) Left-click on the tree control (setting KeepFocus false), then move the mouse off the form.<br>
+3) Right-click on the tree control (setting KeepFocus true), then move the mouse off the form.<br>
+4) Right-click on the tree control (setting KeepFocus true again -- i.e. no change), then move the mouse off the form.<br>
+<br>
+The "problem" is that after step 4, the tree control keeps the input focus, and the AutoCAD window does not get it back until you click somewhere. This is working as designed. This is exactly what "Keep Focus" is designed to do: allow keyboard input to go to the control rather than AutoCAD by capturing the input focus.<br>
+<br>
+What makes it appear inconsistent is the fact that the behavior after the first right-click is different from the second right-click. The reason is that, with Event Invoke set to asynchronous, the first right-click does not set Keep Focus to true until *after* AutoCAD has already retaken the focus. Thus the new KeepFocus setting has no effect because the damage is already done. But by the second right-click, AutoCAD never retakes the focus, so the new setting works as expected.<br>
+<br>
+When Event Invoke is set to Synchronous, the Keep Focus change occurs immediately, so it changes *before* AutoCAd retakes the focus, and thus the effect is seen after the *first* right-click.<br>
+<br>
+I hope this explains the behavior. In any case, I do not see a bug here.</div>
+</article>
+<article class="post" id="msg4213">
+  <div class="post-head">
+    <span class="post-author">stephan_35</span>
+    <span class="post-date muted">2009-07-15 16:42 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+<br>
+The "dcl_SendString" runs correctly, but no animation on the screen.<br>
+<br>
+I found a solution to my problem, simple, but it had to be found: (dcl_Control_SetFocus TREE)<br>
+<br>
+Longer need to use keepfocus.<br>
+we set asynchronous to 1.<br>
+<br>
+However, I remain confused to see that the management of a treecontrol causing as many problems related to focus.<br>
+<br>
+Best regards </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

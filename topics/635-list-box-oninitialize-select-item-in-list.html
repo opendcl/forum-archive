@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>List Box OnInitialize select item in list · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 635</p>
+    <h1>List Box OnInitialize select item in list</h1>
+    <p class="meta">Started by Jim ·
+      2009-03-08 21:43 UTC ·
+      5 replies · SMF topic #635</p>
+<article class="post" id="msg2993">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2009-03-08 21:43 UTC</span>
+  </div>
+  <div class="post-body">Can't get first item in the list to be selected during initialize.<br>
+is this possible to do?<br>
+<br>
+(defun c:Onset_StandardFeatures_OnInitialize (/)<br>
+   (dcl_Control_SetEnabled Onset_StandardFeatures_btnOK False)<br>
+   (dcl_Control_SetList Onset_StandardFeatures_lstFeatures (tcam:stdFeatures))<br>
+   (dcl_ListBox_SetFocusIndex Onset_StandardFeatures_lstFeatures 0)<br>
+   (dcl_ListBox_SelectItem Onset_StandardFeatures_lstFeatures 0)<br>
+)</div>
+</article>
+<article class="post" id="msg2995">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-08 22:18 UTC</span>
+  </div>
+  <div class="post-body">Did you have a try with SetCurSel method insteand of SelectItem?<br>
+<br>
+In ancient times SetCurSel was described for using in ListBoxes with SingleSelectionStyle and SelectItem for MultiSelectionStyle. I had a look at the new documentation, there's no word about this difference.<br>
+<br>
+@Owen: Does this difference still exist? Should we add this to the documentation then?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2996">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-08 22:38 UTC</span>
+  </div>
+  <div class="post-body">Yes, SelectItem only works if multiple selection is enabled. I also see in MSDN that passing -1 for the ItemIndex applies it to all items.<br>
+<br>
+I will add the following to the end of the descriptions for ListBox_SelectItem, ListBox_SelItemRange, DWGList_SelectItem, and DWGList_SelItemRange:<br>
+<code>This method does not work for single-selection lists (see SelectionStyle).</code><br>
+<br>
+For ListBox_SelectItem and DWGList_SelectItem, I will add the following after the first sentence:<br>
+<code>If ItemIndex is -1, all list items are selected or deselected.</code></div>
+</article>
+<article class="post" id="msg2997">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-08 22:49 UTC</span>
+  </div>
+  <div class="post-body">Interestingly, it looks like ListView_SetCurSel and BlockList_SetCurSel have semantically the same behavior as ListBox_SelectItem. It seems to me that SetCurSel should be removed for all of them, and replaced with a single SelectItem that handles both multiple and single selection cases. SelectItem sounds more unambiguous to me.</div>
+</article>
+<article class="post" id="msg2998">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-08 22:57 UTC</span>
+  </div>
+  <div class="post-body">Ok, I think, this is a good idea.<br>
+Fred</div>
+</article>
+<article class="post" id="msg3000">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2009-03-08 23:59 UTC</span>
+  </div>
+  <div class="post-body">You guys are, "On it Boss"<br>
+<br>
+Thanks,<br>
+Jim</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

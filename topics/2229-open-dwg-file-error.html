@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Open dwg file - error · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2229</p>
+    <h1>Open dwg file - error</h1>
+    <p class="meta">Started by juniorolisp ·
+      2015-02-12 21:13 UTC ·
+      24 replies · SMF topic #2229</p>
+<article class="post" id="msg11193">
+  <div class="post-head">
+    <span class="post-author">juniorolisp</span>
+    <span class="post-date muted">2015-02-12 21:13 UTC</span>
+  </div>
+  <div class="post-body">hi, <br>
+I'm a new user opendcl  and encountered the first problem.<br>
+When using a listbox-and I call the function "(command" _.OPEN" name)".<br>
+The file opens, but double-click stops working. <br>
+Of course, the next time you load the Lisp works, what am I doing wrong?<br>
+Bricscad V13 use.<br>
+Sorry for my English.</div>
+</article>
+<article class="post" id="msg11194">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-02-12 22:35 UTC</span>
+  </div>
+  <div class="post-body">Are you calling (command) from a synchronous event handler? If so, take a look at the last paragraph <a href="http://www.opendcl.com/HelpFiles/index.php?page=Concepts/Modality.htm" rel="nofollow noopener">{2}</a>. </div>
+</article>
+<article class="post" id="msg11196">
+  <div class="post-head">
+    <span class="post-author">juniorolisp</span>
+    <span class="post-date muted">2015-02-14 18:45 UTC</span>
+  </div>
+  <div class="post-body">Unfortunately, we still something I'm doing wrong<br>
+(defun c:I_im_DrawingsListBox_OnDblClicked (/  )<br>
+	( setvar "SDI" 0 ) ; turn on multiple document interface<br>
+	(setvar "FILEDIA" 0)<br>
+	(dcl_SendString (strcat "(command " "\"_.OPEN\"" "\"" "C:/001.dwg" "\"" ")" " "))<br>
+	(setvar "filedia" 1)	<br>
+)<br>
+<br>
+the first call to work correctly. After opening the file, double-click it returns an error:<br>
+; ----- Error around expression ----<br>
+(DCL_LISTBOX_GETSELECTEDITEMS I_Im_DRAWINGSLISTBOX)<br>
+<br>
+; error : no function definition  ; expected FUNCTION at <br>
+;<br>
+; error : during LISP function [c:I_Im_DrawingsListBox_OnDblClicked] invoke from BRX/SDS interface,<br>
+          please check Lisp function definition and call arguments.<br>
+<br>
+Please Help Me</div>
+</article>
+<article class="post" id="msg11197">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-02-15 03:47 UTC</span>
+  </div>
+  <div class="post-body">Both (setvar "FILEDIA") calls are not doing what you expect and can be removed from your code without changing anything. The error indicates that an event handler is not defined. When you open a new document, you need to make sure your event handlers are defined in the new document before they are fired. There are various way of doing so. One way is to load your functions via (vl-load-all).</div>
+</article>
+<article class="post" id="msg11199">
+  <div class="post-head">
+    <span class="post-author">juniorolisp</span>
+    <span class="post-date muted">2015-02-15 10:28 UTC</span>
+  </div>
+  <div class="post-body">Thank you for your help, however, still do not know how to do it.<br>
+I attach a file odcl plus lsp file maybe somewhere else is an error.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2097/2015-02-15.zip">2015-02-15.zip</a> <span class="muted">(2249 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11202">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-02-15 19:03 UTC</span>
+  </div>
+  <div class="post-body">Your lisp code and .odcl do not explain the problem. How are you loading your lisp code into the new drawing?</div>
+</article>
+<article class="post" id="msg11203">
+  <div class="post-head">
+    <span class="post-author">juniorolisp</span>
+    <span class="post-date muted">2015-02-15 19:51 UTC</span>
+  </div>
+  <div class="post-body">I use the file menu .cui and file .mnl<br>
+(load "i.lsp" "error")<br>
+</div>
+</article>
+<article class="post" id="msg11204">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-02-15 20:09 UTC</span>
+  </div>
+  <div class="post-body">I am able to reproduce the problem in Bricscad V15 64-bit. Strangely, if I switch documents then switch back, the control symbol is suddenly defined as expected. I will investigate.<br>
+<br>
+By the way, I recommend to remove your very complex function to load OpenDCL runtime and replace it with simply (command "OPENDCL").</div>
+</article>
+<article class="post" id="msg11205">
+  <div class="post-head">
+    <span class="post-author">juniorolisp</span>
+    <span class="post-date muted">2015-02-15 20:19 UTC</span>
+  </div>
+  <div class="post-body">Feature written by Leemac working properly:<br>
+http://www.lee-mac.com/open.html<br>
+However, I have time after a long activity that Bricscad also stopped working.<br>
+I would therefore run the simple OPEN.</div>
+</article>
+<article class="post" id="msg11206">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-02-15 20:56 UTC</span>
+  </div>
+  <div class="post-body">This appears to be a bug in Bricscad. I will report the bug and see what they say. You could work around the problem by using the alternate method of "" "" "" instead of the control symbol.</div>
+</article>
+<article class="post" id="msg11207">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-02-15 21:23 UTC</span>
+  </div>
+  <div class="post-body">This works for me:<br>
+[/(defun C:Iii ( / wersja)<br>
+	(command "OPENDCL")<br>
+	(dcl_Project_Load "I")<br>
+	(dcl_Form_Show I_IM 30 150)<br>
+	(dcl_Control_SetDockableSides I_IM 0)<br>
+	(princ)<br>
+)<br>
+<br>
+(defun c:I_Im_DrawingsListBox_OnDblClicked (/ %nazwa acApp acDocs Nazwa)<br>
+  	(setq %nazwa (car (dcl_ListBox_GetSelectedItems I_Im_DrawingsListBox)))<br>
+	(setq  %nazwa (strcat (getvar "dwgprefix")  %nazwa ".dwg"))<br>
+	(setq  %nazwa (vl-string-translate "\\" "/" %nazwa))<br>
+	(setvar "SDI" 0 ) ; turn on multiple document interface<br>
+	(dcl_SendString (strcat "FILEDIA 0\n_.OPEN \"" (vl-princ-to-string %nazwa) "\"\nFILEDIA 1 "))<br>
+)<br>
+(defun c:I_Im_DrawingsRefresh_OnClicked (/  %DrawingsListComplete %DrawingsListCompleteDWG)<br>
+	(setq %DrawingsListComplete (vl-directory-files (strcat (getvar "dwgprefix"))  "*.dwg"))<br>
+	(foreach % %DrawingsListComplete<br>
+		(setq %DrawingsListCompleteDWG (cons (substr % 1 (- (strlen %) 4)) %DrawingsListCompleteDWG))<br>
+	)<br>
+	(dcl_ListBox_Clear I_Im_DrawingsListBox)<br>
+	(dcl_ListBox_AddList I_Im_DrawingsListBox %DrawingsListCompleteDWG)<br>
+)<br>
+code]</div>
+</article>
+<article class="post" id="msg11208">
+  <div class="post-head">
+    <span class="post-author">juniorolisp</span>
+    <span class="post-date muted">2015-02-15 21:51 UTC</span>
+  </div>
+  <div class="post-body">Thank you very much, it works.<br>
+So it was a mistake to send "command" to the command line ?<br>
+<br>
+Maybe not to assume the new post I have a question<br>
+As the closure of the palette to call it again ?</div>
+</article>
+<article class="post" id="msg11209">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-02-15 22:35 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=juniorolisp link=topic=2229.msg11208#msg11208 date=1424037091 wrote:</cite><br>
+So it was a mistake to send "command" to the command line ?</blockquote><br>
+<br>
+I'm not sure I would call it a mistake, but it does create an unusual situation since lisp evaluation is confined to each document. In AutoCAD that approach does not work at all to open a new drawing.<br>
+<br>
+<br>
+<blockquote class="quote"><cite> author=juniorolisp link=topic=2229.msg11208#msg11208 date=1424037091 wrote:</cite><br>
+As the closure of the palette to call it again ?</blockquote><br>
+<br>
+Sorry, I don't understand the question.</div>
+</article>
+<article class="post" id="msg11210">
+  <div class="post-head">
+    <span class="post-author">juniorolisp</span>
+    <span class="post-date muted">2015-02-15 22:45 UTC</span>
+  </div>
+  <div class="post-body">if I close the window opendcl eg. "cross".<br>
+How do I open them again</div>
+</article>
+<article class="post" id="msg11211">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-02-15 22:52 UTC</span>
+  </div>
+  <div class="post-body">I guess the same way you opened it in the first place, usually by a custom command. Is that what you're asking?</div>
+</article>
+<article class="post" id="msg11221">
+  <div class="post-head">
+    <span class="post-author">juniorolisp</span>
+    <span class="post-date muted">2015-02-22 19:55 UTC</span>
+  </div>
+  <div class="post-body">After a week of testing I find that everything works great.<br>
+There were, however, a new question:<br>
+How to open file "Read-only" (or is it at all possible?)?</div>
+</article>
+<article class="post" id="msg11222">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-02-22 23:05 UTC</span>
+  </div>
+  <div class="post-body">One way to force a file to open read-only is to open it for writing with the lisp expression (open "" "a") before issuing the OPEN command. I don't know how that will work in your scenario.</div>
+</article>
+<article class="post" id="msg11535">
+  <div class="post-head">
+    <span class="post-author">juniorolisp</span>
+    <span class="post-date muted">2015-08-04 19:25 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+After long trials, there was another problem.<br>
+If you open the file will get the message<br>
+<blockquote class="quote">This file is already in use. Do you want to open it as read-only?</blockquote><br>
+ and click no.<br>
+All functions lisp stop working. Do you have any idea how to get around \ repair</div>
+</article>
+<article class="post" id="msg11536">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-08-05 08:47 UTC</span>
+  </div>
+  <div class="post-body">I think you will need to give more details.<br>
+If you open a dwg as read-only you can still run Lisp code in that drawing.</div>
+</article>
+<article class="post" id="msg11537">
+  <div class="post-head">
+    <span class="post-author">juniorolisp</span>
+    <span class="post-date muted">2015-08-05 15:37 UTC</span>
+  </div>
+  <div class="post-body">so then it works.<br>
+It stops working when you give up opening the file</div>
+</article>
+<article class="post" id="msg11538">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-08-06 14:38 UTC</span>
+  </div>
+  <div class="post-body">After many tests I find the problem is related to the undocked state of the palette. If the palette is docked before any double click action has occurred, things seem to work fine. In BricsCAD V14 this problem does not occur but even in that version there are still issues with palettes.</div>
+</article>
+<article class="post" id="msg11539">
+  <div class="post-head">
+    <span class="post-author">juniorolisp</span>
+    <span class="post-date muted">2015-08-07 09:51 UTC</span>
+  </div>
+  <div class="post-body">Do you have maybe an idea how to bypass this problem? Is the only solution is to update to a higher version of Bricscad?</div>
+</article>
+<article class="post" id="msg11541">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-08-09 12:22 UTC</span>
+  </div>
+  <div class="post-body">I have tried 3 alternative methods, but can't find a full proof approach to opening the drawings.<br>
+<br>
+Method 1 can't be used because on_doc_load.lsp and .mnl files are not loaded in the new drawings.<br>
+Methods 2 and 3 suffer from the problem mentioned in posts #2 and #7. I think this problem is caused by a 'namespace issue'. The ODCL dialog is using functions that are defined in a different drawing from the current one. In my tests closing a drawing (after creating some entities) seems to be a trigger.<br>
+<br>
+Note 1: BricsCAD V13 and ODCL 8.0.0.6 were used for testing.<br>
+Note 2: I have created a new ODCL project with a modeless dialog and have used the new 'dcl-' naming scheme.<br>
+<br>
+<strong>Method 1: I_new_vla-open.lsp</strong><br>
+Use (vla-open) to open drawings.<br>
+This is a strange one! In my tests I have used on_doc_load.lsp to load the project Lisp file. And even thought on_doc_load.lsp is not loaded in a dwg opened with (vla-open), the ODCL dialog works fine in the new drawing. This again points to a namespace issue.<br>
+<br>
+<strong>Method 2: I_new_script.lsp</strong><br>
+Use a temporary script to open drawings.<br>
+<br>
+<strong>Method 3: I_new_sendkeys.lsp</strong><br>
+Use the WSH sendkeys method to open drawings.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2145/I_new.zip">I_new.zip</a> <span class="muted">(3372 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11542">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-08-09 23:43 UTC</span>
+  </div>
+  <div class="post-body">Roy, there was a bugfix in one of the BricsCAD V15 updates that addresses the problem with functions not being defined in the correct namespace.</div>
+</article>
+<article class="post" id="msg11543">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-08-11 06:44 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2229.msg11542#msg11542 date=1439163825 wrote:</cite><br>
+Roy, there was a bugfix in one of the BricsCAD V15 updates that addresses the problem with functions not being defined in the correct namespace.<br>
+</blockquote>I am using BricsCAD V14 at the moment. But good to know it has been fixed. Thanks.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

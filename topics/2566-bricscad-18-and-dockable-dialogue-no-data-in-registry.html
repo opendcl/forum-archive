@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bricscad 18 and Dockable Dialogue: No data in registry? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2566</p>
+    <h1>Bricscad 18 and Dockable Dialogue: No data in registry?</h1>
+    <p class="meta">Started by Peter2 ·
+      2018-01-22 11:21 UTC ·
+      8 replies · SMF topic #2566</p>
+<article class="post" id="msg12713">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-01-22 11:21 UTC</span>
+  </div>
+  <div class="post-body">I have Bricscad 18 and a Dockable Dialogue, and every time I "show" the dialogue it is in the upper left corner of screen. I move it and resize it - and next "show" does not consider the last settings.<br>
+<br>
+In Registry under Bricscad-Profile I have a lot of entries for other ODCL-dialogues, but the dockable is not there.<br>
+<br>
+Bug or feature or By Incident?</div>
+</article>
+<article class="post" id="msg12716">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2018-01-23 13:13 UTC</span>
+  </div>
+  <div class="post-body">Me too!<br>
+When I had problems with docked control bars displaying properly after closing and re-opening, I was successful by deleting this folder:<br>
+HKEY_CURRENT_USER\Software\Autodesk\AutoCAD\R16.0\ACAD-233:409\Profiles\uMillBare\OpenDCL<br>
+<br>
+Not any more.<br>
+<br>
+Where is docked control bar location data stored?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2375/Registery.jpg">Registery.jpg</a> <span class="muted">(28286 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12724">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2018-01-27 20:57 UTC</span>
+  </div>
+  <div class="post-body">I just did a quick test with a test control bar form, and it seems to be working correctly. Control bar state is saved on application exit to the profile. In the case of control bars, the state is saved by the application, not by OpenDCL. Each control bar is assigned a GUID by OpenDCL, and state is saved (in BricsCAD) under {profile}\ControlBars\{GUID}.<br>
+<br>
+If you can provide a reproducible test case I'll be happy to have a closer look.</div>
+</article>
+<article class="post" id="msg12725">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2018-01-27 21:03 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Jim Short link=topic=2566.msg12716#msg12716 date=1516713203 wrote:</cite><br>
+Where is docked control bar location data stored?<br>
+</blockquote><br>
+<br>
+Acad stores it in your .cui file.</div>
+</article>
+<article class="post" id="msg12727">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2018-01-27 22:45 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+Thanks for the tip. I really don't know how this heals itself. After a few days the docked bar order returns to normal. Weird.<br>
+Jim</div>
+</article>
+<article class="post" id="msg12730">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-01-28 21:13 UTC</span>
+  </div>
+  <div class="post-body">Thanks from me too - I will watch it.</div>
+</article>
+<article class="post" id="msg12782">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-03-12 10:57 UTC</span>
+  </div>
+  <div class="post-body">a)<br>
+I played around with the width of my control bar - and this brings me to the basic question:<br>
+<br>
+What decides the width of control bar?<br>
+a) The basic width, defined in the ODVL file?<br>
+b) The current width, defined from user at runtime, and stored in profile (registry)?<br>
+<br>
+For me, it seem to be a: The basic width  ..<br>
+<br>
+b)<br>
+<blockquote class="quote">Each control bar is assigned a GUID by OpenDCL...</blockquote><br>
+How can I get the GUID of my GUI?</div>
+</article>
+<article class="post" id="msg12783">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2018-03-12 12:53 UTC</span>
+  </div>
+  <div class="post-body">If a bar is docked, size is controlled by the host dock bar (which can hold multiple child docking bars) in which it is docked. The first bar in the host dock bar has some influence on the final size, but there are some differences between platforms. The bar's GUID (called "Tool ID" in the API) is not accessible via UI. The only way to get it is by observing the registry key name where its config data are persisted when you close the host app.</div>
+</article>
+<article class="post" id="msg12784">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2018-03-12 14:54 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen<br>
+<br>
+I decided to use the standard <pre class="code"><code>(dcl-Control-SetWidth ...</code></pre> to handle this topic. I'll see how it works.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

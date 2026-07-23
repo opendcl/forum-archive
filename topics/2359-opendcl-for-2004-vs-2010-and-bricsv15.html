@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenDCL for 2004  vs 2010 and BricsV15 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2359</p>
+    <h1>OpenDCL for 2004  vs 2010 and BricsV15</h1>
+    <p class="meta">Started by Jim ·
+      2016-04-02 14:57 UTC ·
+      4 replies · SMF topic #2359</p>
+<article class="post" id="msg11836">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2016-04-02 14:57 UTC</span>
+  </div>
+  <div class="post-body">My app has a docked bar with a slider that changes a lisp var controlling the speed of an animation running in lisp. OpenDCL running in Acad2k4 will allow the slider to be moved while animation is in progress.<br>
+Event Evoke = (0) Synchronous. If Asynchronous it does not. <br>
+<br>
+ObjectDCL Event Evoke = (0) Keep Focus in Acad2k4 also allowed changing animation speed.<br>
+<br>
+Testing same in Acad2010 or BricsCAD V15 does not allow interrupt as is possible in Acad2k4.<br>
+<br>
+Is this working as expected on later versions? Is there a way to achieve the same affect?<br>
+<br>
+Thanks,<br>
+Jim<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg11837">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-04-03 01:30 UTC</span>
+  </div>
+  <div class="post-body">Is your control bar's Keep Focus property enabled? It sounds like you have an OnScroll event handler for the slider, but a better design might be to eliminate the OnScroll event and just read the slider's current value from your lisp code at the point where it's needed.</div>
+</article>
+<article class="post" id="msg11838">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2016-04-07 15:55 UTC</span>
+  </div>
+  <div class="post-body">Control keep focus=true<br>
+ReleaseCapture Event=checked<br>
+</div>
+</article>
+<article class="post" id="msg11839">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2016-04-09 15:59 UTC</span>
+  </div>
+  <div class="post-body">Handling ReleaseCapture is risky, as the event is executing while the system is transitioning from an unusual state. I would consider eliminating the event and just querying the slider value when needed.</div>
+</article>
+<article class="post" id="msg11885">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2016-05-18 00:27 UTC</span>
+  </div>
+  <div class="post-body">I am still looking into this. The modeless window with slider can not get focus while the lisp animation expression is evaluating. I tried this while inside a simple lisp expression and I had access to the slider. Is it possible that the animation is too deeply nested?<br>
+Jim</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

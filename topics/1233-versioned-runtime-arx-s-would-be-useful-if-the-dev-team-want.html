@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>versioned runtime arx's would be useful if the dev team wanted to do so · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1233</p>
+    <h1>versioned runtime arx's would be useful if the dev team wanted to do so</h1>
+    <p class="meta">Started by jmaeding ·
+      2010-03-24 16:39 UTC ·
+      3 replies · SMF topic #1233</p>
+<article class="post" id="msg6588">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-03-24 16:39 UTC</span>
+  </div>
+  <div class="post-body">I'm thinking it would be ok if the arx was OpenDCL.17.0123.arx or whatever to allow multiple runtime versions within a session.<br>
+Its so easy to distrib the runtime, since it (and ENU folder) can be copied to a support path, that its easy to implement on the user end.<br>
+The dev team might hate or like this idea, throw it out if its more work than less.<br>
+The advantages for users is we could upgrade past projects incrementally, thus allowing us to ues and test the latest for any projects under development.<br>
+The other thing is sooner or later, two vendors will be selling tools on different odcl versions, and the users will be stuck choosing one runtime version, thus preventing both from running at same time.  Its the same old dll hell scenario.<br>
+Did I get this wrong though?  I know you can reg the arx to run without being in the support path, but cannot run two odcl arx's at once, since they are the same name.<br>
+Maybe the function names would overlap though, so its a mute point.  Curious what the recommended procedure is for two compiled tools that each want a different odcl version.<br>
+thx<br>
+</div>
+</article>
+<article class="post" id="msg6591">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-24 17:01 UTC</span>
+  </div>
+  <div class="post-body">It's not possible to use two different runtime versions simultaneously. Now that the runtime has become more ubiquitous, it cannot be allowed to break older programs (i.e. code written for OpenDCL 6 must work in all future runtimes). There is really no other solution.</div>
+</article>
+<article class="post" id="msg6599">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-03-24 21:48 UTC</span>
+  </div>
+  <div class="post-body">is there a way to warn the user that a particular program wants a particular ODCL runtime?<br>
+I know I can hardcode it into my lisp, but what if i got confused, and had some odcl.lsp files and wondered what version they were for?  Is the odcl file tagged with anything implying its version?<br>
+</div>
+</article>
+<article class="post" id="msg6600">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-24 21:59 UTC</span>
+  </div>
+  <div class="post-body">There is not currently any way to do that, but it's an interesting idea. One problem is that .odcl files are not versioned at the file level, so there is no clear parallel between .odcl file and runtime version. It's really the lisp files that would need to be versioned.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

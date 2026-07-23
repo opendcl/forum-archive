@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid_CalColWidth · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1110</p>
+    <h1>Grid_CalColWidth</h1>
+    <p class="meta">Started by fred_tomke ·
+      2010-01-05 13:42 UTC ·
+      6 replies · SMF topic #1110</p>
+<article class="post" id="msg5875">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-05 13:42 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+please have a look at the Grid sample. When I append a column the CalcColumnWidth method returns the width of the new column. But unfortunately it is too small on XP with enabled visual styles and normal font size. I have to add another 15 pixels to make the full title visible. Does this depend on OS and Visual Styles?<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1202/screen.png">screen.png</a> <span class="muted">(20150 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5895">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-06 18:19 UTC</span>
+  </div>
+  <div class="post-body">The MSDN documntation mentiones that "The returned width takes into account the control's current font and column margins, but not the width of a small icon."  Does that explain the difference you're seeing?</div>
+</article>
+<article class="post" id="msg5897">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-06 18:49 UTC</span>
+  </div>
+  <div class="post-body">Hello, Owen, unfortunately it does not explain it in detail or I didn't understand quite well.<br>
+<br>
+<blockquote class="quote">[...]but not the width of a small icon.</blockquote><br>
+<br>
+There is no icon the column header?!<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5898">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-06 18:53 UTC</span>
+  </div>
+  <div class="post-body">I think the problem has no easy solution, other than to always add 12 or so pixels to the result. CalcColumnWidth calculates the minimum width of a column in he list control, but this is not necessarily the minimum width needed for the same text in the header control. I think the platform and control version could all affect the minimum width needed, but probably the only way to do it is to add a fixed number of pixels plus the image width if there is an icon.<br>
+<br>
+I changed the code int he Grid sample to the following, and it seems to work on my Windows 7 system:<br>
+(Setq cWidth (+ (dcl_Grid_CalcColWidth GRID_Dcl-1_grid1 txt) (if (&gt;= cImg 0) 48 12)))</div>
+</article>
+<article class="post" id="msg5900">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2010-01-06 21:18 UTC</span>
+  </div>
+  <div class="post-body">Using the same subject.  <br>
+Was a ToolTip already included to show larger texts than the field in Grid?  <br>
+Thanks,  <br>
+velasquez</div>
+</article>
+<article class="post" id="msg5902">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-01-07 07:09 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=velasquez link=topic=1110.msg5900#msg5900 date=1262812708 wrote:</cite><br>
+Was a ToolTip already included to show larger texts than the field in Grid?  <br>
+</blockquote><br>
+<br>
+I've added that for Alpha 19.</div>
+</article>
+<article class="post" id="msg5903">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-01-07 07:39 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1110.msg5898#msg5898 date=1262804034 wrote:</cite><br>
+I changed the code int he Grid sample to the following, and it seems to work on my Windows 7 system:<br>
+(Setq cWidth (+ (dcl_Grid_CalcColWidth GRID_Dcl-1_grid1 txt) (if (&gt;= cImg 0) 48 12)))<br>
+</blockquote><br>
+<br>
+Owen, I 've uploaded new DEU grid sample files. We had a test on Win XP, Vista and Win7. We've found out that it must be added another 15 pixels using VisualStyles and normal system fontsize with wndows default font.<br>
+I also changed the icon size to 16x16 because sometimes the column icon is larger than the height of column header. That looks not nice so I decided to resize.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

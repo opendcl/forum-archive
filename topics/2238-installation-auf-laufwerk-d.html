@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Installation auf Laufwerk D · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/11-german.html">GERMAN</a> /
+      Topic 2238</p>
+    <h1>Installation auf Laufwerk D</h1>
+    <p class="meta">Started by CADMATIC2 ·
+      2015-02-27 14:23 UTC ·
+      9 replies · SMF topic #2238</p>
+<article class="post" id="msg11240">
+  <div class="post-head">
+    <span class="post-author">CADMATIC2</span>
+    <span class="post-date muted">2015-02-27 14:23 UTC</span>
+  </div>
+  <div class="post-body">Hallo,<br>
+<br>
+bislang hatte ich eine AutoCAD Installation auf Laufwerk C und eine Bricscad- Applikation auf Laufwerk D. Meine Opendcl-Projekte liefen einwandfrei.<br>
+Nun habe ich AutoCAD auf D uminstalliert und will dort meine Opendcl-Projekte laufen lassen. Hier findet AutoCAD die OpenDCL Umgebung nicht. Opendcl ist selbstverständlich installiert.<br>
+<br>
+Gibt es bei dieser Konstellation Probleme oder muß ich diese Pfadänderung irgendwo einstellen ? <br>
+<br>
+Gruß CADMATIC2</div>
+</article>
+<article class="post" id="msg11241">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-02-27 16:06 UTC</span>
+  </div>
+  <div class="post-body">Have you reinstalled OpenDCL after changing your AutoCAD installation?</div>
+</article>
+<article class="post" id="msg11242">
+  <div class="post-head">
+    <span class="post-author">CADMATIC2</span>
+    <span class="post-date muted">2015-02-27 17:37 UTC</span>
+  </div>
+  <div class="post-body">Yes ! After it was not working i've make a Deinstallation of opendcl and a new Installation. Is it necessary to install in a Special Path ? <br>
+Need AutoCAD Support Path ? <br>
+<br>
+Cadmatic2</div>
+</article>
+<article class="post" id="msg11243">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-02-27 18:14 UTC</span>
+  </div>
+  <div class="post-body">Have you projects some special defined paths which search on C:\?<br>
+If you load the ARX by hand - what will happen?<br>
+What's the content of the acad.rx and the registered commands in the registry?</div>
+</article>
+<article class="post" id="msg11244">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-02-27 23:27 UTC</span>
+  </div>
+  <div class="post-body">I guess you are not loading OPENDCL runtime correctly. You must use (command "_OPENDCL") from your lisp code to load the runtime before calling any OpenDCL functions.</div>
+</article>
+<article class="post" id="msg11247">
+  <div class="post-head">
+    <span class="post-author">CADMATIC2</span>
+    <span class="post-date muted">2015-02-28 10:03 UTC</span>
+  </div>
+  <div class="post-body">Hello@all,<br>
+<br>
+i've dont have Projects with a search to C:\\<br>
+<br>
+If i loading manuelly the arx then a get back a error message.<br>
+<br>
+My Projects starting everytime with a (command "OPENDCL"). Unknown command is the answer from the command line.<br>
+<br>
+CADMATIC2</div>
+</article>
+<article class="post" id="msg11248">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-02-28 10:25 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=CADMATIC2 link=topic=2238.msg11247#msg11247 date=1425117808 wrote:</cite><br>
+...If i loading manuelly the arx then a get back a error message....</blockquote><br>
+Which? Can you show a screenshot?<br>
+Maybe you have the wrong ARX (not fitting for you system)?</div>
+</article>
+<article class="post" id="msg11249">
+  <div class="post-head">
+    <span class="post-author">CADMATIC2</span>
+    <span class="post-date muted">2015-02-28 10:41 UTC</span>
+  </div>
+  <div class="post-body">Befehl: (ARXLOAD "C:/Program Files (x86)/Common Files/OpenDCL/OpenDCL.x64.20.arx") ; Fehler: Fehler bei ARXLOAD<br>
+<br>
+I've tried many other arx files with the same Feedback.<br>
+<br>
+I' am working with a 64 Bit System and a AutoCAD Full Version 2014.<br>
+<br>
+Cadmatic2</div>
+</article>
+<article class="post" id="msg11251">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-02-28 11:00 UTC</span>
+  </div>
+  <div class="post-body">a) Acad 2014 needs version "19"<br>
+b) Have you checked your "Trusted Paths"?</div>
+</article>
+<article class="post" id="msg11252">
+  <div class="post-head">
+    <span class="post-author">CADMATIC2</span>
+    <span class="post-date muted">2015-02-28 11:04 UTC</span>
+  </div>
+  <div class="post-body">Perfect  :) :) :)<br>
+<br>
+Now it runs!<br>
+<br>
+I needet the trusted Path with the odcl !!<br>
+<br>
+Thanx @all for the help.<br>
+<br>
+CADMATIC2</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

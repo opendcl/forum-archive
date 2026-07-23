@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What are the requirements to implement openDCL to other programs? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2739</p>
+    <h1>What are the requirements to implement openDCL to other programs?</h1>
+    <p class="meta">Started by jtm2020hyo@gmail.com ·
+      2020-08-24 14:50 UTC ·
+      5 replies · SMF topic #2739</p>
+<article class="post" id="msg13423">
+  <div class="post-head">
+    <span class="post-author">jtm2020hyo@gmail.com</span>
+    <span class="post-date muted">2020-08-24 14:50 UTC</span>
+  </div>
+  <div class="post-body">I want to suggest to implement OpenDCL to multiple programs like LibreCAD 3, Blender, FreeCAD, Sweet Home 3D and similars, but I do not know whats are the requirements...<br>
+... for example, OpenDCL is just focused for AutoLisp? ODCL can work without Autolisp? ODCL community is planing to create plugins for another programs like Revit, Rhino or mentioned Software?<br>
+</div>
+</article>
+<article class="post" id="msg13425">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2020-08-25 04:02 UTC</span>
+  </div>
+  <div class="post-body">The OpenDCL runtime is tightly bound to the MFC based controls provided with the ObjectARX SDK, so at least in its current form it is difficult and expensive to port to other application frameworks that do not provide such controls. It's possible that in the future we might recreate those MFC controls using some other UI framework like wxWidgets or Qt, but that is a lot of work, and would require a serious development effort. OpenDCL also has a very strong connection to Lisp as its runtime scripting language. None of the alternative platforms you mentioned would support Lisp language plugins, so it is another reason why OpenDCL is pretty much stuck with CAD applications that support Lisp and an ARX compatible SDK.</div>
+</article>
+<article class="post" id="msg13427">
+  <div class="post-head">
+    <span class="post-author">jtm2020hyo@gmail.com</span>
+    <span class="post-date muted">2020-09-01 12:09 UTC</span>
+  </div>
+  <div class="post-body">Might suggest add an API Python support, actually autocad, revit, blender, freecad, librecad 3, PyFlow and Dynamo have api communication with python, OpenDCL might give us access to autolisp routine... those programs have potential new users for ODCL.</div>
+</article>
+<article class="post" id="msg13428">
+  <div class="post-head">
+    <span class="post-author">jtm2020hyo@gmail.com</span>
+    <span class="post-date muted">2020-09-01 12:30 UTC</span>
+  </div>
+  <div class="post-body">I have another question, OpenDCL can be converted to data flow programing software? I mean, similar to PyFlow, Dynamo or Grasshopper, create nodes based on Autolisp and export to others programs with Python API. I suggest use PyFlow bases, with this ODCL might give access to AutoLisp to all programs that support Python API.<br>
+<br>
+https://community.osarch.org<br>
+<br>
+Here you might find help of mentioned software developers directly.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg13430">
+  <div class="post-head">
+    <span class="post-author">BIG-AL</span>
+    <span class="post-date muted">2020-09-07 04:48 UTC</span>
+  </div>
+  <div class="post-body">jtm2020hyo why not just program in another supported language that has dcl or forms, VBA comes to mind its in Microsoft products Word, Excel etc. .net is supported in many products not something I program in but sure there would be similar dcl/forms creation ability.</div>
+</article>
+<article class="post" id="msg13431">
+  <div class="post-head">
+    <span class="post-author">jtm2020hyo@gmail.com</span>
+    <span class="post-date muted">2020-09-16 18:03 UTC</span>
+  </div>
+  <div class="post-body">I just think that could be nice use our library with any program... This could be possible if OpenDCL add support for Python. for example for use pyautocad, pyrevit, IronPython, etc.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

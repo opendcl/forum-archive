@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid style 39 does not allow point · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 368</p>
+    <h1>Grid style 39 does not allow point</h1>
+    <p class="meta">Started by fred_tomke ·
+      2008-06-26 12:05 UTC ·
+      7 replies · SMF topic #368</p>
+<article class="post" id="msg1615">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-26 12:05 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+[5.0.0.19 DEU]<br>
+<br>
+before adding it as a bug report I want to know if somebody can reproduce it:<br>
+I have a form with grid. In a cell setting style 39 at runtime I cannot input the decimal delimiter "." although 38 is for integer I thougth. The droplist can be added successfully. The decimal delimiter is also shown when using dcl_grid_setitemtext. But I cannot input "." by hand.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1616">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-06-26 16:04 UTC</span>
+  </div>
+  <div class="post-body">I cannot reproduce the problem in the ENU version.</div>
+</article>
+<article class="post" id="msg1617">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-26 22:47 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+I've attached an example to test. I cannot input the value 1.3 instead of 5. Can you?<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/429/080627.zip">080627.zip</a> <span class="muted">(5507 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1618">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-06-27 02:14 UTC</span>
+  </div>
+  <div class="post-body">I can enter 1.3 without any problem (but I did notice that backspace doesn't work -- that is a bug). I tested both the ENU and the DEU versions.</div>
+</article>
+<article class="post" id="msg1619">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-06-27 02:19 UTC</span>
+  </div>
+  <div class="post-body">I just had an idea: the input is validated by the ObjectARX equivalent of the AutoLISP (distof) function.  What happens if you try (distof "1.3") at the command line?  In any case, I suppose Windows localization settings and/or AutoCAD units settings could have some bearing on this problem.</div>
+</article>
+<article class="post" id="msg1622">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-06-30 20:27 UTC</span>
+  </div>
+  <div class="post-body">Hello, Owen,<br>
+<br>
+I was out for some days with my wife, so I can answer now: Decimal delimiter (Windows setting) is ",". But AutoCAD works partial different of that: decimal delimiter in AutoCAD DEU version is ".".<br>
+<br>
+The return values of atof and distof are reals:<br>
+<br>
+<pre class="code"><code><br>
+Befehl: (distof "1.3")<br>
+1.3<br>
+<br>
+Befehl: (atof "1.3")<br>
+1.3<br>
+</code></pre><br>
+<br>
+I think that the AutoCAD standard and not the windows-setting should be used.<br>
+On the other hand: item style 9 works very well. Isn't it the same style for internal editbox?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1623">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-06-30 23:51 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=368.msg1622#msg1622 date=1214857620 wrote:</cite><br>
+On the other hand: item style 9 works very well. Isn't it the same style for internal editbox?<br>
+</blockquote><br>
+<br>
+Yes, both styles should be using identical filters in their edit boxes.</div>
+</article>
+<article class="post" id="msg1624">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-07-01 05:01 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+I can enter 1.3 in grid itemstyle 9. So that's why I'm confused 'cause it don't work at the example I attached before.<br>
+I will have some tests this week with other forms.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

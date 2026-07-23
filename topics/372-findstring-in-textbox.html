@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FindString in TextBox · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/21-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 372</p>
+    <h1>FindString in TextBox</h1>
+    <p class="meta">Started by fred_tomke ·
+      2008-07-04 01:19 UTC ·
+      3 replies · SMF topic #372</p>
+<article class="post" id="msg1636">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-07-04 01:19 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I tried to create a search &amp; find function in a form.<br>
+I have two textboxes: one single line edit to input the pattern and another textbox as multiline edit for the text which includes the pattern. Because there is not Find-method for textboxes  I use Lisp-functions to do that. If the pattern is found the text is selected using SetSel successfully. But unfortunately, the multiline edit won't be scrolled to the line with the selected part when using SetSel. I tried a workaround using GetLineLength, sum up the linelengths until the start character shall be found. But I have the feeling that the sum of linelengths up to the line with the first position of the pattern doesn't match with the returning result of vl-string-search.<br>
+<br>
+What would be the best way to scroll to the correct line of current selection?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1637">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-07-04 05:57 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I did some research. The following workaround is not nice but it's working successfully:<br>
+<br>
+<ul><br>
+store the orignal text in a variable<br>
+get the startposition of the pattern in the whole text<br>
+cut the rest off from the whole text after startposition of the pattern using substr<br>
+assign the left part to the multiline editbox <br>
+read out the number of lines into a variable intLine using GetLineCount<br>
+assign the original whole text to the multiline editbox again<br>
+use setsel<br>
+use linescroll with intLine<br>
+</ul><br>
+<br>
+Here is a codesnip for imagination and for whom who wants to know:<br>
+<pre class="code"><code><br>
+(defun c:edt_search_OnReturnPressed ( / strText strSearch intOld intLine intGes)<br>
+    (if (not intSearch) (setq intSearch 0))<br>
+    (setq intOld intSearch)<br>
+    (if (and (setq strText (dcl_Control_GetText edt_html))<br>
+	     (setq strSearch (dcl_Control_GetText edt_search))<br>
+	     (/= (vl-string-trim " " strText) "")<br>
+	     (/= (vl-string-trim " " strSearch) ""))<br>
+      (if (setq intSearch (vl-string-search (strcase strSearch) (strcase strText)<br>
+			    (if (/= strSearch strOldSearch) (setq intSearch 0) intSearch)))<br>
+	(progn<br>
+	  (dcl_Control_SetText edt_html (substr strText 1 (1+ intSearch)))<br>
+	  (setq intLine (dcl_TextBox_GetLineCount edt_html))<br>
+	  (dcl_Control_SetText edt_html strText)<br>
+	  (dcl_TextBox_SetSel edt_html intSearch (+ intSearch (strlen strSearch)))<br>
+	  (dcl_TextBox_LineScroll edt_html (if (&gt; intLine 0) (1- intLine) intLine))<br>
+	  (setq intSearch (1+ intSearch))<br>
+	  (setq strOldSearch strSearch)<br>
+	); progn<br>
+	(if (&gt; intOld 0)<br>
+	  (if (= (dcl_messagebox "I'm at the end of the document now. Shall I start from the beginning?" "Search" 5 3) 6)<br>
+	    (progn<br>
+	      (setq intSearch 0)<br>
+	      (c:edt_search_OnReturnPressed)<br>
+	    ); progn<br>
+	  ); if<br>
+	  (dcl_messagebox "Text was not found!" "Search" 2 1)<br>
+	); if<br>
+      ); if<br>
+    ); if<br>
+  )<br>
+</code></pre><br>
+<br>
+Maybe someone has another idea to make sure that the multiline editbox does automatically scroll to the current selection.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1639">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-07-04 12:20 UTC</span>
+  </div>
+  <div class="post-body">The edit control's SetSel function has an argument for scrolling the selection into view. Currently that argument is hard coded to "NoScroll". It is simple to add an optional argument to SetSel to specify whether to scroll the selection into view, so I will add that for the next build.</div>
+</article>
+<article class="post" id="msg1641">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-07-04 14:28 UTC</span>
+  </div>
+  <div class="post-body">That's great, thanks!<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

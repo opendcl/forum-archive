@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Suggestion for readonly textboxes in tabs · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 603</p>
+    <h1>Suggestion for readonly textboxes in tabs</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-02-27 09:44 UTC ·
+      10 replies · SMF topic #603</p>
+<article class="post" id="msg2738">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-27 09:44 UTC</span>
+  </div>
+  <div class="post-body">Hello, I ask you for a suggestion about read-only textboxes. Please have a look at the screenshot I attached. There you can see many textboxes. If you should guess which of them are read-write and which are read-only you will have problems in deviding them from each other. But why they're white? The backgroundcolor is -6 as default. Read-only textboxes on forms use the same backcolor as the form behind. Tabs using VisualStyles are white in the backgound (using this style). I think that's the reason the textbox's back is white, too.<br>
+<br>
+What do you suggest me to do if I don't want to disable using VisualStyles? Shall I change the forecolor of the text? But I was suggested not to override the defined styles of Windows. I there another idea?<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/598/textboxes.png">textboxes.png</a> <span class="muted">(13883 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2739">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2009-02-27 14:18 UTC</span>
+  </div>
+  <div class="post-body">Label control?</div>
+</article>
+<article class="post" id="msg2740">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-27 14:27 UTC</span>
+  </div>
+  <div class="post-body">Thanks jb, label control is not bad. But its backcolor is white, too. However, maybe I could make the text inside the control looking as grayed (to visualize that it is read-only). Which color is used for inactive captions?<br>
+I haven't got the right one yet.<br>
+Fred</div>
+</article>
+<article class="post" id="msg2741">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2009-02-27 15:18 UTC</span>
+  </div>
+  <div class="post-body">What's up with the rectangle captions?  Why are the backgrounds grey and not white?<br>
+<br>
+say 60 - 70% grey for the read-only text would look good.</div>
+</article>
+<article class="post" id="msg2742">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-02-27 15:32 UTC</span>
+  </div>
+  <div class="post-body">I don't see that the read only property has any effect on the control's background. Is there some reason why you can't just disable (i.e. set Enabled to false) the read-only text box controls?</div>
+</article>
+<article class="post" id="msg2743">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-27 18:22 UTC</span>
+  </div>
+  <div class="post-body">@Owen Yes, I will do that, thanks Owen.<br>
+<br>
+@James: Yes you are right, it is worth to test. But in some forum messages Owen maked me thinking about user defined system colors and what will happen if I override this. But I think disabling single line textboxes will do that what I need.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2744">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2009-02-27 18:48 UTC</span>
+  </div>
+  <div class="post-body">Sounds good.<br>
+<br>
+Hey Owen, I can't remember when this changed but I use label controls to show the path of a drawing.  These paths are usually than the control is.  It used to be that hovering the mouse ofver the control brought up a rectangle "cloud" with the full text.  Doesn't do that now.  I know it worked in ObjectDCL.<br>
+<br>
+Am I making sense?  It's Friday - and it's been a really long week . . ..<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg2745">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-02-27 18:54 UTC</span>
+  </div>
+  <div class="post-body">Fred, I noticed that the ReadOnly.htm property description is wrong. Obviously I copied it from the AsReadOnly.htm page and never updated the copy. I have uploaded new files with a corrected ReadOnly.htm.</div>
+</article>
+<article class="post" id="msg2746">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-02-27 19:21 UTC</span>
+  </div>
+  <div class="post-body">jb, I took a quick look at the code for label controls, and I don't see anything that displays a tooltip. Maybe it was there at one point, but since removed. In any case, here are some suggestions:<br>
+<br>
+1) Put in a feature request for this. I would say the proper solution should be to add a new property to the label called "Ellipsis Style", which can be set to "None", "Word", "End", or "Path", corresponding to control styles for the underlying Windows control (these styles automatically compact the displayed text). Then OpenDCL could display a tooltip with the complete path when "Ellipse Style" is set to something other than None *and* there is no tooltip defined for the control.<br>
+<br>
+2) In the meantime, you could use a read only text box with border set to None and background set to -16 to emulate a label with tooltips, then set the ToolTip property to the complete path. (Hmm, I was surprised to see that labels don't have ToolTip properties in OpenDCL. I wonder why.)</div>
+</article>
+<article class="post" id="msg2747">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2009-02-27 19:26 UTC</span>
+  </div>
+  <div class="post-body">Owen:<br>
+<br>
+1. will do<br>
+<br>
+2.a good suggestion<br>
+<br>
+2.b good question<br>
+<br>
+ps<br>
+<br>
+Everyone have a great weekend . . . and be safe!</div>
+</article>
+<article class="post" id="msg2748">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-27 21:30 UTC</span>
+  </div>
+  <div class="post-body">Yes, have a nice weekend. Mine will start when the last method in the German documentation will be translated...  ;)<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

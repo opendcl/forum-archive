@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Slider controls · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2461</p>
+    <h1>Slider controls</h1>
+    <p class="meta">Started by honkinberry ·
+      2016-12-01 21:29 UTC ·
+      1 replies · SMF topic #2461</p>
+<article class="post" id="msg12295">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2016-12-01 21:29 UTC</span>
+  </div>
+  <div class="post-body">I'm having some difficulty with the Slider controls.<br>
+Most imperatively -- the keyboard arrow keys are firing the Scroll event, which means that ReleasedCapture is not fired.<br>
+Where this is an issue, is that when operating with a mouse, the Scroll event is firing for every change, which results in a LOT of code fires.  When this is calling a complex operation that has multiple function levels, relying on global variables and recursion, it just wipes it out, as there will inevitably be a moment where apparently multiple instances of the same Lisp functions are running.  Or something like that.<br>
+So for Mouse operation, it's easy enough, to have the Scroll event only update the dialog box captions, and then wait for ReleaseCapture to run the primary code.<br>
+Which then becomes an issue, if the user would prefer to use the arrow keys, then ReleaseCapture is never fired.<br>
+<br>
+I suppose my preference would be for arrow keys to only fire ReleaseCapture, leaving PageUp/PageDown to only fire Scroll.  But I do see how that is almost certainly not an option for what code it would affect.<br>
+<br>
+In a code-only fix, I suppose I could do something with MouseMove, to tell the difference between a mouse-fired Scroll, and a keyboard-fired Scroll?  As in assuming that any Scroll event that occurs after a MouseMove ButtonUp, must be a Keyboard Scroll.  Does anyone have any similar experience/pointers in that regard?<br>
+<br>
+ Many thanks for any ideas!<br>
+<br>
+--J<br>
+</div>
+</article>
+<article class="post" id="msg12301">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2016-12-04 12:39 UTC</span>
+  </div>
+  <div class="post-body">Hi, honkinberry, as a result of my own experiences I can recommend that the code behind ReleaseCapture should be as short as possible and should not cause any changes in the drawing.<br>
+For keyboard-based value changes I recommend to build a custom slider using picture control.<br>
+See here for some samples:<br>
+http://www.opendcl.com/forum/index.php?topic=994.0<br>
+http://www.opendcl.com/forum/index.php?topic=995.0<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

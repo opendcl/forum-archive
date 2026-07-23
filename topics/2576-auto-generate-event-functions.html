@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>auto generate event functions · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2576</p>
+    <h1>auto generate event functions</h1>
+    <p class="meta">Started by Jim ·
+      2018-02-22 16:18 UTC ·
+      6 replies · SMF topic #2576</p>
+<article class="post" id="msg12758">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2018-02-22 16:18 UTC</span>
+  </div>
+  <div class="post-body">When one was several text boxes on a form, many event calls are possible to provide detailed control of what user sees, and how user interacts with them.<br>
+This requires lisp to provide many similar event defuns. I have been looking at to write one master function to handle the same event for four boxes. The followings does not work but gives the idea: <br>
+;;;(setq<br>
+;;;		zones<br>
+;;;		'("FeedZone""StartZone""RoughZone""FinishZone")<br>
+;;;	)<br>
+;;;	(foreach z zones<br>
+;;;		(defun-q-list-set<br>
+;;;			(read (strcat "c:uMill/WorkZones/tb" z "#OnSetFocus"))<br>
+;;;			'(<br>
+;;;				()<br>
+;;;				(dcl-TextBox-SetSel<br>
+;;;					(read (strcat "c:uMill/WorkZones/tb" z))<br>
+;;;					0<br>
+;;;					-1<br>
+;;;					t<br>
+;;;				)<br>
+;;;			)<br>
+;;;		)<br>
+;;;	) <br>
+<br>
+Has anyone succeeded with something like this?<br>
+<br>
+Thanks,<br>
+Jim </div>
+</article>
+<article class="post" id="msg12759">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-02-22 21:27 UTC</span>
+  </div>
+  <div class="post-body">Hi, do all the event function do the same content or do you just want to set the events at runtime? I did this and it worked very well. For the case an event of many controls do the same I just set a single common event function to all the controls.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg12760">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2018-02-23 00:47 UTC</span>
+  </div>
+  <div class="post-body">Fred,<br>
+In my example, the zones list is used to generate the four control names for (dcl-TextBox-SetSel. This also could be done in a subroutine called with a cntrlName arg.<br>
+My real desire was to use the zones list to generate four event defuns at lisp load time of the type c:uMill/WorkZones/tb#OnSetFocus. <br>
+Thus the use of read statement.<br>
+Do you have an example of your techniques?<br>
+Thanks,<br>
+Jim</div>
+</article>
+<article class="post" id="msg12763">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-02-23 10:23 UTC</span>
+  </div>
+  <div class="post-body">Aaah, I begin to understand.<br>
+All you need to know is that you just need to address events like properties:<br>
+<br>
+<pre class="code"><code>(dcl-Control-SetProperty project_dialog_control "MouseMove" "c:project_dialog_control_OnMouseMove")</code></pre><br>
+<br>
+Hope that helps,<br>
+Fred</div>
+</article>
+<article class="post" id="msg12764">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-02-23 10:26 UTC</span>
+  </div>
+  <div class="post-body">.... and then you override c:project_dialog_control_OnMouseMove with the evaluation of your string...</div>
+</article>
+<article class="post" id="msg12765">
+  <div class="post-head">
+    <span class="post-author">Jim</span>
+    <span class="post-date muted">2018-02-23 14:19 UTC</span>
+  </div>
+  <div class="post-body">Is this the same as changing the autolisp function to call on event, in OpenDCL Editor Event Tab?<br>
+Except that the function name that is automatically shown there, is being modified at runtime?<br>
+Does that allow several text boxes to call the same function by defining it in that field? <br>
+OR modify it as shown in your example at runtime.<br>
+<br>
+It has been a long time since I thought about this. And it could be useful. <br>
+ <br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg12766">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-02-23 16:07 UTC</span>
+  </div>
+  <div class="post-body">I already thought, that it might not be clear enough, unfortunately I've not the time for a sample these days.<br>
+With assigning events at runtime you have the chance to decide when and which event should get active or inactive (empty string) at runtime. And you can change an event function at runtime.<br>
+I mean several options:<br>
+<br>
+<ul><br>
+fixed event name for a function always called at the event - you only have to redefine the function at runtime with another code<br>
+A single event function could be set to many controls/events using the same event arguments<br>
+leave the event name empty in studio and just set it when needed. The name of the event function may depend on the current needs of the user<br>
+you can turn off events at runtime<br>
+</ul><br>
+<br>
+But be careful: the number of arguments of the event function have to match to the underlying event (see Button_OnMouseMove vs. Button_OnClicked)!<br>
+<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

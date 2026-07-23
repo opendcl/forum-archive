@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>button pressed enter key and &quot;OnCancelClose&quot; problem · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1332</p>
+    <h1>button pressed enter key and &quot;OnCancelClose&quot; problem</h1>
+    <p class="meta">Started by khann ·
+      2010-08-24 09:30 UTC ·
+      6 replies · SMF topic #1332</p>
+<article class="post" id="msg7128">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-08-24 09:30 UTC</span>
+  </div>
+  <div class="post-body">Hi, there.<br>
+<br>
+I wonder why the button does not have "Return pressed " Event.<br>
+<br>
+A form have some buttons and other controls with tab stop true property.<br>
+<br>
+When I press enter key to step one control to another , on the button control pressed enter key,<br>
+it goes to form's "OnCancelClose" Event.<br>
+<br>
+The "OnCancelClose" Event has just reason arg, normaly returns "0" value and the form does not close.<br>
+<br>
+But I want some special button pressed enter key to close form.<br>
+<br>
+Hope someone show me the way. <br>
+<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg7129">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-08-24 17:52 UTC</span>
+  </div>
+  <div class="post-body">Hi khann<br>
+<br>
+A button doesn't need a OnReturnPressed event. If the button has focus, the same event will be called as you would left click the button. It is new to me that pressing Enter on a text button would call OnCancelClose. But if so, I can imagine to create a cond-condition within CancelClose to get the information which control had focus when pressing Enter (using (dcl_GetFocus)).<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7130">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-08-25 00:39 UTC</span>
+  </div>
+  <div class="post-body">Thanks, Fred.<br>
+Nice to meet you.<br>
+<br>
+I never thought and never heard the button pressed enter key calls the OnClicked Event.<br>
+<br>
+In my test, textButton pressed enter key, it calls the form's "OnCancelClose" <br>
+and returns "Reason" arg value 0, does not close the form.<br>
+<br>
+But delete "OnCancelClose" from the form, textButton pressed enter key just closes the form <br>
+and does not calls the "OnClicked" Event.<br>
+<br>
+The modeless form's "Keep Focus" value is false.<br>
+<br>
+What's wrong with this?<br>
+<br>
+I'm testing OpenDCL Runtime [6.0.0.27]. with AcadMap 2005, XP SP2.<br>
+<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg7131">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-08-25 22:53 UTC</span>
+  </div>
+  <div class="post-body">Hm, interesting, it works for me - but I'm using modal forms. Can you upload a simple sample for me for testing?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7132">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-08-26 00:26 UTC</span>
+  </div>
+  <div class="post-body">All right.<br>
+Here is a sample.<br>
+Thanks again.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1437/TextButton pressed EnterKey TEST.LSP">TextButton pressed EnterKey TEST.LSP</a> <span class="muted">(1467 bytes)</span></li><li><a href="../attachments/1438/test.odcl">test.odcl</a> <span class="muted">(800 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7133">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-08-26 11:28 UTC</span>
+  </div>
+  <div class="post-body">Hi, khann, there must be a difference between Focus and Focus. Try to press SpaceBar instead of Enter.<br>
+<br>
+a) If you press enter in the text box, Return should behave as Tab (as you've set in OpenDCL Studio). Then the focus moves to the text button (the focus rectangle can be seen there). If you press Enter, Button_OnClicked won't be called. But if you press SpaceBar Button_OnClicked will be called ?!<br>
+<br>
+b) If you click the textbutton and move the mouse outside the text button while pressing the left mouse button, OnClicked won't be called (because the internal OnMouseUp events is called outside the textbutton). The focus rectangle is still on the textbutton. If you hit Enter key now, OnClicked-event will be called.<br>
+<br>
+The thing is: the textbutton has no OnReturnPressed event, so you cannot catch it. But the thing you can do is the following:<br>
+<br>
+<ul><br>
+Set the property ReturnAsTab to False.<br>
+Activate OnCancelClose event.<br>
+Within CancelClose event check if IsESCWasPressed is zero.<br>
+If IsESCWasPressed is zero and the text value is valid call (c:project_form_TextButton_OnClicked) manually.<br>
+If more than one cases exist then catch the currently focussed control in a cond-condition.<br>
+</ul><br>
+<br>
+Greetings<br>
+Fred</div>
+</article>
+<article class="post" id="msg7136">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-08-27 00:53 UTC</span>
+  </div>
+  <div class="post-body">Thanks.<br>
+So kind of you, Fred. :)<br>
+<br>
+I'll make it as you said.<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

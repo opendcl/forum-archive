@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PictureBox at Palette: Enable clear  control · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1198</p>
+    <h1>PictureBox at Palette: Enable clear  control</h1>
+    <p class="meta">Started by PrWork1 ·
+      2010-03-09 09:03 UTC ·
+      2 replies · SMF topic #1198</p>
+<article class="post" id="msg6427">
+  <div class="post-head">
+    <span class="post-author">PrWork1</span>
+    <span class="post-date muted">2010-03-09 09:03 UTC</span>
+  </div>
+  <div class="post-body">I am having trouble writing the code for the following situation:<br>
+I have paintBox on Palette<br>
+<br>
+;;;1st paint box<br>
+(dcl_PictureBox_DrawSolidRect UI02_dclToolBox_pbMatColor (List (list 0 0 50 50 2)  )))<br>
+;;; 2nd enabe control<br>
+(dcl_Control_SetEnabled 02_dclToolBox_pbMatColor T)<br>
+<br>
+When I enable control, my solidrect clear.<br>
+When I comment line  (dcl_Control_SetEnabled 02_dclToolBox_pbMatColor T) all OK/<br>
+<br>
+Why?<br>
+<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6428">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-09 09:51 UTC</span>
+  </div>
+  <div class="post-body">Hi, PrWork1,<br>
+<br>
+I do not know much about the events and your code at all.<br>
+I recommend you to enable the picturebox's OnPaint event. Then write the line <br>
+(dcl_PictureBox_DrawSolidRect UI02_dclToolBox_pbMatColor (List (list 0 0 50 50 2)  )))<br>
+into this event.<br>
+<br>
+In some situations a picture box gets repainted. So you have to make sure that you either redraw the picturebox's content after repainting (using the OnPaint event) <strong>OR</strong> (and now I hope Owen will have a look at my post to correct me) you do not activate OnPaint event but you will store the image. But I do not have any experience in that:<br>
+<br>
+<br>
+;;;1st paint box<br>
+(dcl_PictureBox_DrawSolidRect UI02_dclToolBox_pbMatColor (List (list 0 0 50 50 2)  )))<br>
+;;; 2nd store the content<br>
+(dcl_PictureBox_StoreImage UI02_dclToolBox_pbMatColor)<br>
+;;; 3rd enable control<br>
+(dcl_Control_SetEnabled 02_dclToolBox_pbMatColor T)<br>
+<br>
+<br>
+Have a look at <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/PictureBox/StoreImage.htm" rel="nofollow noopener">{2}</a> method and please give it a try and let me know.<br>
+<br>
+Regards,<br>
+Fred</div>
+</article>
+<article class="post" id="msg6429">
+  <div class="post-head">
+    <span class="post-author">PrWork1</span>
+    <span class="post-date muted">2010-03-09 11:18 UTC</span>
+  </div>
+  <div class="post-body">Many thanks to rapid and complete answer.<br>
+I call the SaveImage Method, all OK!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

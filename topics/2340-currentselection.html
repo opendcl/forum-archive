@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CurrentSelection · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2340</p>
+    <h1>CurrentSelection</h1>
+    <p class="meta">Started by ScottBolton ·
+      2015-12-04 21:42 UTC ·
+      4 replies · SMF topic #2340</p>
+<article class="post" id="msg11741">
+  <div class="post-head">
+    <span class="post-author">ScottBolton</span>
+    <span class="post-date muted">2015-12-04 21:42 UTC</span>
+  </div>
+  <div class="post-body">Can't get CurrentSelection, or CurSel, to work:<br>
+<br>
+(dcl_Project_Load "D:/opendcl/frames" T)<br>
+(dcl-Control-SetCaption frames/Form1/Proceed "ggg")<br>
+(dcl-Control-SetCurrentSelection frames/Form1/MAIN-OptionList1 2)<br>
+(dcl-Control-GetCurrentSelection frames/Form1/MAIN-OptionList1)<br>
+(dcl-Control-SetWidth frames/Form1 330)<br>
+(dcl_Form_Show frames/Form1)<br>
+<br>
+Lines 1, 5 and 6 work fine, but 2-4 don't. Am I missing something? The OptionList has the DblClicked and SelChanged events checked.</div>
+</article>
+<article class="post" id="msg11742">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-12-04 21:47 UTC</span>
+  </div>
+  <div class="post-body">Hi, I'm irritated: did you really write these lines in one go? Then it won't work.<br>
+Please have a look at the concept of events. It's not like native DCL!<br>
+<br>
+You will find an example <a href="http://www.opendcl.com/forum/index.php?topic=1080.0" rel="nofollow noopener">{2}</a>.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11743">
+  <div class="post-head">
+    <span class="post-author">ScottBolton</span>
+    <span class="post-date muted">2015-12-04 21:59 UTC</span>
+  </div>
+  <div class="post-body">Fred, thanks for the speedy, if irritated, reply.<br>
+<br>
+I'm not sure where I'm to look in your example. I have separate c: functions for all the events (#OnClicked, #OnSelChanged, #OnDblClicked) but I thought that I would set form data between the (dcl_Project_Load and (dcl_Form_Show - as lines 1,5,6 work fine. How can I set the second item of an OptionList to be current? (The CurrentSelection is not always going to be 2, it will be variable.)<br>
+<br>
+S</div>
+</article>
+<article class="post" id="msg11744">
+  <div class="post-head">
+    <span class="post-author">ScottBolton</span>
+    <span class="post-date muted">2015-12-04 22:13 UTC</span>
+  </div>
+  <div class="post-body">Ok, so everything between Load and Show should be in an OnInitialize, with the Event checked for the Form.<br>
+<br>
+(defun c:frames/Form1#OnInitialize (/)<br>
+(dcl-Control-SetCurrentSelection frames/Form1/MAIN-OptionList1 (atoi *FRAMES_sizeA*))<br>
+(dcl-Control-SetCurrentSelection frames/Form1/MAIN-OptionList2 (atoi *FRAMES_sheetlength*))<br>
+(dcl-Control-SetCurrentSelection frames/Form1/MAIN-OptionList3 (atoi *FRAMES_viewport*))<br>
+(dcl-Control-SetCurrentSelection frames/Form1/MAIN-OptionList4 (atoi *FRAMES_titleblock*))<br>
+(dcl-Control-SetWidth frames/Form1 330)<br>
+)<br>
+<br>
+(dcl_Project_Load "D:/opendcl/frames" T)<br>
+(dcl_Form_Show frames/Form1)<br>
+<br>
+<br>
+A slow learning curve for me.<br>
+<br>
+Thanks for the (vague) pointer.<br>
+<br>
+S</div>
+</article>
+<article class="post" id="msg11745">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-12-04 23:21 UTC</span>
+  </div>
+  <div class="post-body">Hi, I recommend you to start with the tutorial and the sample files coming with OpenDCL installation.<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

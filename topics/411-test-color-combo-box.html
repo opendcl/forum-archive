@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test Color Combo Box · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 411</p>
+    <h1>Test Color Combo Box</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2008-08-27 05:17 UTC ·
+      5 replies · SMF topic #411</p>
+<article class="post" id="msg1844">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-08-27 05:17 UTC</span>
+  </div>
+  <div class="post-body">For anyone following along ....<br>
+... there are a couple of things to remember if trying to set the current selection to a cpecific Color Number ... the color MUST be in the Combo Display List<br>
+... hope this helps ...<br>
+<br>
+for example .. set the current layer to have a color higher than 7 ... and type DOIT at the command line to see that the combo list will be populated with the Layer Color ..<br>
+<br>
+NOTE: the attached ODCL is compiled with Studio Build 5.0.0.23 <br>
+<br>
+<pre class="code"><code><br>
+(defun c:doit () (TestColorCombo))<br>
+;;;------------------------------------------------------------------<br>
+;;;------------------------------------------------------------------<br>
+;;;<br>
+<br>
+(defun TestColorCombo (/<br>
+                       _ConvertColorStringToNumber _ResetComboBox<br>
+                       ;;<br>
+                       currentLayerColorNumber<br>
+                      )<br>
+  (setq currentLayerColorNumber<br>
+         (vla-get-Color (vla-get-activelayer<br>
+                          (vla-get-activedocument<br>
+                            (vlax-get-acad-object)<br>
+                          )<br>
+                        )<br>
+         )<br>
+  )<br>
+  ;;-----------------------------------------------------------<br>
+  ;;<br>
+  ;; Convert the return value from the dcl_ComboBox_GetTBText Method to a Color Number (0-256)<br>
+  ;; (_ConvertColorStringToNumber "12")<br>
+  ;; (_ConvertColorStringToNumber "Color 122")<br>
+  ;; (_ConvertColorStringToNumber "Cyan") (_ConvertColorStringToNumber "0")<br>
+  ;;<br>
+  (defun _ConvertColorStringToNumber (ColorString / tmp)<br>
+    (cond<br>
+      ((numberp<br>
+         (setq tmp (read (vl-string-subst "" "Color " ColorString)))<br>
+       )<br>
+       tmp<br>
+      )<br>
+      ((numberp (setq<br>
+                  tmp (eval<br>
+                        (read<br>
+                          (strcat "ac"<br>
+                                  (vl-string-subst "" "Color " ColorString)<br>
+                          )<br>
+                        )<br>
+                      )<br>
+                )<br>
+       )<br>
+       tmp<br>
+      )<br>
+      (t 256)<br>
+    )<br>
+  )<br>
+  ;;-----------------------------------------------------------<br>
+  ;;<br>
+  (defun _ResetComboBox (ColorNumber / stringValue listIndex)<br>
+    (cond ((Setq listIndex (dcl_ComboBox_FindColor<br>
+                             TestColorCombo_Main_ComboBox1<br>
+                             ColorNumber<br>
+                           )<br>
+           )<br>
+           ;; the color exists in the display list, so select it by it's index<br>
+           (dcl_ComboBox_SetCurSel TestColorCombo_Main_ComboBox1<br>
+                                   listIndex<br>
+           )<br>
+          )<br>
+          ;;<br>
+          ;; the color is not in the combo display,<br>
+          ;; so add it if it's a valid color number.<br>
+          ((and (&gt;= ColorNumber 8) (&lt;= ColorNumber 256))<br>
+           (dcl_ComboBox_AddColor TestColorCombo_Main_ComboBox1<br>
+                                  ColorNumber<br>
+           )<br>
+           (dcl_ComboBox_SetCurSel<br>
+             TestColorCombo_Main_ComboBox1<br>
+             (dcl_ComboBox_FindColor TestColorCombo_Main_ComboBox1<br>
+                                     ColorNumber<br>
+             )<br>
+           )<br>
+          )<br>
+          ;;<br>
+    )<br>
+    (Setq stringValue<br>
+           (dcl_ComboBox_GetTBText TestColorCombo_Main_ComboBox1<br>
+           )<br>
+    )<br>
+    (c:TestColorCombo_Main_ComboBox1_OnSelChanged 0 stringValue)<br>
+  )<br>
+  ;;-----------------------------------------------------------<br>
+  ;;<br>
+  ;; Main Entry Point<br>
+  ;;-----------------------------------------------------------<br>
+  ;;---------------(findFile "TestColorCombo.odcl")<br>
+  (dcl_project_load "TestColorCombo.odcl" T)<br>
+  (dcl_form_show TestColorCombo_main)<br>
+  ;;<br>
+  (princ)<br>
+)<br>
+;;;------------------------------------------------------------------<br>
+;;;------------------------------------------------------------------<br>
+;;;<br>
+(defun c:TestColorCombo_Main_OnInitialize (/)<br>
+  (_ResetComboBox currentLayerColorNumber)<br>
+)<br>
+;;;------------------------------------------------------------------<br>
+;;;------------------------------------------------------------------<br>
+;;;<br>
+(defun c:TestColorCombo_Main_TextBox3_OnReturnPressed (/)<br>
+  (c:TestColorCombo_Main_DoIt_OnClicked)<br>
+)<br>
+;;;------------------------------------------------------------------<br>
+;;;------------------------------------------------------------------<br>
+;;;<br>
+(defun c:TestColorCombo_Main_ComboBox1_OnSelChanged<br>
+       (nSelection sSelText /)<br>
+  (dcl_Control_SetText TestColorCombo_Main_TextBox1<br>
+                       (itoa (_ConvertColorStringToNumber sSelText))<br>
+  )<br>
+  (dcl_Control_SetText TestColorCombo_Main_TextBox2 sSelText)<br>
+  (dcl_Control_SetText TestColorCombo_Main_TextBox3 "")<br>
+)<br>
+;;;------------------------------------------------------------------<br>
+;;;------------------------------------------------------------------<br>
+;;;<br>
+(defun c:TestColorCombo_Main_DoIt_OnClicked<br>
+       (/ TextValue ColorNumber tmp)<br>
+  (Setq TextValue   (dcl_Control_GetText TestColorCombo_Main_TextBox3)<br>
+        ColorNumber (if (numberp (setq tmp (read TextValue)))<br>
+                      tmp<br>
+                      256<br>
+                    )<br>
+        ColorNumber (if (and (&gt;= ColorNumber 0) (&lt;= ColorNumber 256))<br>
+                      ColorNumber<br>
+                      256<br>
+                    )<br>
+  )<br>
+  (_ResetComboBox ColorNumber)<br>
+)<br>
+;;;------------------------------------------------------------------<br>
+;;;------------------------------------------------------------------<br>
+;;;<br>
+<br>
+(princ)<br>
+</code></pre><div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/464/TestColorCombo.png">TestColorCombo.png</a> <span class="muted">(43366 bytes)</span></li><li><a href="../attachments/465/TestColorCombo.odcl">TestColorCombo.odcl</a> <span class="muted">(1255 bytes)</span></li><li><a href="../attachments/466/TestColorCombo.lsp">TestColorCombo.lsp</a> <span class="muted">(8521 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1847">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-08-29 13:31 UTC</span>
+  </div>
+  <div class="post-body">Nice example Kerry - thanks.<br>
+<br>
+How's 5.0.0.23 doing?  I'm still using 4 - stability reasons.</div>
+</article>
+<article class="post" id="msg1853">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-08-29 23:13 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=jb link=topic=411.msg1847#msg1847 date=1220016709 wrote:</cite><br>
+Nice example Kerry - thanks.<br>
+<br>
+How's 5.0.0.23 doing?  I'm still using 4 - stability reasons.<br>
+</blockquote><br>
+<br>
+thanks.<br>
+<br>
+5.0.0.23 seems fine James .. i'm using it for production code without problem.</div>
+</article>
+<article class="post" id="msg1854">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-08-29 23:27 UTC</span>
+  </div>
+  <div class="post-body">I think the only major changes Owen has left in 5.0 Alpha is ActiveX stuff.<br>
+(But I could be wrong)</div>
+</article>
+<article class="post" id="msg1857">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-08-30 03:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=411.msg1854#msg1854 date=1220052453 wrote:</cite><br>
+I think the only major changes Owen has left in 5.0 Alpha is ActiveX stuff.<br>
+(But I could be wrong)<br>
+</blockquote><br>
+<br>
+Yes, and I'm working on that now.  There are still some palette issues that I've been having trouble resolving, and I'd like to get the "selected control" painting in Studio more robust.  Everything else is pretty stable.</div>
+</article>
+<article class="post" id="msg1863">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-09-01 06:14 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I want to add my "mustard": We have distributed our new release using 5.0.0.19 as a stable release in our mind. All other new things changed after 5.0.0.19 are not as relevantly for us to publish an urgently servicepack.<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

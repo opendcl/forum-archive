@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Can't get dcl_grid_addrow to work. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 282</p>
+    <h1>Can't get dcl_grid_addrow to work.</h1>
+    <p class="meta">Started by Kelie ·
+      2008-04-10 17:04 UTC ·
+      11 replies · SMF topic #282</p>
+<article class="post" id="msg1247">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2008-04-10 17:04 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I have a two-column grid and I'm using function below to fill in some data, but it doesn't work. <br>
+<br>
+<pre class="code"><code><br>
+(defun c:MODVAR_frmMain_OnInitialize (/)<br>
+  (dcl_grid_addstring MODVAR_frmMain_grdVar<br>
+		      "Name1\tValue1"<br>
+		      "\t"<br>
+  )<br>
+  (dcl_grid_addstring MODVAR_frmMain_grdVar<br>
+		      "Name2\tValue2"<br>
+		      "\t"<br>
+  )<br>
+)<br>
+</code></pre><br>
+<br>
+After I did a search in this forum. I tried the following and still didn't work.<br>
+<br>
+<pre class="code"><code><br>
+(defun c:MODVAR_frmMain_OnInitialize (/)<br>
+  (setq iRowIndex1 (dcl_grid_addrow MODVAR_frmMain_grdVar "Row 1"))<br>
+  (setq iRowIndex2 (dcl_grid_addrow MODVAR_frmMain_grdVar "Row 2"))<br>
+)<br>
+</code></pre><br>
+<br>
+What did I miss? Thanks.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg1248">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-04-10 17:13 UTC</span>
+  </div>
+  <div class="post-body">Hi Kelie,<br>
+<br>
+please try<br>
+<br>
+<pre class="code"><code><br>
+(defun c:MODVAR_frmMain_OnInitialize (/)<br>
+  (setq iRowIndex1 (dcl_grid_addrow MODVAR_frmMain_grdVar (list "Row 1")))<br>
+  (setq iRowIndex2 (dcl_grid_addrow MODVAR_frmMain_grdVar (list "Row 2")))<br>
+)<br>
+</code></pre></div>
+</article>
+<article class="post" id="msg1249">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-04-10 17:15 UTC</span>
+  </div>
+  <div class="post-body">I've found this in the intelligent help:<br>
+<br>
+<blockquote class="quote"><br>
+AutoLISP Syntax:<br>
+(Setq rValue (dcl_Grid_AddRow Untitled_Dialog1_Datenblatt1 <br>
+	(list  <br>
+	Optional nImageIndex ... [as Integer] <br>
+	sText [as String] <br>
+	Optional sColText1 sColText2 sColText3 ... [as String])))<br>
+</blockquote><br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1250">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-04-10 17:19 UTC</span>
+  </div>
+  <div class="post-body"><pre class="code"><code>Finally,<br>
+<br>
+If you want to add a full row take<br>
+<br>
+(defun c:MODVAR_frmMain_OnInitialize (/)<br>
+  (setq iRowIndex1 (dcl_grid_addrow MODVAR_frmMain_grdVar (list "Col 1" "Col2")))<br>
+  (setq iRowIndex2 (dcl_grid_addrow MODVAR_frmMain_grdVar (list "Col 1" "Col2")))<br>
+)</code></pre><br>
+<br>
+If you want to add a row using only the value of first column you can also use:<br>
+<br>
+<pre class="code"><code><br>
+(defun c:MODVAR_frmMain_OnInitialize (/)<br>
+  (setq iRowIndex1 (dcl_grid_addstring MODVAR_frmMain_grdVar "Row 1"))<br>
+  (setq iRowIndex2 (dcl_grid_addstring MODVAR_frmMain_grdVar "Row 2"))<br>
+)<br>
+</code></pre><br>
+<br>
+<br>
+Now we got it  :)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1251">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2008-04-10 17:19 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=282.msg1248#msg1248 date=1207847606 wrote:</cite><br>
+Hi Kelie,<br>
+<br>
+please try<br>
+<br>
+<pre class="code"><code><br>
+(defun c:MODVAR_frmMain_OnInitialize (/)<br>
+  (setq iRowIndex1 (dcl_grid_addrow MODVAR_frmMain_grdVar (list "Row 1")))<br>
+  (setq iRowIndex2 (dcl_grid_addrow MODVAR_frmMain_grdVar (list "Row 2")))<br>
+)<br>
+</code></pre><br>
+</blockquote><br>
+<br>
+Thanks Fred. It didn't work. I attached the dcl and lsp file. <br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/366/MODVAR.odcl">MODVAR.odcl</a> <span class="muted">(986 bytes)</span></li><li><a href="../attachments/367/MODVAR.LSP">MODVAR.LSP</a> <span class="muted">(971 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1252">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-04-10 17:21 UTC</span>
+  </div>
+  <div class="post-body">Ok, I will check your example in an hour, I have to bring my kids to bed first.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1253">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2008-04-10 17:24 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=282.msg1252#msg1252 date=1207848068 wrote:</cite><br>
+Ok, I will check your example in an hour, I have to bring my kids to bed first.<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+Sure Fred. No rush. And thanks for your help.</div>
+</article>
+<article class="post" id="msg1254">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-04-10 17:29 UTC</span>
+  </div>
+  <div class="post-body">Yeah, enabling OnInitialize event will be your solution  ;D<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1256">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2008-04-10 17:44 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=282.msg1254#msg1254 date=1207848567 wrote:</cite><br>
+Yeah, enabling OnInitialize event will be your solution  ;D<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+That was a dumb mistake! Thanks a lot Fred.</div>
+</article>
+<article class="post" id="msg1257">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2008-04-10 17:52 UTC</span>
+  </div>
+  <div class="post-body">More questions on grid:<br>
+<br>
+1. Can I set different background color for columns?<br>
+2. Can I set certain columns to be read-only?<br>
+<br>
+Thanks!</div>
+</article>
+<article class="post" id="msg1260">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-04-10 18:46 UTC</span>
+  </div>
+  <div class="post-body">Hi Kelie<br>
+<br>
+1. Yes, you can: define an alternate color and change alternate orientation (see pic below).<br>
+2. Not directly. There is a row header. This is not editable. In other cases you set the cell style to 0. Then it is not editable.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/369/props.jpg">props.jpg</a> <span class="muted">(32975 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1266">
+  <div class="post-head">
+    <span class="post-author">Kelie</span>
+    <span class="post-date muted">2008-04-10 22:55 UTC</span>
+  </div>
+  <div class="post-body">Thank you Fred!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

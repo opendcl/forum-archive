@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_Control_SetBackColor not working on slides · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 703</p>
+    <h1>dcl_Control_SetBackColor not working on slides</h1>
+    <p class="meta">Started by mr nick ·
+      2009-04-07 15:57 UTC ·
+      19 replies · SMF topic #703</p>
+<article class="post" id="msg3415">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-04-07 15:57 UTC</span>
+  </div>
+  <div class="post-body">I'm trying to change the background color of my slides when I select them but nothing is happening. If I use the highlight function, this works with no problems but it's just too subtle so I'd much prefer to change the entire background. If I set a color in the studio, the color shows correctly but if I try to alter it from code, nothing happens - no errors, no change.<br>
+<br>
+Is this a bug or am I doing something wrong?</div>
+</article>
+<article class="post" id="msg3416">
+  <div class="post-head">
+    <span class="post-author">docsaintly</span>
+    <span class="post-date muted">2009-04-07 20:25 UTC</span>
+  </div>
+  <div class="post-body">Please post the code you are using so we can take a look :)</div>
+</article>
+<article class="post" id="msg3418">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-04-08 00:30 UTC</span>
+  </div>
+  <div class="post-body">Here is a simple example. The dialog has a single slide with the background defined in the studio as green. Clicking the button should, if I'm doing things correctly, change the background to yellow but doesn't.<br>
+<br>
+If anyone can point out the error of my ways or confirm it as a bug I'd be most appreciative.<br>
+<br>
+<br>
+<br>
+(defun c:slidex (/ slidedia )<br>
+  (setq slidedia<br>
+    '("YWt6AygMAACfU3xZBuKT6LUVbS9quMGqSMczXTy/ucyu9Ht3ugjkWNB6OzrTK33AbjztMCUT5Pb2"<br>
+    "szAJqIkwSVAixI53QIjQCplhnmFehqTHL2Wxx/cNGUDzu1xoumeYj8WJohGQnQJJJ60mEt4LWwKq"<br>
+    "T/9H4jx7QBx+IFv+EAcUi75W2JqyH3pgWJvg6J7C4lsHjdo/J7DKqvG0TVURBxqaYmzkzFNY+oxs"<br>
+    "GUGpLrtv97W1mzdVscgoo+KriBLSEQvMZuisyhYXYUws5O/RcPccMJAnCtw5O8u5XKK+ROZmRK5E"<br>
+    "2tQVWRRGUz2lfI18w6EVJF+Y3lb6cA2wNKed85bnJfbJTtihTyH3sWyJxIgJKpFLq7FtQQ2PiIUx"<br>
+    "9uFsQViAMgQLnFEQAqSuIj5c5mJjIQGltwTw0C495unvNuY/qe17x5JM0unp2uhyjUxadewnWRrv"<br>
+    "A2Ls2fGHSHWsf21yUMpm1epF/VCnDk2QlAlX0di/2fZhrBxB3LcHPo+J95FvoVsw7GAxH1ZH8Fah"<br>
+    "3oZ7rFVvYVgglYoKrLIAuZnr8S+CL5zluqn30W8hW8A8AueGbI87nH2qgZ0qwWayMbKwsXm5yLOF"<br>
+    "XrvkjxFXO0F4hLOGCT+MSQf+pBHagJINAiUHcecRUY9mjxAcyK5YJIHu25QWJzRtwTk1SM3bxDVG"<br>
+    "/VTIHTgIvVTYuyo1Z1Qa5j+bBjpOa+iUbZ/kBiiJfUwsAWclb4O7VryTYjuCps9cuBP3kH8bsjS3"<br>
+    "mqHJHUtEpE9qGup7l9tRg9S2hXDHMb3i2krVb7HHyoTaBZZSqyn2Ac9zEr4xyP/bErNIHWXT3hMY"<br>
+    "bsuzSIJ/pV5os+2bpFbbW5MT2sckyMeOZUjMbWDLL0JcyzKVRvuBqHePQRJjg21ryDBhKKBEBAJ9"<br>
+    "k6nsww==")<br>
+  );setq<br>
+  (dcl_Project_import slidedia nil nil)<br>
+  (dcl_Form_Show example_form1)<br>
+  (dcl_Project_Unload "example" t)<br>
+  (princ)<br>
+);defun<br>
+<br>
+(defun c:example_Form1_btnChange_OnClicked (/)<br>
+  (dcl_Control_SetBackColor example_Form1_SlideView1 2)<br>
+)<br>
+(defun c:example_Form1_btnCancel_OnClicked (/)<br>
+  (dcl_Form_Close example_form1)<br>
+)<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3419">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-08 01:27 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the sample code.  It's a bug.  I've fixed it now for the next build.</div>
+</article>
+<article class="post" id="msg3420">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-04-08 01:51 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=703.msg3419#msg3419 date=1239154039 wrote:</cite><br>
+Thanks for the sample code.  It's a bug.  I've fixed it now for the next build.<br>
+</blockquote><br>
+<br>
+Thanks Owen. Any ideas on an ETA for the next build?</div>
+</article>
+<article class="post" id="msg3424">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-08 07:25 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+Sorry for my silly question, but - what is an ETA?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3430">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-08 12:50 UTC</span>
+  </div>
+  <div class="post-body">ETA = "Estimated Time of Arrival"<br>
+<br>
+In this case, ETA is April 13.</div>
+</article>
+<article class="post" id="msg3435">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-08 12:56 UTC</span>
+  </div>
+  <div class="post-body">Aaah, ok, thanks, Owen.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3473">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2009-04-13 07:53 UTC</span>
+  </div>
+  <div class="post-body">Just downloaded the updated arx and the slide backgrounds now work as expected. Thanks Owen.</div>
+</article>
+<article class="post" id="msg3540">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2009-04-23 10:49 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+I've just noticed exactly the same issue with BlockViews too.  Works with highlight, but not background colour.<br>
+<br>
+Cheers</div>
+</article>
+<article class="post" id="msg3546">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-24 02:20 UTC</span>
+  </div>
+  <div class="post-body">The BlockView should not have a background color property, because the background color is determined by AutoCAD and cannot be set. I will remove that property for the next build and correct the documentation.</div>
+</article>
+<article class="post" id="msg3547">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-24 05:33 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+<blockquote class="quote">the background color is determined by AutoCAD</blockquote><br>
+<br>
+that is new to me. In ObjectDCL I could set the BackColor to -16 so a drawn preview block could be placed on the form as if it was drawn directly on the form.<br>
+It would be very unfortunate to me, if this wouldn't work any longer (see attachment BlockView.png).<br>
+<br>
+What I don't understand is that the backcolor property work in OpenDCL as you can see in the attachment BlockLin.png. So why should this be removed?<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/683/BlockView.png">BlockView.png</a> <span class="muted">(12711 bytes)</span></li><li><a href="../attachments/684/BlockLin.png">BlockLin.png</a> <span class="muted">(56865 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3552">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2009-04-24 08:05 UTC</span>
+  </div>
+  <div class="post-body">Owen,  I don't want to seem churlish, because I am so indebted to you.  However,  I was setting Background colour in BlockViews worked quite happily in v4, so why not v5?</div>
+</article>
+<article class="post" id="msg3553">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-24 12:04 UTC</span>
+  </div>
+  <div class="post-body">No problem to correct me when I'm wrong. I'll see if I can figure out why this would have changed.</div>
+</article>
+<article class="post" id="msg3558">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-25 14:37 UTC</span>
+  </div>
+  <div class="post-body">After some further testing, I see that the block view (and hatch) controls do use the background color that is set at design time, but they apparently cache that background color and repaint with the original background color at runtime. This means that even though the new background color is actually painted, it then gets painted over with the cached original background color. This presents a bit of a dilemma, because caching the displayed graphics is a performance improvement. Those controls use AutoCAD AcGsView control internally, and while I could force that control to be recreated every time the background color changes, it would cause a noticeable delay at runtime.<br>
+<br>
+How important is it to you guys to be able to change the background color of block view and hatch controls at runtime? Is it worth the performance penalty?</div>
+</article>
+<article class="post" id="msg3560">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-04-25 18:25 UTC</span>
+  </div>
+  <div class="post-body">This penalty until today it didn't harm my work, and I believe that nobody has noticed this.<br>
+<br>
+Velasquez</div>
+</article>
+<article class="post" id="msg3561">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2009-04-26 09:36 UTC</span>
+  </div>
+  <div class="post-body">I would take the perfomance penalty too, (assuming its just for this control and function). I never noticed the issue in v4.  I use SetBackColor as a quick and  easy way to denote a selected Blockview "control".  For me SetHighlight is just not noticable enough, especially when you have several blockviews on one form.<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg3562">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-27 06:16 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+To answer your question I will say that when I use SetBackColor at runtime then only to highlight one of nine blockview controls.<br>
+<br>
+<blockquote class="quote">it would cause a noticeable delay at runtime</blockquote><br>
+The question is how long would this be and how stable is the recreation of the control. Does the recreation mean that the block has to be reloaded? That would cause that main delay, I fear. I think of the sample of Danner and me using SetBackColor for selecting a block. If the user clicks 3 different blockview in a second AutoCAD shouldn't crash.<br>
+<br>
+These are some thoughts about this.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3564">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-27 06:32 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+another thought of mine:<br>
+<br>
+<blockquote class="quote">This presents a bit of a dilemma, because caching the displayed graphics is a performance improvement. Those controls use AutoCAD AcGsView control internally,...</blockquote><br>
+<br>
+Caching the displayed graphics is a new feature from you or does the AutoCAD AcGsView control do this automatically?<br>
+I just had the idea of a design time property UseCache. If this is set to true the the displayed graphics will be cached and all performance improvements are available. If UseCache is set to No the graphics will not be cached but SetBackColor can be set at runtime (as an example).<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3567">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-27 13:07 UTC</span>
+  </div>
+  <div class="post-body">Fred, the graphics cache is part of AutoCAD AcGsView. I'm too busy right now to do much work on this, but I will investigate this problem in more depth when I have some time.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

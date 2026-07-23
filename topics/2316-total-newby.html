@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Total Newby · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2316</p>
+    <h1>Total Newby</h1>
+    <p class="meta">Started by Cornelis ·
+      2015-09-25 20:29 UTC ·
+      22 replies · SMF topic #2316</p>
+<article class="post" id="msg11632">
+  <div class="post-head">
+    <span class="post-author">Cornelis</span>
+    <span class="post-date muted">2015-09-25 20:29 UTC</span>
+  </div>
+  <div class="post-body">Hello OpenDCL Forum. <br>
+<br>
+I am Cornelis and in my 50 Years never joined any forum, so please bear with me Normally I only read a lot of them.<br>
+<br>
+Hope I will not do any stupid things.<br>
+<br>
+I am new to OpenDCL but not new to Autocad, I am here to get some help with the following.<br>
+<br>
+I wrote a little lisp program and wanted a new and good looking Interface witch stays on top and is drag able round the screen to place it out of the way.<br>
+<br>
+If I understood it wright, I need a modeless form, for interaction with AutoCAD while the form stays on top or open<br>
+<br>
+Standard DCL boxes are made to dis a peer and then interact with Autocad<br>
+<br>
+I have a demo project where I can start by a click on a button a lisp like <br>
+<br>
+(command "line" pause)              ;form stays open<br>
+<br>
+But if I push another button on my form while the original command is still waiting for user input. I want the new chosen command to cancel the running command and start the new one like: <br>
+<br>
+(command "circle" pause) <br>
+<br>
+So the user don’t have to enter Escape Escape to cancel<br>
+I managed at first by setting  <br>
+<br>
+(dcl-Control-SetEventInvoke AD_Form1 1)<br>
+(dcl-Control-SetEventInvoke AD_Form1_TreeC1 1)<br>
+<br>
+And I tried this, both worked <br>
+(dcl-Invoke "c:lispCircle")<br>
+(dcl-SendString "(c:lispCircle)" )<br>
+<br>
+in the first test it worked superb in a treeview flawlessly, so I started programming the UI but I can’t get it to work with immagebuttons. <br>
+<br>
+And if I change for example a click or any other  event of the treeview and save the project then it doesn’t work that way anymore. The it says “Point or option keyword required.” <br>
+<br>
+And that is the way Autolisp is supposed to work saying cant re-enter autolisp<br>
+<br>
+I do provide 2 exactly the same sample project to clarify.<br>
+<br>
+Sorry for my bad English. <br>
+<br>
+Thanks in advance <br>
+<br>
+Regards<br>
+<br>
+Cornelis<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+   <br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2170/NotOke3.lsp">NotOke3.lsp</a> <span class="muted">(3747 bytes)</span></li><li><a href="../attachments/2171/NotOke3.lsp">NotOke3.lsp</a> <span class="muted">(3747 bytes)</span></li><li><a href="../attachments/2172/Oke3.lsp">Oke3.lsp</a> <span class="muted">(3744 bytes)</span></li><li><a href="../attachments/2173/Oke3.odcl">Oke3.odcl</a> <span class="muted">(88568 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11633">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-09-25 22:25 UTC</span>
+  </div>
+  <div class="post-body">You have not include the NotOke3.odcl file.<br>
+<br>
+1.<br>
+I don't understand the problem you have with image buttons. But you should check if their event invoke property is set to asynchronous.<br>
+2.<br>
+To cancel running commands you can try this:<br>
+(progn (dcl-sendstring (strcat (chr 27) (chr 27) "circle ")) (princ))<br>
+See discussion here: http://www.opendcl.com/forum/index.php?topic=2280.msg11475#msg11475.<br>
+3.<br>
+When you update the caption with "Done with circle" etc. The command is actually still running.<br>
+4.<br>
+In the Lisp files you refer to a problem with event names after saving the .odcl file under a new name. There is a tool to reset event names: Menu &gt; Tools &gt; Reset Event Names.</div>
+</article>
+<article class="post" id="msg11634">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-09-26 10:30 UTC</span>
+  </div>
+  <div class="post-body">...<br>
+5.<br>
+The form does not have a title bar and initially I did not know how to move it around on screen. Other users may be confused as well.<br>
+6.<br>
+In the code to handle the tree you supply image indices. But the tree control does not have an image list.<br>
+7.<br>
+You are using both the old and the new ODCL naming scheme. In new projects I would use only the new scheme.<br>
+<br>
+Attached are two new files. Note: I have removed the (big) images from the .odcl file.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2174/Oke3.lsp">Oke3.lsp</a> <span class="muted">(1654 bytes)</span></li><li><a href="../attachments/2175/Oke3.odcl">Oke3.odcl</a> <span class="muted">(927 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11635">
+  <div class="post-head">
+    <span class="post-author">Cornelis</span>
+    <span class="post-date muted">2015-09-26 14:51 UTC</span>
+  </div>
+  <div class="post-body">Hi Roy<br>
+<br>
+Thank you for your reply's and editing my files<br>
+<br>
+1) I dont have the time to test your files right know but will come back to you on Teuasday.<br>
+<br>
+2) I tried every thing, but I will try this also.<br>
+<br>
+3) this is just to check what is happening<br>
+<br>
+4) I am glad you explained <br>
+<br>
+ "There is a tool to reset event names: Menu &gt; Tools &gt; Reset Event Names." <br>
+<br>
+Nice such a tool ;-)<br>
+<br>
+5)Sorry This is just a demo to explain my problem no actual users here, but thanks<br>
+6)Thanks I copied a piece of code from the examples, didn't know the exact meaning of the numbers<br>
+7)Did not know how to change them but with your point 4 i will try<br>
+<br>
+How did you removed the images, i couldnt find them in the RAD (OpenDCL or the program you edit the dialogs with)  anymore? <br>
+<br>
+<br>
+Have a nice weekend<br>
+<br>
+Cornelis<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2176/NotOke3.odcl">NotOke3.odcl</a> <span class="muted">(88555 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11636">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-09-26 15:19 UTC</span>
+  </div>
+  <div class="post-body">...<br>
+Ad. 7.<br>
+I have not explained sufficiently. Recently the ODCL naming scheme was revised.<br>
+See: http://www.opendcl.com/forum/index.php?topic=2084.0<br>
+In your code you are mixing old and new names.<br>
+<br>
+Example 1:<br>
+(dcl-Control-SetEventInvoke AD_Form1 1)<br>
+dcl-Control-SetEventInvoke = NEW<br>
+AD_Form1 = OLD<br>
+<br>
+Example 2:<br>
+(dcl_Tree_AddParent AD/Form1/TreeC1  "Houtafscheider" 10 -1 10))<br>
+dcl_Tree_AddParent = OLD<br>
+AD/Form1/TreeC1 = NEW</div>
+</article>
+<article class="post" id="msg11638">
+  <div class="post-head">
+    <span class="post-author">Cornelis</span>
+    <span class="post-date muted">2015-09-29 10:21 UTC</span>
+  </div>
+  <div class="post-body">Hi Roy, I looked at your edited file.<br>
+<br>
+I changed it a little to reproduce the problem I have and renamed them to Roy.lsp and Roy.odcl.<br>
+<br>
+What I want: I need to get points distances and user input etc. and then execute my piece of lisp code to insert blocks explode them and do things with them. Other commands lets user select items lets user select points and I move and copy them etc. etc. <br>
+This is the problem point: But while still getting this user input I want the user to make a different choice, so cancel what he is doing and execute the other new chosen command not by ESCAPE ESCAPE but thus bij pushing another button or treeview choice on the form. <br>
+<br>
+Why? “Because all Autocad works that way”.<br>
+<br>
+I simplified the problem by only using (Getpoint "And then the specific question")  <br>
+<br>
+This happens In your files: Roy.lsp and Roy.odcl  <br>
+(These are your Edited Oke3 files with I downloaded and modified the commands in to get the problem clear.) <br>
+When I Click in the Treeview (Roy.odcl) on DrawCircle and do not pick a point but click on DrawLine in the Treeview, it says:<br>
+<br>
+Can't reenter LISP.<br>
+Invalid point.<br>
+<br>
+This is standard AutoCAD behaviour you can’t answer a lisp user input by another piece of lisp. <br>
+So  (chr 27) won't work here. (Just type (getpoint) and try to cancel that by lisp)<br>
+<br>
+But somehow in my files: Oke3.lsp and Oke3.dcl <br>
+Witch I Modified to execute the exact same commands as I placed in your Roy.lsp and Roy.odcl<br>
+<br>
+1) When I Click in the Treeview  (from Oke3.dcl ) on DrawCircle and do not pick a point but click on DrawLine in the Treeview, it just executes the new chosen command (DrawLine) just fine.<br>
+<br>
+I reached this behaviour(1) by accident, just fooling around a few weeks ago, it even works without the (chr 27) (chr 27).<br>
+But this is exact the way I like my dialog to perform but I cannot get other elements to work this way.<br>
+<br>
+So I am aware that my oke3.lisp code is not changed according to your comments. But this lisp file is doing exactly what I want in the treeview but not in the Image buttons. (If I change it to much the behaviour(1) is gone)<br>
+<br>
+So my question is can you tell me how to get this behaviour in the files you edited so nice both in the treeview and Image Buttons.<br>
+<br>
+I really hope you I explained it this time well enough and that the examples are clear.<br>
+<br>
+Note that these Oke3 Files are new versions.<br>
+<br>
+Regards Cornelis<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2177/Roy.lsp">Roy.lsp</a> <span class="muted">(1750 bytes)</span></li><li><a href="../attachments/2178/Roy.odcl">Roy.odcl</a> <span class="muted">(88541 bytes)</span></li><li><a href="../attachments/2179/Oke3.lsp">Oke3.lsp</a> <span class="muted">(3198 bytes)</span></li><li><a href="../attachments/2180/Oke3.odcl">Oke3.odcl</a> <span class="muted">(88568 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11639">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-09-29 11:48 UTC</span>
+  </div>
+  <div class="post-body">If I load your last Oke3 project and click items in the tree view, Lisp code that was previously sent to the CAD program is indeed cancelled. But I don't know why this works. There is something strange going on.<br>
+<br>
+While analysing the project I changed 3 things:<br>
+1. Reset the event names in the .odcl file.<br>
+2. Removed "(chr 27) (chr 27) " in the .lsp file (4x).<br>
+3. Replaced "PicTest" with "Oke3" in the .lsp file (6x).<br>
+After this set of changes, which I think should not alter the functionality of the project in any way, the 'automagic' cancel effect is gone!<br>
+<br>
+Maybe Owen can look into this.</div>
+</article>
+<article class="post" id="msg11640">
+  <div class="post-head">
+    <span class="post-author">Cornelis</span>
+    <span class="post-date muted">2015-09-29 12:06 UTC</span>
+  </div>
+  <div class="post-body">1) After this set of changes, which I think should not alter the functionality of the project in any way, the 'automagic' cancel effect is gone!<br>
+<br>
+Thanks Roy, thats why I didn't change all that.<br>
+<br>
+I hope you understand that I am looking for that Automatic Cancel Effect, it is awesom.<br>
+<br>
+Do i have to do something to let Owen Look at this?<br>
+</div>
+</article>
+<article class="post" id="msg11641">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-09-29 12:07 UTC</span>
+  </div>
+  <div class="post-body">Cornelis, I don't think you are completely right when you say:<br>
+<blockquote class="quote"><cite> author=Cornelis link=topic=2316.msg11638#msg11638 date=1443522108 wrote:</cite><br>
+This is standard AutoCAD behaviour you can’t answer a lisp user input by another piece of lisp.</blockquote>I can't be sure because I use BricsCAD instead of AutoCAD.<br>
+<br>
+Two examples that work in BricsCAD:<br>
+<br>
+Example 1:<br>
+<pre class="code"><code>: (setq pt (getpoint "\nPoint please: "))<br>
+Point please: (list 1.1 2.2 3.3)<br>
+(1.1 2.2 3.3)<br>
+Point please: (1.1 2.2 3.3)<br>
+: !pt<br>
+(1.1 2.2 3.3)</code></pre><br>
+<br>
+Example 2:<br>
+<pre class="code"><code>: (setq i (getint "\nInteger please: "))<br>
+Integer please: (* 2 3)<br>
+6<br>
+Integer please: 66<br>
+: !i<br>
+6</code></pre></div>
+</article>
+<article class="post" id="msg11642">
+  <div class="post-head">
+    <span class="post-author">Cornelis</span>
+    <span class="post-date muted">2015-09-29 12:11 UTC</span>
+  </div>
+  <div class="post-body">Might be Roy, but that is from the command line I gues?</div>
+</article>
+<article class="post" id="msg11643">
+  <div class="post-head">
+    <span class="post-author">Cornelis</span>
+    <span class="post-date muted">2015-09-29 12:15 UTC</span>
+  </div>
+  <div class="post-body">Autocad 2014 : <br>
+<br>
+(setq i (getint "\nInteger please: "))<br>
+<br>
+Integer please: !i<br>
+Can't reenter LISP.<br>
+<br>
+Requires an integer value.<br>
+<br>
+<br>
+<br>
+Command: (setq pt (getpoint "\nPoint please: "))<br>
+<br>
+Point please: !pt<br>
+<br>
+Can't reenter LISP.<br>
+Invalid point.<br>
+<br>
+Maybe a setting? But this ia also what I red on the net.<br>
+</div>
+</article>
+<article class="post" id="msg11644">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-09-29 12:19 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Cornelis link=topic=2316.msg11643#msg11643 date=1443528935 wrote:</cite><br>
+Autocad 2014 : <br>
+<br>
+(setq i (getint "\nInteger please: "))<br>
+<br>
+Integer please: !i<br>
+Can't reenter LISP.<br>
+<br>
+Requires an integer value.<br>
+<br>
+<br>
+<br>
+Command: (setq pt (getpoint "\nPoint please: "))<br>
+<br>
+Point please: !pt<br>
+<br>
+Can't reenter LISP.<br>
+Invalid point.<br>
+<br>
+Maybe a setting? But this ia also what I red on the net.<br>
+</blockquote>You are not following my example.</div>
+</article>
+<article class="post" id="msg11645">
+  <div class="post-head">
+    <span class="post-author">Cornelis</span>
+    <span class="post-date muted">2015-09-29 12:21 UTC</span>
+  </div>
+  <div class="post-body">to be complete <br>
+<br>
+Command: (setq i (getint "\nInteger please: "))<br>
+Integer please: 6<br>
+6<br>
+Command: (setq i (getint "\nInteger please: "))<br>
+Integer please: !i<br>
+Can't reenter LISP.<br>
+Requires an integer value.<br>
+<br>
+<br>
+and <br>
+<br>
+Command: (setq pt (getpoint "\nPoint please: "))<br>
+Point please: (16.7359 7.10615 0.0)<br>
+Command: (setq pt (getpoint "\nPoint please: "))<br>
+Point please: !pt<br>
+Can't reenter LISP.</div>
+</article>
+<article class="post" id="msg11646">
+  <div class="post-head">
+    <span class="post-author">Cornelis</span>
+    <span class="post-date muted">2015-09-29 12:22 UTC</span>
+  </div>
+  <div class="post-body">Sorry reading is difficult, try that.</div>
+</article>
+<article class="post" id="msg11647">
+  <div class="post-head">
+    <span class="post-author">Cornelis</span>
+    <span class="post-date muted">2015-09-29 12:24 UTC</span>
+  </div>
+  <div class="post-body">Command: (setq pt (getpoint "\nPoint please: "))<br>
+Point please: (list 1.1 2.2 3.3)<br>
+Can't reenter LISP.<br>
+Invalid point.</div>
+</article>
+<article class="post" id="msg11648">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-09-29 12:30 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Cornelis link=topic=2316.msg11647#msg11647 date=1443529482 wrote:</cite><br>
+Command: (setq pt (getpoint "\nPoint please: "))<br>
+Point please: (list 1.1 2.2 3.3)<br>
+Can't reenter LISP.<br>
+Invalid point.<br>
+</blockquote>Maybe you have to change the TEXTEVAL variable in AutoCAD or this, indeed, does not work in AutoCAD. As I said I use BricsCAD.</div>
+</article>
+<article class="post" id="msg11649">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-09-29 12:31 UTC</span>
+  </div>
+  <div class="post-body">Finally, Cornelis, you interpretation of my 'escape' example is not correct.<br>
+<br>
+My suggestion:<br>
+(dcl-SendString (strcat (chr 27) (chr 27) "_ellipse "))<br>
+Your code:<br>
+(dcl-SendString "(chr 27) (chr 27) (setq p1 (getpoint \"Getpoint (Ellipse)\")) ")<br>
+<br>
+I have used (strcat) for a reason. My code sends 2 escape characters your code does not.<br>
+<br>
+Your code should be:<br>
+(dcl-SendString (strcat (chr 27) (chr 27) "(setq p1 (getpoint \"Getpoint (Ellipse)\")) "))<br>
+This works in BricsCAD, and judging by the discussion I have previously linked to, should also work in AutoCAD.</div>
+</article>
+<article class="post" id="msg11650">
+  <div class="post-head">
+    <span class="post-author">Cornelis</span>
+    <span class="post-date muted">2015-09-29 12:45 UTC</span>
+  </div>
+  <div class="post-body">Enter new value for TEXTEVAL &lt;0&gt;: 1<br>
+Command: (setq pt (getpoint "\nPoint please: "))<br>
+Point please: (list 1.1 2.2 3.3)<br>
+can't reenter LISP.<br>
+Invalid point.<br>
+Command: texteval<br>
+Enter new value for TEXTEVAL &lt;1&gt;: 0<br>
+Command: (setq pt (getpoint "\nPoint please: "))<br>
+Point please: (list 1.1 2.2 3.3)<br>
+Can't reenter LISP.<br>
+Invalid point.<br>
+<br>
+texteval has no influence.<br>
+<br>
+Sorry for the (strcat ,wil look into that.</div>
+</article>
+<article class="post" id="msg11651">
+  <div class="post-head">
+    <span class="post-author">Cornelis</span>
+    <span class="post-date muted">2015-09-29 13:34 UTC</span>
+  </div>
+  <div class="post-body">I changed in Roy.lsp to this (defun DrawEllipse ()<br>
+  (dcl-Control-SetCaption Roy/Form1/LblStatus "Select Ellipse")<br>
+  (dcl-SendString (strcat (chr 27) (chr 27) "(setq p1 (getpoint \"Getpoint (Ellipse)\")) "))<br>
+)<br>
+<br>
+(defun DrawRectangle ()<br>
+  (dcl-Control-SetCaption Roy/Form1/LblStatus "Select Rectangle")<br>
+<br>
+ (dcl-SendString (strcat (chr 27) (chr 27) "(setq p1 (getpoint \"Getpoint (Rectangle)\")) "))<br>
+)<br>
+<br>
+(defun DrawCircle ()<br>
+  (dcl-Control-SetCaption Roy/Form1/LblStatus "Select circle")<br>
+<br>
+   (dcl-SendString (strcat (chr 27) (chr 27) "(setq p1 (getpoint \"Getpoint (Cirlce)\")) "))<br>
+)<br>
+<br>
+(defun DrawLine ()<br>
+  (dcl-Control-SetCaption Roy/Form1/LblStatus "Select Line")<br>
+  (dcl-SendString (strcat (chr 27) (chr 27) "(setq p1 (getpoint \"Getpoint (Line)\")) "))<br>
+)<br>
+<br>
+but same result. Texteval 1</div>
+</article>
+<article class="post" id="msg11652">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-09-29 14:37 UTC</span>
+  </div>
+  <div class="post-body">That is disappointing. I don't think I can be of further assistance.<br>
+<br>
+BTW: You have never confirmed if my code in post #2 works.</div>
+</article>
+<article class="post" id="msg11653">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-09-29 14:50 UTC</span>
+  </div>
+  <div class="post-body">I'm not sure I understood the problem, but if your modeless form's event invoke property is set to 'Asynchronous', you should go to the button's OnClicked event and click the [Add Cancel] button to add a ^C^C prefix to your event handler string. This cancels any running commands before executing the event handler.</div>
+</article>
+<article class="post" id="msg11654">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-09-29 17:54 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2316.msg11653#msg11653 date=1443538230 wrote:</cite><br>
+I'm not sure I understood the problem, but if your modeless form's event invoke property is set to 'Asynchronous', you should go to the button's OnClicked event and click the [Add Cancel] button to add a ^C^C prefix to your event handler string. This cancels any running commands before executing the event handler.<br>
+</blockquote>Owen, you are completely right. That is indeed the difference between the two projects. Resetting the event names removes this prefix. Both the OP and I have completely overlooked this. Good to know that it is so easy to accomplish this. Thank you.</div>
+</article>
+<article class="post" id="msg11655">
+  <div class="post-head">
+    <span class="post-author">Cornelis</span>
+    <span class="post-date muted">2015-10-02 07:16 UTC</span>
+  </div>
+  <div class="post-body">Wow that works the clicking the add Cancel button is the solution!!! I am a happy camper now.<br>
+<br>
+Thank you so much Owen and Roy<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Something odd with ControlBar and ModalForm · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 777</p>
+    <h1>Something odd with ControlBar and ModalForm</h1>
+    <p class="meta">Started by khann ·
+      2009-05-29 02:35 UTC ·
+      6 replies · SMF topic #777</p>
+<article class="post" id="msg3821">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2009-05-29 02:35 UTC</span>
+  </div>
+  <div class="post-body">In my ODCL file there're one Controlbar and some ModalForm.<br>
+When opening an AutoCAD Document the Controlbar always shows up where it docked place.<br>
+Then I popup a ModalForm, at first the docked Controlbar loses its inner controls and when the ModalForm closed the Controlbar gone away too.<br>
+Is this just for my case?<br>
+</div>
+</article>
+<article class="post" id="msg3823">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-29 05:33 UTC</span>
+  </div>
+  <div class="post-body">Can you upload a very simple .odcl and .lsp that demonstrates the problem? Also, which versions of Windows and AutoCAD are you using?</div>
+</article>
+<article class="post" id="msg3839">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2009-05-30 02:18 UTC</span>
+  </div>
+  <div class="post-body">Thanks owen for your reply.<br>
+Sorry, I've tried  but the LISP codes so complecate to make a sample.<br>
+But I captured screen shots of that problem and attach them.<br>
+<br>
+01.png - At first the Controlbar of BlockList preview the blocks.<br>
+02.png - Then I select a pline in AutoCAD the P_SIDE form pops up and the Controlbar changes gray.<br>
+03.png - After close the P_SIDE form with click Cancel button, the controlbar also disappears.<br>
+<br>
+Before I build my project, while testing sample the Controlbar and Form make no problem.<br>
+I think somewhere of my LISP code is wrong.<br>
+I coded two places (command "opendcl") and ("dcl_project_load")<br>
+<br>
+(command "opendcl")   <br>
+(dcl_project_load "GBIPRMIS_ODCL.odcl" T)<br>
+<br>
+in each Controlbar and Form code part.<br>
+Mabye this could cause the odd.<br>
+And there's no code of closing Controlbar but it goes away.<br>
+<br>
+Still I'm trying to fix this.<br>
+<br>
+Thanks.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/756/a03.png">a03.png</a> <span class="muted">(58068 bytes)</span></li><li><a href="../attachments/755/a02.png">a02.png</a> <span class="muted">(60977 bytes)</span></li><li><a href="../attachments/754/a01.png">a01.png</a> <span class="muted">(71484 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3845">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-30 03:28 UTC</span>
+  </div>
+  <div class="post-body">That is strange. It looks to me like something is causing the control bar to close. The "docking pane" is left behind, then eventually removed when its layout is refreshed. Please continue trying to simplify your code; this may help narrow down the code that causes the problem.</div>
+</article>
+<article class="post" id="msg3848">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-05-30 06:51 UTC</span>
+  </div>
+  <div class="post-body">Hm, are both of the forms defined in the same project?<br>
+If so, you shut down the control pane by using<br>
+<br>
+(dcl_project_load "GBIPRMIS_ODCL.odcl" T) <br>
+<br>
+In 02.png you can see that the controlpane is going to be closed!<br>
+<br>
+I would test if it will be work after changing all the <br>
+<br>
+(dcl_project_load "GBIPRMIS_ODCL.odcl" T)  into<br>
+<br>
+(dcl_project_load "GBIPRMIS_ODCL.odcl") <br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3851">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2009-05-31 01:03 UTC</span>
+  </div>
+  <div class="post-body">Thank you two men!<br>
+Finally I've made a sample.<br>
+attach three files of dwg, odcl and lsp.<br>
+First load signTab with (c:LoadSignTab)<br>
+Then run the (c:selobj) and select the cyan pline in the dwg file.<br>
+<br>
+Just check the result.<br>
+Thanks.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/757/ODCL-Sample.dwg">ODCL-Sample.dwg</a> <span class="muted">(178022 bytes)</span></li><li><a href="../attachments/758/ODCL-Sample.odcl">ODCL-Sample.odcl</a> <span class="muted">(9946 bytes)</span></li><li><a href="../attachments/759/ODCL-Sample.LSP">ODCL-Sample.LSP</a> <span class="muted">(641 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3853">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-05-31 02:01 UTC</span>
+  </div>
+  <div class="post-body">Fred is correct. When you force the project to be reloaded, it must first be unloaded, which means closing any open forms from that project. The solution is as Fred said, to not force the project to be reloaded.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

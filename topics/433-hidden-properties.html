@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hidden properties · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/21-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 433</p>
+    <h1>Hidden properties</h1>
+    <p class="meta">Started by fred_tomke ·
+      2008-09-22 09:11 UTC ·
+      6 replies · SMF topic #433</p>
+<article class="post" id="msg1928">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-09-22 09:11 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+there is a method (dcl_control_getproperties mycontrol).<br>
+In a list of strings the property's names will be returned.<br>
+<br>
+I see that the hidden property's names like (VariableName) are returned as localized names.<br>
+How can I query the variablen name of a control object in a localized runtime?<br>
+<br>
+(dcl_control_getproperty (car (dcl_form_getcontrols)) "(VariablenName)")<br>
+<br>
+Regards<br>
+Fred</div>
+</article>
+<article class="post" id="msg1932">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-09-22 19:11 UTC</span>
+  </div>
+  <div class="post-body">Would the problem be solved if the (dcl_Control_GetProperties) function returned the API (non-localized) name instead of the localized name?</div>
+</article>
+<article class="post" id="msg1933">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-09-22 19:18 UTC</span>
+  </div>
+  <div class="post-body">Hello Owen,<br>
+<br>
+in my opinion it would be the solution - but I don't know how the other LLPM think about...<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1937">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-09-23 00:38 UTC</span>
+  </div>
+  <div class="post-body">I think it makes more sense to return the API names. The (dcl_Control_GetProperties) function is primarily for programmers, not end users, so I see no real benefit from returning the "friendly" names. I will change this for the next build.</div>
+</article>
+<article class="post" id="msg1938">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-09-23 01:48 UTC</span>
+  </div>
+  <div class="post-body">I concur . . .  what ever that means.</div>
+</article>
+<article class="post" id="msg1940">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-09-23 06:03 UTC</span>
+  </div>
+  <div class="post-body">Hi James,<br>
+<br>
+since I believe that you use the English release, so this change shouldn't cause any consequences for your code.<br>
+ ;)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg1943">
+  <div class="post-head">
+    <span class="post-author">jb</span>
+    <span class="post-date muted">2008-09-23 12:52 UTC</span>
+  </div>
+  <div class="post-body">Yes - no problems here.<br>
+<br>
+I was going to suggest a naming convention, "Blocks_TreeView", "OK_GraphicButton", but after seeing the extent of your work, that would be a daunting task to go back and rename EVERYTHING.<br>
+<br>
+ :o</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

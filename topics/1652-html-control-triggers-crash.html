@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HTML Control Triggers Crash · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 1652</p>
+    <h1>HTML Control Triggers Crash</h1>
+    <p class="meta">Started by mr nick ·
+      2011-07-07 08:35 UTC ·
+      9 replies · SMF topic #1652</p>
+<article class="post" id="msg8196">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2011-07-07 08:35 UTC</span>
+  </div>
+  <div class="post-body">I have encountered a problem with one of my dialogs which I can't resolve. I have a very simple modal dialog which contains a few labels, an html box and an OK button. All it does is display a simple html file to inform a user of what steps have been carried out during a process. There are no links or anything in the the HTML, it is purely simple text. I created the dialog on a machine running 64bit Win7 and no matter what I do I cannot replicate the problem on this machine. However, when I passed the routine to a user with 32bit XP, he noticed an odd behaviour:<br>
+<br>
+If the dialog is shown and the user directly clicks the OK button then it closes as one would expect and nothing untoward happens. However, if the user clicks within the html box, either accidentally or to scroll the html text, and then clicks the OK button, the dialog closes but then about 5-10 seconds later AutoCAD crashes without warning and you are left with nothing more than the Autodesk Error Report dialog.<br>
+<br>
+I have tested this on another similar machine and the exact same thing happens but I have also tried it on a very old laptop also running XP32 and this does not have the same problem. I have also tried it on an XP virtual machine on my Win7 machine and it won't crash on there either. Finally I tested on my Win7 home machine (again 64bit) and once again, the crash does not happen.<br>
+<br>
+And that is why I'm stuck - on some machines no matter how I try I cannot trigger the crash whereas on other machines it triggers absolutely every time we go through the step of clicking the html and then the OK button. In order to check it wasn't a glitch in my original dialog I created a standalone code snippet which replicates the dialog but does nothing else. If I then run this routine it displays the modal dialog but the the html area is blank (as I haven't put any links in) for simplicity. And sure enough the exact same behaviour is displayed by each of the machines, some crash, some don't.<br>
+<br>
+I don't know if anybody else would be able to replicate this as I don't know what causes some machines to crash and others not. If anybody would care to try it, I have included my example code below.<br>
+<br>
+Is anybody able to give any reasons as to why this is happening or what may be a possible trigger?<br>
+<br>
+<br>
+<br>
+(defun c:nick_crash ()<br>
+  (defun c:crasher2_Form1_TextButton1_OnClicked (/)<br>
+    (dcl_Form_close crasher2_form1)<br>
+  )<br>
+  (setq testdia<br>
+'("YWt6AzoRAAC9l6GEBuKT6DUxLT9quYHJPGcXu/oeCt0XXNwvP3o0u2PxbuvZ8XvQNmFeNBdtP1q4"<br>
+"uuNQoscOmzm+Kdzmxgrb0IJ+usZKL0oPnzjb4E3JoscNdNNm7fxESU3DgQUYsLLjDQAJxEPJ4j3A"<br>
+"1FpQXfAXMh7ykCSefgYtexLbIZAuYTt8sxryr2u5L0osZT15CxM6Zbhvqwm51hOtqHoj0zYv85cA"<br>
+"swpbFsLgTrlgHTbs8WrzN6+7HaTXMfJKBfIvIakdRaMLlocGSABkq4BsBDsvem8c2cKcFCCTMFZ5"<br>
+"f5p151QF79vp5NxHqjWq0CaMI6pnKr4pqnOTNOmNjUfWJN0ZF/IEGMqQgSqWe9/hdoMjsgl1K6Ac"<br>
+"19bDFVCA6xv/RB5CwaM84ACuIMa7r4gFPLF0g3zrVSTRGi+m0SQECWy5X40aahgD3WY8eFnXILpy"<br>
+"q0asqiDd4FSWpuDB9+eYEtN9xHUVeIp6h+FckdV5Sn6bExD7ifTQYEwlqLXEpHr9c4Aewd1FCyl6"<br>
+"FfnPqc9gSIRL+Z7KzpFNBOaL3q9z4jIDXEeE+2BuhOquTFuI9YmP27Z80TH4gsh2uuMrfD+dbpw5"<br>
+"+RtePJlWxg1q8lAi3wj4LF+9P3clIGQ0WbCUAKL6lKgX6rpaizc/K/QqBFagnsCucfrgUX8/pKU/"<br>
+"KTF0Q5uT1o3rD7N0hVvfm3BRB0WWlButITmS7WaBr4VCxsQg8oESqN2TW/6Of74O195rrr5uhN5g"<br>
+"99oBUsr6WB2HdnGeUlwqR6oXxFyW34j8e6k/pg4XQUDG0EVIIvf+c6kzyAFut5H901Uevaj4QX5l"<br>
+"YgVhqH+hXCtzbfF2je1Ydy3O4X43lkNVPhY924PpM+aIwD2DQ1HBtsdObFa+3Njt7ObBPGd0MfrA"<br>
+"MJ2qsJrBJ7sOr9GIxcZCSRUknEuFjq8ZtV+NcGzhIUTl9J7dQXNAAqwbRtVCIsiP7RzGyoK52wLG"<br>
+"imqcLKk33hp3c4nOgcmup31l4+8M3C29MfTfrcTfr6fyAc6o/7DvPAqUeUtGHYrxRzyB9Fl24hfE"<br>
+"DaVGqzKgYK9fspSBte9CFHjS2MFs0yimFgvpf1NQQX8XYXCg")<br>
+  )<br>
+  (dcl_project_import testdia nil nil)<br>
+  (dcl_Form_Show crasher2_form1)<br>
+)<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg8198">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-07-07 10:02 UTC</span>
+  </div>
+  <div class="post-body">Hi, sorry, but I couldn't reproduce the crash. But maybe because of the fact that no html is displayed in the control. Please add code to your sample to show a htmlfile. Maybe one which is saved at runtime in temp dir. It could be enough for this sample.<br>
+<br>
+I've tried it in WinXP 32 Civil 2009.<br>
+<br>
+Regards,<br>
+Fred</div>
+</article>
+<article class="post" id="msg8199">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2011-07-07 10:23 UTC</span>
+  </div>
+  <div class="post-body">In my original code, it displays an html page and crashes exactly the same as this one does. I simply created this as a quick example of a code that consistantly crashes some machines and not others.</div>
+</article>
+<article class="post" id="msg8200">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2011-07-07 11:05 UTC</span>
+  </div>
+  <div class="post-body">Just found another machine that this happens on and spotted something that I'm assuming is linked. On all the machines that crash, there is a border displayed around the dialog whereas the machines that don't crash display no such border.<br>
+<br>
+Secondly, the OK button on the good machines always retains the 'focus' dotted mark when you click in the html box whereas the bad machines lose this 'focus' as soon as the html box is clicked. And then when we hit the OK button after this, the machines crash.<br>
+<br>
+Is there some kind of 'pre-requisite' bit of software that is needed that may be missing from these machines maybe?<br>
+<br>
+<img src="http://www.bailcad.co.uk/forum/images/html_prob.png" alt="" loading="lazy"></div>
+</article>
+<article class="post" id="msg8201">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2011-07-07 12:17 UTC</span>
+  </div>
+  <div class="post-body">Hi, the rectangle you see is the focus rectangle that may not be displayed on every OS.<br>
+I'm not sure if a special ActiveX component release must be installed for OpenDCL-built-in HTML control.<br>
+<br>
+Have you already tried the IE ActiveX control?<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8202">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2011-07-07 12:34 UTC</span>
+  </div>
+  <div class="post-body">The thing is, I'm now testing ONLY on 32bit WinXP so all OS's are the same so I would anticipate that the display and actual behaviour should be the same - but obviously there is something different somewhere, just need to figure out what that something is.<br>
+<br>
+Not yet tested anything around ActiveX - installing all missing Windows updates to see if that has any effect.</div>
+</article>
+<article class="post" id="msg8203">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-07-07 13:08 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=mr nick link=topic=1652.msg8200#msg8200 date=1310036704 wrote:</cite><br>
+Just found another machine that this happens on and spotted something that I'm assuming is linked. On all the machines that crash, there is a border displayed around the dialog whereas the machines that don't crash display no such border.<br>
+</blockquote><br>
+<br>
+It looks like the "good" machine is using visual styles and the "bad" one is not. This would be set in your display theme in Control Panel.</div>
+</article>
+<article class="post" id="msg8204">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2011-07-07 13:25 UTC</span>
+  </div>
+  <div class="post-body">Both machines are using Windows XP style. I have even copied the theme from one of the good machines onto a crasher and the problem still occurs. The display of the borders really isn't an issue - it's just odd that only machines which show this border will crash when you click within the html control. Is there any reason why a visual style would cause AutoCAD to crash in this way?</div>
+</article>
+<article class="post" id="msg8205">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-07-07 16:45 UTC</span>
+  </div>
+  <div class="post-body">It sounds like the crashing machines have a different version of OpenDCL Runtime.  Did you install by using the latest MSI?  Is it possible you're using code to manually load the wrong OpenDCL Runtime .arx file?</div>
+</article>
+<article class="post" id="msg8206">
+  <div class="post-head">
+    <span class="post-author">mr nick</span>
+    <span class="post-date muted">2011-07-08 01:45 UTC</span>
+  </div>
+  <div class="post-body">Owen - I could kiss you!!  :-* <br>
+<br>
+I couldn't see the wood for the trees there. I completely overlooked the fact that I had installed the latest build of the studio on my machine when I did a rebuild and so it was indeed a simple arx mismatch that was causing the crash - and the border/button disparity.<br>
+<br>
+Many thanks for reminding me that I should start with the simple and work toward the complex rather than the other way around when problem solving  :-[</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

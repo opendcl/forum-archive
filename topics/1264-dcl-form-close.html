@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_Form_Close · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/11-german.html">GERMAN</a> /
+      Topic 1264</p>
+    <h1>dcl_Form_Close</h1>
+    <p class="meta">Started by OPLisp ·
+      2010-04-21 14:39 UTC ·
+      1 replies · SMF topic #1264</p>
+<article class="post" id="msg6777">
+  <div class="post-head">
+    <span class="post-author">OPLisp</span>
+    <span class="post-date muted">2010-04-21 14:39 UTC</span>
+  </div>
+  <div class="post-body">  Hallo,<br>
+<br>
+  ich starte eine Form durch eine Schleife.<br>
+<br>
+  Mit Button schließe ich die Form um in AutoCAD Objekte zu wählen.<br>
+  Wie ersichtlich, steuere ich die Form weiter mit dcl_Control_GetValue <br>
+  und dcl_Control_SetVisible. Das läuft weil das Project nicht entladen ist,<br>
+  nach dcl_FORM_SHOW wird alles richtig angezeigt.<br>
+<br>
+  Meine Frage wäre, ob die Art so zu programmieren<br>
+  in Ordnung geht ? Sind hier keine "spätfolgen" zu erwarten ?<br>
+  Oder ob nur eine sichtbare Form gesteuert werden sollte.<br>
+<br>
+  In DCL ist eine vorübergehend geschlossene Form überhaupt <br>
+  nicht erreichbar.<br>
+<br>
+  Code auszug:<br>
+<br>
+  (defun c:main ()  <br>
+    .<br>
+    .<br>
+    (setq loop T) <br>
+    (while loop<br>
+      (setq loop nil)<br>
+      (dcl_FORM_SHOW Project_Form)<br>
+    )<br>
+    .<br>
+    .<br>
+  )<br>
+<br>
+  (defun c:Project_Form_button_OnClicked (/ art var1)<br>
+<br>
+    (setq loop T)<br>
+    (dcl_Form_Close Project_Form)<br>
+    (setq art (dcl_Control_GetValue Project_Form_option1))<br>
+    (setq var1 (ssget))<br>
+    .<br>
+    .<br>
+    (dcl_Control_SetVisible Project_Form_option2 nil)<br>
+  )<br>
+<br>
+<br>
+  Weiterhin habe ich wenig über (dcl_project_unload) gefunden<br>
+  ist dies zu empfehlen ?<br>
+<br>
+  Danke für die Unterstützung</div>
+</article>
+<article class="post" id="msg6778">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-04-21 20:18 UTC</span>
+  </div>
+  <div class="post-body">Hallo, OPLisp,<br>
+<br>
+Dein Beispiel mit der Objektwahl funktioniert gut in nicht-modalen Dialogen, andockbaren Dialogen und Paletten. In modalen Dialogen kann ich dringend empfehlen, die Event-Funktion zunächst zu verlassen. Ein Beispiel hierfür findest Du hier: <a href="http://www.opendcl.com/forum/index.php?topic=1080.0" rel="nofollow noopener">{2}</a><br>
+Wie Du selbst festgestellt hast, stehen auch die Änderungen einiger Steuerelemente solange zur verfügung, bis das Projekt entladen wird. Änderst Du also den CheckBox-Status, geht das, weil eben diese Einstellung gespeichert wird. Das gilt aber eben beispielsweise nicht für Inhalte von Baumstrukturen, Grids und ListViews sowie die aktuelle Auswahl der Listenfelder, Grids und Baumstrukturen.<br>
+<br>
+<blockquote class="quote">Oder ob nur eine sichtbare Form gesteuert werden sollte.</blockquote><br>
+Bei modalen Dialogen würde ich dem demnach ausnahmslos zustimmen.<br>
+<br>
+Bei nicht-modalen und andockbaren Dialogen und Paletten ist das ein wenig anders. Hier kannst Du für den Zeitraum einer Punktwahl einfach die Hide-Methode anwenden: Der Dialog ist dann einfach zwischenzeitlich nicht sichtbar, aber dennoch aktiv und Du kannst ohne weiteres Änderungen auch im Dialog vornehmen und bei Bedarf diesen wieder einblenden.<br>
+<br>
+(dcl_project_unload) dient in erster Linie der Bereinigung nicht mehr benötigter Projekte, gerade auch in der Phase der Entwicklung, um nicht jedes Mal AutoCAD neuzustarten, nur um das Verhalten VOR dem Laden des Projekts zu prüfen. Außerdem könnte es Fälle geben, bei denen verschiedene Versionen eines Projekts in unterschiedlichen Ordnern existieren. Dann kann ein Entladen sinnvoll sein. Hat man ein Projekt entladen und will wieder einen Dialog dieses Projekts anzeigen, muss zunächst das Projekt wieder geladen werden. Bei größeren Projektdateien mit vielen Dialogen oder großen Bildern/Icons kann der Ladevorgang schon ein wenig dauern, weswegen ein ständiges Laden/Entladen die Anwendung nicht gerade performant erscheinen lässt. Deshalb lassen die meisten das Projekt geladen und entladen es nicht mehr. Und das ist wohl der Grund, weshalb du so wenig darüber gefunden hast. :)<br>
+<br>
+VG, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>8.0.0.13 opendcldemo shows nothing? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2261</p>
+    <h1>8.0.0.13 opendcldemo shows nothing?</h1>
+    <p class="meta">Started by khann ·
+      2015-04-23 07:01 UTC ·
+      10 replies · SMF topic #2261</p>
+<article class="post" id="msg11353">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2015-04-23 07:01 UTC</span>
+  </div>
+  <div class="post-body">Hi, <br>
+I've just changed my OPENDCL 7.xx to 8.0.0.13<br>
+<br>
+In Acad, loaded [ @AllSamples.lsp ] file.<br>
+"Command: AP APPLOAD @AllSamples.lsp successfully loaded"<br>
+<br>
+But "opendcldemo" command shows nothing.<br>
+<br>
+What did i do wrong?<br>
+anything else to do?<br>
+<br>
+(Win 7, 64x. acadmap 2014)</div>
+</article>
+<article class="post" id="msg11354">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2015-04-23 07:09 UTC</span>
+  </div>
+  <div class="post-body">I feel something odds.<br>
+<br>
+In VisualLisp Editor, when click [ Load edit window ]<br>
+prints like this :<br>
+<br>
+; 0 forms loaded from #<br>
+_$ <br>
+_$ <br>
+<br>
+<br>
+and<br>
+<br>
+Check edit window<br>
+prints like this :<br>
+<br>
+[CHECKING TEXT @AllSamples.lsp loading...]<br>
+; Check done.<br>
+<br>
+it didnot show any function's names.<br>
+<br>
+ :-[<br>
+</div>
+</article>
+<article class="post" id="msg11355">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-04-23 17:10 UTC</span>
+  </div>
+  <div class="post-body">What happens if you restart AutoCAD and just enter the OPENDCLDEMO command without first loading the lisp file?</div>
+</article>
+<article class="post" id="msg11358">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2015-04-24 01:52 UTC</span>
+  </div>
+  <div class="post-body">Well, <br>
+<br>
+After installed, it seems basically loaded.<br>
+<br>
+command bar shows the OPENDCLDEMO, like the image.<br>
+<br>
+But it shows nothing...!<br>
+<br>
+ ::)<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2125/open_49324_50857_51088_ _51648_51221_ 1.jpg">open&amp;#49324;&amp;#50857;&amp;#51088; &amp;#51648;&amp;#51221; 1.jpg</a> <span class="muted">(40542 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11359">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-04-24 03:24 UTC</span>
+  </div>
+  <div class="post-body">Maybe it is displayed off screen, or maybe it is very small and you are overlooking it?</div>
+</article>
+<article class="post" id="msg11362">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2015-04-24 11:08 UTC</span>
+  </div>
+  <div class="post-body">I returned to VisualLisp Editor and selected all the lines of @Allsamples.lsp files then loaded manually.<br>
+<br>
+Visual LISP Consle window lists nothing.<br>
+But when only select from <br>
+<br>
+<span style="color:blue">(setq *OdclAllSamples ~ )<br>
+<br>
+...<br>
+<br>
+(princ "\nOPENDCLDEMO\n")<br>
+(C:OPENDCLDEMO)</span><br>
+<br>
+not include the comments parts.<br>
+<br>
+Visual LISP Consle window lists these 5 lines.<br>
+<br>
+<span style="color:purple">(("Basic" ... ""))  &lt;- long list.<br>
+C:OPENDCLDEMO <br>
+*ODCL:RUNSAMPLE <br>
+*ODCL:VANISH <br>
+*ODCL:UPDATECHECK </span><br>
+<br>
+how it could be like this?<br>
+<br>
+Hmm....  ???<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg11363">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2015-04-24 11:30 UTC</span>
+  </div>
+  <div class="post-body">I tested the pure @Allsample.lsp file.<br>
+<br>
+When delete all the comments, it just shows the new body.<br>
+<br>
+But faced another wall.<br>
+<br>
+Each sample did not appear how ever clicking the name's column, Misc to Combo Box Lab.<br>
+Only last two VLX1, 2 pops up.<br>
+<br>
+And <br>
+<span style="color:blue">Selection -&gt; malformed list on ipnut error alerting. (same at 2014, 2005map)</span><br>
+<br>
+<br>
+<br>
+<span style="color:purple">Slider -&gt; ADS request error alerting. (this at 2014map)<br>
+           <br>
+              (this from 2005map)<br>
+         -&gt; An OpenDCL function argument processing exception has occurred!<br>
+             Error : NIL value not allowed<br>
+             Function:dcl-ListBox-Clear<br>
+             Argument:0</span><br>
+<br>
+<br>
+<br>
+Tested, at 2005map, 2014map.<br>
+Win 7, 64b.<br>
+</div>
+</article>
+<article class="post" id="msg11364">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-04-24 15:20 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I'm not sure why you are changing the files or what you are hoping to see in VLIDE.</div>
+</article>
+<article class="post" id="msg11367">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2015-04-25 01:14 UTC</span>
+  </div>
+  <div class="post-body">At first, it did not pops up any form.<br>
+<br>
+So I checked the file.<br>
+<br>
+with the original file, OPENDCLDEMO still does not show anything.<br>
+<br>
+I'm just telling you what's going on my state.<br>
+<br>
+What's the matter with my machine?<br>
+<br>
+I returned to 7.0.1.4.<br>
+The Masterdemo fires nomally.<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg11368">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-04-25 02:17 UTC</span>
+  </div>
+  <div class="post-body">Ok, it's not really helpful to make changes to the known-working file unless you see that a specific change corrects the problem. I don't have anything to add to my previous suggestions.</div>
+</article>
+<article class="post" id="msg11369">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2015-04-25 05:39 UTC</span>
+  </div>
+  <div class="post-body">Ok, Owen.<br>
+I will check what's wrong with my ACAD.<br>
+8.0.0.10 also the same.<br>
+I wonder if there is other's report about this.<br>
+Thanks.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

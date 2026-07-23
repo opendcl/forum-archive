@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>help function always minimized when launched from an odcl form · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 966</p>
+    <h1>help function always minimized when launched from an odcl form</h1>
+    <p class="meta">Started by copter ·
+      2009-10-11 13:25 UTC ·
+      4 replies · SMF topic #966</p>
+<article class="post" id="msg4852">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-10-11 13:25 UTC</span>
+  </div>
+  <div class="post-body">Hello<br>
+<br>
+When I run the help function inside an odcl form, The displayed window is always minimized.<br>
+Not such issue inside a dcl file.<br>
+Any ideas ?</div>
+</article>
+<article class="post" id="msg4853">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-11 16:48 UTC</span>
+  </div>
+  <div class="post-body">Hi, copter,<br>
+<br>
+hm, I can partially reproduce it but I haven't found any solution yet. I reckon that it may caused by the effect that the control wants to keep the focus (event invoke): the form tries to send itself to front after calling the event. I have the same problem when I call a function from a button-onclicked-event which shows a modeless form: the modeless form is beeing moved behind the modal form which opens the modeless form. As I said I haven't found any solution yet. And when I tried to create a small example for Owen then every works fine in this sample.<br>
+<br>
+Sorry that I couldn't help you.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4855">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-12 08:50 UTC</span>
+  </div>
+  <div class="post-body">See if you can create a simple project that duplicates the problem. I did a few tests, but I didn't notice any problems.</div>
+</article>
+<article class="post" id="msg4863">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-12 13:56 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">I did a few tests, but I didn't notice any problems.</blockquote><br>
+I did expect this. I tried several samples but the samples never reproduced the same as the real form does. I will try it again.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4865">
+  <div class="post-head">
+    <span class="post-author">copter</span>
+    <span class="post-date muted">2009-10-12 15:56 UTC</span>
+  </div>
+  <div class="post-body">I can reproduce it now: It occurs when vlide is loaded. (Even if vlide is loaded from an other drawing)<br>
+So, this not an important issue. Please forget my post.<br>
+Copter<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

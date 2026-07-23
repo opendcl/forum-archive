@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Palette/Dockable Control bar initial mode · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2087</p>
+    <h1>Palette/Dockable Control bar initial mode</h1>
+    <p class="meta">Started by garcigj ·
+      2014-01-10 19:25 UTC ·
+      7 replies · SMF topic #2087</p>
+<article class="post" id="msg10330">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-01-10 19:25 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Palettes and ContrlosBars are initialized the first time anchored to the application as parameter "Dockable Sides". <br>
+To avoid the error BlockView and Palettes are mounted above each other:<br>
+<ul><br>
+Is there any way to initialize ("the first time," I know that after its location is saved) in Float mode.?<br>
+Save autocad or windows location of these windows in the registry?<br>
+</ul><br>
+I have not managed to locate them in:<br>
+HKEY_CURRENT_USER\Software\Autodesk\AutoCAD\RXX.X\ACAD-XXXX\Profiles\MyProfile\OpenDCL\Dialogs<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg10331">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-10 21:02 UTC</span>
+  </div>
+  <div class="post-body">I believe those settings are saved in FixedProfile.aws. I'm not sure if it would work to modify that file before loading the form, but that would be the obvious thing to try. Maybe someone else has some experience they can share.</div>
+</article>
+<article class="post" id="msg10332">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-01-10 21:59 UTC</span>
+  </div>
+  <div class="post-body">Autocad 2014 saves in:<br>
+<br>
+%USERPROFILE%\appdata\roaming\autodesk\autocad 2014\r19.1\<strong>Mylanguage</strong>\support\profiles\<strong>MyProfile</strong>\profile.aws<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1952/profile_aws.png">profile_aws.png</a> <span class="muted">(60648 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg10333">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-01-10 22:23 UTC</span>
+  </div>
+  <div class="post-body">I think it could be programmed in NET: <a href="http://support.microsoft.com/kb/301233/en-us" rel="nofollow noopener">{2}</a><br>
+But the damage possible programming error in the file can be disastrous. ( :-\ very afraid)<br>
+<br>
+Although, you can always make a backup<br>
+(as you explain to the user if it goes wrong)</div>
+</article>
+<article class="post" id="msg10334">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2014-01-11 09:27 UTC</span>
+  </div>
+  <div class="post-body">Hi, garcigj,<br>
+<br>
+once upon a time I did some changes in the FixedProfile.aws and .\\Profile.aws. But I had to see that AutoCAD overides my changes which I made at AutoCAD runtime when I close AutoCAD.<br>
+<br>
+Have a look at <a href="http://www.opendcl.com/forum/index.php?topic=1042.0" rel="nofollow noopener">{2}</a>, there is much written about it.<br>
+<a href="http://www.opendcl.com/forum/index.php?topic=1042.msg7683#msg7683" rel="nofollow noopener">{2}</a> you can see how to open a palette in floating state.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg10335">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-01-11 12:12 UTC</span>
+  </div>
+  <div class="post-body">Excellent research Fred.<br>
+I had not read this and is very interesting.<br>
+<br>
+I will try to implement something with all this way to control the floating palettes, at least temporarily while the issue is resolved BlockView error in a future version of ODCL.<br>
+<br>
+If the application only the usase I would not worry about these issues, but I need to use that many users.<br>
+<br>
+Anyway, the problem would never solved BlockView because anyone can minimize the window of Autocad.<br>
+You can also attach pallets on top of each other manually. see (<a href="http://www.opendcl.com/forum/index.php?topic=2086.0" rel="nofollow noopener">{2}</a>)<br>
+<br>
+I worry about locating the palette settings in "profile.aws" with "CLSID"<br>
+-if it does not exist, no problem.<br>
+-If the program has been used in a previous installation, the "CLSID" already exists and can not know what is.<br>
+-If we double-palette a section with two "CLSID" different. What is it?<br>
+<br>
+I'll try to walk the tree "profile.aws" through "MSXML.DOMDocument" from  Palette Palette section and try to locate  = TitelBarText&gt; name.<br>
+<br>
+Thanks Fred.</div>
+</article>
+<article class="post" id="msg10336">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-01-11 15:42 UTC</span>
+  </div>
+  <div class="post-body">If your goal in all this is to prevent the blockview from being resized to zero, I think it is the wrong solution. Better to simply set limits so that the control size cannot become zero in any dimension.</div>
+</article>
+<article class="post" id="msg10337">
+  <div class="post-head">
+    <span class="post-author">garcigj</span>
+    <span class="post-date muted">2014-01-11 15:51 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+I'm trying to OnSize event but I get good results for now<br>
+<br>
+I'm working on this now.<br>
+<br>
+thanks.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

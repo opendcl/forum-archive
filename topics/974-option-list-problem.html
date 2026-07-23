@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Option List Problem · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 974</p>
+    <h1>Option List Problem</h1>
+    <p class="meta">Started by Iulian ·
+      2009-10-17 15:14 UTC ·
+      3 replies · SMF topic #974</p>
+<article class="post" id="msg4926">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2009-10-17 15:14 UTC</span>
+  </div>
+  <div class="post-body">Hi. I have a problem with the Option List tool. Like in the picture below (attached), when I click the first Option List button, I want to appear in the picture box below, "Picture 1". When I click the second Option List button, I want to appear "Picture 2" in the picture box below, and so on with the last Option List button. For this I used the procedure <strong>dcl_OptionList_GetCurSel</strong> for obtaining the current value of OptionButton1, and than, with IF function I made the connection between the current value and the corespondent picture. With TextButton1 I would like to see in a messagebox this value, assigned to <strong>OptList1CSel</strong>  . What I can do?<br>
+Thanks.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/963/option button problem.JPG">option button problem.JPG</a> <span class="muted">(118450 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4928">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-17 15:50 UTC</span>
+  </div>
+  <div class="post-body">If you want to use the value of OptList1CSel in another function, then you need to make it a global variable by removing it from the local variable list of your c:aaa function. The GetCurSel method returns -1 if no options are selected, or the zero based index of the currently selected item, so your use of it is correct.</div>
+</article>
+<article class="post" id="msg4929">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-10-17 16:17 UTC</span>
+  </div>
+  <div class="post-body">Hi Iulian,<br>
+Good start, but you have a few issue.<br>
+1. Like Owen said use a global variable (but you wont need it per below).<br>
+2. Your C:aaa function will never get called. C:zzz will show the form &amp; it will take focus, you'd have to run the aaa command at the command line, but can't because you have a modal dialog.<br>
+3. Be sure to use the "Evants" tab next to the "Properties" Tab<br>
+<br>
+Here's an alternative solution for you:<br>
+<br>
+<br>
+(command "opendcl")<br>
+(defun C:zzz ()<br>
+  (dcl_project_load "example")<br>
+  (dcl_form_show example_form1)<br>
+  (princ)<br>
+)<br>
+<br>
+(defun c:example_Form1_OptionList1_OnSelChanged (ItemIndexOrCount Value /)<br>
+   (cond<br>
+     ((= ItemIndexOrCount 0)<br>
+       (dcl_Control_SetPicture example_Form1_PictureBox1 100)<br>
+     )<br>
+     ((= ItemIndexOrCount 1)<br>
+       (dcl_Control_SetPicture example_Form1_PictureBox1 101)<br>
+     )<br>
+     ((= ItemIndexOrCount 2)<br>
+       (dcl_Control_SetPicture example_Form1_PictureBox1 102)<br>
+     )<br>
+   )<br>
+  (princ)<br>
+)<br>
+<br>
+(defun c:example_Form1_GraphicButton1_OnClicked ( / OptList1CSel )<br>
+  (setq OptList1CSel (dcl_OptionList_GetCurSel example_Form1_OptionList1))<br>
+  (dcl_MessageBox (strcat "OptList1CSel value: " (itoa OptList1CSel)))<br>
+  (princ)<br>
+)<br>
+<br>
+<br>
+<br>
+Hope this helps,<br>
+Barry</div>
+</article>
+<article class="post" id="msg4968">
+  <div class="post-head">
+    <span class="post-author">Iulian</span>
+    <span class="post-date muted">2009-10-18 17:20 UTC</span>
+  </div>
+  <div class="post-body">Thank you very much for the code below and your information. Now it works.<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

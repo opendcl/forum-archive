@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A few questions from a OpenDCL novice · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 999</p>
+    <h1>A few questions from a OpenDCL novice</h1>
+    <p class="meta">Started by Carsten ·
+      2009-10-30 14:57 UTC ·
+      2 replies · SMF topic #999</p>
+<article class="post" id="msg5075">
+  <div class="post-head">
+    <span class="post-author">Carsten</span>
+    <span class="post-date muted">2009-10-30 14:57 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+After having struggled with ACAD dcl for almost a decade, I am just now exploring the brave new world of OpenDCL. <br>
+It looks like a great tool, which can do all I ask for and much more. <br>
+<br>
+However, as always when you start something new, there is a bit of confusion, even though I try to move forward in very small and simple steps. <br>
+I can see that I must be making some mistakes, but I just cannot figure how to detect them. <br>
+Maybe some of you have "been there, done that" so guidance is highly appreciated.<br>
+<br>
+1) Event functions in lsp don't seem to trigger. <br>
+The code below does put the form on the screen, but neither the "oninitialize" or the "onclick" functions seem to be called. <br>
+<br>
+(defun C:o7R2 (/ Result)<br>
+  (command "_OPENDCL") ; Load OpenDCL Runtime<br>
+  (if (dcl_Project_Load ([shadow=red,left]strcat Logdir "\\Log_Cad")) <br>
+    (progn<br>
+      (setq Result (dcl_Form_Show Log_Cad_WDU))<br>
+      ; Note that this code does not execute until *after* the dialog is closed!<br>
+      ;(if (= Result 1) (DoSomething))<br>
+    )<br>
+  )<br>
+  (princ)<br>
+)<br>
+<br>
+(defun c:Log_Cad_WDU_OnInitialize (/ sFilename)<br>
+<br>
+  (setq sFilename "C:\\Documents and Settings\\ct\\Dokumenter\\My Pictures\\Robert i Muddergrøften Small.jpg")<br>
+  (if (/= sFileName nil)<br>
+    (dcl_PictureBox_LoadPictureFile<br>
+     Log_Cad_WDU_MainPic<br>
+     sFilename<br>
+     T<br>
+    )<br>
+  )  <br>
+)<br>
+<br>
+(defun c:Log_Cad_WDU_MainPic_OnClicked (/)<br>
+  (dcl_MessageBox "To Do: code must be added to event handler\r\nc:Log_Cad_WDU_MainPic_OnClicked" "To do")<br>
+)<br>
+<br>
+<br>
+2) Maybe this applies more to the Studio forum but anyway:<br>
+- Can a Form be moved from one project to another?<br>
+- Can a project name be changed within an existing project?<br>
+<br>
+Thanks &amp; regards<br>
+Carsten<br>
+   </div>
+</article>
+<article class="post" id="msg5076">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-30 15:23 UTC</span>
+  </div>
+  <div class="post-body">  The first problem is usually a mistake in naming.  Open your form in Studio (and make sure you're opening the same project that you're loading in AutoCAD).  Open the form.  Go to the events pane, amd make sure OnInitialize is checked.  Copy the function name from the displayed name at the bottom of the events pane, then paste it intop your lisp code.  This ensures that the code matches what is in the project file.  Next, select the "MainPic" control and do the same for the OnClicked event.<br>
+<br>
+  Forms cannot be moved, but their controls can be copied and pasted en masse.  The "project name" is the filename, so just change the filename.  This does not affect or change the names of event handlers that are already enabled.</div>
+</article>
+<article class="post" id="msg5077">
+  <div class="post-head">
+    <span class="post-author">Carsten</span>
+    <span class="post-date muted">2009-10-30 15:38 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen,<br>
+<br>
+Thanks for your response, it clarifies a few things.<br>
+I see now that I got some of the basic concepts wrong and therefore "fumbled."<br>
+I think I can get it straigth now. <br>
+<br>
+Regards<br>
+Carsten<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

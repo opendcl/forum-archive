@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>4K HiDPI support with AutoCAD 2018 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2515</p>
+    <h1>4K HiDPI support with AutoCAD 2018</h1>
+    <p class="meta">Started by honkinberry ·
+      2017-06-20 20:51 UTC ·
+      14 replies · SMF topic #2515</p>
+<article class="post" id="msg12507">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2017-06-20 20:51 UTC</span>
+  </div>
+  <div class="post-body">I finally got around to playing with AutoCAD 2018 in HiDPI mode.<br>
+All my DCL dialog boxes are looking great, but the OpenDCL ones are tiny!<br>
+The only setting I have noticed, is that I can set the Font of elements to be scaled by Monitor instead of by Pixel.<br>
+But that doesn't address the overall dialog box size.<br>
+And the Studio editor itself is a bit wonky in a HiDPI setting, so I'm guessing there is a bit to go with supporting this?<br>
+Any tips or knowledge you can share on the subject would be most appreciated.<br>
+<br>
+Cheers!<br>
+<br>
+--J</div>
+</article>
+<article class="post" id="msg12558">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2017-09-06 22:39 UTC</span>
+  </div>
+  <div class="post-body">Now with 2018.1, it has even more HiDPI 4K support.  There is still some obvious things pending, such as the images in the Ribbon, but I think it's clear the writing is on the wall that 2019 will have full HiDPI support.<br>
+See the attached files for our issue.  The "dcl 4k" example is a dilaog box in DCL in HiDPI mode, which you can see AutoCAD scales correctly.  Meanwhile, the "odcl 4k" example shows an OpenDCL dialog, which is still rendered at the original pixel size.  Only when switching the display settings to miserable low resolution and standard scaling does the OpenDCL dialog look correct, in the "odcl 2k" file -- note you can see how low quality much of the rest of the screen items are.<br>
+<br>
+I'm hoping I'm missing something simple, or perhaps that OpenDCL 9 will just magically support HiDPI displays, or something like that?!  :D<br>
+<br>
+Thanks for any assistance.<br>
+<br>
+--J<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2349/dcl 4k.png">dcl 4k.png</a> <span class="muted">(321794 bytes)</span></li><li><a href="../attachments/2350/odcl 4k.png">odcl 4k.png</a> <span class="muted">(290797 bytes)</span></li><li><a href="../attachments/2351/odcl 2k.png">odcl 2k.png</a> <span class="muted">(115587 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12561">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2017-09-11 13:08 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+I also want to ask about the current state for "4k"? More and more AutoCAD users have these monitors - is there a current or future way to handle it with ODCL?</div>
+</article>
+<article class="post" id="msg12563">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2017-09-12 13:53 UTC</span>
+  </div>
+  <div class="post-body">It will require internally scaling all size values based on a scale factor derived from display resolution. It's going to take some work and will take time to find and correct all the cases where sizes should be scaled, but I agree it needs to be done.</div>
+</article>
+<article class="post" id="msg12568">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2017-09-26 07:20 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2515.msg12563#msg12563 date=1505224386 wrote:</cite><br>
+...but I agree it needs to be done.</blockquote><br>
+Owen, can you estimate approx. when this could be done? End of this year? Or some months later?<br>
+<br>
+Have a fine day!<br>
+<br>
+Peter</div>
+</article>
+<article class="post" id="msg12570">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2017-09-26 12:01 UTC</span>
+  </div>
+  <div class="post-body">I plan to start working on it in December, but it definitely won't be finished this year.</div>
+</article>
+<article class="post" id="msg12654">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2018-01-05 04:33 UTC</span>
+  </div>
+  <div class="post-body">Have a look at OpenDCL 9.0 and let me know if you see any improvement on high resolution displays.</div>
+</article>
+<article class="post" id="msg12661">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2018-01-05 23:58 UTC</span>
+  </div>
+  <div class="post-body">This is very promising!!!<br>
+Some notes:<br>
+- on a Mac using Parallels, things are still off, especially in Coherence mode.  But out of coherence mode, for instance in the Studio, the display of things seems normal.  Many elements such as the pulldown menu are still scaled.<br>
+- the Web Browser ActiveX Control is the only notable control I can find that is still off.  The dialog itself correctly spawns at double the specified size, the web browser control correct adjusts size, but the HTML displayed is not scaled up 200%.  This may be in our HTML, we are looking into that.<br>
+- the version noted in Programs and Features is 9.0.0.1, but in AutoCAD it is reported as 8.2.2.1<br>
+<br>
+Most excited, we were definitely looking forward to being able to support HiDPI with the release of AutoCAD 2019, and it looks like you'll have that amply!  Thank you!<br>
+<br>
+--J</div>
+</article>
+<article class="post" id="msg12662">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2018-01-06 23:30 UTC</span>
+  </div>
+  <div class="post-body">I can't help you with Parallels, but I've taken a stab at the other issues in 9.0.0.2.</div>
+</article>
+<article class="post" id="msg12683">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2018-01-10 17:50 UTC</span>
+  </div>
+  <div class="post-body">It is looking very good!<br>
+It would definitely help us test across OS configurations if it worked in Parallels -- are there Windows library return values we can query to report back?<br>
+<br>
+The web pages within the Web Browser ActiveX are still not being scaled up.<br>
+We certainly can rewrite all of those pages to scale up according to calculated scale factor (screen.deviceXDPI / screen.logicalXDPI), but this is usually done automatically by the browser.  Still investigating it here, but mentioning in case there is anything specific we can test, report, or any anybody has any ideas.<br>
+<br>
+--J</div>
+</article>
+<article class="post" id="msg12684">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2018-01-11 01:59 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=honkinberry link=topic=2515.msg12683#msg12683 date=1515606621 wrote:</cite><br>
+The web pages within the Web Browser ActiveX are still not being scaled up.</blockquote><br>
+<br>
+It is working in my test case. The web browser control is finicky about when it accepts zoom factor changes, so the change is not done until OnDocumentComplete(). Maybe there is some timing issue in your case that causes it to fail during that event. See if you can produce a simple test case for me to try here, then we can both be sure we're testing the same thing.</div>
+</article>
+<article class="post" id="msg12685">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2018-01-11 18:03 UTC</span>
+  </div>
+  <div class="post-body">You bet.<br>
+Attached please find a simple example, and a screenshot of how it renders on our end (compared to a Google Chrome window loading the same page).<br>
+<br>
+This is on a a Surface Pro, at 2736x1824 with 200% scaling.<br>
+<br>
+Thanks!<br>
+<br>
+--J<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2366/Archive.zip">Archive.zip</a> <span class="muted">(225580 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12686">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2018-01-11 20:39 UTC</span>
+  </div>
+  <div class="post-body">The sample is working for me: it looks just like Chrome in your screen shot. I'm using Windows 10 v. 1709 build 16299.192.</div>
+</article>
+<article class="post" id="msg12687">
+  <div class="post-head">
+    <span class="post-author">honkinberry</span>
+    <span class="post-date muted">2018-01-12 01:23 UTC</span>
+  </div>
+  <div class="post-body">Ugh!  I hate it when these things happen, I'm sorry.<br>
+That's my Windows version too, and I checked all updates installed.<br>
+Also did a clean reinstall of 2018, with the Update 1.1.<br>
+Here's an odd one -- note the Autodesk License screen is small (attached).<br>
+I can't find any reports of others having that, so I'm thinking this could be a clue, as to something amiss on my computer.<br>
+So we will continue to poke around here.<br>
+Sorry for being a problem child!<br>
+<br>
+--J<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2367/Capture.PNG">Capture.PNG</a> <span class="muted">(384591 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12688">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2018-01-12 16:50 UTC</span>
+  </div>
+  <div class="post-body">Indeed, my license dialog looks normal (but I'm only running at 125%, so I wouldn't see much difference anyway).</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

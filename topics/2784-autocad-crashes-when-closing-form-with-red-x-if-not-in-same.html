@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AutoCad crashes when closing form with red &quot;X&quot; if not in same doc · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2784</p>
+    <h1>AutoCad crashes when closing form with red &quot;X&quot; if not in same doc</h1>
+    <p class="meta">Started by commodore ·
+      2021-09-17 12:35 UTC ·
+      5 replies · SMF topic #2784</p>
+<article class="post" id="msg13589">
+  <div class="post-head">
+    <span class="post-author">commodore</span>
+    <span class="post-date muted">2021-09-17 12:35 UTC</span>
+  </div>
+  <div class="post-body">AutoCad 2022, OpenDcl 9.1.3.0 (also tried it with the stable build 9.0.6.1)<br>
+SDI = 0 (multi-document mode)<br>
+<br>
+AutoCad crashes if the steps below are followed.<br>
+1. Open a drawing, let's call it DWG-A.<br>
+2. Open a OpenDCL Modeless form.<br>
+3. Open a new drawing, let's call it DWG-B.<br>
+4. Close DWG-A, leaving the form open.<br>
+5. Close the form using the Red "X" at the upper right of the form.<br>
+<br>
+This causes AutoCad to crash.<br>
+This did not happen in AutoCad 2018 and OpenDCL 9.0.0.2<br>
+</div>
+</article>
+<article class="post" id="msg13594">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2021-09-21 23:22 UTC</span>
+  </div>
+  <div class="post-body">I could not reproduce a crash using the Modeless demo form (OPENDCLDEMO) and following the provided steps. I tested with Acad 2022 _VERNUM=S.51.0.0.</div>
+</article>
+<article class="post" id="msg13605">
+  <div class="post-head">
+    <span class="post-author">commodore</span>
+    <span class="post-date muted">2021-09-28 14:36 UTC</span>
+  </div>
+  <div class="post-body">We are using MEP 2022 with all the latest updates.<br>
+Windows 10, version 21H1.<br>
+<br>
+See attached file.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2533/OpenDCL_Error.gif">OpenDCL_Error.gif</a> <span class="muted">(2865919 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13610">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2021-09-30 02:13 UTC</span>
+  </div>
+  <div class="post-body">Did you try to reproduce it with the modeless form from the OPENDCLDEMO sample? If it crashes with the demo as well, it would indicate a generic issue; otherwise (and more likely) it is related to your system or code.</div>
+</article>
+<article class="post" id="msg13633">
+  <div class="post-head">
+    <span class="post-author">commodore</span>
+    <span class="post-date muted">2021-12-01 18:14 UTC</span>
+  </div>
+  <div class="post-body">Owen,<br>
+I am able to reproduce the AutoCad crash using your "AllControls" sample.<br>
+See the attached video.<br>
+The crash seems to be caused by calls to "dcl-BlockView-PreLoadDwg" of which there are 2 in the "AllControls" sample.<br>
+If you comment out those 2 calls and repeat the process AutoCad does not crash.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2541/2021-12-01_13h05_18.gif">2021-12-01_13h05_18.gif</a> <span class="muted">(1478520 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg13634">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2021-12-02 05:15 UTC</span>
+  </div>
+  <div class="post-body">I am able to reproduce it now. The crash happens when a block from a preloaded drawing is displayed in a Block View control, then the control is destroyed after closing the document which was current at the time the drawing was preloaded. It looks like an Acad bug, and a thorny one to resolve.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

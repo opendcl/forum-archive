@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OnMouseEntered and OnMouseMovedOff events · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/21-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 850</p>
+    <h1>OnMouseEntered and OnMouseMovedOff events</h1>
+    <p class="meta">Started by AutoKAD ·
+      2009-07-16 16:48 UTC ·
+      6 replies · SMF topic #850</p>
+<article class="post" id="msg4215">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2009-07-16 16:48 UTC</span>
+  </div>
+  <div class="post-body">How do I keep these two events from printing a new line to the command prompt every time I enter or exit?</div>
+</article>
+<article class="post" id="msg4216">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-07-16 17:45 UTC</span>
+  </div>
+  <div class="post-body">Set the form's Event Invoke property to 'Synchronous'.</div>
+</article>
+<article class="post" id="msg4217">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2009-07-16 19:59 UTC</span>
+  </div>
+  <div class="post-body">I set the form Event Invoke to 'Synchronous' in Studio and it still prints a new line to the command prompt when moving the cursor over the form and moving the cursor off of the form.  I tried changing the state during runtime, as well.  Then, I replaced all my code in both events with just T and it still occurs.  Not sure what I am doing wrong.  Tried it in the stable version and beta 7 of the Runtime.<br>
+<br>
+I'll post an example later today.<br>
+<br>
+Thanks!</div>
+</article>
+<article class="post" id="msg4218">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-07-16 21:17 UTC</span>
+  </div>
+  <div class="post-body">I can be late but this doesn't happen in OpenDCL 4.1.2.2  <br>
+Perhaps this helps to understand the problem.</div>
+</article>
+<article class="post" id="msg4219">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2009-07-16 22:32 UTC</span>
+  </div>
+  <div class="post-body">Here's my usual test file.  <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/842/GridTest (2).zip">GridTest (2).zip</a> <span class="muted">(9205 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4220">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-07-17 00:47 UTC</span>
+  </div>
+  <div class="post-body">For some reason the modeless dialog was coded to ignore the Event Invoke setting and always use Asynchronous. I've fixed it now for the next build.</div>
+</article>
+<article class="post" id="msg4222">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2009-07-17 01:02 UTC</span>
+  </div>
+  <div class="post-body">Awesome.<br>
+<br>
+Thanks Owen!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

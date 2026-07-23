@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SetDroppedWidth · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1024</p>
+    <h1>SetDroppedWidth</h1>
+    <p class="meta">Started by AutoKAD ·
+      2009-11-25 06:37 UTC ·
+      3 replies · SMF topic #1024</p>
+<article class="post" id="msg5230">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2009-11-25 06:37 UTC</span>
+  </div>
+  <div class="post-body">dcl_ComboBox_SetDroppedWidth isn't working for me.  I've tried it with the event OnDropDown and several other ways, too.  Using latest stable version, 5.1.2.3.</div>
+</article>
+<article class="post" id="msg5231">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-25 07:08 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Seems to work for me PROVIDING the Dropdown width is greater than the Control ..<br>
+<br>
+<br>
+<br>
+(vl-load-com)<br>
+(command "OPENDCL")<br>
+<br>
+;; Test Code  <br>
+;; 20091125 kdub@home <br>
+<br>
+;|&lt;&gt;|;<br>
+<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;; (findfile "Test1125A.ODCL")<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:doit (/ dialogreturn)<br>
+  (dcl_project_load "Test1125A.ODCL" t)<br>
+  ;; Show the main form  <br>
+  (setq dialogreturn (dcl_form_show test1125a_main))<br>
+  ;;------  <br>
+  (princ)<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;|&lt;&gt;|;<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;; <br>
+;|&lt;&gt;|;<br>
+(defun c:Test1125A_Main_OnInitialize (/)<br>
+  (setq combocontent '("AddColor"     "AddList"      "AddPath"<br>
+                       "AddString"    "Clear"        "ClearEdit"<br>
+                      )<br>
+  )<br>
+  (dcl_ComboBox_AddList Test1125A_Main_ComboBox1 combocontent) <br>
+)<br>
+;;;-------------------------------------------<br>
+<br>
+(defun c:Test1125A_Main_ComboBox1_OnDropDown (/)<br>
+  (dcl_ComboBox_SetDroppedWidth Test1125A_Main_ComboBox1 300)<br>
+  ;;(dcl_ComboBox_SetDroppedWidth Test1125A_Main_ComboBox1 70)<br>
+)<br>
+<br>
+;;;-------------------------------------------<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+<br>
+(prompt "\n DOIT to run.")<br>
+(princ)<br>
+<br>
+<br>
+regards<br>
+Kerry<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1051/Test1125a.png">Test1125a.png</a> <span class="muted">(6454 bytes)</span></li><li><a href="../attachments/1052/Test1125A.lsp">Test1125A.lsp</a> <span class="muted">(1460 bytes)</span></li><li><a href="../attachments/1053/Test1125A.odcl">Test1125A.odcl</a> <span class="muted">(578 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5232">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-25 07:22 UTC</span>
+  </div>
+  <div class="post-body">I assume this is the sort of thing you're trying to acomplish ...<br>
+<br>
+<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;; <br>
+;|&lt;&gt;|;<br>
+(defun c:test1125a_main_oninitialize (/)<br>
+  (setq<br>
+    combocontent '("AddColor"<br>
+                   "AddList"<br>
+                   "AddPath"<br>
+                   "AddString1"<br>
+                   "123456789012345678901234567890123456789012345"<br>
+                   "Clear"<br>
+                   "ClearEdit"<br>
+                  )<br>
+  )<br>
+  (dcl_combobox_addlist test1125a_main_combobox1 combocontent)<br>
+)<br>
+;;;-------------------------------------------<br>
+<br>
+(defun c:Test1125A_Main_ComboBox1_OnDropDown (/)  <br>
+          <br>
+  (dcl_combobox_setdroppedwidth<br>
+    test1125a_main_combobox1<br>
+    (atoi (rtos (* 6.6 (apply 'max (mapcar 'strlen combocontent))) 2 0)<br>
+    )<br>
+  )  <br>
+)<br>
+<br>
+;;;-------------------------------------------<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1054/Test1125a-2.png">Test1125a-2.png</a> <span class="muted">(7459 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5245">
+  <div class="post-head">
+    <span class="post-author">AutoKAD</span>
+    <span class="post-date muted">2009-11-25 16:57 UTC</span>
+  </div>
+  <div class="post-body">Yup, that's what I was trying.  Thanks!</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

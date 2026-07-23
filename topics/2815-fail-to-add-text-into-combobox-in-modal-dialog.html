@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fail to add text into combobox in modal dialog · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2815</p>
+    <h1>Fail to add text into combobox in modal dialog</h1>
+    <p class="meta">Started by EricTang ·
+      2022-05-12 05:10 UTC ·
+      3 replies · SMF topic #2815</p>
+<article class="post" id="msg13672">
+  <div class="post-head">
+    <span class="post-author">EricTang</span>
+    <span class="post-date muted">2022-05-12 05:10 UTC</span>
+  </div>
+  <div class="post-body">Greetings to all  :)! I am new to openDCL, and I may need some help in the development.<br>
+<br>
+I have a modal dialog with a combobox inside. My task is to add a list of text into the combobox. However, the combobox seems unchanged, and a runtime error occurs after closing the dialog: "Error: NIL value not allowed; Function: dcl-Control-SetList". The reason could be the inproper settings to the modal dialog, since when I executed the same code in a modeless dialog, it worked. But I don't know what is going wrong in my modal dialog. I appreciate it if anyone can give some help.<br>
+<br>
+Here is my code:<br>
+(dcl-Form-Show New/SettingDlg)<br>
+(setq testlst '("1" "2" "3"))<br>
+(dcl-Control-SetList New/SettingDlg/Layer1Cmbbox testlst)</div>
+</article>
+<article class="post" id="msg13673">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2022-05-13 07:00 UTC</span>
+  </div>
+  <div class="post-body">The dcl-Control-SetList function needs to be called in the OnInitialize event handler function. Take a look at ListView.lsp in the Samples folder:<br>
+C:\Program Files (x86)\OpenDCL Studio\ENU\Samples\Tree.lsp</div>
+</article>
+<article class="post" id="msg13678">
+  <div class="post-head">
+    <span class="post-author">EricTang</span>
+    <span class="post-date muted">2022-05-15 05:14 UTC</span>
+  </div>
+  <div class="post-body">Thanks for your help. It works. However, I still wonder what if I want to change the content of a combobox when the dialog is already shown?</div>
+</article>
+<article class="post" id="msg13680">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2022-05-16 05:57 UTC</span>
+  </div>
+  <div class="post-body">Since it's a modal dialog you would do that with event handler functions as well. The Grid.lsp file will give you an idea how this works.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

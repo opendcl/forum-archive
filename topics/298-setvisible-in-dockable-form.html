@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SetVisible in Dockable form · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 298</p>
+    <h1>SetVisible in Dockable form</h1>
+    <p class="meta">Started by Marco Jacinto ·
+      2008-04-21 18:27 UTC ·
+      2 replies · SMF topic #298</p>
+<article class="post" id="msg1327">
+  <div class="post-head">
+    <span class="post-author">Marco Jacinto</span>
+    <span class="post-date muted">2008-04-21 18:27 UTC</span>
+  </div>
+  <div class="post-body">The atached file shows a problem with dockable forms, the rectangle should hide when clicked the button but it doesn't.<br>
+<br>
+<pre class="code"><code>(defun c:prueba	()<br>
+  (dcl_Project_Import<br>
+    '("YWt6A3AIAADPHOgjBuK76kcRLT9q+7HN/f3i2l5cbNtb/D58NUiwNPt+L35fblaW8mlsPOI7L371"<br>
+      "+Gj3WGvB/Fs2Umts3PzwYT49+bqoL7jiCUPtB5hmdhfmFkKNwEcNGUVJfX4k5VMhTVUmuzMiPWtr"<br>
+      "OmIFoXWKRDPUo3AxnFY5VVYvSbgAYG2oZR0Res2aax3N5hriQjinVdywJN/EtiQ8/x3IGFXwRrCv"<br>
+      "VBnq1lNMKKDcq9NJHNWrp9VMsFaZu8NkuZyLlWhR2I8kFxqjIJ3DTQj1c4ikd1ylwWt0hDAd5zkj"<br>
+      "mh9lcsH0BwBpM4Zo/YY19xuRRJxnBP0jwdR4E1koIDkTikxe0QTfli4+ZRCcDStDLYp/Z4lrhwPL"<br>
+      "aqMvCjWvEzvRivKX1rkBOHCzPi4tHZOhsO2GaTPNs0SLn1BRRA78jEuoW02wG6jYA8khy8Edh11L"<br>
+      "Yj2slRsKIcPyoflTHeSKWouNip38x08glPfgiu/cufRgVCSmxLa2IQk9r3M7tfSQFYa7U4E6QeZT"<br>
+      "TzQfCYwPCeBzJ4u+4W3afsvAPTVjn4XZDndHqJXCjXiBDEa7oUft4HHNkce6x26u9D1pbQeXqOZw"<br>
+      "lvQtc3sKotdwekqfrn1Dljg+gN4xK+uHaX0xF9ThLXqzu83URN2W3hCR1cCXCeOGJyvlZJU1BQm3"<br>
+      "971EjyWZy4eqob3Isc/fEIGyGQYpS6CrOaCj4hvOwcuBmZjVbklJY8RlrlnpC0NfKLTXbDggKV3R"<br>
+      "PfLCcRya/GRHaffvA5wTsRxFjO1RQX/AJ5hb"<br>
+     )<br>
+  )<br>
+  (dcl_Form_Show prueba_Formulario1)<br>
+)<br>
+<br>
+(defun c:prueba_Formulario1_BotondeTexto1_OnClicked (/)<br>
+  (if (= (dcl_Control_GetVisible prueba_Formulario1_Rectángulo1)<br>
+	 T<br>
+      )<br>
+    (dcl_Control_SetVisible prueba_Formulario1_Rectángulo1 nil)<br>
+    (dcl_Control_SetVisible prueba_Formulario1_Rectángulo1 t)<br>
+  )<br>
+)</code></pre></div>
+</article>
+<article class="post" id="msg1328">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-04-22 02:48 UTC</span>
+  </div>
+  <div class="post-body">The problem is that the background does not get repainted after the control is hidden. This is now fixed in Alpha 13.</div>
+</article>
+<article class="post" id="msg1334">
+  <div class="post-head">
+    <span class="post-author">Marco Jacinto</span>
+    <span class="post-date muted">2008-04-22 14:59 UTC</span>
+  </div>
+  <div class="post-body">thanks Owen</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How can I know whether ODCL Runtime is installed  or not ? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1344</p>
+    <h1>How can I know whether ODCL Runtime is installed  or not ?</h1>
+    <p class="meta">Started by khann ·
+      2010-09-30 00:58 UTC ·
+      4 replies · SMF topic #1344</p>
+<article class="post" id="msg7181">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-09-30 00:58 UTC</span>
+  </div>
+  <div class="post-body">Hi, <br>
+When I published a lisp code of involving ODCL Form or Function ,<br>
+if he does not have ODCL Runtime the lisp code will fail.<br>
+<br>
+At this time can I check the Runtime is installed or not before run the lisp code ?<br>
+<br>
+Thanks.</div>
+</article>
+<article class="post" id="msg7182">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-09-30 07:12 UTC</span>
+  </div>
+  <div class="post-body">Hi, I didn't test it yet, but I would give it a try:<br>
+(vl-cmdf ...) executs a command without cancelling the code in case of failing<br>
+<br>
+(if (and (not dcl_project_load)<br>
+	 (vl-cmdf "OPENDCL")<br>
+	 (not dcl_project_load))<br>
+  (alert "No OpenDCL is installed yet.")<br>
+); if<br>
+<br>
+The more complicated way would be to research the registry.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg7183">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-09-30 08:10 UTC</span>
+  </div>
+  <div class="post-body">Thanks, Fred.<br>
+<br>
+That's just it.  :D :D</div>
+</article>
+<article class="post" id="msg7184">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-09-30 13:55 UTC</span>
+  </div>
+  <div class="post-body">The ideal approach is to run the OpenDCL Runtime install as part of the installer for your own code, then there is no need to check for its presence.</div>
+</article>
+<article class="post" id="msg7197">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2010-10-05 04:05 UTC</span>
+  </div>
+  <div class="post-body">Yes, that's right.<br>
+I make some codes of install program, some codes of just ".lsp" file which has ODCL Function.<br>
+Install program has ODCL Runtime but the others not.<br>
+<br>
+I don't know who will get my codes by chance and run on his machine after it's been published.<br>
+So I want to check the ODCL Runtime is installed or not and just alert him of ODCL presence if he has not ODCL Runtime.<br>
+<br>
+Thanks, Owen.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

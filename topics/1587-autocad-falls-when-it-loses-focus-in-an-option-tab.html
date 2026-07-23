@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>- Autocad falls when it loses focus in an 'option tab' · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1587</p>
+    <h1>- Autocad falls when it loses focus in an 'option tab'</h1>
+    <p class="meta">Started by new_neo ·
+      2011-02-11 14:05 UTC ·
+      5 replies · SMF topic #1587</p>
+<article class="post" id="msg7757">
+  <div class="post-head">
+    <span class="post-author">new_neo</span>
+    <span class="post-date muted">2011-02-11 14:05 UTC</span>
+  </div>
+  <div class="post-body">Gentlemen:<br>
+<br>
+2 questions:<br>
+<br>
+1 .- Autocad falls when it loses focus in an 'option tab', let me happens when another application active than autocad<br>
+<br>
+2 .- ¿Is there any way to add toolstip OpenDCL the object of autoCAD?, and that I can not do it directly with AutoCAD.<br>
+<br>
+Thanks excellent product. Greetings from Chile and forgive my bad English (as translated by google)<br>
+<br>
+Installed: <br>
+  - OpenDCL Studio 5.1.2.3 <br>
+  - AutoCAD 2008 Run over Windows XP<br>
+<br>
+<br>
+Señores:<br>
+<br>
+2 preguntas:<br>
+<br>
+1.- Se me cuelga autocad cuando pierde el focus en un 'option tab', me sucede cuando dejo activa otra aplicacion que no sea autocad<br>
+<br>
+2.- ¿Existe alguna manera con opendcl agregar toolstip a los object de autoCAD, ya que no logro hacerlo directamente con AutoCAD.<br>
+<br>
+Gracias exelente producto. Saludos de Chile y perdonen mi mal ingles (lo traduje por google)</div>
+</article>
+<article class="post" id="msg7758">
+  <div class="post-head">
+    <span class="post-author">new_neo</span>
+    <span class="post-date muted">2011-02-11 14:09 UTC</span>
+  </div>
+  <div class="post-body"><pre class="code"><code><br>
+<br>
+(defun c:Normas_OptionTab_OnShow (Showing /)<br>
+	(if (dcl_Form_IsActive Normas_FrmMain)<br>
+		(progn<br>
+		(if sn_LimitePagina (dcl_Control_SetText Normas_OptionTab_TxtRegistrosPagina (rtos sn_LimitePagina 2 0)))<br>
+		<br>
+		(setq tmp (vl-registry-read "HKEY_LOCAL_MACHINE\\Software\\....\\SN_NORMAS\\" "AgrupaVista"))<br>
+		(if tmp (dcl_Control_SetValue Normas_OptionTab_ChkAgrupaVista tmp))<br>
+		<br>
+		(setq tmp (vl-registry-read "HKEY_LOCAL_MACHINE\\Software\\...\\SN_NORMAS\\" "TipoTabla"))<br>
+		(if tmp (dcl_Control_SetCurrentSelection Normas_OptionTab_ListaOpt tmp))<br>
+		)<br>
+	)<br>
+)<br>
+<br>
+(defun c:Normas_OptionTab_OnOK (/)<br>
+	(if (dcl_Form_IsActive Normas_FrmMain)<br>
+		(progn<br>
+		(setq tmp (dcl_Control_GetText Normas_OptionTab_TxtRegistrosPagina))<br>
+		(vl-registry-write "HKEY_LOCAL_MACHINE\\Software\\...\\SN_NORMAS\\" "LimitePagina" tmp)<br>
+		(setq sn_LimitePagina (atoi tmp))	<br>
+		<br>
+		(c:Normas_FrmMain_CmdInicio_OnClicked)<br>
+		(setq tmp (dcl_Control_GetValue Normas_OptionTab_ChkAgrupaVista))<br>
+		(vl-registry-write "HKEY_LOCAL_MACHINE\\Software\\...\\SN_NORMAS\\" "AgrupaVista" tmp)<br>
+		(if (= 1 tmp)<br>
+			(setq OnOffAgrupaVista T)<br>
+			(setq OnOffAgrupaVista nil)<br>
+		)<br>
+		<br>
+		(setq opt_Tipotabla (dcl_Control_GetCurrentSelection Normas_OptionTab_ListaOpt))<br>
+		(vl-registry-write "HKEY_LOCAL_MACHINE\\Software\\...\\SN_NORMAS\\" "TipoTabla" opt_Tipotabla)<br>
+		;<br>
+		)<br>
+	)<br>
+)<br>
+</code></pre></div>
+</article>
+<article class="post" id="msg7763">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-02-14 15:51 UTC</span>
+  </div>
+  <div class="post-body">I'm not sure what you mean by "toolstrip". If you mean toolbar, this can be done as a modeless form, but it's usually better to use the AutoCAD CUI when possible.<br>
+<br>
+Would you be able to attach a small sample .odcl and .lsp file (along with instructions) that demonstrate the options tab problem?</div>
+</article>
+<article class="post" id="msg7772">
+  <div class="post-head">
+    <span class="post-author">new_neo</span>
+    <span class="post-date muted">2011-02-16 16:09 UTC</span>
+  </div>
+  <div class="post-body">I.- Problem AutoFalls<br>
+<strong>Instrucciones:</strong><br>
+<br>
+1..- In AutoCAD: Execute new command sn_toolbar<br>
+2.-  Write command config --- &gt; go last tab 'Sistema de Normas' ----&gt; go tab 'Dibuja Normas'<br>
+3.-  Next Activar other aplication ej, firefox, explorer.. (and AutoCAD crunsh)<br>
+<br>
+<br>
+<br>
+pd: send Atach 2 files<br>
+<br>
+<br>
+II.- ¿Is possible create and attachments  <strong>ToolsTip</strong> in object AutoCAD, via Opendcl?<br>
+<br>
+<br>
+Thanks<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1543/Normas.odcl">Normas.odcl</a> <span class="muted">(10090 bytes)</span></li><li><a href="../attachments/1544/sn_toolbar.lsp">sn_toolbar.lsp</a> <span class="muted">(2462 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg7792">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-02-20 17:56 UTC</span>
+  </div>
+  <div class="post-body">This turned out to be a tricky one, but I think I have now fixed the problem for the next build.</div>
+</article>
+<article class="post" id="msg8012">
+  <div class="post-head">
+    <span class="post-author">new_neo</span>
+    <span class="post-date muted">2011-05-23 14:21 UTC</span>
+  </div>
+  <div class="post-body">Thanks; Solved in OpenDCL.Runtime.6.0.2.3.msi</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

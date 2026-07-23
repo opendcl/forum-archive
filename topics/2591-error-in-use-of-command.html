@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Error in use of command · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2591</p>
+    <h1>Error in use of command</h1>
+    <p class="meta">Started by Nima2018 ·
+      2018-04-18 17:35 UTC ·
+      6 replies · SMF topic #2591</p>
+<article class="post" id="msg12835">
+  <div class="post-head">
+    <span class="post-author">Nima2018</span>
+    <span class="post-date muted">2018-04-18 17:35 UTC</span>
+  </div>
+  <div class="post-body">Hi members<br>
+I put a command in an opendcl button event click but in runtime an error<br>
+ appears in Autocad prompts .<br>
+When I put this command outside of click event in top of my program it<br>
+ works correctly , I want my Command to be inside of event click body<br>
+, what must I do ?</div>
+</article>
+<article class="post" id="msg12836">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-04-18 17:57 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<blockquote class="quote"><cite> author=Nima2018 link=topic=2591.msg12835#msg12835 date=1524072909 wrote:</cite><br>
+Hi members<br>
+I put a command in an opendcl button event click but in runtime an error<br>
+ appears in Autocad prompts .<br>
+When I put this command outside of click event in top of my program it<br>
+ works correctly , I want my Command to be inside of event click body<br>
+, what must I do ?<br>
+</blockquote><br>
+<br>
+without knowing your exact code I think this FAQ may help you.<br>
+http://opendcl.com/forum/index.php?topic=1080.0<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg12838">
+  <div class="post-head">
+    <span class="post-author">Tharwat</span>
+    <span class="post-date muted">2018-04-19 05:06 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+You can not use command calls in events ( action_tile ) but you can replace the command with a function if available.<br>
+What's the command name that you are trying to use in the event?<br>
+<br>
+Similar issue here: http://opendcl.com/forum/index.php?topic=2556.msg12677#msg12677</div>
+</article>
+<article class="post" id="msg12843">
+  <div class="post-head">
+    <span class="post-author">Nima2018</span>
+    <span class="post-date muted">2018-04-19 17:10 UTC</span>
+  </div>
+  <div class="post-body">Hi All<br>
+First of all, I thanks for your hints and reply , I learned a lot about "OPENDCL" programming in your points and links.<br>
+I really want to bring and execute an assembly that I have created in C# by the following commands :<br>
+<br>
+<pre class="code"><code><br>
+(command "load" (findfile "myAssembly.dll")<br>
+(command "HTS")<br>
+;; HTS is command method in myAssembly.dll<br>
+</code></pre><br>
+<br>
+When I cut (command "load" (findfile "myAssembly.dll") and paste it top of my program, all routines work but when this command is inside event button onclick,<br>
+at the prompt line I get and error !?<br>
+ And in the case of the second command too , I must change it to below one to get rid of the error :<br>
+<br>
+<pre class="code"><code><br>
+(princ)<br>
+(princ "\nType 'HTS' for execution")<br>
+(princ)<br>
+</code></pre><br>
+I think this is not a good method at all, and there must be a better and more effective one that I do not know about it.<br>
+</div>
+</article>
+<article class="post" id="msg12844">
+  <div class="post-head">
+    <span class="post-author">Tharwat</span>
+    <span class="post-date muted">2018-04-19 17:41 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+Try to use the function vla-sendcommand in lieu of command call.<br>
+<br>
+Let me know if that function works for you.</div>
+</article>
+<article class="post" id="msg12845">
+  <div class="post-head">
+    <span class="post-author">Nima2018</span>
+    <span class="post-date muted">2018-04-19 18:16 UTC</span>
+  </div>
+  <div class="post-body">Dear Tharwat Thanks for your advice.<br>
+ I used the following instructions on the advice of you :<br>
+<br>
+<pre class="code"><code><br>
+<br>
+(vla-sendcommand "load" (filefind "myAssembly.dll"))<br>
+(vla-sendcommand "HTS")<br>
+<br>
+</code></pre><br>
+<br>
+And this time I saw this error on the command line:  <span style="color:red">;error : bad argument type : VLA-OBJECT "load"</span><br>
+</div>
+</article>
+<article class="post" id="msg12846">
+  <div class="post-head">
+    <span class="post-author">Tharwat</span>
+    <span class="post-date muted">2018-04-19 18:44 UTC</span>
+  </div>
+  <div class="post-body">Please try it like the following:<br>
+<br>
+<pre class="code"><code><br>
+(if (setq file (findfile "myAssembly.dll"))<br>
+  (vla-SendCommand (vla-get-ActiveDocument (vlax-get-acad-object)) (strcat "LOAD " file))<br>
+  )<br>
+</code></pre></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

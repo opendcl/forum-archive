@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>newbie questions · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 557</p>
+    <h1>newbie questions</h1>
+    <p class="meta">Started by vladimirzm ·
+      2009-02-18 21:01 UTC ·
+      7 replies · SMF topic #557</p>
+<article class="post" id="msg2515">
+  <div class="post-head">
+    <span class="post-author">vladimirzm</span>
+    <span class="post-date muted">2009-02-18 21:01 UTC</span>
+  </div>
+  <div class="post-body">hello <br>
+i'm absolutely new in ODCL and i have some questions:<br>
+<br>
+1º i'm trying to create a modal dialog with just one button (Pick button) and a label. Clic in Pick button must hides the dialog and select objects, when selection finishes the dialog must shows it and the label text changed to something like "10 objects selected". that's all, but "FORM_HIDE" method locks up autocad (as it says in the help), i thougth "FORM_SHOW" will unlocks autocad but i can't even select objects. so, how can i "restore" the show status of a modal dialog?<br>
+<br>
+<pre class="code"><code>(defun c:sslength_Form1_GraphicButton1_OnClicked (/)<br>
+  (dcl_Form_Hide sslength_Form1 t)  <br>
+  (setq objs (ssget))<br>
+  (DCL_FORM_SHOW alttext_FORM1)<br>
+  ...<br>
+)</code></pre><br>
+<br>
+2º in the same dialog and when there's not objects selected, the label must display a help text (not as tooltip) when move the mouse over pick button, but i really don't understand how mouse_move works, when i try to load in vlisp editor: <em>; error: bad element in arguments list: 0</em> <br>
+<pre class="code"><code>(defun c:sslength_Form1_GraphicButton1_OnMouseMove 0 0 0 /)<br>
+  (dcl_Control_SetCaption sslength_Form1_Label1 "This button allows you select objects")<br>
+)</code></pre><br>
+<br>
+3º i have some problems with ESM (spanish version), the translation is not full and is a little confusing. so i decided to install ENU version and i have this error (three times downloaded and three times the same):<br>
+<img src="http://i10.photobucket.com/albums/a116/vladimirzm/otros/Clip.jpg" alt="" loading="lazy"><br>
+<br>
+thnx<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg2518">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-02-18 21:20 UTC</span>
+  </div>
+  <div class="post-body">1) You need to put your (dcl_Form_Show) inside a while loop and re-show the form after the selection is made (with a flag to exit the while loop when the dialog should not be redisplayed). Take a look at the Selections sample for one way to do this.<br>
+<br>
+2) Your c:sslength_Form1_GraphicButton1_OnMouseMove function is missing a left parenthesis after the "(defun c:sslength_Form1_GraphicButton1_OnMouseMove".<br>
+<br>
+3) Try clearing your temporary files, then download the ENU version again.</div>
+</article>
+<article class="post" id="msg2519">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-18 21:23 UTC</span>
+  </div>
+  <div class="post-body">Hello, vladimirzm,<br>
+<br>
+to the first point of Owens reply I can send you a code snippet. It is part of the German help:<br>
+<br>
+<pre class="code"><code><br>
+(defun c:proj_form_OnInitialize ()<br>
+  (princ "Hier wird der komplette Dialog mit Inhalt gefüllt.")<br>
+);  c:proj_form_OnInitialize<br>
+<br>
+(defun c:proj_form_pb_accept ()<br>
+  (dcl_form_close proj_form 0)<br>
+); c:proj_form_pb_accept <br>
+<br>
+(defun c:proj_form_pb_select ()<br>
+  (dcl_form_close proj_form 1)<br>
+); c:proj_form_pb_select <br>
+<br>
+(defun c:proj_form_pb_cancel ()<br>
+  (dcl_form_close proj_form 2)<br>
+); c:proj_form_pb_cancel <br>
+<br>
+(setq isSchleife T)<br>
+(while isSchleife<br>
+  (setq isSchleife nil) ;; um Endlosschleife bei ESC zu vermeiden<br>
+  (setq intErgebnis (dcl_form_show proj_form))<br>
+  (cond<br>
+    ((= intErgebnis 0) (princ "Hier passiert was."))<br>
+    ((= intErgebnis 1) (princ "Hier wird ein Objekt oder Punkt gewählt.") (setq isSchleife T))<br>
+    ((= intErgebnis 2) (princ "Hier passiert nichts."))<br>
+  ); cond<br>
+); while<br>
+</code></pre><br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2523">
+  <div class="post-head">
+    <span class="post-author">vladimirzm</span>
+    <span class="post-date muted">2009-02-18 22:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">2) Your c:sslength_Form1_GraphicButton1_OnMouseMove function is missing a left parenthesis after the "(defun c:sslength_Form1_GraphicButton1_OnMouseMove".</blockquote><br>
+well obviously that's just here, in vlisp everything is ok:<br>
+<br>
+<img src="http://i10.photobucket.com/albums/a116/vladimirzm/otros/Clip_2.jpg" alt="" loading="lazy"><br>
+<br>
+<br>
+thnx i'll try your answers</div>
+</article>
+<article class="post" id="msg2524">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-18 22:04 UTC</span>
+  </div>
+  <div class="post-body">Hi, vladimirzm, do some symbols into the list behind the function name<br>
+<br>
+<pre class="code"><code><br>
+(defun c:sslength_Form1_GraphicButton1_OnMouseMove (intFlags intX intY /)<br>
+  (dcl_Control_SetCaption sslength_Form1_Label1 "This button allows you select objects")<br>
+); c:sslength_Form1_GraphicButton1_OnMouseMove <br>
+</code></pre><br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2528">
+  <div class="post-head">
+    <span class="post-author">vladimirzm</span>
+    <span class="post-date muted">2009-02-18 22:59 UTC</span>
+  </div>
+  <div class="post-body">yes, it works. <br>
+anyway this isn't normal  :-\</div>
+</article>
+<article class="post" id="msg2529">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-02-18 23:04 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=vladimirzm link=topic=557.msg2528#msg2528 date=1234997996 wrote:</cite><br>
+anyway this isn't normal  :-\<br>
+</blockquote><br>
+<br>
+Why do you think that?<br>
+<br>
+By the way, if you want to do this in the MouseMove event, I highly recommend to do it only the first time that your event handler executes, otherwise you will waste a lot of CPU cycles. For example:<br>
+<br>
+<pre class="code"><code>(defun c:sslength_Form1_GraphicButton1_OnMouseMove (intFlags intX intY /)<br>
+  (if (not *AlreadyChangedCaption) (dcl_Control_SetCaption sslength_Form1_Label1 "This button allows you select objects"))<br>
+  (setq *AlreadyChangedCaption T)<br>
+); c:sslength_Form1_GraphicButton1_OnMouseMove </code></pre> </div>
+</article>
+<article class="post" id="msg2564">
+  <div class="post-head">
+    <span class="post-author">vladimirzm</span>
+    <span class="post-date muted">2009-02-20 15:49 UTC</span>
+  </div>
+  <div class="post-body">ok thnx</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Is it psossible to break previous command in a &quot;dcl_sendstring&quot; · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2280</p>
+    <h1>Is it psossible to break previous command in a &quot;dcl_sendstring&quot;</h1>
+    <p class="meta">Started by Rainer Bous ·
+      2015-06-03 06:13 UTC ·
+      5 replies · SMF topic #2280</p>
+<article class="post" id="msg11472">
+  <div class="post-head">
+    <span class="post-author">Rainer Bous</span>
+    <span class="post-date muted">2015-06-03 06:13 UTC</span>
+  </div>
+  <div class="post-body">Is it psossible to break previous command in a "dcl_sendstring", like ^C^C in mnu-method?</div>
+</article>
+<article class="post" id="msg11475">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-06-03 09:01 UTC</span>
+  </div>
+  <div class="post-body">(progn (dcl_sendstring (strcat (chr 27) (chr 27))) (princ))</div>
+</article>
+<article class="post" id="msg11478">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-06-04 15:39 UTC</span>
+  </div>
+  <div class="post-body">Hm, not bad, roy! Didn't know that yet. Thanks!<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11485">
+  <div class="post-head">
+    <span class="post-author">Rainer Bous</span>
+    <span class="post-date muted">2015-06-11 08:21 UTC</span>
+  </div>
+  <div class="post-body">Thanks a lot, roy.<br>
+It works very well.<br>
+for example my code to use old mnu-commands:<br>
+<br>
+(defun SUB:cba_sendstring (cmdstr)<br>
+  (cond	((vl-string-search "^C^C^P" cmdstr)<br>
+	 (dcl_sendstring (strcat (chr 27) (chr 27)))<br>
+	 (setq cmdstr (vl-string-subst " " ";" cmdstr))<br>
+	 (dcl_sendstring (substr cmdstr 7))<br>
+	)<br>
+	((vl-string-search "^C^C" cmdstr)<br>
+	 (dcl_sendstring (strcat (chr 27) (chr 27)))<br>
+	 (setq cmdstr (vl-string-subst " " ";" cmdstr))<br>
+	 (dcl_sendstring (substr cmdstr 5))<br>
+	)<br>
+	(T (dcl_sendstring cmdstr))<br>
+  )<br>
+;;; Ende SUB:cba_sendstring<br>
+)</div>
+</article>
+<article class="post" id="msg11486">
+  <div class="post-head">
+    <span class="post-author">Rainer Bous</span>
+    <span class="post-date muted">2015-06-11 08:25 UTC</span>
+  </div>
+  <div class="post-body">It is a part of my Tablett-Emulator "cbaCAD TabEmu" powered by OpenDCL.<br>
+!!! I love OpenDCL !!!</div>
+</article>
+<article class="post" id="msg11487">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-06-11 08:57 UTC</span>
+  </div>
+  <div class="post-body">@ cbaCAD:<br>
+I do not know the source of the cmdstr arguments. If you read them from a CUI you should be aware that not all macros end with a semicolon.<br>
+Example:<br>
+<span style="color:blue"><code>^c^c_line</code></span><br>
+Just using<br>
+(dcl_sendstring "_line")<br>
+will not start the command. You will need to append a space (or any other white space character).<br>
+<br>
+Some other considerations:<br>
+1.<br>
+(vl-string-search) is case-sensitive.<br>
+2.<br>
+Some macros begin with:<br>
+<span style="color:blue"><code>*^c^c</code></span><br>
+3.<br>
+Macros may look like this:<br>
+<span style="color:blue"><code>^c^c_line;\\^c_circle</code></span><br>
+4.<br>
+You should trim away trailing <span style="color:blue"><code>^p</code></span> and <span style="color:blue"><code>^P</code></span> portions.<br>
+5.<br>
+Use<br>
+(progn (dcl_sendstring ...) (princ))<br>
+to suppress the T return value.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

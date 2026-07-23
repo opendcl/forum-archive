@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Combobox with &quot;Style - Colors&quot; · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 2031</p>
+    <h1>Combobox with &quot;Style - Colors&quot;</h1>
+    <p class="meta">Started by Peter2 ·
+      2013-09-23 18:17 UTC ·
+      11 replies · SMF topic #2031</p>
+<article class="post" id="msg10020">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-09-23 18:17 UTC</span>
+  </div>
+  <div class="post-body">from the sample "misc.adcl" I used the combobox with the colors and wrote this function:<br>
+<br>
+(defun c:Verdrahtung_opt_verdrahtung_combox_farben_OnSelChanged (ItemIndexOrCount Value /)<br>
+    (if (not (dcl_Form_IsApplyEnabled Verdrahtung_opt_verdrahtung))<br>
+        (dcl_Form_SetApplyEnabled Verdrahtung_opt_verdrahtung T)<br>
+    )<br>
+    (setq freistellfarbe_temp Value)<br>
+)<br>
+<br>
+<br>
+a)<br>
+At first I tried to use "ItemIndexOrCount", and it worked fine for the standard colors (up to 9). Using one of the color dialogues just displayed the right value in the combobox (e.g. "Color 183"), but the return-value "ItemIndexOrCount" was always 0. What went wrong?<br>
+<br>
+b)<br>
+Then I used the "Value" and get the names of the colors: red, green, color 183, ...<br>
+Using DXF-code (entmod) I need the numbers of the colors, and so I have to "convert" them from string to real: red -&gt; 1, green -&gt; 3.<br>
+That's not impossible, but working in a multi-language environment it could be a problem ...<br>
+<br>
+Conclusion:<br>
+How do I get the color-number from the color-combobox?</div>
+</article>
+<article class="post" id="msg10021">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-09-23 18:53 UTC</span>
+  </div>
+  <div class="post-body">A. Nothing is going wrong. The index is not the ACI index but the list index.<br>
+B. I don't know a way around this.</div>
+</article>
+<article class="post" id="msg10022">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-09-23 19:05 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2031.msg10021#msg10021 date=1379962389 wrote:</cite><br>
+A. Nothing is going wrong. The index is not the ACI index but the list index....<br>
+</blockquote><br>
+But when I select "Color 183" which is displayed in the list - why I do not get "184" as list index? I get 0 ...</div>
+</article>
+<article class="post" id="msg10025">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-09-23 19:28 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Peter2 link=topic=2031.msg10022#msg10022 date=1379963103 wrote:</cite><br>
+But when I select "Color 183" which is displayed in the list - why I do not get "184" as list index? I get 0 ...<br>
+</blockquote><br>
+<br>
+Do I understand correctly that you first add Color 183 to the list, then select it? When I tried that, Color 183 was added at the beginning of the list, which is index 0. Therefore, 0 would be the correct list index in that case.<br>
+<br>
+I think that <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/ComboBox/GetItemData.htm" rel="nofollow noopener">{2}</a> will return the ACI color value associated with a color combo box list item.</div>
+</article>
+<article class="post" id="msg10026">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-09-23 19:36 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2031.msg10025#msg10025 date=1379964536 wrote:</cite><br>
+Do I understand correctly that you first add Color 183 to the list, then select it? .....<br>
+</blockquote><br>
+No. I (my code) add nothing to the list. I have the "Combobox - Type 4 - Colors" which is created by ODCL. But I don't know how the list of colors is created - maybe the base-list has only the standard colors and all others are added while the user picks a color from the color-dialogues?</div>
+</article>
+<article class="post" id="msg10027">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-09-23 19:45 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Peter2 link=topic=2031.msg10026#msg10026 date=1379964968 wrote:</cite><br>
+But I don't know how the list of colors is created - maybe the base-list has only the standard colors and all others are added while the user picks a color from the color-dialogues?</blockquote><br>
+<br>
+Yes, and the list of added colors is stored in the current user profile.</div>
+</article>
+<article class="post" id="msg10028">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-09-23 20:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2031.msg10025#msg10025 date=1379964536 wrote:</cite><br>
+....When I tried that, Color 183 was added at the beginning of the list, which is index 0. Therefore, 0 would be the correct list index in that case....</blockquote><br>
+The list consists always of "1 special color (index 0) plus following standard colors"?<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=2031.msg10025#msg10025 date=1379964536 wrote:</cite><br>
+I think that <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/ComboBox/GetItemData.htm" rel="nofollow noopener">{2}</a> will return the ACI color value associated with a color combo box list item.<br>
+</blockquote><br>
+I think I tried it already but I will try again on Wednesday.<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=2031.msg10027#msg10027 date=1379965550 wrote:</cite><br>
+Yes, and the list of added colors is stored in the current user profile.</blockquote><br>
+Where? If I repeat the job and select some colors then I can see only the current selected color. It does not makes a history which stores formerly selected colors.</div>
+</article>
+<article class="post" id="msg10029">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-09-23 20:21 UTC</span>
+  </div>
+  <div class="post-body">Maybe this will help:<br>
+<a href="http://docs.autodesk.com/ACDMAC/2011/ENU/ObjectARX%20Reference/index.html?frmname=topic&amp;frmfile=CAcUiColorComboBox.html" rel="nofollow noopener">{2}</a><br>
+<a href="http://docs.autodesk.com/ACDMAC/2011/ENU/ObjectARX%20Reference/index.html?frmname=topic&amp;frmfile=CAcUiMRUComboBox.html" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg10030">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-09-23 20:34 UTC</span>
+  </div>
+  <div class="post-body">Thank you. I will continue the day after tomorrow.</div>
+</article>
+<article class="post" id="msg10031">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-09-24 07:39 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Peter2 link=topic=2031.msg10028#msg10028 date=1379966539 wrote:</cite><br>
+The list consists always of "1 special color (index 0) plus following standard colors"?<br>
+</blockquote>No. The special color 156 is added by Misc.lsp. The default list starts with "ByLayer".<br>
+<br>
+<blockquote class="quote"><cite> author=owenwengerd link=topic=2031.msg10027#msg10027 date=1379965550 wrote:</cite><br>
+Yes, and the list of added colors is stored in the current user profile.</blockquote>This does not happen (at least not with BricsCAD).<br>
+</div>
+</article>
+<article class="post" id="msg10032">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-09-24 15:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2031.msg10031#msg10031 date=1380008348 wrote:</cite><br>
+This does not happen (at least not with BricsCAD).</blockquote><br>
+<br>
+I stand corrected.</div>
+</article>
+<article class="post" id="msg10033">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2013-09-25 07:40 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=2031.msg10025#msg10025 date=1379964536 wrote:</cite><br>
+I think that <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/ComboBox/GetItemData.htm" rel="nofollow noopener">{2}</a> will return the ACI color value associated with a color combo box list item.<br>
+</blockquote><br>
+Thank you. Confirmed - Solved.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

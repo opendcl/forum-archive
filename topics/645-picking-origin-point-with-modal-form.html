@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Picking origin point with modal form · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 645</p>
+    <h1>Picking origin point with modal form</h1>
+    <p class="meta">Started by william17051 ·
+      2009-03-12 12:31 UTC ·
+      22 replies · SMF topic #645</p>
+<article class="post" id="msg3096">
+  <div class="post-head">
+    <span class="post-author">william17051</span>
+    <span class="post-date muted">2009-03-12 12:31 UTC</span>
+  </div>
+  <div class="post-body">I am using a Modal form and need to be able to pick an origin point from a command button.<br>
+I tried to use a modeless Dialog, but autolisp runs through the whole program without letting me set the variables first.<br>
+It uses the default settings only.<br>
+When I use the Modal Dialog, It works well until I want to pick an origin point from a command button.<br>
+I cant seem to go from Modal to Autocad and back again.<br>
+Is there any way to make the autolisp wait until the Modeless form is complete?</div>
+</article>
+<article class="post" id="msg3097">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-12 13:19 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+you can find a solution <a href="http://www.opendcl.com/forum/index.php?topic=557.msg2519#msg2519" rel="nofollow noopener">{2}</a> and in the samples folder.<br>
+Good luck!<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3098">
+  <div class="post-head">
+    <span class="post-author">william17051</span>
+    <span class="post-date muted">2009-03-12 13:48 UTC</span>
+  </div>
+  <div class="post-body">I understand where you going with this, but is this for a Modal,Modeless or doesn't it matter?<br>
+<br>
+Also, I can't seem to find this Samples folder. :-[</div>
+</article>
+<article class="post" id="msg3099">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-12 13:58 UTC</span>
+  </div>
+  <div class="post-body">Ah, ok, the code in the link is not directly in the sample folder, but something similar. The code in the link is for <strong>modal </strong> forms, because your question was related to a modal form I think. Using modeless forms you can pick a point without closing the form (But maybe you want hide it meanwhile using hide method.). <br>
+<br>
+In the sample folder you find the selections.lsp.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3100">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-12 14:00 UTC</span>
+  </div>
+  <div class="post-body">Writing a loop to show and re-show your dialog is only needed for modal dialogs. For modeless dialogs, there are other issues to deal with that make them much more complicated. The sample files are in a subfolder under the main OpenDCL Studio installation folder.</div>
+</article>
+<article class="post" id="msg3101">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-12 14:01 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I haven't read your last sentence correctly:<br>
+<br>
+Search for c:\Program Files\OpenDCL\ENU\Samples. (If ENU is your language)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3102">
+  <div class="post-head">
+    <span class="post-author">william17051</span>
+    <span class="post-date muted">2009-03-12 14:01 UTC</span>
+  </div>
+  <div class="post-body">Thanks for quick responses!<br>
+<br>
+Where is that Samples folder?</div>
+</article>
+<article class="post" id="msg3103">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-12 14:17 UTC</span>
+  </div>
+  <div class="post-body">Have you found the smaples now?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3105">
+  <div class="post-head">
+    <span class="post-author">william17051</span>
+    <span class="post-date muted">2009-03-12 14:29 UTC</span>
+  </div>
+  <div class="post-body">Ok! Got it!<br>
+I thought it was on the web site somewhere!<br>
+Thanks for the help!</div>
+</article>
+<article class="post" id="msg3182">
+  <div class="post-head">
+    <span class="post-author">william17051</span>
+    <span class="post-date muted">2009-03-16 17:43 UTC</span>
+  </div>
+  <div class="post-body">Hello again,<br>
+I managed to get the point from autocad and I it shows the form.<br>
+Now I can not get the textboxes that show the X: Y: Z: coordinated to update to the new values.<br>
+It almost seems like it does no initialize over again. Is that right?<br>
+<br>
+(defun C:BillsShopDrawing (/)<br>
+  (command "OPENDCL")<br>
+  (setq Spot(list 0 0 0))<br>
+  (setq lg 100)<br>
+  (setq wd 96)<br>
+  (setq ht 90)<br>
+  (SETQ bflag T)<br>
+  (WHILE bflag                                  ; To fire it up<br>
+  (SETQ bflag nil)<br>
+  (dcl_Project_Load "BillsShopDrawing")<br>
+  (dcl_Form_Show BillsShopDrawing_form1);jump to open form and set variables<br>
+  (princ)<br>
+    ); end while<br>
+    (setvar "osmode" 175)                           <br>
+    (setvar "highlight" 1)<br>
+  <br>
+  );end defun<br>
+(defun c:BillsShopDrawing_form1_OnInitialize (/ OrX OrY OrZ)<br>
+  (setq OrX(car Spot))<br>
+  (setq OrY(cadr Spot))<br>
+  (setq OrZ(caddr Spot))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox1 (itoa lg))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox2 (itoa wd))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox3 (itoa ht))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox4 (itoa OrX))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox5 (itoa OrY))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox6 (itoa OrZ))<br>
+  )<br>
+(defun c:BillsShopDrawing_form1_SetOrigin_OnClicked (/)<br>
+  (SETQ bflag T)<br>
+(dcl_FORM_CLOSE BillsShopDrawing_form1)<br>
+  (SETVAR "BLIPMODE" 1)<br>
+  (SETQ Spot(GETPOINT "\nSelect point: "))<br>
+  (SETVAR "BLIPMODE" 0)<br>
+        (VL-CMDF "REDRAW")<br>
+  <br>
+    )</div>
+</article>
+<article class="post" id="msg3185">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-16 18:12 UTC</span>
+  </div>
+  <div class="post-body">Try putting the form_close at the end of your OnClicked function.  I think you want to (setq SPOT...) *before* you close and reshow the form.</div>
+</article>
+<article class="post" id="msg3187">
+  <div class="post-head">
+    <span class="post-author">william17051</span>
+    <span class="post-date muted">2009-03-16 18:29 UTC</span>
+  </div>
+  <div class="post-body">If I place the form close after the getpoint command, It will not allow me to pick a point in space.<br>
+This is a modal form. You either have to be in the form or in autocad. </div>
+</article>
+<article class="post" id="msg3188">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-16 19:06 UTC</span>
+  </div>
+  <div class="post-body">Hello william17051,<br>
+<br>
+try this code, it should work.<br>
+<br>
+<pre class="code"><code>(defun C:BillsShopDrawing (/)<br>
+  (command "OPENDCL")<br>
+  (dcl_Project_Load "BillsShopDrawing") ; load it just only one time<br>
+  <br>
+  (setq Spot(list 0 0 0))<br>
+  (setq lg 100)<br>
+  (setq wd 96)<br>
+  (setq ht 90)<br>
+  (SETQ bflag T)<br>
+  (WHILE bflag                                  ; To fire it up<br>
+    (SETQ bflag nil)<br>
+    (setq intResult (dcl_Form_Show BillsShopDrawing_form1))      ; jump to open form and set variables<br>
+    (cond<br>
+      ((= intResult 3)<br>
+       (SETVAR "BLIPMODE" 1)<br>
+       (SETQ Spot(GETPOINT "\nSelect point: "))<br>
+       (SETVAR "BLIPMODE" 0)<br>
+       (VL-CMDF "REDRAW")<br>
+       (SETQ bflag T))<br>
+    ); cond<br>
+  ); end while<br>
+  (setvar "osmode" 175)<br>
+  (setvar "highlight" 1)<br>
+);end defun<br>
+<br>
+<br>
+(defun c:BillsShopDrawing_form1_OnInitialize (/ OrX OrY OrZ)<br>
+  (setq OrX(car Spot))<br>
+  (setq OrY(cadr Spot))<br>
+  (setq OrZ(caddr Spot))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox1 (itoa lg))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox2 (itoa wd))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox3 (itoa ht))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox4 (itoa OrX))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox5 (itoa OrY))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox6 (itoa OrZ))<br>
+); c:BillsShopDrawing_form1_OnInitialize<br>
+<br>
+<br>
+(defun c:BillsShopDrawing_form1_SetOrigin_OnClicked (/)<br>
+  (dcl_FORM_CLOSE BillsShopDrawing_form1 3) ; the given argument will be the returning value of Form_Show method<br>
+); c:BillsShopDrawing_form1_SetOrigin_OnClicked<br>
+</code></pre><br>
+<br>
+I suggest you to post code within the code-tag for better formatting.<br>
+Have a closer look to <a href="http://www.opendcl.com/forum/index.php?topic=557.msg2519#msg2519" rel="nofollow noopener">{2}</a>.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3189">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-16 19:07 UTC</span>
+  </div>
+  <div class="post-body">Sorry, you're right; the point acquisition should be inside the (while) loop that shows the form. I see Fred has fixed you up.</div>
+</article>
+<article class="post" id="msg3190">
+  <div class="post-head">
+    <span class="post-author">william17051</span>
+    <span class="post-date muted">2009-03-16 19:26 UTC</span>
+  </div>
+  <div class="post-body">Ok, I like the way you set it up.<br>
+<br>
+How do I get textbox 4,5,6 to update with the new x,y,z values?<br>
+<br>
+Thanks for your patience by the way!<br>
+<br>
+The form shows but the values are not updated after picking the point.</div>
+</article>
+<article class="post" id="msg3191">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-16 19:37 UTC</span>
+  </div>
+  <div class="post-body">You've already done. Have a look into the OnInitialize-function. The OnInitialize event will be called when the form will be shown again. and there you wrote<br>
+<br>
+<pre class="code"><code><br>
+  (setq OrX(car Spot))<br>
+  (setq OrY(cadr Spot))<br>
+  (setq OrZ(caddr Spot))<br>
+</code></pre><br>
+<br>
+and then<br>
+<br>
+<pre class="code"><code><br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox4 (itoa OrX))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox5 (itoa OrY))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox6 (itoa OrZ))</code></pre><br>
+<br>
+It should work.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3192">
+  <div class="post-head">
+    <span class="post-author">william17051</span>
+    <span class="post-date muted">2009-03-16 19:52 UTC</span>
+  </div>
+  <div class="post-body">Well it does not update. ???<br>
+It continues to to use the original 0,0,0.<br>
+<br>
+I thought it would update as well. <br>
+<br>
+I just noticed in the command prompt after the getpoint command it is giving me an error.<br>
+<br>
+<pre class="code"><code>Command: _BillsShopDrawing<br>
+Select point: Program ERROR<br>
+Resetting environment ; error: An error has occurred inside the *error* <br>
+functionbad argument type: consp nil<br>
+1<br>
+Command: 'VLIDE<br>
+Command:</code></pre><br>
+<br>
+Im not sure why yet. :o</div>
+</article>
+<article class="post" id="msg3193">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-16 19:57 UTC</span>
+  </div>
+  <div class="post-body">Hm, go far ahead from the ucs origin - itoa is given back a text from an integer. Try a (rtos OrX 2 4) instead.<br>
+I didn't check you code - I only moved som things.<br>
+<br>
+I will take a closer look. <br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3194">
+  <div class="post-head">
+    <span class="post-author">william17051</span>
+    <span class="post-date muted">2009-03-16 20:03 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred,<br>
+Your help is greatly appreciated! ;)</div>
+</article>
+<article class="post" id="msg3195">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-16 20:04 UTC</span>
+  </div>
+  <div class="post-body">Ahm, I cannot see any mistake at the code. Please be so kind to upload <br>
+<br>
+a) the project file and<br>
+b) your *error* function<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3196">
+  <div class="post-head">
+    <span class="post-author">william17051</span>
+    <span class="post-date muted">2009-03-16 20:11 UTC</span>
+  </div>
+  <div class="post-body">As far as an error code, Well I dont have one. :-\  What you have, I have.<br>
+Sort of a newbee here. Never really had an error function.<br>
+<br>
+Here is the project file. And code.<br>
+<br>
+<pre class="code"><code>(defun C:BillsShopDrawing (/)<br>
+  (command "OPENDCL")<br>
+  (dcl_Project_Load "BillsShopDrawing") ; load it just only one time<br>
+  <br>
+  (setq Spot(list 1 1 1))<br>
+  (setq lg 100)<br>
+  (setq wd 96)<br>
+  (setq ht 90)<br>
+  (SETQ bflag T)<br>
+  (WHILE bflag                                  ; To fire it up<br>
+    (SETQ bflag nil)<br>
+    (setq intResult (dcl_Form_Show BillsShopDrawing_form1))      ; jump to open form and set variables<br>
+    (cond<br>
+      ((= intResult 3)<br>
+       (SETVAR "BLIPMODE" 1)<br>
+       (SETQ Spot(GETPOINT "\nSelect point: "))<br>
+       (SETVAR "BLIPMODE" 0)<br>
+       (VL-CMDF "._REDRAW")<br>
+       (SETQ bflag T))<br>
+      ); cond<br>
+    ); end while<br>
+  (setvar "osmode" 175)<br>
+  (setvar "highlight" 1)<br>
+);end defun<br>
+<br>
+<br>
+(defun c:BillsShopDrawing_form1_OnInitialize (/ OrX OrY OrZ)<br>
+  (setq OrX(car Spot))<br>
+  (setq OrY(cadr Spot))<br>
+  (setq OrZ(caddr Spot))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox1 (itoa lg))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox2 (itoa wd))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox3 (itoa ht))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox4 (rtos OrX 2 4))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox5 (rtos OrY 2 4))<br>
+  (dcl_Control_SetText BillsShopDrawing_form1_TextBox6 (rtos OrZ 2 4))<br>
+); c:BillsShopDrawing_form1_OnInitialize<br>
+<br>
+<br>
+(defun c:BillsShopDrawing_form1_SetOrigin_OnClicked (/)<br>
+  (dcl_FORM_CLOSE BillsShopDrawing_form1 3) ; the given argument will be the returning value of Form_Show method<br>
+); c:BillsShopDrawing_form1_SetOrigin_OnClicked</code></pre><div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/640/BillsShopDrawing.odcl">BillsShopDrawing.odcl</a> <span class="muted">(17938 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3197">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-16 20:36 UTC</span>
+  </div>
+  <div class="post-body">Your text bozes contain an integer filter, so they are rejecting any setting that is not an integer. The (rtos) is resulting in a real number, which is rejected. Try changing the third argument to (rtos) from a 4 to zero, then it should work. </div>
+</article>
+<article class="post" id="msg3199">
+  <div class="post-head">
+    <span class="post-author">william17051</span>
+    <span class="post-date muted">2009-03-16 20:45 UTC</span>
+  </div>
+  <div class="post-body">You guys are awsome ;D!<br>
+Works great!<br>
+Thanks for all the help!<br>
+Bill</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

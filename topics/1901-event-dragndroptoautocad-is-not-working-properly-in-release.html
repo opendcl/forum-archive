@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Event DragnDropToAutoCAD is not working properly in release 13 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1901</p>
+    <h1>Event DragnDropToAutoCAD is not working properly in release 13</h1>
+    <p class="meta">Started by Coert ·
+      2012-10-10 14:28 UTC ·
+      1 replies · SMF topic #1901</p>
+<article class="post" id="msg9362">
+  <div class="post-head">
+    <span class="post-author">Coert</span>
+    <span class="post-date muted">2012-10-10 14:28 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+The event DragnDropToAutoCAD  with property “Event  Invoke = 1-Asynchronuous” is not working properly in AutoCAD and Bricscad. It look likes the event invoke is synchronous. You can easily test this with the attached program. <br>
+<br>
+Copy the files in a search path of AutoCAD and load the lisp file “DropInAcad.lsp” Start the lisp function (start) and the dialog appears. When you drag and drop a point from the dialog slide tile the dialog appears again without inserting the dwg “DropInAcad.dwg”. <br>
+<br>
+Note it works fine in previous releases.<br>
+(I'm using OpenDCL 7.0.0.8)<br>
+<br>
+Thanks in advance,<br>
+Coert van den Broek<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1827/DropInAcad.zip">DropInAcad.zip</a> <span class="muted">(71784 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9365">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-10-10 22:53 UTC</span>
+  </div>
+  <div class="post-body">The DragNDropToAutoCAD event has changed in OpenDCL 7. It is always synchronous because the return value is now used to decide whether or not to invoke the default handler. You could use (dcl_SendString) inside the event handler to run another function asynchronously to actually do the work.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

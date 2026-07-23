@@ -1,0 +1,70 @@
+
+
+
+(defun c:CSW ()
+
+(command "opendcl")
+
+(princ "\nCOLOR SWATCH...")
+
+;;;(setq indexList '(18 28 38 48 58 68 78 88 98 108 118 128 138 148 158 168 178 188 198 208 218 228 238 248
+;;;                16 26 36 46 56 66 76 86 96 106 116 126 136 146 156 166 176 186 196 206 216 226 236 246
+;;;                14 24 34 44 54 64 74 84 94 104 114 124 134 144 154 164 174 184 194 204 214 224 234 244
+;;;                12 22 32 42 52 62 72 82 92 102 112 122 132 142 152 162 172 182 192 202 212 222 232 242
+;;;                10 20 30 40 50 60 70 80 90 100 110 120 130 140 150 160 170 180 190 200 210 220 230 240
+;;;
+;;;                11 21 31 41 51 61 71 81 91 101 111 121 131 141 151 161 171 181 191 201 211 221 231 241
+;;;			    13 23 33 43 53 63 73 83 90 103 113 123 133 143 153 163 173 183 193 203 213 223 233 243
+;;;			    15 25 35 45 55 65 75 85 95 105 115 125 135 145 155 165 175 185 195 205 215 225 234 245
+;;;			    17 27 37 47 57 67 77 87 97 107 117 127 137 147 157 167 177 187 197 207 217 227 237 247
+;;;			    19 29 39 49 59 69 79 89 99 109 119 129 139 149 159 169 179 189 199 209 219 229 239 249
+;;;			    1 2 3 4 5 6 7 8 9 250 251 252 253 254 255)
+;;;)
+;;;			   
+;;;(foreach index indexList
+;;;    (eval (read (strcat "(defun c:color_swatch_COLOR_SWATCH_COLOR"
+;;;                        (itoa index)
+;;;                        "_OnClicked () (ColorButtonOnClick "
+;;;                        (itoa index)
+;;;                        "))"
+;;;                )
+;;;          )
+;;;    )
+;;;)
+
+
+(dcl_LoadProject "color_swatch")
+(dcl_Form_Show color_swatch/COLOR_SWATCH)
+    
+)
+
+
+(defun ColorButtonOnClick (index)
+  (dcl-Form-Close color_swatch/COLOR_SWATCH)
+    (setvar "cmdecho" 0)
+     ; (command ".color" index)
+)
+
+(defun c:color_swatch/COLOR_SWATCH/EXITBUTTON#OnClicked (/)
+  (dcl-Form-Close color_swatch/COLOR_SWATCH)
+)
+
+
+(defun c:color_swatch/COLOR_SWATCH/BBLOCK#OnClicked (/)
+  (dcl-Form-Close color_swatch/COLOR_SWATCH)
+  ;(command ".color" "BYBLOCK")
+)
+
+
+(defun c:color_swatch/COLOR_SWATCH/BLAYER#OnClicked (/)
+  (dcl-Form-Close color_swatch/COLOR_SWATCH)
+  ;(command "color" "BYLAYER")  
+)
+
+(princ " LOADED... Type CSW to Run...")
+(prin1)
+
+
+
+
+

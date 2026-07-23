@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Layer Combo filtering · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 28</p>
+    <h1>Layer Combo filtering</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2007-07-31 03:05 UTC ·
+      3 replies · SMF topic #28</p>
+<article class="post" id="msg124">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-31 03:05 UTC</span>
+  </div>
+  <div class="post-body"><em>reposted from SourceForge:</em><br>
+<br>
+I may be suffering from brain drain ... <br>
+ <br>
+Using the Layer Combo I have this or similar code in a couple of routines ... <br>
+<pre class="code"><code> <br>
+(DEFUN c:SSP99-01_F_OnInitialize (/ layerList)<br>
+    (SETQ g:BlockLayer     "ST-BLOCKS"<br>
+          g:DimScaleFactor (GETVAR "DIMSCALE")<br>
+    )<br>
+    (CTAU:ASSERTLAYER g:BlockLayer)<br>
+    (SETQ<br>
+        layerList (VL-REMOVE-IF<br>
+                      '(LAMBDA (var) (WCMATCH var "*$*"))<br>
+                      (CTAU:LISTCOLLECTIONMEMBERNAMES (CTAU:IACADLAYERS))<br>
+                  )<br>
+    )<br>
+    (DCL_COMBOBOX_ADDLIST SSP99-01_F_BlockLayerCombo layerList)<br>
+    (DCL_COMBOBOX_SELECTSTRING SSP99-01_F_BlockLayerCombo g:BlockLayer)<br>
+    (IF (NOT gvar:SSP99DataList)<br>
+        (PROMPT "\n Data List To Be initialised.")<br>
+    )<br>
+) </code></pre> <br>
+ <br>
+Essentially, I had imagined that the code provided a filtered layer list to the LayerCombo. <br>
+.. in this case filtering out XRef Layers <br>
+ <br>
+Either it's stopped working or I delusionally believed it did work. <br>
+ <br>
+Any ideas ? <br>
+/// kwb <br>
+</div>
+</article>
+<article class="post" id="msg125">
+  <div class="post-head">
+    <span class="post-author">dkh007</span>
+    <span class="post-date muted">2007-07-31 03:53 UTC</span>
+  </div>
+  <div class="post-body">Vertical bars seperate XREFS "|" Dollar signs "$" are for XREFS converted to INSERTS.<br>
+<br>
+Here is one way to get a layer list excluding the XREFS, for a long list I added the sorting.<br>
+<br>
+<pre class="code"><code><br>
+(defun laylist (/ llist lnlist)<br>
+  (while (setq llist (tblnext "layer" (not llist)))<br>
+    (setq lnlist (cons (cdr (assoc 2 llist)) lnlist))<br>
+  )<br>
+)<br>
+<br>
+(SETQ layerList <br>
+  (VL-REMOVE-IF <br>
+    '(LAMBDA (var) (WCMATCH var "*|*"))<br>
+    (acad_strlsort (laylist))<br>
+  )<br>
+)</code></pre></div>
+</article>
+<article class="post" id="msg126">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-31 04:23 UTC</span>
+  </div>
+  <div class="post-body">Thanks Daniel, I had the filtering method resolved ..<br>
+<br>
+Owen responded at SourceForge that the LayerCombo appears to not honour the AddList Method .. so I'll use a conventional Combo.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg128">
+  <div class="post-head">
+    <span class="post-author">dkh007</span>
+    <span class="post-date muted">2007-07-31 11:07 UTC</span>
+  </div>
+  <div class="post-body">Sometimes it helps to read the whole post  ;) I was only looking at a filtered list problem, and not necessarily a filter list for the layercombo problem. Glad you got something resolved. </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

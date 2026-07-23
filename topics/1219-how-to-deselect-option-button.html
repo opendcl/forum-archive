@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to deselect Option Button · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1219</p>
+    <h1>How to deselect Option Button</h1>
+    <p class="meta">Started by kruuger ·
+      2010-03-20 00:40 UTC ·
+      6 replies · SMF topic #1219</p>
+<article class="post" id="msg6529">
+  <div class="post-head">
+    <span class="post-author">kruuger</span>
+    <span class="post-date muted">2010-03-20 00:40 UTC</span>
+  </div>
+  <div class="post-body">Hello <br>
+<br>
+I got few Option Buttons. OnInitialize i set value for one of them. <br>
+(dcl_Control_SetValue Shortcuts_SHORT_OptionButton1 1)<br>
+<br>
+Next time OnInitialize i want to select next Option Button 2 but dialog box remember also first OptionButton1.<br>
+<br>
+My question is, so every time when i close my dialog i need to change value all of Option Button to 0?<br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg6530">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-03-20 01:50 UTC</span>
+  </div>
+  <div class="post-body"><br>
+<br>
+ For an Option Button 0 = Unchecked; 1 = Checked<br>
+(dcl_Control_SetValue Shortcuts_SHORT_OptionButton1 1)<br>
+<br>
+<br>
+<br>
+For an OptionList nominate the Selected indexItem (zero based ie 0 = Item1 )<br>
+(dcl_Control_SetCurrentSelection Untitled_Form1_OptionList1 &lt; NewValue [as Long] &gt; )</div>
+</article>
+<article class="post" id="msg6531">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-03-20 02:00 UTC</span>
+  </div>
+  <div class="post-body">If  the OptionButton1  was set last time you used it and you want OptionButton2 on next time :<br>
+Perhaps try something like in the initialize Event :<br>
+<br>
+<br>
+<br>
+(cond ((= 1 (dcl_Control_GetValue Shortcuts_SHORT_OptionButton1))<br>
+       (dcl_Control_SetValue Shortcuts_SHORT_OptionButton1 0)<br>
+       (dcl_Control_SetValue Shortcuts_SHORT_OptionButton2 1)<br>
+      )<br>
+      ((= 1 (dcl_Control_GetValue Shortcuts_SHORT_OptionButton2))<br>
+       (dcl_Control_SetValue Shortcuts_SHORT_OptionButton2 0)<br>
+       (dcl_Control_SetValue Shortcuts_SHORT_OptionButton3 1)<br>
+      )<br>
+      ((= 1 (dcl_Control_GetValue Shortcuts_SHORT_OptionButton3))<br>
+       (dcl_Control_SetValue Shortcuts_SHORT_OptionButton3 0)<br>
+       (dcl_Control_SetValue Shortcuts_SHORT_OptionButton4 1)<br>
+      )<br>
+      ((= 1 (dcl_Control_GetValue Shortcuts_SHORT_OptionButton4))<br>
+       (dcl_Control_SetValue Shortcuts_SHORT_OptionButton4 0)<br>
+       (dcl_Control_SetValue Shortcuts_SHORT_OptionButton4 1)<br>
+      )<br>
+      ((= 1 (dcl_Control_GetValue Shortcuts_SHORT_OptionButton5))<br>
+       (dcl_Control_SetValue Shortcuts_SHORT_OptionButton5 0)<br>
+       (dcl_Control_SetValue Shortcuts_SHORT_OptionButton1 1)<br>
+      )<br>
+      ;; in case none are on<br>
+      (T (dcl_Control_SetValue Shortcuts_SHORT_OptionButton1 1))<br>
+)<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6532">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-03-20 02:07 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"> .... when i close my dialog i need to change value all of Option Button to 0</blockquote><br>
+<br>
+Perhaps try something like this In the OnClose Event :<br>
+<br>
+<br>
+;;(foreach Control '(Shortcuts_SHORT_OptionButton1 ;&lt;~ <br>
+(foreach Control (LIST Shortcuts_SHORT_OptionButton1<br>
+                   Shortcuts_SHORT_OptionButton2<br>
+                   Shortcuts_SHORT_OptionButton3<br>
+                   Shortcuts_SHORT_OptionButton4<br>
+                   Shortcuts_SHORT_OptionButton5<br>
+                  )<br>
+  (dcl_Control_SetValue Control 0)<br>
+)<br>
+<br>
+Quoted array Changed to LIST </div>
+</article>
+<article class="post" id="msg6534">
+  <div class="post-head">
+    <span class="post-author">kruuger</span>
+    <span class="post-date muted">2010-03-20 09:14 UTC</span>
+  </div>
+  <div class="post-body">These FOREACH and COND are very nice solution  :)<br>
+I like it :)<br>
+<br>
+Thanks Kerry<br>
+</div>
+</article>
+<article class="post" id="msg6537">
+  <div class="post-head">
+    <span class="post-author">kruuger</span>
+    <span class="post-date muted">2010-03-20 21:37 UTC</span>
+  </div>
+  <div class="post-body">foreach works but like this:<br>
+<br>
+(foreach Control (LIST Shortcuts_SHORT_OptionButton1  <br>
+                    Shortcuts_SHORT_OptionButton2  <br>
+                    Shortcuts_SHORT_OptionButton3  <br>
+                    Shortcuts_SHORT_OptionButton4  <br>
+                    Shortcuts_SHORT_OptionButton5  <br>
+                   )  <br>
+   (dcl_Control_SetValue Control 0)  <br>
+)  </div>
+</article>
+<article class="post" id="msg6538">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2010-03-20 21:54 UTC</span>
+  </div>
+  <div class="post-body">Yes, we'd need to use LIST rather than QUOTE so that the Button ID variables will be evaluated.<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

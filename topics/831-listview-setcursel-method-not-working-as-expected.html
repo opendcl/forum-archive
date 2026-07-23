@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ListView SetCurSel Method not working as expected!!! · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 831</p>
+    <h1>ListView SetCurSel Method not working as expected!!!</h1>
+    <p class="meta">Started by renencon ·
+      2009-06-28 13:47 UTC ·
+      1 replies · SMF topic #831</p>
+<article class="post" id="msg4125">
+  <div class="post-head">
+    <span class="post-author">renencon</span>
+    <span class="post-date muted">2009-06-28 13:47 UTC</span>
+  </div>
+  <div class="post-body">I am using SetCurSel method on a ListView control but does not work as expected.<br>
+During initialization of the form I populate the control with data arranged in three columns and use the SetCurSel method to set the initial selection on the 10th row of the list.<br>
+However when the form is displayed if you press the arrow keys on the keyboard up or down you will notice that the current selection although shows to be on item 10 is actually on item 0 and as soon as the down arrow on the keyboard is pressed the selection moves to item 1 second selection on the list.<br>
+<br>
+I think this could be a bug in the SetCurSel Method of the ListView control.<br>
+Is there something else that could be wrong?<br>
+<br>
+I am new to OpenDCL, using it for only a few days.<br>
+You have created an excellent tool and you have given AutoLisp the power to create user friendly interfaces extremely fast. Congratulations!!!!<br>
+<br>
+Thanks!!!<br>
+<br>
+I have attached the related LV.odcl file and following is the AutoLisp Code that I've used with AutoCAD 2010 plain vanilla.<br>
+<br>
+(defun c:LV ( / )<br>
+  (or LoadRunTime (load "_OpenDclUtils.lsp") (exit))<br>
+  (LoadRunTime)<br>
+  (dcl_Project_Load "LV.odcl" T)<br>
+  (dcl_FORM_SHOW LV_Form1)<br>
+  ;; The Event handlers manage the form here.<br>
+  (princ)<br>
+)<br>
+<br>
+(defun c:LV_Form1_OnInitialize ( / Row)<br>
+  (dcl_ListView_AddColumns LV_Form1_ListView1 '(("A") ("B") ("C")))<br>
+  (dcl_ListView_SetColumnWidth LV_Form1_ListView1 0 100)<br>
+  (dcl_ListView_SetColumnWidth LV_Form1_ListView1 1 150)<br>
+  (dcl_ListView_SetColumnWidth LV_Form1_ListView1 2 200)<br>
+  (setq Row 1)<br>
+  (repeat 100<br>
+    (setq Row (+ (dcl_ListView_AddString LV_Form1_ListView1 (strcat  (itoa Row) "\t123\t" "ABC")) 2))<br>
+    )<br>
+  ;; I think the following function SetCurSel does not work as expected<br>
+  (dcl_ListView_SetCurSel LV_Form1_ListView1 10)<br>
+)<br>
+<br>
+PLEASE NOTE! Same behavior on the 5.0.2.4 release and AutoCAD 2009.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/828/LV.odcl">LV.odcl</a> <span class="muted">(607 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4134">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2009-06-29 16:49 UTC</span>
+  </div>
+  <div class="post-body">Hi renencon, welcome to the team.<br>
+<br>
+Ya I can confirm this on "5.1.1.6" also.<br>
+The down arrow jumps to the top of the ListView.<br>
+I don't think it's a bug with the "SetCurSel" function, but Owen will correct be if I'm wrong.<br>
+You should report the bug here: <a href="https://sourceforge.net/tracker/?atid=923363&amp;group_id=187950&amp;func=browse" rel="nofollow noopener">{2}</a><br>
+so we can track it.<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>about graphic button's &quot;Clicked&quot; and &quot;MouseMove&quot; events... · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2615</p>
+    <h1>about graphic button's &quot;Clicked&quot; and &quot;MouseMove&quot; events...</h1>
+    <p class="meta">Started by khann ·
+      2018-07-28 02:50 UTC ·
+      6 replies · SMF topic #2615</p>
+<article class="post" id="msg12914">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2018-07-28 02:50 UTC</span>
+  </div>
+  <div class="post-body">Hi.<br>
+I have a graphic button with have two  <br>
+"Clicked" and "MouseMove" events at same time.<br>
+<br>
+"MouseMove" event is to show its related "BlockPreview"<br>
+and<br>
+"Clicked" event is to get a point and insert the "Block"<br>
+<br>
+when I clicked the button <br>
+there are number of<br>
+<br>
+"Can't reenter lisp"<br>
+"Invalid point."<br>
+<br>
+prompted out at the command line before I get a point .<br>
+can these messages be prevented ?<br>
+<br>
+but removed the "MouseMove" event<br>
+it shows nothings.  <br>
+<br>
+any reply would be appreciated.<br>
+Thannks</div>
+</article>
+<article class="post" id="msg12915">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-07-28 11:07 UTC</span>
+  </div>
+  <div class="post-body">Hi, am I right, that the form is a modeless form/palette? Then you have to switch the button's property EventInvoke to AllowCommand. <br>
+If it is a modal form, have a look at the <a href="http://opendcl.com/forum/index.php?topic=1080.0" rel="nofollow noopener">{2}</a>.<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg12916">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2018-07-29 05:42 UTC</span>
+  </div>
+  <div class="post-body">Hi, Fred.<br>
+Thank you for your reply.<br>
+<br>
+The form is modeless, <br>
+and the button is EvenInvoke of 1-Asynch..<br>
+ ???<br>
+<br>
+ODCL 8.2.0.1</div>
+</article>
+<article class="post" id="msg12932">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2018-07-31 05:29 UTC</span>
+  </div>
+  <div class="post-body">Hi, can you post a small sample for debugging? Regards, Fred</div>
+</article>
+<article class="post" id="msg12933">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2018-08-01 01:19 UTC</span>
+  </div>
+  <div class="post-body">Hi. Fred.<br>
+thank you for your interest.<br>
+<br>
+I attach samples of a DWG and lisp files.<br>
+Type "t33" to load the test Form.<br>
+<br>
+It seems that the <span style="color:red">(</span><span style="color:blue">getpoint</span><span style="color:red">)</span> function cause the "Can't reenter lisp" messages<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2412/01-Test btnClick and mouse move.LSP">01-Test btnClick and mouse move.LSP</a> <span class="muted">(2823 bytes)</span></li><li><a href="../attachments/2413/01-Test for btn Click and Mouse Move.dwg">01-Test for btn Click and Mouse Move.dwg</a> <span class="muted">(59299 bytes)</span></li><li><a href="../attachments/2414/01-test.png">01-test.png</a> <span class="muted">(36188 bytes)</span></li><li><a href="../attachments/2415/02-test.png">02-test.png</a> <span class="muted">(36784 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg12936">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2018-08-01 11:36 UTC</span>
+  </div>
+  <div class="post-body">@khann:<br>
+You are almost there with your analysis. The problem is probably that the (getpoint) function receives input from the (c:CnMTest/Form/btnALMLT#OnMouseMove) function. Unlike BricsCAD, AutoCAD does not allow this.<br>
+See:<br>
+http://help.autodesk.com/view/OARX/2018/ENU/?guid=GUID-445F32F0-8A9D-4E1D-976F-DE87CC5267D0<br>
+<br>
+One solution is to temporarily switch off OnMouseMove:<br>
+<pre class="code"><code>(defun c:CnMTest/Form/btnALMLT#OnClicked ( / *TP *Tmp_TBlock_Name func)<br>
+  (setq func (dcl-Control-GetProperty CnMTest/Form/btnALMLT "MouseMove"))<br>
+  (dcl-Control-SetProperty CnMTest/Form/btnALMLT "MouseMove" "") ; Switch of OnMouseMove.<br>
+  (setq *Tmp_TBlock_Name "TBlock")<br>
+  (setq *TP (getpoint "\n Block Point : ]"))<br>
+  (command "-insert" *Tmp_TBlock_Name *TP "1" "" "0")<br>
+  (dcl-Control-SetProperty CnMTest/Form/btnALMLT "MouseMove" func) ; Restore OnMouseMove.<br>
+  (princ)<br>
+)</code></pre></div>
+</article>
+<article class="post" id="msg12942">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2018-08-02 02:43 UTC</span>
+  </div>
+  <div class="post-body">Thank you roy_043  :D :D<br>
+<br>
+I was thinking something similar like this..<br>
+but I did not know about the "<span style="color:blue">dcl-Control-SetProperty</span>" function.<br>
+<br>
+I can use your sample codes.<br>
+Thank you so much .  :)<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

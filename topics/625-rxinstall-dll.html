@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RxInstall.dll · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 625</p>
+    <h1>RxInstall.dll</h1>
+    <p class="meta">Started by velasquez ·
+      2009-03-06 11:59 UTC ·
+      9 replies · SMF topic #625</p>
+<article class="post" id="msg2911">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-03-06 11:59 UTC</span>
+  </div>
+  <div class="post-body">Is possible knowledge please how the file RxInstall.dll Works?  <br>
+Thanks</div>
+</article>
+<article class="post" id="msg2912">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-06 12:18 UTC</span>
+  </div>
+  <div class="post-body">Hi, velasquez,<br>
+<br>
+as far as I know this dll is responsible for registering the OPENDCL command for demand loading in every single installed (!!!) AutoCAD release. It decides which ARX-file has to be loaded in which AutoCAD release.<br>
+This is the registry entry for C3D 2009 German:<br>
+<br>
+<pre class="code"><code><br>
+Windows Registry Editor Version 5.00<br>
+<br>
+[HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R17.2\ACAD-7000:407\Applications\OpenDCL]<br>
+"Loader"="C:\\Programme\\Gemeinsame Dateien\\OpenDCL\\OpenDCL.17.arx"<br>
+"Description"="OpenDCL"<br>
+"LoadCtrls"=dword:0000000c<br>
+<br>
+[HKEY_LOCAL_MACHINE\SOFTWARE\Autodesk\AutoCAD\R17.2\ACAD-7000:407\Applications\OpenDCL\Commands]<br>
+"OPENDCL"="OPENDCL"<br>
+</code></pre><br>
+<br>
+But Owen could tell some more details if you want.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2913">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-03-06 12:58 UTC</span>
+  </div>
+  <div class="post-body">Thank you very much Fred.  <br>
+Velasquez</div>
+</article>
+<article class="post" id="msg2919">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-06 14:26 UTC</span>
+  </div>
+  <div class="post-body">As Fred said, RxInstall is used during installation and uninstallation to add (and remove) registry entries for every supported AutoCAD installation.</div>
+</article>
+<article class="post" id="msg2939">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-03-06 17:58 UTC</span>
+  </div>
+  <div class="post-body">Would I like to execute RxInstall for my installation program?  <br>
+Do parameters exist for the command line in the installation and uninstallation?<br>
+<br>
+Velasquez</div>
+</article>
+<article class="post" id="msg2941">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-06 18:05 UTC</span>
+  </div>
+  <div class="post-body">Normally, you should install the runtime after installing AutoCAD. If you install AutoCAD after the runtime, you have to recall the repair option of OpenDCL installation.<br>
+<br>
+I've learned a third option:<br>
+Call a <br>
+<br>
+msiexec /qn /fo {03867BD6-AE1B-4AC5-962D-5BC122E6171A}<br>
+<br>
+and this should do it, too.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2942">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-06 18:06 UTC</span>
+  </div>
+  <div class="post-body">Your application install script should execute the entire runtime installation script (either the MSM or the MSI). You should not attempt to use RxInstall.dll directly. To execute the runtime install by command line, you can use the msiexec command, which has many options.</div>
+</article>
+<article class="post" id="msg2951">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-03-06 18:58 UTC</span>
+  </div>
+  <div class="post-body">Owen  <br>
+I already tested below the line to execute MSI and msiexec.exe he/she worked well in the installation.<br>
+  <br>
+<strong>msiexec.exe /passive /i OpenDCL.Runtime.ENU.4.0.3.1.msi   </strong><br>
+  <br>
+How should it be in the uninstallation?  <br>
+  <br>
+Excuse I don't have knowledge of msiexec.exe.</div>
+</article>
+<article class="post" id="msg2953">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-03-06 19:07 UTC</span>
+  </div>
+  <div class="post-body">Just replace /i with /x to uninstall.</div>
+</article>
+<article class="post" id="msg2955">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2009-03-06 19:25 UTC</span>
+  </div>
+  <div class="post-body">OK OWEN,  <br>
+  <br>
+I will test this.  <br>
+  <br>
+Thank you very much.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Display dwg is not working in tile “BlockView” in BricsCAD V13 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1905</p>
+    <h1>Display dwg is not working in tile “BlockView” in BricsCAD V13</h1>
+    <p class="meta">Started by Coert ·
+      2012-10-16 13:43 UTC ·
+      10 replies · SMF topic #1905</p>
+<article class="post" id="msg9371">
+  <div class="post-head">
+    <span class="post-author">Coert</span>
+    <span class="post-date muted">2012-10-16 13:43 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+Display dwg is not working in tile “BlockView” in BricsCAD V13<br>
+<br>
+Function dcl_BlockView_DisplayDwg does not work properly in tile “BlockView” in BricsCAD V13. <br>
+See the attached example. Copy the files in a search path of BricsCAD and load lisp file “InsertBlock.lsp” Start the dialog with command (startinsert). The dialog appears and activate button “Load dwg…”.<br>
+<br>
+Select a dwg file, after that no preview is visible in the dialog. Close this dialog and when launching the dialog again with (startdialog) an error dialog appears with the text:<br>
+<br>
+“Project failed to load!” …etc (see attachment Error Bricscad.jpg)<br>
+<br>
+Note: it works fine in AutoCAD R13<br>
+<br>
+Thanks in advance,<br>
+Coert<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1828/InsertBlock.zip">InsertBlock.zip</a> <span class="muted">(47159 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9373">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-10-16 15:33 UTC</span>
+  </div>
+  <div class="post-body">This bug was reported to Bricsys in September (Support Request ID 36420). It wouldn't hurt to remind them that it is not yet fixed.</div>
+</article>
+<article class="post" id="msg9392">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2012-11-05 09:21 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen, <br>
+<br>
+I assume this is the same bug as the one I reported on the bug tracker? (dcl_BlockView - fails in Bricscad v13 - ID: 3579135")<br>
+<br>
+If it is, I'll give Bricsys a chase.</div>
+</article>
+<article class="post" id="msg9394">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-11-05 16:27 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Danner link=topic=1905.msg9392#msg9392 date=1352107266 wrote:</cite><br>
+I assume this is the same bug as the one I reported on the bug tracker? (dcl_BlockView - fails in Bricscad v13 - ID: 3579135")<br>
+</blockquote><br>
+<br>
+Yep, that's the one.</div>
+</article>
+<article class="post" id="msg9396">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2012-11-06 15:33 UTC</span>
+  </div>
+  <div class="post-body">Received today from Bricsys:<br>
+<br>
+This support request (connected with SR36420) has just been started to process and its priority has been increased. I will update you with an estimation as soon I will gather pertinent information. We appologise for the latency of this request.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg9423">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2012-11-23 08:32 UTC</span>
+  </div>
+  <div class="post-body">Received yesterday from Bricsys:<br>
+<br>
+FYI : We have just finished the OpenDCL Debug platform for Bricscad V13. Meaning that we can now start debugging the rported problems</div>
+</article>
+<article class="post" id="msg9468">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2012-12-17 16:03 UTC</span>
+  </div>
+  <div class="post-body">Received today.  Looks like this may take some time...<br>
+<br>
+<em>we are able to reproduce and debug your problem in our current code. The problem seems to be located in Teigha code. I am now preparing a sample for. From now on the fix is up to them. As soon as I have some feedback I will let you know.</em><br>
+</div>
+</article>
+<article class="post" id="msg9469">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-12-17 16:37 UTC</span>
+  </div>
+  <div class="post-body">Thanks for keeping us updated.</div>
+</article>
+<article class="post" id="msg9560">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2013-02-12 17:46 UTC</span>
+  </div>
+  <div class="post-body">Good news from Bricsys:  :)<br>
+<br>
+<em>we have now found and fixed the problem with the GS view;<br>
+all our test cases (internal BRX tests and clients' samples) now run fine again.<br>
+<br>
+One of next BricsCAD versions will include this fix - please have a look at ReleaseNotes.htm<br>
+file, it will contain a reference to this request ID.<br>
+<br>
+Again many thanks for your help !<br>
+Wish you a nice day &amp; many greetings<br>
+Torsten Moses</em><br>
+<br>
+<br>
+For anyone checking the release notes - I'm not sure whether Torsten was referring to Owen's original request ID (36420) or my later one (37316).<br>
+</div>
+</article>
+<article class="post" id="msg9587">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2013-03-04 09:25 UTC</span>
+  </div>
+  <div class="post-body">The newly released Bricscad V13.1.20 is working for me.  8)</div>
+</article>
+<article class="post" id="msg9588">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-03-04 15:36 UTC</span>
+  </div>
+  <div class="post-body">Excellent! I guess it's time to check the open bug reports again to see which ones can finally be closed.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

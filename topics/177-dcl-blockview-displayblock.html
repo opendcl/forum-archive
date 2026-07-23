@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_BlockView_DisplayBlock · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 177</p>
+    <h1>dcl_BlockView_DisplayBlock</h1>
+    <p class="meta">Started by velasquez ·
+      2008-02-15 17:33 UTC ·
+      3 replies · SMF topic #177</p>
+<article class="post" id="msg774">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-02-15 17:33 UTC</span>
+  </div>
+  <div class="post-body">In Alpha 4 dcl_BlockView_DisplayBlock not this working inside of OnInitialize  <br>
+The call below worked without problems in OpenDCL 4...<br>
+<br>
+ (defun c:JoyLoop-5_JoyMainLoop_OnInitialize (/)<br>
+;;;Centraliza o quadro<br>
+    (Dcl_Form_Center JoyLoop-5_JoyMainLoop)<br>
+;;;ESTA FUNCIONANDO BEM<br>
+    (Dcl_BlockView_DisplayBlock JoyLoop-5_JoyMainLoop_JoyBlockIso "JoyIso")<br>
+  ) ;_ fim de defun<br>
+<br>
+Should I tell this how a BUG or was it already seen?</div>
+</article>
+<article class="post" id="msg779">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-02-15 20:00 UTC</span>
+  </div>
+  <div class="post-body">Owen this is giving an OpenDCL runtime error: "Expected more arguments"<br>
+<br>
+According to the Int. Help there are 2 flavors of this funtion:<br>
+(dcl_BlockView_DisplayBlock Misc_DemoModal_BlockView <br>
+	BlockName  [as String] <br>
+	Optional PresetView  [as Integer] <br>
+	Optional ZoomFactor [as Real])<br>
+<br>
+(dcl_BlockView_DisplayBlock Misc_DemoModal_BlockView <br>
+	BlockName  [as String] <br>
+	CameraXOffset  [as Real] <br>
+	CameraYOffset  [as Real] <br>
+	Optional CameraZOffset  [as Real] <br>
+	Optional ZoomFactor [as Real])<br>
+<br>
+Which I think are causing the confusion.<br>
+The same issue maybe occurring with (dcl_BlockView_DisplayBlockToScale ...)<br>
+<br>
+Bug report: <br>
+<a href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1894709&amp;group_id=187950&amp;atid=923363" rel="nofollow noopener">{2}</a><br>
+</div>
+</article>
+<article class="post" id="msg840">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-02-18 20:19 UTC</span>
+  </div>
+  <div class="post-body">This this working well now.  <br>
+I might have missed some before thing</div>
+</article>
+<article class="post" id="msg852">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2008-02-19 11:54 UTC</span>
+  </div>
+  <div class="post-body">Excuse me.  <br>
+My last postage was on dcl_BlockView_DisplayBlock in OnInitialize.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

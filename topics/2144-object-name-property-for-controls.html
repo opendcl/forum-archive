@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Object name property for controls? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2144</p>
+    <h1>Object name property for controls?</h1>
+    <p class="meta">Started by roy_043 ·
+      2014-05-28 07:21 UTC ·
+      2 replies · SMF topic #2144</p>
+<article class="post" id="msg10729">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-05-28 07:21 UTC</span>
+  </div>
+  <div class="post-body">If you want to create a function for several controls (in my case Grid and List View) is there a way to distinguish the control using some property similar to the ObjectName for CAD objects?<br>
+<br>
+Example:<br>
+(defun Dialog_Control_ColumnFit (control / objectName)<br>
+  (cond<br>
+    ((= (dcl-Control-GetObjectName control) "Grid")<br>
+      ...<br>
+    )<br>
+    ((= (dcl-Control-GetObjectName control) "ListView")<br>
+      ...<br>
+    )<br>
+  )<br>
+  ...<br>
+)</div>
+</article>
+<article class="post" id="msg10732">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-05-28 14:35 UTC</span>
+  </div>
+  <div class="post-body">There is no direct way unfortunately. To just distinguish between several possible control types, one workaround is to check for the existence of a control-specific property in the list returned by (<a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Control/GetProperties.htm" rel="nofollow noopener">{2}</a>).</div>
+</article>
+<article class="post" id="msg10735">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-05-28 15:42 UTC</span>
+  </div>
+  <div class="post-body">In that case I will add an argument to the function to indicate the control type. Thank you Owen.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

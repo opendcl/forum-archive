@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Label foreground color 8.0.0.13 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2260</p>
+    <h1>Label foreground color 8.0.0.13</h1>
+    <p class="meta">Started by Jürg Menzi ·
+      2015-04-21 15:28 UTC ·
+      5 replies · SMF topic #2260</p>
+<article class="post" id="msg11350">
+  <div class="post-head">
+    <span class="post-author">Jürg Menzi</span>
+    <span class="post-date muted">2015-04-21 15:28 UTC</span>
+  </div>
+  <div class="post-body">Since I've changed to runtime 8.0.0.13 - because of AutoCAD2016 - all label controls loose the foreground color. In studio they are displayed correct, in runtime they change to black. Doesn't matter what color they have in studio...<br>
+<br>
+What I'm doing wrong? Or is this a bug?<br>
+<br>
+Thanks for enlighten me<br>
+Jürg<br>
+<br>
+Win7-64, AutoCAD2015/2016</div>
+</article>
+<article class="post" id="msg11351">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-04-21 19:03 UTC</span>
+  </div>
+  <div class="post-body">Hi, cannot reproduce this with the attached sample.<br>
+But I did not test it with 2016.<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2123/150421.zip">150421.zip</a> <span class="muted">(1379 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11352">
+  <div class="post-head">
+    <span class="post-author">Jürg Menzi</span>
+    <span class="post-date muted">2015-04-22 07:41 UTC</span>
+  </div>
+  <div class="post-body">Hi Fred<br>
+<br>
+The problem exists in 2015/2016.<br>
+Your sample works as expected, but the attached sample not.<br>
+I assume there is one difference: my sample was originally created with 8.0.0.5 or 8.0.0.7<br>
+<br>
+Cheers<br>
+Jürg<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2124/MC-004.zip">MC-004.zip</a> <span class="muted">(14100 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11356">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-04-23 18:27 UTC</span>
+  </div>
+  <div class="post-body">I am investigating. It looks like the problem is caused by a transparent dialog background. if you give the main form a non-transparent background, the labels display as expected.</div>
+</article>
+<article class="post" id="msg11357">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-04-23 19:32 UTC</span>
+  </div>
+  <div class="post-body">This should now be fixed in the next build, at least in Windows 7. I didn't test in Windows XP, but I suspect the fix might cause incorrect backgrounds on Windows XP.</div>
+</article>
+<article class="post" id="msg11360">
+  <div class="post-head">
+    <span class="post-author">Jürg Menzi</span>
+    <span class="post-date muted">2015-04-24 07:36 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+Yep, seems to be the reason. Changing the label background color to another than transparent, the foreground color remains also.<br>
+<br>
+Cheers<br>
+Jürg</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

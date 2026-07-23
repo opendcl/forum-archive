@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bricscad V13 bug? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1958</p>
+    <h1>Bricscad V13 bug?</h1>
+    <p class="meta">Started by hmspe ·
+      2013-04-19 20:35 UTC ·
+      3 replies · SMF topic #1958</p>
+<article class="post" id="msg9658">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2013-04-19 20:35 UTC</span>
+  </div>
+  <div class="post-body">I redefine the OPEN command in my on_doc_load.lsp to simulate Autocad's single document interface mode (so only one drawing can be open in an instance of Bricscad). I run ToolPac 14.1 from Dotsoft as an add-on in addition to OpenDCL.  I'm running Bricscad V13.1.22-2 (32 bit) and V13.2.2 beta (64 bit).  OpenDCL works without problem, but with (command "undefine" "open") active in my on_doc_load.lsp file I get the following error when the open command is executed and a new file opens:<br>
+<br>
+<pre class="code"><code><br>
+DS&gt; ---------------------------------------<br>
+DS&gt; ToolPac 14.1<br>
+DS&gt; Copyright (C) 1994-2012, DotSoft<br>
+DS&gt; All Rights Reserved<br>
+DS&gt; ---------------------------------------<br>
+DS&gt; Quick Keys Macro System ... Loaded.<br>
+<br>
+; ----- Error around expression -----<br>
+(BRXLOADMANAGEDDLL "C:/Program Files (x86)/DotSoft/command12.dll")<br>
+;<br>
+; error : no function definition  ; expected FUNCTION at <br>
+failed to load module C:\Program Files (x86)\DotSoft\command12.dll<br>
+</code></pre><br>
+<br>
+I have reported this to Bricscad and to Dotsoft, neither of which could duplicate.  Uninstalling OpenDCL seems to remove the problem.<br>
+<br>
+If this is the wrong place for this please feel free to move or remove the post.  I tried the "report a bug" button on the home page but couldn't find a way to add a report.  If I log in to SourceForge I can add a topic, but there are fields I don't think I should be able to change.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1876/on_doc_load.lsp">on_doc_load.lsp</a> <span class="muted">(5034 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9659">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-04-20 00:32 UTC</span>
+  </div>
+  <div class="post-body">Just to clarify, are you saying that the error occurs even though the OpenDCL runtime is not loaded? That is very odd.</div>
+</article>
+<article class="post" id="msg9661">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2013-04-20 05:52 UTC</span>
+  </div>
+  <div class="post-body">With ODCL installed I get the error.  If I close all instances of Bricscad then uninstall ODCL with Control Panel the error does not occur.  If I reinstall ODCL the error comes back.  I install the studio version of ODCL, not just the runtime.  This is on my main computer.  I've updated all the software and have been through the uninstall/test/reinstall/test loop more than once.  The results have been repeatable.  <br>
+<br>
+I agree that it is odd.  I'll do more testing when I have a few minutes and will report anything I can tie down.</div>
+</article>
+<article class="post" id="msg9662">
+  <div class="post-head">
+    <span class="post-author">hmspe</span>
+    <span class="post-date muted">2013-04-20 15:01 UTC</span>
+  </div>
+  <div class="post-body">Looks like I posted too soon.  Today this is not repeatable.  It did not make sense that ODCL could cause the problem directly, but I really did go through the process of uninstalling ODCL several times during the work week and having the problem with BRXLOADMANAGEDDLL go away.  This in both Bricscad V13.1.22 and V13.2.2 beta.  <br>
+<br>
+Sorry for the false alarm. <br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

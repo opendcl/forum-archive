@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help with LSP code for a program · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/21-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 13</p>
+    <h1>Help with LSP code for a program</h1>
+    <p class="meta">Started by AVCAD ·
+      2007-07-12 17:33 UTC ·
+      5 replies · SMF topic #13</p>
+<article class="post" id="msg42">
+  <div class="post-head">
+    <span class="post-author">AVCAD</span>
+    <span class="post-date muted">2007-07-12 17:33 UTC</span>
+  </div>
+  <div class="post-body">I am really really new to  this OpenDCL stuff and i dont really understand the code at all. <br>
+<br>
+I designed this UI for a program but i have no clue where to go with it.<br>
+<br>
+what I want it to do seems simple enough...but doesnt it always?<br>
+<br>
+Basically, Select a type of connector from a drop down...populate the list box per that selection...Select a Wall plate type from a drop down...1 gang plate...2 gang plate..etc...have the dwg image populate with the gang plate selection...and then based on the list box selection be able to click on the dwg preview to insert a block of that selection at the given location that you clicked...and have the dwg preview update...then when you hit Insert it will well insert what you had in the dwg preview...and the Delete Last button to beable to delete the last (or undo) the block you clicked to insert...<br>
+<br>
+simple no? lol.... <br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg43">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2007-07-12 17:59 UTC</span>
+  </div>
+  <div class="post-body">Hi Avcad,<br>
+Welcome to the club. :)<br>
+Are you on build RC2?<br>
+It looks like there's a bug, that doesn't allow you to copy the event code to the LSP file.<br>
+So I'm guessing thats why you had it blank...<br>
+I think Owen will get it fixed soon, then things will be a little clearer for you &amp; then we can help you out more.<br>
+</div>
+</article>
+<article class="post" id="msg44">
+  <div class="post-head">
+    <span class="post-author">AVCAD</span>
+    <span class="post-date muted">2007-07-12 18:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=13.msg43#msg43 date=1184263141 wrote:</cite><br>
+Hi Avcad,<br>
+Welcome to the club. :)<br>
+Are you on build RC2?<br>
+It looks like there's a bug, that doesn't allow you to copy the event code to the LSP file.<br>
+So I'm guessing thats why you had it blank...<br>
+I think Owen will get it fixed soon, then things will be a little clearer for you &amp; then we can help you out more.<br>
+<br>
+</blockquote><br>
+<br>
+ya i am on rc2 i downloaded it, i think yesterday from the link here....ya i thought it was suppose to fill in the lsp code...</div>
+</article>
+<article class="post" id="msg45">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-12 23:28 UTC</span>
+  </div>
+  <div class="post-body">It is a situation particular to RC2.<br>
+<br>
+You can highlight the code in the pane and copy it.<br>
+This will be rectified in RC3.<br>
+<br>
+[attachment deleted by admin]</div>
+</article>
+<article class="post" id="msg48">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2007-07-13 01:25 UTC</span>
+  </div>
+  <div class="post-body">Avcad,<br>
+Can you check the contents of your Zip file please. .. the LSP appears to be empty.</div>
+</article>
+<article class="post" id="msg58">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2007-07-13 17:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=AVCAD link=topic=13.msg42#msg42 date=1184261598 wrote:</cite><br>
+I am really really new to  this OpenDCL stuff and i dont really understand the code at all. <br>
+<br>
+I designed this UI for a program but i have no clue where to go with it.<br>
+<br>
+what I want it to do seems simple enough...but doesnt it always?<br>
+<br>
+Basically, Select a type of connector from a drop down...populate the list box per that selection...Select a Wall plate type from a drop down...1 gang plate...2 gang plate..etc...have the dwg image populate with the gang plate selection...and then based on the list box selection be able to click on the dwg preview to insert a block of that selection at the given location that you clicked...and have the dwg preview update...then when you hit Insert it will well insert what you had in the dwg preview...and the Delete Last button to beable to delete the last (or undo) the block you clicked to insert...<br>
+<br>
+simple no? lol.... <br>
+</blockquote><br>
+<br>
+OK, RC3 is now fixed. Download it and give it a try. Highlight each event &amp; copy it to your clipboard &amp; paste it in your lisp. (Or go to Tools &amp; set "Write to Lisp files")<br>
+Then do your coding in each event. Have a look at the help file "Hello World" &amp; the Example folder to help you get started.<br>
+Then if you have any more specific question, we'll be happy to help you out. :)<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

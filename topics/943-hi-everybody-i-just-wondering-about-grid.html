@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HI everybody , i just wondering about Grid.. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 943</p>
+    <h1>HI everybody , i just wondering about Grid..</h1>
+    <p class="meta">Started by mycino ·
+      2009-09-27 13:48 UTC ·
+      5 replies · SMF topic #943</p>
+<article class="post" id="msg4738">
+  <div class="post-head">
+    <span class="post-author">mycino</span>
+    <span class="post-date muted">2009-09-27 13:48 UTC</span>
+  </div>
+  <div class="post-body">well, hi everybody !:)   i live in korea and i heared ABout OpenDcl from Autdeks International User Group and i used to make some stuff application for my company.<br>
+<br>
+Oneday, i sould  changed so many attribute name(kind of block of attributes..). so i made application for my job.(like a image )<br>
+<br>
+but it just worked only one single attributed....it was really so simple routines... <br>
+<br>
+i want to improve this application  by Grid box..<br>
+<br>
+when i  addstring to first column..it was added up but. when i try addstring to next column..it doesn't works... i mean i couldn't addeup other strings to next columns...<br>
+<br>
+i don't know why it doesn't worked.<br>
+<br>
+my source is like this :<br>
+<br>
+ (defun c:laycon_laycon_OnInitialize (/ nRow laycont laylist)<br>
+  (dcl_Control_SetEventInvoke laycon_laycon_layconsub 1); define dcl controler...to events..<br>
+  (vl-load-com)  <br>
+(setq lays (vla-get-layers (vla-get-ActiveDocument (vlax-get-acad-object))))<br>
+(vlax-for lay lays<br>
+(setq laylist (append laylist (list (vla-get-Name lay))))<br>
+)<br>
+  (setq laycont 0)<br>
+  (repeat (length laylist)<br>
+  (setq laygrid (nth laycont laylist))<br>
+ (dcl_Grid_AddString laycon_laycon_layconsub laygrid));;;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;   this line have some problems... i don't know why i can't added up next columns..<br>
+ (setq laycont (+ laycont 1)) ;repeat add string to grid....<br>
+)<br>
+<br>
+);end add string to grid<br>
+<br>
+<br>
+thanks for readed my article :)<br>
+<br>
+<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/920/screenshot.bmp">screenshot.bmp</a> <span class="muted">(681318 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4741">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-09-27 18:23 UTC</span>
+  </div>
+  <div class="post-body">Hi, mycino, I like working with grid very much. To help you it would be great if you upload the odcl-file. Thanks.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4743">
+  <div class="post-head">
+    <span class="post-author">mycino</span>
+    <span class="post-date muted">2009-09-28 03:59 UTC</span>
+  </div>
+  <div class="post-body">hi :) Fred<br>
+<br>
+thanks for your adviced.. about my atricle.. and.<br>
+<br>
+i just add up  my layertool source and odcl file..<br>
+<br>
+:) thans fred...<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/921/LoweLayerTooL.zip">LoweLayerTooL.zip</a> <span class="muted">(2784 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4751">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-09-29 09:55 UTC</span>
+  </div>
+  <div class="post-body">Hi, mycino, what shall happen if I activate the option buttons at the top of the form?<br>
+<br>
+For using dcl_Grid_AddString you give a long string with all texts for all cells in a single row (see <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Grid/AddString.htm" rel="nofollow noopener">{2}</a>).<br>
+Example:<br>
+(dcl_Grid_AddString MyProj_MyForm_MyGrid "Column1Text|Column2Text|Column3Text" "|")<br>
+<br>
+Another way would be to use Grid_AddRow. In this case you would call this function with a list of strings (see <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Grid/AddRow.htm" rel="nofollow noopener">{2}</a>).<br>
+Example:<br>
+(dcl_Grid_AddRow MyProj_MyForm_MyGrid (list "Column1Text" "Column2Text" "Column3Text"))<br>
+<br>
+A more individual way would be to add a string for the first column and to configure each cell afterwards. This is maybe neccessary if not all cells in a single column are using the same <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Grid/SetCellStyle.htm" rel="nofollow noopener">{2}</a>.<br>
+<br>
+(if (setq intRow (dcl_Grid_AddString MyProj_MyForm_MyGrid "Column1Text"))<br>
+  (progn<br>
+    (setq oLayer (vla-item oLayerCollection "Column1Text"))<br>
+    (dcl_Grid_SetRowData MyProj_MyForm_MyGrid intRow (vla-get_objectID oLayer))<br>
+    (dcl_Grid_SetCellCheckState MyProj_MyForm_MyGrid intRow 1 (if (= (vla-get-layeron oLayer) :vlax-true) 1 0))<br>
+  ); progn<br>
+); if<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg4766">
+  <div class="post-head">
+    <span class="post-author">mycino</span>
+    <span class="post-date muted">2009-10-01 03:42 UTC</span>
+  </div>
+  <div class="post-body">Thansk for you adviced to my article..<br>
+<br>
+Well, i added up Only one column...... i wanna more add up others columns... <br>
+<br>
+i couldn't exactly what is cause about it...<br>
+<br>
+so i attached my lisp sourced for it and Odcl file.. .so... please test it for somthing stuff( :)<br>
+<br>
+A point of my questions <br>
+<br>
+&gt;1) HOw can more add up other column. (like images "OldValue" )....<br>
+<br>
+&gt;2) HOw can i get cell text from Grid.....?<br>
+<br>
+<br>
+<br>
+Thanks readed my article :) <div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/931/attributer.JPG">attributer.JPG</a> <span class="muted">(34326 bytes)</span></li><li><a href="../attachments/932/attchanger_odcl_48260_51260_.zip">attchanger_odcl&amp;#48260;&amp;#51260;.zip</a> <span class="muted">(5561 bytes)</span></li><li><a href="../attachments/933/wonder.JPG">wonder.JPG</a> <span class="muted">(31297 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg4768">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-10-01 05:21 UTC</span>
+  </div>
+  <div class="post-body">Hi, mycino,<br>
+<br>
+I suggest you to have a look at the <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Control/Grid.htm" rel="nofollow noopener">{2}</a>. Here you can find everything about grid.<br>
+For adding a column you can use <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Grid/AddColumns.htm" rel="nofollow noopener">{2}</a>. For reading cell content you can use <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Grid/GetCellText.htm" rel="nofollow noopener">{2}</a> for a single cell or <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Grid/GetRowCells.htm" rel="nofollow noopener">{2}</a> for all cells in one row.<br>
+<br>
+I hope that brings much more light into the dark.  ;)<br>
+<br>
+Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

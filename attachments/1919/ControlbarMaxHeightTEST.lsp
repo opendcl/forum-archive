@@ -1,0 +1,52 @@
+
+
+
+(defun F:Sub_Import_ODCL_Form ( / )
+
+   ;; Max Height : 416 Size.
+   
+;;;'("YWt6A5QOAAC+urw+BuLDKDcxKj9u0ElMPV1uc9Yext48ijz65x8eQsw7b3rplnt9cnK9vk5mSjTG"
+;;;"nq+TnrebGELWeYnGu7q6Bk4GnXnmxlVQ1nmdv32dKUO1BdFOnHL9kdvVhZWQ1CkjKyOLKLqYHOoW"
+;;;"W/NKNC9EOh2WXWreIPKkP7kXVXtXMl9kupRgFNij3nhvM5lsm0dOfgX74YZzLkHk8dTX9JROjJzT"
+;;;"PNW7AnM4fwzdkb3WYV1hcz4KbsN5qv3AUNAw8luE/qMq8QdRRoLkpX3wf1OvfefLZodf0WTFJhxR"
+;;;"GJS+a3phsQW/b9pitBnf0g9AZOvsTParqHHoDHgOmk9kXwvmIvcX/Seq+r5P/+F1Arr4qYmvaOYT"
+;;;"ZngS2zATpl+kdcPEV4e7MGaIfgqS2HBmAWUkZjhwnVpvrnfS1s2cZdl6CGcIQlCo2dZWB6i636tQ"
+;;;"plrH+Y/akIpNfaXVOZpatd3g5iaRUUyJIb42U02SjJD1i8VocmOqQ20Vhwl6oB4NcdcZfBFMiXEc"
+;;;"2qO1ZNCf50yXICl1MqN1HXkfBGs34yO1Lr188doaZUGnaN0cAzaeQeapP1QL6nAtq3S4UA/qm7xr"
+;;;"rKovpYD8CCLADMo/Ylj8yeLkPj1I6apNoRRtzUzUrbpDkuzjWODgvU9VM6K6lUUyoruCpfv1pHoQ"
+;;;"acYrHmxfXCPEL6a/nJyt8Pr1qX/qjjL9Cs90v7sfGv6aAyyFE8keDURJL7T0obN48jzm9yxl/Ffe"
+;;;"k6HyIwIhK8DGDdHWXvd1V805w8m19huO1umP8unsbzGLOPPYEDND5ARL06uq2dewujjD2ADYcLDN"
+;;;"j8BYr8U3Q25ZAel70yEZP7hy0yTKeUAuj9wbwuNhdzjkM8PPtQ4Zrirfji3Jvhfau2HPATb1f1+B"
+;;;"5r6FekBQjjf/MXbCLJ5Q/xkth1/wmTKDyjPBdAPBLtBzKXaAEZiHi4R8F4Ht1t5hswqI9bNJVw7w"
+;;;"NoXozK+9huw28adUZcn7YhVnn0wuMgdXR08LOJLAUg7EO5n7ngFU9Lg7H7ux3BYq9JEn9KhHXXU7"
+;;;"Ve1cu0U0B9gEIO903io612/oYdv9Itpodlw17gKZXs96e3nVhukOJHqhSmur7BB34tOOBxYUSrVk"
+;;;"RPu9Up/K6M9yXjW+Il8FvkIYAkALVZ2MtHrIeqp6g0M+8PTB5AyEwX+svMY+GlfZhgnBX6jRdwIj"
+;;;"ntU14rsbaCCc0rSxEUFlK1k=")
+
+
+   ;; Max Height : 500 Size.
+   
+   '("YWt6A1AOAAAataTwBuLDKLUx7T9u4dEsJnrcf2tyafJuw27fU/sEmmv9Xob2IE77PFexHK5Wn/w5"
+"IXkxQBC4/QSOYyFPT09g8qCGfTICVUAucbr9eZQRyPGDwL/26pxIRcXBo+OXkrKSsslUSGndOlEQ"
+"3i/0rF9kvUYyX5S40nMK4sgv5nhWPIOmoz0zymWqXNzXYtwiaVgeUXFugTyq9ZDZVNTaJLIChivc"
+"qR7DZM1uB06IHqj15+GEXkTyr3WUuyZlKVm4bIO+YNS9xHFif7OTeznh6Jb7smSyfO4p+y1Sz2VV"
+"y550/fGpA552LWibzy6oRnHjNDYnuhSV+NPSQCIH8jg2Y9iSusy7UhQ8nua+UXpAXI4n/zF34hNH"
+"j8amATj7N0NtdNUjxjGMcp03Q5ZIc8XXOZpYJS0xcqiZdbOHdebXa+gtoAPNQbWFCROZ3/3EGc7o"
+"ATme83Ct7ARQjhgNwGFNk2SoDmPR6jSpGkm9T6MOM2aQKr3XxRVnFDae7+oSlVmlHCqScXSCeY3E"
+"NtvQrBAqUxniU9DMLMY85ESURuGh+Pkt+KDxtXKdKTjz3m/5NZTmEdO/0vKUTsb1I8ytntdHIs28"
+"njigoR8OWY0RaVAUa8Yznmj/N/r2CpdYH3nl9THFbFCgfi6yVYusu1R8aXGeiwj+YP4TqgC5Vaas"
+"PSUf21/a32jin4pKNgVvcD80wKVaGe7a0l7LXderHWi/NOokbzJfE4FY4mQ+PC0HnLPD2IJaUN6K"
+"5ISe6m813dcpjxLr7G8xrSjL2GAzw+SEStOvqtHXsNwo49h/2FCw74/PRE8ENkNuSQHhf9OhGj64"
+"StMnzHlALK/sG8LlYXeoXMUEleqfN93VfJ/Z3r71NvXNzwE29V9fgea+hXpAUI43/zF2wiSeMP8Z"
+"LIdf8JnyAKTYofrAIVe5/7V7gQkNAcPBPqSBUlSWWe2wAM+HWHuwbBehKEjEZiFsl08tG53I7h1R"
+"XSJ49FZJW1nYsPat6XsgEq8HV4bh9NwPLyaP9VZka5yBEjuV4uv/3Osw75xtW8IsS9E2+y5U3Kp+"
+"tfGsP1AsdXrvUzYADu6m/Pz9KwI1xhP8EWQ7y9olfBlUAmBk8xgmPckO5lPiqE3ofxp15lWacua5"
+"8rHZIBsiINe+yP7k3sF5ti+PKy04gUk+5GeZ9VKbaKGQSbqAS//RdQIL583Gsry14ivHg3ggOjYZ"
+"")
+   
+   
+)
+
+(dcl_project_import (F:Sub_Import_ODCL_Form) nil nil)
+
+(dcl_Form_Show ControlbarMaxHeightTEST_form )

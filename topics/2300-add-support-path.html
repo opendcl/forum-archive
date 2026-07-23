@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add support path · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/19-deployment.html">Deployment</a> /
+      Topic 2300</p>
+    <h1>Add support path</h1>
+    <p class="meta">Started by Lube ·
+      2015-08-19 14:59 UTC ·
+      8 replies · SMF topic #2300</p>
+<article class="post" id="msg11564">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2015-08-19 14:59 UTC</span>
+  </div>
+  <div class="post-body">Hello again, I'm looking for a way to add a support path to autocad without the user have to do it manually.<br>
+<br>
+OpenDCL do it because I can see the path for his exemple.<br>
+<br>
+any advice?<br>
+<br>
+Thanks</div>
+</article>
+<article class="post" id="msg11565">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-08-20 02:38 UTC</span>
+  </div>
+  <div class="post-body">You should only extend the user's support path in exceptional circumstances where there is no alternative. Better to specify absolute paths in your code. If you must extend the support path, you can do it when your application first loads.</div>
+</article>
+<article class="post" id="msg11567">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-08-20 04:30 UTC</span>
+  </div>
+  <div class="post-body">Hi, Lube,<br>
+<br>
+during the installation I added a path in the registry where the user has installed the application in.<br>
+<br>
+<pre class="code"><code><br>
+Root: HKLM; Subkey: Software\Allevo\Flamap-Update; ValueType: string; ValueName: InstDir; ValueData: {app}<br>
+</code></pre><br>
+<br>
+Then I only searched within folders within the install path.<br>
+<br>
+To modify AutoCAD preferences you have to check the AutoCAD preferences ActiveX-object.<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg11570">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2015-08-20 08:26 UTC</span>
+  </div>
+  <div class="post-body">Hello guys, thanks for the reply.<br>
+I added a code  in the "code" section that modify the acad20xx.lsp file.<br>
+<br>
+(DEFUN AddSupportPath (dir / tmp Cpath)<br>
+  (VL-LOAD-COM)<br>
+  (SETQ	Cpath (GETENV "ACAD") tmp (STRCAT ";" dir ";"))<br>
+  (IF (NOT (VL-STRING-SEARCH dir cpath)) (SETENV "ACAD" (STRCAT Cpath ";" dir)))<br>
+  (PRINC)<br>
+)<br>
+(AddSupportPath "C:\\Cobiax\\")<br>
+<br>
+question 1: with absolute path i don't need support path? maybe i don't get what do you mean with that.<br>
+     My app installs in C:\COBIAX\Cordoli.<br>
+     In this location there is my vlx.<br>
+     Inside this folder there is a folder called Blocks with all the block i need to insert inside the dwg.<br>
+<br>
+    In my code i refer to C:\COBIAX\Blocks\cordoli.dwg etc.<br>
+    Cause i force the user to install my program in this folder.<br>
+   <br>
+   Can I do it in another way and avoid cahnge the acad20xx.lsp file?<br>
+<br>
+question 2: is it possible to add to autostart lisp programms from "APPLOAD" ? How?<br>
+<br>
+Thanks :)<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg11571">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-08-20 09:47 UTC</span>
+  </div>
+  <div class="post-body">Hi, I solved that using an mnl-file. Once the user has added the menu, the mnl is automatically loaded. In the file I called (vl-load-all myprogram.vlx).<br>
+<br>
+Finding path of fixed blocks (publish by you product) is only writing an extension:<br>
+<br>
+(defun get_block_path (block)<br>
+  (setq prefix (vl-registry-read productkey "InstDir"))<br>
+  (strcat prefix block)<br>
+); get_block_path<br>
+<br>
+(place_block (get_block_path "/Blocks/Geographic/Landmark.dwg"))<br>
+(place_block (get_block_path "/Blocks/Survey/WallBolt.dwg"))<br>
+<br>
+<br>
+<br>
+HTH, Fred<br>
+Fred</div>
+</article>
+<article class="post" id="msg11572">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2015-08-20 09:56 UTC</span>
+  </div>
+  <div class="post-body">Thanks Fred :)<br>
+<br>
+can you explain a bit deeper about mnl-file? It's totally new for me.<br>
+My program has modal and modeless dialogs only.<br>
+<br>
+What do you mean with "the user has added the menu" ? <br>
+In my mind the user should only install the program and when he starts autocad he will find the program totally working without doing anything.<br>
+<br>
+Thanks :)</div>
+</article>
+<article class="post" id="msg11573">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-08-20 10:44 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+mnl file is a lisp file (https://www.google.de/search?q=autocad+lisp+mnl).<br>
+This is the content:<br>
+(if (not vlax-get-acad-object) (vl-load-com))<br>
+(defun c:myproduct_load (/ strFile strPath strRegPath)<br>
+  (if (not c:myproduct)<br>
+    (progn<br>
+      (if (not (= (getenv "PROCESSOR_ARCHITECTURE") "x86"))<br>
+	(setq strReg "SOFTWARE\\Wow6432Node\\Company\\MyProduct")<br>
+	(setq strReg "SOFTWARE\\Company\\MyProduct")<br>
+      ); if<br>
+      (if (setq strRegPath (vl-registry-read (strcat "HKEY_LOCAL_MACHINE\\" strReg) "InstDir"))<br>
+	(if (= (substr strRegPath (strlen strRegPath)) "\\")<br>
+	  (setq strPath strRegPath)<br>
+	  (setq strPath (strcat strRegPath "\\"))<br>
+	); if<br>
+	(progn<br>
+	  (princ "\nEin wichtiger Registrierungsschlüssel fehlt. Bitte installieren Sie MyProduct neu!\n")<br>
+	  (setq strPath "C:\\Programme\\Company\\MyProduct\\")<br>
+	); progn<br>
+      ); if<br>
+      (if (setq strFile (findfile (strcat strPath "myproduct.vlx")))<br>
+	(vl-load-all strFile)<br>
+        (alert "\nIch kann die Datei myproduct.VLX nicht finden. Bitte installieren Sie MyProduct neu!\n")<br>
+      ); if<br>
+    ); progn<br>
+  ); if<br>
+  (princ)<br>
+); c:myproduct_load<br>
+(c:myproduct_load)<br>
+<br>
+The image shows the content of the install folder.<br>
+<br>
+Regards, Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2160/myproduct.PNG">myproduct.PNG</a> <span class="muted">(6647 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11575">
+  <div class="post-head">
+    <span class="post-author">Lube</span>
+    <span class="post-date muted">2015-08-20 14:00 UTC</span>
+  </div>
+  <div class="post-body">Fred I still need some help!<br>
+<br>
+I was looking how to create a menu with .mnu files.<br>
+That's exactly what i need but i don't know how to run lisp code when an item is pressed.<br>
+<img src="http://i.imgur.com/K38SU2c.png" alt="" loading="lazy"><br>
+<br>
+***MENUGROUP=Cordoli<br>
+<br>
+***POP1					<br>
+P1-1				<br>
+P1-2[&amp;Load APP]				<br>
+P1-3[&amp;Help]<br>
+<br>
+Than i need a way to load it via acaddoc.lsp<br>
+<br>
+Maybe this way?<br>
+(vl-load-com)<br>
+(setq *mgs* (vla-get-menugroups (vlax-get-acad-object)))<br>
+(vla-load *mgs* "cordoli")<br>
+<br>
+Thanks!<br>
+</div>
+</article>
+<article class="post" id="msg11580">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2015-08-21 07:01 UTC</span>
+  </div>
+  <div class="post-body">Hi, google for AutoCAD and menu<br>
+for instance: http://www.archidigm.com/Coverpage/cover1-01/lounge-set_menu.htm<br>
+Regards, Fred</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

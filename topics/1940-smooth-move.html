@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smooth Move · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/6-show-and-tell.html">Show and Tell</a> /
+      Topic 1940</p>
+    <h1>Smooth Move</h1>
+    <p class="meta">Started by balisteor ·
+      2013-01-22 20:10 UTC ·
+      2 replies · SMF topic #1940</p>
+<article class="post" id="msg9514">
+  <div class="post-head">
+    <span class="post-author">balisteor</span>
+    <span class="post-date muted">2013-01-22 20:10 UTC</span>
+  </div>
+  <div class="post-body">Hopefully everyone is still using OpenDCL, there doesn't seem to be much going on anymore. I thought I would share a useful tool. to help keep it going. I hope OpenDCL never dies!<br>
+<br>
+<br>
+This program allows you to move objects smoothly (simply for program cosmetics); and to create menu's with labels or buttons and such.<br>
+<br>
+So you can see what it does I have attached a video and set the button move speed at the lowest setting (1)  the video was set at minimal settings so that the file stays small, Just trust me that it will look a lot better on your computer when you actually use it. my apologies I am no good at making videos and posting in forums.<br>
+<br>
+I'll paste the two main functions and a couple extra's hopefully they are simple enough to get you going. the possibilities are endless.<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+;;step to target number<br>
+(defun sttn (tar cur ch / out)<br>
+(setq out ((if (minusp (- cur tar)) + -) cur ch))<br>
+(cond ((= cur tar) tar);; if current is equal to target, return target.<br>
+	  ((minusp out) tar);; current value is larger than target, and change ends up negative (return target)<br>
+	  ((&gt; out tar)(if (&gt; cur tar) out tar));if out is larger than target and current is also larger, number should be safely shrinking (return out), otherwise it has gone past into negative value therefore (return target)<br>
+	  (T out); any other condition (most likely growing or same) return out<br>
+)<br>
+);d<br>
+<br>
+<br>
+<br>
+;; move objects func.<br>
+;; use:   (odcl:slideobjects (list (object left top width height)) movespeed_as_int move_in_sync_or_in_order(as boolean) functiontoapplytoobjectoneachstep)<br>
+;; example2:   (odcl:slideobjects (list (list MControl_Main_buttonrefreshjob 16 136 62 24) (list MControl_Main_Buttonrefreshdatagrid 935 136 88 24)) 5 T (lambda (x) (dcl_Control_SetCaption x (apply 'strcat (mapcar '(lambda (xx) (strcat (itoa xx) ", ")) (dcl_Control_Getpos x))))))<br>
+(defun odcl:slideobjects (objdlist smoothspeed sync objfunc / cform x1)<br>
+(setq cform (eval (read (strcat (vl-princ-to-string (car (setq cform (dcl_GetFocus)))) "_" (cadr cform)))));cant think of a better way to get the form of the object, so insead i get the focused form, therefore form must have focus for this to work.<br>
+;(setq cform (strcat (setq x1 (substr (setq cform (car (car objdlist))) 1 (1- (vl-string-search "_" cform))))  (substr  (vl-string-subst "" x1 cform) 1 (1- (vl-string-search "_" cform)))))<br>
+(cond (sync (while (not (vl-every '(lambda (a) (equal (dcl_Control_GetPos (car a)) (cdr a))) objdlist))<br>
+			(mapcar '(lambda (b) (apply 'dcl_Control_SetPos b) (if objfunc (objfunc (car b))) (dcl_Control_Redraw (car b)))<br>
+			 (mapcar '(lambda (c / nl pos) (mapcar '(lambda (d) (if (numberp d) (sttn d (nth (setq nl (if nl (1+ nl) 0)) pos) smoothspeed) (setq pos (dcl_Control_GetPos d) d d))) c))<br>
+			 objdlist<br>
+			 )<br>
+			)<br>
+		    (dcl_Control_Redraw cform);;**** redraw entire form (little slower but looks much better)<br>
+			);w<br>
+		);cond sync<br>
+      (T (foreach o objdlist ;;any other cond than sync being true (move objects 1 at a time)<br>
+			(while (not (equal (dcl_Control_GetPos (car o))(cdr o)))<br>
+			(apply 'dcl_Control_SetPos<br>
+			  (mapcar (function (lambda (a) (if (numberp a) (sttn a (nth (setq nl (if nl (1+ nl) 0)) pos) smoothspeed) (setq pos (dcl_Control_GetPos a) a a))))<br>
+				o<br>
+			  )<br>
+			);apply<br>
+		    (if objfunc (objfunc (car o)))<br>
+		    (dcl_Control_Redraw cform)<br>
+			(setq nl nil pos nil)<br>
+		    );w<br>
+		   );fe<br>
+		);cond sync nil<br>
+);cond<br>
+(mapcar '(lambda (x) (cons (car x) (dcl_Control_GetPos (car x)))) objdlist);return all items with new current data.<br>
+);d<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+;extra's (stack objects together)<br>
+(defun odcl:stackobjects (objlist startpoint rowheight columnwidth maxrows padding smoothspeed sync func / rowcount columncount)<br>
+(setq rowcount 0<br>
+	  columncount 0<br>
+	  objlist<br>
+(mapcar '(lambda (x / xx)<br>
+         (setq xx (list x (+ (car startpoint) (+ (* columnwidth columncount) (* columncount padding))) (+ (cadr startpoint) (+ (* rowheight rowcount) (* rowcount padding))) columnwidth rowheight));; create object position list<br>
+		 (if (&gt;= (1+ rowcount) maxrows)(setq rowcount 0 columncount (1+ columncount))(setq rowcount (1+ rowcount))) ;;set new points<br>
+		 xx ;return xx<br>
+		 )<br>
+objlist<br>
+);mapcar<br>
+)<br>
+(odcl:slideobjects objlist smoothspeed sync func)<br>
+)<br>
+;(lambda (x) (dcl_Control_SetCaption x (apply 'strcat (mapcar '(lambda (xx) (strcat (itoa xx) ", ")) (dcl_Control_Getpos x)))))<br>
+<br>
+;;extra (swap object postion and size properties)<br>
+;;swap object positions Left,Top,Width &amp; Height<br>
+(defun odcl:swapobjects (obj1 obj2 smoothspeed) (odcl:slideobjects (list (cons obj1 (dcl_Control_GetPos obj2)) (cons obj2 (dcl_Control_GetPos obj1))) smoothspeed T nil));d<br>
+<br>
+<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1843/Slide_Objects.gif">Slide_Objects.gif</a> <span class="muted">(3701117 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9515">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-01-22 22:02 UTC</span>
+  </div>
+  <div class="post-body">I didn't run the code, but it looks very cool!</div>
+</article>
+<article class="post" id="msg9516">
+  <div class="post-head">
+    <span class="post-author">balisteor</span>
+    <span class="post-date muted">2013-01-23 15:04 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Once I get the base program I get so many ideas, here is another cool one.<br>
+Now with just this simple code we can have it rotate each object in the list to the next objects properties and create a fancy scroll button list.<br>
+<br>
+<br>
+(defun odcl:revolveobjects (objlist smoothspeed) (odcl:slideobjects (associate-lists (reverse (cons (car objlist) (reverse (cdr objlist)))) (mapcar 'dcl_Control_GetPos objlist)) smoothspeed T nil))<br>
+;(odcl:revolveobjects (list button0 button1 button2 button3 button4 button5) 2)<br>
+<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1844/Rotate_Objects.gif">Rotate_Objects.gif</a> <span class="muted">(461811 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

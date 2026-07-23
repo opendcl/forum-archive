@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl-Control-SetColumnHeader doesn't seem to work. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2213</p>
+    <h1>dcl-Control-SetColumnHeader doesn't seem to work.</h1>
+    <p class="meta">Started by roy_043 ·
+      2014-12-01 14:53 UTC ·
+      6 replies · SMF topic #2213</p>
+<article class="post" id="msg11116">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-12-01 14:53 UTC</span>
+  </div>
+  <div class="post-body">For a small project I want to dynamically change a list view including the column header. But for some reason I can't get dcl-Control-SetColumnHeader to work. Is there something wrong with my code or is this perhaps a bug?<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2083/SQLite_Viewer.odcl">SQLite_Viewer.odcl</a> <span class="muted">(1197 bytes)</span></li><li><a href="../attachments/2084/SQLite_Viewer.lsp">SQLite_Viewer.lsp</a> <span class="muted">(960 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11118">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-12-01 15:47 UTC</span>
+  </div>
+  <div class="post-body">I am travelling and can't check the source code right now, but I believe that is a design-time-only property. You could change it at runtime, but you would need to make the change before showing the form.</div>
+</article>
+<article class="post" id="msg11120">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-12-01 18:08 UTC</span>
+  </div>
+  <div class="post-body">The function dcl-Control-SetColumnHeader is called in the 'OnInitialize' event. Is this what you mean by 'before showing the form'?<br>
+<br>
+Note: BricsCAD 14.2.17 + OpenDCL 8.0.0.10.</div>
+</article>
+<article class="post" id="msg11121">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-12-01 19:15 UTC</span>
+  </div>
+  <div class="post-body">Owen, I Just found out that we have already addressed <a href="http://www.opendcl.com/forum/index.php?topic=2143.5" rel="nofollow noopener">{2}</a> (with the same sample files...) in May of this year. My apologies for wasting your time.</div>
+</article>
+<article class="post" id="msg11124">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-12-02 08:02 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2213.msg11120#msg11120 date=1417457317 wrote:</cite><br>
+The function dcl-Control-SetColumnHeader is called in the 'OnInitialize' event. Is this what you mean by 'before showing the form'?</blockquote><br>
+<br>
+OnInitialize is too late for design-time properties. I meant before (dcl-Form-Show),</div>
+</article>
+<article class="post" id="msg11125">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-12-02 08:03 UTC</span>
+  </div>
+  <div class="post-body">BTW, the Combo Box Lab sample deals with the issue (actually different properties, but same design-time-only problem) by closing and reshowing the form.</div>
+</article>
+<article class="post" id="msg11126">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2014-12-02 09:55 UTC</span>
+  </div>
+  <div class="post-body">Thanks for pointing out 'Combo Box Lab'. It is quite impressive. But for what I want, a blank list view until a database is selected, it is perhaps too much overhead. Also I do not want to close the form. Maybe I'll use a second dummy list view and just play with the visibility property instead.<br>
+Thanks again Owen.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

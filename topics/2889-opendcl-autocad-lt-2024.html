@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenDCL AutoCad LT 2024 · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2889</p>
+    <h1>OpenDCL AutoCad LT 2024</h1>
+    <p class="meta">Started by Christina ·
+      2023-09-29 07:12 UTC ·
+      4 replies · SMF topic #2889</p>
+<article class="post" id="msg13901">
+  <div class="post-head">
+    <span class="post-author">Christina</span>
+    <span class="post-date muted">2023-09-29 07:12 UTC</span>
+  </div>
+  <div class="post-body">Are there plans to make OpenDCL work in AutoCad LT 2024 ?</div>
+</article>
+<article class="post" id="msg13902">
+  <div class="post-head">
+    <span class="post-author">Blade</span>
+    <span class="post-date muted">2023-09-29 11:25 UTC</span>
+  </div>
+  <div class="post-body">AutoCAD LT does not support lisp,vba,arx,.net, etc.</div>
+</article>
+<article class="post" id="msg13903">
+  <div class="post-head">
+    <span class="post-author">Christina</span>
+    <span class="post-date muted">2023-09-29 22:06 UTC</span>
+  </div>
+  <div class="post-body">Joseph, search about 2024...</div>
+</article>
+<article class="post" id="msg13904">
+  <div class="post-head">
+    <span class="post-author">Blade</span>
+    <span class="post-date muted">2023-09-30 08:59 UTC</span>
+  </div>
+  <div class="post-body">Indeed, you are right.<br>
+I did not know about this.<br>
+The LT has lisp <strong>limitations</strong>:<br>
+<br>
+The first type of limitation is the lack of support for external ActiveX objects. For them you cannot use the (vlax-create-object), (vlax-get-object), (vlax-get-or-create-object), (vlax-import-type-library), (vla-GetInterfaceObject) functions. These functions are typically used for online communication, clipboard handling, XML, binary files, Excel, Word, Access (or other database tools), etc.<br>
+<br>
+E.g the call:<br>
+<br>
+(vlax-create-object "Microsoft.XMLHTTP")<br>
+<br>
+returns nil and the web "communicator" object is not created.<br>
+<br>
+Another, quite logical limitation is working with 3D DWG objects (plus render tools, databases...). These are not supported in LT version and therefore you cannot use (command) to call unsupported commands (or access variables), nor can you create or modify 3D objects via (entmake), (entmakex), (entmod).<br>
+<br>
+E.g. the construction:<br>
+<br>
+(entmake (list (cons 0 "3DFACE")(cons 10 (car triangle))(cons 11 (cadr triangle))(cons 12 (caddr triangle))(cons 13 (caddr triangle))))<br>
+<br>
+returns nil and the entity of type 3DFACE is not created (silent fail, no error is reported).<br>
+<br>
+You cannot access XRecords, used by some LISP applications to store data in dictionaries.<br>
+<br>
+You also can't use Express Tools commands or its libraries or "acet-" functions in LT. Of course, you can't call VBA or ARX or .NET functions either.<br>
+<br>
+Automatic loading of LISP functions from ACADDOC.LSP must be done in the LT version in the ACADLTDOC.LSP file. Also, .MNL files (with CUIx menu files) are not automatically loaded. The LT version does not work with profiles. And there is no AI_UTILS.LSP preinstalled.<br>
+<br>
+Note that the LT version does not have a LISP editor (IDE, the VLIDE command) and therefore no debugger or compiler or linker. You can switch Unicode support though - LISPSYS. You cannot use (vlisp-compile) to compile LSP files either.<br>
+<br>
+You can use the .bundle autoload mechanism in LT (the folder Autodesk/ApplicationPlugins). Don't forget to add Platform="ACADLT" to the RuntimeRequirements section in your PackageContents.xml file.<br>
+<br>
+The AutoCAD LT for Mac version has other limitations - e.g. you cannot use ActiveX functions (vlax-), reactors, etc. </div>
+</article>
+<article class="post" id="msg13987">
+  <div class="post-head">
+    <span class="post-author">Christina</span>
+    <span class="post-date muted">2024-03-05 06:10 UTC</span>
+  </div>
+  <div class="post-body">Thank you for the explanation Joseph !</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

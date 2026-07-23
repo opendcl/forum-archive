@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Read and write color in Combobox · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1781</p>
+    <h1>Read and write color in Combobox</h1>
+    <p class="meta">Started by Emiliano ·
+      2012-03-27 05:58 UTC ·
+      6 replies · SMF topic #1781</p>
+<article class="post" id="msg8742">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-03-27 05:58 UTC</span>
+  </div>
+  <div class="post-body">I just can not understand how to use the combobox with style "4 - Color".  :'(<br>
+I simply want to understand how to read and set a color.<br>
+<br>
+- To read the color set, use the following code<br>
+<br>
+(setq col (dcl_ComboBox_GetTBText Applic_Form_ComboCol)))<br>
+<br>
+<br>
+However, in this way, the revenue of the color string in the language of AutoCAD (English, Italian, German, etc..)<br>
+how can I get the number of colors selected to avoid checking the language of AutoCAD?<br>
+<br>
+- To set a color using the lisp code, I tried using<br>
+<br>
+(setq num_color "3") ;&lt;--Green<br>
+(dcl_ComboBox_SetCurSel Applic_Form_ComboCol (+ (atoi num_color) 1))<br>
+<br>
+<br>
+This code works, until the list of the colors, is added, at the top the last color used.  :'(<br>
+<br>
+I'm confused  ???<br>
+Can you help me?<br>
+Thanks in advance.</div>
+</article>
+<article class="post" id="msg8750">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-03-27 17:10 UTC</span>
+  </div>
+  <div class="post-body">See if this function retrieves the color value:<br>
+<a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/ComboBox/GetItemData.htm" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg8754">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-03-28 05:05 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+Thanks for the reply.<br>
+Now I understand that finding the number of selected color in combox.<br>
+<br>
+However the most difficult problem is to select, using the lisp code, a certain color.<br>
+I have a combobox that contains eg. the following list of colors:<br>
+<br>
+Color71<br>
+Color73<br>
+Color96<br>
+Red<br>
+Yellow<br>
+Green &lt;--Current Selection<br>
+Cian<br>
+Blue<br>
+Magent<br>
+<br>
+How do I select the color "Blue" using Lisp code?<br>
+Thanks in advance</div>
+</article>
+<article class="post" id="msg8755">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-03-28 05:29 UTC</span>
+  </div>
+  <div class="post-body">See if this helps:<br>
+<a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/ComboBox/FindColor.htm" rel="nofollow noopener">{2}</a></div>
+</article>
+<article class="post" id="msg8756">
+  <div class="post-head">
+    <span class="post-author">Emiliano</span>
+    <span class="post-date muted">2012-03-28 14:13 UTC</span>
+  </div>
+  <div class="post-body">Thanks again for your reply.<br>
+I hope it is useful to someone, with your help I wrote the following functions:<br>
+<br>
+<br>
+(defun TTComboGetColor (control / col)<br>
+  (setq col (dcl_ComboBox_GetItemData control (dcl_ComboBox_GetCurSel control)))<br>
+  col<br>
+)<br>
+<br>
+(defun TTComboSetColor (control col / findel)<br>
+  (setq findel (dcl_ComboBox_FindColor control col))<br>
+  (if (= findel nil)<br>
+    (progn<br>
+      (dcl_ComboBox_AddColor control col)<br>
+      (setq findel (dcl_ComboBox_FindColor control col))<br>
+    )<br>
+  )<br>
+  (dcl_ComboBox_SetCurSel control findel)<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg11290">
+  <div class="post-head">
+    <span class="post-author">Peter2</span>
+    <span class="post-date muted">2015-03-21 00:37 UTC</span>
+  </div>
+  <div class="post-body">Is this solution still the current way to get the selected color in OpenDCL 8?<br>
+<br>
+I looked around, found old examples with "GetTBText" (which seem to be outdated ...), tried with GetLBText and GetCurSel, and at the moment I'm a little bit confused ....</div>
+</article>
+<article class="post" id="msg11292">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2015-03-21 00:59 UTC</span>
+  </div>
+  <div class="post-body">Yes, this is the correct way to get the selected color value. If you want the displayed text, GetLBText should work.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

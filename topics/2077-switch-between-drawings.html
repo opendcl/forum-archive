@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>switch between drawings? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2077</p>
+    <h1>switch between drawings?</h1>
+    <p class="meta">Started by MiD-AwE ·
+      2013-12-18 20:31 UTC ·
+      12 replies · SMF topic #2077</p>
+<article class="post" id="msg10249">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-12-18 20:31 UTC</span>
+  </div>
+  <div class="post-body">Dialog content or/and the variables are not updated when the user switches between drawings. <br>
+Using the event OnDocActivated I have been unable to make the dialog content reliable. It holds on to the previous drawings data. <br>
+<br>
+What must I do to force the dialog to display only information for the active document?  :-\<br>
+<br>
+Thank you for any help. </div>
+</article>
+<article class="post" id="msg10251">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-18 21:33 UTC</span>
+  </div>
+  <div class="post-body">It's hard to guess what's wrong with your code without seeing it.</div>
+</article>
+<article class="post" id="msg10256">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-12-18 22:35 UTC</span>
+  </div>
+  <div class="post-body">I suppose a more specific question is, how do I clear all controls?<br>
+<br>
+I there some ambiguous method for clear all?<br>
+<br>
+ :-[</div>
+</article>
+<article class="post" id="msg10257">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-18 22:44 UTC</span>
+  </div>
+  <div class="post-body">No, you have to manage each control individually.</div>
+</article>
+<article class="post" id="msg10258">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2013-12-18 22:54 UTC</span>
+  </div>
+  <div class="post-body">Ok, <br>
+That'll nearly double the code. At least a thousand lines. (I better get typing)<br>
+<br>
+Thank you.</div>
+</article>
+<article class="post" id="msg10259">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-12-18 22:58 UTC</span>
+  </div>
+  <div class="post-body">In most cases you can use common code to initialize or re-initialize controls in the OnInitialize and OnDocActivated event handlers.</div>
+</article>
+<article class="post" id="msg10365">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2014-01-31 20:45 UTC</span>
+  </div>
+  <div class="post-body">I'm finally getting back to this.  ???<br>
+<br>
+Is there an example anywhere for your <blockquote class="quote">use common code to initialize or re-initialize controls in the OnInitialize and OnDocActivated event handlers</blockquote><br>
+suggestion. Is it as easy as:<br>
+<br>
+(foreach cntrl 'list<br>
+  (dcl_Control_SetText cntrl "")<br>
+)<br>
+(foreach cntrl 'list<br>
+  (DCL_CONTROL_SETPICTURE cntrl "")<br>
+)<br>
+etc...<br>
+<br>
+<br>
+Or, what can you suggest?<br>
+<br>
+Thank you in advance for any suggestions.</div>
+</article>
+<article class="post" id="msg10366">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-02-01 03:23 UTC</span>
+  </div>
+  <div class="post-body">By "common" I meant "shared". Like this:<br>
+<br>
+<br>
+(defun DoInitialization ()<br>
+...<br>
+)<br>
+<br>
+(defun c:OnInitialize()<br>
+  (DoInitialization)<br>
+)<br>
+<br>
+(defun c:OnDocActivated()<br>
+  (DoInitialization)<br>
+)<br>
+</div>
+</article>
+<article class="post" id="msg10367">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2014-02-03 18:20 UTC</span>
+  </div>
+  <div class="post-body"> :) Thank you. I've done a little more digging around in the help and examples and have assembled this generic code so far:<br>
+<br>
+(DEFUN ReSetOdclControl (odclfile / chkbx optlst project props)<br>
+  (FOREACH form (DCL_PROJECT_GETFORMS odclfile)<br>
+    (FOREACH cntrl (DCL_FORM_GETCONTROLS form)<br>
+      (PROGN<br>
+	(SETQ props (DCL_CONTROL_GETPROPERTIES cntrl))<br>
+	(COND<br>
+	  ((MEMBER "Text" props)<br>
+	   (PROGN<br>
+	     (SETQ teXt (DCL_CONTROL_GETPROPERTY cntrl "Text"))<br>
+	     (IF (/= teXt "")<br>
+	       (DCL_CONTROL_SETTEXT cntrl "")<br>
+	     )<br>
+	   )<br>
+	  )<br>
+	  ((MEMBER "Value" props)<br>
+	   (PROGN<br>
+	     (SETQ chkbx (DCL_CONTROL_GETPROPERTY cntrl "Value"))<br>
+	     (IF (/= chkbx "Unchecked")<br>
+	       (DCL_CONTROL_SETVALUE cntrl "Unchecked")<br>
+	     )<br>
+	   )<br>
+	  )<br>
+	  ((MEMBER "Current Selection" props)<br>
+	   (PROGN<br>
+	     (SETQ optlst (DCL_CONTROL_GETPROPERTY cntrl "Current Selection"))<br>
+	     (IF (/= optlst 0)<br>
+	       (DCL_CONTROL_SETVALUE cntrl 0)<br>
+	     )<br>
+	   )<br>
+	  )<br>
+	)<br>
+      )<br>
+    )<br>
+  )<br>
+)<br>
+<br>
+Along with your clarification it seems to be working. Maybe the above could be helpful to others too. <br>
+<br>
+- It was quite frustrating getting to this point. I know I used clear English in my question but I felt like the simple thing I was asking was lost in translation. Ultimately I used an example in the help file for the obscure thing of changing the size of font of a project. I would assume the thing I'm trying to do would be MUCH more common and useful. Go figure  :o</div>
+</article>
+<article class="post" id="msg10368">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-02-03 23:26 UTC</span>
+  </div>
+  <div class="post-body">I'm glad you got it figured out. The sledge hammer approach is good if that's what you needed, but I think most use cases call for being selective about what and how to change control properties (which as you said is more work for the programmer -- but them's the breaks).</div>
+</article>
+<article class="post" id="msg10369">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2014-02-04 15:02 UTC</span>
+  </div>
+  <div class="post-body">I get it. I just happen to be working with OpenDCL for production, where we often work with several drawings simultaneously and no two drawings have anything to do with each other. <br>
+<br>
+The only alternative was to quit AutoCAD completely and reopen. That is a huge time killer. This method of making certain the data displayed by OpenDCL is only reflective of the active document is vital. It would be a deal breaker for us if the data from one project ended up in another; not to mention someone would loose their job over such an error.   :'(<br>
+<br>
+Again thank you Owen for all of your help.  :)</div>
+</article>
+<article class="post" id="msg10370">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2014-02-04 16:06 UTC</span>
+  </div>
+  <div class="post-body">It just occurred to me that you may be able to achieve the same end (and as a bonus, save your job in the process) by simply reloading the project by passing T as the 'ForceReload' argument to (<a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/Project/Load.htm" rel="nofollow noopener">{2}</a>).</div>
+</article>
+<article class="post" id="msg10375">
+  <div class="post-head">
+    <span class="post-author">MiD-AwE</span>
+    <span class="post-date muted">2014-02-06 16:23 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen,  :)<br>
+<br>
+The 'ForceReload' was a good idea. I jumped right on it to test if it would really cause the project to reflect the values of the Active Document. Unfortunately an error popped up complaining about nil values for every control, and finally AutoCAD crashed. I tried it 3 times with drawings at various stages. Only a fully completed project could have all controls manipulated; and then not all projects utilize every control.<br>
+<br>
+I'm not sure of the problem but it sure was worth a try. For now I'll stick with the "ReSetOdclControl" function, it has it's quirks but it does not crash AutoCAD. The nil value thing may be the way that I populate the controls by loading existing values from Global variable assigned in another lsp file. A simple thing actually. I assign xdata as the user works with the drawing, the refering lsp file reads the xdata into a long list of globals that are also reference by fields in tables and title-block. The OpenDCL "CNTRL-PNL" project is used to manipulate the xdata, the refering lsp file is reloaded and the globals are refreshed. It quite fast, but not fail proof without  the "ReSetOdclControl" function.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

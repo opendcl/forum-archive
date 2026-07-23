@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Controlling ZOrder and · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1943</p>
+    <h1>Controlling ZOrder and</h1>
+    <p class="meta">Started by JEdwardL ·
+      2013-01-29 17:58 UTC ·
+      7 replies · SMF topic #1943</p>
+<article class="post" id="msg9527">
+  <div class="post-head">
+    <span class="post-author">JEdwardL</span>
+    <span class="post-date muted">2013-01-29 17:58 UTC</span>
+  </div>
+  <div class="post-body">I'm can't seem to control the ZOrder properly.  Is there a way to move to a particular control using ZOrder and then continuing seqentially from there?  I have several text boxes that are being populated programmatically, but I need a way to continue in the dialog from the point where the program leaves off in order to populate the remaining boxes.<br>
+<br>
+Thank you,<br>
+<br>
+J Leavitt</div>
+</article>
+<article class="post" id="msg9528">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-01-29 18:44 UTC</span>
+  </div>
+  <div class="post-body">You can use (dcl_Control_SetFocus control) to set the focus to the text box following the last one that was filled programmatically. The ZOrder will control the sequence from that point.</div>
+</article>
+<article class="post" id="msg9529">
+  <div class="post-head">
+    <span class="post-author">JEdwardL</span>
+    <span class="post-date muted">2013-01-29 18:49 UTC</span>
+  </div>
+  <div class="post-body">If I'm not mistaken, I can't use SetFocus within an Initialize event.  Has that restriction been removed?<br>
+<br>
+Thank you,<br>
+<br>
+J Leavitt</div>
+</article>
+<article class="post" id="msg9530">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-01-29 22:38 UTC</span>
+  </div>
+  <div class="post-body">You are completely right. So it is not as easy as I had hoped. But manipulating the ZOrder does work. However, if you do not also change the ZOrder of the controls before the first text box, the result will be confusing if the user wants to cycle through the form again.<br>
+<br>
+<br>
+(defun c:TextBoxTest ( / c:TextBoxTest_Form1_OnInitialize stringList)<br>
+<br>
+  (defun c:TextBoxTest_Form1_OnInitialize ()<br>
+    (foreach<br>
+      control<br>
+      (list ; Controls before first TextBox.<br>
+        TextBoxTest_Form1_TextButton0<br>
+        TextBoxTest_Form1_TextButton1<br>
+      )<br>
+      (dcl_Control_ZOrder control 0)<br>
+    )<br>
+    (mapcar<br>
+      '(lambda (index string / control)<br>
+        (setq control (eval (read (strcat "TextBoxTest_Form1_TextBox" (itoa index)))))<br>
+        (dcl_Control_SetText control string)<br>
+        (dcl_Control_ZOrder control 0)<br>
+      )<br>
+      '(0 1 2 3 4 5)<br>
+      stringList<br>
+    )<br>
+  )<br>
+<br>
+  (setvar 'cmdecho 0)<br>
+  (command "OPENDCL")<br>
+  (setvar 'cmdecho 1)<br>
+<br>
+  (setq stringList '("A" "B" "C"))<br>
+  (dcl_Project_Load "TextBoxTest" T)<br>
+  (dcl_Form_Show TextBoxTest_Form1)<br>
+)<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1847/TextBoxTest.lsp">TextBoxTest.lsp</a> <span class="muted">(772 bytes)</span></li><li><a href="../attachments/1848/TextBoxTest.odcl">TextBoxTest.odcl</a> <span class="muted">(869 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9533">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-01-30 00:41 UTC</span>
+  </div>
+  <div class="post-body">Another idea is to disable the ones you want to skip.</div>
+</article>
+<article class="post" id="msg9536">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-01-30 13:27 UTC</span>
+  </div>
+  <div class="post-body">@ Owen:<br>
+Just wondering: is there a way to retrieve the ZOrder of a form?</div>
+</article>
+<article class="post" id="msg9537">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-01-30 16:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=1943.msg9536#msg9536 date=1359552432 wrote:</cite><br>
+Just wondering: is there a way to retrieve the ZOrder of a form?<br>
+</blockquote><br>
+<br>
+I don't believe so, unless there's some way to do it using standar Windows functionality via COM.</div>
+</article>
+<article class="post" id="msg9538">
+  <div class="post-head">
+    <span class="post-author">JEdwardL</span>
+    <span class="post-date muted">2013-01-30 16:48 UTC</span>
+  </div>
+  <div class="post-body">Thank you both!<br>
+<br>
+I managed to adapt the sample code that roy_043 posted and it works fine, although it would be ever so much easier to be able to specify the order programatically.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

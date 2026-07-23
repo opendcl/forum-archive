@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenDCL 6.0 Development Notes · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/5-project-administration.html">Project Administration</a> /
+      Topic 992</p>
+    <h1>OpenDCL 6.0 Development Notes</h1>
+    <p class="meta">Started by owenwengerd ·
+      2009-10-26 05:43 UTC ·
+      16 replies · SMF topic #992</p>
+<article class="post" id="msg5043">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-10-26 05:43 UTC</span>
+  </div>
+  <div class="post-body">I wrote on the SourceForge discussion forum about the control painting changes that I started in Alpha 10, but I want to make sure it is noted here as well.<br>
+<br>
+Basically, I'm starting over from scratch. I am still experimenting with different strategies for painting controls, so this will be an ongoing evolution over the next few builds. My goal is to rely as much as possible on Windows' optimizations in painting controls on the screen, and only override Windows' built in behaviors where necessary. Unfortunately, there are many situations where overriding the built in behavior is necessary; in those cases, my goal is to make the overrides consistent and common across controls to the extent possible, with minimal control-specific behavor.<br>
+<br>
+If all controls always lived on the same color solid background like they did in the early days of Windows, this would be easy. In practice, though, it's an almost impossible task. Resizable dialogs introduce the well-known flashing effect when resizing. Tab controls introduce a different background color. Transparent controls require special handling to ensure that their background gets painted first, and completely, before the control is painted.<br>
+<br>
+To make matters worse, different versions of Windows and different settings for Visual Styles can affect specific controls in different ways under different circumstances, so there is a need for special handling in certain cases.<br>
+<br>
+I will have more to say on the subject once I get a better handle on how I will proceed.  For now, just be warned that painting is not perfect in Alpha 10, and it will change over the next few builds, so there is no need to report painting bugs yet.</div>
+</article>
+<article class="post" id="msg5084">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-02 09:27 UTC</span>
+  </div>
+  <div class="post-body">In Alpha 11, the control painting changes are starting to settle down.  If you have forms that rely on some unusual behavior, please test things in Alpha 11 and report any problems.  There are several potentially problematic situations:<br>
+<br>
+1) Transparent controls. There are differences between Windows versions, using or not using visual styles, and the type of form. For example, transparent controls on a tab page for a tab strip using visual styles requires special handling that differs between Windows XP and Vista. In Alpha 11, I'm using a different approach to handling transparent controls in general. Instead of being truly transparent, "transparent" really means "paint the background the same color as the parent" -- at least generally (i.e. there are exceptions).<br>
+<br>
+2) Overlapping controls. This has always been problematic. Transparent controls should always be painted after non-transparent controls, but there is no well defined way to put a control "on top of" another. If one control is transparent and one is not, then the transparent control should generally appear to be on top of the non-transparent control -- but how this actually looks in the end may depend on the types of controls. Tab order does not affect painting order -- at least not in any reliable way.<br>
+<br>
+3) Flashing during resizing. This problem is a difficult one to solve. In some cases, double buffering can be used to solve it. In some cases, smarter repainting logic can minimize it. As a general rule, transparent controls are more likely to cause flashing. I will continue to work on this problem, but in many cases we're just stuck with it.<br>
+<br>
+I'm testing during development with Windows 7, and I've tested briefly with Windows XP, but Alpha 11 really needs to be tested on a wider variety of Windows versions in case there are serious problems that require a change in strategy. Please test Alpha 11 in other Windows versions and report your findings by replying here.</div>
+</article>
+<article class="post" id="msg5092">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2009-11-03 09:13 UTC</span>
+  </div>
+  <div class="post-body">Hi Owen<br>
+<br>
+re: Alpha 11/Windows XP<br>
+<br>
+I've noticed the following repainting issues:<br>
+<br>
+<u>1. transparent controls on a Tab Control</u><br>
+<br>
+Check boxes - background colour, shows as white<br>
+Frames - caption background only, shows as white.<br>
+Rectangles - whole back ground is white, it also masks any other controls with in the rectangle.(presumably because of the reasons mentioned in your last post).<br>
+(Interestingly - Option buttons are repainting fine) <br>
+<br>
+<br>
+<u>2. Labels (not on a tab control)</u><br>
+<br>
+Overlapping labels lose their draw order (as specified in Studio).<br>
+<br>
+<br>
+Regards<br>
+<br>
+Dan</div>
+</article>
+<article class="post" id="msg5095">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-03 10:52 UTC</span>
+  </div>
+  <div class="post-body"><br>
+XP SP3 AC2010 &amp; 2007 Mech<br>
+<br>
+I have some buttons that that are not enabled at initialisation. The buttons are enabled when the min required information is available to allow a logical continuation.<br>
+<br>
+The butttons do not display untill I do a mouseover the button.<br>
+<br>
+I'll try to define the problem more consisely and/or try to produce a minimalist project to demonstrate the issue .. won't be tonight or tomorrow though :)<br>
+ </div>
+</article>
+<article class="post" id="msg5097">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-04 01:10 UTC</span>
+  </div>
+  <div class="post-body">ACADM2007 (Mech) <br>
+XP sp3   odcl 6.0.0.11<br>
+<br>
+When NOT enabled the TextBox control displays a <s>horixontal</s> horizontal underline instead of being greyed out.<br>
+<br>
+<br>
+edit: DUH !<br>
+<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1018/TextBox  Enabled.png">TextBox  Enabled.png</a> <span class="muted">(21487 bytes)</span></li><li><a href="../attachments/1019/TextBox  NOT_Enabled.png">TextBox  NOT_Enabled.png</a> <span class="muted">(21750 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5099">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-05 02:43 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Danner link=topic=992.msg5092#msg5092 date=1257239603 wrote:</cite><br>
+<u>1. transparent controls on a Tab Control</u><br>
+Check boxes - background colour, shows as white<br>
+Frames - caption background only, shows as white.<br>
+Rectangles - whole back ground is white, it also masks any other controls with in the rectangle.(presumably because of the reasons mentioned in your last post).<br>
+(Interestingly - Option buttons are repainting fine) <br>
+</blockquote><br>
+<br>
+I tested with a tab control that uses visual styles, but I didn't think to test on one that doesn't. I've had to do a little bit of refactoring, but I think I've come up with a slightly improved system now that works reliably in all cases. Please test again in Alpha 12 and let me know the results.<br>
+</div>
+</article>
+<article class="post" id="msg5100">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-05 02:47 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Danner link=topic=992.msg5092#msg5092 date=1257239603 wrote:</cite><br>
+<u>2. Labels (not on a tab control)</u><br>
+Overlapping labels lose their draw order (as specified in Studio).<br>
+</blockquote><br>
+<br>
+In Windows, there is no real concept of "draw order".  I assume you're referring to Z / Tab Order, which is confusingly similar.  In fact, I think the nomenclature should be changed to just "Tab Order" to make it less confusing.<br>
+<br>
+To reiterate what I posted before, the only way to reliably control the order in which overlapping controls are painted is to make one transparent and one not transparent. Windows (should) always paint transparent controls last.</div>
+</article>
+<article class="post" id="msg5101">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-05 07:18 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=992.msg5097#msg5097 date=1257297013 wrote:</cite><br>
+When NOT enabled the TextBox control displays a <s>horixontal</s> horizontal underline instead of being greyed out.</blockquote><br>
+<br>
+I can't reproduce with my current code, so it's either fixed or I'm not testing it right.  Please test again in Alpha 12 when it's released and report any remaining (or new!) problems.</div>
+</article>
+<article class="post" id="msg5103">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2009-11-05 15:39 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=992.msg5100#msg5100 date=1257389224 wrote:</cite><br>
+[quote author=Danner link=topic=992.msg5092#msg5092 date=1257239603]<br>
+<u>2. Labels (not on a tab control)</u><br>
+Overlapping labels lose their draw order (as specified in Studio).<br>
+</blockquote><br>
+<br>
+In Windows, there is no real concept of "draw order".  I assume you're referring to Z / Tab Order, which is confusingly similar.  In fact, I think the nomenclature should be changed to just "Tab Order" to make it less confusing.<br>
+<br>
+To reiterate what I posted before, the only way to reliably control the order in which overlapping controls are painted is to make one transparent and one not transparent. Windows (should) always paint transparent controls last.<br>
+<br>
+<br>
+Yes, sorry I did indeed mean Z order.  I see I can still invoke the function "Control_ZOrder" <u>after</u> the actual Oninitiliaze event and it works.  (Or should I be wary?)<br>
+<br>
+Thanks. </div>
+</article>
+<article class="post" id="msg5104">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-05 17:35 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Danner link=topic=992.msg5103#msg5103 date=1257435574 wrote:</cite><br>
+Yes, sorry I did indeed mean Z order.  I see I can still invoke the function "Control_ZOrder" <u>after</u> the actual Oninitiliaze event and it works.  (Or should I be wary?)<br>
+</blockquote><br>
+<br>
+You should probably be wary, but I'd like to see an example of what you're referring to.</div>
+</article>
+<article class="post" id="msg5105">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2009-11-06 09:05 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=992.msg5104#msg5104 date=1257442547 wrote:</cite><br>
+[quote author=Danner link=topic=992.msg5103#msg5103 date=1257435574]<br>
+Yes, sorry I did indeed mean Z order.  I see I can still invoke the function "Control_ZOrder" <u>after</u> the actual Oninitiliaze event and it works.  (Or should I be wary?)<br>
+</blockquote><br>
+<br>
+You should probably be wary, but I'd like to see an example of what you're referring to.<br>
+<br>
+<br>
+Here you go - please see a video below:<br>
+<br>
+RectangleDemo<br>
+<br>
+Behind each blockview there is a green rectangle set to invisible.  Selecting a blockview or a blockname from the listbox - makes the rectangle visible and send it behind the blockview with the following subroutine:<br>
+<br>
+(defun SET_RECTANGLE_VIS (NSel_Int / RectangleList)<br>
+	(setq RectangleList (GET_RECTANGLE_CONTROL_LIST))<br>
+	;set rectangle visible<br>
+	(dcl_Control_SetVisible (nth NSel_Int RectangleList) T)<br>
+	;put rectangle behind blockview<br>
+	(dcl_Control_ZOrder (nth NSel_Int RectangleList) 1)<br>
+);endfun <br>
+<br>
+The routine seems to be working fine now I've added "(dcl_Control_ZOrder....",  but now I'm rather circumspect.</div>
+</article>
+<article class="post" id="msg5106">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-06 11:41 UTC</span>
+  </div>
+  <div class="post-body">Hi, Danner, have a look <a href="http://www.opendcl.com/forum/index.php?topic=786.msg3880#msg3880" rel="nofollow noopener">{2}</a>. There you can see a highlighting rectangle. Maybe it would be better to use <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/DwgPreview/SetHighlight.htm" rel="nofollow noopener">{2}</a>-method.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5108">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2009-11-06 12:35 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=992.msg5106#msg5106 date=1257507711 wrote:</cite><br>
+Hi, Danner, have a look <a href="http://www.opendcl.com/forum/index.php?topic=786.msg3880#msg3880" rel="nofollow noopener">{2}</a>. There you can see a highlighting rectangle. Maybe it would be better to use <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/DwgPreview/SetHighlight.htm" rel="nofollow noopener">{2}</a>-method.<br>
+<br>
+Fred<br>
+</blockquote><br>
+<br>
+Thanks Fred,<br>
+<br>
+Interesting - I wasn't keen on the SetHighlight method, because I find the highlight rectangle difficult to see when the blockviews are numerous and rather small.  <br>
+<br>
+I see in your example that you have placed a "colour wash" on the highlighted preview which is very effective.  Did you use SetBackgroundColor to do that - I didn't think that worked very well on BlockViews (see <a href="http://www.opendcl.com/forum/index.php?topic=703.15" rel="nofollow noopener">{2}</a>? If it works fine - great, I've got a plan B! (I would still like to use my rectangles -all things being equal, so I don't have to change my code.) <br>
+</div>
+</article>
+<article class="post" id="msg5110">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-06 15:03 UTC</span>
+  </div>
+  <div class="post-body">Hi, I'm using DWGPreviews in that form because of the delay of loading a block in BlockView. So SetBackColor works very well for me.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5112">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-06 15:50 UTC</span>
+  </div>
+  <div class="post-body">For that purpose, your method might be fine.  What happens in your example if you switch to a different window (that covers your dialog), then back?  hat is you move the dialog partially off screen, then back on?  If those cases work in all your supported operating systems, then I think you are safe.</div>
+</article>
+<article class="post" id="msg5114">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2009-11-06 17:14 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=992.msg5112#msg5112 date=1257522607 wrote:</cite><br>
+For that purpose, your method might be fine.  What happens in your example if you switch to a different window (that covers your dialog), then back?  hat is you move the dialog partially off screen, then back on?  If those cases work in all your supported operating systems, then I think you are safe.<br>
+</blockquote><br>
+<br>
+Ah good.  Works on xp will try Vista next week.</div>
+</article>
+<article class="post" id="msg5120">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2009-11-09 08:40 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=992.msg5099#msg5099 date=1257389024 wrote:</cite><br>
+<br>
+I tested with a tab control that uses visual styles, but I didn't think to test on one that doesn't. I've had to do a little bit of refactoring, but I think I've come up with a slightly improved system now that works reliably in all cases. Please test again in Alpha 12 and let me know the results.<br>
+<br>
+</blockquote><br>
+<br>
+Transparant contols on tabs in Alpha 12 are working properly now. Cheers. </div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

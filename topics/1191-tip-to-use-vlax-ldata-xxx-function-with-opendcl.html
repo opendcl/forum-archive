@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tip to use vlax-ldata-xxx function with OpenDCL · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1191</p>
+    <h1>Tip to use vlax-ldata-xxx function with OpenDCL</h1>
+    <p class="meta">Started by Blade ·
+      2010-02-26 08:31 UTC ·
+      12 replies · SMF topic #1191</p>
+<article class="post" id="msg6371">
+  <div class="post-head">
+    <span class="post-author">Blade</span>
+    <span class="post-date muted">2010-02-26 08:31 UTC</span>
+  </div>
+  <div class="post-body">I saw in a post that vlax-ldata-xxx functions doesn't work with OpenDCl and it's right. But there is a method to save data with vlax-ldata-xxx when you work with OpenDCL. Lets say that we already selected an object in Autocad an appeared the OpenDCL dialog and we introduced 3 data to save to the selected object. Lets say that the dialog has a "Save" button and when we click on it the 3 entered data will be saved with vlax-ldata-put function to the selected object. Here is the code:<br>
+<br>
+(defun savedata()<br>
+(vlax-ldata-put selected_object ("MyKey1" "EnteredData1"))<br>
+(vlax-ldata-put selected_object ("MyKey2" "EnteredData2"))<br>
+(vlax-ldata-put selected_object ("MyKey3" "EnteredData3"))<br>
+)<br>
+<br>
+(defun c:test_Form1_Save_OnClicked ()<br>
+	(dcl_Control_SetKeepFocus test_Form1 NIL)    ;;Set the dialog focus ot nil<br>
+  	(dcl_Control_SetEventInvoke test_Form1 1)    ;;Enables the command line, so u can enter commands now<br>
+           (dcl_SendString "(savedata) ")                      ;;This is how you start the (savedata) function throgh the command line<br>
+	(dcl_Control_SetKeepFocus test_Form1 T)      ;;Set back the focus of the dialog<br>
+  	(dcl_Control_SetEventInvoke test_Form1 0)    ;;Disables the command line, now u can't call functions or commands through the command line<br>
+)<br>
+<br>
+<br>
+I hate EED (Extended Entity Data)  &gt;:( . The vlax-ldata-xxx more easier to use and you can save unlimited data with it  ;) . <br>
+<br>
+-LONG LIVE THE VLAX-LDATA-XXX-<br>
+<br>
+I hope i could help for some people who work with vlax-ldata-xxx function and didn't knew this little trick.  :)<br>
+<br>
+Best regards.<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg6372">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-26 13:32 UTC</span>
+  </div>
+  <div class="post-body">That's great if it works for you, but I highly discourage use of the Ldata functions. Ldata is not portable across AutoCAD versions, and its format is not documented, thereby leaving your data at the mercy of Autodesk.</div>
+</article>
+<article class="post" id="msg6373">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-26 13:37 UTC</span>
+  </div>
+  <div class="post-body">Hello, and welcome to the forum. Thank you for sharing your experiences. Unfortunately, I have to disagree with you in two points:<br>
+<br>
+<ul><br>
+<strong>I saw in a post that vlax-ldata-xxx functions doesn't work with OpenDCl and it's right.</strong><br>
+That's is wrong: Don't expect that anything can be changed in the drawing database while a modal form is shown or a syncronous event handler is running. If you want to change something in the drawing database you have either to close the form (and don't do anything in the drawing while the OnClose event is running!!!) or you have to call a asynchronous command similar to the way you've given in you post. Changing the SetKeepFocus property state is not needed. Changing the EventInvoke property state the way you did is like getting off the car before stopping it: the EventInvoke property controls the way the event handler shall be called. Changing the property state at runtime of the synchronous called event shouldn't have any effect. That's why I wouldn't trust that way. Have a look at <a href="http://www.opendcl.com/forum/index.php?topic=1171.msg6323#msg6323" rel="nofollow noopener">{2}</a> how to do that properly. In case your sample is a modeless form (or dockable or palette) I recommend you to do the following:<br>
+- set the EventInvoke property state of the Save button to 1 in OpenDCL Studio, save the project and reload the project in AutoCAD.<br>
+- the only thing you need in your event handler <br>
+</ul>(defun c:test_Form1_Save_OnClicked ()  <br>
+ (dcl_SendString "(savedata) ")<br>
+); c:test_Form1_Save_OnClicked<ul><br>
+<br>
+<strong>The vlax-ldata-xxx more easier to use and you can save unlimited data with it.</strong><br>
+That's not right. I've got an answer from ADN that there are limitations. LDATA are limited to 1023 characters (if you are saving lists convert the list into string using (vl-prin1-to-string) to get the number of reserved chars) and not at last <strong>LDATA can even destroy your drawing</strong>. We were using LDATA for years and we are converting all the LDATA into real dictionary structures. In AutoCAD 2007 vlax-ldata-list returns only the first char of the dict key. LDATA cannot be read via ActiveX.<br>
+For all unexperienced Lisp developers I can highly recommend not to use LDATA. I've already given a <a href="http://www.opendcl.com/forum/index.php?topic=449.msg2017#msg2017" rel="nofollow noopener">{2}</a>. And I'm <a href="http://www.opendcl.com/forum/index.php?topic=688.msg3340#msg3340" rel="nofollow noopener">{2}</a>.<br>
+<br>
+</ul><br>
+<br>
+If anybody has problems changing anything in the drawing database while a form is still active, let me know. I can help you to control that. Even if you use LDATA  ;) !<br>
+<br>
+Regards,<br>
+Fred</div>
+</article>
+<article class="post" id="msg6374">
+  <div class="post-head">
+    <span class="post-author">Blade</span>
+    <span class="post-date muted">2010-02-26 16:24 UTC</span>
+  </div>
+  <div class="post-body">I know that the autocad 2007 saves the first character of the ldata key and this is disturbing. What yo mean on 1023 character? I save to my objects this type of lists: ("0.00000000" "27.23496379" "39.44805586" "58.59683628" "71.28699270" "89.37963458" "111.57272113" "140.35459636" "155.17567089" "160.31370056" "212.04139236" "244.82385758" "287.00000000" "302.00000000" "323.00000000" "374.17805003" "425.25475756" "461.37503650" "492.45285970" "502.90714459" "530.26188088" "560.26502813" "591.00000000") and some lists has more than 150 of this type of data and i had never any problem.  Thats why i didn't use EED. I can open my drawings in any version of autocad and works fine the ldata except the autocad 2007.<br>
+<br>
+Tell me about real dictionary. Thanks.</div>
+</article>
+<article class="post" id="msg6375">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-26 19:29 UTC</span>
+  </div>
+  <div class="post-body">Hi, Blade,<br>
+<br>
+yes, the way you do it, is nearly the same I did.<br>
+I built a small sample for you to point the problems.<br>
+<br>
+<span style="color:navy"><strong>DXF-files including too much LDATA cannot be opened anymore.</strong></span><br>
+Once a drawing with LDATA is saved as DXF, you cannot open the DXF in AutoCAD anymore.<br>
+Have a try with the data.dxf. Can you open it?<br>
+<ul><br>
+Open data.dwg<br>
+Load the new.lsp<br>
+Type save1 into the commandline and press enter.<br>
+Select the line.<br>
+Type get_data into the commandline and press enter.<br>
+This is not much data.<br>
+Save drawing as DXF.<br>
+Close DXF file<br>
+Open DXF file anew<br>
+AutoCAD can open the DXF file<br>
+Load the new.lsp<br>
+Type save2 into the commandline and press enter.<br>
+Select the line.<br>
+Type get_data into the commandline and press enter.<br>
+This is only one additional char in Option10.<br>
+Save drawing as DXF.<br>
+Close DXF file<br>
+Open DXF file anew<br>
+AutoCAD cannot open the DXF anymore.<br>
+</ul><br>
+<br>
+<span style="color:navy"><strong>Objects cannot be managed anymore.</strong></span><br>
+<br>
+Please, tell me, which AutoCAD release are you using?<br>
+In the dbg.zip you can find some Debuggers for drawings.<br>
+<ul><br>
+Open LoangData.dwg<br>
+Load the right Debugger ARX depending on your AutoCAD release.<br>
+Type SnoopEnts into the commandline and press enter.<br>
+Pick the polygon and press enter.<br>
+A dialog appears. Press Extension Dict button<br>
+Select SC_PLANT_DATA and press DXF button.<br>
+Because of too much data this object cannot be managed anymore. Close all the forms.<br>
+The SC_PLANT_DATA key has the handle 222 in this drawing.<br>
+Type (handent "222") into the commandline. An entity is returned <br>
+Now type (entget (handent "222")) into the commandline. Note that the return value is nil.<br>
+Try it with your drawings and your objects. Is the debugger form filled with something?<br>
+</ul><br>
+<br>
+Hope this shows the problem a bit.<br>
+<br>
+Showing the way of using real dictionaries will take a while for me to prepare. I prefer the way using ActiveX. But there is also a way using Lisp only but I'm not familiar with it.<br>
+If you only save lists like in your posts I'd prefer EED as the much easiest way and not Dictionaries. Dictionaries are designed to save complex data as you can see <a href="http://www.opendcl.com/forum/index.php?topic=657.msg3283#msg3283" rel="nofollow noopener">{2}</a>. The screenshot shows the debugger info for object dictionaries.<br>
+<br>
+Regards,<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1313/ldata.zip">ldata.zip</a> <span class="muted">(45715 bytes)</span></li><li><a href="../attachments/1314/dbg.zip">dbg.zip</a> <span class="muted">(1924080 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6378">
+  <div class="post-head">
+    <span class="post-author">Blade</span>
+    <span class="post-date muted">2010-02-27 08:43 UTC</span>
+  </div>
+  <div class="post-body">I tested your sample. It really destroys the drawing if you use it like a DXF.  With DWG extension works without any problem. We use and almoust everybody, the DWG format.</div>
+</article>
+<article class="post" id="msg6379">
+  <div class="post-head">
+    <span class="post-author">Blade</span>
+    <span class="post-date muted">2010-02-27 09:06 UTC</span>
+  </div>
+  <div class="post-body">I tried your arx file under autocad 2010x32. I made a screenshot for you Fred. Check out.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1319/sample.PNG">sample.PNG</a> <span class="muted">(192339 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6380">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-27 10:45 UTC</span>
+  </div>
+  <div class="post-body">Hi, Blade, is it really necessary to add the object's handle in the dict key's? Your polyline has the handle 425DB.<br>
+Nice to hear that LDATA work for you. Our customers got very angry that they couldn't open their DXF files anymore.<br>
+It's just a matter of time until borders are reached.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg6381">
+  <div class="post-head">
+    <span class="post-author">Blade</span>
+    <span class="post-date muted">2010-02-27 11:14 UTC</span>
+  </div>
+  <div class="post-body">It's not necesary to add the handle to LDATE key. I just put it there :) With DWG files you will never have problem with LDATA only under AutoCAD 2007 :)<br>
+<br>
+I was reading an article on a site and it was wrote:<br>
+<br>
+Internally, LDATA is a collection of data dictionary records from which each record is accessed by a key name. Dictionaries are stored in a section of the drawing database different from the entities, one that is better optimized to locate and manipulate randomly structured data using a keyed reference. In the entity there is just a reference to the dictionary object. Performance for the entity is not compromised, and no limit exists as to how much data you can attach to it. To top it off, it is easier to attach LISP data such as lists of data. The LDATA functions make the job of attaching data to entities easy, as you will see in the next few paragraphs.<br>
+<br>
+here is the url: <a href="http://www.cadalyst.com/cad/autocad/attaching-data-autocad-entity-objects-4814" rel="nofollow noopener">{2}</a><br>
+<br>
+Best regards.</div>
+</article>
+<article class="post" id="msg6382">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-02-27 12:36 UTC</span>
+  </div>
+  <div class="post-body">Thank you for your reply and the link. Of course, attaching and getting LDATA is easy using vlax-ldata-... functions. I have not said anything contrary. But when you open the LongData.dwg from my previous posting and select the polygon in the drawing with the SnoopEnts command from the debugger you can see that the dictionary object cannot be managed anymore even in a DWG.<br>
+<br>
+I cannot prevent you from using LDATA. But I will warn that not everything is gold that glitters around AutoCAD.<br>
+<br>
+Regards,<br>
+Fred</div>
+</article>
+<article class="post" id="msg6383">
+  <div class="post-head">
+    <span class="post-author">Blade</span>
+    <span class="post-date muted">2010-02-27 13:40 UTC</span>
+  </div>
+  <div class="post-body">Hello Fred again. I made a screenshot of your Longdata.dwg datas, they can be accessed with LISP easy. <br>
+<br>
+Best regards.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1320/sample.PNG">sample.PNG</a> <span class="muted">(151550 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg6384">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-02-27 14:05 UTC</span>
+  </div>
+  <div class="post-body">Blade, the purpose of Fred's response is not to argue about how easy ldata is to use or how well it works for you, but to make sure that others don't mistake ldata as a good idea. No professional programmer should use ldata, and any mention of ldata should be accompanied by ample warnings about its danger.</div>
+</article>
+<article class="post" id="msg6397">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-03 22:07 UTC</span>
+  </div>
+  <div class="post-body">Hi, Blade, as I promised, I've uploaded a sample how to create dictionaries and Xrecords which can also be read by other applications than with lisp.<br>
+Note, it is only a sample. The amount of code and time depends on the data which have to be saved. I use different types of lists and structures to save.<br>
+Since I have no knowledge and experiences in doing that using AutoLISP I only did it with ActiveX. Have a look at the commands at the beginning of the file.<br>
+<br>
+Regards,<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1322/dict.LSP">dict.LSP</a> <span class="muted">(12979 bytes)</span></li></ul></div></div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

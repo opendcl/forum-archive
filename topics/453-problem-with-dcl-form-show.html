@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with dcl_Form_Show · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 453</p>
+    <h1>Problem with dcl_Form_Show</h1>
+    <p class="meta">Started by Zibster ·
+      2008-10-15 12:16 UTC ·
+      18 replies · SMF topic #453</p>
+<article class="post" id="msg2031">
+  <div class="post-head">
+    <span class="post-author">Zibster</span>
+    <span class="post-date muted">2008-10-15 12:16 UTC</span>
+  </div>
+  <div class="post-body">Hi Hey Hello :)<br>
+<br>
+I have problem with "dcl_Form_Show" on AutoCAD2009LT.<br>
+LT-Extender is okey, the others function work properly.<br>
+<br>
+(dcl_Project_Load "bik_Blacha" T)<br>
+(dcl_Form_Show bik_Blacha_frmBlachy)<br>
+<br>
+My version ODCL: 5.0.0.24<br>
+<br>
+Zbyszek<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/496/error.jpg">error.jpg</a> <span class="muted">(51672 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2032">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-15 13:52 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+I have no experiences in LT and LT Extender but how about <br>
+<br>
+(dcl_Form_Show "bik_Blacha" "frmBlachy")<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2036">
+  <div class="post-head">
+    <span class="post-author">Zibster</span>
+    <span class="post-date muted">2008-10-16 13:37 UTC</span>
+  </div>
+  <div class="post-body">Thx Fred,<br>
+<br>
+but I have ask:<br>
+(dcl_Form_Show "bik_Blacha" "frmBlachy")  - it's work in LT and Full ACAD<br>
+<br>
+why in Intelligent Help is:<br>
+AutoLISP Syntax:<br>
+(Setq Value (dcl_Form_Show bik_Blacha_frmBlachy <br>
+	 UpperLeftXCoordinate  [as Integer]  <br>
+	 UpperLeftYCoordinate  [as Integer]))<br>
+<br>
+and not:<br>
+AutoLISP Syntax:<br>
+(Setq Value (dcl_Form_Show "bik_Blacha" "frmBlachy"<br>
+	 UpperLeftXCoordinate  [as Integer]  <br>
+	 UpperLeftYCoordinate  [as Integer]))<br>
+<br>
+????<br>
+<br>
+I wrote my code in Full ACAD, but after then I have to run the same program in ACAD LT too.<br>
+Now I have to correct all the code because everywhere I have so:<br>
+for example: (dcl_Form_Show bik_Blacha_frmBlachy)... ;/<br>
+or: (dcl_ComboBox_SetCurSel bik_Blacha_frmBlachy_cmbClassSteel 0)... ;/<br>
+<br>
+The same problems are here:<br>
+1. (dcl_ComboBox_AddList "bik_Blacha" "frmBlachy" "cmbClassSteel" '("1" "2" "3" ...) )<br>
+2. (dcl_ComboBox_SetCurSel "bik_Blacha" "frmBlachy" "cmbClassSteel" 0)<br>
+3. (dcl_ComboBox_GetCurSel "bik_Blacha" "frmBlachy" "cmbClassSteel")<br>
+4... and more<br>
+<br>
+Zbyszek</div>
+</article>
+<article class="post" id="msg2038">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-16 19:08 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+as you may know, both is possible: bik_Blacha_frmBlachy and "bik_Blacha" "frmBlachy". You should prefer bik_Blacha_frmBlachy instead of using the strings to address controls and forms. In my experiences using the variables is more fast because you address the form object or the control object directly. That's why in the intelligent help the object variable is used.<br>
+<br>
+Maybe LT or the LT extender does not support the variables with the form object or the control object. You've forgotten to mention in your initial message that you already tried the strings. Now I know that.<br>
+<br>
+If your application only run in real AutoCAD when using the object variable then you have to change your code to strings to address controls and forms if it should work in both. As you can see in the <a href="http://www.lt-extender.de/LT-Extender/downloads/deutsch/extender/ReleaseNotes_de.txt" rel="nofollow noopener">{2}</a>, the LT extender was updated to allow the old ObjectDCL working correctly. So maybe the LT extender has to be updated for OpenDCL, too.<br>
+<br>
+But I want to let you know that you should take a look to the EULA. There is written that it is not allowed to extend the functionality of AutoCAD LT. Please keep this in mind.<br>
+I show you some information we got:<br>
+<br>
+<blockquote class="quote">As you know, AutoCAD LT does not support the development of applications based on ObjectARX, LISP or VBA. AutoCAD LT is degined to deliver cost effective access to full drafting productivity and is not an application development platform. Autodesk is aware that some developers are developing applications for AutoCAD LT and we would like to call your attention to the following:<br>
+<ul><br>
+AutoCAD LT is not an application development platform and does not contain an application development environment.  <br>
+Autodesk does not support application development for AutoCAD LT. <br>
+Users of AutoCAD LT must comply with the provisions of the Software License Agreement that accompanies the product. This license agreement specifically states that use of add-on applications is not acceptable. <br>
+ADN members must comply with the terms of their ADN Agreement with Autodesk and with the terms of the ObjectARX license agreement. The ObjectARX license specifically prohibits using the ObjectARX SDK to develop applications for AutoCAD LT. In addition, unauthorized copying of AutoCAD LT or any portion of its code is copyright infringement. Autodesk will vigorously protect its intellectual property rights in AutoCAD LT. <br>
+AutoCAD, AutoCAD OEM and the Vertical Desktops offer appropriate environments for developing independent applications. These products contain all necessary APIs, which are fully disclosed, and developer support for them is provided through the Autodesk Developer Network.<br>
+Because AutoCAD LT is not a development platform, programming changes may be made in future versions that cause such applications to cease functioning with AutoCAD LT. Autodesk assumes no responsibility should this occur.  <br>
+To protect AutoCAD LT customers from the risk of unauthorized and unsupported use of AutoCAD LT by third-party developers, and to protect its own image and reputation, Autodesk will take such steps as may be necessary to prevent or impede such unauthorized use.<br>
+</ul>We thank you for your support and understanding. Please contact us with any questions you may have regarding this issue.<br>
+</blockquote><br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg2041">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-10-16 21:40 UTC</span>
+  </div>
+  <div class="post-body">ObjectDCL used to use strings instead of variables, that's why the strings work &amp; the Var's don't.<br>
+</div>
+</article>
+<article class="post" id="msg2042">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-17 06:01 UTC</span>
+  </div>
+  <div class="post-body">Hello Barry,<br>
+<br>
+also in ObjectDCL variables could be used. But the variables contained an integer and not an object as in OpenDCL.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/497/objectdcl.jpg">objectdcl.jpg</a> <span class="muted">(233885 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg2043">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-10-17 11:31 UTC</span>
+  </div>
+  <div class="post-body">Hi, Zibster, have a look to the website of <a href="http://www.lt-extender.com/LT-Extender/englisch/inhalte/ueberblick/content.htm" rel="nofollow noopener">{2}</a>: he knows that not all tools will work. But you can send him your application for testing.<br>
+<br>
+(see at the end of the site "Some tips for the   command:" and "Some common notes:".)<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2099">
+  <div class="post-head">
+    <span class="post-author">Zibster</span>
+    <span class="post-date muted">2008-11-12 12:44 UTC</span>
+  </div>
+  <div class="post-body">Thx Fred,<br>
+<br>
+I have problem with this yet:<br>
+(dcl_Control_SetRowHeight "bik_Siatki" "frmSiatki" "gridStand" 22) - not work<br>
+(dcl_Control_SetRowHeight "bik_Siatki" "frmSiatki" "gridStand" "22") - not work<br>
+(dcl_Control_SetRowHeight bik_Siatki_frmSiatki_gridStand 22) - not work<br>
+(dcl_Control_SetRowHeight bik_Siatki_frmSiatki_gridStand "22") - not work<br>
+<br>
+Error: No object instance<br>
+Function: dcl_Control_SetRowHeight<br>
+Argument: 4<br>
+<br>
+what is wrong?<br>
+<br>
+Zbyszek<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg2100">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-11-12 17:36 UTC</span>
+  </div>
+  <div class="post-body">Are you asking about Acad LT?<br>
+If so it's not supported.<br>
+</div>
+</article>
+<article class="post" id="msg2101">
+  <div class="post-head">
+    <span class="post-author">Zibster</span>
+    <span class="post-date muted">2008-11-12 19:37 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=BazzaCAD link=topic=453.msg2100#msg2100 date=1226511387 wrote:</cite><br>
+Are you asking about Acad LT?<br>
+If so it's not supported.<br>
+<br>
+</blockquote><br>
+<br>
+Yes, I asked about Acad LT...<br>
+Hmm... any chance that will change in the future? :)<br>
+In Poland 75% people work on AutoCAD LT :(<br>
+My boss is stubborn as a mule and wants all applications on LT ;/<br>
+<br>
+very sad...<br>
+Zbyszek</div>
+</article>
+<article class="post" id="msg2102">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-11-12 19:44 UTC</span>
+  </div>
+  <div class="post-body">I doubt it will every be officially supported as ARX isn't officially support in LT.<br>
+</div>
+</article>
+<article class="post" id="msg2103">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-11-12 22:40 UTC</span>
+  </div>
+  <div class="post-body">Hello, everybody, I ask you to send a very small example to Mr. Moses, the programmer of OpenDCL.<br>
+Maybe he can check this, or give advices.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2104">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-11-12 23:17 UTC</span>
+  </div>
+  <div class="post-body">Who's "Mr. Moses" ?<br>
+<br>
+<blockquote class="quote"><cite> author=Fred Tomke link=topic=453.msg2103#msg2103 date=1226529613 wrote:</cite><br>
+Hello, everybody, I ask you to send a very small example to Mr. Moses, the programmer of OpenDCL.<br>
+Maybe he can check this, or give advices.<br>
+<br>
+Fred<br>
+</blockquote></div>
+</article>
+<article class="post" id="msg2105">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2008-11-13 12:07 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=453.msg2103#msg2103 date=1226529613 wrote:</cite><br>
+Mr. Moses, the programmer of OpenDCL ...<br>
+</blockquote><br>
+<br>
+Sorry, I getting older and older, my brain seems to leave me. I mean <br>
+<br>
+<strong>"Mr. Moses, the programmer of LT Extender ..."</strong><br>
+<br>
+Torsten_Moses@LT-Extender.com<br>
+<br>
+http://www.lt-extender.com/LT-Extender/englisch/kontakt/content.htm<br>
+<br>
+Sorry for this heavy mistake.<br>
+<br>
+I also slept bad, I started to translate the new OpenDCL Help to German last night.<br>
+<br>
+Fred<br>
+</div>
+</article>
+<article class="post" id="msg2108">
+  <div class="post-head">
+    <span class="post-author">Zibster</span>
+    <span class="post-date muted">2008-11-14 09:44 UTC</span>
+  </div>
+  <div class="post-body">Thanks a lot Fred :)<br>
+<br>
+I sent message to Mr. Moses and I'm waiting for answer...<br>
+<br>
+regards,<br>
+Zbyszek</div>
+</article>
+<article class="post" id="msg2422">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-02-16 16:35 UTC</span>
+  </div>
+  <div class="post-body">Hi Zibster,<br>
+<br>
+are there any news from Mr. Moses?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg2451">
+  <div class="post-head">
+    <span class="post-author">vosey</span>
+    <span class="post-date muted">2009-02-17 07:35 UTC</span>
+  </div>
+  <div class="post-body">Thanks for the advice guys, copying the common files to a folder works fine now Fred, but I understand the concerns and will ensure that the .msi file is run wherever practical. Very much appreciated.</div>
+</article>
+<article class="post" id="msg2900">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-03-06 00:17 UTC</span>
+  </div>
+  <div class="post-body">Hi, Zibster, I just got the information that the distribution of lt-extender was stopped immediately.<br>
+Mr. Moses now works for BricsCAD. That's why you may not get an answer.<br>
+<br>
+Please have a look <a href="http://www.lt-extender.com/LT-Extender/englisch/default.htm" rel="nofollow noopener">{2}</a>.<br>
+<br>
+Sorry for the bad news.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3036">
+  <div class="post-head">
+    <span class="post-author">Cider</span>
+    <span class="post-date muted">2009-03-10 07:16 UTC</span>
+  </div>
+  <div class="post-body">Hi , we got LOTS of Open DCL-Projects working with LT.<br>
+But as Torsten Moses stopped development of the Extender, we are looking<br>
+out for a possibility to use OpenDCL with Bricscad.<br>
+<br>
+Greetings<br>
+<br>
+Martin</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

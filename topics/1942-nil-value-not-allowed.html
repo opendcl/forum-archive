@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NIL value not allowed??? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1942</p>
+    <h1>NIL value not allowed???</h1>
+    <p class="meta">Started by andrew ·
+      2013-01-25 17:13 UTC ·
+      4 replies · SMF topic #1942</p>
+<article class="post" id="msg9519">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2013-01-25 17:13 UTC</span>
+  </div>
+  <div class="post-body">im at a loss here<br>
+this was working for the last 2 weeks now all the sudden its not working<br>
+<br>
+<pre class="code"><code><br>
+(defun c:newrelease_Form3_TextButton3_OnClicked (/)<br>
+   (startapp "Notepad.exe" datafile)<br>
+   (dcl_Control_SetCaption newrelease_Form3_Label6 "Refresh list after file has been saved")<br>
+)<br>
+</code></pre><br>
+<br>
+or <br>
+<br>
+<pre class="code"><code><br>
+(defun c:newrelease_Form3_TextButton3_OnClicked (/)<br>
+   (dcl_Control_SetCaption newrelease_Form3_Label6 "Refresh list after file has been saved")<br>
+   (startapp "Notepad.exe" datafile)<br>
+)<br>
+</code></pre><br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg9520">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-01-25 18:01 UTC</span>
+  </div>
+  <div class="post-body">You're going to have to describe the problem if you want help. "Not working" is not working.</div>
+</article>
+<article class="post" id="msg9521">
+  <div class="post-head">
+    <span class="post-author">andrew</span>
+    <span class="post-date muted">2013-01-25 18:24 UTC</span>
+  </div>
+  <div class="post-body">when i click the button on my project, the label is supposed to set per the first quoted code in the first post, it doesnt set. I changed it around to the second quoted code, still doesnt set.<br>
+ I get the error nill value not allowed all the sudden.<br>
+<br>
+It was working up until today.<br>
+do you see anything wrong with the code i posted?<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg9522">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2013-01-25 18:53 UTC</span>
+  </div>
+  <div class="post-body">With [Control Browser &gt; Properties &gt; Caption] check if newrelease_Form3_Label6 is still pointing to a control.</div>
+</article>
+<article class="post" id="msg9523">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-01-25 19:01 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=andrew link=topic=1942.msg9521#msg9521 date=1359138256 wrote:</cite><br>
+do you see anything wrong with the code i posted?<br>
+</blockquote><br>
+<br>
+I don't see anything wrong with the code you posted. You didn't say *which* value is NIL, but assuming there is no other code executing, the only possible NIL value is newrelease_Form3_Label6. If that symbol is NIL, then the most likely cause is that the ODCL project is either not loaded or does not define that symbol name.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

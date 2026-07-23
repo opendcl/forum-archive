@@ -1,0 +1,18 @@
+ (defun c:go ()
+   (command "OPENDCL")
+   (dcl_Project_Load "draw+" T)
+   (dcl_Form_Show draw+_Form1)
+
+   (Draw)
+   (princ)
+ )
+ (defun c:draw+_Form1_OnInitialize (/)
+   (Draw) ; this one doesn't work ??  
+   (princ)
+ )
+ (defun c:draw+_Form1_TextButton1_OnClicked (/)
+   (Draw)
+ )
+ (defun Draw ()
+   (dcl_PictureBox_DrawLine draw+_Form1_PictureBox1 '((22 10 22 34 0) (10 22 34 22 0)))
+ )

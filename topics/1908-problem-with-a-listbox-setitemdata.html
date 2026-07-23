@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem with a ListBox + SetItemData · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1908</p>
+    <h1>Problem with a ListBox + SetItemData</h1>
+    <p class="meta">Started by krunch ·
+      2012-11-02 00:42 UTC ·
+      6 replies · SMF topic #1908</p>
+<article class="post" id="msg9382">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-11-02 00:42 UTC</span>
+  </div>
+  <div class="post-body">Hi<br>
+<br>
+I have a ListBox with wich I'd want to use ItemData, but SetItemData doesn't seem to record my list ..<br>
+Example :<br>
+<br>
+(defun c:Project_Form_OnInitialize ()<br>
+    (dcl_Control_SetList Project_Form_lst0 '("a" "b" "c")<br>
+    (dcl_Control_SetItemData Project_Form_lst0 '(0 1 2))<br>
+<br>
+    (print (dcl_Control_GetItemData Project_Form_lst0))<br>
+)<br>
+&gt; (0 0 0)<br>
+<br>
+Did I miss something ?</div>
+</article>
+<article class="post" id="msg9383">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-11-02 02:23 UTC</span>
+  </div>
+  <div class="post-body">The code in your post is using the item data functions incorrectly and results in argument exceptions. If you don't see the exception message dialogs, use <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Function/SuppressMessages.htm" rel="nofollow noopener">{2}</a> to turn them back on. Please take a look at the function syntax of <a href="http://www.opendcl.com/HelpFiles/index.php?page=Reference/Method/ListBox/SetItemData.htm" rel="nofollow noopener">{2}</a> and post back if you have additional questions.</div>
+</article>
+<article class="post" id="msg9389">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-11-02 10:38 UTC</span>
+  </div>
+  <div class="post-body">Ok thanks Owen<br>
+<br>
+I had looked at the 'ItemData' property in the help .. <br>
+<blockquote class="quote">Set Function   (dcl_Control_SetItemData Project_Form_lst0 NewValue [as List of Longs]) </blockquote><br>
+Does it means that we can't apply it to List Box (only combo boxes) ?<br>
+<br>
+The error message is not triggered, even with (dcl_SuppressMessages NIL)<br>
+</div>
+</article>
+<article class="post" id="msg9390">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-11-02 16:21 UTC</span>
+  </div>
+  <div class="post-body">Sorry, I misread your original code and didn't notice that you were setting the property vs. calling the SetItemData method. It is indeed a bug, and I have fixed it now for the next build. In the meantime, you can work around the bug by getting and setting individual data for items using the GetItemData and SetItemData methods.</div>
+</article>
+<article class="post" id="msg9397">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-11-08 14:48 UTC</span>
+  </div>
+  <div class="post-body">Ok<br>
+<br>
+Just another remark : when you drag and drop items from a listbox to another the ItemData doesn't seem to follow (?)</div>
+</article>
+<article class="post" id="msg9402">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2012-11-09 04:45 UTC</span>
+  </div>
+  <div class="post-body">The default drag/drop handler is very basic and only copies the item text to the clipboard as plain text. To include the item data, it would either need to be encoded into the item text, or the list control would need to use a custom clipboard format for storing both item text and item data together. Modifying the item text is problematic because the encoded item data would then get dropped into places where it wouldn't be expected. The custom clipboard format would probably work, but it's not easy to implement.<br>
+<br>
+I'll agree that the current behavior is a bit unintuitive when dragging from listbox to listbox, but that in itself is probably not enough reason to invest the effort in implementing a new clipboard format plus the code to handle the new format during drag and drop operations. In any case, you can create a custom drag/drop handler that transfers the item data for your own listbox control, so with a little work you should be able to work around the problem locally.</div>
+</article>
+<article class="post" id="msg9406">
+  <div class="post-head">
+    <span class="post-author">krunch</span>
+    <span class="post-date muted">2012-11-09 14:56 UTC</span>
+  </div>
+  <div class="post-body">ok, this structure is already enough to do many things and it's true that we can transfer the item data with dragndrop event .. Thanks</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

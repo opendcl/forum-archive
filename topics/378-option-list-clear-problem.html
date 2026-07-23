@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Option List Clear Problem · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 378</p>
+    <h1>Option List Clear Problem</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2008-07-16 23:08 UTC ·
+      6 replies · SMF topic #378</p>
+<article class="post" id="msg1671">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-07-16 23:08 UTC</span>
+  </div>
+  <div class="post-body">I'm having problems clearing and replacing the Strings in an Option List.<br>
+The Clear Method  only works if I select (give focus to) the Option Control first, then select the button.<br>
+The AddString Method works as expected.<br>
+The DeleteString Method appears to not work.<br>
+The AddList Method works as expected<br>
+<br>
+Note the Row count displays as if the items were removed :-)<br>
+<br>
+This option is probably not used much, but I'd like to have the options dynamic, dependant on run-time conditions.<br>
+<br>
+Any ideas ?<br>
+<br>
+<br>
+<br>
+<br>
+;;;----------------------------------------------------------------------------<br>
+(defun c:doit () (clearoptionstest) (princ))<br>
+;;--------------------<br>
+<br>
+(defun clearoptionstest ()<br>
+  (dcl_project_load "ClearOptionsTest.odcl" t)<br>
+  (dcl_form_show clearoptionstest_form1)<br>
+  (princ)<br>
+)<br>
+;;;----------------------------------------------------------------------------<br>
+(defun _setcountlabel ()<br>
+  (dcl_control_setcaption<br>
+    clearoptionstest_form1_countlabel<br>
+    (strcat<br>
+      "Row Count is "<br>
+      (itoa<br>
+        (dcl_optionlist_getcount clearoptionstest_form1_optionlist1)<br>
+      )<br>
+    )<br>
+  )<br>
+)<br>
+<br>
+;;;----------------------------------------------------------------------------<br>
+;;; API EVENTS <br>
+;;;----------------------------------------------------------------------------<br>
+(defun c:clearoptionstest_form1_oninitialize (/)<br>
+  (dcl_optionlist_clear clearoptionstest_form1_optionlist1)<br>
+  (dcl_optionlist_addlist clearoptionstest_form1_optionlist1<br>
+                          (list "1" "2" "3")<br>
+  )<br>
+  (_setcountlabel)<br>
+)<br>
+;;--------------------<br>
+(defun c:clearoptionstest_form1_addstringbtn_onclicked (/)<br>
+  (dcl_optionlist_addstring clearoptionstest_form1_optionlist1<br>
+                            "Roses are Red, Violets are Blue ... "<br>
+  )<br>
+  (_setcountlabel)<br>
+)<br>
+;;--------------------<br>
+(defun c:clearoptionstest_form1_removefirstbtn_onclicked (/)<br>
+  (dcl_optionlist_deletestring clearoptionstest_form1_optionlist1 0)<br>
+  (_setcountlabel)<br>
+)<br>
+;;--------------------<br>
+(defun c:clearoptionstest_form1_clearbtn_onclicked (/)<br>
+  (dcl_optionlist_clear clearoptionstest_form1_optionlist1)<br>
+  (_setcountlabel)<br>
+)<br>
+;;--------------------<br>
+(defun c:clearoptionstest_form1_addlistbtn_onclicked (/)<br>
+  (dcl_optionlist_clear clearoptionstest_form1_optionlist1)<br>
+  (dcl_optionlist_addlist clearoptionstest_form1_optionlist1<br>
+                          (list "First Option Field"<br>
+                                "Second Option Field"<br>
+                                "Third Option Field"<br>
+                          )<br>
+  )<br>
+  (_setcountlabel)<br>
+)<br>
+<br>
+;;;----------------------------------------------------------------------------<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/443/ClearOptionsTest.png">ClearOptionsTest.png</a> <span class="muted">(9503 bytes)</span></li><li><a href="../attachments/444/ClearOptionsTest.odcl">ClearOptionsTest.odcl</a> <span class="muted">(971 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg1672">
+  <div class="post-head">
+    <span class="post-author">bazzacad</span>
+    <span class="post-date muted">2008-07-16 23:11 UTC</span>
+  </div>
+  <div class="post-body">Welcome back, long time no see. :)<br>
+I'm guessing bug, maybe Owen will confirm.<br>
+You're on the latest build right?<br>
+</div>
+</article>
+<article class="post" id="msg1673">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-07-16 23:13 UTC</span>
+  </div>
+  <div class="post-body">Hi Barry<br>
+<br>
+Build 5.0.0.19<br>
+<br>
+<br>
+I've been flat out busy ... hardly been able to find time to scratch myself  ;)</div>
+</article>
+<article class="post" id="msg1674">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-07-16 23:18 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Addendum:<br>
+I've tried the SetFocus Method for the OptionList Programmatically ..<br>
+and tried the ForceUpdateNow Method<br>
+<br>
+it <em>may</em> be a buglet.<br>
+</div>
+</article>
+<article class="post" id="msg1706">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2008-07-28 19:36 UTC</span>
+  </div>
+  <div class="post-body">This should be fixed in Alpha 20.  BTW, it would help me keep organized if you could add bug reports to the bug tracker on SourceForge.</div>
+</article>
+<article class="post" id="msg1718">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-07-29 22:20 UTC</span>
+  </div>
+  <div class="post-body"><br>
+Hi Owen<br>
+<br>
+It was added to SourceForge .. just a bit late 'cause I couldn't remember my access details :(<br>
+<br>
+The optionlist_DeleteString does not work in Alpha 20 ; <br>
+The optionlist_Clear works as expected now.<br>
+<br>
+regards<br>
+Kerry<br>
+</div>
+</article>
+<article class="post" id="msg1728">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2008-07-30 22:17 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">See if you have better luck after changing<br>
+"Drag/Drop Allow Begin" to False for the [Remove first] button.</blockquote><br>
+<br>
+Yes, that did the trick!<br>
+<br>
+Thanks<br>
+<br>
+</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

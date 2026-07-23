@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dcl_ListView_CancellabelEdit · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/3-studio-dialog-editor.html">Studio/Dialog Editor</a> /
+      Topic 97</p>
+    <h1>dcl_ListView_CancellabelEdit</h1>
+    <p class="meta">Started by dbalogh ·
+      2007-11-23 11:40 UTC ·
+      2 replies · SMF topic #97</p>
+<article class="post" id="msg402">
+  <div class="post-head">
+    <span class="post-author">dbalogh</span>
+    <span class="post-date muted">2007-11-23 11:40 UTC</span>
+  </div>
+  <div class="post-body">Hi again,<br>
+<br>
+I just try to get a cell locked in my grid. The Object browser offers the method:<br>
+<br>
+(dcl_ListView_CancelItemEdit BOM_Builder_R12_Form2_Grid11).<br>
+<br>
+When writing the code to lisp, the function is not recognized, but there is a function called<br>
+<br>
+dcl_ListView_CancellabelEdit,<br>
+which is unfortunatelly not listed/described in the object browser.<br>
+So I guess, the new one replaced CancelItemEdit, but how to call this function?<br>
+<br>
+Just giving it into <br>
+(defun c:BOM_Builder_R12_Form2_Grid11_OnSelChanged (nRow nCol /)<br>
+  (dcl_ListView_CancellabelEdit BOM_Builder_R12_Form2_Grid11)<br>
+)<br>
+does not work.<br>
+<br>
+Thanks again,<br>
+Daniel</div>
+</article>
+<article class="post" id="msg603">
+  <div class="post-head">
+    <span class="post-author">dayange</span>
+    <span class="post-date muted">2008-01-22 06:46 UTC</span>
+  </div>
+  <div class="post-body">I found a slip of pen: in grid control intelligent help, the CancelItemEdit function is written as(dcl_ListView_CancelItemEdit), the right function should be (dcl_Grid_CancelItemEdit).</div>
+</article>
+<article class="post" id="msg608">
+  <div class="post-head">
+    <span class="post-author">dbalogh</span>
+    <span class="post-date muted">2008-01-23 06:18 UTC</span>
+  </div>
+  <div class="post-body">Will check it!<br>
+Thanx,<br>
+Daniel</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>String length · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 2317</p>
+    <h1>String length</h1>
+    <p class="meta">Started by velasquez ·
+      2015-10-03 11:46 UTC ·
+      6 replies · SMF topic #2317</p>
+<article class="post" id="msg11656">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2015-10-03 11:46 UTC</span>
+  </div>
+  <div class="post-body">I had to use an invisible grid control to know the length of a string with dcl-Grid-CalcColumnWidth and pass the value to the width of a Label control in design mode. The width of the Label control will set the width of a Modal form en OnInitialize.<br>
+Does anyone know a better way to work with this?<br>
+<br>
+Thanks,<br>
+Velasquez</div>
+</article>
+<article class="post" id="msg11657">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-10-04 17:58 UTC</span>
+  </div>
+  <div class="post-body">Am I understanding correctly that the width and caption of the label are ultimately fixed and you are doing this to get zero margins?</div>
+</article>
+<article class="post" id="msg11658">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2015-10-05 12:27 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2317.msg11657#msg11657 date=1443981508 wrote:</cite><br>
+Am I understanding correctly that the width and caption of the label are ultimately fixed and you are doing this to get zero margins?<br>
+</blockquote><br>
+<br>
+Hello Roy,<br>
+I need to create a modal form that works like AutoCAD Alert or as dcl-MessageBox in OpenDCL.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2181/forms.png">forms.png</a> <span class="muted">(3358 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11659">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-10-05 16:29 UTC</span>
+  </div>
+  <div class="post-body">In your first post when you say 'design mode', which I have interpreted as 'design time', you in fact mean 'at run time'.<br>
+It is an interesting problem and I think your solution is pretty clever, but I don't know a better one. I have checked dcl-Control-GetProperties and dcl-Control-Dump but they do not provide useful hidden information.</div>
+</article>
+<article class="post" id="msg11660">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2015-10-05 18:09 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2317.msg11659#msg11659 date=1444062585 wrote:</cite><br>
+In your first post when you say 'design mode', which I have interpreted as 'design time', you in fact mean 'at run time'.<br>
+It is an interesting problem and I think your solution is pretty clever, but I don't know a better one. I have checked dcl-Control-GetProperties and dcl-Control-Dump but they do not provide useful hidden information.<br>
+</blockquote><br>
+When you have talked at runtime. <br>
+Use the hidden grid was the best I have found.<br>
+Thanks Roy<br>
+<br>
+(defun c:test_form_OnInitialize (/ JoyWidth)<br>
+;;;Calculating the width of the Label control<br>
+  (setq JoyWidth (dcl-grid-calccolumnwidth test/form/Grid1 strText)) ;_ visible = false<br>
+;;; Apply the width of the form <br>
+  (dcl-control-setwidth test/form (+ JoyWidth 8))<br>
+;;; Apply the width in Label control<br>
+  (dcl-control-setwidth proj/form/label JoyWidth)<br>
+;;;<br>
+  (dcl-control-setcaption test/form/label strText)<br>
+) ;_ fim de defun<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/2182/forms-1.png">forms-1.png</a> <span class="muted">(8672 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg11661">
+  <div class="post-head">
+    <span class="post-author">roy_043</span>
+    <span class="post-date muted">2015-10-06 08:12 UTC</span>
+  </div>
+  <div class="post-body">Thank you for sharing the code.<br>
+If you set 'Use Right From Right' to 1 for the label its width should automatically change with the width of the form.</div>
+</article>
+<article class="post" id="msg11664">
+  <div class="post-head">
+    <span class="post-author">velasquez</span>
+    <span class="post-date muted">2015-10-06 21:56 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=roy_043 link=topic=2317.msg11661#msg11661 date=1444119160 wrote:</cite><br>
+Thank you for sharing the code.<br>
+If you set 'Use Right From Right' to 1 for the label its width should automatically change with the width of the form.<br>
+</blockquote><br>
+<br>
+Thank you Roy<br>
+I used your suggestion.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

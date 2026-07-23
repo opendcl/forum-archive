@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SetBackColor and Performance in PictureBoxes · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 730</p>
+    <h1>SetBackColor and Performance in PictureBoxes</h1>
+    <p class="meta">Started by fred_tomke ·
+      2009-04-27 07:52 UTC ·
+      2 replies · SMF topic #730</p>
+<article class="post" id="msg3565">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-27 07:52 UTC</span>
+  </div>
+  <div class="post-body">Hello,<br>
+<br>
+before adding a bug report I want to ask if somebody can reproduce my experiences. I attached a small project a I've changed a bit so you won't need the whole appliaction.<br>
+<br>
+Load the LISP and add the odcl-file to a support path. Command: house<br>
+<br>
+Using ODCL <strong>5.0.2.4</strong>:<br>
+The form will be shown very quick and when I move the mouse over the images the backcolor of the underlaying picture will be changed.<br>
+<br>
+Using ODCL <strong>5.1.0.3</strong>:<br>
+The form will be shown much slowlier picture by picture and when I move the mouse over the images the backcolor of the underlaying picture will <strong>not</strong> be changed.<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/687/090427.zip">090427.zip</a> <span class="muted">(97933 bytes)</span></li><li><a href="../attachments/688/5_0_2_4.gif">5_0_2_4.gif</a> <span class="muted">(81879 bytes)</span></li><li><a href="../attachments/689/5_1_0_3.gif">5_1_0_3.gif</a> <span class="muted">(70435 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg3566">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-04-27 08:08 UTC</span>
+  </div>
+  <div class="post-body">Ok, got it in Rev. 201, PictureBox.cpp, Line 279: What does <strong>CopyDC();</strong> do?<br>
+<br>
+After moving this line back from Refresh-Method to SetPicture it works well again. But I know that's not the solution. What was the idea to move this line to Refresh?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg3568">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-04-27 13:10 UTC</span>
+  </div>
+  <div class="post-body">CopyDC updates the cached graphics by taking a new snapshot of what is displayed. The change fixed a bug reported in the bug tracker.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

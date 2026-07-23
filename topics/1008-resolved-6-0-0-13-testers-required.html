@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[Resolved] [6.0.0.13] Testers required. · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1008</p>
+    <h1>[Resolved] [6.0.0.13] Testers required.</h1>
+    <p class="meta">Started by Kerry Brown ·
+      2009-11-11 10:15 UTC ·
+      41 replies · SMF topic #1008</p>
+<article class="post" id="msg5136">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-11 10:15 UTC</span>
+  </div>
+  <div class="post-body">NOTE: All issues raised in this thread were related to a particular series of builds where the control painting methodology was being redesigned.<br>
+These issues have now been RESOLVED.<br>
+kwb.<br>
+///------------------------------------------------------------------------------------------<br>
+<br>
+I'd like as many people as possible to try to run this code.<br>
+<br>
+It's a simple Tab Control with 3 Pages<br>
+<br>
+When the code is run ;<br>
+<br>
+Command : DOIT<br>
+<br>
+The user should see Page 1<br>
+.. a TextButton, A textBox and a Graphics Button.<br>
+Ditto for Page 2<br>
+Ditto for Page 3.<br>
+<br>
+If you can't see the controls, just move the mouse pointer over the tab page.<br>
+If you can't see the TextBox properly, Click the button.<br>
+if you cant see the graphicButton Select (Pick) on the Tab Page till you find it.<br>
+<br>
+This is not a trick program.<br>
+I'm getting different results on different computers ...<br>
+Please post back with your results <br>
+and AcaD Version, OpenDCL Version, Machine details(if possible). <br>
+<br>
+Best Regards and Thanks<br>
+kerry<br>
+<br>
+<br>
+<br>
+;; Test Code<br>
+;; 20091111 kdub@home<br>
+<br>
+;|&lt;&gt;|;<br>
+<br>
+<br>
+(defun c:doit () (c:Test60012b))<br>
+<br>
+;;----------------------------------------------------------------<br>
+(defun c:Test60012b (/ DialogReturn)<br>
+  (command "_OPENDCL")<br>
+  (dcl_Project_Load "kdub60012b.odcl" T)<br>
+  ;; Show the main form<br>
+  (setq DialogReturn (dcl_Form_Show kdub60012b_Main))<br>
+  ;;------<br>
+  (princ)<br>
+)<br>
+ ;|&lt;&gt;|;<br>
+<br>
+ ;|&lt;&gt;|;<br>
+<br>
+<br>
+;;-----------<br>
+;;-----------<br>
+(princ " &lt;&lt; Enter DOIT or 'Test60012b' command to run &gt;&gt; \n")<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1027/2009-11-11Test60012b.png">2009-11-11Test60012b.png</a> <span class="muted">(59040 bytes)</span></li><li><a href="../attachments/1028/kdub60012b.odcl">kdub60012b.odcl</a> <span class="muted">(1336 bytes)</span></li><li><a href="../attachments/1029/kdub60012-B.lsp">kdub60012-B.lsp</a> <span class="muted">(629 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5137">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2009-11-11 14:41 UTC</span>
+  </div>
+  <div class="post-body">Fast check in one of my workplace mashine in two ver. of ACAD.<br>
+At home, i will check on my notebook, and workstation, with more runtime versions.<br>
+<br>
+So now.<br>
+-----<br>
+AMD Athlon 64 x2 5000+ 2.60 GHZ <br>
+2 GB of RAM<br>
+on Gygabyte Tech M720-US3<br>
+Windows XP Pro sp.3 (5.1, Build 2600)<br>
+NVIDIA GeForce 8600 GT, with old driver=&gt; 6.14.11.6923<br>
+DirectX 9.0c (4.09.0000.0904)<br>
+Visual Style (Theme) =&gt; WindowsXp Default(blue)<br>
+-----<br>
+<br>
+OpenDCL Runtime [5.1.2.3]<br>
+<br>
+:ACAD 2004<br>
+----------------<br>
+Command: acadver<br>
+  ACADVER = "16.0s (LMS Tech)" (read only)<br>
+Command: _vernum<br>
+  _VERNUM = "V.0.86" (read only)<br>
+<br>
+:ACAD 2010<br>
+----------------<br>
+Command: acadver<br>
+  ACADVER = "18.0s (LMS Tech)" (read only)<br>
+Command: _vernum<br>
+  _VERNUM = "D.215.0.0 (UNICODE)" (read only)<br>
+<br>
+<br>
+ No problems. Everything looks fine.</div>
+</article>
+<article class="post" id="msg5138">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-11 16:03 UTC</span>
+  </div>
+  <div class="post-body">Hi Kerry,<br>
+<br>
+easy answer:<br>
+<br>
+Every Machine: Visual Styles enabled, OpenDCL 6.0.0.12 DEU, ODCL-project read from network drive via additional supportpath<br>
+All (but one) AutoCAD releases DEU<br>
+<br>
+Machine 1 (Tower): WinXP x86 DEU, AMD XP 3200+, 2GB RAM, ATI RADEON 7500<br>
+Tested in: AutoCAD 2004, AutoCAD 2008, Map 2008, Civil 3D 2009 (all x86)<br>
+Result: All controls are shown properly, no flickering, nothing bad to tell.<br>
+<br>
+Machine 2 (Tower): Win Vista x64 DEU, Intel Xeon E5504, 12 GB RAM, NVIDIA Quadro FX 580<br>
+Tested in: AutoCAD 2010 x64, AutoCAD R18.1 x64 Beta 1 ENU<br>
+Result: All controls are shown properly, no flickering, nothing bad to tell.<br>
+<br>
+Machine 3 (Notebook): Win 7 x64 DEU, Intel Core2Duo T7300, 4GB RAM, NVIDIA GeForce 8600M GT<br>
+Tested in AutoCAD Map 2010 x64<br>
+Result: All controls are shown properly, no flickering, nothing bad to tell.<br>
+<br>
+On Windows 7 x64 I suggest to call the form again and again and again: I have the feeling that my forms are getting slowlier and slowlier each time they have to be shown. I'm still testing our product on Win 7 x64, too.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5139">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2009-11-12 11:04 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Slavko.Ivanovic link=topic=1008.msg5137#msg5137 date=1257950479 wrote:</cite><br>
+Fast check in one of my workplace mashine in two ver. of ACAD.<br>
+At home, i will check on my notebook, and workstation, with more runtime versions.<br>
+<br>
+So now.<br>
+-----<br>
+AMD Athlon 64 x2 5000+ 2.60 GHZ <br>
+2 GB of RAM<br>
+on Gygabyte Tech M720-US3<br>
+Windows XP Pro sp.3 (5.1, Build 2600)<br>
+NVIDIA GeForce 8600 GT, with old driver=&gt; 6.14.11.6923<br>
+DirectX 9.0c (4.09.0000.0904)<br>
+Visual Style (Theme) =&gt; WindowsXp Default(blue)<br>
+-----<br>
+<br>
+OpenDCL Runtime [5.1.2.3]<br>
+<br>
+:ACAD 2004<br>
+----------------<br>
+Command: acadver<br>
+  ACADVER = "16.0s (LMS Tech)" (read only)<br>
+Command: _vernum<br>
+  _VERNUM = "V.0.86" (read only)<br>
+<br>
+:ACAD 2010<br>
+----------------<br>
+Command: acadver<br>
+  ACADVER = "18.0s (LMS Tech)" (read only)<br>
+Command: _vernum<br>
+  _VERNUM = "D.215.0.0 (UNICODE)" (read only)<br>
+<br>
+<br>
+ No problems. Everything looks fine.<br>
+</blockquote><br>
+<br>
+NEWS!<br>
+Test no.2.<br>
+Same machine, same ACADs, <br>
+but i have just installed:<br>
+<br>
+OpenDCL Runtime [6.0.0.12]<br>
+<br>
+and...<br>
+In both ver of AutoCAD same (bad) behavior:<br>
+<br>
+--------<br>
+<strong>Always on Start or Tab change :</strong><br>
+I <strong>only can see Text Box </strong> , but looks like disabled and i can not see text inside. <br>
+--------<br>
+<br>
+after showing...<br>
+<br>
+scenario: <br>
+1. If I first click in Text Box I see this control correct. <br>
+   When I click in Text Box <strong>Graphic Button get visible</strong>, but Text Button is still not visible. <br>
+<br>
+scenario: <br>
+2. If I first move mouse pointer over area where Text Button should be, <strong>then (on mouse over) Text Button get visible</strong>.<br>
+   Text Button get visible, but still can't see Graphic Button, and Text Box still look's like disabled.<br>
+<br>
+scenario:<br>
+3. If I first click in area where Graphic Button should be, <strong>then (on mouse click) Graphic Button get visible</strong>.<br>
+    But Text Button is still not visible, and Text Box still look's like disabled.<br>
+<br>
+--------------------<br>
+<br>
+So after this i tested some of my forms with Tab controls, and they are "acting strange".<br>
+Example in one form, when i change Tab, some controls in that Tab have delay 1-3 sec before get visible.<br>
+<br>
+So, on absolutely same configuration:<br>
+OpenDCL Runtime [5.1.2.3] - NO PROBLEMS OF ANY KIND<br>
+OpenDCL Runtime [6.0.0.12] - FORM and CONTROL SHOW PROBLEMS<br>
+ <br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5140">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-12 12:12 UTC</span>
+  </div>
+  <div class="post-body">Hi,<br>
+<br>
+<blockquote class="quote">AMD Athlon XP 3200+, 1x2,2 GHz <br>
+2 GB of RAM<br>
+on MSI KT6 Delta-FISR (MS-6590 v2.0)<br>
+Windows XP DEU Version 5.1.2600 Service Pack 3 Build 2600<br>
+ATI Radeon 7500 DDR using Windows Driver (uses no CCC!)<br>
+DirectX 9.0 (installed by AutoCAD, no idea how to find the subversion)<br>
+Visual Style (Theme) <br>
+tried with WindowsXp Default(blue)<br>
+tried with WindowsXp Silver<br>
+tried with WindowsXp Olive<br>
+tried with Windows Classic<br>
+-----<br>
+<br>
+OpenDCL Runtime [6.0.0.12]<br>
+<br>
+:ACAD 2004<br>
+----------------<br>
+Command: acadver<br>
+  ACADVER = "16.0s (LMS Tech)" (read only)<br>
+Command: _vernum<br>
+  _VERNUM = "V.0.86" (read only)<br>
+<br>
+:ACAD 2008<br>
+----------------<br>
+Befehl: acadver<br>
+ACADVER = "17.1s (LMS Tech)" (schreibgeschützt)<br>
+Befehl: _vernum<br>
+_VERNUM = "B.51.0 (UNICODE)" (schreibgeschützt)<br>
+<br>
+</blockquote><br>
+<br>
+I've tried several combinations of Visual Styles, Hardware accelerations and manual tuning of _3dconfig.<br>
+In every case I can see no problems.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5141">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2009-11-12 12:34 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote">DirectX 9.0 (installed by AutoCAD, no idea how to find the subversion)</blockquote><br>
+<br>
+[WINKey+R], dxdiag <br>
+<br>
+Start -&gt; Run -&gt; dxdiag -&gt; OK</div>
+</article>
+<article class="post" id="msg5143">
+  <div class="post-head">
+    <span class="post-author">Slavko.Ivanovic</span>
+    <span class="post-date muted">2009-11-12 13:58 UTC</span>
+  </div>
+  <div class="post-body">Test no.3.<br>
+<br>
+shortly:<br>
+My notebook IBM  THINKPAD T43.<br>
+XP Pro. SP3<br>
+<br>
+:Acad 2004<br>
+:Acad 2009<br>
+:Acad 2010<br>
+<br>
+all ENU.<br>
+<br>
+OpenDCL Runtime [5.1.2.3] -&gt; ALL OK !<br>
+OpenDCL Runtime [6.0.0.12] -&gt; PROBLEMS SAME LIKE IN MY Test no.2.<br>
+</div>
+</article>
+<article class="post" id="msg5144">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-12 14:56 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Slavko.Ivanovic link=topic=1008.msg5141#msg5141 date=1258029278 wrote:</cite><br>
+Start -&gt; Run -&gt; dxdiag -&gt; OK<br>
+</blockquote><br>
+<br>
+Thanks, now I know that I have 4.09.0000.0904, too.<br>
+I see, the only difference between our workstations must be the language  ;) ?<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5149">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-12 20:04 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Slavko.Ivanovic link=topic=1008.msg5139#msg5139 date=1258023857 wrote:</cite><br>
+<br>
+NEWS!<br>
+Test no.2.<br>
+Same machine, same ACADs, <br>
+but i have just installed:<br>
+<br>
+OpenDCL Runtime [6.0.0.12]<br>
+<br>
+and...<br>
+In both ver of AutoCAD same (bad) behavior:<br>
+<br>
+--------<br>
+<strong>Always on Start or Tab change :</strong><br>
+I <strong>only can see Text Box </strong> , but looks like disabled and i can not see text inside. <br>
+--------<br>
+<br>
+after showing...<br>
+<br>
+scenario: <br>
+1. If I first click in Text Box I see this control correct. <br>
+   When I click in Text Box <strong>Graphic Button get visible</strong>, but Text Button is still not visible. <br>
+<br>
+scenario: <br>
+2. If I first move mouse pointer over area where Text Button should be, <strong>then (on mouse over) Text Button get visible</strong>.<br>
+   Text Button get visible, but still can't see Graphic Button, and Text Box still look's like disabled.<br>
+<br>
+scenario:<br>
+3. If I first click in area where Graphic Button should be, <strong>then (on mouse click) Graphic Button get visible</strong>.<br>
+    But Text Button is still not visible, and Text Box still look's like disabled.<br>
+<br>
+--------------------<br>
+<br>
+So after this i tested some of my forms with Tab controls, and they are "acting strange".<br>
+Example in one form, when i change Tab, some controls in that Tab have delay 1-3 sec before get visible.<br>
+<br>
+So, on absolutely same configuration:<br>
+OpenDCL Runtime [5.1.2.3] - NO PROBLEMS OF ANY KIND<br>
+OpenDCL Runtime [6.0.0.12] - FORM and CONTROL SHOW PROBLEMS<br>
+ <br>
+<br>
+</blockquote><br>
+<br>
+THANK YOU !!!!<br>
+<br>
+I have the same issue on several machines.<br>
+<br>
+////... <br>
+<br>
+Just for Info : are any of the tests using a dual monitor setup ??<br>
+</div>
+</article>
+<article class="post" id="msg5150">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-12 20:22 UTC</span>
+  </div>
+  <div class="post-body">Yes, I have. I wanted to tell it in my last post but I deleted it because I thought it would not be important. I have no display problems on all three machines. My XP tower with the Radeon 7500 graphics card uses 2 Samsung 2343BW with a resolution of 2048 x 1152 for each.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5151">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-12 20:53 UTC</span>
+  </div>
+  <div class="post-body">There is definitely a problem, but I'm not sure what the solution is.  For Alpha 13, I'll try making a few small changes to see if anything changes.</div>
+</article>
+<article class="post" id="msg5152">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-13 04:11 UTC</span>
+  </div>
+  <div class="post-body">Here's another one which is causing me trouble.<br>
+<br>
+I have Slides that the user selects a location on. Dependant on the location selected, some textBox and Buttons may be made visible.<br>
+<br>
+This is a sample.<br>
+<br>
+Note that the draw method in both the slide and PictureBox seems to not work at initialisation.<br>
+.. (but perhaps I'm doing something wrong 'cause I bashed this together.<br>
+<br>
+<br>
+If you comment the code <br>
+<br>
+  (dcl_slideview_fillimage test_1113a_main_slideview1  <br>
+                           (list (list x y 10 20 3))  <br>
+  )  <br>
+  (dcl_slideview_endimage test_1113a_main_slideview1) <br>
+<br>
+in c:test_1113a_main_slideview1_onmousedown (so that the fillImage Method is not used) the SetVisible works as expected.<br>
+<br>
+ <br>
+<br>
+(vl-load-com)<br>
+(command "OPENDCL")<br>
+<br>
+;; Test Code  <br>
+;; 20091113 kdub@work  <br>
+<br>
+;|&lt;&gt;|;<br>
+<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;; (findfile "Test_1113A.ODCL")<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:test_1113a (/ dialogreturn)<br>
+  (dcl_project_load "Test_1113A.ODCL" t)<br>
+  ;; Show the main form  <br>
+  (setq dialogreturn (dcl_form_show test_1113a_main))<br>
+  ;;------  <br>
+  (princ)<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;|&lt;&gt;|;<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;; <br>
+;|&lt;&gt;|;<br>
+<br>
+(defun c:test_1113a_main_oninitialize (/)<br>
+  (dcl_control_setvisible test_1113a_main_textbutton1 nil)<br>
+  (dcl_control_setvisible test_1113a_main_textbox1 nil)<br>
+  (dcl_control_setvisible test_1113a_main_textbutton2 nil)<br>
+  (dcl_control_setvisible test_1113a_main_textbox2 nil)<br>
+  ;;<br>
+  (dcl_control_setbackcolor test_1113a_main_picturebox1 8)<br>
+  (dcl_picturebox_drawcircle<br>
+    test_1113a_main_picturebox1<br>
+    (list (list 10 10 30 30 2) (list 30 30 20 40 6))<br>
+  )<br>
+  (dcl_PictureBox_StoreImage test_1113A_Main_PictureBox1)<br>
+  (dcl_slideview_fillimage test_1113a_main_slideview1<br>
+                           (list (list 30 30 25 25 3))<br>
+  )<br>
+  (dcl_slideview_endimage test_1113a_main_slideview1)<br>
+)<br>
+;;;-------------------------------------------<br>
+;;;<br>
+(defun c:test_1113a_main_picturebox1_onmousedown (button flags x y /)<br>
+  (dcl_control_setvisible test_1113a_main_textbutton1 t)<br>
+  (dcl_control_setvisible test_1113a_main_textbox1 t)<br>
+  ;;<br>
+  (dcl_picturebox_drawcircle<br>
+    test_1113a_main_picturebox1<br>
+    (list (list (- x 15) (- y 15)  30 30 3) )<br>
+  )<br>
+  (dcl_PictureBox_StoreImage test_1113A_Main_PictureBox1)<br>
+)<br>
+;;;-------------------------------------------<br>
+;;;<br>
+(defun c:test_1113a_main_slideview1_onmousedown (button flags x y /)<br>
+  (dcl_control_setvisible test_1113a_main_textbutton2 t)<br>
+  (dcl_control_setvisible test_1113a_main_textbox2 t)<br>
+  (setq xx x)<br>
+  (setq yy y)<br>
+  (dcl_slideview_fillimage test_1113a_main_slideview1<br>
+                           (list (list x y 10 20 3))<br>
+  )<br>
+  (dcl_slideview_endimage test_1113a_main_slideview1)<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+<br>
+(prompt "\n TEST_1113A to run.")<br>
+(princ)<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1030/SlideView xx.png">SlideView xx.png</a> <span class="muted">(19150 bytes)</span></li><li><a href="../attachments/1032/test_1113A.odcl">test_1113A.odcl</a> <span class="muted">(1022 bytes)</span></li><li><a href="../attachments/1033/Test_1113A.LSP">Test_1113A.LSP</a> <span class="muted">(2456 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5153">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-13 04:25 UTC</span>
+  </div>
+  <div class="post-body">It is not possible to draw on a picturebox in OnInitialize because the picture box is not yet visible at that point. This is the case because the draw methods draw directly onto the display. The same thing would happen with slideimage. For the picture box, you can do the drawing during OnPaint.</div>
+</article>
+<article class="post" id="msg5154">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-13 04:34 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen,<br>
+I don't usually draw on initialise, just tried for this sample. ... I'll keep that in mind for future.<br>
+<br>
+added:<br>
+I would like to draw in the slide to indicate the location selected though <br>
+... this is why ... see the green marker, it indicates the reference point selected<br>
+<br>
+<br>
+Just for info, the 'Insert Options' and 'Draw 2D' 'Draw 3D' buttons don't display untill the workpoint is selected.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1034/SlideView xxx.png">SlideView xxx.png</a> <span class="muted">(24650 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5156">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2009-11-13 14:49 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=1008.msg5136#msg5136 date=1257934500 wrote:</cite><br>
+<br>
+I'd like as many people as possible to try to run this code.<br>
+<br>
+It's a simple Tab Control with 3 Pages<br>
+<br>
+</blockquote><br>
+<br>
+Tested on ODCL - 6.0.0.12, AutoCAD 2007 though to 2010, Bricscad Pro v10<br>
+<br>
+Laptop (Windows XP Pro v2002 SP3, x86) - all working well<br>
+Tower (Windows Vista Ultimate SP1, x86) - none work (controls not painting themselves on the tabs)</div>
+</article>
+<article class="post" id="msg5167">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-16 23:31 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=owenwengerd link=topic=1008.msg5151#msg5151 date=1258059199 wrote:</cite><br>
+There is definitely a problem, but I'm not sure what the solution is.  For Alpha 13, I'll try making a few small changes to see if anything changes.<br>
+</blockquote><br>
+<br>
+In 6.0.0.13 for me, the problem persists. <br>
+.. for both samples posted.<br>
+<br>
+Regards<br>
+Kerry<br>
+ </div>
+</article>
+<article class="post" id="msg5168">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-17 00:58 UTC</span>
+  </div>
+  <div class="post-body">Rats. :(</div>
+</article>
+<article class="post" id="msg5169">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-17 01:41 UTC</span>
+  </div>
+  <div class="post-body"><br>
+I don't know if this will help or not ...<br>
+<br>
+The SlideControl MouseDown Event does not show buttons ( same as previous demo)<br>
+.. also does not add Text to textBox.<br>
+<br>
+The  SlideControl FillImage is not contained in Slide Control .. spills over into form.<br>
+<br>
+When the Piccy is selected when the current focus is on the SlideControl it takes 2 selections in the PiccyControl for the MouseDown event to be trapped.<br>
+<br>
+<br>
+Attached is a mini-Battleship Demo :)<br>
+<br>
+<br>
+Regards<br>
+Kerry<br>
+<br>
+ps. Can we have a few people test this and report ..please.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1040/Test_1113B.LSP">Test_1113B.LSP</a> <span class="muted">(4884 bytes)</span></li><li><a href="../attachments/1041/test_1113B.odcl">test_1113B.odcl</a> <span class="muted">(1476 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5170">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-17 01:55 UTC</span>
+  </div>
+  <div class="post-body">The Video is set to run once. Refresh ( F5 ) the page to view again.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1042/BattleShips.gif">BattleShips.gif</a> <span class="muted">(84118 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5171">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-17 02:08 UTC</span>
+  </div>
+  <div class="post-body">The LSP Source<br>
+<br>
+<br>
+<br>
+(vl-load-com)<br>
+(command "OPENDCL")<br>
+<br>
+;; Test Code  <br>
+;; 20091117 kdub@home<br>
+<br>
+(defun c:doit () (c:test_1113B))<br>
+<br>
+ ;|&lt;&gt;|;<br>
+<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;; (findfile "Test_1113B.ODCL")<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+(defun c:test_1113B (/ dialogreturn)<br>
+  (dcl_project_load "Test_1113B.ODCL" t)<br>
+  ;; Show the main form  <br>
+  (setq dialogreturn (dcl_form_show test_1113B_main))<br>
+  ;;------  <br>
+  (princ)<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+;|&lt;&gt;|;<br>
+(defun _ManageSlideView (button flags x y / Sector)<br>
+  ;;<br>
+  ;; Slide control is set at 120x120<br>
+  (dcl_Control_SetText test_1113B_Main_XLocation (itoa X))<br>
+  (dcl_Control_SetText test_1113B_Main_YLocation (itoa Y))<br>
+  ;;Determine Sector<br>
+  ;; assume divisions 3 wide, 2 divisions high<br>
+  (cond ((&lt; Y 60)                            ; The top half<br>
+         (cond ((&lt; X 40) (setq Sector 1))<br>
+               ((&lt; X 90) (setq Sector 2))<br>
+               (T (setq Sector 3))<br>
+         )<br>
+        )<br>
+        (T                                   ; Bottom Half<br>
+         (cond ((&lt; X 40) (setq Sector 11))<br>
+               ((&lt; X 80) (setq Sector 12))<br>
+               (T (setq Sector 13))<br>
+         )<br>
+        )<br>
+  )<br>
+  (dcl_Control_SetText test_1113B_Main_SectorText<br>
+                       (strcat "SlideSector " (itoa Sector))<br>
+  )<br>
+  ;; <br>
+  (dcl_control_setvisible test_1113B_main_textbutton2 t)<br>
+  (dcl_control_setvisible test_1113B_main_textbox2 t)<br>
+  ;;<br>
+  (dcl_slideview_fillimage test_1113B_main_slideview1<br>
+                           (list (list (- x 5) (- y 10) 10 20 3))<br>
+  )<br>
+  (dcl_slideview_endimage test_1113B_main_slideview1)<br>
+)<br>
+;;;-------------------------------------------<br>
+;;;<br>
+(defun _ManagePiccy (button flags x y / Sector)<br>
+  (dcl_control_setvisible test_1113B_main_textbutton1 t)<br>
+  (dcl_control_setvisible test_1113B_main_textbox1 t)<br>
+  ;;<br>
+  (dcl_picturebox_drawcircle test_1113B_main_picturebox1<br>
+                             (list (list (- x 15) (- y 15) 30 30 3))<br>
+  )<br>
+  (dcl_PictureBox_StoreImage test_1113B_Main_PictureBox1)<br>
+  ;;<br>
+  ;;<br>
+  ;; Piccy control is set at 120x120<br>
+  (dcl_Control_SetText test_1113B_Main_XLocation (itoa X))<br>
+  (dcl_Control_SetText test_1113B_Main_YLocation (itoa Y))<br>
+  ;;Determine Sector<br>
+  ;; assume divisions 3 wide, 2 divisions high<br>
+  (cond ((&lt; Y 60)                            ; The top half<br>
+         (cond ((&lt; X 40) (setq Sector 1))<br>
+               ((&lt; X 90) (setq Sector 2))<br>
+               (T (setq Sector 3))<br>
+         )<br>
+        )<br>
+        (T                                   ; Bottom Half<br>
+         (cond ((&lt; X 40) (setq Sector 11))<br>
+               ((&lt; X 80) (setq Sector 12))<br>
+               (T (setq Sector 13))<br>
+         )<br>
+        )<br>
+  )<br>
+  (dcl_Control_SetText test_1113B_Main_SectorText<br>
+                       (strcat "PiccySector " (itoa Sector))<br>
+  )<br>
+)<br>
+;;;---------------------------------------------------------------------------<br>
+;;; <br>
+;|&lt;&gt;|;<br>
+<br>
+(defun c:test_1113B_main_oninitialize (/)<br>
+  (dcl_control_setvisible test_1113B_main_textbutton1 nil)<br>
+  (dcl_control_setvisible test_1113B_main_textbox1 nil)<br>
+  (dcl_control_setvisible test_1113B_main_textbutton2 nil)<br>
+  (dcl_control_setvisible test_1113B_main_textbox2 nil)<br>
+  ;;<br>
+  (dcl_control_setbackcolor test_1113B_main_picturebox1 8)<br>
+)<br>
+;;;-------------------------------------------<br>
+;;;<br>
+(defun c:test_1113B_main_picturebox1_onmousedown (button flags x y /)<br>
+  (_ManagePiccy button flags x y)<br>
+)<br>
+;;;-------------------------------------------<br>
+;;;<br>
+(defun c:test_1113B_main_slideview1_onmousedown (button flags x y /)<br>
+  (_ManageSlideView button flags x y)<br>
+)<br>
+;;;-------------------------------------------<br>
+;;;<br>
+(defun c:test_1113B_Main_BtnReset_OnClicked (/)<br>
+  (dcl_control_setvisible test_1113B_main_textbutton1 nil)<br>
+  (dcl_control_setvisible test_1113B_main_textbox1 nil)<br>
+  (dcl_control_setvisible test_1113B_main_textbutton2 nil)<br>
+  (dcl_control_setvisible test_1113B_main_textbox2 nil)<br>
+  ;;<br>
+  (dcl_PictureBox_Clear test_1113B_Main_PictureBox1)<br>
+  (dcl_SlideView_Clear test_1113B_Main_SlideView1)<br>
+  ;;<br>
+  (dcl_Control_SetText test_1113B_Main_SectorText "")<br>
+  (dcl_Control_SetText test_1113B_Main_XLocation "")<br>
+  (dcl_Control_SetText test_1113B_Main_YLocation "")<br>
+)<br>
+;;;-------------------------------------------<br>
+;;;<br>
+(defun c:test_1113B_Main_ShowButtons_OnClicked (/)<br>
+  (dcl_control_setvisible test_1113B_main_textbutton1 T)<br>
+  (dcl_control_setvisible test_1113B_main_textbox1 T)<br>
+  (dcl_control_setvisible test_1113B_main_textbutton2 T)<br>
+  (dcl_control_setvisible test_1113B_main_textbox2 T)<br>
+)<br>
+<br>
+;;;-------------------------------------------<br>
+;;;<br>
+<br>
+;;;---------------------------------------------------------------------------<br>
+;;;<br>
+<br>
+(prompt "\n Test_1113B ...  DoIt to run.")<br>
+(princ)<br>
+</div>
+</article>
+<article class="post" id="msg5173">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2009-11-17 09:48 UTC</span>
+  </div>
+  <div class="post-body">Hi I've tested on:<br>
+<br>
+Tower, Windows Vista Ultimate SP1, AutoCAD 2010, Bricscad Pro v10<br>
+Laptop, Windows XP SP3, AutoCAD 2007 and Bricscad Pro v10<br>
+<br>
+All issues were replicated with one difference:-<br>
+<br>
+On the Vista machine - SlideControl MouseDown Event doesnot show the textbox either, however when the mouse is hoverred over it, it appears and indeed the text has been added to it (unlike for the XP machine where the textbox remains blank).<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</div>
+</article>
+<article class="post" id="msg5174">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-17 10:12 UTC</span>
+  </div>
+  <div class="post-body">Thanks Danner .. much appreciated.<br>
+<br>
+Something I didn't realise :<br>
+<br>
+After selecting a point on the SlideView control the X Y and sector textboxes do not update.<br>
+.. However, if I click in each of those TextBos controls, the text updates with the correct data.<br>
+<br>
+... ... seems like a focus thing, but thats a really wild guess :)</div>
+</article>
+<article class="post" id="msg5203">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-20 20:57 UTC</span>
+  </div>
+  <div class="post-body">Hi, now with Alpha 13 I can reproduce it:<br>
+<br>
+<blockquote class="quote"><br>
+AMD Athlon XP 3200+, 1x2,2 GHz <br>
+2 GB of RAM<br>
+on MSI KT6 Delta-FISR (MS-6590 v2.0)<br>
+Windows XP DEU Version 5.1.2600 Service Pack 3 Build 2600<br>
+ATI Radeon 7500 DDR using Windows Driver (uses no CCC!)<br>
+DirectX 9.0Visual Style (Theme) <br>
+tried with WindowsXp Silver<br>
+-----<br>
+<br>
+OpenDCL Runtime [6.0.0.13] in AutoCAD Civil 3D 2998 German<br>
+</blockquote><br>
+<br>
+5123.png = OpenDCL 5.1.2.3<br>
+A13.png = OpenDCL 6.0.0.13<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1048/5123.png">5123.png</a> <span class="muted">(7149 bytes)</span></li><li><a href="../attachments/1049/A13.png">A13.png</a> <span class="muted">(6243 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5211">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-23 07:37 UTC</span>
+  </div>
+  <div class="post-body">It turns out that the slide control blithely draws outside its boundary, even taking a snapshot of the surrounding controls and repainting whatever was in the snapshot. That problem should now be fixed in Alpha 14. Everything else appears to be working as well in Alpha 14, so it's possible that the other issues either got incidentally fixed, or they just don't happen on my configuration.</div>
+</article>
+<article class="post" id="msg5213">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-23 09:25 UTC</span>
+  </div>
+  <div class="post-body">Thanks Owen !<br>
+<br>
+With Build 6.0.0.14<br>
+<br>
+test_1113B project works as expected.   wheee !!<br>
+<br>
+<br>
+The Test60012b project ( with the TAB Control and 3 pages ) still does not work. <br>
+I'll try to post a better description of the issues.<br>
+<br>
+Best Regards<br>
+Kerrry</div>
+</article>
+<article class="post" id="msg5214">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-23 09:37 UTC</span>
+  </div>
+  <div class="post-body">When each tabPage is displayed, it is empty except for the TextBox outline.<br>
+The TextBox will only display completely after a Click at it's location,<br>
+<br>
+The TextButton will only display after a MouseOver or Click at it's location.<br>
+<br>
+The GraphicButtom will only display after a Click at it's location<br>
+OR after a click in the textBox<br>
+OR after a click in the textButton.<br>
+<br>
+<br>
+<br>
+regards<br>
+kerry<br>
+<br>
+code is in the first Post. <br>
+<br>
+The Video is set to run once. Refresh ( F5 ) the page to view again.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1050/test60012B.gif">test60012B.gif</a> <span class="muted">(60631 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5215">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2009-11-23 15:10 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Kerry Brown link=topic=1008.msg5213#msg5213 date=1258968322 wrote:</cite><br>
+The Test60012b project ( with the TAB Control and 3 pages ) still does not work. <br>
+I'll try to post a better description of the issues.<br>
+</blockquote><br>
+<br>
+Yep, same problem for me on Vista. XP still fine.  <br>
+<br>
+(Test_1113B working great on both)</div>
+</article>
+<article class="post" id="msg5227">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-24 16:32 UTC</span>
+  </div>
+  <div class="post-body"><br>
+ whereas I have the issue on XP sp3 (don't use vista)</div>
+</article>
+<article class="post" id="msg5332">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-27 14:09 UTC</span>
+  </div>
+  <div class="post-body">Oh oh, do I have to change anything? It's getting worse in Alpha 14.<br>
+The bullet and the textbox appear only after mouseover. The textbox stays grey (although it should never be grey) and the picture box in the textbox is missing.<br>
+<br>
+Picture Top: Stable release 5.1.2.3<br>
+Picture Bottom: 6.0.0.14<br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1065/5123.png">5123.png</a> <span class="muted">(7149 bytes)</span></li><li><a href="../attachments/1066/A14.png">A14.png</a> <span class="muted">(2921 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5372">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-30 08:16 UTC</span>
+  </div>
+  <div class="post-body">I've made some changes for Alpha 15 that might fix this (or make it worse!).</div>
+</article>
+<article class="post" id="msg5375">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-30 09:50 UTC</span>
+  </div>
+  <div class="post-body">Owen, I have the feeling that it is better (see ltm.gif). The caption will be displayed correctly in 5.1.2.3 (filled during OnInitialize). In 6.0.0.15 I have to set the caption manually after OnInitialize.<br>
+<br>
+Another thing I recognized:<br>
+I have some picture buttons on the first tab which are disabled. As you can see in FormOver.gif they are overlayed with the form which is above during initialisation (here: OPM). Unfortunately, I have no chance to influence this. It is not so, if no other form is above.<br>
+<br>
+Fred<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1078/ltm.gif">ltm.gif</a> <span class="muted">(197823 bytes)</span></li><li><a href="../attachments/1080/FormOver.gif">FormOver.gif</a> <span class="muted">(205580 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5376">
+  <div class="post-head">
+    <span class="post-author">DanW</span>
+    <span class="post-date muted">2009-11-30 11:25 UTC</span>
+  </div>
+  <div class="post-body">6.0.0.15 - I'm afraid the problem with display of controls on tabs, see with Kerry's Test60012b project - still persists with my (Vista) computer.  My (xp) laptop still working fine.  </div>
+</article>
+<article class="post" id="msg5377">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-11-30 12:09 UTC</span>
+  </div>
+  <div class="post-body"><blockquote class="quote"><cite> author=Danner link=topic=1008.msg5376#msg5376 date=1259580330 wrote:</cite><br>
+6.0.0.15 - I'm afraid the problem with display of controls on tabs, see with Kerry's Test60012b project - still persists with my (Vista) computer.  My (xp) laptop still working fine.  <br>
+</blockquote><br>
+<br>
+Ditto ...  but I'm using XP sp3. frustrating.<br>
+<br>
+ </div>
+</article>
+<article class="post" id="msg5384">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-30 17:59 UTC</span>
+  </div>
+  <div class="post-body">Fred, it would be helpful if you could attach simple examples (modeless form with bare minimum controls) that demonstrate each remaining problem.</div>
+</article>
+<article class="post" id="msg5387">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-30 18:55 UTC</span>
+  </div>
+  <div class="post-body">Hi, Owen,<br>
+<br>
+for the issue with overlaying form I send you an example:<br>
+<br>
+<ul><br>
+Load the project I attached. You won't need any code.<br>
+(dcl_form_show demo1_dialog1)<br>
+If no form lies over the sample palette everything seems to look fine.<br>
+Open AutoCAD object property manager and move it over the sample palette.<br>
+Close the sample palette<br>
+Open the sample palette again. Some controls show the pixels of the covering form.<br>
+<br>
+</ul><br>
+<br>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1081/demo1.odcl">demo1.odcl</a> <span class="muted">(2760 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg5389">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-30 19:37 UTC</span>
+  </div>
+  <div class="post-body">Owen, the first problem I mentioned on top (with the disappearing caption) I cannot reproduce at my Win7 x64 Bit Notebook in a small project. But I'm just on tour these days. I'll try to create a new sample on thrusday when I'm back in office. Then I will also have a try to describe another new effect I had with one of my modeless form in Alpha 15: it "forgot" all its properties (but not Height and Width) so I had to reload the project file anew that all the other properties (like TitleBarText) are present again. But I think I need more silence to reproduce and to describe this. So I ask you for patience until thursday.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5393">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-11-30 19:56 UTC</span>
+  </div>
+  <div class="post-body">I could not reproduce the problem with your demo1 sample in Windows 7 x64 and AutoCAD 2010. It would be better if you can reproduce it with a modeless form that has only one control on it. Your sample introduces extra factors (pallete form, tab page, multiple controls) which could have an impact. By narrowing the problem down to the bare minimum needed to reproduce it, you will save me a lot of time chasing dead ends.</div>
+</article>
+<article class="post" id="msg5396">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-11-30 21:45 UTC</span>
+  </div>
+  <div class="post-body">Owen, I have just created a modeless form with only the four imagebuttons. In that combination the effect you can see at the screenshot does not appear. The reason might be that the modeless form pushes itself to front automatically when form_show will be called. <br>
+<br>
+This may be the difference to the palette form of my demo1-sample: Since the palette will be docked automatcally when Form_Show will be called it may appear behind an open floating palette. That's why I created a small example with the contents where I can reproduce.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5403">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-01 00:29 UTC</span>
+  </div>
+  <div class="post-body">I tested with the demo1 palette floating. Does it need to be docked?</div>
+</article>
+<article class="post" id="msg5405">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2009-12-01 06:31 UTC</span>
+  </div>
+  <div class="post-body">No, but there has to be another palette over the position where the demo1 palette will appear. If the demo1 palette appears behid the other palette it should be reproducable (so on my Win7 x64 notebook). Will the demo1 palette not be docked if you call it? It is is docked at my notebook whatever I do.<br>
+<br>
+Fred</div>
+</article>
+<article class="post" id="msg5407">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2009-12-01 06:34 UTC</span>
+  </div>
+  <div class="post-body">The demo1 palette was docked initially, but I thought from your description that it should be floating, so I undocked it for testing.  Let me know if you think of anything else I can try.</div>
+</article>
+<article class="post" id="msg5853">
+  <div class="post-head">
+    <span class="post-author">Kerry Brown</span>
+    <span class="post-date muted">2009-12-30 20:07 UTC</span>
+  </div>
+  <div class="post-body">NOTE: Issues raised in this thread were related to a particular series of builds where the control painting methodology was being redesigned.<br>
+These issues have now been RESOLVED.<br>
+kwb.<br>
+///------------------------------------------------------------------------------------------</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>do we still need to use &quot;two string&quot; calls for DCL_Form_ when sep. namespaces? · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1217</p>
+    <h1>do we still need to use &quot;two string&quot; calls for DCL_Form_ when sep. namespaces?</h1>
+    <p class="meta">Started by jmaeding ·
+      2010-03-19 19:29 UTC ·
+      4 replies · SMF topic #1217</p>
+<article class="post" id="msg6523">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-03-19 19:29 UTC</span>
+  </div>
+  <div class="post-body">Its been so long since I switched to calling things like:<br>
+(DCL_Form_IsActive "CT-Civil10" "frmCT-Civil-Mst")<br>
+that i forget why I do that.<br>
+I recall it was for separate namespace vlx, which is what I always compile to.<br>
+<br>
+The problem I am seeing is I load using (DCL_Project_Load (findfile "CT-Civil10.odcl.lsp")),<br>
+then check if a modeless dialog is open, but get an error.<br>
+I read that you check if the var exists to avoid calling DCL_Form_IsActive and DCL_Form_Close with nulls,<br>
+but its not working.<br>
+I am trying:<br>
+(IF (OR (NOT (vl-doc-ref 'CT-Civil10_frmCT-Civil-Mst))<br>
+  (NOT (DCL_Form_IsActive "CT-Civil10" "frmCT-Civil-Mst")))<br>
+;SHOW TOOLBAR<br>
+  (DCL_Form_Show "CT-Civil10" "frmCT-Civil-Mst")<br>
+)<br>
+<br>
+I'm kind of lost though.<br>
+The tasks I need to do are:<br>
+1) close a particular dialog if open<br>
+2) show a form if not open<br>
+what are the recommended ways for current odcl version of 5.1<br>
+thanks<br>
+</div>
+</article>
+<article class="post" id="msg6524">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-03-19 21:53 UTC</span>
+  </div>
+  <div class="post-body">I think my code is ok, but i caused problems by a support path acad dropped (that has the odcl.lsp files in it).<br>
+So the files got found in folder that has my old dialogs....<br>
+I'd still like to know if its better to call using two strings, or the single varname.<br>
+thx</div>
+</article>
+<article class="post" id="msg6525">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2010-03-19 22:16 UTC</span>
+  </div>
+  <div class="post-body">Hi, jmaeding, I cannot tell you definitely what is better right from the code. Since the variables contain the entities of the controls and forms, it just suggests me to think it should be faster than using separate strings. In old ObjectDCL using strings had the effect that the code was looking for a project file at first with this name in the support path, looking for the form, then for the control... In the sum of many accesses to the form a delay could be recognized. But I don't know anything about the algorithm on OpenDCL when using strings. But maybe it is still the same. Then it could be better to use variables.<br>
+<br>
+Writing code using strings could have one single advantage: In my old ObjectDCL code (I'm just transforming to OpenDCL) I find many places where I used this way:<br>
+(mapcar '(lambda (strC isVis) (dcl_control_setvisible "MyProj" "MyForm" strC isVis))<br>
+            (list "pb_accept" "pb_select" "pb_cancel" "pb_help")<br>
+            (list nil nil T T))<br>
+<br>
+Because I want to use variables now I have to rewrite most part of the code. Sometimes I create an additional subfunction to keep most of the old code:<br>
+<br>
+(defun control (strC)<br>
+  (eval (read (strcat "MyProj_MyForm_" strC)))<br>
+); control<br>
+[...]<br>
+(mapcar '(lambda (strC isVis) (dcl_control_setvisible (control strC) isVis))<br>
+            (list "pb_accept" "pb_select" "pb_cancel" "pb_help")<br>
+            (list nil nil T T))<br>
+<br>
+Sorry, that I cannot give more detailed information.<br>
+<br>
+Fred<br>
+</div>
+</article>
+<article class="post" id="msg6526">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2010-03-19 22:55 UTC</span>
+  </div>
+  <div class="post-body">As far as I know the only good reason to use strings is cases where the string is arrived at programmatically. Using the preset variable name is much more efficient internally.</div>
+</article>
+<article class="post" id="msg6536">
+  <div class="post-head">
+    <span class="post-author">jmaeding</span>
+    <span class="post-date muted">2010-03-20 18:54 UTC</span>
+  </div>
+  <div class="post-body">ah, good info, I think I need to switch then.  I don't build the strings programatically in any case so far.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

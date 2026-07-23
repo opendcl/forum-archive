@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Control bar stuck when docked !!! · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1988</p>
+    <h1>Control bar stuck when docked !!!</h1>
+    <p class="meta">Started by khann ·
+      2013-07-30 05:33 UTC ·
+      7 replies · SMF topic #1988</p>
+<article class="post" id="msg9802">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2013-07-30 05:33 UTC</span>
+  </div>
+  <div class="post-body">Hi, all of you, the heros of ODCL.<br>
+I've just tested a control bar in ACAD 2014, win7 / 64bit with ODCL 7.0.0.12<br>
+<br>
+When it docked left side by the right of the properties palette, the both slide bar does not work normally.<br>
+Controlbar's goes to right but not narrow to left under some width.<br>
+The more, the propertie palette's slide just not move at all.<br>
+<br>
+Anyone knows about this?<br>
+<br>
+Thanks!<br>
+</div>
+</article>
+<article class="post" id="msg9803">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-07-30 15:22 UTC</span>
+  </div>
+  <div class="post-body">I'm not sure what do you mean by "the both slide bar". Are you referring to the resizing bar? If so, which edge? Does the control bar have a minimum width (Min Width)? Is resizing enabled (Allow Resizing)?</div>
+</article>
+<article class="post" id="msg9804">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2013-07-31 01:52 UTC</span>
+  </div>
+  <div class="post-body">Hi, owenwengerd.<br>
+<br>
+I mean "the both slide bar" is CAD's Properties and ODCL's Controlbar's.<br>
+When Controlbar was docked, properties resizing vertical bar does not move at all, seems fully stucked.<br>
+And Controlbar's just move to the right side, and does not narrow to the min width.<br>
+It stops at some width, greater than the specified form minwidth.<br>
+<br>
+thanks.<br>
+</div>
+</article>
+<article class="post" id="msg9805">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2013-07-31 02:15 UTC</span>
+  </div>
+  <div class="post-body"><br>
+ Tested in Acad 2005 on the same OS system, they work very well.<br>
+I think it is the problem of ACAD Version.</div>
+</article>
+<article class="post" id="msg9806">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-07-31 02:42 UTC</span>
+  </div>
+  <div class="post-body">I could not reproduce the problem with the Properties window and the MasterDemo sample control bar both docked at the left edge. Are you perhaps using QuikPik with "Lock Floating Windows" enabled? If so, you need to hold the  button to override the locking.</div>
+</article>
+<article class="post" id="msg9809">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2013-08-01 02:33 UTC</span>
+  </div>
+  <div class="post-body">Thanks, owenwengerd.<br>
+<br>
+Lock Floating Windows has no use.<br>
+<br>
+So I modified the MasterDemo's Min Width 220 to 0 and tested the version 2005, 2014.<br>
+I paste two pictures of result.<br>
+<br>
+Acad 2005 narrow to almost to 0 but 2014 stops at some width.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1885/2005MasterDemo.png">2005MasterDemo.png</a> <span class="muted">(17763 bytes)</span></li><li><a href="../attachments/1886/2014MasterDemo.png">2014MasterDemo.png</a> <span class="muted">(29169 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9812">
+  <div class="post-head">
+    <span class="post-author">khann</span>
+    <span class="post-date muted">2013-08-01 02:53 UTC</span>
+  </div>
+  <div class="post-body">And I just found that the ACAD 2014 Properties window also does not narrow under some width when it docked.<br>
+Maybe it's the problem of ACAD 2014 itself not ODCL.<br>
+Thanks.<br>
+<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1887/2014Prop.png">2014Prop.png</a> <span class="muted">(14899 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg9813">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2013-08-01 03:49 UTC</span>
+  </div>
+  <div class="post-body">I noticed that as well. I would guess that is due to a change that Autodesk made in the dockable frame implementation internally.</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

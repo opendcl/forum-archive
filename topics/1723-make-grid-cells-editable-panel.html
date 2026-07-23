@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>make grid cells editable ( panel) · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1723</p>
+    <h1>make grid cells editable ( panel)</h1>
+    <p class="meta">Started by sherby88 ·
+      2011-11-12 21:51 UTC ·
+      1 replies · SMF topic #1723</p>
+<article class="post" id="msg8483">
+  <div class="post-head">
+    <span class="post-author">sherby88</span>
+    <span class="post-date muted">2011-11-12 21:51 UTC</span>
+  </div>
+  <div class="post-body">hi guys, I just started using opendcl<br>
+I created a grid and I can't get my cells to be editable<br>
+<br>
+This is the code i wrote so far for the grid.<br>
+I tried alot of things to make my cells editable<br>
+what event/syntax should i use?<br>
+thx<br>
+<br>
+(command "OPENDCL")<br>
+<br>
+(defun c:armare (/)<br>
+	(dcl_Project_Load "ARMARE.odcl")<br>
+	(dcl_Form_Show ARMARE_Form1)<br>
+	(princ)<br>
+)<br>
+	<br>
+<br>
+(defun c:ARMARE_Form1_OnInitialize (/ GridCellTypeList nrow)<br>
+;;Lista tipuri de armaturi<br>
+  <br>
+  	(dcl_ComboBox_Clear ARMARE_Form1_ComboBox1)<br>
+	(dcl_ComboBox_AddString ARMARE_Form1_ComboBox1 "Armatura longitudinala" " Etrieri plan" "Etrieri sectiune" )<br>
+<br>
+;;Proprieteti<br>
+  <br>
+(setq iRowIndex1 (dcl_Grid_AddRow ARMARE_Form1_Grid1  (list "Marca")))<br>
+ 		 (dcl_Grid_SetCellStyle ARMARE_Form1_Grid1 1 1 6)<br>
+(setq iRowIndex2 (dcl_Grid_AddRow ARMARE_Form1_Grid1  (list "Diametru")))<br>
+  		 (dcl_Grid_SetCellStyle ARMARE_Form1_Grid1 2 1 8)<br>
+(setq iRowIndex3 (dcl_Grid_AddRow ARMARE_Form1_Grid1  (list "Clasa")))<br>
+  		 (dcl_Grid_SetCellStyle ARMARE_Form1_Grid1 3 1 6)<br>
+<br>
+(princ)<br>
+)</div>
+</article>
+<article class="post" id="msg8484">
+  <div class="post-head">
+    <span class="post-author">owenwengerd</span>
+    <span class="post-date muted">2011-11-15 20:16 UTC</span>
+  </div>
+  <div class="post-body">The grid cell columns and rows are referenced by a zero-based index. It looks like you may be using a 1-based index. Does that help?</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

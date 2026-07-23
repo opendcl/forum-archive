@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkbox Visibility · OpenDCL Forums Archive</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="banner">Legacy OpenDCL Forums archive (SMF). Read-only.
+        New discussion: <a href="https://github.com/OpenDCL/community/discussions">GitHub Discussions</a>.
+      </p>
+      <div class="nav">
+        <a class="brand" href="../index.html">OpenDCL Forums Archive</a>
+        <nav>
+          <a href="../index.html">Boards</a>
+          <a href="../search.html">Search</a>
+        </nav>
+      </div>
+      
+    </div>
+  </header>
+  <main class="wrap">
+    <p class="breadcrumbs"><a href="../index.html">Boards</a> /
+      <a href="../boards/2-runtime-autolisp.html">Runtime/AutoLISP</a> /
+      Topic 1758</p>
+    <h1>Checkbox Visibility</h1>
+    <p class="meta">Started by jmcgrew ·
+      2012-02-20 18:52 UTC ·
+      4 replies · SMF topic #1758</p>
+<article class="post" id="msg8628">
+  <div class="post-head">
+    <span class="post-author">jmcgrew</span>
+    <span class="post-date muted">2012-02-20 18:52 UTC</span>
+  </div>
+  <div class="post-body">Ok I am very new at this so sorry in advance. What I am trying to do is I have a dropdown that list different locations and I have two check box's that I want there Visibility to change per what is selected in my dropdown (ex. dropdown set to "General" both checkbox's are not visible, dropdown set to "Oklahoma" checkbox1 is visible but not checkbox2)<br>
+<br>
+Thanks for any help</div>
+</article>
+<article class="post" id="msg8629">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-02-20 21:21 UTC</span>
+  </div>
+  <div class="post-body">Hi and welcome,<br>
+<br>
+without knowing your code I can give you this sample:<br>
+<br>
+<br>
+  (defun c:myproject_myform_mycombo_OnSelChanged (intRow strItem)<br>
+    ;; intRow 0 = General<br>
+    ;; intRow 1 = Oklahoma<br>
+    ;; intRow 2 = Berlin<br>
+    (dcl_control_setvisible myproject_myform_mycheckbox1 (= intRow 1))<br>
+    (dcl_control_setvisible myproject_myform_mycheckbox2 (= intRow 2))<br>
+  ); c:myproject_myform_mycombo_OnSelChanged <br>
+<br>
+<br>
+Regards, Fred</div>
+</article>
+<article class="post" id="msg8631">
+  <div class="post-head">
+    <span class="post-author">jmcgrew</span>
+    <span class="post-date muted">2012-02-20 22:10 UTC</span>
+  </div>
+  <div class="post-body">Fred,<br>
+<br>
+Here is my code and odcl, its pretty rough but working on it.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1705/Border.odcl">Border.odcl</a> <span class="muted">(2165 bytes)</span></li><li><a href="../attachments/1706/border.LSP">border.LSP</a> <span class="muted">(10906 bytes)</span></li></ul></div></div>
+</article>
+<article class="post" id="msg8633">
+  <div class="post-head">
+    <span class="post-author">fred_tomke</span>
+    <span class="post-date muted">2012-02-21 12:50 UTC</span>
+  </div>
+  <div class="post-body">Hi, <br>
+<br>
+as I mentioned you should catch the event OnSelChanged, but not OnDropDown. OnDropDown is normally used if the list should be filled right before the user is going to open the dropdownlist. I recommend you to change your code the way I've shown in my sample.<br>
+<br>
+Regards, Fred<br>
+</div>
+</article>
+<article class="post" id="msg8635">
+  <div class="post-head">
+    <span class="post-author">jmcgrew</span>
+    <span class="post-date muted">2012-02-21 15:01 UTC</span>
+  </div>
+  <div class="post-body">Fred,<br>
+<br>
+That worked perfect thanks for the help!<br>
+<br>
+Jutin</div>
+</article>
+
+
+  </main>
+  <footer class="site-footer wrap">
+    <p>Generated from the July 2026 SMF database dump. Authors are display names from the original forum, not verified GitHub accounts.</p>
+  </footer>
+</body>
+</html>

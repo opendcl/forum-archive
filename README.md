@@ -11,7 +11,7 @@ Read-only static archive of the historic OpenDCL SMF forum (2007–2026).
 | Posts (searchable) | 12,743 |
 | Attachments | 1,942 |
 
-- **New discussion:** [opendcl/community Discussions](https://github.com/opendcl/community/discussions) *(when enabled)*
+- **New discussion:** [opendcl/community Discussions](https://github.com/opendcl/community/discussions)
 - **Main project:** [opendcl/OpenDCL](https://github.com/opendcl/OpenDCL)
 - **Project website:** [opendcl.github.io](https://opendcl.github.io/)
 

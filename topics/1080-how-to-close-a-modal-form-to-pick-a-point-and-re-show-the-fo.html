@@ -117,16 +117,16 @@ There are 2 ways to do that:<br>
 <strong><span style="color:navy">1. Call another command using dcl_sendstring from a synchronous called event handler.</span></strong><br>
 This makes only sense if you have to define additional variables at first or you have to finish other tasks at first before calling the other command.<br>
 <ul><br>
-The control's EventInvoke property state is 0 (for KeepFocus).<br>
-The event is active and calls the event handler with the default name (like c:MyProj_MyForm_MyButton_OnClicked).<br>
-During the event handler an externally defined command is called using (dcl_sendstring "ExternalCommand ") and <strong>NOT</strong> using (c:ExternalCommand).<br>
+<li>The control's EventInvoke property state is 0 (for KeepFocus).</li><br>
+<li>The event is active and calls the event handler with the default name (like c:MyProj_MyForm_MyButton_OnClicked).</li><br>
+<li>During the event handler an externally defined command is called using (dcl_sendstring "ExternalCommand ") and <strong>NOT</strong> using (c:ExternalCommand).</li><br>
 </ul><br>
 <br>
 <strong><span style="color:navy">2. The event handler is an own command which is called asynchronous.</span></strong><br>
 <ul><br>
-The control's EventInvoke property state is 1 (for AllowCommand).<br>
-The event is active. The name of the event handler is only the cammand name (like ExternalCommand) or c:ExternalCommand. If you want, press the AddCancel button to make sure that all active commands and inputs are stopped. The prefix ^C^C will appear in front of you command name (like ^C^CExternalCommand).<br>
-You need no additional event handler but only the command which executes all the desired tasks.<br>
+<li>The control's EventInvoke property state is 1 (for AllowCommand).</li><br>
+<li>The event is active. The name of the event handler is only the cammand name (like ExternalCommand) or c:ExternalCommand. If you want, press the AddCancel button to make sure that all active commands and inputs are stopped. The prefix ^C^C will appear in front of you command name (like ^C^CExternalCommand).</li><br>
+<li>You need no additional event handler but only the command which executes all the desired tasks.</li><br>
 </ul><br>
 <br>
 The attached sample will show you how to work with modeless forms, modal forms and user inputs from the commandline.<br>

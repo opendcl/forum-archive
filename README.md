@@ -1,23 +1,23 @@
 # OpenDCL Forums Archive
 
-Read-only static archive of the historic OpenDCL SMF forum (2007–2026).
+Read-only static archive generated from the OpenDCL SMF database dump.
 
-**Live site:** https://opendcl.github.io/forum-archive/
+- **New discussion:** [https://github.com/OpenDCL/community/discussions](https://github.com/OpenDCL/community/discussions)
+- **Proposal:** see `docs/forum-migration-proposal.md` in the OpenDCL workspace
 
-| Content | Count |
-|---------|------:|
-| Boards | 20 (public; restricted admin boards omitted) |
-| Topics | 2,523 |
-| Posts (searchable) | 12,743 |
-| Attachments | 1,942 |
+## Local preview
 
-- **New discussion:** [opendcl/community Discussions](https://github.com/opendcl/community/discussions)
-- **Main project:** [opendcl/OpenDCL](https://github.com/opendcl/OpenDCL)
-- **Project website:** [opendcl.github.io](https://opendcl.github.io/)
+Open `index.html` in a browser, or serve this folder:
 
-## Short URLs (for SMF redirects)
+```bash
+python -m http.server 8080
+```
 
-- Topic: https://opendcl.github.io/forum-archive/t/{topicId}.html
-- Board: https://opendcl.github.io/forum-archive/b/{boardId}.html
+Then visit http://localhost:8080/
 
-Authors are original SMF display names, not verified GitHub accounts.
+## Regenerate
+
+```bash
+cd forum-archive-tools
+python generate.py config.p1.json
+```

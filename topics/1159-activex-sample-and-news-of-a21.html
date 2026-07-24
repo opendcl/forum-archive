@@ -43,14 +43,14 @@ I'm going to build up a ActiveX sample for OpenDCL. I hope that I only used stan
 I post them without any order of importance.<br>
 <br>
 <ul><br>
-Normally I can get the event function name of an activated event by calling something like (dcl_control_getproperty oControl "Clicked"). To avoid globale variables I tried to get the <strong>EnterCell </strong> event function name of the FlexGrid control in the project. It returned nil and I cannot set another function name at runtime. I don't know whether it's a bug or not.<br>
-Have a look at the function <strong>statusbar_text</strong>. There you can see a line  (dcl_AxObject_Get oPanel nil "Text"). If I call only (dcl_AxObject_Get oPanel "Text") instead then I get an error of too less arguments. I've found out that another argument must passed between control object and property name. The syntax in the control browser does not show this additional argument. Unfortunately, changing the text of the second panel has no effect. Maybe it is caused by the additional argument.<br>
-Some properties seem to be read-only although they're officially not. So I tried to make the vertical scrollbar of the richtext control visible. Maybe someone else has much more luck.<br>
-The prompting when a control fails to get imported should be improved. I have tried to import an instance of the HHCtrl component. After drawing a rectangle to locate the control nothing happens. I do remember a message in earlier releases that some controls are not desgined to be placed on a form. Otherwise the OpenDCL developer does not know why this happens (or better: does not happen).<br>
-In my first idea to such a ActiveX sample I wanted to show pdf and dwf files in a form. But unfortunately, OpenDCL editor crashed when locating an instance of dwf viewer component. Then I tried Adobe Reader control. When loading the form in AutoCAD, AutoCAD crashed immediately. But I remember a small sample in this forum, could be shown succesfully. Maybe both crashes depended on the existing ActiveX controls of the form where they should be placed at. I didn't investigate furthermore. Maybe somebody else will do that.<br>
+<li>Normally I can get the event function name of an activated event by calling something like (dcl_control_getproperty oControl "Clicked"). To avoid globale variables I tried to get the <strong>EnterCell </strong> event function name of the FlexGrid control in the project. It returned nil and I cannot set another function name at runtime. I don't know whether it's a bug or not.</li><br>
+<li>Have a look at the function <strong>statusbar_text</strong>. There you can see a line  (dcl_AxObject_Get oPanel nil "Text"). If I call only (dcl_AxObject_Get oPanel "Text") instead then I get an error of too less arguments. I've found out that another argument must passed between control object and property name. The syntax in the control browser does not show this additional argument. Unfortunately, changing the text of the second panel has no effect. Maybe it is caused by the additional argument.</li><br>
+<li>Some properties seem to be read-only although they're officially not. So I tried to make the vertical scrollbar of the richtext control visible. Maybe someone else has much more luck.</li><br>
+<li>The prompting when a control fails to get imported should be improved. I have tried to import an instance of the HHCtrl component. After drawing a rectangle to locate the control nothing happens. I do remember a message in earlier releases that some controls are not desgined to be placed on a form. Otherwise the OpenDCL developer does not know why this happens (or better: does not happen).</li><br>
+<li>In my first idea to such a ActiveX sample I wanted to show pdf and dwf files in a form. But unfortunately, OpenDCL editor crashed when locating an instance of dwf viewer component. Then I tried Adobe Reader control. When loading the form in AutoCAD, AutoCAD crashed immediately. But I remember a small sample in this forum, could be shown succesfully. Maybe both crashes depended on the existing ActiveX controls of the form where they should be placed at. I didn't investigate furthermore. Maybe somebody else will do that.</li><br>
 </ul><br>
 <br>
-Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1259/screena.png">screena.png</a> <span class="muted">(17495 bytes)</span></li><li><a href="../attachments/1260/screenb.png">screenb.png</a> <span class="muted">(16810 bytes)</span></li><li><a href="../attachments/1261/ActiveX.odcl">ActiveX.odcl</a> <span class="muted">(33441 bytes)</span></li><li><a href="../attachments/1262/ActiveX.LSP">ActiveX.LSP</a> <span class="muted">(8241 bytes)</span></li></ul></div></div>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1259/screena.png"><img class="attach-thumb" src="../attachments/1259/screena.png" alt="screena.png" loading="lazy"></a><a href="../attachments/1259/screena.png">screena.png</a> <span class="muted">(17495 bytes)</span></li><li><a href="../attachments/1260/screenb.png"><img class="attach-thumb" src="../attachments/1260/screenb.png" alt="screenb.png" loading="lazy"></a><a href="../attachments/1260/screenb.png">screenb.png</a> <span class="muted">(16810 bytes)</span></li><li><a href="../attachments/1261/ActiveX.odcl">ActiveX.odcl</a> <span class="muted">(33441 bytes)</span></li><li><a href="../attachments/1262/ActiveX.LSP">ActiveX.LSP</a> <span class="muted">(8241 bytes)</span></li></ul></div></div>
 </article>
 <article class="post" id="msg6167">
   <div class="post-head">
@@ -83,7 +83,7 @@ Item method of the IButtons collection of the toolbar. But the control browser s
 <br>
 There is another thing left. Does anybody have experiences in linking a imagelist control to a control's imagelist property? My toolbar shows no images because I didn't linked a imagelist yet. Can I link it also at design time or only at runtime or even no time?<br>
 <br>
-Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1263/screen.png">screen.png</a> <span class="muted">(34842 bytes)</span></li></ul></div></div>
+Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1263/screen.png"><img class="attach-thumb" src="../attachments/1263/screen.png" alt="screen.png" loading="lazy"></a><a href="../attachments/1263/screen.png">screen.png</a> <span class="muted">(34842 bytes)</span></li></ul></div></div>
 </article>
 <article class="post" id="msg6170">
   <div class="post-head">
@@ -114,7 +114,7 @@ I agree that feedback would be good. I'm not sure what form it should take, thou
     <span class="post-date muted">2010-02-09 03:20 UTC</span>
   </div>
   <div class="post-body"><blockquote class="quote"><cite> author=Fred Tomke link=topic=1159.msg6166#msg6166 date=1265038663 wrote:</cite><br>
-<ul>Normally I can get the event function name of an activated event by calling something like (dcl_control_getproperty oControl "Clicked"). To avoid globale variables I tried to get the <strong>EnterCell </strong> event function name of the FlexGrid control in the project. It returned nil and I cannot set another function name at runtime. I don't know whether it's a bug or not.</ul><br>
+<ul><li>Normally I can get the event function name of an activated event by calling something like (dcl_control_getproperty oControl "Clicked"). To avoid globale variables I tried to get the <strong>EnterCell </strong> event function name of the FlexGrid control in the project. It returned nil and I cannot set another function name at runtime. I don't know whether it's a bug or not.</li></ul><br>
 </blockquote><br>
 <br>
 That's a bug, now fixed for the next build.</div>

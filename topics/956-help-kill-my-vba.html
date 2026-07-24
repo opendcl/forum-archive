@@ -80,11 +80,11 @@ End Sub<br>
 <br>
 If you really want to solve this via LISP I can imagine to do it this way:<br>
 <ul><br>
-Make sure that another drawing beside the current drawing is open (otherwise after closing the current drawing Lisp cannot be executed anymore).<br>
-Show a modeless form. The modeless form has an active event OnDocActivated. In a label there is written: "Wait until reopening drawing has finished..." and below it there is a readonly textbox with the fullname of the drawing to reopen.<br>
-Close the current drawing.<br>
-The other drawing is going to get active. In this moment the event OnDocActivated is called. In the event function the name of the file to reopen can be read out from the textbox. And if this file can still be found (maybe a nervous colleague has deleted my file meanwhile) it will be opened.<br>
-I think you are using a technology to load your app automatically to each newly opened drawing (via vl-load-all or similiar). In the end of your lisp there is a line which checks if the modeless form is active. In this case close it.<br>
+<li>Make sure that another drawing beside the current drawing is open (otherwise after closing the current drawing Lisp cannot be executed anymore).</li><br>
+<li>Show a modeless form. The modeless form has an active event OnDocActivated. In a label there is written: "Wait until reopening drawing has finished..." and below it there is a readonly textbox with the fullname of the drawing to reopen.</li><br>
+<li>Close the current drawing.</li><br>
+<li>The other drawing is going to get active. In this moment the event OnDocActivated is called. In the event function the name of the file to reopen can be read out from the textbox. And if this file can still be found (maybe a nervous colleague has deleted my file meanwhile) it will be opened.</li><br>
+<li>I think you are using a technology to load your app automatically to each newly opened drawing (via vl-load-all or similiar). In the end of your lisp there is a line which checks if the modeless form is active. In this case close it.<br>
 </ul><br>
 <br>
 Hm, I feel it is worth to test it.  ;)<br>
@@ -138,10 +138,10 @@ Here is the code. I also attached the whole C# project (MSVS 2005). For compilin
 <br>
 For those who want to test.<br>
 <ul><br>
-Open AutoCAD and an existing drawing.<br>
-call NETLOAD from command line and load ReOpen.dll from the source project<br>
-call lisp function <strong>(reload)</strong>. An exception will occur.<br>
-call command <strong>reload </strong> from commandline. The drawing will be reloaded.<br>
+<li>Open AutoCAD and an existing drawing.</li><br>
+<li>call NETLOAD from command line and load ReOpen.dll from the source project</li><br>
+<li>call lisp function <strong>(reload)</strong>. An exception will occur.</li><br>
+<li>call command <strong>reload </strong> from commandline. The drawing will be reloaded.</li><br>
 </ul><br>
 <br>
 As you can see the lisp function and the command are doing the same.<br>

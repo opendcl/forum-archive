@@ -78,18 +78,18 @@ Best regards.<br>
   <div class="post-body">Hello, and welcome to the forum. Thank you for sharing your experiences. Unfortunately, I have to disagree with you in two points:<br>
 <br>
 <ul><br>
-<strong>I saw in a post that vlax-ldata-xxx functions doesn't work with OpenDCl and it's right.</strong><br>
+<li><strong>I saw in a post that vlax-ldata-xxx functions doesn't work with OpenDCl and it's right.</strong><br>
 That's is wrong: Don't expect that anything can be changed in the drawing database while a modal form is shown or a syncronous event handler is running. If you want to change something in the drawing database you have either to close the form (and don't do anything in the drawing while the OnClose event is running!!!) or you have to call a asynchronous command similar to the way you've given in you post. Changing the SetKeepFocus property state is not needed. Changing the EventInvoke property state the way you did is like getting off the car before stopping it: the EventInvoke property controls the way the event handler shall be called. Changing the property state at runtime of the synchronous called event shouldn't have any effect. That's why I wouldn't trust that way. Have a look at <a href="http://www.opendcl.com/forum/index.php?topic=1171.msg6323#msg6323" rel="nofollow noopener">{2}</a> how to do that properly. In case your sample is a modeless form (or dockable or palette) I recommend you to do the following:<br>
 - set the EventInvoke property state of the Save button to 1 in OpenDCL Studio, save the project and reload the project in AutoCAD.<br>
 - the only thing you need in your event handler <br>
 </ul>(defun c:test_Form1_Save_OnClicked ()  <br>
  (dcl_SendString "(savedata) ")<br>
 ); c:test_Form1_Save_OnClicked<ul><br>
-<br>
-<strong>The vlax-ldata-xxx more easier to use and you can save unlimited data with it.</strong><br>
+</li><br>
+<li><strong>The vlax-ldata-xxx more easier to use and you can save unlimited data with it.</strong><br>
 That's not right. I've got an answer from ADN that there are limitations. LDATA are limited to 1023 characters (if you are saving lists convert the list into string using (vl-prin1-to-string) to get the number of reserved chars) and not at last <strong>LDATA can even destroy your drawing</strong>. We were using LDATA for years and we are converting all the LDATA into real dictionary structures. In AutoCAD 2007 vlax-ldata-list returns only the first char of the dict key. LDATA cannot be read via ActiveX.<br>
 For all unexperienced Lisp developers I can highly recommend not to use LDATA. I've already given a <a href="http://www.opendcl.com/forum/index.php?topic=449.msg2017#msg2017" rel="nofollow noopener">{2}</a>. And I'm <a href="http://www.opendcl.com/forum/index.php?topic=688.msg3340#msg3340" rel="nofollow noopener">{2}</a>.<br>
-<br>
+</li><br>
 </ul><br>
 <br>
 If anybody has problems changing anything in the drawing database while a form is still active, let me know. I can help you to control that. Even if you use LDATA  ;) !<br>
@@ -120,25 +120,25 @@ I built a small sample for you to point the problems.<br>
 Once a drawing with LDATA is saved as DXF, you cannot open the DXF in AutoCAD anymore.<br>
 Have a try with the data.dxf. Can you open it?<br>
 <ul><br>
-Open data.dwg<br>
-Load the new.lsp<br>
-Type save1 into the commandline and press enter.<br>
-Select the line.<br>
-Type get_data into the commandline and press enter.<br>
-This is not much data.<br>
-Save drawing as DXF.<br>
-Close DXF file<br>
-Open DXF file anew<br>
-AutoCAD can open the DXF file<br>
-Load the new.lsp<br>
-Type save2 into the commandline and press enter.<br>
-Select the line.<br>
-Type get_data into the commandline and press enter.<br>
-This is only one additional char in Option10.<br>
-Save drawing as DXF.<br>
-Close DXF file<br>
-Open DXF file anew<br>
-AutoCAD cannot open the DXF anymore.<br>
+<li>Open data.dwg</li><br>
+<li>Load the new.lsp</li><br>
+<li>Type save1 into the commandline and press enter.</li><br>
+<li>Select the line.</li><br>
+<li>Type get_data into the commandline and press enter.</li><br>
+<li>This is not much data.</li><br>
+<li>Save drawing as DXF.</li><br>
+<li>Close DXF file</li><br>
+<li>Open DXF file anew</li><br>
+<li>AutoCAD can open the DXF file</li><br>
+<li>Load the new.lsp</li><br>
+<li>Type save2 into the commandline and press enter.</li><br>
+<li>Select the line.</li><br>
+<li>Type get_data into the commandline and press enter.</li><br>
+<li>This is only one additional char in Option10.</li><br>
+<li>Save drawing as DXF.</li><br>
+<li>Close DXF file</li><br>
+<li>Open DXF file anew</li><br>
+<li>AutoCAD cannot open the DXF anymore.</li><br>
 </ul><br>
 <br>
 <span style="color:navy"><strong>Objects cannot be managed anymore.</strong></span><br>
@@ -146,17 +146,17 @@ AutoCAD cannot open the DXF anymore.<br>
 Please, tell me, which AutoCAD release are you using?<br>
 In the dbg.zip you can find some Debuggers for drawings.<br>
 <ul><br>
-Open LoangData.dwg<br>
-Load the right Debugger ARX depending on your AutoCAD release.<br>
-Type SnoopEnts into the commandline and press enter.<br>
-Pick the polygon and press enter.<br>
-A dialog appears. Press Extension Dict button<br>
-Select SC_PLANT_DATA and press DXF button.<br>
-Because of too much data this object cannot be managed anymore. Close all the forms.<br>
-The SC_PLANT_DATA key has the handle 222 in this drawing.<br>
-Type (handent "222") into the commandline. An entity is returned <br>
-Now type (entget (handent "222")) into the commandline. Note that the return value is nil.<br>
-Try it with your drawings and your objects. Is the debugger form filled with something?<br>
+<li>Open LoangData.dwg</li><br>
+<li>Load the right Debugger ARX depending on your AutoCAD release.</li><br>
+<li>Type SnoopEnts into the commandline and press enter.</li><br>
+<li>Pick the polygon and press enter.</li><br>
+<li>A dialog appears. Press Extension Dict button</li><br>
+<li>Select SC_PLANT_DATA and press DXF button.</li><br>
+<li>Because of too much data this object cannot be managed anymore. Close all the forms.</li><br>
+<li>The SC_PLANT_DATA key has the handle 222 in this drawing.</li><br>
+<li>Type (handent "222") into the commandline. An entity is returned </li><br>
+<li>Now type (entget (handent "222")) into the commandline. Note that the return value is nil.</li><br>
+<li>Try it with your drawings and your objects. Is the debugger form filled with something?</li><br>
 </ul><br>
 <br>
 Hope this shows the problem a bit.<br>
@@ -179,7 +179,7 @@ Fred<div class="attachments"><strong>Attachments</strong><ul><li><a href="../att
     <span class="post-author">Blade</span>
     <span class="post-date muted">2010-02-27 09:06 UTC</span>
   </div>
-  <div class="post-body">I tried your arx file under autocad 2010x32. I made a screenshot for you Fred. Check out.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1319/sample.PNG">sample.PNG</a> <span class="muted">(192339 bytes)</span></li></ul></div></div>
+  <div class="post-body">I tried your arx file under autocad 2010x32. I made a screenshot for you Fred. Check out.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1319/sample.PNG"><img class="attach-thumb" src="../attachments/1319/sample.PNG" alt="sample.PNG" loading="lazy"></a><a href="../attachments/1319/sample.PNG">sample.PNG</a> <span class="muted">(192339 bytes)</span></li></ul></div></div>
 </article>
 <article class="post" id="msg6380">
   <div class="post-head">
@@ -226,7 +226,7 @@ Fred</div>
   </div>
   <div class="post-body">Hello Fred again. I made a screenshot of your Longdata.dwg datas, they can be accessed with LISP easy. <br>
 <br>
-Best regards.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1320/sample.PNG">sample.PNG</a> <span class="muted">(151550 bytes)</span></li></ul></div></div>
+Best regards.<div class="attachments"><strong>Attachments</strong><ul><li><a href="../attachments/1320/sample.PNG"><img class="attach-thumb" src="../attachments/1320/sample.PNG" alt="sample.PNG" loading="lazy"></a><a href="../attachments/1320/sample.PNG">sample.PNG</a> <span class="muted">(151550 bytes)</span></li></ul></div></div>
 </article>
 <article class="post" id="msg6384">
   <div class="post-head">
